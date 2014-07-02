@@ -53,7 +53,12 @@ Item {
                         exclusiveGroup: group
                         Layout.maximumWidth: height
                         checked: model.pluginName == currentPlugin
-                        onCheckedChanged: if (checked) currentPlugin = model.pluginName
+                        onCheckedChanged: {
+                            if (checked) {
+                                currentPlugin = model.pluginName
+                            }
+                            configurationChanged();
+                        }
                     }
                     PlasmaCore.IconItem {
                         width: units.iconSizes.small
