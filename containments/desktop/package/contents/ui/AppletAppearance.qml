@@ -67,7 +67,6 @@ Item {
     onMinimumWidthChanged: appletItem.width = Math.max(minimumWidth, width);
     onMinimumHeightChanged: appletItem.height = Math.max(minimumHeight, height);
 
-
     //FIXME: this delay is because backgroundHints gets updated only after a while in qml applets
     Timer {
         id: appletTimer
@@ -199,6 +198,13 @@ Item {
 //                     print("plasmoid.backgroundHintsChanged");
                     updateBackgroundHints();
                 }
+                onStatusChanged: {print("EEEEE"+applet.status)
+                    if (applet.status == PlasmaCore.Types.AwaitingDeletionStatus) {
+                        applet.visible = false
+                    } else {
+                        applet.visible = true
+                    }
+                }
             }
 
             MouseArea {
@@ -320,6 +326,10 @@ Item {
                         script: appletContainer.appletDestroyed()
                     }
                 }
+                PlasmaExtras.AppearAnimation {
+                    id: appearAnim
+                    targetItem: appletItem
+                }
                 Loader {
                     id: busyLoader
                     anchors.centerIn: parent
@@ -392,10 +402,30 @@ Item {
         }
     }
 
+    Column {
+        z: 999
+        visible: !applet.visible
+        anchors.centerIn: parent
+        PlasmaComponents.Button {
+            text: "Undo"
+            onClicked: {
+                appearAnim.running = true
+                applet.status = PlasmaCore.Types.PassiveStatus
+            }
+        }
+        PlasmaComponents.Button {
+            text: "Delete Permanently"
+            onClicked: {
+                applet.action("remove").trigger();
+            }
+        }
+    }
+
     Component.onCompleted: {
         layoutTimer.running = true
         layoutTimer.restart()
         visible = false
+        appearAnim.running = true;
         // restore rotation
     }
 }
