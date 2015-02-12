@@ -39,4 +39,10 @@ ConfigModel {
          icon: "view-filter"
          source: "ConfigFilter.qml"
     }
+
+    ConfigCategory {
+         name: "Experimental" /* Intentionally not i18n'd. */
+         icon: "kmines" /* It's a mine field. Geddit? */
+         source: "ConfigExperimental.qml"
+    }
 }
