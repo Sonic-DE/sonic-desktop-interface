@@ -30,7 +30,7 @@
 class AbstractEntry
 {
     public:
-        enum EntryType { RunnableType, GroupType };
+        enum EntryType { RunnableType, GroupType, DividerType };
 
         virtual ~AbstractEntry();
 
