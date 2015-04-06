@@ -21,6 +21,7 @@
 #include "eventforge.h"
 #include "infonotification.h"
 #include "systemsettings.h"
+#include "toolboxinterface.h"
 
 #include <QtQml>
 
@@ -30,5 +31,6 @@ void DesktopPlugin::registerTypes(const char *uri)
     qmlRegisterType<EventForge>(uri, 0, 1, "EventForge");
     qmlRegisterType<InfoNotification>(uri, 0, 1, "InfoNotification");
     qmlRegisterType<SystemSettings>(uri, 0, 1, "SystemSettings");
+    qmlRegisterType<ToolboxInterface>(uri, 0, 1, "ToolboxInterface");
 }
 
