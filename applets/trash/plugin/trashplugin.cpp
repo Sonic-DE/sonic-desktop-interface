@@ -19,13 +19,20 @@
 
 #include "trashplugin.h"
 #include "dirmodel.h"
+#include "trash.h"
 
 #include <QtQml>
 
+static QObject *trash_singletonProvider(QQmlEngine *engine, QJSEngine *scriptEngine)
+{
+    Q_UNUSED(engine)
+    Q_UNUSED(scriptEngine)
+    return new Trash();
+}
 
 void TrashPrivatePlugin::registerTypes(const char *uri)
 {
     Q_ASSERT(uri == QLatin1String("org.kde.plasma.private.trash"));
     qmlRegisterType<DirModel>(uri, 1,0, "DirModel");
+    qmlRegisterSingletonType<Trash>(uri, 1, 0, "Trash", trash_singletonProvider);
 }
-
