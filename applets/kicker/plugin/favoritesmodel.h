@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2014 by Eike Hein <hein@kde.org>                        *
+ *   Copyright (C) 2014-2015 by Eike Hein <hein@kde.org>                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -45,13 +45,11 @@ class FavoritesModel : public AbstractModel
         QStringList favorites() const;
         void setFavorites(const QStringList &favorites);
 
-        Q_INVOKABLE bool isFavorite(const QString &favoriteId) const;
-        Q_INVOKABLE void addFavorite(const QString &favoriteId);
-        Q_INVOKABLE void removeFavorite(const QString &favoriteId);
+        Q_INVOKABLE bool isFavorite(const QString &id) const;
+        Q_INVOKABLE void addFavorite(const QString &id);
+        Q_INVOKABLE void removeFavorite(const QString &id);
 
         Q_INVOKABLE void moveRow(int from, int to);
-
-        void setSourceModel(AbstractModel *model);
 
     public Q_SLOTS:
         virtual void refresh();
@@ -60,11 +58,10 @@ class FavoritesModel : public AbstractModel
         void favoritesChanged() const;
 
     private:
-        KService::Ptr defaultAppByName(const QString &name);
+        AbstractEntry *favoriteFromId(const QString &id);
 
+        QList<AbstractEntry *> m_entryList;
         QStringList m_favorites;
-        QHash<QString, KService::Ptr> m_serviceCache;
-        QPointer<AbstractModel> m_sourceModel;
 };
 
 #endif
