@@ -154,18 +154,25 @@ public:
             ) + "'";
     }
 
+    inline QString starPattern(const QString &pattern) const
+    {
+        return Common::parseStarPattern(pattern, "%", [] (QString str) {
+            return str.replace("%", "\\%").replace("_", "\\_");
+        });
+    }
+
     QString urlFilterClause(const QString &urlFilter) const
     {
         if (urlFilter == "*") return "1";
 
-        return "starmatch('" + urlFilter + "', resource)";
+        return "resource LIKE '" + Common::starPatternToLike(urlFilter) + "' ESCAPE '\\'";
     }
 
     QString mimetypeClause(const QString &mimetype) const
     {
         if (mimetype == ":any" || mimetype == "*") return "1";
 
-        return "starmatch('" + mimetype + "', mimetype)";
+        return "mimetype LIKE '" + Common::starPatternToLike(mimetype) + "' ESCAPE '\\'";
     }
 
     /**
