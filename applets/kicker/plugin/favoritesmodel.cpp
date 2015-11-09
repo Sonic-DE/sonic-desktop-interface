@@ -24,18 +24,28 @@
 #include "systementry.h"
 #include "actionlist.h"
 
+#include <QDebug>
+
 #include <KLocalizedString>
 
-FavoritesModel::FavoritesModel(QObject *parent) : AbstractModel(parent)
+#include <KActivitiesExperimentalStats/Terms>
+#include <KActivitiesExperimentalStats/ResultModel>
+
+namespace KAStats = KActivities::Experimental::Stats;
+
+using namespace KAStats;
+using namespace KAStats::Terms;
+
+FavoritesModel::FavoritesModel(QObject *parent) : ForwardingModel(parent)
 , m_enabled(true)
 , m_maxFavorites(-1)
 , m_dropPlaceholderIndex(-1)
 {
+    refresh();
 }
 
 FavoritesModel::~FavoritesModel()
 {
-    qDeleteAll(m_entryList);
 }
 
 QString FavoritesModel::description() const
@@ -49,21 +59,17 @@ QVariant FavoritesModel::data(const QModelIndex& index, int role) const
         return QVariant();
     }
 
-    if (index.row() == m_dropPlaceholderIndex) {
-        if (role == Kicker::IsDropPlaceholderRole) {
-            return true;
-        } else {
-            return QVariant();
-        }
+    const QString url = ForwardingModel::data(index, ResultModel::ResourceRole).toString();
+
+    qDebug() << "URL" << url;
+
+    // const casts are bad, but we can not achieve this
+    // with the standard 'mutable' members for lazy evaluation
+    const AbstractEntry *entry = const_cast<FavoritesModel*>(this)->favoriteFromId(url);
+
+    if (!entry) {
+        return "NULL!";
     }
-
-    int mappedIndex = index.row();
-
-    if (m_dropPlaceholderIndex != -1 && mappedIndex > m_dropPlaceholderIndex) {
-        --mappedIndex;
-    }
-
-    const AbstractEntry *entry = m_entryList.at(mappedIndex);
 
     if (role == Qt::DisplayRole) {
         return entry->name();
@@ -82,23 +88,44 @@ QVariant FavoritesModel::data(const QModelIndex& index, int role) const
     return QVariant();
 }
 
-int FavoritesModel::rowCount(const QModelIndex& parent) const
-{
-    return parent.isValid() ? 0 : m_entryList.count() + (m_dropPlaceholderIndex != -1 ? 1 : 0);
-}
+// int FavoritesModel::rowCount(const QModelIndex& parent) const
+// {
+// }
 
 bool FavoritesModel::trigger(int row, const QString &actionId, const QVariant &argument)
 {
-    if (row < 0 || row >= m_entryList.count()) {
+    if (row < 0 || row >= rowCount()) {
         return false;
     }
 
-    return m_entryList.at(row)->run(actionId, argument);
+    const QString url = ForwardingModel::data(index(row, 0), ResultModel::ResourceRole).toString();
+
+    return m_entries.contains(url) ? m_entries[url]->run(actionId, argument)
+                                   : false;
 }
 
 bool FavoritesModel::enabled() const
 {
     return m_enabled;
+}
+
+int FavoritesModel::maxFavorites() const
+{
+    return m_maxFavorites;
+}
+
+void FavoritesModel::setMaxFavorites(int max)
+{
+    if (m_maxFavorites != max)
+    {
+        m_maxFavorites = max;
+
+        if (m_maxFavorites != -1 && m_favorites.count() > m_maxFavorites) {
+            refresh();
+        }
+
+        emit maxFavoritesChanged();
+    }
 }
 
 void FavoritesModel::setEnabled(bool enable)
@@ -126,111 +153,29 @@ void FavoritesModel::setFavorites(const QStringList& favorites)
     }
 }
 
-int FavoritesModel::maxFavorites() const
-{
-    return m_maxFavorites;
-}
-
-void FavoritesModel::setMaxFavorites(int max)
-{
-    if (m_maxFavorites != max)
-    {
-        m_maxFavorites = max;
-
-        if (m_maxFavorites != -1 && m_favorites.count() > m_maxFavorites) {
-            refresh();
-        }
-
-        emit maxFavoritesChanged();
-    }
-}
-
 bool FavoritesModel::isFavorite(const QString &id) const
 {
-    return m_favorites.contains(id);
+    qDebug() << "isFavorite" << id;
+    return m_entries.contains(validateUrl(id));
 }
 
 void FavoritesModel::addFavorite(const QString &id, int index)
 {
-    if (!m_enabled || id.isEmpty()) {
-        return;
-    }
+    const QString url = validateUrl(id);
 
-    if (m_maxFavorites != -1 && m_favorites.count() == m_maxFavorites) {
-        return;
-    }
-
-    AbstractEntry *entry = favoriteFromId(id);
-
-    if (!entry || !entry->isValid()) {
-        delete entry;
-        return;
-    }
-
-    setDropPlaceholderIndex(-1);
-
-    int insertIndex = (index != -1) ? index : m_entryList.count();
-
-    beginInsertRows(QModelIndex(), insertIndex, insertIndex);
-
-    m_entryList.insert(insertIndex, entry);
-    m_favorites.insert(insertIndex, entry->id());
-
-    endInsertRows();
-
-    emit countChanged();
-    emit favoritesChanged();
+    qDebug() << "addFavorite" << url << index;
 }
 
 void FavoritesModel::removeFavorite(const QString &id)
 {
-    if (!m_enabled || id.isEmpty()) {
-        return;
-    }
+    const QString url = validateUrl(id);
 
-    int index = m_favorites.indexOf(id);
-
-    if (index != -1) {
-        setDropPlaceholderIndex(-1);
-
-        beginRemoveRows(QModelIndex(), index, index);
-
-        delete m_entryList[index];
-        m_entryList.removeAt(index);
-        m_favorites.removeAt(index);
-
-        endRemoveRows();
-
-        emit countChanged();
-        emit favoritesChanged();
-    }
+    qDebug() << "removeFavorite" << url;
 }
 
-void FavoritesModel::moveRow(int from, int to)
-{
-    if (from >= m_favorites.count() || to >= m_favorites.count()) {
-        return;
-    }
-
-    if (from == to) {
-        return;
-    }
-
-    setDropPlaceholderIndex(-1);
-
-    int modelTo = to + (to > from ? 1 : 0);
-
-    bool ok = beginMoveRows(QModelIndex(), from, from, QModelIndex(), modelTo);
-
-    if (ok) {
-        m_entryList.move(from, to);
-        m_favorites.move(from, to);
-
-        endMoveRows();
-
-        emit favoritesChanged();
-    }
-}
+// void FavoritesModel::moveRow(int from, int to)
+// {
+// }
 
 int FavoritesModel::dropPlaceholderIndex() const
 {
@@ -239,32 +184,9 @@ int FavoritesModel::dropPlaceholderIndex() const
 
 void FavoritesModel::setDropPlaceholderIndex(int index)
 {
-    if (index == -1 && m_dropPlaceholderIndex != -1) {
-        beginRemoveRows(QModelIndex(), m_dropPlaceholderIndex, m_dropPlaceholderIndex);
-
+    if (m_dropPlaceholderIndex != index) {
         m_dropPlaceholderIndex = index;
 
-        endRemoveRows();
-
-        emit countChanged();
-    } else if (index != -1 && m_dropPlaceholderIndex == -1) {
-        beginInsertRows(QModelIndex(), index, index);
-
-        m_dropPlaceholderIndex = index;
-
-        endInsertRows();
-
-        emit countChanged();
-    } else if (m_dropPlaceholderIndex != index) {
-        int modelTo = index + (index > m_dropPlaceholderIndex ? 1 : 0);
-
-        bool ok = beginMoveRows(QModelIndex(), m_dropPlaceholderIndex, m_dropPlaceholderIndex, QModelIndex(), modelTo);
-
-        if (ok) {
-            m_dropPlaceholderIndex = index;
-
-            endMoveRows();
-        }
     }
 }
 
@@ -275,57 +197,63 @@ AbstractModel *FavoritesModel::favoritesModel()
 
 void FavoritesModel::refresh()
 {
-    beginResetModel();
+    QObject *oldModel = sourceModel();
 
-    setDropPlaceholderIndex(-1);
+    auto query = LinkedResources
+                    | Agent {
+                        "org.kde.plasma.favorites.applications",
+                        "org.kde.plasma.favorites.contacts",
+                        "org.kde.plasma.favorites.system"
+                      }
+                    | Type::any()
+                    | Activity::current()
+                    | Limit(15);
 
-    int oldCount = m_entryList.count();
+    ResultModel *model = new ResultModel(query);
 
-    qDeleteAll(m_entryList);
-    m_entryList.clear();
+    QModelIndex index;
 
-    QStringList newFavorites;
-
-    foreach(const QString &id, m_favorites) {
-        AbstractEntry *entry = favoriteFromId(id);
-
-        if (entry && entry->isValid()) {
-            m_entryList << entry;
-            newFavorites << entry->id();
-
-            if (m_maxFavorites != -1 && newFavorites.count() == m_maxFavorites) {
-                break;
-            }
-        } else if (entry) {
-            delete entry;
-        }
+    if (model->canFetchMore(index)) {
+        model->fetchMore(index);
     }
 
-    m_favorites = newFavorites;
+    setSourceModel(model);
 
-    endResetModel();
-
-    if (oldCount != m_entryList.count()) {
-        emit countChanged();
-    }
-
-    emit favoritesChanged();
+    delete oldModel;
 }
 
 AbstractEntry *FavoritesModel::favoriteFromId(const QString &id)
 {
-    const QUrl url(id);
-    const QString &s = url.scheme();
+    if (!m_entries.contains(id)) {
+        const QUrl url(id);
+        const QString &s = url.scheme();
 
-    if ((s.isEmpty() && id.contains(QStringLiteral(".desktop"))) || s == QStringLiteral("preferred")) {
-        return new AppEntry(this, id);
-    } else if (s == QStringLiteral("ktp")) {
-        return new ContactEntry(this, id);
-    } else if (url.isValid() && !url.scheme().isEmpty()) {
-        return new FileEntry(this, url);
-    } else {
-        return new SystemEntry(this, id);
+        AbstractEntry *entry = nullptr;
+
+        if (s == QStringLiteral("applications")
+                || s == QStringLiteral("preferred")
+                || (s.isEmpty() && id.contains(QStringLiteral(".desktop")))) {
+            entry = new AppEntry(this, id);
+        } else if (s == QStringLiteral("ktp")) {
+            entry = new ContactEntry(this, id);
+        } else if (url.isValid() && !url.scheme().isEmpty()) {
+            entry = new FileEntry(this, url);
+        } else {
+            entry = new SystemEntry(this, id);
+        }
+
+        m_entries[id] = entry;
     }
 
-    return nullptr;
+    return m_entries[id];
 }
+
+QString FavoritesModel::validateUrl(const QString &url) const
+{
+    const QUrl qurl(url);
+    const QString &s = qurl.scheme();
+
+    return s.isEmpty() ? "applications://" + url : url;
+}
+
+

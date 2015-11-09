@@ -20,13 +20,13 @@
 #ifndef FAVORITESMODEL_H
 #define FAVORITESMODEL_H
 
-#include "abstractmodel.h"
+#include "forwardingmodel.h"
 
 #include <QPointer>
 
 #include <KService>
 
-class FavoritesModel : public AbstractModel
+class FavoritesModel : public ForwardingModel
 {
     Q_OBJECT
 
@@ -43,7 +43,7 @@ class FavoritesModel : public AbstractModel
 
         QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
-        int rowCount(const QModelIndex &parent = QModelIndex()) const;
+        // int rowCount(const QModelIndex &parent = QModelIndex()) const;
 
         Q_INVOKABLE bool trigger(int row, const QString &actionId, const QVariant &argument);
 
@@ -60,7 +60,7 @@ class FavoritesModel : public AbstractModel
         Q_INVOKABLE void addFavorite(const QString &id, int index = -1);
         Q_INVOKABLE void removeFavorite(const QString &id);
 
-        Q_INVOKABLE void moveRow(int from, int to);
+        // Q_INVOKABLE void moveRow(int from, int to);
 
         int dropPlaceholderIndex() const;
         void setDropPlaceholderIndex(int index);
@@ -79,9 +79,12 @@ class FavoritesModel : public AbstractModel
     private:
         AbstractEntry *favoriteFromId(const QString &id);
 
+        QString validateUrl(const QString &url) const;
+
         bool m_enabled;
 
-        QList<AbstractEntry *> m_entryList;
+        // QList<AbstractEntry *> m_entryList;
+        mutable QHash<QString, AbstractEntry *> m_entries;
         QStringList m_favorites;
         int m_maxFavorites;
 
