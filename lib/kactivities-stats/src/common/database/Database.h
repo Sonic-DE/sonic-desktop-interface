@@ -133,14 +133,14 @@ QString parseStarPattern(const QString &pattern, const QString &joker,
 
 inline QString starPatternToLike(const QString &pattern)
 {
-    return parseStarPattern(pattern, QStringLiteral("%"), [] (QString str) {
-        return str.replace(QLatin1String("%"), QLatin1String("\\%")).replace(QLatin1String("_"), QLatin1String("\\_"));
+    return parseStarPattern(pattern, "%", [] (QString str) {
+        return str.replace("%", "\\%").replace("_", "\\_");
     });
 }
 
 inline QRegExp starPatternToRegex(const QString &pattern)
 {
-    return QRegExp(parseStarPattern(pattern, QStringLiteral(".*"), QRegExp::escape));
+    return QRegExp(parseStarPattern(pattern, ".*", QRegExp::escape));
 }
 
 } // namespace Common

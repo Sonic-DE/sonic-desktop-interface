@@ -33,7 +33,6 @@
 #include <iterator>
 #include <functional>
 #include <mutex>
-#include <boost/optional.hpp>
 
 // KActivities
 #include "activitiessync_p.h"
@@ -136,41 +135,41 @@ public:
 
     QString agentClause(const QString &agent) const
     {
-        if (agent == QLatin1String(":any")) return QStringLiteral("1");
+        if (agent == ":any") return "1";
 
         return "agent = '" + (
-                agent == QLatin1String(":current") ? QCoreApplication::instance()->applicationName() :
+                agent == ":current" ? QCoreApplication::instance()->applicationName() :
                                       agent
             ) + "'";
     }
 
     QString activityClause(const QString &activity) const
     {
-        if (activity == QLatin1String(":any")) return QStringLiteral("1");
+        if (activity == ":any") return "1";
 
         return "activity = '" + (
-                activity == QLatin1String(":current") ? ActivitiesSync::currentActivity(activities) :
+                activity == ":current" ? ActivitiesSync::currentActivity(activities) :
                                          activity
             ) + "'";
     }
 
     inline QString starPattern(const QString &pattern) const
     {
-        return Common::parseStarPattern(pattern, QStringLiteral("%"), [] (QString str) {
-            return str.replace(QLatin1String("%"), QLatin1String("\\%")).replace(QLatin1String("_"), QLatin1String("\\_"));
+        return Common::parseStarPattern(pattern, "%", [] (QString str) {
+            return str.replace("%", "\\%").replace("_", "\\_");
         });
     }
 
     QString urlFilterClause(const QString &urlFilter) const
     {
-        if (urlFilter == QLatin1String("*")) return QStringLiteral("1");
+        if (urlFilter == "*") return "1";
 
         return "resource LIKE '" + Common::starPatternToLike(urlFilter) + "' ESCAPE '\\'";
     }
 
     QString mimetypeClause(const QString &mimetype) const
     {
-        if (mimetype == QLatin1String(":any") || mimetype == QLatin1String("*")) return QStringLiteral("1");
+        if (mimetype == ":any" || mimetype == "*") return "1";
 
         return "mimetype LIKE '" + Common::starPatternToLike(mimetype) + "' ESCAPE '\\'";
     }
@@ -215,10 +214,10 @@ public:
         // ORDER BY column
         auto ordering = queryDefinition.ordering();
         QString orderingColumn = QStringLiteral("linkStatus DESC, ") + (
-                ordering == HighScoredFirst      ? QStringLiteral("score DESC,")
-              : ordering == RecentlyCreatedFirst ? QStringLiteral("firstUpdate DESC,")
-              : ordering == RecentlyUsedFirst    ? QStringLiteral("lastUpdate DESC,")
-              : ordering == OrderByTitle         ? QStringLiteral("title ASC,")
+                ordering == HighScoredFirst      ? "score DESC,"
+              : ordering == RecentlyCreatedFirst ? "firstUpdate DESC,"
+              : ordering == RecentlyUsedFirst    ? "lastUpdate DESC,"
+              : ordering == OrderByTitle         ? "title ASC,"
               : QString()
             );
 
@@ -246,11 +245,11 @@ public:
 
         return kamd::utils::debug_and_return("Query: ",
             query
-                .replace(QLatin1String("$orderingColumn"), orderingColumn)
-                .replace(QLatin1String("$agentsFilter"), agentsFilter.join(QStringLiteral(" OR ")))
-                .replace(QLatin1String("$activitiesFilter"), activitiesFilter.join(QStringLiteral(" OR ")))
-                .replace(QLatin1String("$urlFilter"), urlFilter.join(QStringLiteral(" OR ")))
-                .replace(QLatin1String("$mimetypeFilter"), mimetypeFilter.join(QStringLiteral(" OR ")))
+                .replace("$orderingColumn", orderingColumn)
+                .replace("$agentsFilter", agentsFilter.join(" OR "))
+                .replace("$activitiesFilter", activitiesFilter.join(" OR "))
+                .replace("$urlFilter", urlFilter.join(" OR "))
+                .replace("$mimetypeFilter", mimetypeFilter.join(" OR "))
             );
     }
 
@@ -260,7 +259,7 @@ public:
         //       since the cache was last updated, although, for this query,
         //       scores are not that important.
         static const QString query =
-            QStringLiteral("\n"
+            "\n"
             "SELECT \n"
             "    rl.targettedResource as resource \n"
             "  , SUM(rsc.cachedScore) as score \n"
@@ -289,7 +288,7 @@ public:
             "    AND ($urlFilter)\n"
             "    AND ($mimetypeFilter)\n"
 
-            "GROUP BY resource, title \n")
+            "GROUP BY resource, title \n"
             ;
 
         return query;
@@ -300,7 +299,7 @@ public:
         // TODO: We need to correct the scores based on the time that passed
         //       since the cache was last updated
         static const QString query =
-            QStringLiteral("\n"
+            "\n"
             "SELECT \n"
             "    rsc.targettedResource as resource \n"
             "  , SUM(rsc.cachedScore)  as score \n"
@@ -324,7 +323,7 @@ public:
             "    AND ($urlFilter)\n"
             "    AND ($mimetypeFilter)\n"
 
-            "GROUP BY resource, title \n")
+            "GROUP BY resource, title \n"
             ;
 
         return query;
@@ -351,10 +350,10 @@ public:
                 "SELECT * FROM LinkedResourcesResults \n" +
                 "UNION \n" +
                 usedResourcesQuery_
-                    .replace(QLatin1String("WHERE "),
-                        QLatin1String("WHERE rsc.targettedResource NOT IN "
-                        "(SELECT resource FROM LinkedResourcesResults) AND "))
-                    .replace(QLatin1String("1 as linkStatus"), QLatin1String("0 as linkStatus"));
+                    .replace("WHERE ",
+                        "WHERE rsc.targettedResource NOT IN "
+                        "(SELECT resource FROM LinkedResourcesResults) AND ")
+                    .replace("1 as linkStatus", "0 as linkStatus");
         // }
 
         return query;
@@ -363,15 +362,15 @@ public:
     ResultSet::Result currentResult() const
     {
         ResultSet::Result result;
-        result.setResource(query.value(QStringLiteral("resource")).toString());
-        result.setTitle(query.value(QStringLiteral("title")).toString());
-        result.setMimetype(query.value(QStringLiteral("mimetype")).toString());
-        result.setScore(query.value(QStringLiteral("score")).toDouble());
-        result.setLastUpdate(query.value(QStringLiteral("lastUpdate")).toInt());
-        result.setFirstUpdate(query.value(QStringLiteral("firstUpdate")).toInt());
+        result.setResource(query.value("resource").toString());
+        result.setTitle(query.value("title").toString());
+        result.setMimetype(query.value("mimetype").toString());
+        result.setScore(query.value("score").toDouble());
+        result.setLastUpdate(query.value("lastUpdate").toInt());
+        result.setFirstUpdate(query.value("firstUpdate").toInt());
 
         result.setLinkStatus(
-            (ResultSet::Result::LinkStatus)query.value(QStringLiteral("linkStatus")).toInt());
+            (ResultSet::Result::LinkStatus)query.value("linkStatus").toInt());
 
         return result;
     }
