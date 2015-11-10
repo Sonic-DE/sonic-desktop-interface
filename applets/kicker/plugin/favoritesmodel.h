@@ -26,6 +26,14 @@
 
 #include <KService>
 
+namespace KActivities {
+namespace Experimental {
+namespace Stats {
+    class ResultModel;
+} // namespace Stats
+} // namespace Experimental
+} // namespace KActivities
+
 class FavoritesModel : public ForwardingModel
 {
     Q_OBJECT
@@ -79,7 +87,8 @@ class FavoritesModel : public ForwardingModel
     private:
         AbstractEntry *favoriteFromId(const QString &id);
 
-        QString validateUrl(const QString &url) const;
+        QString validateUrl(const QString &url, QString * scheme = nullptr) const;
+        QString agentForScheme(const QString &scheme) const;
 
         bool m_enabled;
 
@@ -89,6 +98,7 @@ class FavoritesModel : public ForwardingModel
         int m_maxFavorites;
 
         int m_dropPlaceholderIndex;
+        KActivities::Experimental::Stats::ResultModel *m_sourceModel;
 };
 
 #endif

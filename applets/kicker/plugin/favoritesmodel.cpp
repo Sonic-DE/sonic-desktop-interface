@@ -40,6 +40,7 @@ FavoritesModel::FavoritesModel(QObject *parent) : ForwardingModel(parent)
 , m_enabled(true)
 , m_maxFavorites(-1)
 , m_dropPlaceholderIndex(-1)
+, m_sourceModel(nullptr)
 {
     refresh();
 }
@@ -161,16 +162,25 @@ bool FavoritesModel::isFavorite(const QString &id) const
 
 void FavoritesModel::addFavorite(const QString &id, int index)
 {
-    const QString url = validateUrl(id);
+    // TODO: Inspect where this is used
+    Q_UNUSED(index)
 
-    qDebug() << "addFavorite" << url << index;
+    QString scheme;
+    const QString url = validateUrl(id, &scheme);
+
+    m_sourceModel->linkToActivity(
+        QUrl(url), Activity::current(),
+        Agent(agentForScheme(scheme)));
 }
 
 void FavoritesModel::removeFavorite(const QString &id)
 {
-    const QString url = validateUrl(id);
+    QString scheme;
+    const QString url = validateUrl(id, &scheme);
 
-    qDebug() << "removeFavorite" << url;
+    m_sourceModel->unlinkFromActivity(
+        QUrl(url), Activity::current(),
+        Agent(agentForScheme(scheme)));
 }
 
 // void FavoritesModel::moveRow(int from, int to)
@@ -209,15 +219,15 @@ void FavoritesModel::refresh()
                     | Activity::current()
                     | Limit(15);
 
-    ResultModel *model = new ResultModel(query);
+    m_sourceModel = new ResultModel(query);
 
     QModelIndex index;
 
-    if (model->canFetchMore(index)) {
-        model->fetchMore(index);
+    if (m_sourceModel->canFetchMore(index)) {
+        m_sourceModel->fetchMore(index);
     }
 
-    setSourceModel(model);
+    setSourceModel(m_sourceModel);
 
     delete oldModel;
 }
@@ -248,12 +258,40 @@ AbstractEntry *FavoritesModel::favoriteFromId(const QString &id)
     return m_entries[id];
 }
 
-QString FavoritesModel::validateUrl(const QString &url) const
+QString FavoritesModel::validateUrl(const QString &url, QString * scheme) const
 {
     const QUrl qurl(url);
-    const QString &s = qurl.scheme();
 
-    return s.isEmpty() ? "applications://" + url : url;
+    QString s; // needed only when scheme is null
+
+    if (!scheme) {
+        scheme = &s;
+    }
+
+    *scheme = qurl.scheme();
+
+    if (scheme->isEmpty() && url.contains(".desktop")) {
+        *scheme = "applications";
+        return "applications://" + url;
+
+    } else {
+        return url;
+    }
 }
 
+QString FavoritesModel::agentForScheme(const QString &scheme) const
+{
+    if (scheme == QStringLiteral("applications")
+            || scheme == QStringLiteral("preferred")) {
+        return "org.kde.plasma.favorites.applications";
+
+    } else if (scheme == QStringLiteral("ktp")) {
+        return "org.kde.plasma.favorites.contacts";
+
+    } else if (scheme == QStringLiteral("system")) {
+        return "org.kde.plasma(.favorites.system";
+    }
+
+    return QString();
+}
 
