@@ -25,6 +25,7 @@
 #include <QPointer>
 
 #include <KService>
+#include <KConfig>
 
 namespace KActivities {
 namespace Experimental {
@@ -68,7 +69,7 @@ class FavoritesModel : public ForwardingModel
         Q_INVOKABLE void addFavorite(const QString &id, int index = -1);
         Q_INVOKABLE void removeFavorite(const QString &id);
 
-        // Q_INVOKABLE void moveRow(int from, int to);
+        Q_INVOKABLE void moveRow(int from, int to);
 
         int dropPlaceholderIndex() const;
         void setDropPlaceholderIndex(int index);
@@ -94,11 +95,12 @@ class FavoritesModel : public ForwardingModel
 
         // QList<AbstractEntry *> m_entryList;
         mutable QHash<QString, AbstractEntry *> m_entries;
-        QStringList m_favorites;
         int m_maxFavorites;
 
         int m_dropPlaceholderIndex;
         KActivities::Experimental::Stats::ResultModel *m_sourceModel;
+
+        KConfig m_config;
 };
 
 #endif

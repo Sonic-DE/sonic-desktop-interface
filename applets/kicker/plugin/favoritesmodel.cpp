@@ -27,6 +27,7 @@
 #include <QDebug>
 
 #include <KLocalizedString>
+#include <KConfigGroup>
 
 #include <KActivitiesExperimentalStats/Terms>
 #include <KActivitiesExperimentalStats/ResultModel>
@@ -41,6 +42,7 @@ FavoritesModel::FavoritesModel(QObject *parent) : ForwardingModel(parent)
 , m_maxFavorites(-1)
 , m_dropPlaceholderIndex(-1)
 , m_sourceModel(nullptr)
+, m_config("TESTTEST")
 {
     refresh();
 }
@@ -60,13 +62,15 @@ QVariant FavoritesModel::data(const QModelIndex& index, int role) const
         return QVariant();
     }
 
-    const QString url = ForwardingModel::data(index, ResultModel::ResourceRole).toString();
+    const QString url =
+        ForwardingModel::data(index, ResultModel::ResourceRole).toString();
 
     qDebug() << "URL" << url;
 
     // const casts are bad, but we can not achieve this
     // with the standard 'mutable' members for lazy evaluation
-    const AbstractEntry *entry = const_cast<FavoritesModel*>(this)->favoriteFromId(url);
+    const AbstractEntry *entry =
+        const_cast<FavoritesModel*>(this)->favoriteFromId(url);
 
     if (!entry) {
         return "NULL!";
@@ -99,7 +103,8 @@ bool FavoritesModel::trigger(int row, const QString &actionId, const QVariant &a
         return false;
     }
 
-    const QString url = ForwardingModel::data(index(row, 0), ResultModel::ResourceRole).toString();
+    const QString url =
+        ForwardingModel::data(index(row, 0), ResultModel::ResourceRole).toString();
 
     return m_entries.contains(url) ? m_entries[url]->run(actionId, argument)
                                    : false;
@@ -117,16 +122,6 @@ int FavoritesModel::maxFavorites() const
 
 void FavoritesModel::setMaxFavorites(int max)
 {
-    if (m_maxFavorites != max)
-    {
-        m_maxFavorites = max;
-
-        if (m_maxFavorites != -1 && m_favorites.count() > m_maxFavorites) {
-            refresh();
-        }
-
-        emit maxFavoritesChanged();
-    }
 }
 
 void FavoritesModel::setEnabled(bool enable)
@@ -140,18 +135,11 @@ void FavoritesModel::setEnabled(bool enable)
 
 QStringList FavoritesModel::favorites() const
 {
-    return m_favorites;
+    return QStringList();
 }
 
 void FavoritesModel::setFavorites(const QStringList& favorites)
 {
-    QStringList _favorites(favorites);
-    _favorites.removeDuplicates();
-
-    if (_favorites != m_favorites) {
-        m_favorites = _favorites;
-        refresh();
-    }
 }
 
 bool FavoritesModel::isFavorite(const QString &id) const
@@ -183,9 +171,15 @@ void FavoritesModel::removeFavorite(const QString &id)
         Agent(agentForScheme(scheme)));
 }
 
-// void FavoritesModel::moveRow(int from, int to)
-// {
-// }
+void FavoritesModel::moveRow(int from, int to)
+{
+    const QString url =
+        ForwardingModel::data(index(from, 0), ResultModel::ResourceRole).toString();
+
+    qDebug() << "Moving " << url << "(" << from << ") to" << to;
+
+    m_sourceModel->setResultPosition(validateUrl(url), to);
+}
 
 int FavoritesModel::dropPlaceholderIndex() const
 {
@@ -219,7 +213,7 @@ void FavoritesModel::refresh()
                     | Activity::current()
                     | Limit(15);
 
-    m_sourceModel = new ResultModel(query);
+    m_sourceModel = new ResultModel(query, "org.kde.plasma.favorites");
 
     QModelIndex index;
 
