@@ -1,5 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2014-2015 by Eike Hein <hein@kde.org>                   *
+ *   Copyright (C) 2015 by Ivan Cukic <ivan.cukic@kde.org>                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -201,6 +202,7 @@ AbstractModel *FavoritesModel::favoritesModel()
 
 void FavoritesModel::refresh()
 {
+    qDebug() << "Refreshing the model";
     QObject *oldModel = sourceModel();
 
     auto query = LinkedResources
