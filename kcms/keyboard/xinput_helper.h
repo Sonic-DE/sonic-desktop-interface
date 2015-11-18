@@ -30,6 +30,7 @@
 
 Q_DECLARE_LOGGING_CATEGORY(KCM_KEYBOARD)
 
+class UdevDeviceNotifier;
 
 class XInputEventNotifier: public XEventNotifier {
 	Q_OBJECT
@@ -54,6 +55,7 @@ private:
 
 	int xinputEventType;
 	Display* display;
+	UdevDeviceNotifier *udevNotifier;
 };
 
 #endif /* XINPUT_HELPER_H_ */
