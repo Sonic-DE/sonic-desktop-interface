@@ -33,6 +33,7 @@ public:
     Plasma::Service *serviceForSource(const QString &source);
 
 private Q_SLOTS:
+    void workingTouchpadFoundChanged(bool);
     void mousePluggedInChanged(bool);
     void enabledChanged(bool);
 
