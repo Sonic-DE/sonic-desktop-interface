@@ -22,6 +22,8 @@ import QtQuick 2.2
 import org.kde.plasma.extras 2.0 as PlasmaExtras
 import org.kde.activities 0.1 as Activities
 
+import org.kde.plasma.activityswitcher 1.0 as ActivitySwitcher
+
 Flickable {
     id: root
 
@@ -34,11 +36,12 @@ Flickable {
 
     property int itemsWidth: 0
 
-    property int    selectedIndex: -1
+    property int selectedIndex: -1
 
     function _selectRelativeToCurrent(distance)
     {
         var startingWithSelected = selectedIndex;
+        console.log("SortedActivitiesModel selectRelativeToCurrent " + distance);
 
         do {
             selectedIndex += distance;
@@ -51,9 +54,12 @@ Flickable {
                 selectedIndex = activitiesList.count - 1;
             }
 
+            console.log("SortedBlah " + activitiesList.itemAt(selectedIndex).title);
+
             // Searching for the first item that is visible, or back to the one
             // that we started with
-        } while (!activitiesList.itemAt(selectedIndex).visible && startingWithSelected != selectedIndex);
+        } while (!activitiesList.itemAt(selectedIndex).visible
+                        && startingWithSelected != selectedIndex);
 
         _updateSelectedItem();
 
@@ -105,12 +111,6 @@ Flickable {
     }
 
     Activities.ActivityModel {
-        id: activitiesModel
-
-        shownStates: "Running,Stopping"
-    }
-
-    Activities.ActivityModel {
         id: stoppedActivitiesModel
 
         shownStates: "Stopped,Starting"
@@ -128,7 +128,7 @@ Flickable {
         Repeater {
             id: activitiesList
 
-            model: activitiesModel
+            model: ActivitySwitcher.Backend.runningActivitiesModel()
 
             ActivityItem {
 

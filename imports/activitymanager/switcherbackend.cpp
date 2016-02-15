@@ -156,6 +156,8 @@ SwitcherBackend::SwitcherBackend(QObject *parent)
     : QObject(parent)
     , m_lastInvokedAction(Q_NULLPTR)
     , m_shouldShowSwitcher(false)
+    , m_runningActivitiesModel(new SortedActivitiesModel({KActivities::Info::Running, KActivities::Info::Stopping}, this))
+    , m_stoppedActivitiesModel(new SortedActivitiesModel({KActivities::Info::Stopped, KActivities::Info::Starting}, this))
 {
     m_wallpaperCache = new KImageCache("activityswitcher_wallpaper_preview", 10485760);
 
@@ -204,46 +206,59 @@ void SwitcherBackend::keybdSwitchToPreviousActivity()
 
 void SwitcherBackend::switchToActivity(Direction direction)
 {
-    auto runningActivities
-        = m_activities.activities(KActivities::Info::Running);
+    const auto activityToSet =
+        m_runningActivitiesModel->relativeActivity(direction == Next ? 1 : -1);
 
-    if (runningActivities.count() == 0) {
-        return;
-    }
+    if (activityToSet.isEmpty()) return;
 
-    // Sorting this every time is not really (or at all) efficient,
-    // but at least we do not need to connect to too many Info objects
-    std::sort(runningActivities.begin(), runningActivities.end(),
-        [] (const QString &left, const QString &right) {
-            using KActivities::Info;
-            const QString &leftName = Info(left).name().toLower();
-            const QString &rightName = Info(right).name().toLower();
-
-            return
-                (leftName < rightName) ||
-                (leftName == rightName && left < right);
-        });
-
-    auto index = std::max(
-        0, runningActivities.indexOf(m_activities.currentActivity()));
-
-    index += direction == Next ? 1 : -1;
-
-    if (index < 0) {
-        index = runningActivities.count() - 1;
-    } else if (index >= runningActivities.count()) {
-        index = 0;
-    }
-
-    // TODO: This is evil, but plasmashell goes into a dead-lock if
-    // the activity is changed while one tries to open the switcher O.o
-    // m_activities.setCurrentActivity(runningActivities[index]);
-    const auto activityToSet = runningActivities[index];
     QTimer::singleShot(150, this, [this,activityToSet] () {
-                m_activities.setCurrentActivity(activityToSet);
+                setCurrentActivity(activityToSet);
             });
 
     keybdSwitchedToAnotherActivity();
+    //
+    // return;
+    //
+    // auto runningActivities
+    //     = m_activities.activities(KActivities::Info::Running);
+    //
+    // if (runningActivities.count() == 0) {
+    //     return;
+    // }
+    //
+    // // Sorting this every time is not really (or at all) efficient,
+    // // but at least we do not need to connect to too many Info objects
+    // std::sort(runningActivities.begin(), runningActivities.end(),
+    //     [] (const QString &left, const QString &right) {
+    //         using KActivities::Info;
+    //         const QString &leftName = Info(left).name().toLower();
+    //         const QString &rightName = Info(right).name().toLower();
+    //
+    //         return
+    //             (leftName < rightName) ||
+    //             (leftName == rightName && left < right);
+    //     });
+    //
+    // auto index = std::max(
+    //     0, runningActivities.indexOf(m_activities.currentActivity()));
+    //
+    // index += direction == Next ? 1 : -1;
+    //
+    // if (index < 0) {
+    //     index = runningActivities.count() - 1;
+    // } else if (index >= runningActivities.count()) {
+    //     index = 0;
+    // }
+    //
+    // // TODO: This is evil, but plasmashell goes into a dead-lock if
+    // // the activity is changed while one tries to open the switcher O.o
+    // // m_activities.setCurrentActivity(runningActivities[index]);
+    // const auto activityToSet = runningActivities[index];
+    // QTimer::singleShot(150, this, [this,activityToSet] () {
+    //             m_activities.setCurrentActivity(activityToSet);
+    //         });
+    //
+    // keybdSwitchedToAnotherActivity();
 
 }
 
@@ -402,33 +417,21 @@ QPixmap SwitcherBackend::wallpaperThumbnail(const QString &path, int width, int 
     return preview;
 }
 
-QString SwitcherBackend::lastTimeUsedString(const QString &activity)
+QAbstractItemModel *SwitcherBackend::runningActivitiesModel() const
 {
-    KConfig config("kactivitymanagerd-switcher");
-    KConfigGroup times(&config, "LastUsed");
-
-    const auto now = QDateTime::currentDateTime().toTime_t();
-    const auto time = times.readEntry(activity, 0);
-
-    if (time == 0) return i18n("Used some time ago");
-
-    auto diff = now - time;
-
-    // We do not need to be precise
-    const auto seconds = diff % 60; diff /= 60;
-    const auto minutes = diff % 60; diff /= 60;
-    const auto hours   = diff % 24; diff /= 24;
-    const auto days    = diff % 30; diff /= 30;
-    const auto months  = diff % 12; diff /= 12;
-    const auto years   = diff;
-
-    return (years > 0)   ? i18n("Used a long time ago")
-         : (months > 0)  ? i18ncp("amount in months",  "Used a month ago",  "Used %1 months ago", months)
-         : (days > 0)    ? i18ncp("amount in days",    "Used a day ago",    "Used %1 days ago",   days)
-         : (hours > 0)   ? i18ncp("amount in hours",   "Used an hour ago",  "Used %1 hours ago",  hours)
-         : (minutes > 0) ? i18ncp("amount in minutes", "Used a minute ago", "Used %1 minutes ago",  minutes)
-         :                 i18n("Used a moment ago");
+    qDebug() << "SortedActivitiesModel" << (void*)m_runningActivitiesModel << "::getting running activities model";
+    return m_runningActivitiesModel;
 }
 
+QAbstractItemModel *SwitcherBackend::stoppedActivitiesModel() const
+{
+    qDebug() << "SortedActivitiesModel" << (void*)m_stoppedActivitiesModel << "::getting stopped activities model";
+    return m_stoppedActivitiesModel;
+}
+
+void SwitcherBackend::setCurrentActivity(const QString &activity)
+{
+    m_activities.setCurrentActivity(activity);
+}
 
 #include "switcherbackend.moc"
