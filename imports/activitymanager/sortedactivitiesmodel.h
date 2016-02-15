@@ -30,6 +30,7 @@ class SortedActivitiesModel : public QSortFilterProxyModel {
     Q_OBJECT
 
     Q_PROPERTY(bool sortByLastUsedTime READ sortByLastUsedTime WRITE setSortByLastUsedTime NOTIFY sortByLastUsedTimeChanged)
+    Q_PROPERTY(bool inhibitUpdates READ inhibitUpdates WRITE setInhibitUpdates NOTIFY inhibitUpdatesChanged)
 
 public:
     SortedActivitiesModel(QVector<KActivities::Info::State> states, QObject *parent = 0);
@@ -46,24 +47,35 @@ protected:
     bool lessThan(const QModelIndex & source_left, const QModelIndex & source_right) const;
 
     enum AdditionalRoles {
-        LastTimeUsed = Qt::UserRole + 6,
-        LastTimeUsedString = Qt::UserRole + 7
+        LastTimeUsed       = KActivities::ActivitiesModel::UserRole,
+        LastTimeUsedString = KActivities::ActivitiesModel::UserRole + 1
     };
 
 public Q_SLOTS:
     bool sortByLastUsedTime() const;
     void setSortByLastUsedTime(bool sortByLastUsedTime);
 
-    void backgroundsUpdated(const QStringList &changedBackgrounds);
+    bool inhibitUpdates() const;
+    void setInhibitUpdates(bool sortByLastUsedTime);
 
-    QString activityIdForIndex(const QModelIndex &index) const;
+    void onBackgroundsUpdated(const QStringList &changedBackgrounds);
+    void onCurrentActivityChanged(const QString &currentActivity);
+
     QString activityIdForRow(int row) const;
+    int rowForActivityId(const QString &activity) const;
+
+    void rowChanged(int row, const QVector<int> &roles);
 
 Q_SIGNALS:
     void sortByLastUsedTimeChanged(bool sortByLastUsedTime);
+    void inhibitUpdatesChanged(bool inhibitUpdates);
 
 private:
     bool m_sortByLastUsedTime;
+    bool m_inhibitUpdates;
+
+    QString m_previousActivity;
+
     KActivities::ActivitiesModel *m_activitiesModel;
     KActivities::Consumer *m_activities;
 };

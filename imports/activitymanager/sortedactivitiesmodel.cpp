@@ -140,7 +140,7 @@ namespace {
                 forActivity = newBackgrounds;
 
                 for (auto model: models) {
-                    model->backgroundsUpdated(changedBackgrounds);
+                    model->onBackgroundsUpdated(changedBackgrounds);
                 }
             }
         }
@@ -204,10 +204,25 @@ void SortedActivitiesModel::setSortByLastUsedTime(bool sortByLastUsedTime)
     }
 }
 
+bool SortedActivitiesModel::inhibitUpdates() const
+{
+    return m_inhibitUpdates;
+}
+
+void SortedActivitiesModel::setInhibitUpdates(bool inhibitUpdates)
+{
+    if (m_inhibitUpdates != inhibitUpdates) {
+        m_inhibitUpdates = inhibitUpdates;
+        emit inhibitUpdatesChanged(m_inhibitUpdates);
+
+        setDynamicSortFilter(!inhibitUpdates);
+    }
+}
+
 uint SortedActivitiesModel::lastUsedTime(const QString &activity) const
 {
     if (m_activities->currentActivity() == activity) {
-        return 0;
+        return ~(uint)0;
 
     } else {
         KConfig config("kactivitymanagerd-switcher");
@@ -295,14 +310,22 @@ QVariant SortedActivitiesModel::data(const QModelIndex &index, int role) const
     }
 }
 
-QString SortedActivitiesModel::activityIdForIndex(const QModelIndex &index) const
-{
-    return data(index, KActivities::ActivitiesModel::ActivityId).toString();
-}
-
 QString SortedActivitiesModel::activityIdForRow(int row) const
 {
-    return activityIdForIndex(index(row, 0));
+    return data(index(row, 0), KActivities::ActivitiesModel::ActivityId).toString();
+}
+
+int SortedActivitiesModel::rowForActivityId(const QString &activity) const
+{
+    int position = -1;
+
+    for (int row = 0; row < rowCount(); ++row) {
+        if (activity == activityIdForRow(row)) {
+            position = row;
+        }
+    }
+
+    return position;
 }
 
 QString SortedActivitiesModel::relativeActivity(int relative) const
@@ -324,21 +347,29 @@ QString SortedActivitiesModel::relativeActivity(int relative) const
     return activityIdForRow(currentActivityRow);
 }
 
+void SortedActivitiesModel::onCurrentActivityChanged(const QString &currentActivity)
+{
+    if (m_previousActivity == currentActivity) return;
 
-void SortedActivitiesModel::backgroundsUpdated(const QStringList &activities)
+    const int previousActivityRow = rowForActivityId(m_previousActivity);
+    emit rowChanged(previousActivityRow, { LastTimeUsed, LastTimeUsedString });
+
+    m_previousActivity = currentActivity;
+
+    const int currentActivityRow = rowForActivityId(m_previousActivity);
+    emit rowChanged(currentActivityRow, { LastTimeUsed, LastTimeUsedString });
+}
+
+void SortedActivitiesModel::onBackgroundsUpdated(const QStringList &activities)
 {
     for (const auto &activity: activities) {
-        int position = -1;
-
-        for (int row = 0; row < rowCount(); ++row) {
-            if (activity == data(index(row, 0), KActivities::ActivitiesModel::ActivityId).toString()) {
-                position = row;
-            }
-        }
-
-        if (position != -1) {
-            emit dataChanged(index(position, 0), index(position, 0),
-                             { KActivities::ActivitiesModel::ActivityBackground });
-        }
+        const int row = rowForActivityId(activity);
+        emit rowChanged(row, { KActivities::ActivitiesModel::ActivityBackground });
     }
+}
+
+void SortedActivitiesModel::rowChanged(int row, const QVector<int> &roles)
+{
+    if (row == -1) return;
+    emit dataChanged(index(row, 0), index(row, 0), roles);
 }

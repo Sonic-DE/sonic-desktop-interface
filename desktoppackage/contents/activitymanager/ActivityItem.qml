@@ -336,7 +336,7 @@ Item {
                 iconSource: "process-stop"
                 tooltip: i18nd("plasma_shell_org.kde.plasma.desktop", "Stop")
 
-                onClicked: activitiesModel.stopActivity(activityId, function () {});
+                onClicked: ActivitySwitcher.Backend.stopActivity(activityId);
 
                 anchors {
                     right       : parent.right

@@ -70,6 +70,7 @@ public Q_SLOTS:
     QAbstractItemModel *stoppedActivitiesModel() const;
 
     void setCurrentActivity(const QString &activity);
+    void stopActivity(const QString &activity);
 
 private:
     template <typename Handler>
@@ -91,7 +92,7 @@ private Q_SLOTS:
 
     void showActivitySwitcherIfNeeded();
 
-    void currentActivityChangedSlot(const QString &id);
+    void onCurrentActivityChanged(const QString &id);
 
 private:
     QHash<QString, QKeySequence> m_actionShortcut;

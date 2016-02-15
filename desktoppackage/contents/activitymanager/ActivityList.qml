@@ -133,7 +133,7 @@ Flickable {
                 title        : model.name
                 icon         : model.iconSource
                 background   : model.background
-                current      : model.current
+                current      : model.isCurrent
                 innerPadding : 2 * units.smallSpacing
                 stoppable    : activitiesList.count > 1
 
