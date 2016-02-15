@@ -21,7 +21,6 @@
 #include "sortedactivitiesmodel.h"
 
 // Qt
-#include <QDebug>
 #include <QColor>
 
 // KDE
@@ -173,8 +172,6 @@ SortedActivitiesModel::SortedActivitiesModel(QVector<KActivities::Info::State> s
     , m_activitiesModel(new KActivities::ActivitiesModel(states, this))
     , m_activities(new KActivities::Consumer(this))
 {
-    qDebug() << "SortedActivitiesModel" << (void*)this << "::constructor";
-
     setSourceModel(m_activitiesModel);
 
     setDynamicSortFilter(true);
@@ -197,8 +194,6 @@ bool SortedActivitiesModel::sortByLastUsedTime() const
 void SortedActivitiesModel::setSortByLastUsedTime(bool sortByLastUsedTime)
 {
     if (m_sortByLastUsedTime != sortByLastUsedTime) {
-        // qDebug() << "SortedActivitiesModel" << (void*)this << "::setSortByLastUsedTime" << sortByLastUsedTime;
-
         m_sortByLastUsedTime = sortByLastUsedTime;
 
         if (m_sortByLastUsedTime) {
@@ -232,15 +227,11 @@ bool SortedActivitiesModel::lessThan(const QModelIndex &sourceLeft,
         const auto timeLeft  = lastUsedTime(activityLeft.toString());
         const auto timeRight = lastUsedTime(activityRight.toString());
 
-        // qDebug() << "SortedActivitiesModel" << (void*)this << " times " << timeLeft << timeRight;
-
         return timeLeft < timeRight;
 
     } else {
         const auto titleLeft  = sourceModel()->data(sourceLeft, KActivities::ActivitiesModel::ActivityName);
         const auto titleRight = sourceModel()->data(sourceRight, KActivities::ActivitiesModel::ActivityName);
-
-        // qDebug() << "SortedActivitiesModel" << (void*)this << " titles " << titleLeft << titleRight;
 
         return titleLeft < titleRight;
     }
@@ -271,8 +262,6 @@ QVariant SortedActivitiesModel::data(const QModelIndex &index, int role) const
             QSortFilterProxyModel::data(index, Qt::UserRole).toString();
 
         const auto time = lastUsedTime(activity);
-
-        // qDebug() << "SortedActivitiesModel" << (void*)this << " time for" << activity << " " << time;
 
         if (role == LastTimeUsed) {
             return QVariant(time);
@@ -306,33 +295,33 @@ QVariant SortedActivitiesModel::data(const QModelIndex &index, int role) const
     }
 }
 
+QString SortedActivitiesModel::activityIdForIndex(const QModelIndex &index) const
+{
+    return data(index, KActivities::ActivitiesModel::ActivityId).toString();
+}
+
+QString SortedActivitiesModel::activityIdForRow(int row) const
+{
+    return activityIdForIndex(index(row, 0));
+}
+
 QString SortedActivitiesModel::relativeActivity(int relative) const
 {
-    qDebug() << "SortedActivitiesModel" << (void*)this << ": relative" << relative;
     const auto currentActivity = m_activities->currentActivity();
-    qDebug() << "SortedActivitiesModel" << (void*)this << ": sourceModel" << sourceModel() << " c act" << currentActivity;
 
     if (!sourceModel()) return QString();
 
     const auto currentRowCount = sourceModel()->rowCount();
 
-    int currentActivityIndex = 0;
-    qDebug() << "SortedActivitiesModel" << (void*)this << ": rowCount" << currentRowCount;
+    int currentActivityRow = 0;
 
-    for (; currentActivityIndex < currentRowCount; currentActivityIndex++) {
-        qDebug() << "SortedActivitiesModel" << (void*)this
-            << ": currentActivityIndex" << currentActivityIndex
-            << data(index(currentActivityIndex, Qt::UserRole)).toString();
-        if (data(index(currentActivityIndex, Qt::UserRole)).toString() == currentActivity) break;
+    for (; currentActivityRow < currentRowCount; currentActivityRow++) {
+        if (activityIdForRow(currentActivityRow) == currentActivity) break;
     }
 
-    qDebug() << "SortedActivitiesModel" << (void*)this << ": curr" << currentActivityIndex;
+    currentActivityRow = (currentActivityRow + relative) % currentRowCount;
 
-    currentActivityIndex = (currentActivityIndex + relative) % currentRowCount;
-
-    qDebug() << "SortedActivitiesModel" << (void*)this << ": curr" << currentActivityIndex;
-
-    return data(index(currentActivityIndex, Qt::UserRole)).toString();
+    return activityIdForRow(currentActivityRow);
 }
 
 

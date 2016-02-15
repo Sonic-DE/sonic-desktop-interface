@@ -176,11 +176,14 @@ SwitcherBackend::SwitcherBackend(QObject *parent)
     connect(&m_activities, &KActivities::Controller::currentActivityChanged,
             this, &SwitcherBackend::currentActivityChangedSlot);
     m_previousActivity = m_activities.currentActivity();
+
+    qDebug() << "Activities SwitcherBackend constructor " << (void*)this;
 }
 
 SwitcherBackend::~SwitcherBackend()
 {
     delete m_wallpaperCache;
+    qDebug() << "Activities SwitcherBackend destructor " << (void*)this;
 }
 
 QObject *SwitcherBackend::instance(QQmlEngine *engine, QJSEngine *scriptEngine)

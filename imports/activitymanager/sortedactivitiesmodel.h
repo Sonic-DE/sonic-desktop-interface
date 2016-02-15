@@ -56,6 +56,9 @@ public Q_SLOTS:
 
     void backgroundsUpdated(const QStringList &changedBackgrounds);
 
+    QString activityIdForIndex(const QModelIndex &index) const;
+    QString activityIdForRow(int row) const;
+
 Q_SIGNALS:
     void sortByLastUsedTimeChanged(bool sortByLastUsedTime);
 
