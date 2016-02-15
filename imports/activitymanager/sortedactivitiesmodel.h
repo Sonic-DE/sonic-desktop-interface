@@ -54,6 +54,8 @@ public Q_SLOTS:
     bool sortByLastUsedTime() const;
     void setSortByLastUsedTime(bool sortByLastUsedTime);
 
+    void backgroundsUpdated(const QStringList &changedBackgrounds);
+
 Q_SIGNALS:
     void sortByLastUsedTimeChanged(bool sortByLastUsedTime);
 

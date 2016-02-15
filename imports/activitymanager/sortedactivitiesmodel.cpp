@@ -22,12 +22,150 @@
 
 // Qt
 #include <QDebug>
+#include <QColor>
 
 // KDE
 #include <KConfig>
 #include <KConfigGroup>
+#include <KDirWatch>
 #include <KLocalizedString>
 #include <KActivities/Consumer>
+
+namespace {
+
+    class BackgroundCache {
+    public:
+        BackgroundCache()
+            : initialized(false)
+            , plasmaConfig("plasma-org.kde.plasma.desktop-appletsrc")
+        {
+            using namespace std::placeholders;
+
+            const auto configFile = QStandardPaths::writableLocation(
+                                        QStandardPaths::GenericConfigLocation) +
+                                    QLatin1Char('/') + plasmaConfig.name();
+
+            KDirWatch::self()->addFile(configFile);
+
+            QObject::connect(KDirWatch::self(), &KDirWatch::dirty,
+                             [this] (const QString &file) { settingsFileChanged(file); });
+            QObject::connect(KDirWatch::self(), &KDirWatch::created,
+                             [this] (const QString &file) { settingsFileChanged(file); });
+        }
+
+        void settingsFileChanged(const QString &file)
+        {
+            if (!file.endsWith(plasmaConfig.name())) return;
+
+            plasmaConfig.reparseConfiguration();
+
+            if (initialized) {
+                reload(false);
+            }
+        }
+
+        void subscribe(SortedActivitiesModel *model)
+        {
+            if (!initialized) {
+                reload(true);
+            }
+
+            models << model;
+        }
+
+        void unsubscribe(SortedActivitiesModel *model)
+        {
+            models.removeAll(model);
+
+            if (models.isEmpty()) {
+                initialized = false;
+                forActivity.clear();
+            }
+        }
+
+        QString backgroundFromConfig(const KConfigGroup &config) const
+        {
+            auto wallpaperPlugin = config.readEntry("wallpaperplugin");
+            auto wallpaperConfig = config.group("Wallpaper").group(wallpaperPlugin).group("General");
+
+            if (wallpaperConfig.hasKey("Image")) {
+                // Trying for the wallpaper
+                auto wallpaper = wallpaperConfig.readEntry("Image", QString());
+                if (!wallpaper.isEmpty()) {
+                    return wallpaper;
+                }
+            }
+            if (wallpaperConfig.hasKey("Color")) {
+                auto backgroundColor = wallpaperConfig.readEntry("Color", QColor(0, 0, 0));
+                return backgroundColor.name();
+            }
+
+            return QString();
+        }
+
+        void reload(bool fullReload)
+        {
+            QHash<QString, QString> newBackgrounds;
+
+            if (fullReload) {
+                forActivity.clear();
+            }
+
+            QStringList changedBackgrounds;
+
+            for (const auto &cont: plasmaConfigContainments().groupList()) {
+
+                auto config = plasmaConfigContainments().group(cont);
+                auto activityId = config.readEntry("activityId", QString());
+
+                // Ignore if it has no assigned activity
+                if (activityId.isEmpty()) continue;
+
+                // Ignore if we have already found the background
+                if (newBackgrounds.contains(activityId) &&
+                    newBackgrounds[activityId][0] != '#') continue;
+
+                auto newBackground = backgroundFromConfig(config);
+
+                if (forActivity[activityId] != newBackground) {
+                    changedBackgrounds << activityId;
+                    if (!newBackground.isEmpty()) {
+                        newBackgrounds[activityId] = newBackground;
+                    }
+                }
+            }
+
+            initialized = true;
+
+            if (!changedBackgrounds.isEmpty()) {
+                forActivity = newBackgrounds;
+
+                for (auto model: models) {
+                    model->backgroundsUpdated(changedBackgrounds);
+                }
+            }
+        }
+
+        KConfigGroup plasmaConfigContainments() {
+            return plasmaConfig.group("Containments");
+        }
+
+        QHash<QString, QString> forActivity;
+        QList<SortedActivitiesModel*> models;
+
+        bool initialized;
+        KConfig plasmaConfig;
+
+    };
+
+    static BackgroundCache &backgrounds()
+    {
+        // If you convert this to a shared pointer,
+        // fix the connections to KDirWatcher
+        static BackgroundCache cache;
+        return cache;
+    }
+}
 
 SortedActivitiesModel::SortedActivitiesModel(QVector<KActivities::Info::State> states, QObject *parent)
     : QSortFilterProxyModel(parent)
@@ -42,10 +180,13 @@ SortedActivitiesModel::SortedActivitiesModel(QVector<KActivities::Info::State> s
     setDynamicSortFilter(true);
     setSortRole(LastTimeUsed);
     sort(0, Qt::DescendingOrder);
+
+    backgrounds().subscribe(this);
 }
 
 SortedActivitiesModel::~SortedActivitiesModel()
 {
+    backgrounds().unsubscribe(this);
 }
 
 bool SortedActivitiesModel::sortByLastUsedTime() const
@@ -119,7 +260,13 @@ QHash<int, QByteArray> SortedActivitiesModel::roleNames() const
 
 QVariant SortedActivitiesModel::data(const QModelIndex &index, int role) const
 {
-    if (role == LastTimeUsed || role == LastTimeUsedString) {
+    if (role == KActivities::ActivitiesModel::ActivityBackground) {
+        const auto activity =
+            QSortFilterProxyModel::data(index, Qt::UserRole).toString();
+
+        return backgrounds().forActivity[activity];
+
+    } else if (role == LastTimeUsed || role == LastTimeUsedString) {
         const auto activity =
             QSortFilterProxyModel::data(index, Qt::UserRole).toString();
 
@@ -188,3 +335,21 @@ QString SortedActivitiesModel::relativeActivity(int relative) const
     return data(index(currentActivityIndex, Qt::UserRole)).toString();
 }
 
+
+void SortedActivitiesModel::backgroundsUpdated(const QStringList &activities)
+{
+    for (const auto &activity: activities) {
+        int position = -1;
+
+        for (int row = 0; row < rowCount(); ++row) {
+            if (activity == data(index(row, 0), KActivities::ActivitiesModel::ActivityId).toString()) {
+                position = row;
+            }
+        }
+
+        if (position != -1) {
+            emit dataChanged(index(position, 0), index(position, 0),
+                             { KActivities::ActivitiesModel::ActivityBackground });
+        }
+    }
+}

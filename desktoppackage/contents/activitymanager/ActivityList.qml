@@ -30,7 +30,7 @@ Flickable {
     // contentWidth: content.width
     contentHeight: content.height
 
-    property var    model: activitiesModel
+    property var    model: ActivitySwitcher.Backend.runningActivitiesModel()
     property string filterString: ""
     property bool   showSwitcherOnly: false
 
@@ -104,16 +104,8 @@ Flickable {
         }
 
         if (selectedItem != null) {
-            activitiesModel.setCurrentActivity(
-                selectedItem.activityId, function () {}
-            );
+            ActivitySwitcher.Backend.setCurrentActivity(selectedItem.activityId);
         }
-    }
-
-    Activities.ActivityModel {
-        id: stoppedActivitiesModel
-
-        shownStates: "Stopped,Starting"
     }
 
     Column {
@@ -145,8 +137,8 @@ Flickable {
                 innerPadding : 2 * units.smallSpacing
                 stoppable    : activitiesList.count > 1
 
-                onClicked          : {
-                    activitiesModel.setCurrentActivity(model.id, function () {})
+                onClicked    : {
+                    ActivitySwitcher.Backend.setCurrentActivity(model.id);
                 }
             }
         }
@@ -170,7 +162,7 @@ Flickable {
         Repeater {
             id: stoppedActivitiesList
 
-            model: root.showSwitcherOnly ? null : stoppedActivitiesModel
+            model: root.showSwitcherOnly ? null : ActivitySwitcher.Backend.stoppedActivitiesModel()
 
             delegate: StoppedActivityItem {
                 id: stoppedActivityItem
@@ -186,7 +178,7 @@ Flickable {
                 innerPadding : 2 * units.smallSpacing
 
                 onClicked: {
-                    stoppedActivitiesModel.setCurrentActivity(model.id, function () {})
+                    ActivitySwitcher.Backend.setCurrentActivity(model.id)
                 }
             }
         }
