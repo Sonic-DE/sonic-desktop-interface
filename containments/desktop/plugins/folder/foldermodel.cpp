@@ -448,6 +448,8 @@ void FolderModel::setFilterPattern(const QString &pattern)
         m_regExps.append(rx);
     }
 
+    invalidateFilter();
+
     emit filterPatternChanged();
 }
 
@@ -1428,6 +1430,7 @@ void FolderModel::moveSelectedToTrash()
     if (uiDelegate.askDeleteConfirmation(urls, KIO::JobUiDelegate::Trash, KIO::JobUiDelegate::DefaultConfirmation)) {
         KIO::Job* job = KIO::trash(urls);
         job->ui()->setAutoErrorHandlingEnabled(true);
+        KIO::FileUndoManager::self()->recordJob(KIO::FileUndoManager::Trash, urls, QUrl(QStringLiteral("trash:/")), job);
     }
 }
 

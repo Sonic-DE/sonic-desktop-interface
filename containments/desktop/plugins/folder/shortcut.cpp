@@ -1,5 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2012-2013 by Eike Hein <hein@kde.org>                   *
+ *   Copyright Ken <https://stackoverflow.com/users/1568857/ken>           *
+ *   Copyright 2016 Leslie Zhai <xiangzhai83@gmail.com>                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,27 +18,37 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA .        *
  ***************************************************************************/
 
-import QtQuick 2.0
+#include "shortcut.h"
 
-Flow {
-    property bool animating: false
+#include <KStandardShortcut>
 
-    layoutDirection: Qt.application.layoutDirection
+#include <QKeyEvent>
 
-    property int rows: Math.floor(height / children[0].height)
-    property int columns: Math.floor(width / children[0].width)
+ShortCut::ShortCut(QObject *parent)
+    : QObject(parent)
+{
+}
 
-    move: Transition {
-        SequentialAnimation {
-            PropertyAction { target: taskList; property: "animating"; value: true }
+void ShortCut::installAsEventFilterFor(QObject *target)
+{
+    if (target) {
+        target->installEventFilter(this);
+    }
+}
 
-            NumberAnimation {
-                properties: "x, y"
-                easing.type: Easing.OutQuad
-                duration: units.longDuration * 2
-            }
-
-            PropertyAction { target: taskList; property: "animating"; value: false }
+bool ShortCut::eventFilter(QObject *obj, QEvent *e)
+{
+    if (e->type() == QEvent::KeyPress) {
+        QKeyEvent *keyEvent = static_cast<QKeyEvent*>(e);
+        int keyInt = keyEvent->modifiers() + keyEvent->key();
+        if (KStandardShortcut::deleteFile().contains(QKeySequence(keyInt))) {
+            Q_EMIT deleteFile();
+        } else if (KStandardShortcut::renameFile().contains(QKeySequence(keyInt))) {
+            Q_EMIT renameFile();
+        } else if (KStandardShortcut::moveToTrash().contains(QKeySequence(keyInt))) {
+            Q_EMIT moveToTrash();
         }
     }
+
+    return QObject::eventFilter(obj, e);
 }

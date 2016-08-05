@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2012-2013 by Eike Hein <hein@kde.org>                   *
+ *   Copyright (C) 2016 by Eike Hein <hein@kde.org>                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -19,25 +19,14 @@
 
 import QtQuick 2.0
 
-Flow {
-    property bool animating: false
+import org.kde.plasma.components 2.0 as PlasmaComponents
 
-    layoutDirection: Qt.application.layoutDirection
+PlasmaComponents.Label {
+    anchors.fill: parent
 
-    property int rows: Math.floor(height / children[0].height)
-    property int columns: Math.floor(width / children[0].width)
-
-    move: Transition {
-        SequentialAnimation {
-            PropertyAction { target: taskList; property: "animating"; value: true }
-
-            NumberAnimation {
-                properties: "x, y"
-                easing.type: Easing.OutQuad
-                duration: units.longDuration * 2
-            }
-
-            PropertyAction { target: taskList; property: "animating"; value: false }
-        }
-    }
+    text: model.display
+    wrapMode: Text.Wrap
+    elide: Text.ElideRight
+    textFormat: Text.PlainText
+    verticalAlignment: Text.AlignVCenter
 }

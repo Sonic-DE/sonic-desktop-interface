@@ -43,8 +43,8 @@ MouseArea {
 
     property int itemIndex: index
     property bool inPopup: false
-    property bool initialGeometryExported: false
-    property int textWidth: label.implicitWidth
+    property bool isWindow: model.IsWindow
+    property alias textWidth: label.implicitTextWidth
     property bool pressed: false
     property int pressX: -1
     property int pressY: -1
@@ -54,19 +54,10 @@ MouseArea {
     property QtObject smartLauncherItem: null
 
     acceptedButtons: Qt.LeftButton | Qt.RightButton | Qt.MidButton
-    hoverEnabled: true
 
-    onVisibleChanged: {
-        if (visible && model.IsWindow === true && itemIndex == 0) {
-            tasksModel.requestPublishDelegateGeometry(modelIndex(), backend.globalRect(task), task);
-            initialGeometryExported = true;
-        }
-    }
-
-    onXChanged: {
-        if (!initialGeometryExported && model.IsWindow === true) {
-            tasksModel.requestPublishDelegateGeometry(modelIndex(), backend.globalRect(task), task);
-            initialGeometryExported = true;
+    onIsWindowChanged: {
+        if (isWindow) {
+            taskInitComponent.createObject(task);
         }
     }
 
@@ -115,7 +106,7 @@ MouseArea {
                 }
             } else if (mouse.button == Qt.LeftButton) {
                 if (mouse.modifiers & Qt.ShiftModifier) {
-                    tasksModel.requestNewInstance(index);
+                    tasksModel.requestNewInstance(modelIndex());
                 } else if (model.IsGroupParent === true) {
                     if ((iconsOnly || mouse.modifiers == Qt.ControlModifier) && backend.canPresentWindows()) {
                         toolTip.hideToolTip();
@@ -181,6 +172,30 @@ MouseArea {
     function modelIndex() {
         return (inPopup ? tasksModel.makeModelIndex(groupDialog.visualParent.itemIndex, index)
             : tasksModel.makeModelIndex(index));
+    }
+
+    Component {
+        id: taskInitComponent
+
+        Timer {
+            id: timer
+
+            interval: units.longDuration * 2
+            repeat: false
+
+            onTriggered: {
+                parent.hoverEnabled = true;
+
+                if (parent.isWindow) {
+                    tasksModel.requestPublishDelegateGeometry(parent.modelIndex(),
+                        backend.globalRect(parent), parent);
+                }
+
+                timer.destroy();
+            }
+
+            Component.onCompleted: timer.start()
+        }
     }
 
     PlasmaCore.FrameSvgItem {
@@ -358,15 +373,24 @@ MouseArea {
             }
         ]
 
-        Component.onCompleted: {
-            if (model.IsStartup === true) {
-                Qt.createQmlObject("import org.kde.plasma.components 2.0 as PC; PC.BusyIndicator { anchors.fill: parent }", iconBox);
-            }
+        Loader {
+            anchors.fill: parent
+
+            active: model.IsStartup === true
+            sourceComponent: busyIndicator
+        }
+
+        Component {
+            id: busyIndicator
+
+            PlasmaComponents.BusyIndicator { anchors.fill: parent }
         }
     }
 
-    TaskManagerApplet.TextLabel {
+    Loader {
         id: label
+
+        property int implicitTextWidth: label.item ? label.item.implicitWidth : 0
 
         anchors {
             fill: parent
@@ -379,11 +403,10 @@ MouseArea {
         visible: (inPopup || !iconsOnly && model.IsLauncher !== true
             && (parent.width - iconBox.height - units.smallSpacing) >= (theme.mSize(theme.defaultFont).width * 7))
 
-        enabled: true
+        active: inPopup || !iconsOnly
+        asynchronous: true
 
-        text: (!inPopup && iconsOnly) ? "" : model.display
-        color: theme.textColor
-        elide: !inPopup
+        source: plasmoid.configuration.experimentalQmlTextLabel ? "QmlTextLabel.qml" : "CppTextLabel.qml"
     }
 
     states: [
@@ -438,6 +461,10 @@ MouseArea {
         if (!inPopup && model.IsWindow === true) {
             var component = Qt.createComponent("GroupExpanderOverlay.qml");
             component.createObject(task);
+        }
+
+        if (!inPopup && model.IsWindow !== true) {
+            taskInitComponent.createObject(task);
         }
     }
 }

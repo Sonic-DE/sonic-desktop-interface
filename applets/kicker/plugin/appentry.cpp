@@ -17,6 +17,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA .        *
  ***************************************************************************/
 
+#include <config-workspace.h>
 #include "appentry.h"
 #include "actionlist.h"
 #include "appsmodel.h"
@@ -176,7 +177,7 @@ QVariantList AppEntry::actions() const
     }
 
 #ifdef PackageKitQt5_FOUND
-    QStringList files(m_service->entryPath());
+    /*QStringList files(m_service->entryPath());
 
     if (m_service->isApplication()) {
         files += QStandardPaths::findExecutable(KShell::splitArgs(m_service->exec()).first());
@@ -190,7 +191,7 @@ QVariantList AppEntry::actions() const
         QVariantMap removeAction = Kicker::createActionItem(i18n("Remove '%1'...", packageName), "removeApplication", packageName);
         removeAction["icon"] = "applications-other";
         actionList << removeAction;
-    }
+    }*/
 #endif
 
     QQmlPropertyMap *appletConfig = qobject_cast<QQmlPropertyMap *>(appletInterface->property("configuration").value<QObject *>());

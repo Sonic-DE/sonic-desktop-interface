@@ -1,5 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2012-2013 by Eike Hein <hein@kde.org>                   *
+ *   Copyright Ken <https://stackoverflow.com/users/1568857/ken>           *
+ *   Copyright 2016 Leslie Zhai <xiangzhai83@gmail.com>                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,27 +18,38 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA .        *
  ***************************************************************************/
 
-import QtQuick 2.0
+#ifndef SHORTCUT_H
+#define SHORTCUT_H
 
-Flow {
-    property bool animating: false
+#include <QObject>
 
-    layoutDirection: Qt.application.layoutDirection
+/**
+ * TODO: ShortCut is a stopgap solution and should be dropped when Qt's StandardKey
+ * gains support for these actions. QTBUG-54926 https://bugreports.qt.io/browse/QTBUG-54926
+ * And it is *NOT* encouraged registering C++ types with the QML by using EventFilter
+ * but for special case QTBUG-40327 https://bugreports.qt.io/browse/QTBUG-40327
+ *
+ * ShortCut was copied from Ken's answer.
+ * https://stackoverflow.com/questions/12192780/assigning-keyboard-shortcuts-to-qml-components
+ * it uses cc by-sa 3.0 license by default compatible with GPL.
+ * https://www.gnu.org/licenses/license-list.en.html#ccbysa
+ */
+class ShortCut : public QObject
+{
+    Q_OBJECT
 
-    property int rows: Math.floor(height / children[0].height)
-    property int columns: Math.floor(width / children[0].width)
+public:
+    explicit ShortCut(QObject *parent = Q_NULLPTR);
 
-    move: Transition {
-        SequentialAnimation {
-            PropertyAction { target: taskList; property: "animating"; value: true }
+    Q_INVOKABLE void installAsEventFilterFor(QObject *target = Q_NULLPTR);
 
-            NumberAnimation {
-                properties: "x, y"
-                easing.type: Easing.OutQuad
-                duration: units.longDuration * 2
-            }
+Q_SIGNALS:
+    void deleteFile();
+    void renameFile();
+    void moveToTrash();
 
-            PropertyAction { target: taskList; property: "animating"; value: false }
-        }
-    }
-}
+protected:
+    bool eventFilter(QObject *obj, QEvent *e) Q_DECL_OVERRIDE;
+};
+
+#endif // SHORTCUT_H
