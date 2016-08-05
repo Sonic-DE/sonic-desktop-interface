@@ -29,6 +29,8 @@
 class QStackedWidget;
 class QListWidgetItem;
 
+class KColorButton;
+
 /**
  * The Desktop/Colors tab in kcontrol.
  */
@@ -42,52 +44,52 @@ public:
 
 public Q_SLOTS:
 
-    /// load the settings from the config
-    virtual void load();
-
-    /// save the current settings
-    virtual void save();
-
-    /// sets the configuration to sensible default values.
-    virtual void defaults();
+//     /// load the settings from the config
+//     virtual void load();
+//
+//     /// save the current settings
+//     virtual void save();
+//
+//     /// sets the configuration to sensible default values.
+//     virtual void defaults();
 
 private Q_SLOTS:
 
-    /** set the colortable color buttons up according to the current colorset */
-    void updateColorTable();
-
-    /** slot called when color on a KColorButton changes */
-    void colorChanged( const QColor &newColor );
-
-    /** slot called when any varies button is clicked */
-    void variesClicked();
-
-    /** slot called when the schemeList selection changes */
-    void loadScheme(QListWidgetItem *currentItem, QListWidgetItem *previousItem);
-
-    /** reselect the previously selected scheme in schemeList without loading it */
-    void selectPreviousSchemeAgain();
-
-    /** slot called when the remove button is clicked*/
-    void on_schemeRemoveButton_clicked();
-
-    /** slot called when the save button is clicked */
-    void on_schemeSaveButton_clicked();
-
-    /** slot called when the import button is clicked */
-    void on_schemeImportButton_clicked();
-
-    /** slot called when the get new schemes button is clicked */
-    void on_schemeKnsButton_clicked();
-
-    /** slot called when the upload scheme button is clicked */
-    void on_schemeKnsUploadButton_clicked();
-
-    /** null slot to emit changed(true) */
-    void emitChanged();
-
+//    /** set the colortable color buttons up according to the current colorset */
+//    void updateColorTable();
+//
+//     /** slot called when color on a KColorButton changes */
+//     void colorChanged( const QColor &newColor );
+//
+//     /** slot called when any varies button is clicked */
+//     void variesClicked();
+//
+//     /** slot called when the schemeList selection changes */
+//     void loadScheme(QListWidgetItem *currentItem, QListWidgetItem *previousItem);
+//
+//     /** reselect the previously selected scheme in schemeList without loading it */
+//     void selectPreviousSchemeAgain();
+//
+//     /** slot called when the remove button is clicked*/
+//     void on_schemeRemoveButton_clicked();
+//
+//     /** slot called when the save button is clicked */
+//     void on_schemeSaveButton_clicked();
+//
+//     /** slot called when the import button is clicked */
+//     void on_schemeImportButton_clicked();
+//
+//     /** slot called when the get new schemes button is clicked */
+//     void on_schemeKnsButton_clicked();
+//
+//     /** slot called when the upload scheme button is clicked */
+//     void on_schemeKnsUploadButton_clicked();
+//
+//     /** null slot to emit changed(true) */
+//     void emitChanged();
+//
     // options slots
-    void on_contrastSlider_valueChanged(int value);
+ /*   void on_contrastSlider_valueChanged(int value);
     void on_shadeSortedColumn_stateChanged(int state);
     void on_inactiveSelectionEffect_stateChanged(int state);
     void on_useInactiveEffects_stateChanged(int state);
@@ -107,8 +109,8 @@ private Q_SLOTS:
     void on_disabledColorSlider_valueChanged(int value);
     void on_disabledColorButton_changed(const QColor & color);
     void on_disabledContrastBox_currentIndexChanged(int index);
-    void on_disabledContrastSlider_valueChanged(int value);
-
+    void on_disabledContrastSlider_valueChanged(int value);*/
+    void on_schemeEditButton_clicked();
 private:
     class WindecoColors {
         public:
@@ -132,31 +134,31 @@ private:
     };
 
     /** create a preview of a color scheme */
-    static QPixmap createSchemePreviewIcon(const KSharedConfigPtr &config);
-
-    /** load options from global */
-    void loadOptions();
-
-    /** load from global */
-    void loadInternal(bool loadOptions);
-
-    /** load a scheme from a config file at a given path */
-    void loadScheme(KSharedConfigPtr config);
-
-    /** populate the schemeList with color schemes found on the system */
-    void populateSchemeList();
-
-    /** update m_colorSchemes contents from the values in m_config */
-    void updateColorSchemes();
-
-    /** update the effects page from the values in m_config */
-    void updateEffectsPage();
-
-    /** update all preview panes from the values in m_config */
-    void updatePreviews();
-
-    /** setup the colortable with its buttons and labels */
-    void setupColorTable();
+//     static QPixmap createSchemePreviewIcon(const KSharedConfigPtr &config);
+//
+//     /** load options from global */
+//     void loadOptions();
+//
+//     /** load from global */
+//     void loadInternal(bool loadOptions);
+//
+     /** load a scheme from a config file at a given path */
+     void loadScheme(KSharedConfigPtr config);
+//
+//     /** populate the schemeList with color schemes found on the system */
+//     void populateSchemeList();
+//
+//     /** update m_colorSchemes contents from the values in m_config */
+//     void updateColorSchemes();
+//
+//     /** update the effects page from the values in m_config */
+//     void updateEffectsPage();
+//
+//     /** update all preview panes from the values in m_config */
+//     void updatePreviews();
+//
+//     /** setup the colortable with its buttons and labels */
+//     void setupColorTable();
 
     /** helper to create color entries */
     void createColorEntry(const QString &text,

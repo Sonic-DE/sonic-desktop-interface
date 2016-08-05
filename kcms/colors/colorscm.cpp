@@ -21,6 +21,7 @@
 #include "colorscm.h"
 
 #include "../krdb/krdb.h"
+#include "coloreditdialog.h"
 
 #include <QFileInfo>
 #include <QFileDialog>
@@ -92,14 +93,14 @@ KColorCm::KColorCm(QWidget *parent, const QVariantList &)
 
     setupUi(this);
     schemeKnsButton->setIcon( QIcon::fromTheme(QStringLiteral("get-hot-new-stuff")) );
-    schemeKnsUploadButton->setIcon( QIcon::fromTheme(QStringLiteral("get-hot-new-stuff")) );
+    /*schemeKnsUploadButton->setIcon( QIcon::fromTheme(QStringLiteral("get-hot-new-stuff")) );
     connect(colorSet, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &KColorCm::updateColorTable);
     connect(schemeList, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
             this, SLOT(loadScheme(QListWidgetItem*,QListWidgetItem*)));
-    connect(applyToAlien, &QCheckBox::toggled, this, &KColorCm::emitChanged);
+    /*connect(applyToAlien, &QCheckBox::toggled, this, &KColorCm::emitChanged);
 
     // only needs to be called once
-    setupColorTable();
+    setupColorTable();*/
 }
 
 KColorCm::~KColorCm()
@@ -107,7 +108,7 @@ KColorCm::~KColorCm()
     m_config->markAsClean();
 }
 
-void KColorCm::populateSchemeList()
+/*void KColorCm::populateSchemeList()
 {
     // clear the list in case this is being called from reset button click
     schemeList->clear();
@@ -224,12 +225,12 @@ void KColorCm::updateEffectsPage()
     disabledColorButton->setDisabled(disabledColorBox->currentIndex() < 2);
     inactiveContrastSlider->setDisabled(inactiveContrastBox->currentIndex() == 0);
     disabledContrastSlider->setDisabled(disabledContrastBox->currentIndex() == 0);
-}
+}*/
 
 void KColorCm::loadScheme(KSharedConfigPtr config) // const QString &path)
 {
     KSharedConfigPtr temp = m_config;
-    m_config = config;
+  /*  m_config = config;
 
     updateColorSchemes();
     updateEffectsPage(); // intentionally before swapping back m_config
@@ -241,10 +242,10 @@ void KColorCm::loadScheme(KSharedConfigPtr config) // const QString &path)
     updateFromOptions();
     updateColorTable();
 
-    m_loadedSchemeHasUnsavedChanges = false;
+    m_loadedSchemeHasUnsavedChanges = false;)*/
     //m_changed = false;
 }
-
+/*
 void KColorCm::selectPreviousSchemeAgain()
 {
     m_dontLoadSelectedScheme = true;
@@ -1507,6 +1508,12 @@ void KColorCm::on_disabledContrastSlider_valueChanged(int value)
     m_loadedSchemeHasUnsavedChanges = true;
 
     emit changed(true);
+}*/
+
+void KColorCm::on_schemeEditButton_clicked()
+{
+    ColorEditDialog* dialog = new ColorEditDialog(this);
+    dialog->show();
 }
 
 #include "colorscm.moc"
