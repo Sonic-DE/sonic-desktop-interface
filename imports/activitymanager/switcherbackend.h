@@ -103,7 +103,7 @@ private:
     QString m_previousActivity;
 
     KImageCache *m_wallpaperCache;
-    QSet<QUrl> m_previewJobs;
+    QMultiHash<QString, QJSValue> m_previewJobs;
 
     SortedActivitiesModel *m_runningActivitiesModel;
     SortedActivitiesModel *m_stoppedActivitiesModel;

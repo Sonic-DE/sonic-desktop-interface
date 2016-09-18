@@ -33,48 +33,48 @@ Item {
 
     property string background : ""
 
-    function updateBackgroundRetry(valid) {
-        // TODO: (comment by David)
-        //
-        // Registering a a QQuickImageProvider with
-        // ForceAsynchronousImageLoading (so you can just exec() in the main
-        // method without blocking) will probably be both simpler code
-        // and more robust.
-
-        if (valid) {
-            // Try to get the pixmap, if it is not available, this function
-            // will be called again when the thumbnailer finishes its job
-            // console.log("Loading background for " + root.title);
-            backgroundWallpaper.pixmap = ActivitySwitcher.Backend.wallpaperThumbnail(
-                background,
-                backgroundWallpaper.width,
-                backgroundWallpaper.height,
-                updateBackgroundRetry
-                );
-
-            backgroundColor.visible = false;
-
-        } else {
-            backgroundColor.color = "#000000";
-            backgroundColor.visible = true;
-        }
-    }
-
-    function updateBackground() {
-        if (background == "") return;
-
-        updateBackgroundRetry(true);
-    }
-
-    onBackgroundChanged: if (background[0] != '#') {
-        // We have a proper wallpaper, hurroo!
-        updateBackground();
-
-    } else {
-        // We have only a color
-        backgroundColor.color = background
-        backgroundColor.visible = true
-    }
+    // function updateBackgroundRetry(valid) {
+    //     // TODO: (comment by David)
+    //     //
+    //     // Registering a a QQuickImageProvider with
+    //     // ForceAsynchronousImageLoading (so you can just exec() in the main
+    //     // method without blocking) will probably be both simpler code
+    //     // and more robust.
+    //
+    //     if (valid) {
+    //         // Try to get the pixmap, if it is not available, this function
+    //         // will be called again when the thumbnailer finishes its job
+    //         // console.log("Loading background for " + root.title);
+    //         backgroundWallpaper.pixmap = ActivitySwitcher.Backend.wallpaperThumbnail(
+    //             background,
+    //             backgroundWallpaper.width,
+    //             backgroundWallpaper.height,
+    //             updateBackgroundRetry
+    //             );
+    //
+    //         backgroundColor.visible = false;
+    //
+    //     } else {
+    //         backgroundColor.color = "#000000";
+    //         backgroundColor.visible = true;
+    //     }
+    // }
+    //
+    // function updateBackground() {
+    //     if (background == "") return;
+    //
+    //     updateBackgroundRetry(true);
+    // }
+    //
+    // onBackgroundChanged: if (background[0] != '#') {
+    //     // We have a proper wallpaper, hurroo!
+    //     updateBackground();
+    //
+    // } else {
+    //     // We have only a color
+    //     backgroundColor.color = background
+    //     backgroundColor.visible = true
+    // }
 
     signal clicked
 
@@ -83,8 +83,8 @@ Item {
     // Marco removed displayAspectRatio
     height : width * 9.0 / 16.0
 
-    onWidthChanged  : updateBackground()
-    onHeightChanged : updateBackground()
+    // onWidthChanged  : updateBackground()
+    // onHeightChanged : updateBackground()
 
 
     Item {
@@ -104,13 +104,23 @@ Item {
             opacity: root.selected ? .8 : .5
         }
 
-        KQuickControlsAddonsComponents.QPixmapItem {
+        Image {
             id: backgroundWallpaper
 
             anchors.fill: parent
 
             visible: !backgroundColor.visible
+            source: "wallpaperthumbnail://" + background
+            // source: background
         }
+
+        // KQuickControlsAddonsComponents.QPixmapItem {
+        //     id: backgroundWallpaper
+        //
+        //     anchors.fill: parent
+        //
+        //     visible: !backgroundColor.visible
+        // }
 
 
         // Title and the icon

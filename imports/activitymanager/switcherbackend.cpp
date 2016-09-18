@@ -29,6 +29,10 @@
 #include <QTimer>
 #include <QDateTime>
 
+// Qml and QtQuick
+#include <QQuickImageProvider>
+#include <QQmlEngine>
+
 // KDE
 #include <kglobalaccel.h>
 #include <klocalizedstring.h>
@@ -134,6 +138,92 @@ namespace {
         }
     }
 
+    class ThumbnailImageResponse: public QQuickImageResponse {
+    public:
+        ThumbnailImageResponse(const QString &id, const QSize &requestedSize)
+            : m_id(id)
+            , m_requestedSize(requestedSize)
+            , m_texture(Q_NULLPTR)
+        {
+            qDebug() << "GREPME Getting the thumbnail for: " << m_id;
+            run();
+            // setAutoDelete(false);
+        }
+
+        QQuickTextureFactory *textureFactory() const
+        {
+            return m_texture;
+        }
+
+        void run()
+        {
+            int width = m_requestedSize.width();
+            int height = m_requestedSize.height();
+
+            if (width == 0) {
+                width = 320;
+            }
+
+            if (height == 0) {
+                height = 240;
+            }
+            qDebug() << "GREPME Getting the thumbnail for: " << m_id;
+            const auto file = QUrl::fromUserInput(m_id);
+
+            KFileItemList list;
+            list.append(KFileItem(file, QString(), 0));
+
+            auto job =
+                KIO::filePreview(list, QSize(width, height));
+            job->setScaleType(KIO::PreviewJob::Scaled);
+            job->setIgnoreMaximumSize(true);
+
+            connect(job, &KIO::PreviewJob::gotPreview,
+                    this, [this,file] (const KFileItem& item, const QPixmap& pixmap) {
+                        Q_UNUSED(item);
+                        qDebug() << " ----> GREPME We got a preview for: " << file << pixmap;
+
+                        m_texture = QQuickTextureFactory::textureFactoryForImage(pixmap.toImage());
+                        emit finished();
+                    }, Qt::QueuedConnection);
+
+            connect(job, &KIO::PreviewJob::failed,
+                    this, [this,job] (const KFileItem& item) {
+                        Q_UNUSED(item);
+                        qWarning() << "SwitcherBackend: FAILED to get the thumbnail";
+                        emit finished();
+                    });
+            // QImage image(50, 50, QImage::Format_RGB32);
+            // if (m_id == "slow") {
+            //     qDebug() << "Slow, red, sleeping for 5 seconds";
+            //     QThread::sleep(5);
+            //     image.fill(Qt::red);
+            // } else {
+            //     qDebug() << "Fast, blue, sleeping for 1 second";
+            //     QThread::sleep(1);
+            //     image.fill(Qt::blue);
+            // }
+            // if (m_requestedSize.isValid())
+            //     image = image.scaled(m_requestedSize);
+            // m_texture = QQuickTextureFactory::textureFactoryForImage(image);
+            //       emit finished();
+        }
+
+        QString m_id;
+        QSize m_requestedSize;
+        QQuickTextureFactory *m_texture;
+    };
+
+    class ThumbnailImageProvider: public QQuickAsyncImageProvider {
+    public:
+        QQuickImageResponse *requestImageResponse(const QString &id,
+                                                  const QSize &requestedSize)
+        {
+            return new ThumbnailImageResponse(id, requestedSize);
+        }
+    };
+
+
 
 } // local namespace
 
@@ -193,8 +283,10 @@ SwitcherBackend::~SwitcherBackend()
 
 QObject *SwitcherBackend::instance(QQmlEngine *engine, QJSEngine *scriptEngine)
 {
-    Q_UNUSED(engine)
+    // Q_UNUSED(engine)
     Q_UNUSED(scriptEngine)
+    qDebug() << "GREPME Register thumbnailer";
+    engine->addImageProvider("wallpaperthumbnail", new ThumbnailImageProvider());
     return new SwitcherBackend();
 }
 
@@ -360,43 +452,69 @@ QPixmap SwitcherBackend::wallpaperThumbnail(const QString &path, int width, int 
         + QString::number(width) + "x"
         + QString::number(height);
 
+    qDebug() << "GREPME Pixmap key is: " << pixmapKey;
+
     if (m_wallpaperCache->findPixmap(pixmapKey, &preview)) {
+        qDebug() << " ----> GREPME pixmap is here - is it null? "
+                 << preview.isNull()
+                 << preview;
         return preview;
     }
 
-    QUrl file = QUrl::fromLocalFile(path);
+    const auto file = QUrl::fromUserInput(path);
 
-    if (!m_previewJobs.contains(file) && file.isValid()) {
-        m_previewJobs.insert(file);
+    // If we already have a thumbnail job for this file,
+    // just register the callback that we need to call
+    // when the job is done
+    const bool jobAlreadyRunning = m_previewJobs.contains(pixmapKey);
+    m_previewJobs.insert(pixmapKey, callback);
 
-        KFileItemList list;
-        list.append(KFileItem(file, QString(), 0));
-
-        KIO::PreviewJob* job =
-            KIO::filePreview(list, QSize(width, height));
-        job->setScaleType(KIO::PreviewJob::Scaled);
-        job->setIgnoreMaximumSize(true);
-
-        connect(job, &KIO::PreviewJob::gotPreview,
-                this, [=] (const KFileItem& item, const QPixmap& pixmap) mutable {
-                    Q_UNUSED(item);
-                    m_wallpaperCache->insertPixmap(pixmapKey, pixmap);
-                    m_previewJobs.remove(file);
-
-                    callback.call({true});
-                });
-
-        connect(job, &KIO::PreviewJob::failed,
-                this, [=] (const KFileItem& item) mutable {
-                    Q_UNUSED(item);
-                    m_previewJobs.remove(file);
-
-                    qWarning() << "SwitcherBackend: FAILED to get the thumbnail for "
-                               << path << job->detailedErrorStrings(&file);
-                    callback.call({false});
-                });
-
+    if (jobAlreadyRunning) {
+        qDebug() << " ... GREPME Preview already requested";
+        return preview;
     }
+
+    qDebug() << " ... GREPME Creating preview for " << file;
+
+    KFileItemList list;
+    list.append(KFileItem(file, QString(), 0));
+
+    auto job =
+        KIO::filePreview(list, QSize(width, height));
+    job->setScaleType(KIO::PreviewJob::Scaled);
+    job->setIgnoreMaximumSize(true);
+
+    connect(job, &KIO::PreviewJob::gotPreview,
+            this, [this,pixmapKey] (const KFileItem& item, const QPixmap& pixmap) {
+                Q_UNUSED(item);
+                qDebug() << " ----> GREPME We got a preview for: " << pixmapKey << pixmap;
+                m_wallpaperCache->insertPixmap(pixmapKey, pixmap);
+
+                auto callbacks = m_previewJobs.values(pixmapKey);
+
+                m_previewJobs.remove(pixmapKey);
+
+                for (auto& callback: callbacks) {
+                    qDebug() << "    GREPME Calling the callback";
+                    callback.call({true});
+                }
+            }, Qt::QueuedConnection);
+
+    connect(job, &KIO::PreviewJob::failed,
+            this, [this,pixmapKey,job] (const KFileItem& item) {
+                Q_UNUSED(item);
+                auto callbacks = m_previewJobs.values(pixmapKey);
+
+                m_previewJobs.remove(pixmapKey);
+
+                qWarning() << "SwitcherBackend: FAILED to get the thumbnail for "
+                           << pixmapKey;// << job->detailedErrorStrings(&file);
+
+                for (auto& callback: callbacks) {
+                    qDebug() << "!!!!! GREPME Calling the callback to tell it that we failed";
+                    callback.call({false});
+                }
+            });
 
     return preview;
 }
