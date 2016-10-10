@@ -109,9 +109,9 @@ Item {
         groupingWindowTasksThreshold: (plasmoid.configuration.onlyGroupWhenFull && !iconsOnly
             ? LayoutManager.optimumCapacity(width, height) + 1 : -1)
 
-        onLauncherListChanged: {
+        onSerializedLauncherListChanged: {
             layoutTimer.restart();
-            plasmoid.configuration.launchers = launcherList;
+            plasmoid.configuration.launchers = serializedLauncherList;
         }
 
         onGroupingAppIdBlacklistChanged: {
@@ -149,7 +149,7 @@ Item {
         }
 
         Component.onCompleted: {
-            launcherList = plasmoid.configuration.launchers;
+            serializedLauncherList = plasmoid.configuration.launchers;
             groupingAppIdBlacklist = plasmoid.configuration.groupingAppIdBlacklist;
             groupingLauncherUrlBlacklist = plasmoid.configuration.groupingLauncherUrlBlacklist;
 
@@ -258,7 +258,7 @@ Item {
     Connections {
         target: plasmoid.configuration
 
-        onLaunchersChanged: tasksModel.launcherList = plasmoid.configuration.launchers
+        onLaunchersChanged: tasksModel.serializedLauncherList = plasmoid.configuration.launchers
         onGroupingAppIdBlacklistChanged: tasksModel.groupingAppIdBlacklist = plasmoid.configuration.groupingAppIdBlacklist;
         onGroupingLauncherUrlBlacklistChanged: tasksModel.groupingLauncherUrlBlacklist = plasmoid.configuration.groupingLauncherUrlBlacklist;
     }
