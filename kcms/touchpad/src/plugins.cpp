@@ -21,12 +21,12 @@
 #include <KPluginFactory>
 #include <KLocalizedString>
 
-#include "kcm/touchpadconfig.h"
+#include "kcm/touchpadconfigcontainer.h"
 #include "kded/kded.h"
 
 
 K_PLUGIN_FACTORY(TouchpadPluginFactory,
                  registerPlugin<TouchpadDisabler>();
-                 registerPlugin<TouchpadConfig>("kcm");)
+                 registerPlugin<TouchpadConfigContainer>("kcm");)
 #include <plugins.moc>
 //K_EXPORT_PLUGIN(TouchpadPluginFactory(buildAboutData()))
