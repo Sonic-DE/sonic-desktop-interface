@@ -26,8 +26,20 @@ import org.kde.draganddrop 2.0 as DragDrop
 DragDrop.DropArea {
     property Item folderView: null
 
+    onContainsDragChanged: {
+        if (containsDrag) {
+            hoverActivateTimer.restart();
+        } else {
+            hoverActivateTimer.stop();
+        }
+    }
+
     onDrop: folderView.model.dropCwd(event)
     preventStealing: true
+
+    function toggle() {
+        plasmoid.expanded = !plasmoid.expanded;
+    }
 
     PlasmaCore.IconItem {
         id: icon
@@ -47,8 +59,14 @@ DragDrop.DropArea {
 
         hoverEnabled: true
 
-        onClicked: {
-            plasmoid.expanded = !plasmoid.expanded;
-        }
+        onClicked: toggle()
+    }
+
+    Timer {
+        id: hoverActivateTimer
+
+        interval: root.hoverActivateDelay
+
+        onTriggered: toggle()
     }
 }
