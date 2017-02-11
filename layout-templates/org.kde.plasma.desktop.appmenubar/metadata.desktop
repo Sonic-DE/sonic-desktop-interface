@@ -1,7 +1,14 @@
 [Desktop Entry]
 Encoding=UTF-8
 Name=Application Menu Bar
+Name[de]=Anwendungsmenüleiste
+Name[pt]=Menu da Aplicação
+Name[uk]=Смужка меню програми
+Name[x-test]=xxApplication Menu Barxx
 Comment=Combines the current application menu into your shell
+Comment[pt]=Combina o menu actual da aplicação com a sua consola
+Comment[uk]=Вбудовує меню поточної програми до меню оболонки
+Comment[x-test]=xxCombines the current application menu into your shellxx
 Type=Service
 ServiceTypes=Plasma/LayoutTemplate
 X-Plasma-Shell=plasmashell

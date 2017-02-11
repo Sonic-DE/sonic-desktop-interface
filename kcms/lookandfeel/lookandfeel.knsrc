@@ -1,5 +1,9 @@
 [KNewStuff3]
 Name=Look and Feel
+Name[de]=Erscheinungsbild
+Name[pt]=Aparência e Comportamento
+Name[uk]=Вигляд і поведінка
+Name[x-test]=xxLook and Feelxx
 
 ProvidersUrl=https://autoconfig.kde.org/ocs/providers.xml
 Categories=121

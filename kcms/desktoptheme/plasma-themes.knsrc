@@ -1,5 +1,9 @@
 [KNewStuff3]
 Name=Plasma Themes
+Name[de]=Plasma-Designs
+Name[pt]=Temas do Plasma
+Name[uk]=Теми Плазми
+Name[x-test]=xxPlasma Themesxx
 
 ProvidersUrl=http://download.kde.org/ocs/providers.xml
 Categories=Plasma Theme

@@ -1,5 +1,9 @@
 [KNewStuff3]
 Name=Cursors
+Name[de]=Zeiger
+Name[pt]=Cursores
+Name[uk]=Вказівники
+Name[x-test]=xxCursorsxx
 
 ProvidersUrl=http://download.kde.org/ocs/providers.xml
 Categories=X11 Mouse Theme
