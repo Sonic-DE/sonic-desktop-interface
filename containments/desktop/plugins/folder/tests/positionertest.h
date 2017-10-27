@@ -50,6 +50,8 @@ private Q_SLOTS:
     void tst_isBlank();
     void tst_reset();
     void tst_defaultValues();
+    void tst_changeEnabledStatus();
+    void tst_changePerStripe();
 
 private:
     void checkPositions(int perStripe);
