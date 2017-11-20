@@ -1,0 +1,71 @@
+/*
+ *  Copyright (C) 2001 Rik Hemsley (rikkus) <rik@kde.org>
+ *  Copyright (C) 2017 Eike Hein <hein@kde.org>
+ *
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ */
+
+#ifndef LAUNCHFEEDBACK_H
+#define LAUNCHFEEDBACK_H
+
+#include <KQuickAddons/ConfigModule>
+
+class LaunchFeedback : public KQuickAddons::ConfigModule
+{
+    Q_OBJECT
+
+    Q_PROPERTY(int busyCursorCurrentIndex READ busyCursorCurrentIndex WRITE setBusyCursorCurrentIndex NOTIFY busyCursorCurrentIndexChanged)
+    Q_PROPERTY(int busyCursorTimeout READ busyCursorTimeout WRITE setBusyCursorTimeout NOTIFY busyCursorTimeoutChanged)
+
+    Q_PROPERTY(bool taskManagerNotification READ taskManagerNotification WRITE setTaskManagerNotification NOTIFY taskManagerNotificationChanged)
+    Q_PROPERTY(int taskManagerNotificationTimeout READ taskManagerNotificationTimeout WRITE setTaskManagerNotificationTimeout NOTIFY taskManagerNotificationTimeoutChanged)
+
+    public:
+        explicit LaunchFeedback(QObject* parent = 0, const QVariantList &list = QVariantList());
+        virtual ~LaunchFeedback();
+
+        int busyCursorCurrentIndex() const;
+        void setBusyCursorCurrentIndex(int index);
+
+        int busyCursorTimeout() const;
+        void setBusyCursorTimeout(int duration);
+
+        bool taskManagerNotification() const;
+        void setTaskManagerNotification(bool enabled);
+
+        int taskManagerNotificationTimeout() const;
+        void setTaskManagerNotificationTimeout(int duration);
+
+    public Q_SLOTS:
+        void load();
+        void save();
+        void defaults();
+
+    Q_SIGNALS:
+        void busyCursorCurrentIndexChanged() const;
+        void busyCursorTimeoutChanged() const;
+        void taskManagerNotificationChanged() const;
+        void taskManagerNotificationTimeoutChanged() const;
+
+    private:
+        void updateNeedsSave();
+
+        int m_busyCursorCurrentIndex;
+        int m_busyCursorTimeout;
+
+        bool m_taskManagerNotification;
+        int m_taskManagerNotificationTimeout;
+};
+
+#endif
