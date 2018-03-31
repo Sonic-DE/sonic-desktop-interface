@@ -21,71 +21,31 @@
 #define X11BACKEND_H
 
 #include "inputbackend.h"
-#include "evdev_settings.h"
 
 #include <QX11Info>
 #include <X11/Xdefs.h>
 
-class ConfigPlugin;
-
 class X11Backend : public InputBackend
 {
     Q_OBJECT
+
 public:
-    X11Backend(QObject *parent = nullptr);
+    static X11Backend *implementation(QObject *parent = nullptr);
     ~X11Backend();
 
+    void kcmInit() override;
+
     bool isValid() const override { return m_dpy != nullptr; }
-
-    void load() override;
-
-    void apply(bool force = false);
-
-    EvdevSettings* settings() {
-        return m_settings;
-    }
-
-    bool supportScrollPolarity();
-    QStringList supportedAccelerationProfiles();
-    QString accelerationProfile();
-    double accelRate();
-    Handed handed();
-    int threshold();
 
     QString currentCursorTheme();
     void applyCursorTheme(const QString &name, int size);
 
-Q_SIGNALS:
-    void mouseStateChanged();
-    void mousesChanged();
-    void mouseReset();
+protected:
+    X11Backend(QObject *parent = nullptr);
 
-private:
-    void initAtom();
-    bool evdevApplyReverseScroll(int deviceid, bool reverse);
-    bool libinputApplyReverseScroll(int deviceid, bool reverse);
-    void libinputApplyAccelerationProfile(int deviceid, QString profile);
-
-    Atom m_libinputAccelProfileAvailableAtom;
-    Atom m_libinputAccelProfileEnabledAtom;
-    Atom m_libinputNaturalScrollAtom;
-
-    Atom m_evdevWheelEmulationAtom;
-    Atom m_evdevScrollDistanceAtom;
-    Atom m_evdevWheelEmulationAxesAtom;
-
-    Atom m_touchpadAtom;
     // We may still need to do something on non-X11 platform due to Xwayland.
-    Display* m_dpy;
+    Display* m_dpy = nullptr;
     bool m_platformX11;
-    EvdevSettings *m_settings = nullptr;
-    int m_numButtons = 1;
-    Handed m_handed = Handed::NotSupported;
-    double m_accelRate = 1.0;
-    int m_threshold = 0;
-    int m_middleButton = -1;
-    QStringList m_supportedAccelerationProfiles;
-    QString m_accelerationProfile;
 };
 
 #endif // X11BACKEND_H

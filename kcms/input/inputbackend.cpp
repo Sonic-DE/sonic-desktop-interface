@@ -29,7 +29,7 @@ InputBackend *InputBackend::implementation(QObject *parent)
     //There are multiple possible backends
     if (KWindowSystem::isPlatformX11()) {
         qCDebug(KCM_INPUT) << "Using X11 backend";
-        return new X11Backend(parent);
+        return X11Backend::implementation(parent);
     }
     else if (KWindowSystem::isPlatformWayland()) {
         qCDebug(KCM_INPUT) << "Using KWin+Wayland backend";
