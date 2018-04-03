@@ -37,6 +37,8 @@
 #include <KLocalizedString>
 #include <Plasma/PluginLoader>
 
+#include <KNewStuff3/KNS3/DownloadDialog>
+
 K_PLUGIN_FACTORY_WITH_JSON(KCMSplashScreenFactory, "kcm_splashscreen.json", registerPlugin<KCMSplashScreen>();)
 
 KCMSplashScreen::KCMSplashScreen(QObject* parent, const QVariantList& args)
@@ -67,10 +69,21 @@ QList<Plasma::Package> KCMSplashScreen::availablePackages(const QString &compone
     for (const QString &path : dataPaths) {
         QDir dir(path + QStringLiteral("/plasma/look-and-feel"));
         paths << dir.entryList(QDir::AllDirs | QDir::NoDotAndDotDot);
+        dir = QDir(path + QStringLiteral("/plasma/splashscreens"));
+        paths << dir.entryList(QDir::AllDirs | QDir::NoDotAndDotDot);
     }
 
     for (const QString &path : paths) {
         Plasma::Package pkg = Plasma::PluginLoader::self()->loadPackage(QStringLiteral("Plasma/LookAndFeel"));
+        pkg.setPath(path);
+        pkg.setFallbackPackage(Plasma::Package());
+        if (component.isEmpty() || !pkg.filePath(component.toUtf8()).isEmpty()) {
+            packages << pkg;
+        }
+    }
+
+    for (const QString &path : paths) {
+        Plasma::Package pkg = Plasma::PluginLoader::self()->loadPackage(QStringLiteral("Plasma/SplashScreen"));
         pkg.setPath(path);
         pkg.setFallbackPackage(Plasma::Package());
         if (component.isEmpty() || !pkg.filePath(component.toUtf8()).isEmpty()) {
@@ -102,6 +115,17 @@ void KCMSplashScreen::setSelectedPlugin(const QString &plugin)
     }
     m_selectedPlugin = plugin;
     emit selectedPluginChanged();
+}
+
+void KCMSplashScreen::getNewClicked()
+{
+    KNS3::DownloadDialog dialog("ksplash.knsrc", 0);
+    if (dialog.exec()) {
+        KNS3::Entry::List list = dialog.changedEntries();
+        if (list.count() > 0) {
+            load();
+        }
+    }
 }
 
 void KCMSplashScreen::load()
