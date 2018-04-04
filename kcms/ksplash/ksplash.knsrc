@@ -1,0 +1,8 @@
+[KNewStuff3]
+Name=Splash Screens
+
+ProvidersUrl=https://autoconfig.kde.org/ocs/providers.xml
+Categories=Plasma Splashscreens
+StandardResource=tmp
+InstallationCommand=kpackagetool5 -t Plasma/SplashScreen -i %f
+UninstallCommand=kpackagetool5 -t Plasma/SplashScreen -r %f
