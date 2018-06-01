@@ -4,6 +4,8 @@ import QtQuick.Controls 2.3
 
 import org.kde.kirigami 2.4 as Kirigami
 
+import org.kde.time 1.0
+
 /**
  * This Item provides an entry box for inputting a date.
  * It is represented in a form suitable for entering a known date (i.e date of birth, current date)
@@ -66,19 +68,35 @@ RowLayout {
     }
 
     Component {
+        id: tumberDelegate
+        Text {
+            text: model.display
+            color: control.visualFocus ? control.palette.highlight : control.palette.text
+            font: control.font
+            opacity: 0.4 + Math.max(0, 1 - Math.abs(Tumbler.displacement)) * 0.6
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+        }
+    }
+
+    Component {
         id: daySelectComponent
         SpinBox {
             from: 1
             to: 31
             editable: true
-            value: layout.value.getDay();
-            onValueModified: layout.value.setDay(value);
+            value: layout.value.getDate();
+            onValueModified: layout.value.setDate(value);
         }
     }
     Component {
         id: daySelectTouchComponent
         Tumbler {
-            model: 31
+            delegate: tumberDelegate
+            model: NumberModel {
+                min: 1
+                max: 31
+            }
         }
         //Tumbler doesn't have a separate user modified signal...booooooo!!!!!
     }
@@ -96,7 +114,11 @@ RowLayout {
     Component {
         id: monthSelectTouchComponent
         Tumbler {
-            model: 12
+            delegate: tumberDelegate
+            model: NumberModel {
+                min: 1
+                max: 12
+            }
         }
     }
     Component {
@@ -106,14 +128,18 @@ RowLayout {
             to: 2100 //I assume we'll have a new LTS release by then
             editable: true
             textFromValue: function(value) {return value} //default implementation does toLocaleString which looks super weird
-            value: layout.value.getYear();
-            onValueModified: layout.value.setYear(value);
+            value: layout.value.getFullYear();
+            onValueModified: layout.value.setFullYear(value);
         }
     }
     Component {
         id: yearSelectTouchComponent
         Tumbler {
-            model: 12
+            delegate: tumberDelegate
+            model: NumberModel {
+                min: 1970
+                max: 2100
+            }
         }
     }
 
