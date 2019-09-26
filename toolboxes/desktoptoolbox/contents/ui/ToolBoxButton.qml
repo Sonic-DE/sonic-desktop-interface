@@ -19,18 +19,16 @@
  ***************************************************************************/
 
 import QtQuick 2.4
+import QtQuick.Layouts 1.4
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
+import org.kde.plasma.components 3.0 as PlasmaComponents3
 import org.kde.kquickcontrolsaddons 2.0 as KQuickControlsAddons
 import org.kde.plasma.plasmoid 2.0
 
 Item {
     id: toolBoxButton
 
-    property string text: main.Plasmoid.activityName === i18n("Default") ? i18n("Desktop Toolbox") : i18n("Desktop Toolbox — %1 Activity", main.Plasmoid.activityName)
-    property bool isCorner: !buttonMouse.dragging &&
-                            ((state == "topleft") || (state == "topright") ||
-                             (state == "bottomright") || (state == "bottomleft"))
     property bool isHorizontal: (state != "left" && state != "right")
 
     rotation: switch(state) {
@@ -43,15 +41,36 @@ Item {
     }
 
     transform: Translate {
-        x: state == "left" ? Math.round(-width/2 + height/2) : state == "right" ? + Math.round(width/2 - height/2) : 0
+        x: state == "left" ? Math.round(-width/2 + height/2) - (plasmoid.editMode ? 0: height)
+           : state == "right" ? + Math.round(width/2 - height/2) + (plasmoid.editMode ? 0 : height)
+           : 0
+
+        y: plasmoid.editMode ? 0
+           : state == "top" ? -height
+           : state == "bottom" ? height
+           : 0
         Behavior on x {
             NumberAnimation {
-                duration: units.shortDuration * 3;
-                easing.type: Easing.InOutExpo;
+                duration: units.longDuration
+                easing.type: Easing.InOutQuad
+            }
+        }
+        Behavior on y {
+            NumberAnimation {
+                duration: units.longDuration
+                easing.type: Easing.InOutQuad
             }
         }
     }
     transformOrigin: Item.Center
+    opacity: plasmoid.editMode
+    Behavior on opacity {
+        OpacityAnimator {
+            duration: units.longDuration
+            easing.type: Easing.InOutQuad
+        }
+        enabled: visible
+    }
     Behavior on rotation {
         NumberAnimation {
             duration: units.shortDuration * 3;
@@ -100,16 +119,8 @@ Item {
 
         var cornerSnap = iconWidth
 
-        if (x < cornerSnap && y < cornerSnap) {
-            toolBoxButton.state = "topleft";
-        } else if (container.width - x - buttonLayout.width < cornerSnap && y < cornerSnap) {
-            toolBoxButton.state = "topright";
-        } else if (container.width - x - buttonLayout.width < cornerSnap && container.height - y - buttonLayout.width  < cornerSnap) {
-            toolBoxButton.state = "bottomright";
-        } else if (x < cornerSnap && container.height - y - buttonLayout.width < cornerSnap) {
-            toolBoxButton.state = "bottomleft";
         //top diagonal half
-        } else if (x > (y * (container.width/container.height))) {
+        if (x > (y * (container.width/container.height))) {
             //Top edge
             if (container.width - x > y ) {
                 toolBoxButton.state = "top";
@@ -144,8 +155,7 @@ Item {
             top: parent.top
         }
         imagePath: "widgets/translucentbackground"
-        opacity: buttonMouse.containsMouse || (toolBoxLoader.item && toolBoxLoader.item.visible) ? 1.0 : 0.4
-        width: Math.round((isCorner ? buttonLayout.height : buttonLayout.width) + margins.horizontal)
+        width: Math.round(buttonLayout.width + margins.horizontal)
         height: Math.round(buttonLayout.height + margins.vertical)
         Behavior on width {
             NumberAnimation {
@@ -161,72 +171,6 @@ Item {
         }
     }
 
-    Row {
-        id: buttonLayout
-        anchors.centerIn: parent
-        height: Math.max(toolBoxIcon.height, fontMetrics.height)
-        spacing: units.smallSpacing
-
-        Behavior on x {
-            NumberAnimation {
-                duration: units.longDuration;
-                easing.type: Easing.InOutQuad;
-            }
-        }
-
-        PlasmaCore.SvgItem {
-            id: toolBoxIcon
-            svg: PlasmaCore.Svg {
-                id: iconSvg
-                imagePath: "widgets/configuration-icons"
-                onRepaintNeeded: toolBoxIcon.elementId = iconSvg.hasElement("menu") ? "menu" : "configure"
-            }
-            elementId: iconSvg.hasElement("menu") ? "menu" : "configure"
-            anchors.verticalCenter: parent.verticalCenter
-            width: iconSize
-            height: iconSize
-            opacity: buttonMouse.containsMouse || (toolBoxLoader.item && toolBoxLoader.item.visible) ? 1 : 0.5
-            rotation: isHorizontal ? 0 : -90;
-            transformOrigin: Item.Center
-            Behavior on opacity {
-                NumberAnimation {
-                    duration: units.longDuration;
-                    easing.type: Easing.InOutExpo;
-                }
-            }
-        }
-
-        PlasmaComponents.Label {
-            id: activityName
-            anchors.verticalCenter: parent.verticalCenter
-            opacity: isCorner ? 0 : 1
-            text: toolBoxButton.text
-            visible: opacity
-            Behavior on opacity {
-                //only have this animation when going from hidden -> shown
-                enabled: activityName.opacity == 0
-
-                SequentialAnimation {
-                    //pause to allow the toolbox frame to resize
-                    //otherwise we see the text overflow the box
-                    //whilst that animates
-                    PauseAnimation {
-                        duration: units.longDuration
-                    }
-                    NumberAnimation {
-                        duration: units.shortDuration
-                        easing.type: Easing.InOutExpo
-                    }
-                }
-            }
-        }
-
-        FontMetrics {
-            id: fontMetrics
-            font: activityName.font
-        }
-    }
-
     MouseArea {
         id: buttonMouse
 
@@ -235,17 +179,15 @@ Item {
         property int pressedY
         property bool dragging: false
 
-        anchors {
-            fill: parent
-            margins: -10
-        }
+        anchors.fill: parent
 
         drag {
+            filterChildren: true
             target: main.Plasmoid.immutable ? undefined : toolBoxButton
             minimumX: 0
-            maximumX: container.width - toolBoxIcon.width
+            maximumX: container.width - toolBoxButton.width
             minimumY: 0
-            maximumY: container.height - toolBoxIcon.height
+            maximumY: container.height - toolBoxButton.height
         }
 
         hoverEnabled: true
@@ -260,11 +202,7 @@ Item {
                 dragging = true;
             }
         }
-        onClicked: {
-            // the dialog auto-closes on losing focus
-            main.open = !main.dialogWasVisible
-            plasmoid.focus = true;
-        }
+
         onReleased: {
             main.Plasmoid.configuration.ToolBoxButtonState = toolBoxButton.state;
             main.Plasmoid.configuration.ToolBoxButtonX = toolBoxButton.x;
@@ -278,29 +216,61 @@ Item {
             updateState();
         }
         onCanceled: dragging = false;
+
+        RowLayout {
+            id: buttonLayout
+            anchors.centerIn: parent
+            spacing: units.smallSpacing
+
+
+            PlasmaComponents3.ToolButton {
+                property QtObject qAction: plasmoid.action("add widgets")
+                text: qAction.text
+                icon.name: "list-add"
+                icon.height: units.iconSizes.smallMedium
+                onClicked: qAction.trigger()
+            }
+            PlasmaComponents3.ToolButton {
+                property QtObject qAction: plasmoid.globalAction("manage activities")
+                text: qAction.text
+                icon.name: "activities"
+                icon.height: units.iconSizes.smallMedium
+                onClicked: qAction.trigger()
+            }
+            PlasmaComponents3.ToolButton {
+                property QtObject qAction: plasmoid.action("lock widgets")
+                text: qAction.text
+                icon.name: "lock"
+                icon.height: units.iconSizes.smallMedium
+                onClicked: qAction.trigger()
+            }
+            PlasmaComponents3.ToolButton {
+                property QtObject qAction: plasmoid.action("configure")
+                text: qAction.text
+                icon.name: "preferences-desktop-wallpaper"
+                icon.height: units.iconSizes.smallMedium
+                onClicked: qAction.trigger()
+            }
+            PlasmaComponents3.ToolButton {
+                icon.name: "window-close"
+                icon.height: units.iconSizes.smallMedium
+                onClicked: plasmoid.editMode = false
+                PlasmaComponents3.ToolTip {
+                    text: i18n("Close Edit Mode")
+                }
+            }
+        }
     }
 
     states: [
         State {
-            name: "topleft"
-        },
-        State {
             name: "top"
-        },
-        State {
-            name: "topright"
         },
         State {
             name: "right"
         },
         State {
-            name: "bottomright"
-        },
-        State {
             name: "bottom"
-        },
-        State {
-            name: "bottomleft"
         },
         State {
             name: "left"

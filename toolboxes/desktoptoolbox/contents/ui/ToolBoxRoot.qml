@@ -40,28 +40,6 @@ Item {
         onAvailableScreenRegionChanged: placeToolBoxTimer.restart();
     }
 
-    //FIXME: this timer shouldn't exist, but unfortunately when the focus passes
-    //from the desktop to the dialog or vice versa, the event is not atomic
-    //and ends up with neither of those having focus, hiding the dialog when
-    //it shouldn't
-    Timer {
-        id: hideDialogTimer
-        interval: 0
-        //NOTE: it's checking activeFocusItem instead of active as active doesn't correctly signal its change
-        property bool desktopOrDialogFocus: main.Window.activeFocusItem !== null || (toolBoxLoader.item && toolBoxLoader.item.activeFocusItem !== null)
-        onDesktopOrDialogFocusChanged: {
-            if (!desktopOrDialogFocus) {
-                hideDialogTimer.restart();
-            }
-                
-        }
-        onTriggered: {
-            if (!desktopOrDialogFocus) {
-                open = false;
-            }
-        }
-    }
-
     signal minimumWidthChanged
     signal minimumHeightChanged
     signal maximumWidthChanged
@@ -74,29 +52,12 @@ Item {
     property int iconHeight: iconWidth
     property bool dialogWasVisible: false
     property bool open: false
-    onOpenChanged: {
-        plasmoid.editMode = open
-        if (open) {
-            plasmoid.contextualActionsAboutToShow();
-
-            toolBoxLoader.active = true;
-            toolBoxLoader.item.visible = true;
-        } else {
-            toolBoxLoader.item.visible = false;
-        }
-    }
 
     onWidthChanged: placeToolBoxTimer.restart();
     onHeightChanged: placeToolBoxTimer.restart();
 
     LayoutMirroring.enabled: (Qt.application.layoutDirection === Qt.RightToLeft)
     LayoutMirroring.childrenInherit: true
-
-    onVisibleChanged: {
-        if (!visible && toolBoxLoader.item) {
-            toolBoxLoader.item.visible = false
-        }
-    }
 
     ToolBoxButton {
         id: toolBoxButton
@@ -117,37 +78,10 @@ Item {
         }
     }
 
-    Loader {
-        id: toolBoxLoader
-        active: false
-        sourceComponent: PlasmaCore.Dialog {
-            id: dialog
-            flags: Qt.WindowStaysOnTopHint
-            location: PlasmaCore.Types.Floating
-            visualParent: toolBoxButton
-         //   hideOnWindowDeactivate: true
-            mainItem: ToolBoxItem {
-                LayoutMirroring.enabled: Qt.application.layoutDirection === Qt.RightToLeft
-                LayoutMirroring.childrenInherit: true
-
-                Timer {
-                    id: visibleTimer
-                    interval: 300
-                    onTriggered: main.dialogWasVisible = dialog.visible
-                }
-            }
-            onVisibleChanged: visibleTimer.restart();
-        }
-    }
-
     function placeToolBox(ts) {
         // if nothing has been setup yet, determine default position based on layout direction
         if (!ts) {
-            if (Qt.application.layoutDirection === Qt.RightToLeft) {
-                placeToolBox("topleft");
-            } else {
-                placeToolBox("topright");
-            }
+            placeToolBox("top");
             return;
         }
 
@@ -169,29 +103,9 @@ Item {
             pos = plasmoid.adjustToAvailableScreenRegion(tx, ty, toolBoxButton.width, toolBoxButton.height);
             break;
         case "bottom":
+        default:
             ty = main.height + main.y - toolBoxButton.height;
             pos = plasmoid.adjustToAvailableScreenRegion(tx, ty, toolBoxButton.width, toolBoxButton.height);
-            break;
-        case "topleft":
-            tx = main.x;
-            ty = main.y;
-            pos = plasmoid.adjustToAvailableScreenRegion(tx, ty, toolBoxButton.height, toolBoxButton.height);
-            break;
-        case "topright":
-            tx = main.width + main.x - toolBoxButton.height;
-            ty = main.y;
-            pos = plasmoid.adjustToAvailableScreenRegion(tx, ty, toolBoxButton.height, toolBoxButton.height);
-            break;
-        case "bottomleft":
-            tx = main.x;
-            ty = main.height + main.y - toolBoxButton.height;
-            pos = plasmoid.adjustToAvailableScreenRegion(tx, ty, toolBoxButton.height, toolBoxButton.height);
-            break;
-        case "bottomright":
-        default:
-            tx = main.width + main.x - toolBoxButton.height;
-            ty = main.height + main.y - toolBoxButton.height;
-            pos = plasmoid.adjustToAvailableScreenRegion(tx, ty, toolBoxButton.height, toolBoxButton.height);
             break;
         }
         //print("XXXY Setting toolbox to: " + ts + " " + tx + "x" + ty + " screen: " + main.width+ "x" + main.height+"");
