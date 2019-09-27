@@ -29,25 +29,27 @@ import org.kde.plasma.plasmoid 2.0
 Item {
     id: toolBoxButton
 
-    property bool isHorizontal: (state != "left" && state != "right")
+    property bool isHorizontal: state != "left" && state != "right" && state != "leftcenter" && state != "rightcenter"
 
     rotation: switch(state) {
         case "left":
+        case "leftcenter":
             return -90;
         case "right":
+        case "rightcenter":
             return 90;
         default:
             return 0;
     }
 
     transform: Translate {
-        x: state == "left" ? Math.round(-width/2 + height/2) - (plasmoid.editMode ? 0: height)
-           : state == "right" ? + Math.round(width/2 - height/2) + (plasmoid.editMode ? 0 : height)
+        x: state == "left" || state == "leftcenter" ? Math.round(-width/2 + height/2) - (plasmoid.editMode ? 0: height)
+           : state == "right" || state == "rightcenter" ? + Math.round(width/2 - height/2) + (plasmoid.editMode ? 0 : height)
            : 0
 
         y: plasmoid.editMode ? 0
-           : state == "top" ? -height
-           : state == "bottom" ? height
+           : state == "top" || state == "topcenter" ? -height
+           : state == "bottom" || state == "bottomcenter" ? height
            : 0
         Behavior on x {
             NumberAnimation {
@@ -98,9 +100,7 @@ Item {
     width: backgroundFrame.width + backgroundFrame.width % 2
     height: backgroundFrame.height + backgroundFrame.height % 2
 
-    //x and y default to 0, so top left would be correct
-    //If the position is anything else it will updated via onXChanged during initialization
-    state: "topleft"
+    state: "topcenter"
 
     onXChanged: stateTimer.restart()
     onYChanged: stateTimer.restart()
@@ -122,22 +122,36 @@ Item {
         //top diagonal half
         if (x > (y * (container.width/container.height))) {
             //Top edge
-            if (container.width - x > y ) {
-                toolBoxButton.state = "top";
+            if (container.width - x - width/2 > y ) {
+                if (Math.abs(container.width/2 - (x + width/2)) < units.gridUnit) {
+                    toolBoxButton.state = "topcenter";
+                } else {
+                    toolBoxButton.state = "top";
+                }
             //right edge
             } else {
-                //toolBoxButton.transformOrigin = Item.BottomRight
-                toolBoxButton.state = "right";
+                if (Math.abs(container.height/2 - (y + width/2)) < units.gridUnit) {
+                    toolBoxButton.state = "rightcenter";
+                } else {
+                    toolBoxButton.state = "right";
+                }
             }
         //bottom diagonal half
         } else {
             //Left edge
-            if (container.height - y > x ) {
-                //toolBoxButton.transformOrigin = Item.TopLeft
-                toolBoxButton.state = "left";
+            if (container.height - y - width/2 > x ) {
+                if (Math.abs(container.height/2 - (y + width/2)) < units.gridUnit) {
+                    toolBoxButton.state = "leftcenter";
+                } else {
+                    toolBoxButton.state = "left";
+                }
             //Bottom edge
             } else {
-                toolBoxButton.state = "bottom";
+                if (Math.abs(container.width/2 - (x + width/2)) < units.gridUnit) {
+                    toolBoxButton.state = "bottomcenter";
+                } else {
+                    toolBoxButton.state = "bottom";
+                }
             }
         }
 
@@ -186,8 +200,8 @@ Item {
             target: main.Plasmoid.immutable ? undefined : toolBoxButton
             minimumX: 0
             maximumX: container.width - toolBoxButton.width
-            minimumY: 0
-            maximumY: container.height - toolBoxButton.height
+            minimumY: toolBoxButton.isHorizontal ? 0 : toolBoxButton.width/2 - toolBoxButton.height/2
+            maximumY: toolBoxButton.isHorizontal ? container.height : container.height - toolBoxButton.width/2 - toolBoxButton.height/2
         }
 
         hoverEnabled: true
@@ -262,9 +276,12 @@ Item {
         }
     }
 
-    states: [
+   /* states: [
         State {
             name: "top"
+        },
+        State {
+            name: "topcenter"
         },
         State {
             name: "right"
@@ -275,5 +292,5 @@ Item {
         State {
             name: "left"
         }
-    ]
+    ]*/
 }

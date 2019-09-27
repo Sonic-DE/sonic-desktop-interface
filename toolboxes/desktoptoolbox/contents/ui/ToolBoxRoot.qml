@@ -39,14 +39,14 @@ Item {
         target: plasmoid
         onAvailableScreenRegionChanged: placeToolBoxTimer.restart();
     }
-
+/*
     signal minimumWidthChanged
     signal minimumHeightChanged
     signal maximumWidthChanged
     signal maximumHeightChanged
     signal preferredWidthChanged
     signal preferredHeightChanged
-
+*/
     property int iconSize: units.iconSizes.small
     property int iconWidth: units.iconSizes.smallMedium
     property int iconHeight: iconWidth
@@ -81,7 +81,7 @@ Item {
     function placeToolBox(ts) {
         // if nothing has been setup yet, determine default position based on layout direction
         if (!ts) {
-            placeToolBox("top");
+            placeToolBox("topcenter");
             return;
         }
 
@@ -103,8 +103,28 @@ Item {
             pos = plasmoid.adjustToAvailableScreenRegion(tx, ty, toolBoxButton.width, toolBoxButton.height);
             break;
         case "bottom":
-        default:
             ty = main.height + main.y - toolBoxButton.height;
+            pos = plasmoid.adjustToAvailableScreenRegion(tx, ty, toolBoxButton.width, toolBoxButton.height);
+            break;
+        case "bottomcenter":
+            tx = main.width / 2 - toolBoxButton.width / 2;
+            ty = main.height + main.y - toolBoxButton.height;
+            pos = plasmoid.adjustToAvailableScreenRegion(tx, ty, toolBoxButton.width, toolBoxButton.height);
+            break;
+        case "leftcenter":
+            tx = main.x;
+            ty = main.height - toolBoxButton.width / 2;
+            pos = plasmoid.adjustToAvailableScreenRegion(tx, ty, toolBoxButton.width, toolBoxButton.height);
+            break;
+        case "rightcenter":
+            tx = main.width + main.x - toolBoxButton.width;
+            ty = main.height - toolBoxButton.width / 2;
+            pos = plasmoid.adjustToAvailableScreenRegion(tx, ty, toolBoxButton.width, toolBoxButton.height);
+            break;
+        case "topcenter":
+        default:
+            tx = main.width / 2 - toolBoxButton.width / 2;
+            ty = main.y;
             pos = plasmoid.adjustToAvailableScreenRegion(tx, ty, toolBoxButton.width, toolBoxButton.height);
             break;
         }
