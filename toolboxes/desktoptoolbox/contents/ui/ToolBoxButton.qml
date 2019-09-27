@@ -107,7 +107,7 @@ Item {
 
     Timer {
         id: stateTimer
-        interval: 100
+        interval: 0//toolBoxButton.state.indexOf("center") != -1 ? 0 : 100
         onTriggered: updateState()
     }
     function updateState() {
@@ -130,7 +130,7 @@ Item {
                 }
             //right edge
             } else {
-                if (Math.abs(container.height/2 - (y + width/2)) < units.gridUnit) {
+                if (Math.abs(container.height/2 - (y + height/2)) < units.gridUnit) {
                     toolBoxButton.state = "rightcenter";
                 } else {
                     toolBoxButton.state = "right";
@@ -147,7 +147,7 @@ Item {
                 }
             //Bottom edge
             } else {
-                if (Math.abs(container.width/2 - (x + width/2)) < units.gridUnit) {
+                if (Math.abs(container.width/2 - (x + height/2)) < units.gridUnit) {
                     toolBoxButton.state = "bottomcenter";
                 } else {
                     toolBoxButton.state = "bottom";
@@ -191,6 +191,10 @@ Item {
         property QtObject container: main
         property int pressedX
         property int pressedY
+        property int snapStartX
+        property int snapStartY
+        property bool snapX: false;
+        property bool snapY: false;
         property bool dragging: false
 
         anchors.fill: parent
@@ -215,9 +219,32 @@ Item {
                 Math.abs(toolBoxButton.y - pressedY) > iconSize)) {
                 dragging = true;
             }
+
+            // Center snapping X
+            if (snapX && Math.abs(snapStartX - mouse.x) > units.gridUnit) {
+                toolBoxButton.anchors.horizontalCenter = undefined;
+                snapX = false;
+            } else if (!snapX && Math.abs(main.width/2 - (toolBoxButton.x + toolBoxButton.width/2)) < units.gridUnit) {
+                toolBoxButton.anchors.horizontalCenter = main.horizontalCenter;
+                snapStartX = mouse.x;
+                snapX = true;
+            }
+            // Center snapping Y still use mouse.x because rotation
+            if (snapY && Math.abs(snapStartY - mouse.x) > units.gridUnit) {
+                toolBoxButton.anchors.verticalCenter = undefined;
+                snapY = false;
+            } else if (!snapY && Math.abs(main.height/2 - (toolBoxButton.y + toolBoxButton.height/2)) < units.gridUnit) {
+                toolBoxButton.anchors.verticalCenter = main.verticalCenter;
+                snapStartY = mouse.x;
+                snapY = true;
+            }
         }
 
         onReleased: {
+            toolBoxButton.anchors.horizontalCenter = undefined;
+            toolBoxButton.anchors.verticalCenter = undefined;
+            snapX = false;
+            snapY = false;
             main.Plasmoid.configuration.ToolBoxButtonState = toolBoxButton.state;
             main.Plasmoid.configuration.ToolBoxButtonX = toolBoxButton.x;
             main.Plasmoid.configuration.ToolBoxButtonY = toolBoxButton.y;
