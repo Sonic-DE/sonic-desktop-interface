@@ -37,6 +37,7 @@ FocusScope {
     property QtObject model: dir
     property Item rubberBand: null
 
+    property alias view: gridView
     property alias isRootView: gridView.isRootView
     property alias currentIndex: gridView.currentIndex
     property alias url: dir.url

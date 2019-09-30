@@ -340,6 +340,8 @@ FolderViewDropArea {
         cellWidth: units.iconSizes.small
         cellHeight: cellWidth
 
+        eventManagerToFilter: folderViewLayer.item ? folderViewLayer.item.view.view : null
+
         appletContainerComponent: ContainmentLayoutManager.BasicAppletContainer {
             id: appletContainer
             editModeCondition: plasmoid.immutable
