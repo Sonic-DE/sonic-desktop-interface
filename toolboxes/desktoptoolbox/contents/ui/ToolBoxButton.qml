@@ -96,9 +96,8 @@ Item {
         enabled: visible
     }
 
-    clip: backgroundFrameWidthAnimation.running
-    width: backgroundFrame.width + backgroundFrame.width % 2
-    height: backgroundFrame.height + backgroundFrame.height % 2
+    width: buttonLayout.width
+    height: buttonLayout.height
 
     state: "topcenter"
 
@@ -165,24 +164,17 @@ Item {
     PlasmaCore.FrameSvgItem {
         id: backgroundFrame
         anchors {
-            left: parent.left
-            top: parent.top
+            //left: parent.left
+            //top: parent.top
+            fill: parent
+            leftMargin: -backgroundFrame.margins.left
+            topMargin: -backgroundFrame.margins.top
+            rightMargin: -backgroundFrame.margins.right
+            bottomMargin: -backgroundFrame.margins.bottom
         }
-        imagePath: "widgets/translucentbackground"
+        imagePath: "widgets/background"
         width: Math.round(buttonLayout.width + margins.horizontal)
         height: Math.round(buttonLayout.height + margins.vertical)
-        Behavior on width {
-            NumberAnimation {
-                id: backgroundFrameWidthAnimation
-                duration: units.longDuration;
-                easing.type: Easing.InOutQuad;
-            }
-        }
-        Behavior on opacity {
-            NumberAnimation {
-                duration: units.longDuration;
-            }
-        }
     }
 
     MouseArea {
@@ -302,22 +294,4 @@ Item {
             }
         }
     }
-
-   /* states: [
-        State {
-            name: "top"
-        },
-        State {
-            name: "topcenter"
-        },
-        State {
-            name: "right"
-        },
-        State {
-            name: "bottom"
-        },
-        State {
-            name: "left"
-        }
-    ]*/
 }
