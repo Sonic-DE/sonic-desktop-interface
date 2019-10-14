@@ -94,14 +94,6 @@ Item {
             ty = main.y;
             pos = plasmoid.adjustToAvailableScreenRegion(tx, ty, toolBoxButton.width, toolBoxButton.height);
             break;
-        case "left":
-            tx = main.x;
-            pos = plasmoid.adjustToAvailableScreenRegion(tx, ty, toolBoxButton.width, toolBoxButton.height);
-            break;
-        case "right":
-            tx = main.width + main.x - toolBoxButton.width;
-            pos = plasmoid.adjustToAvailableScreenRegion(tx, ty, toolBoxButton.width, toolBoxButton.height);
-            break;
         case "bottom":
             ty = main.height + main.y - toolBoxButton.height;
             pos = plasmoid.adjustToAvailableScreenRegion(tx, ty, toolBoxButton.width, toolBoxButton.height);
@@ -109,16 +101,6 @@ Item {
         case "bottomcenter":
             tx = main.width / 2 - toolBoxButton.width / 2;
             ty = main.height + main.y - toolBoxButton.height;
-            pos = plasmoid.adjustToAvailableScreenRegion(tx, ty, toolBoxButton.width, toolBoxButton.height);
-            break;
-        case "leftcenter":
-            tx = main.x;
-            ty = main.height - toolBoxButton.width / 2;
-            pos = plasmoid.adjustToAvailableScreenRegion(tx, ty, toolBoxButton.width, toolBoxButton.height);
-            break;
-        case "rightcenter":
-            tx = main.width + main.x - toolBoxButton.width;
-            ty = main.height - toolBoxButton.width / 2;
             pos = plasmoid.adjustToAvailableScreenRegion(tx, ty, toolBoxButton.width, toolBoxButton.height);
             break;
         case "topcenter":

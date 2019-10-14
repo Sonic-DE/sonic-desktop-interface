@@ -29,34 +29,12 @@ import org.kde.plasma.plasmoid 2.0
 Item {
     id: toolBoxButton
 
-    property bool isHorizontal: state != "left" && state != "right" && state != "leftcenter" && state != "rightcenter"
-
-    rotation: switch(state) {
-        case "left":
-        case "leftcenter":
-            return -90;
-        case "right":
-        case "rightcenter":
-            return 90;
-        default:
-            return 0;
-    }
-
     transform: Translate {
-        x: state == "left" || state == "leftcenter" ? Math.round(-width/2 + height/2) - (plasmoid.editMode ? 0: height)
-           : state == "right" || state == "rightcenter" ? + Math.round(width/2 - height/2) + (plasmoid.editMode ? 0 : height)
-           : 0
-
         y: plasmoid.editMode ? 0
            : state == "top" || state == "topcenter" ? -height
            : state == "bottom" || state == "bottomcenter" ? height
            : 0
-        Behavior on x {
-            NumberAnimation {
-                duration: units.longDuration
-                easing.type: Easing.InOutQuad
-            }
-        }
+
         Behavior on y {
             NumberAnimation {
                 duration: units.longDuration
@@ -118,39 +96,19 @@ Item {
 
         var cornerSnap = iconWidth
 
-        //top diagonal half
-        if (x > (y * (container.width/container.height))) {
-            //Top edge
-            if (container.width - x - width/2 > y ) {
-                if (Math.abs(container.width/2 - (x + width/2)) < units.gridUnit) {
-                    toolBoxButton.state = "topcenter";
-                } else {
-                    toolBoxButton.state = "top";
-                }
-            //right edge
+        //top
+        if (y + height / 2 < container.height / 2) {
+            if (Math.abs(container.width/2 - (x + width/2)) < units.gridUnit) {
+                toolBoxButton.state = "topcenter";
             } else {
-                if (Math.abs(container.height/2 - (y + height/2)) < units.gridUnit) {
-                    toolBoxButton.state = "rightcenter";
-                } else {
-                    toolBoxButton.state = "right";
-                }
+                toolBoxButton.state = "top";
             }
-        //bottom diagonal half
+        //bottom
         } else {
-            //Left edge
-            if (container.height - y - width/2 > x ) {
-                if (Math.abs(container.height/2 - (y + width/2)) < units.gridUnit) {
-                    toolBoxButton.state = "leftcenter";
-                } else {
-                    toolBoxButton.state = "left";
-                }
-            //Bottom edge
+            if (Math.abs(container.width/2 - (x + height/2)) < units.gridUnit) {
+                toolBoxButton.state = "bottomcenter";
             } else {
-                if (Math.abs(container.width/2 - (x + height/2)) < units.gridUnit) {
-                    toolBoxButton.state = "bottomcenter";
-                } else {
-                    toolBoxButton.state = "bottom";
-                }
+                toolBoxButton.state = "bottom";
             }
         }
 
@@ -164,8 +122,6 @@ Item {
     PlasmaCore.FrameSvgItem {
         id: backgroundFrame
         anchors {
-            //left: parent.left
-            //top: parent.top
             fill: parent
             leftMargin: -backgroundFrame.margins.left
             topMargin: -backgroundFrame.margins.top
@@ -184,9 +140,7 @@ Item {
         property int pressedX
         property int pressedY
         property int snapStartX
-        property int snapStartY
         property bool snapX: false;
-        property bool snapY: false;
         property bool dragging: false
 
         anchors.fill: parent
@@ -196,8 +150,8 @@ Item {
             target: main.Plasmoid.immutable ? undefined : toolBoxButton
             minimumX: 0
             maximumX: container.width - toolBoxButton.width
-            minimumY: toolBoxButton.isHorizontal ? 0 : toolBoxButton.width/2 - toolBoxButton.height/2
-            maximumY: toolBoxButton.isHorizontal ? container.height : container.height - toolBoxButton.width/2 - toolBoxButton.height/2
+            minimumY: 0
+            maximumY: container.height
         }
 
         hoverEnabled: true
@@ -221,22 +175,12 @@ Item {
                 snapStartX = mouse.x;
                 snapX = true;
             }
-            // Center snapping Y still use mouse.x because rotation
-            if (snapY && Math.abs(snapStartY - mouse.x) > units.gridUnit) {
-                toolBoxButton.anchors.verticalCenter = undefined;
-                snapY = false;
-            } else if (!snapY && Math.abs(main.height/2 - (toolBoxButton.y + toolBoxButton.height/2)) < units.gridUnit) {
-                toolBoxButton.anchors.verticalCenter = main.verticalCenter;
-                snapStartY = mouse.x;
-                snapY = true;
-            }
         }
 
         onReleased: {
             toolBoxButton.anchors.horizontalCenter = undefined;
             toolBoxButton.anchors.verticalCenter = undefined;
             snapX = false;
-            snapY = false;
             main.Plasmoid.configuration.ToolBoxButtonState = toolBoxButton.state;
             main.Plasmoid.configuration.ToolBoxButtonX = toolBoxButton.x;
             main.Plasmoid.configuration.ToolBoxButtonY = toolBoxButton.y;
@@ -280,6 +224,7 @@ Item {
             PlasmaComponents3.ToolButton {
                 icon.name: "window-close"
                 icon.height: units.iconSizes.smallMedium
+                Layout.preferredWidth: height
                 onClicked: plasmoid.editMode = false
                 PlasmaComponents3.ToolTip {
                     text: i18n("Close Edit Mode")
