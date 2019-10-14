@@ -271,13 +271,6 @@ Item {
                 onClicked: qAction.trigger()
             }
             PlasmaComponents3.ToolButton {
-                property QtObject qAction: plasmoid.action("lock widgets")
-                text: qAction.text
-                icon.name: "lock"
-                icon.height: units.iconSizes.smallMedium
-                onClicked: qAction.trigger()
-            }
-            PlasmaComponents3.ToolButton {
                 property QtObject qAction: plasmoid.action("configure")
                 text: qAction.text
                 icon.name: "preferences-desktop-wallpaper"
