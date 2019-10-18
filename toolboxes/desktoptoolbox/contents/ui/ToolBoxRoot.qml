@@ -39,14 +39,7 @@ Item {
         target: plasmoid
         onAvailableScreenRegionChanged: placeToolBoxTimer.restart();
     }
-/*
-    signal minimumWidthChanged
-    signal minimumHeightChanged
-    signal maximumWidthChanged
-    signal maximumHeightChanged
-    signal preferredWidthChanged
-    signal preferredHeightChanged
-*/
+
     property int iconSize: units.iconSizes.small
     property int iconWidth: units.iconSizes.smallMedium
     property int iconHeight: iconWidth

@@ -84,7 +84,7 @@ Item {
 
     Timer {
         id: stateTimer
-        interval: 0//toolBoxButton.state.indexOf("center") != -1 ? 0 : 100
+        interval: 0
         onTriggered: updateState()
     }
     function updateState() {
