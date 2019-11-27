@@ -198,6 +198,20 @@ ContainmentLayoutManager.ConfigOverlayWithHandles {
                     }
                 }
             }
+            ActionButton {
+                svg: configIconsSvg
+                elementId: "help"
+                mainText: i18n("Remove Background")
+                iconSize: overlay.iconSize
+                visible: true
+                onClicked: {
+                    if (applet.effectiveBackgroundHints === applet.backgroundHints) {
+                        applet.effectiveBackgroundHints = PlasmaCore.Types.ShadowBackground;
+                    } else {
+                        applet.effectiveBackgroundHints = applet.backgroundHints;
+                    }
+                }
+            }
 
             MouseArea {
                 drag.target: overlay.itemContainer
