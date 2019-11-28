@@ -35,17 +35,6 @@ ContainmentLayoutManager.ConfigOverlayWithHandles {
         imagePath: "widgets/configuration-icons"
     }
 
-    PlasmaComponents.Label {
-        id: toolTipDelegate
-
-        width: contentWidth
-        height: undefined
-
-        property Item toolTip
-
-        text: (toolTip != null) ? toolTip.mainText : ""
-    }
-
     SequentialAnimation {
         id: removeAnim
         NumberAnimation {
@@ -94,14 +83,14 @@ ContainmentLayoutManager.ConfigOverlayWithHandles {
                 rightMargin: parent.margins.right
             }
 
-            ActionButton {
+            ActionButton2 {
                 id: rotateButton
                 svg: configIconsSvg
                 elementId: "rotate"
-                mainText: i18n("Rotate")
+                toolTip: i18n("Rotate")
                 iconSize: overlay.iconSize
                 action: (applet) ? applet.action("rotate") : null
-                active: !rotateHandle.pressed
+                down: !rotateHandle.pressed
                 Component.onCompleted: {
                     if (action && typeof(action) != "undefined") {
                         action.enabled = true
@@ -135,7 +124,6 @@ ContainmentLayoutManager.ConfigOverlayWithHandles {
                     }
 
                     onPressed: {
-                        parent.hideToolTip();
                         mouse.accepted = true
                         startRotation = overlay.itemContainer.rotation;
                         startCenterRelativeAngle = pointAngle(centerRelativePos(mouse.x, mouse.y));
@@ -173,42 +161,54 @@ ContainmentLayoutManager.ConfigOverlayWithHandles {
                 }
             }
 
-            ActionButton {
+            ActionButton2 {
                 svg: configIconsSvg
                 elementId: "configure"
                 iconSize: overlay.iconSize
-                visible: (action && typeof(action) != "undefined") ? action.enabled : false
-                action: (applet) ? applet.action("configure") : null
+                visible: (qAction && typeof(qAction) != "undefined") ? qAction.enabled : false
+                qAction: (applet) ? applet.action("configure") : null
                 Component.onCompleted: {
-                    if (action && typeof(action) != "undefined") {
-                        action.enabled = true
+                    if (qAction && typeof(qAction) != "undefined") {
+                        qAction.enabled = true
                     }
                 }
             }
 
-            ActionButton {
+            ActionButton2 {
                 svg: configIconsSvg
                 elementId: "maximize"
                 iconSize: overlay.iconSize
-                visible: (action && typeof(action) != "undefined") ? action.enabled : false
-                action: (applet) ? applet.action("run associated application") : null
+                toolTip: i18n("Open Externally")
+                visible: (qAction && typeof(qAction) != "undefined") ? qAction.enabled : false
+                qAction: (applet) ? applet.action("run associated application") : null
                 Component.onCompleted: {
-                    if (action && typeof(action) != "undefined") {
-                        action.enabled = true
+                    if (qAction && typeof(qAction) != "undefined") {
+                        qAction.enabled = true
                     }
                 }
             }
-            ActionButton {
+            ActionButton2 {
                 svg: configIconsSvg
-                elementId: "help"
-                mainText: i18n("Remove Background")
+                elementId: "showbackground"
+                //mainText: i18n("Show Background")
+                toolTip: i18n("Show Background")
                 iconSize: overlay.iconSize
-                visible: true
+                visible: !(applet.backgroundHints & PlasmaCore.Types.ImmutableBackground)
+                checked: applet.effectiveBackgroundHints & PlasmaCore.Types.StandardBackground || applet.effectiveBackgroundHints & PlasmaCore.Types.TranslucentBackground
+                checkable: true
                 onClicked: {
-                    if (applet.effectiveBackgroundHints === applet.backgroundHints) {
-                        applet.effectiveBackgroundHints = PlasmaCore.Types.ShadowBackground;
+                    if (checked) {
+                        if (applet.backgroundHints & PlasmaCore.Types.StandardBackground || applet.backgroundHints & PlasmaCore.Types.TranslucentBackground) {
+                            applet.effectiveBackgroundHints = applet.backgroundHints;
+                        } else {
+                            applet.effectiveBackgroundHints = PlasmaCore.Types.StandardBackground;
+                        }
                     } else {
-                        applet.effectiveBackgroundHints = applet.backgroundHints;
+                        if (applet.backgroundHints & PlasmaCore.Types.ShadowBackground || applet.backgroundHints & PlasmaCore.Types.NoBackground) {
+                            applet.effectiveBackgroundHints = applet.backgroundHints;
+                        } else {
+                            applet.effectiveBackgroundHints = PlasmaCore.Types.ShadowBackground;
+                        }
                     }
                 }
             }
@@ -235,11 +235,11 @@ ContainmentLayoutManager.ConfigOverlayWithHandles {
                 }
             }
 
-            ActionButton {
+            ActionButton2 {
                 id: closeButton
                 svg: configIconsSvg
                 elementId: "delete"
-                mainText: i18n("Remove")
+                toolTip: i18n("Remove")
                 iconSize: overlay.iconSize
                 visible: {
                     if (!applet) {

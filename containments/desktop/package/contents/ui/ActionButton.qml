@@ -18,7 +18,9 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import QtQuick 2.0
+import QtQuick 2.12
+import QtQuick.Layouts 1.4
+
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
 
@@ -33,7 +35,7 @@ PlasmaCore.ToolTipArea {
     property PlasmaCore.Svg svg
     property alias elementId: icon.elementId
     property QtObject action
-    property bool backgroundVisible: false
+    property bool backgroundVisible: checked
     property int iconSize: 32
     property int pressedOffset: 1
     property bool checked: false
@@ -41,8 +43,8 @@ PlasmaCore.ToolTipArea {
     property string text
     signal clicked
 
-    implicitWidth: buttonRow.implicitWidth
-    implicitHeight: buttonRow.implicitHeight
+    implicitWidth: buttonColumn.implicitWidth
+    implicitHeight: buttonColumn.implicitHeight
 
     opacity: action==undefined||action.enabled?1:0.6
 
@@ -77,8 +79,8 @@ PlasmaCore.ToolTipArea {
         visible: button.backgroundVisible
     }
 
-    Row {
-        id: buttonRow
+    ColumnLayout {
+        id: buttonColumn
 
         Item {
             width: buttonItem.visible?buttonItem.width:iconSize
@@ -102,13 +104,11 @@ PlasmaCore.ToolTipArea {
             }
         }
 
-        Text {
+        PlasmaComponents.Label {
             id: actionText
             text: button.text
-            style: Text.Outline
-            color: theme.textColor
-            styleColor: Qt.rgba(1,1,1,0.4)
-            anchors.verticalCenter: parent.verticalCenter
+            wrapMode: Text.WordWrap
+            //anchors.verticalCenter: parent.verticalCenter
         }
     }
 
