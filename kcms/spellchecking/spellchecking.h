@@ -1,6 +1,7 @@
 /*
 
 Copyright 2008 Albert Astals Cid <aacid@kde.org>
+Copyright 2020 Benjamin Port <benjamin.port@enioka.com>
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License as
@@ -24,26 +25,34 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define SONNETSPELLCHECKINGMODULE_H
 
 #include "kcmodule.h"
+#include "spellcheckingskeleton.h"
 
+class KConfigDialogManager;
 
 namespace Sonnet
 {
-    class ConfigWidget;
+    class ConfigView;
 }
 
 class SonnetSpellCheckingModule : public KCModule
 {
-  Q_OBJECT
+    Q_OBJECT
 
- public:
-  SonnetSpellCheckingModule(QWidget* parent, const QVariantList&);
-  ~SonnetSpellCheckingModule() override;
+public:
+    SonnetSpellCheckingModule(QWidget *parent, const QVariantList &);
+    ~SonnetSpellCheckingModule() override;
 
-  void save() override;
-  void defaults() override;
+    void save() override;
+    void load() override;
+    void defaults() override;
 
- private:
-  Sonnet::ConfigWidget *m_configWidget;
+private:
+    void stateChanged();
+
+    Sonnet::Settings *m_settings;
+    Sonnet::ConfigView *m_configWidget;
+    SpellCheckingSkeleton *m_skeleton;
+    KConfigDialogManager *m_managedConfig;
 };
 
 #endif
