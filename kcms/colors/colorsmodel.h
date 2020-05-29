@@ -33,8 +33,8 @@ struct ColorsModelData
     QString display;
     QString schemeName;
     QPalette palette;
-    QColor activeTitleBarBackground;
-    QColor activeTitleBarForeground;
+    QColor headerBackground;
+    QColor headerText;
     bool removable;
     bool pendingDeletion;
 };
@@ -55,8 +55,8 @@ public:
         SchemeNameRole = Qt::UserRole + 1,
         PaletteRole,
         // Colors which aren't in QPalette
-        ActiveTitleBarBackgroundRole,
-        ActiveTitleBarForegroundRole,
+        HeaderBackgroundRole,
+        HeaderTextRole,
         RemovableRole,
         PendingDeletionRole
     };

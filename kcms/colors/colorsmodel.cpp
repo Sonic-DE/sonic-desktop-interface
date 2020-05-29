@@ -61,8 +61,8 @@ QVariant ColorsModel::data(const QModelIndex &index, int role) const
     case Qt::DisplayRole: return item.display;
     case SchemeNameRole: return item.schemeName;
     case PaletteRole: return item.palette;
-    case ActiveTitleBarBackgroundRole: return item.activeTitleBarBackground;
-    case ActiveTitleBarForegroundRole: return item.activeTitleBarForeground;
+    case HeaderBackgroundRole: return item.headerBackground;
+    case HeaderTextRole: return item.headerText;
     case PendingDeletionRole: return item.pendingDeletion;
     case RemovableRole: return item.removable;
     }
@@ -107,8 +107,8 @@ QHash<int, QByteArray> ColorsModel::roleNames() const
         {Qt::DisplayRole, QByteArrayLiteral("display")},
         {SchemeNameRole, QByteArrayLiteral("schemeName")},
         {PaletteRole, QByteArrayLiteral("palette")},
-        {ActiveTitleBarBackgroundRole, QByteArrayLiteral("activeTitleBarBackground")},
-        {ActiveTitleBarForegroundRole, QByteArrayLiteral("activeTitleBarForeground")},
+        {HeaderBackgroundRole, QByteArrayLiteral("headerBackground")},
+        {HeaderTextRole, QByteArrayLiteral("headerText")},
         {RemovableRole, QByteArrayLiteral("removable")},
         {PendingDeletionRole, QByteArrayLiteral("pendingDeletion")}
     };
@@ -185,17 +185,16 @@ void ColorsModel::load()
 
         const QPalette palette = KColorScheme::createApplicationPalette(config);
 
-        // from kwin/decorations/decorationpalette.cpp
-        KConfigGroup wmConfig(config, QStringLiteral("WM"));
-        const QColor activeTitleBarBackground = wmConfig.readEntry("activeBackground", palette.color(QPalette::Active, QPalette::Highlight));
-        const QColor activeTitleBarForeground = wmConfig.readEntry("activeForeground", palette.color(QPalette::Active, QPalette::HighlightedText));
+        KColorScheme headerColorScheme(QPalette::Active, KColorScheme::Header, config);
+        const QColor headerBackground = headerColorScheme.background().color();
+        const QColor headerText = headerColorScheme.foreground().color();
 
-        ColorsModelData item{
+        ColorsModelData item {
             name,
             baseName,
             palette,
-            activeTitleBarBackground,
-            activeTitleBarForeground,
+            headerBackground,
+            headerText,
             fi.isWritable(),
             false, // pending deletion
         };

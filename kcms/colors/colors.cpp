@@ -373,7 +373,8 @@ void KCMColors::saveColors()
         QStringLiteral("Colors:Button"),
         QStringLiteral("Colors:Selection"),
         QStringLiteral("Colors:Tooltip"),
-        QStringLiteral("Colors:Complementary")
+        QStringLiteral("Colors:Complementary"),
+        QStringLiteral("Colors:Header")
     };
 
     const QList<KColorScheme> colorSchemes{
@@ -382,7 +383,8 @@ void KCMColors::saveColors()
         KColorScheme(QPalette::Active, KColorScheme::Button, config),
         KColorScheme(QPalette::Active, KColorScheme::Selection, config),
         KColorScheme(QPalette::Active, KColorScheme::Tooltip, config),
-        KColorScheme(QPalette::Active, KColorScheme::Complementary, config)
+        KColorScheme(QPalette::Active, KColorScheme::Complementary, config),
+        KColorScheme(QPalette::Active, KColorScheme::Header, config)
     };
 
     for (int i = 0; i < colorSchemes.length(); ++i) {
@@ -399,33 +401,6 @@ void KCMColors::saveColors()
         group.writeEntry("ForegroundPositive", colorSchemes[i].foreground(KColorScheme::PositiveText).color());
         group.writeEntry("DecorationFocus", colorSchemes[i].decoration(KColorScheme::FocusColor).color());
         group.writeEntry("DecorationHover", colorSchemes[i].decoration(KColorScheme::HoverColor).color());
-    }
-
-    KConfigGroup groupWMTheme(config, "WM");
-    KConfigGroup groupWMOut(m_config, "WM");
-
-    const QStringList colorItemListWM{
-        QStringLiteral("activeBackground"),
-        QStringLiteral("activeForeground"),
-        QStringLiteral("inactiveBackground"),
-        QStringLiteral("inactiveForeground"),
-        QStringLiteral("activeBlend"),
-        QStringLiteral("inactiveBlend")
-    };
-
-    const QVector<QColor> defaultWMColors{
-        QColor(71,80,87),
-        QColor(239,240,241),
-        QColor(239,240,241),
-        QColor(189,195,199),
-        QColor(255,255,255),
-        QColor(75,71,67)
-    };
-
-    int i = 0;
-    for (const QString &coloritem : colorItemListWM) {
-        groupWMOut.writeEntry(coloritem, groupWMTheme.readEntry(coloritem, defaultWMColors.value(i)));
-        ++i;
     }
 
     const QStringList groupNameList{
