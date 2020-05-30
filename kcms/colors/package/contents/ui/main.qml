@@ -152,11 +152,11 @@ KCM.GridViewKCM {
                 height: Math.round(Kirigami.Units.gridUnit * 1.5)
                 gradient: Gradient {
                     // from Breeze Decoration::paintTitleBar
-                    GradientStop { position: 0.0; color: Qt.lighter(model.activeTitleBarBackground, 1.2) }
-                    GradientStop { position: 0.8; color: model.activeTitleBarBackground }
+                    GradientStop { position: 0.0; color: Qt.lighter(model.headerBackground, 1.2) }
+                    GradientStop { position: 0.8; color: model.headerBackground }
                 }
 
-                color: model.activeTitleBarBackground
+                color: model.headerBackground
 
                 QtControls.Label {
                     anchors {
@@ -166,7 +166,7 @@ KCM.GridViewKCM {
                     }
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
-                    color: model.activeTitleBarForeground
+                    color: model.headerText
                     text: i18n("Window Title")
                     elide: Text.ElideRight
                 }
