@@ -367,22 +367,24 @@ void KCMColors::saveColors()
 
     KSharedConfigPtr config = KSharedConfig::openConfig(path);
 
-    const QStringList colorSetGroupList{
+    const QStringList colorSetGroupList {
         QStringLiteral("Colors:View"),
         QStringLiteral("Colors:Window"),
         QStringLiteral("Colors:Button"),
         QStringLiteral("Colors:Selection"),
         QStringLiteral("Colors:Tooltip"),
-        QStringLiteral("Colors:Complementary")
+        QStringLiteral("Colors:Complementary"),
+        QStringLiteral("Colors:Header")
     };
 
-    const QList<KColorScheme> colorSchemes{
+    const QList<KColorScheme> colorSchemes {
         KColorScheme(QPalette::Active, KColorScheme::View, config),
         KColorScheme(QPalette::Active, KColorScheme::Window, config),
         KColorScheme(QPalette::Active, KColorScheme::Button, config),
         KColorScheme(QPalette::Active, KColorScheme::Selection, config),
         KColorScheme(QPalette::Active, KColorScheme::Tooltip, config),
-        KColorScheme(QPalette::Active, KColorScheme::Complementary, config)
+        KColorScheme(QPalette::Active, KColorScheme::Complementary, config),
+        KColorScheme(QPalette::Active, KColorScheme::Header, config)
     };
 
     for (int i = 0; i < colorSchemes.length(); ++i) {
@@ -400,11 +402,12 @@ void KCMColors::saveColors()
         group.writeEntry("DecorationFocus", colorSchemes[i].decoration(KColorScheme::FocusColor).color());
         group.writeEntry("DecorationHover", colorSchemes[i].decoration(KColorScheme::HoverColor).color());
     }
-
+    
+    //TODO: Remove the code for the WM group colors when Colors:Header has completely replaced it
     KConfigGroup groupWMTheme(config, "WM");
     KConfigGroup groupWMOut(m_config, "WM");
 
-    const QStringList colorItemListWM{
+    const QStringList colorItemListWM {
         QStringLiteral("activeBackground"),
         QStringLiteral("activeForeground"),
         QStringLiteral("inactiveBackground"),
@@ -413,13 +416,13 @@ void KCMColors::saveColors()
         QStringLiteral("inactiveBlend")
     };
 
-    const QVector<QColor> defaultWMColors{
-        QColor(71,80,87),
-        QColor(239,240,241),
-        QColor(239,240,241),
-        QColor(189,195,199),
-        QColor(255,255,255),
-        QColor(75,71,67)
+    const QVector<QColor> defaultWMColors { // Default to Header colors
+        colorSchemes[KColorScheme::Header].background(KColorScheme::NormalBackground).color(),
+        colorSchemes[KColorScheme::Header].foreground(KColorScheme::NormalText).color(),
+        colorSchemes[KColorScheme::Header].background(KColorScheme::AlternateBackground).color(),
+        colorSchemes[KColorScheme::Header].foreground(KColorScheme::InactiveText).color(),
+        colorSchemes[KColorScheme::Header].background(KColorScheme::NormalBackground).color(),
+        colorSchemes[KColorScheme::Header].background(KColorScheme::AlternateBackground).color()
     };
 
     int i = 0;
@@ -428,12 +431,12 @@ void KCMColors::saveColors()
         ++i;
     }
 
-    const QStringList groupNameList{
+    const QStringList groupNameList {
         QStringLiteral("ColorEffects:Inactive"),
         QStringLiteral("ColorEffects:Disabled")
     };
 
-    const QStringList effectList{
+    const QStringList effectList {
         QStringLiteral("Enable"),
         QStringLiteral("ChangeSelectionColor"),
         QStringLiteral("IntensityEffect"),
