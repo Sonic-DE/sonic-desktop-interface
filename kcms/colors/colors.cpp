@@ -373,7 +373,8 @@ void KCMColors::saveColors()
         QStringLiteral("Colors:Button"),
         QStringLiteral("Colors:Selection"),
         QStringLiteral("Colors:Tooltip"),
-        QStringLiteral("Colors:Complementary")
+        QStringLiteral("Colors:Complementary"),
+        QStringLiteral("Colors:Header")
     };
 
     const QList<KColorScheme> colorSchemes{
@@ -382,7 +383,8 @@ void KCMColors::saveColors()
         KColorScheme(QPalette::Active, KColorScheme::Button, config),
         KColorScheme(QPalette::Active, KColorScheme::Selection, config),
         KColorScheme(QPalette::Active, KColorScheme::Tooltip, config),
-        KColorScheme(QPalette::Active, KColorScheme::Complementary, config)
+        KColorScheme(QPalette::Active, KColorScheme::Complementary, config),
+        KColorScheme(QPalette::Active, KColorScheme::Header, config)
     };
 
     for (int i = 0; i < colorSchemes.length(); ++i) {
@@ -403,6 +405,7 @@ void KCMColors::saveColors()
 
     KConfigGroup groupWMTheme(config, "WM");
     KConfigGroup groupWMOut(m_config, "WM");
+    KColorScheme inactiveHeaderColorScheme(QPalette::Inactive, KColorScheme::Header, config);
 
     const QStringList colorItemListWM{
         QStringLiteral("activeBackground"),
@@ -414,12 +417,12 @@ void KCMColors::saveColors()
     };
 
     const QVector<QColor> defaultWMColors{
-        QColor(71,80,87),
-        QColor(239,240,241),
-        QColor(239,240,241),
-        QColor(189,195,199),
-        QColor(255,255,255),
-        QColor(75,71,67)
+        colorSchemes[KColorScheme::Header].background().color(),
+        colorSchemes[KColorScheme::Header].foreground().color(),
+        inactiveHeaderColorScheme.background().color(),
+        inactiveHeaderColorScheme.foreground().color(),
+        colorSchemes[KColorScheme::Header].background().color(),
+        inactiveHeaderColorScheme.background().color()
     };
 
     int i = 0;
