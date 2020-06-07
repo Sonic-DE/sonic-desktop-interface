@@ -22,7 +22,12 @@
 #include "user.h"
 #include "user_interface.h"
 
+#include "config-unix.h"
+
+#ifdef HAVE_CRYPT_H
 #include <crypt.h>
+#endif
+
 #include <unistd.h>
 #include <sys/types.h>
 #include <QtConcurrent>
