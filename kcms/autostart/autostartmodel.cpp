@@ -281,17 +281,18 @@ void AutostartModel::showApplicationDialog()
 {
     KOpenWithDialog *owdlg = new KOpenWithDialog();
     connect(owdlg, &QDialog::finished, this, [this, owdlg] (int result) {
-        if (result == QDialog::Accepted) {
-
-            const KService::Ptr service = owdlg->service();
-
-            Q_ASSERT(service);
-            if (!service) {
-                return; // Don't crash if KOpenWith wasn't able to create service.
-            }
-
-            addApplication(service);
+        if (result != QDialog::Accepted) {
+            return;
         }
+
+        const KService::Ptr service = owdlg->service();
+
+        Q_ASSERT(service);
+        if (!service) {
+            return; // Don't crash if KOpenWith wasn't able to create service.
+        }
+
+        addApplication(service);
     });
     owdlg->open();
 }
@@ -328,8 +329,6 @@ void AutostartModel::addScript(const QUrl &url, AutostartModel::AutostartEntrySo
         Q_ASSERT(0);
     }
 
-    beginInsertRows(QModelIndex(), index, index);
-
     QUrl destinationScript = QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::GenericConfigLocation) + folder + fileName);
     KIO::CopyJob *job = KIO::link(url, destinationScript, KIO::HideProgressInfo);
 
@@ -340,25 +339,34 @@ void AutostartModel::addScript(const QUrl &url, AutostartModel::AutostartEntrySo
         destinationScript = to;
     });
 
-    job->exec();
+    connect(job, &KJob::finished, this, [this, index, &destinationScript, url, kind](KJob *theJob){
+        if (theJob->error()) {
+            qWarning() << "Could add script entry" << theJob->errorString();
+            return;
+        }
 
-    AutostartEntry entry = AutostartEntry{
-        destinationScript.fileName(),
-        url.path(),
-        kind,
-        true,
-        destinationScript.path(),
-        false,
-        QStringLiteral("dialog-scripts")
-    };
+        beginInsertRows(QModelIndex(), index, index);
 
-     m_entries.insert(index, entry);
+        AutostartEntry entry = AutostartEntry{
+            destinationScript.fileName(),
+            url.path(),
+            kind,
+            true,
+            destinationScript.path(),
+            false,
+            QStringLiteral("dialog-scripts")
+        };
 
-     if (kind == AutostartModel::AutostartEntrySource::XdgScripts) {
-        ++m_lastLoginScript;
-     }
+        m_entries.insert(index, entry);
 
-     endInsertRows();
+        if (kind == AutostartModel::AutostartEntrySource::XdgScripts) {
+            ++m_lastLoginScript;
+        }
+
+        endInsertRows();
+    });
+
+    job->start();
 }
 
 void AutostartModel::removeEntry(int row)
@@ -367,23 +375,31 @@ void AutostartModel::removeEntry(int row)
 
     KIO::DeleteJob* job = KIO::del(QUrl::fromLocalFile(entry.fileName), KIO::HideProgressInfo);
 
-    beginRemoveRows(QModelIndex(), row, row);
-    job->start();
-    m_entries.remove(row);
-
-    if (entry.source == AutostartModel::AutostartEntrySource::XdgScripts) {
-        Q_ASSERT(m_lastLoginScript > 0);
-        --m_lastLoginScript;
-    } else if (entry.source == AutostartModel::AutostartEntrySource::XdgAutoStart) {
-        Q_ASSERT(m_lastApplication > 0);
-        --m_lastApplication;
-
-        if (m_lastLoginScript > 0) {
-            --m_lastLoginScript;
+    connect(job, &KJob::finished, this, [this, row, entry](KJob *theJob){
+        if (theJob->error()) {
+            qWarning() << "Could not remove entry" << theJob->errorString();
+            return;
         }
-    }
 
-    endRemoveRows();
+        beginRemoveRows(QModelIndex(), row, row);
+        m_entries.remove(row);
+
+        if (entry.source == AutostartModel::AutostartEntrySource::XdgScripts) {
+            Q_ASSERT(m_lastLoginScript > 0);
+            --m_lastLoginScript;
+        } else if (entry.source == AutostartModel::AutostartEntrySource::XdgAutoStart) {
+            Q_ASSERT(m_lastApplication > 0);
+            --m_lastApplication;
+
+            if (m_lastLoginScript > 0) {
+                --m_lastLoginScript;
+            }
+        }
+
+        endRemoveRows();
+    });
+
+    job->start();
 }
 
 QHash<int, QByteArray> AutostartModel::roleNames() const
