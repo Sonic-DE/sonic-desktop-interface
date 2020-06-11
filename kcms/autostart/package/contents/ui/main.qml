@@ -49,14 +49,14 @@ KCM.ScrollViewKCM {
                 spacing: Kirigami.Units.largeSpacing
 
                 Kirigami.Icon {
-                    id: leIcon
+                    id: appIcon
                     source: model.iconName
                     width: Kirigami.Units.iconSizes.medium
                     height: Kirigami.Units.iconSizes.medium
                 }
 
                 Label {
-                    height: leIcon.height
+                    height: appIcon.height
                     text: model.source === AutostartModel.XdgAutoStart ? model.name : model.command
                 }
             }
@@ -64,7 +64,7 @@ KCM.ScrollViewKCM {
             actions: [
                 Kirigami.Action {
                     text: i18n("Properties")
-                    icon.name: "gtk-preferences"
+                    icon.name: "document-properties"
                     onTriggered: kcm.model.editApplication(model.index)
                     visible: model.source === AutostartModel.XdgAutoStart
                 },

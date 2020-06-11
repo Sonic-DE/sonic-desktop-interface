@@ -102,7 +102,7 @@ AutostartModel::AutostartModel(QObject *parent)
 
 QString AutostartModel::XdgAutoStartPath() const
 {
-    return QStandardPaths::writableLocation(QStandardPaths::GenericConfigLocation) + QStringLiteral("/autostart/");
+    return QStandardPaths::writableLocation(QStandardPaths::GenericConfigLocation) + QLatin1String("/autostart/");
 }
 
 void AutostartModel::load()
@@ -116,14 +116,12 @@ void AutostartModel::load()
         autostartdir.mkpath(XdgAutoStartPath());
     }
 
-    autostartdir.setFilter(QDir::Files);
+    autostartdir.setFilter(QDir::Files | QDir::NoDotAndDotDot);
 
     const auto filesInfo = autostartdir.entryInfoList();
     for (const QFileInfo &fi : filesInfo) {
-        const QString filename = fi.fileName();
-        const bool desktopFile = filename.endsWith(QLatin1String(".desktop"));
 
-        if (!desktopFile) {
+        if (!KDesktopFile::isDesktopFile(fi.fileName())) {
             continue;
         }
 
@@ -156,7 +154,7 @@ void AutostartModel::loadScriptsFromDir(const QString& subDir, AutostartModel::A
         dir.mkpath(path);
     }
 
-    dir.setFilter(QDir::Files);
+    dir.setFilter(QDir::Files | QDir::NoDotAndDotDot);
 
     const auto autostartDirFilesInfo = dir.entryInfoList();
     for (const QFileInfo &fi : autostartDirFilesInfo) {
@@ -249,9 +247,7 @@ void AutostartModel::addApplication(const KService::Ptr &service)
     } else {
         desktopPath = XdgAutoStartPath() + service->desktopEntryName() + QStringLiteral(".desktop");
 
-        if (QFile::exists(desktopPath)) {
-            QFile::remove(desktopPath);
-        }
+        QFile::remove(desktopPath);
 
         // copy original desktop file to new path
         KDesktopFile desktopFile(service->entryPath());
@@ -300,25 +296,25 @@ void AutostartModel::showApplicationDialog()
     owdlg->open();
 }
 
-void AutostartModel::addScript(const QUrl &path, AutostartModel::AutostartEntrySource kind)
+void AutostartModel::addScript(const QUrl &url, AutostartModel::AutostartEntrySource kind)
 {
-    const QFileInfo file(path.toLocalFile());
+    const QFileInfo file(url.toLocalFile());
 
     if (!file.isAbsolute()) {
-        Q_EMIT error(i18n("\"%1\" is not an absolute path.", path.toLocalFile()));
+        Q_EMIT error(i18n("\"%1\" is not an absolute url.", url.toLocalFile()));
         return;
     } else if (!file.exists()) {
-        Q_EMIT error(i18n("\"%1\" does not exist.", path.toLocalFile()));
+        Q_EMIT error(i18n("\"%1\" does not exist.", url.toLocalFile()));
         return;
     } else if (!file.isFile()) {
-        Q_EMIT error(i18n("\"%1\" is not a file.", path.toLocalFile()));
+        Q_EMIT error(i18n("\"%1\" is not a file.", url.toLocalFile()));
         return;
     } else if (!file.isReadable()) {
-        Q_EMIT error(i18n("\"%1\" is not readable.", path.toLocalFile()));
+        Q_EMIT error(i18n("\"%1\" is not readable.", url.toLocalFile()));
         return;
     }
 
-    const QString fileName = path.fileName();
+    const QString fileName = url.fileName();
     int index = 0;
     QString folder;
 
@@ -335,7 +331,7 @@ void AutostartModel::addScript(const QUrl &path, AutostartModel::AutostartEntryS
     beginInsertRows(QModelIndex(), index, index);
 
     QUrl destinationScript = QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::GenericConfigLocation) + folder + fileName);
-    KIO::CopyJob *job = KIO::link(path, destinationScript, KIO::HideProgressInfo);
+    KIO::CopyJob *job = KIO::link(url, destinationScript, KIO::HideProgressInfo);
 
     connect(job, &KIO::CopyJob::renamed, this, [&destinationScript](KIO::Job * job, const QUrl & from, const QUrl & to) {
         Q_UNUSED(job)
@@ -348,7 +344,7 @@ void AutostartModel::addScript(const QUrl &path, AutostartModel::AutostartEntryS
 
     AutostartEntry entry = AutostartEntry{
         destinationScript.fileName(),
-        path.path(),
+        url.path(),
         kind,
         true,
         destinationScript.path(),
