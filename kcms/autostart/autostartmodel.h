@@ -34,12 +34,12 @@ public:
 
     enum Roles {
         Name = Qt::DisplayRole,
+        IconName = Qt::DecorationRole,
         Command = Qt::UserRole + 1,
         Enabled,
         Source,
         FileName,
-        OnlyInPlasma,
-        IconName
+        OnlyInPlasma
     };
 
     enum AutostartEntrySource {
@@ -58,7 +58,7 @@ public:
 
     Q_INVOKABLE void removeEntry(int row);
     Q_INVOKABLE void editApplication(int row);
-    Q_INVOKABLE void addScript(const QUrl &path, AutostartEntrySource kind);
+    Q_INVOKABLE void addScript(const QUrl &url, AutostartEntrySource kind);
     Q_INVOKABLE void showApplicationDialog();
 
     void load();
