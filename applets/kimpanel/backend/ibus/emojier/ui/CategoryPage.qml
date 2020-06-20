@@ -38,10 +38,6 @@ Kirigami.ScrollablePage
         if (event.key == Qt.Key_Escape) {
             Qt.quit()
         }
-        // If we select an emoji using the keyboard we don't want to start a search
-        if (event.key == Qt.Key_Return || event.key == Qt.Key_Enter) {
-            return;
-        }
         if (event.text.length > 0 && !view.showSearch && event.modifiers === Qt.NoModifier) {
             // We want to prevent unprintable characters like backspace
             window.startSearch(/[\x00-\x1F\x7F]/.test(event.text) ? "" : event.text)
@@ -125,7 +121,6 @@ Kirigami.ScrollablePage
 
             opacity: mouse.containsMouse ? 0.7 : 1
 
-            Keys.forwardTo: view
             Keys.onReturnPressed: {
                 reportEmoji()
             }
