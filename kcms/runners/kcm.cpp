@@ -73,9 +73,6 @@ SearchConfigModule::SearchConfigModule(QWidget* parent, const QVariantList& args
     headerLayout->addStretch();
     headerLayout->addWidget(clearHistoryButton);
 
-    QHBoxLayout *downloadLayout = new QHBoxLayout(this);
-    auto *downloadButton = new KNS3::Button(i18n("Download New Plugins..."), QStringLiteral("krunner.knsrc"), this);
-    downloadLayout->addWidget(downloadButton);
 
     m_pluginSelector = new KPluginSelector(this);
 
@@ -83,8 +80,13 @@ SearchConfigModule::SearchConfigModule(QWidget* parent, const QVariantList& args
     connect(m_pluginSelector, &KPluginSelector::defaulted, this, &KCModule::defaulted);
 
     layout->addLayout(headerLayout);
-    layout->addLayout(downloadLayout);
     layout->addWidget(m_pluginSelector);
+
+    QHBoxLayout *downloadLayout = new QHBoxLayout(this);
+    auto *downloadButton = new KNS3::Button(i18n("Download New Plugins..."), QStringLiteral("krunner.knsrc"), this);
+    downloadLayout->addStretch();
+    downloadLayout->addWidget(downloadButton);
+    layout->addLayout(downloadLayout);
 }
 
 void SearchConfigModule::load()
