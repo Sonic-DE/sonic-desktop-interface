@@ -30,7 +30,7 @@
 
 // KDE
 #include <KActivities/Controller>
-#include <kimagecache.h>
+#include <KImageCache>
 
 // Local
 #include "sortedactivitiesmodel.h"
@@ -75,6 +75,8 @@ public Q_SLOTS:
     void dropCopy(QMimeData* mimeData, const QVariant &activityId);
     void dropMove(QMimeData* mimeData, const QVariant &activityId);
     bool dropEnabled() const;
+
+    void toggleActivityManager();
 
 private:
     template <typename Handler>

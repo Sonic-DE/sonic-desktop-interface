@@ -57,9 +57,7 @@ DND.DropArea {
     MouseArea {
         anchors.fill: parent
         onClicked: {
-            var service = dataSource.serviceForSource(activeSource)
-            var operation = service.operationDescription("toggleActivityManager")
-            service.startOperationCall(operation)
+            ActivitySwitcher.Backend.toggleActivityManager()
         }
     }
 
@@ -69,12 +67,6 @@ DND.DropArea {
 
     onDragLeave: {
         ActivitySwitcher.Backend.setDropMode(false);
-    }
-
-    PlasmaCore.DataSource {
-        id: dataSource
-        engine: "org.kde.activities"
-        connectedSources: [activeSource]
     }
 
     PlasmaCore.ToolTipArea {
