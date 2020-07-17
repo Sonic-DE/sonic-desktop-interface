@@ -30,7 +30,7 @@ Item {
     height: isSeparator ? separatorHeight : itemHeight
     width: ListView.view.width
 
-    enabled: !isSeparator
+    enabled: !isSeparator && !model.disabled && (!isParent || (isParent && hasChildren))
 
     signal actionTriggered(string actionId, variant actionArgument)
     signal aboutToShowActionMenu(variant actionMenu)
