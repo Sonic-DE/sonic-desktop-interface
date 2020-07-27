@@ -19,7 +19,6 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA          *
  ***************************************************************************/
 
-
 #ifndef AUTOSTART_H
 #define AUTOSTART_H
 
@@ -27,13 +26,13 @@
 
 #include "autostartmodel.h"
 
-class Autostart: public KQuickAddons::ConfigModule
+class Autostart : public KQuickAddons::ConfigModule
 {
     Q_OBJECT
     Q_PROPERTY(AutostartModel *model READ model CONSTANT)
 
 public:
-    explicit Autostart( QObject* parent, const QVariantList&  );
+    explicit Autostart(QObject *parent, const QVariantList &);
     ~Autostart() override;
 
     void load() override;
