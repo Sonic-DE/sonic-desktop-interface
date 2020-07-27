@@ -24,6 +24,9 @@
 #include <KShell>
 #include <KConfigGroup>
 #include <QDebug>
+#include <QQuickItem>
+#include <QQuickRenderControl>
+#include <QWindow>
 
 #include <KLocalizedString>
 #include <KIO/DeleteJob>
@@ -277,9 +280,18 @@ void AutostartModel::addApplication(const KService::Ptr &service)
     endInsertRows();
 }
 
-void AutostartModel::showApplicationDialog()
+void AutostartModel::showApplicationDialog(QQuickItem *context)
 {
     KOpenWithDialog *owdlg = new KOpenWithDialog();
+
+    if (context && context->window()) {
+        if (QWindow *actualWindow = QQuickRenderControl::renderWindowFor(context->window())) {
+            owdlg->winId(); // so it creates windowHandle
+            owdlg->windowHandle()->setTransientParent(actualWindow);
+            owdlg->setModal(true);
+        }
+    }
+
     connect(owdlg, &QDialog::finished, this, [this, owdlg] (int result) {
         if (result != QDialog::Accepted) {
             return;
@@ -417,7 +429,7 @@ QHash<int, QByteArray> AutostartModel::roleNames() const
     return roleNames;
 }
 
-void AutostartModel::editApplication(int row)
+void AutostartModel::editApplication(int row, QQuickItem *context)
 {
     const QModelIndex idx = index(row, 0);
 
@@ -426,6 +438,15 @@ void AutostartModel::editApplication(int row)
     kfi.setDelayedMimeTypes(true);
 
     KPropertiesDialog *dlg = new KPropertiesDialog(kfi, nullptr);
+
+    if (context && context->window()) {
+        if (QWindow *actualWindow = QQuickRenderControl::renderWindowFor(context->window())) {
+            dlg->winId(); // so it creates windowHandle
+            dlg->windowHandle()->setTransientParent(actualWindow);
+            dlg->setModal(true);
+        }
+    }
+
     connect(dlg, &QDialog::finished, this, [this, idx, dlg] (int result) {
         if (result == QDialog::Accepted) {
             reloadEntry(idx, dlg->item().localPath());
