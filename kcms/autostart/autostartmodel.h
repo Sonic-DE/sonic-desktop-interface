@@ -65,8 +65,6 @@ private:
     QString XdgAutoStartPath() const;
 
     QVector<AutostartEntry> m_entries;
-    int m_lastApplication = 0;
-    int m_lastLoginScript = 0;
 };
 
 struct AutostartEntry {

@@ -132,12 +132,9 @@ void AutostartModel::load()
         m_entries.push_back(entry);
     }
 
-    m_lastApplication = m_entries.size() - 1;
-
     loadScriptsFromDir(QStringLiteral("/autostart-scripts/"), AutostartModel::AutostartEntrySource::XdgScripts);
     // Treat them as XdgScripts so they appear together in the UI
     loadScriptsFromDir(QStringLiteral("/plasma-workspace/env/"), AutostartModel::AutostartEntrySource::XdgScripts);
-    m_lastLoginScript = m_entries.size() - 1;
 
     loadScriptsFromDir(QStringLiteral("/plasma-workspace/shutdown/"), AutostartModel::AutostartEntrySource::PlasmaShutdown);
 
@@ -259,14 +256,20 @@ void AutostartModel::addApplication(const KService::Ptr &service)
                                        false,
                                        service->icon()};
 
+    int lastApplication = -1;
+    for (const AutostartEntry &e : qAsConst(m_entries)) {
+        if (e.source == AutostartModel::AutostartEntrySource::XdgScripts) {
+            break;
+        }
+        ++lastApplication;
+    }
+
     // push before the script items
-    const int index = m_lastApplication + 1;
+    const int index = lastApplication + 1;
 
     beginInsertRows(QModelIndex(), index, index);
 
     m_entries.insert(index, entry);
-    ++m_lastApplication;
-    ++m_lastLoginScript;
 
     endInsertRows();
 }
@@ -324,7 +327,16 @@ void AutostartModel::addScript(const QUrl &url, AutostartModel::AutostartEntrySo
     QString folder;
 
     if (kind == AutostartModel::AutostartEntrySource::XdgScripts) {
-        index = m_lastLoginScript + 1;
+
+        int lastLoginScript = -1;
+        for (const AutostartEntry &e : qAsConst(m_entries)) {
+            if (e.source == AutostartModel::AutostartEntrySource::PlasmaShutdown) {
+                break;
+            }
+            ++lastLoginScript;
+        }
+
+        index = lastLoginScript + 1;
         folder = QStringLiteral("/autostart-scripts/");
     } else if (kind == AutostartModel::AutostartEntrySource::PlasmaShutdown) {
         index = m_entries.size();
@@ -355,10 +367,6 @@ void AutostartModel::addScript(const QUrl &url, AutostartModel::AutostartEntrySo
 
         m_entries.insert(index, entry);
 
-        if (kind == AutostartModel::AutostartEntrySource::XdgScripts) {
-            ++m_lastLoginScript;
-        }
-
         endInsertRows();
     });
 
@@ -379,18 +387,6 @@ void AutostartModel::removeEntry(int row)
 
         beginRemoveRows(QModelIndex(), row, row);
         m_entries.remove(row);
-
-        if (entry.source == AutostartModel::AutostartEntrySource::XdgScripts) {
-            Q_ASSERT(m_lastLoginScript > 0);
-            --m_lastLoginScript;
-        } else if (entry.source == AutostartModel::AutostartEntrySource::XdgAutoStart) {
-            Q_ASSERT(m_lastApplication > 0);
-            --m_lastApplication;
-
-            if (m_lastLoginScript > 0) {
-                --m_lastLoginScript;
-            }
-        }
 
         endRemoveRows();
     });
