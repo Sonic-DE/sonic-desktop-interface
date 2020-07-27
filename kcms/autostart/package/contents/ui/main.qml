@@ -19,6 +19,7 @@
 
 import QtQuick 2.10
 import QtQuick.Controls 2.10
+import QtQuick.Layouts 1.11
 import org.kde.kirigami 2.13 as Kirigami
 import QtQuick.Dialogs 1.3
 import org.kde.kcm 1.2 as KCM
@@ -118,19 +119,51 @@ KCM.ScrollViewKCM {
         }
 
         Button {
+            id: menuButton
+
             icon.name: "list-add"
-            text: i18n("Add Application")
-            onClicked: kcm.model.showApplicationDialog(root)
+            text: i18n("Add...")
+
+            checkable: true
+            checked: menu.opened
+
+            onClicked: {
+                // Appear above the button, not below it, since the button is at
+                // the bottom of the window and QQC2 items can't leave the window
+
+                // HACK: since we want to position the menu above the button,
+                // we need to know the menu's height, but it only has a height
+                // after the first time it's been shown, so until then, we need
+                // to provide an artificially-synthesized-and-hopefully-good-enough
+                // height value
+                var menuHeight = menu.height && menu.height > 0 ? menu.height : Kirigami.Units.gridUnit * 3
+                menu.popup(menuButton, 0, -menuHeight)
+            }
         }
-        Button {
-            icon.name: "list-add"
-            text: i18n("Add Login Script")
-            onClicked: startupFileDialog.open()
-        }
-        Button {
-            icon.name: "list-add"
-            text: i18n("Add Logout Script")
-            onClicked: logoutFileDialog.open()
+
+        Menu {
+            id: menu
+
+            modal: true
+
+            MenuItem {
+                text: i18n("Add Application...")
+                icon.name: "list-add"
+
+                onClicked: kcm.model.showApplicationDialog(root)
+            }
+            MenuItem {
+                text: i18n("Add Login Script...")
+                icon.name: "list-add"
+
+                onClicked: startupFileDialog.open()
+            }
+            MenuItem {
+                text: i18n("Add Logout Script...")
+                icon.name: "list-add"
+
+                onClicked: logoutFileDialog.open()
+            }
         }
     }
 }
