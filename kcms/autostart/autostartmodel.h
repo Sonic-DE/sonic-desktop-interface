@@ -33,15 +33,7 @@ class AutostartModel : public QAbstractListModel
 public:
     explicit AutostartModel(QObject *parent = nullptr);
 
-    enum Roles {
-        Name = Qt::DisplayRole,
-        IconName = Qt::DecorationRole,
-        Command = Qt::UserRole + 1,
-        Enabled,
-        Source,
-        FileName,
-        OnlyInPlasma
-    };
+    enum Roles { Name = Qt::DisplayRole, IconName = Qt::DecorationRole, Command = Qt::UserRole + 1, Enabled, Source, FileName, OnlyInPlasma };
 
     enum AutostartEntrySource {
         XdgAutoStart = 0,
@@ -77,9 +69,8 @@ private:
     int m_lastLoginScript = 0;
 };
 
-struct AutostartEntry
-{
-    QString name; // Human readable name or local script name
+struct AutostartEntry {
+    QString name;    // Human readable name or local script name
     QString command; // exec or original .sh file
     AutostartModel::AutostartEntrySource source;
     bool enabled;

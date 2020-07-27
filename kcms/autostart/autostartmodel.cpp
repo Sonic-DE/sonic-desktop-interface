@@ -18,36 +18,36 @@
  ***************************************************************************/
 #include "autostartmodel.h"
 
-#include <QStandardPaths>
-#include <QDir>
+#include <KConfigGroup>
 #include <KDesktopFile>
 #include <KShell>
-#include <KConfigGroup>
 #include <QDebug>
+#include <QDir>
 #include <QQuickItem>
 #include <QQuickRenderControl>
+#include <QStandardPaths>
 #include <QWindow>
 
-#include <KLocalizedString>
-#include <KIO/DeleteJob>
-#include <KIO/CopyJob>
-#include <KService>
 #include <KFileItem>
-#include <KPropertiesDialog>
+#include <KIO/CopyJob>
+#include <KIO/DeleteJob>
+#include <KLocalizedString>
 #include <KOpenWithDialog>
+#include <KPropertiesDialog>
+#include <KService>
 
 // FDO user autostart directories are
 // .config/autostart which has .desktop files executed by klaunch
 
-//Then we have Plasma-specific locations which run scripts
+// Then we have Plasma-specific locations which run scripts
 // .config/autostart-scripts which has scripts executed by ksmserver
 // .config/plasma-workspace/shutdown which has scripts executed by startkde
 // .config/plasma-workspace/env which has scripts executed by startkde
 
-//in the case of pre-startup they have to end in .sh
-//everywhere else it doesn't matter
+// in the case of pre-startup they have to end in .sh
+// everywhere else it doesn't matter
 
-//the comment above describes how autostart *currently* works, it is not definitive documentation on how autostart *should* work
+// the comment above describes how autostart *currently* works, it is not definitive documentation on how autostart *should* work
 
 // share/autostart shouldn't be an option as this should be reserved for global autostart entries
 
@@ -79,23 +79,19 @@ static AutostartEntry loadDesktopEntry(const QString &fileName)
     const bool hidden = grp.readEntry("Hidden", false);
     const QStringList notShowList = grp.readXdgListEntry("NotShowIn");
     const QStringList onlyShowList = grp.readXdgListEntry("OnlyShowIn");
-    const bool enabled = !(hidden ||
-                           notShowList.contains(QLatin1String("KDE")) ||
-                           (!onlyShowList.isEmpty() && !onlyShowList.contains(QLatin1String("KDE"))));
+    const bool enabled = !(hidden || notShowList.contains(QLatin1String("KDE")) || (!onlyShowList.isEmpty() && !onlyShowList.contains(QLatin1String("KDE"))));
 
     const auto lstEntry = grp.readXdgListEntry("OnlyShowIn");
     const bool onlyInPlasma = lstEntry.contains(QLatin1String("KDE"));
     const QString iconName = config.readIcon();
 
-    return {
-        name,
-        command,
-        AutostartModel::AutostartEntrySource::XdgAutoStart, // .config/autostart load desktop at startup
-        enabled,
-        fileName,
-        onlyInPlasma,
-        iconName
-    };
+    return {name,
+            command,
+            AutostartModel::AutostartEntrySource::XdgAutoStart, // .config/autostart load desktop at startup
+            enabled,
+            fileName,
+            onlyInPlasma,
+            iconName};
 }
 
 AutostartModel::AutostartModel(QObject *parent)
@@ -123,7 +119,6 @@ void AutostartModel::load()
 
     const auto filesInfo = autostartdir.entryInfoList();
     for (const QFileInfo &fi : filesInfo) {
-
         if (!KDesktopFile::isDesktopFile(fi.fileName())) {
             continue;
         }
@@ -149,7 +144,7 @@ void AutostartModel::load()
     endResetModel();
 }
 
-void AutostartModel::loadScriptsFromDir(const QString& subDir, AutostartModel::AutostartEntrySource kind)
+void AutostartModel::loadScriptsFromDir(const QString &subDir, AutostartModel::AutostartEntrySource kind)
 {
     const QString path = QStandardPaths::writableLocation(QStandardPaths::GenericConfigLocation) + subDir;
     QDir dir(path);
@@ -161,22 +156,13 @@ void AutostartModel::loadScriptsFromDir(const QString& subDir, AutostartModel::A
 
     const auto autostartDirFilesInfo = dir.entryInfoList();
     for (const QFileInfo &fi : autostartDirFilesInfo) {
-
         QString fileName = fi.absoluteFilePath();
         const bool isSymlink = fi.isSymLink();
         if (isSymlink) {
             fileName = fi.symLinkTarget();
         }
 
-        m_entries.push_back({
-            fi.fileName(),
-            isSymlink ? fileName : QString(),
-            kind,
-            true,
-            fi.absoluteFilePath(),
-            false,
-            QStringLiteral("dialog-scripts")
-        });
+        m_entries.push_back({fi.fileName(), isSymlink ? fileName : QString(), kind, true, fi.absoluteFilePath(), false, QStringLiteral("dialog-scripts")});
     }
 }
 
@@ -214,13 +200,20 @@ QVariant AutostartModel::data(const QModelIndex &index, int role) const
     const auto &entry = m_entries.at(index.row());
 
     switch (role) {
-    case Qt::DisplayRole: return entry.name;
-    case Command: return entry.command;
-    case Enabled: return entry.enabled;
-    case Source: return entry.source;
-    case FileName: return entry.fileName;
-    case OnlyInPlasma: return entry.onlyInPlasma;
-    case IconName: return entry.iconName;
+    case Qt::DisplayRole:
+        return entry.name;
+    case Command:
+        return entry.command;
+    case Enabled:
+        return entry.enabled;
+    case Source:
+        return entry.source;
+    case FileName:
+        return entry.fileName;
+    case OnlyInPlasma:
+        return entry.onlyInPlasma;
+    case IconName:
+        return entry.iconName;
     }
 
     return QVariant();
@@ -243,7 +236,7 @@ void AutostartModel::addApplication(const KService::Ptr &service)
         kcg.writeEntry("Exec", service->exec());
         kcg.writeEntry("Icon", service->icon());
         kcg.writeEntry("Path", "");
-        kcg.writeEntry("Terminal", service->terminal() ? "True": "False");
+        kcg.writeEntry("Terminal", service->terminal() ? "True" : "False");
         kcg.writeEntry("Type", "Application");
         desktopFile.sync();
 
@@ -258,15 +251,13 @@ void AutostartModel::addApplication(const KService::Ptr &service)
         newDeskTopFile->sync();
     }
 
-    const auto entry = AutostartEntry{
-        service->name(),
-        service->exec(),
-        AutostartModel::AutostartEntrySource:: XdgAutoStart, // .config/autostart load desktop at startup
-        true,
-        desktopPath,
-        false,
-        service->icon()
-    };
+    const auto entry = AutostartEntry {service->name(),
+                                       service->exec(),
+                                       AutostartModel::AutostartEntrySource::XdgAutoStart, // .config/autostart load desktop at startup
+                                       true,
+                                       desktopPath,
+                                       false,
+                                       service->icon()};
 
     // push before the script items
     const int index = m_lastApplication + 1;
@@ -293,7 +284,7 @@ void AutostartModel::showApplicationDialog(QQuickItem *context)
         }
     }
 
-    connect(owdlg, &QDialog::finished, this, [this, owdlg] (int result) {
+    connect(owdlg, &QDialog::finished, this, [this, owdlg](int result) {
         if (result != QDialog::Accepted) {
             return;
         }
@@ -345,14 +336,14 @@ void AutostartModel::addScript(const QUrl &url, AutostartModel::AutostartEntrySo
     QUrl destinationScript = QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::GenericConfigLocation) + folder + fileName);
     KIO::CopyJob *job = KIO::link(url, destinationScript, KIO::HideProgressInfo);
 
-    connect(job, &KIO::CopyJob::renamed, this, [&destinationScript](KIO::Job * job, const QUrl & from, const QUrl & to) {
+    connect(job, &KIO::CopyJob::renamed, this, [&destinationScript](KIO::Job *job, const QUrl &from, const QUrl &to) {
         Q_UNUSED(job)
         Q_UNUSED(from)
         // in case the destination filename had to be renamed
         destinationScript = to;
     });
 
-    connect(job, &KJob::finished, this, [this, index, &destinationScript, url, kind](KJob *theJob){
+    connect(job, &KJob::finished, this, [this, index, &destinationScript, url, kind](KJob *theJob) {
         if (theJob->error()) {
             qWarning() << "Could add script entry" << theJob->errorString();
             return;
@@ -360,15 +351,7 @@ void AutostartModel::addScript(const QUrl &url, AutostartModel::AutostartEntrySo
 
         beginInsertRows(QModelIndex(), index, index);
 
-        AutostartEntry entry = AutostartEntry{
-            destinationScript.fileName(),
-            url.path(),
-            kind,
-            true,
-            destinationScript.path(),
-            false,
-            QStringLiteral("dialog-scripts")
-        };
+        AutostartEntry entry = AutostartEntry {destinationScript.fileName(), url.path(), kind, true, destinationScript.path(), false, QStringLiteral("dialog-scripts")};
 
         m_entries.insert(index, entry);
 
@@ -386,9 +369,9 @@ void AutostartModel::removeEntry(int row)
 {
     const auto entry = m_entries.at(row);
 
-    KIO::DeleteJob* job = KIO::del(QUrl::fromLocalFile(entry.fileName), KIO::HideProgressInfo);
+    KIO::DeleteJob *job = KIO::del(QUrl::fromLocalFile(entry.fileName), KIO::HideProgressInfo);
 
-    connect(job, &KJob::finished, this, [this, row, entry](KJob *theJob){
+    connect(job, &KJob::finished, this, [this, row, entry](KJob *theJob) {
         if (theJob->error()) {
             qWarning() << "Could not remove entry" << theJob->errorString();
             return;
@@ -449,7 +432,7 @@ void AutostartModel::editApplication(int row, QQuickItem *context)
         }
     }
 
-    connect(dlg, &QDialog::finished, this, [this, idx, dlg] (int result) {
+    connect(dlg, &QDialog::finished, this, [this, idx, dlg](int result) {
         if (result == QDialog::Accepted) {
             reloadEntry(idx, dlg->item().localPath());
         }
