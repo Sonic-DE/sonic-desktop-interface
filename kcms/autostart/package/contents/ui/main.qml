@@ -26,6 +26,8 @@ import org.kde.plasma.kcm.autostart 1.0
 
 KCM.ScrollViewKCM {
 
+    id: root
+
     header: Kirigami.InlineMessage {
         id: errorMessage
         type: Kirigami.MessageType.Error
@@ -65,7 +67,7 @@ KCM.ScrollViewKCM {
                 Kirigami.Action {
                     text: i18n("Properties")
                     icon.name: "document-properties"
-                    onTriggered: kcm.model.editApplication(model.index)
+                    onTriggered: kcm.model.editApplication(model.index, root)
                     visible: model.source === AutostartModel.XdgAutoStart
                 },
                 Kirigami.Action {
@@ -118,7 +120,7 @@ KCM.ScrollViewKCM {
         Button {
             icon.name: "list-add"
             text: i18n("Add Application")
-            onClicked: kcm.model.showApplicationDialog()
+            onClicked: kcm.model.showApplicationDialog(root)
         }
         Button {
             icon.name: "list-add"

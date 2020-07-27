@@ -24,6 +24,7 @@
 #include <KService>
 
 struct AutostartEntry;
+class QQuickItem;
 
 class AutostartModel : public QAbstractListModel
 {
@@ -57,9 +58,9 @@ public:
     bool reloadEntry(const QModelIndex &index, const QString &fileName);
 
     Q_INVOKABLE void removeEntry(int row);
-    Q_INVOKABLE void editApplication(int row);
+    Q_INVOKABLE void editApplication(int row, QQuickItem *context);
     Q_INVOKABLE void addScript(const QUrl &url, AutostartEntrySource kind);
-    Q_INVOKABLE void showApplicationDialog();
+    Q_INVOKABLE void showApplicationDialog(QQuickItem *context);
 
     void load();
 
