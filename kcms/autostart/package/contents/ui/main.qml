@@ -98,23 +98,41 @@ KCM.ScrollViewKCM {
     footer: Row {
         spacing: Kirigami.Units.largeSpacing
 
-        FileDialog {
-            id: startupFileDialog
-            title: i18n("Choose Startup Script")
-            folder: shortcuts.home
-            selectMultiple: false
-            onAccepted: {
-                kcm.model.addScript(startupFileDialog.fileUrl, AutostartModel.XdgScripts)
+        Loader {
+            id: startupFileDialogLoader
+
+            active: false
+
+            sourceComponent: FileDialog {
+                id: startupFileDialog
+                title: i18n("Choose Startup Script")
+                folder: shortcuts.home
+                selectMultiple: false
+                onAccepted: {
+                    kcm.model.addScript(startupFileDialog.fileUrl, AutostartModel.XdgScripts)
+                    startupFileDialogLoader.active = false
+                }
+
+                Component.onCompleted: open()
             }
         }
 
-        FileDialog {
-            id: logoutFileDialog
-            title: i18n("Choose Logout Script")
-            folder: shortcuts.home
-            selectMultiple: false
-            onAccepted: {
-                kcm.model.addScript(logoutFileDialog.fileUrl, AutostartModel.PlasmaShutdown)
+        Loader {
+            id: logoutFileDialogLoader
+
+            active: false
+
+            sourceComponent: FileDialog {
+                id: logoutFileDialog
+                title: i18n("Choose Logout Script")
+                folder: shortcuts.home
+                selectMultiple: false
+                onAccepted: {
+                    kcm.model.addScript(logoutFileDialog.fileUrl, AutostartModel.PlasmaShutdown)
+                    logoutFileDialogLoader.active = false
+                }
+
+                Component.onCompleted: open()
             }
         }
 
@@ -156,13 +174,13 @@ KCM.ScrollViewKCM {
                 text: i18n("Add Login Script...")
                 icon.name: "list-add"
 
-                onClicked: startupFileDialog.open()
+                onClicked: startupFileDialogLoader.active = true
             }
             MenuItem {
                 text: i18n("Add Logout Script...")
                 icon.name: "list-add"
 
-                onClicked: logoutFileDialog.open()
+                onClicked: logoutFileDialogLoader.active = true
             }
         }
     }
