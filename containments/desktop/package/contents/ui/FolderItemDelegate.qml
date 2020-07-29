@@ -45,6 +45,8 @@ Item {
     Accessible.name: name
     Accessible.role: Accessible.Canvas
 
+    MouseArea { anchors.fill: parent } // This MouseArea exists to intercept press and hold
+
     function openPopup() {
         if (isDir) {
             loader.item.openPopup();
