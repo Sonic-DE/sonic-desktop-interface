@@ -166,6 +166,7 @@ void User::setPath(const QDBusObjectPath &path) {
     };
 
     connect(m_dbusIface, &OrgFreedesktopAccountsUserInterface::Changed, [=]() {
+        qDebug() << "data changed";
         update();
     });
 

@@ -68,10 +68,19 @@ UserModel::UserModel(QObject* parent)
     for (const QDBusObjectPath& path: users) {
         User *user = new User(this);
         user->setPath(path);
-        connect(user, &User::dataChanged, [=]() {
-            beginResetModel();
-            endResetModel();
-        });
+
+#define userProp(signal, role) connect(user, &User::signal, [=]() {\
+    auto idx = index(m_userList.lastIndexOf(user));\
+    Q_EMIT dataChanged(idx, idx, {role});\
+})
+
+        userProp(uidChanged, UidRole);
+        userProp(nameChanged, NameRole);
+        userProp(faceValidChanged, FaceValidRole);
+        userProp(realNameChanged, RealNameRole);
+        userProp(emailChanged, EmailRole);
+        userProp(administratorChanged, AdministratorRole);
+
         m_userList.append(user);
     }
     std::sort(m_userList.begin(), m_userList.end(), [](User *lhs, User *) {
