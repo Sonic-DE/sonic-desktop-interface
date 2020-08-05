@@ -130,11 +130,17 @@ Q_SIGNALS:
 private:
     int mUid = 0;
     QString mName = QString();
+    QString mCurrentName = QString();
     QString mRealName = QString();
+    QString mCurrentRealName = QString();
     QString mEmail = QString();
+    QString mCurrentEmail = QString();
     QUrl mFace = QUrl();
+    QUrl mCurrentFace = QUrl();
     bool mAdministrator = false;
+    bool mCurrentAdministrator = false;
     bool mFaceValid = false;
+    bool mCurrentFaceValid = false;
     bool mLoggedIn = false;
     QDBusObjectPath mPath;
     QPointer<OrgFreedesktopAccountsUserInterface> m_dbusIface;
