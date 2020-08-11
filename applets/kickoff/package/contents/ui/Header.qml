@@ -1,5 +1,6 @@
 /*
  *    Copyright 2014  Sebastian Kügler <sebas@kde.org>
+ *    SPDX-FileCopyrightText: (C) 2020 Carl Schwan <carl@carlschwan.eu>
  *
  *    This program is free software; you can redistribute it and/or modify
  *    it under the terms of the GNU General Public License as published by
