@@ -194,6 +194,7 @@ Item {
                     PropertyChanges {
                         target: header
                         width: header.implicitWidth
+                        location: PlasmaExtras.PlasmoidHeading.Location.Footer
                     }
                     AnchorChanges {
                         target: mainArea
@@ -245,6 +246,7 @@ Item {
                     PropertyChanges {
                         target: header
                         height: header.implicitHeight
+                        location: PlasmaExtras.PlasmoidHeading.Location.Footer
                     }
                     AnchorChanges {
                         target: mainArea
@@ -296,6 +298,7 @@ Item {
                     PropertyChanges {
                         target: header
                         width: header.implicitWidth
+                        location: PlasmaExtras.PlasmoidHeading.Location.Footer
                     }
                     AnchorChanges {
                         target: mainArea
@@ -347,6 +350,7 @@ Item {
                     PropertyChanges {
                         target: header
                         height: header.implicitHeight
+                        location: PlasmaExtras.PlasmoidHeading.Location.Header
                     }
                     AnchorChanges {
                         target: headerSeparator
