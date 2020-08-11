@@ -148,7 +148,7 @@ KCM.ScrollViewKCM {
             checkable: true
             checked: menu.opened
 
-            onClicked: {
+            onPressed: {
                 // Appear above the button, not below it, since the button is at
                 // the bottom of the window and QQC2 items can't leave the window
 
@@ -166,6 +166,7 @@ KCM.ScrollViewKCM {
             id: menu
 
             modal: true
+            dim: false
 
             MenuItem {
                 text: i18n("Add Application...")
