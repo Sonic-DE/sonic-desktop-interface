@@ -71,7 +71,6 @@ PlasmaExtras.PlasmoidHeading {
         Image {
             id: faceIcon
             source: kuser.faceIconUrl
-            Layout.rowSpan: 2
             cache: false
             visible: source !== ""
 
