@@ -118,21 +118,6 @@ Item {
         id: header
     }
 
-    PlasmaCore.SvgItem {
-        id: headerSeparator
-        anchors {
-            top: header.top
-            horizontalCenter: header.horizontalCenter
-        }
-        height: headerSeparatorLine.elementSize("horizontal-line").height
-        width: root.width - 2 * units.gridUnit
-        elementId: "horizontal-line"
-        svg: PlasmaCore.Svg {
-            id: headerSeparatorLine
-            imagePath: "widgets/line"
-        }
-    }
-
     Item {
         id: mainArea
         anchors.topMargin: mainTabGroup.state == "top" ? units.smallSpacing : 0
