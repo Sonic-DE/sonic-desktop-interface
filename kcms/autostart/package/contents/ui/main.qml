@@ -48,9 +48,8 @@ KCM.ScrollViewKCM {
         model: kcm.model
 
         delegate: Kirigami.SwipeListItem {
-            Row {
-                spacing: Kirigami.Units.largeSpacing
 
+            Item {
                 Kirigami.Icon {
                     id: appIcon
                     source: model.iconName
@@ -61,6 +60,10 @@ KCM.ScrollViewKCM {
                 Label {
                     height: appIcon.height
                     text: model.source === AutostartModel.XdgAutoStart ? model.name : model.command
+                    elide: Text.ElideRight
+                    anchors.left: appIcon.right
+                    anchors.leftMargin: Kirigami.Units.largeSpacing
+                    anchors.right: parent.right
                 }
             }
 
