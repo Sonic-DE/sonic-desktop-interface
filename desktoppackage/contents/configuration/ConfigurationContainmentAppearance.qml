@@ -29,7 +29,7 @@ ColumnLayout {
     id: root
     spacing: 0 // unless it's 0 there will be an additional gap between two FormLayouts
 
-    property int formAlignment: wallpaperComboBox.Kirigami.ScenePosition.x - root.Kirigami.ScenePosition.x + (units.largeSpacing/2)
+    property int formAlignment: wallpaperComboBox.Kirigami.ScenePosition.x - root.Kirigami.ScenePosition.x + (PlasmaCore.Units.largeSpacing/2)
     property string currentWallpaper: ""
     property string containmentPlugin: ""
     signal configurationChanged
