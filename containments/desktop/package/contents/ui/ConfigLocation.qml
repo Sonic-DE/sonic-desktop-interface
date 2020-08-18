@@ -197,7 +197,7 @@ Item {
             visible: titleVisible
 
             Item {
-                width: units.largeSpacing
+                width: PlasmaCore.Units.largeSpacing
             }
 
             TextField {

@@ -34,7 +34,7 @@ Flow {
             NumberAnimation {
                 properties: "x, y"
                 easing.type: Easing.OutQuad
-                duration: units.longDuration
+                duration: PlasmaCore.Units.longDuration
             }
 
             PropertyAction { target: taskList; property: "animating"; value: false }

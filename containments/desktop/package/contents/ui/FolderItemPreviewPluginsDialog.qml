@@ -26,8 +26,8 @@ import org.kde.private.desktopcontainment.folder 0.1 as Folder
 ApplicationWindow {
     id: dialog
 
-    width: units.gridUnit * 15
-    height: units.gridUnit * 15
+    width: PlasmaCore.Units.gridUnit * 15
+    height: PlasmaCore.Units.gridUnit * 15
 
     visible: false
 
@@ -53,7 +53,7 @@ ApplicationWindow {
 
     ColumnLayout {
         anchors.fill: parent
-        anchors.margins: 2*units.smallSpacing
+        anchors.margins: 2*PlasmaCore.Units.smallSpacing
 
         Rectangle {
             Layout.fillWidth: true
@@ -69,8 +69,8 @@ ApplicationWindow {
                     model: previewPluginsModel
 
                     delegate: CheckBox {
-                        Layout.leftMargin: units.smallSpacing
-                        Layout.rightMargin: units.smallSpacing
+                        Layout.leftMargin: PlasmaCore.Units.smallSpacing
+                        Layout.rightMargin: PlasmaCore.Units.smallSpacing
 
                         text: model.display
 
@@ -82,7 +82,7 @@ ApplicationWindow {
         }
 
         RowLayout {
-            Layout.margins: units.smallSpacing
+            Layout.margins: PlasmaCore.Units.smallSpacing
             Layout.alignment: (Qt.application.layoutDirection == Qt.LeftToRight) ? Qt.AlignRight : Qt.AlignLeft
 
             layoutDirection: Qt.application.layoutDirection
