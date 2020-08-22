@@ -137,7 +137,7 @@ public:
                                   "If you do not feel capable or comfortable with this, click \"Cancel\" now.");
         } else if (readmes.isEmpty()) {
             msg = xi18nc("@info", "This plugin uses a script for installation which can pose a security risk. "
-                           "Please examine the entire plugin's contents before installing, or at least"
+                           "Please examine the entire plugin's contents before installing, or at least "
                            "read the script's source code.<nl/>"
                            "If you do not feel capable or comfortable with this, click \"Cancel\" now.");
         } else {
@@ -225,7 +225,7 @@ public:
         // If the user clicks cancel or closes the dialog using escape
         connect(buttonBox, &QDialogButtonBox::rejected, this, aboartInstallation);
         connect(buttonBox, &QDialogButtonBox::accepted, this, [this, packagePath](){
-            if (QMimeDatabase().mimeTypeForFile(QFileInfo(packagePath)).name() == QLatin1String("application/x-rpm")
+            if (packagePath.endsWith(QLatin1String(".rpm"))
                     && KOSRelease().name().contains(QStringLiteral("openSUSE"), Qt::CaseInsensitive)) {
                 const QString command = QStringLiteral("sudo zypper install %1").arg(KShell::quoteArg(packagePath));
                 runScriptInTerminal(QStringLiteral("bash -c \"echo %1;%1\"").arg(command), packagePath);
