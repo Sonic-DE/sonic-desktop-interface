@@ -271,6 +271,12 @@ void packageKitInstall(const QString &fileName)
 
 void packageKitUninstall(const QString &fileName)
 {
+    if (QMimeDatabase().mimeTypeForFile(QFileInfo(fileName)).name() == QLatin1String("application/x-rpm")
+     && KOSRelease().name().contains(QStringLiteral("openSUSE"), Qt::CaseInsensitive)) {
+        const QString command = QStringLiteral("sudo zypper remove %1").arg(KShell::quoteArg(fileName));
+        runScriptInTerminal(QStringLiteral("bash -c \"echo %1;%1\"").arg(command), QFileInfo(fileName).absolutePath());
+        exit(0);
+    }
     PackageKit::Transaction *transaction = PackageKit::Daemon::getDetailsLocal(fileName);
     QObject::connect(transaction, &PackageKit::Transaction::details,
                      [=](const PackageKit::Details &details) {
