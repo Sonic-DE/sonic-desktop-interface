@@ -81,6 +81,12 @@ void aboartInstallation()
     exit(1);
 }
 
+inline QString getCloseMessage(Operation operation)
+{
+    return operation == Operation::Install
+                    ? i18n("Installation executed successfully, you may now close this window")
+                    : i18n("Uninstallation executed successfully, you may now close this window");
+}
 
 void runScriptInTerminal(const QString &script, const QString &pwd)
 {
@@ -228,7 +234,8 @@ public:
             if (QMimeDatabase().mimeTypeForFile(QFileInfo(packagePath)).name() == QLatin1String("application/x-rpm")
                     && KOSRelease().name().contains(QStringLiteral("openSUSE"), Qt::CaseInsensitive)) {
                 const QString command = QStringLiteral("sudo zypper install %1").arg(KShell::quoteArg(packagePath));
-                runScriptInTerminal(QStringLiteral("bash -c \"echo %1;%1\"").arg(command), QFileInfo(packagePath).absolutePath());
+                runScriptInTerminal(QStringLiteral("bash -c \"echo %1;%1 && echo %2\"")
+                        .arg(command, KShell::quoteArg(getCloseMessage(Operation::Install))), QFileInfo(packagePath).absolutePath());
                 exit(0);
             } else {
                 done(1);
@@ -271,15 +278,17 @@ void packageKitInstall(const QString &fileName)
 
 void packageKitUninstall(const QString &fileName)
 {
-    if (QMimeDatabase().mimeTypeForFile(QFileInfo(fileName)).name() == QLatin1String("application/x-rpm")
-     && KOSRelease().name().contains(QStringLiteral("openSUSE"), Qt::CaseInsensitive)) {
-        const QString command = QStringLiteral("sudo zypper remove %1").arg(KShell::quoteArg(fileName));
-        runScriptInTerminal(QStringLiteral("bash -c \"echo %1;%1\"").arg(command), QFileInfo(fileName).absolutePath());
-        exit(0);
-    }
     PackageKit::Transaction *transaction = PackageKit::Daemon::getDetailsLocal(fileName);
     QObject::connect(transaction, &PackageKit::Transaction::details,
                      [=](const PackageKit::Details &details) {
+                         if (QMimeDatabase().mimeTypeForFile(QFileInfo(fileName)).name() == QLatin1String("application/x-rpm")
+                             && KOSRelease().name().contains(QStringLiteral("openSUSE"), Qt::CaseInsensitive)) {
+                             const QString command = QStringLiteral("sudo zypper remove %1")
+                                     .arg(KShell::quoteArg(details.packageId().split(";").first()));
+                             runScriptInTerminal(QStringLiteral("bash -c \"echo %1;%1 && echo %2\"")
+                                                .arg(command, KShell::quoteArg(getCloseMessage(Operation::Uninstall))), QFileInfo(fileName).absolutePath());
+                             exit(0);
+                         }
                          PackageKit::Transaction *transaction = PackageKit::Daemon::removePackage(details.packageId());
                          QObject::connect(transaction, &PackageKit::Transaction::finished,
                              [=](PackageKit::Transaction::Exit status, uint) {
@@ -352,11 +361,8 @@ void executeOperation(const QString &archive, Operation operation)
         dlg.exec();
     }
 
-    const QString finishedMessage = operation == Operation::Install
-                                    ? i18n("Installation script executed successfully, you may now close this window")
-                                    : i18n("Uninstallation script executed successfully, you may now close this window");
     const QString bashCommand = QStringLiteral("echo %1;%1 || $SHELL && echo %2")
-            .arg(KShell::quoteArg(installerPath), KShell::quoteArg(finishedMessage));
+            .arg(KShell::quoteArg(installerPath), KShell::quoteArg(getCloseMessage(operation)));
     runScriptInTerminal(QStringLiteral("bash -c %1").arg(KShell::quoteArg(bashCommand)), archive);
 }
 
