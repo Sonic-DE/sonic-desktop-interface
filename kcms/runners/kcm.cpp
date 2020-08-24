@@ -84,7 +84,7 @@ SearchConfigModule::SearchConfigModule(QWidget* parent, const QVariantList& args
     connect(m_freeFloating, &QRadioButton::clicked, this, &SearchConfigModule::markAsChanged);
 
     QFormLayout *positionLayout = new QFormLayout(this);
-    positionLayout->addRow(new QLabel(i18n("Positioning:")), m_topPositioning);
+    positionLayout->addRow(i18n("Positioning:"), m_topPositioning);
     positionLayout->addRow(QString(), m_freeFloating);
     configHeaderLeft->addLayout(positionLayout);
     configHeaderRight->addWidget(clearHistoryButton);
