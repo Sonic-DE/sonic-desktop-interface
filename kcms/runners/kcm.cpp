@@ -78,16 +78,14 @@ SearchConfigModule::SearchConfigModule(QWidget* parent, const QVariantList& args
     QVBoxLayout *configHeaderRight = new QVBoxLayout(this);
 
     // Options where KRunner should pop up
-    QVBoxLayout *positionOptionsLayout = new QVBoxLayout(this);
     m_topPositioning = new QRadioButton(i18n("Top of screen"), this);
     connect(m_topPositioning, &QRadioButton::clicked, this, &SearchConfigModule::markAsChanged);
     m_freeFloating = new QRadioButton(i18n("Free-floating window"), this);
     connect(m_freeFloating, &QRadioButton::clicked, this, &SearchConfigModule::markAsChanged);
-    positionOptionsLayout->addWidget(m_topPositioning);
-    positionOptionsLayout->addWidget(m_freeFloating);
 
     QFormLayout *positionLayout = new QFormLayout(this);
-    positionLayout->addRow(i18n("Positioning:"), positionOptionsLayout);
+    positionLayout->addRow(new QLabel(i18n("Positioning:")), m_topPositioning);
+    positionLayout->addRow(m_freeFloating);
     configHeaderLeft->addLayout(positionLayout);
     configHeaderRight->addWidget(clearHistoryButton);
 
