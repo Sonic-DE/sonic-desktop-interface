@@ -72,13 +72,20 @@ SearchConfigModule::SearchConfigModule(QWidget* parent, const QVariantList& args
         generalConfig.sync();
     });
 
+    QHBoxLayout *configHeaderLayout = new QHBoxLayout(this);
+    QVBoxLayout *configHeaderLeft = new QVBoxLayout(this);
+    QVBoxLayout *configHeaderRight = new QVBoxLayout(this);
     m_freeFloatingCheckbox = new QCheckBox(i18n("Free Floating Window"), this);
     connect(m_freeFloatingCheckbox, &QCheckBox::clicked, this, &SearchConfigModule::markAsChanged);
-    layout->addWidget(m_freeFloatingCheckbox);
+    configHeaderLeft->addWidget(m_freeFloatingCheckbox);
+    configHeaderRight->addWidget(clearHistoryButton);
+
+    configHeaderLayout->addLayout(configHeaderLeft);
+    configHeaderLayout->addStretch();
+    configHeaderLayout->addLayout(configHeaderRight);
 
     headerLayout->addWidget(label);
     headerLayout->addStretch();
-    headerLayout->addWidget(clearHistoryButton);
 
     m_pluginSelector = new KPluginSelector(this);
 
@@ -97,6 +104,7 @@ SearchConfigModule::SearchConfigModule(QWidget* parent, const QVariantList& args
         QDBusConnection::sessionBus().send(message);
     });
 
+    layout->addLayout(configHeaderLayout);
     layout->addLayout(headerLayout);
     layout->addWidget(m_pluginSelector);
 }
