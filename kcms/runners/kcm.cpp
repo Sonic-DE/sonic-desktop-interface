@@ -72,6 +72,10 @@ SearchConfigModule::SearchConfigModule(QWidget* parent, const QVariantList& args
         generalConfig.sync();
     });
 
+    m_freeFloatingCheckbox = new QCheckBox(i18n("Free floating window"), this);
+    connect(m_freeFloatingCheckbox, &QCheckBox::clicked, this, &SearchConfigModule::markAsChanged);
+    layout->addWidget(m_freeFloatingCheckbox);
+
     headerLayout->addWidget(label);
     headerLayout->addStretch();
     headerLayout->addWidget(clearHistoryButton);
@@ -99,13 +103,15 @@ SearchConfigModule::SearchConfigModule(QWidget* parent, const QVariantList& args
 
 void SearchConfigModule::load()
 {
+    KSharedConfigPtr config = KSharedConfig::openConfig(QStringLiteral("krunnerrc"));
+    m_freeFloatingCheckbox->setChecked(config->group("General").readEntry("FreeFloating", false));
     // Set focus on the pluginselector to pass focus to search bar.
     m_pluginSelector->setFocus(Qt::OtherFocusReason);
 
     m_pluginSelector->addPlugins(Plasma::RunnerManager::listRunnerInfo(),
                     KPluginSelector::ReadConfigFile,
                     i18n("Available Plugins"), QString(),
-                    KSharedConfig::openConfig(QStringLiteral( "krunnerrc" )));
+                    config);
     m_pluginSelector->load();
 
     if(!m_pluginID.isEmpty()){
@@ -116,6 +122,8 @@ void SearchConfigModule::load()
 
 void SearchConfigModule::save()
 {
+    KSharedConfigPtr config = KSharedConfig::openConfig(QStringLiteral("krunnerrc"));
+    config->group("General").writeEntry("FreeFloating", m_freeFloatingCheckbox->isChecked(), KConfig::Notify);
     m_pluginSelector->save();
 
     QDBusMessage message = QDBusMessage::createSignal(QStringLiteral("/krunnerrc"),
@@ -128,6 +136,7 @@ void SearchConfigModule::save()
 
 void SearchConfigModule::defaults()
 {
+    m_freeFloatingCheckbox->setChecked(false);
     m_pluginSelector->defaults();
 }
 
