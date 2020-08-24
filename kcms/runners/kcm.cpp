@@ -39,6 +39,7 @@
 #include <QDialog>
 #include <QPainter>
 #include <QPushButton>
+#include <QFormLayout>
 
 K_PLUGIN_FACTORY(SearchConfigModuleFactory, registerPlugin<SearchConfigModule>();)
 
@@ -75,9 +76,19 @@ SearchConfigModule::SearchConfigModule(QWidget* parent, const QVariantList& args
     QHBoxLayout *configHeaderLayout = new QHBoxLayout(this);
     QVBoxLayout *configHeaderLeft = new QVBoxLayout(this);
     QVBoxLayout *configHeaderRight = new QVBoxLayout(this);
-    m_freeFloatingCheckbox = new QCheckBox(i18n("Free Floating Window"), this);
-    connect(m_freeFloatingCheckbox, &QCheckBox::clicked, this, &SearchConfigModule::markAsChanged);
-    configHeaderLeft->addWidget(m_freeFloatingCheckbox);
+
+    // Options where KRunner should pop up
+    QVBoxLayout *positionOptionsLayout = new QVBoxLayout(this);
+    m_topPositioning = new QRadioButton(i18n("Top of screen"), this);
+    connect(m_topPositioning, &QRadioButton::clicked, this, &SearchConfigModule::markAsChanged);
+    m_freeFloating = new QRadioButton(i18n("Free-floating window"), this);
+    connect(m_freeFloating, &QRadioButton::clicked, this, &SearchConfigModule::markAsChanged);
+    positionOptionsLayout->addWidget(m_topPositioning);
+    positionOptionsLayout->addWidget(m_freeFloating);
+
+    QFormLayout *positionLayout = new QFormLayout(this);
+    positionLayout->addRow(i18n("Positioning:"), positionOptionsLayout);
+    configHeaderLeft->addLayout(positionLayout);
     configHeaderRight->addWidget(clearHistoryButton);
 
     configHeaderLayout->addLayout(configHeaderLeft);
@@ -112,7 +123,9 @@ SearchConfigModule::SearchConfigModule(QWidget* parent, const QVariantList& args
 void SearchConfigModule::load()
 {
     KSharedConfigPtr config = KSharedConfig::openConfig(QStringLiteral("krunnerrc"));
-    m_freeFloatingCheckbox->setChecked(config->group("General").readEntry("FreeFloating", false));
+    bool freeFloating = config->group("General").readEntry("FreeFloating", false);
+    m_topPositioning->setChecked(!freeFloating);
+    m_freeFloating->setChecked(freeFloating);
     // Set focus on the pluginselector to pass focus to search bar.
     m_pluginSelector->setFocus(Qt::OtherFocusReason);
 
@@ -131,7 +144,7 @@ void SearchConfigModule::load()
 void SearchConfigModule::save()
 {
     KSharedConfigPtr config = KSharedConfig::openConfig(QStringLiteral("krunnerrc"));
-    config->group("General").writeEntry("FreeFloating", m_freeFloatingCheckbox->isChecked(), KConfig::Notify);
+    config->group("General").writeEntry("FreeFloating", m_freeFloating->isChecked(), KConfig::Notify);
     m_pluginSelector->save();
 
     QDBusMessage message = QDBusMessage::createSignal(QStringLiteral("/krunnerrc"),
@@ -144,7 +157,8 @@ void SearchConfigModule::save()
 
 void SearchConfigModule::defaults()
 {
-    m_freeFloatingCheckbox->setChecked(false);
+    m_topPositioning->setChecked(true);
+    m_freeFloating->setChecked(false);
     m_pluginSelector->defaults();
 }
 
