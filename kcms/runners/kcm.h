@@ -22,6 +22,7 @@
 
 #include <KCModule>
 #include <KConfig>
+#include <QCheckBox>
 
 
 
@@ -48,6 +49,7 @@ private:
     KPluginSelector *m_pluginSelector;
     KConfig m_config;
     QString m_pluginID;
+    QCheckBox *m_freeFloatingCheckbox;
 };
 
 #endif
