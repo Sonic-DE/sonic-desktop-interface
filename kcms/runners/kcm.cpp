@@ -114,6 +114,7 @@ SearchConfigModule::SearchConfigModule(QWidget* parent, const QVariantList& args
     });
 
     layout->addLayout(configHeaderLayout);
+    layout->addSpacing(12);
     layout->addLayout(headerLayout);
     layout->addWidget(m_pluginSelector);
 }
