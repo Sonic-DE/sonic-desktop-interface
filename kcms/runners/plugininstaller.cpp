@@ -282,15 +282,7 @@ void packageKitUninstall(const QString &fileName)
     // On OpenSUSE packagekit can't even look up the package details of a file, so we have to do this manually
     if (QMimeDatabase().mimeTypeForFile(QFileInfo(fileName)).name() == QLatin1String("application/x-rpm")
         && KOSRelease().name().contains(QStringLiteral("openSUSE"), Qt::CaseInsensitive)) {
-        QProcess rpmInfoProcess;
-        rpmInfoProcess.start(QStringLiteral("rpm"), {"-qi", fileName});
-        rpmInfoProcess.waitForFinished(1000);
-        const QString rpmInfo = rpmInfoProcess.readAll();
-        const auto infoMatch = QRegularExpression(QStringLiteral("Name *: (.+)")).match(rpmInfo);
-        if (!infoMatch.hasMatch()) {
-            fail(i18n("Could not resolve package name of %1", fileName));
-        }
-        const QString command = QStringLiteral("sudo zypper remove %1").arg(KShell::quoteArg(infoMatch.captured(1)));
+        const QString command = QStringLiteral("sudo zypper remove $(rpm -qp %1)").arg(KShell::quoteArg(fileName));
         const QString bashCommand = QStringLiteral("bash -c \"echo %1;%1 && echo %2\"").arg(command, getCloseMessage(Operation::Uninstall));
         runScriptInTerminal(bashCommand, QFileInfo(fileName).dir().path());
         exit(0);
