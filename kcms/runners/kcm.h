@@ -55,7 +55,7 @@ private:
     QRadioButton *m_freeFloating;
     QCheckBox *m_retainPriorSearch;
     QPushButton *m_clearHistoryButton;
-    QCheckBox *m_disableHistory;
+    QCheckBox *m_enableHistory;
 };
 
 #endif

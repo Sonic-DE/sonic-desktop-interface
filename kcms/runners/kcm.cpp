@@ -87,15 +87,13 @@ SearchConfigModule::SearchConfigModule(QWidget* parent, const QVariantList& args
     positionLayout->addRow(i18n("Positioning:"), m_topPositioning);
     positionLayout->addRow(QString(), m_freeFloating);
     configHeaderLeft->addLayout(positionLayout);
+    m_enableHistory = new QCheckBox(i18n("Enable"), this);
+    positionLayout->addRow(i18n("History:"), m_enableHistory);
+    connect(m_enableHistory, &QCheckBox::clicked, this, &SearchConfigModule::markAsChanged);
+    connect(m_enableHistory, &QCheckBox::clicked, m_clearHistoryButton, &QPushButton::setEnabled);
     m_retainPriorSearch = new QCheckBox(i18n("Retain previous search"), this);
     connect(m_retainPriorSearch, &QCheckBox::clicked, this, &SearchConfigModule::markAsChanged);
-    positionLayout->addRow(i18n("History:"), m_retainPriorSearch);
-    m_disableHistory = new QCheckBox(i18n("Disable history"), this);
-    connect(m_disableHistory, &QCheckBox::clicked, this, &SearchConfigModule::markAsChanged);
-    connect(m_disableHistory, &QCheckBox::clicked, this, [this]{
-        m_clearHistoryButton->setEnabled(!m_disableHistory->isChecked());
-    });
-    positionLayout->addRow(QString(), m_disableHistory);
+    positionLayout->addRow(QString(), m_retainPriorSearch);
     configHeaderLeft->addLayout(positionLayout);
 
     configHeaderRight->setSizeConstraint(QLayout::SetNoConstraint);
@@ -141,7 +139,7 @@ void SearchConfigModule::load()
     m_freeFloating->setChecked(freeFloating);
     m_retainPriorSearch->setChecked(general.readEntry("RetainPriorSearch", true));
     bool historyEnabled = general.readEntry("HistoryEnabled", true);
-    m_disableHistory->setChecked(!historyEnabled);
+    m_enableHistory->setChecked(historyEnabled);
     m_clearHistoryButton->setEnabled(historyEnabled);
 
     // Set focus on the pluginselector to pass focus to search bar.
@@ -164,7 +162,7 @@ void SearchConfigModule::save()
     KSharedConfigPtr config = KSharedConfig::openConfig(QStringLiteral("krunnerrc"));
     config->group("General").writeEntry("FreeFloating", m_freeFloating->isChecked(), KConfig::Notify);
     config->group("General").writeEntry("RetainPriorSearch", m_retainPriorSearch->isChecked(), KConfig::Notify);
-    config->group("General").writeEntry("HistoryEnabled", !m_disableHistory->isChecked(), KConfig::Notify);
+    config->group("General").writeEntry("HistoryEnabled", m_enableHistory->isChecked(), KConfig::Notify);
     m_pluginSelector->save();
 
     QDBusMessage message = QDBusMessage::createSignal(QStringLiteral("/krunnerrc"),
@@ -180,7 +178,7 @@ void SearchConfigModule::defaults()
     m_topPositioning->setChecked(true);
     m_freeFloating->setChecked(false);
     m_retainPriorSearch->setChecked(true);
-    m_disableHistory->setChecked(false);
+    m_enableHistory->setChecked(true);
     m_clearHistoryButton->setEnabled(true);
     m_pluginSelector->defaults();
 }
