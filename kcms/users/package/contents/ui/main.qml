@@ -92,6 +92,9 @@ KCM.ScrollViewKCM {
             highlighted: index == userList.currentIndex
 
             function openPage() {
+                // This doesn't work as a Component.onCompleted because the kcm hasn't
+                // finished constructing by the time it triggers
+                kcm.columnWidth = Kirigami.Units.gridUnit * 15
                 userList.currentIndex = index
                 kcm.push("UserDetailsPage.qml", {user: User})
             }
