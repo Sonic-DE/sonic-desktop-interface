@@ -88,6 +88,7 @@ SearchConfigModule::SearchConfigModule(QWidget* parent, const QVariantList& args
     positionLayout->addRow(QString(), m_freeFloating);
     configHeaderLeft->addLayout(positionLayout);
     m_enableHistory = new QCheckBox(i18n("Enable"), this);
+    positionLayout->addItem(new QSpacerItem(0, 12));
     positionLayout->addRow(i18n("History:"), m_enableHistory);
     connect(m_enableHistory, &QCheckBox::clicked, this, &SearchConfigModule::markAsChanged);
     connect(m_enableHistory, &QCheckBox::clicked, m_clearHistoryButton, &QPushButton::setEnabled);
