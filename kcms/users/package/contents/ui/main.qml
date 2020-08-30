@@ -28,6 +28,7 @@ import QtQuick.Controls 2.5 as QQC2
 import org.kde.kcm 1.2 as KCM
 import org.kde.kirigami 2.13 as Kirigami
 import org.kde.kcoreaddons 1.0 as KCoreAddons
+import org.kde.plasma.kcm.users 1.0
 
 KCM.ScrollViewKCM {
     id: root
@@ -39,6 +40,17 @@ KCM.ScrollViewKCM {
 
     implicitWidth: Kirigami.Units.gridUnit * 30
     implicitHeight: Kirigami.Units.gridUnit * 20
+
+    // This doesn't work as a Component.onCompleted because the kcm hasn't
+    // finished constructing by the time it triggers
+    Timer {
+        interval: 10
+        running: true
+        onTriggered: {
+            kcm.columnWidth = Kirigami.Units.gridUnit * 15
+            kcm.push("UserDetailsPage.qml", {user: kcm.userModel.getLoggedInUser()})
+        }
+    }
 
     view: ListView {
         id: userList
