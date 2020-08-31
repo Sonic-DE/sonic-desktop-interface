@@ -17,20 +17,44 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA          *
  ***************************************************************************/
 
-#include "componentchooserfilemanager.h"
+import QtQuick 2.12
+import QtQuick.Controls 2.12 as Controls
+import QtQuick.Layouts 1.12
 
-#include <KBuildSycocaProgressDialog>
+import org.kde.kirigami 2.7 as Kirigami
+import org.kde.kcm 1.2
 
-ComponentChooserFileManager::ComponentChooserFileManager(QObject *parent)
-    : ComponentChooser(parent, QStringLiteral("inode/directory"), QStringLiteral("FileManager"), QStringLiteral("org.kde.dolphin.desktop"))
-{
-}
+SimpleKCM {
+    Kirigami.FormLayout {
+        Controls.ComboBox {
+            Kirigami.FormData.label: i18n("Webbrowser:")
+            model: kcm.browsers.applications
+            textRole: "name"
+            currentIndex: kcm.browsers.index
+            onActivated: kcm.browsers.select(currentIndex, true)
+        }
+        Controls.ComboBox {
+            Kirigami.FormData.label: i18n("File Manager:")
+            model: kcm.fileManagers.applications
+            textRole: "name"
+            currentIndex: kcm.fileManagers.index
+            onActivated: kcm.fileManagers.select(currentIndex, true)
 
-void ComponentChooserFileManager::save(bool rebuildCache)
-{
-    ComponentChooser::save(QStringLiteral("inode/directory"), m_applications[m_index].toMap()["storageId"].toString());
+        }
+        Controls.ComboBox {
+            Kirigami.FormData.label: i18n("E-Mail Client:")
+            model: kcm.emailClients.applications
+            textRole: "name"
+            currentIndex: kcm.emailClients.index
+            onActivated: kcm.emailClients.select(currentIndex, true)
 
-    if(rebuildCache) {
-        KBuildSycocaProgressDialog::rebuildKSycoca(nullptr);
+        }
+        Controls.ComboBox {
+            Kirigami.FormData.label: i18n("Terminal Emulator:")
+            model: kcm.terminalEmulators.applications
+            textRole: "name"
+            currentIndex: kcm.terminalEmulators.index
+            onActivated: kcm.terminalEmulators.select(currentIndex, true)
+        }
     }
 }
