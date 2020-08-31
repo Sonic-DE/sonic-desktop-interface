@@ -17,18 +17,28 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA          *
  ***************************************************************************/
 
-#ifndef COMPONENTCHOOSERTERMINAL_H
-#define COMPONENTCHOOSERTERMINAL_H
+import QtQuick 2.12
 
-#include "componentchooser.h"
+import org.kde.kirigami 2.7 as Kirigami
+import org.kde.kcm 1.2
 
-class ComponentChooserTerminal : public ComponentChooser
-{
-public:
-    ComponentChooserTerminal(QObject *parent);
-
-    void load() override;
-    void save() override;
-};
-
-#endif
+SimpleKCM {
+    Kirigami.FormLayout {
+        ComponentComboBox {
+            component: kcm.browsers
+            label: i18n("Webbrowser:")
+        }
+        ComponentComboBox {
+            component: kcm.fileManagers
+            label: i18n("File Manager:")
+        }
+        ComponentComboBox {
+            component: kcm.emailClients
+            label: i18n("E-Mail Client:")
+        }
+        ComponentComboBox {
+            component: kcm.terminalEmulators
+            label: i18n("Terminal Emulator:")
+        }
+    }
+}
