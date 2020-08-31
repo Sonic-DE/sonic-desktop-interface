@@ -38,7 +38,7 @@ KcmComponentChooser::KcmComponentChooser(QObject *parent, const QVariantList &ar
 
     aboutData->addAuthor(i18n("Joseph Wenninger"), QString(), QStringLiteral("jowenn@kde.org"));
     aboutData->addAuthor(i18n("Méven Car"), QString(), QStringLiteral("meven.car@kdemail.net"));
-    aboutData->addAuthor(i18n("Tobias Fella"), QStringLiteral(""), QStringLiteral("fella@posteo.de"));
+    aboutData->addAuthor(i18n("Tobias Fella"), QString(), QStringLiteral("fella@posteo.de"));
 
     setAboutData(aboutData);
     setButtons(Help | Default);
