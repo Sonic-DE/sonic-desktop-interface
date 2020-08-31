@@ -1,7 +1,7 @@
 /***************************************************************************
- *   Copyright (C) 2020 Tobias Fella <fella@posteo.de>                     *
  *   Copyright (C) 2002 Joseph Wenninger <jowenn@kde.org>                  *
  *   Copyright (C) 2020 Méven Car <meven.car@kdemail.net>                  *
+ *   Copyright (C) 2020 Tobias Fella <fella@posteo.de>                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
