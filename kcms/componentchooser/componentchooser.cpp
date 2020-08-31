@@ -37,13 +37,15 @@ ComponentChooser::ComponentChooser(QObject *parent, QString mimeType, QString ty
 {
 }
 
-bool ComponentChooser::defaults() {
+bool ComponentChooser::defaults()
+{
     if(m_defaultIndex != -1)
         return select(m_defaultIndex);
     return false;
 }
 
-void ComponentChooser::load() {
+void ComponentChooser::load()
+{
     bool preferredServiceAdded = false;
 
     KService::Ptr preferredService = KApplicationTrader::preferredService(m_mimeType);
@@ -86,7 +88,8 @@ void ComponentChooser::load() {
     Q_EMIT indexChanged();
 }
 
-bool ComponentChooser::select(int index) {
+bool ComponentChooser::select(int index)
+{
     if (m_index == index)
         return false;
     if (index == m_applications.length() - 1) {

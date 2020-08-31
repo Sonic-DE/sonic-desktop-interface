@@ -79,7 +79,8 @@ void KcmComponentChooser::save()
     KBuildSycocaProgressDialog::rebuildKSycoca(nullptr);
 }
 
-void KcmComponentChooser::rebuildCache() {
+void KcmComponentChooser::rebuildCache()
+{
     KBuildSycocaProgressDialog::rebuildKSycoca(nullptr);
 }
 

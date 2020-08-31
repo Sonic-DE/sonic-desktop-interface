@@ -31,14 +31,14 @@ SimpleKCM {
             model: kcm.browsers.applications
             textRole: "name"
             currentIndex: kcm.browsers.index
-            onActivated: if(kcm.browsers.select(currentIndex)) kcm.rebuildCache()
+            onActivated: if (kcm.browsers.select(currentIndex)) kcm.rebuildCache()
         }
         Controls.ComboBox {
             Kirigami.FormData.label: i18n("File Manager:")
             model: kcm.fileManagers.applications
             textRole: "name"
             currentIndex: kcm.fileManagers.index
-            onActivated: if(kcm.fileManagers.select(currentIndex)) kcm.rebuildCache()
+            onActivated: if (kcm.fileManagers.select(currentIndex)) kcm.rebuildCache()
 
         }
         Controls.ComboBox {
@@ -46,7 +46,7 @@ SimpleKCM {
             model: kcm.emailClients.applications
             textRole: "name"
             currentIndex: kcm.emailClients.index
-            onActivated: if(kcm.emailClients.select(currentIndex)) kcm.rebuildCache()
+            onActivated: if (kcm.emailClients.select(currentIndex)) kcm.rebuildCache()
 
         }
         Controls.ComboBox {
@@ -54,7 +54,7 @@ SimpleKCM {
             model: kcm.terminalEmulators.applications
             textRole: "name"
             currentIndex: kcm.terminalEmulators.index
-            onActivated: if(kcm.terminalEmulators.select(currentIndex)) kcm.rebuildCache()
+            onActivated: if (kcm.terminalEmulators.select(currentIndex)) kcm.rebuildCache()
         }
     }
 }
