@@ -31,6 +31,3 @@ install(TARGETS kcm_componentchooser DESTINATION ${KDE_INSTALL_PLUGINDIR}/kcms)
 
 install(FILES package/metadata.desktop RENAME componentchooser.desktop DESTINATION ${KDE_INSTALL_KSERVICES5DIR})
 kpackage_install_package(package kcm_componentchooser kcms)
-install(FILES browser_settings.kcfg DESTINATION ${KDE_INSTALL_KCFGDIR})
-install(FILES terminal_settings.kcfg DESTINATION ${KDE_INSTALL_KCFGDIR})
-
