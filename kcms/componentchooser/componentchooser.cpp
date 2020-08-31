@@ -114,7 +114,7 @@ bool ComponentChooser::select(int index)
         const QString icon = !service->icon().isEmpty() ? service->icon() : QStringLiteral("application-x-shellscript");
         QVariantMap application;
         application["name"] = service->name();
-        application["icon"] = service->icon();
+        application["icon"] = icon;
         application["storageId"] = service->storageId();
         m_applications.insert(m_applications.length() - 1, application);
         m_index = m_applications.length() - 2;
