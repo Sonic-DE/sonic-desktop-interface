@@ -19,12 +19,18 @@
 
 #include "componentchooserfilemanager.h"
 
+#include <KBuildSycocaProgressDialog>
+
 ComponentChooserFileManager::ComponentChooserFileManager(QObject *parent)
     : ComponentChooser(parent, QStringLiteral("inode/directory"), QStringLiteral("FileManager"), QStringLiteral("org.kde.dolphin.desktop"))
 {
 }
 
-void ComponentChooserFileManager::save()
+void ComponentChooserFileManager::save(bool rebuildCache)
 {
     ComponentChooser::save(QStringLiteral("inode/directory"), m_applications[m_index].toMap()["storageId"].toString());
+
+    if(rebuildCache) {
+        KBuildSycocaProgressDialog::rebuildKSycoca(nullptr);
+    }
 }

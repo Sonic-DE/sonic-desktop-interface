@@ -27,7 +27,7 @@ class ComponentChooserBrowser : public ComponentChooser
 public:
     ComponentChooserBrowser(QObject *parent);
 
-    void save() override;
+    void save(bool rebuildCache) override;
 };
 
 #endif

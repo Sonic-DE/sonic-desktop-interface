@@ -40,7 +40,7 @@ ComponentChooser::ComponentChooser(QObject *parent, QString mimeType, QString ty
 bool ComponentChooser::defaults()
 {
     if(m_defaultIndex != -1)
-        return select(m_defaultIndex);
+        return select(m_defaultIndex, false);
     return false;
 }
 
@@ -88,44 +88,47 @@ void ComponentChooser::load()
     Q_EMIT indexChanged();
 }
 
-bool ComponentChooser::select(int index)
+bool ComponentChooser::select(int index, bool rebuildCache)
 {
     if (m_index == index)
         return false;
     if (index == m_applications.length() - 1) {
-        KOpenWithDialog dialog(m_mimeType, QString());
-        dialog.setSaveNewApplications(true);
-        if (dialog.exec() != QDialog::Accepted) {
-            Q_EMIT indexChanged();
-            return false;
-        }
-
-        const auto service = dialog.service();
-
-        // Check if the selected application is already in the list
-        for (int i = 0; i < m_applications.length(); i++) {
-            if (m_applications[i].toMap()["storageId"] == service->storageId()) {
-                m_index = i;
-                save();
+        KOpenWithDialog *dialog = new KOpenWithDialog(m_mimeType, QString());
+        dialog->setSaveNewApplications(true);
+        dialog->setAttribute(Qt::WA_DeleteOnClose);
+        connect(dialog, &KOpenWithDialog::finished, this, [rebuildCache, this, dialog] (int result) {
+            if(result != QDialog::Accepted) {
                 Q_EMIT indexChanged();
-                return true;
+                return;
             }
-        }
-        const QString icon = !service->icon().isEmpty() ? service->icon() : QStringLiteral("application-x-shellscript");
-        QVariantMap application;
-        application["name"] = service->name();
-        application["icon"] = icon;
-        application["storageId"] = service->storageId();
-        m_applications.insert(m_applications.length() - 1, application);
-        m_index = m_applications.length() - 2;
-        save();
-        Q_EMIT applicationsChanged();
-        Q_EMIT indexChanged();
-        return true;
+
+            const auto service = dialog->service();
+            // Check if the selected application is already in the list
+            for (int i = 0; i < m_applications.length(); i++) {
+                if (m_applications[i].toMap()["storageId"] == service->storageId()) {
+                    m_index = i;
+                    save(rebuildCache);
+                    Q_EMIT indexChanged();
+                    return;
+                }
+            }
+            const QString icon = !service->icon().isEmpty() ? service->icon() : QStringLiteral("application-x-shellscript");
+            QVariantMap application;
+            application["name"] = service->name();
+            application["icon"] = icon;
+            application["storageId"] = service->storageId();
+            m_applications.insert(m_applications.length() - 1, application);
+            m_index = m_applications.length() - 2;
+            save(rebuildCache);
+            Q_EMIT applicationsChanged();
+            Q_EMIT indexChanged();
+        });
+        dialog->open();
+        return false;
     } else {
         m_index = index;
     }
-    save();
+    save(rebuildCache);
     Q_EMIT indexChanged();
     return true;
 }

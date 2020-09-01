@@ -27,7 +27,7 @@ class ComponentChooserFileManager : public ComponentChooser
 public:
     ComponentChooserFileManager(QObject *parent);
 
-    void save() override;
+    void save(bool rebuildCache) override;
 };
 
 #endif

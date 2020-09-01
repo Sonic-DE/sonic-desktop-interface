@@ -25,6 +25,7 @@
 #include <QDBusMessage>
 
 #include <KApplicationTrader>
+#include <KBuildSycocaProgressDialog>
 
 #include "terminal_settings.h"
 
@@ -80,7 +81,7 @@ void ComponentChooserTerminal::load()
     Q_EMIT indexChanged();
 }
 
-void ComponentChooserTerminal::save()
+void ComponentChooserTerminal::save(bool rebuildCache)
 {
     const QString storageId = m_applications[m_index].toMap()["name"].toString();
 
@@ -90,4 +91,8 @@ void ComponentChooserTerminal::save()
 
     QDBusMessage message = QDBusMessage::createMethodCall(QStringLiteral("org.kde.klauncher5"), QStringLiteral("/KLauncher"), QStringLiteral("org.kde.KLauncher"), QStringLiteral("reparseConfiguration"));
     QDBusConnection::sessionBus().send(message);
+
+    if(rebuildCache) {
+        KBuildSycocaProgressDialog::rebuildKSycoca(nullptr);
+    }
 }

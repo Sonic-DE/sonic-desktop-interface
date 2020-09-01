@@ -21,6 +21,8 @@
 
 #include "componentchooserbrowser.h"
 
+#include <KBuildSycocaProgressDialog>
+
 #include "browser_settings.h"
 
 ComponentChooserBrowser::ComponentChooserBrowser(QObject *parent)
@@ -28,7 +30,7 @@ ComponentChooserBrowser::ComponentChooserBrowser(QObject *parent)
 {
 }
 
-void ComponentChooserBrowser::save()
+void ComponentChooserBrowser::save(bool rebuildCache)
 {
     const QString storageId = m_applications[m_index].toMap()["storageId"].toString();
 
@@ -38,4 +40,8 @@ void ComponentChooserBrowser::save()
 
     ComponentChooser::save(QStringLiteral("x-scheme-handler/http"), storageId);
     ComponentChooser::save(QStringLiteral("x-scheme-handler/https"), storageId);
+
+    if(rebuildCache) {
+        KBuildSycocaProgressDialog::rebuildKSycoca(nullptr);
+    }
 }

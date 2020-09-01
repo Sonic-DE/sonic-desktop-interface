@@ -41,8 +41,6 @@ public:
     void load() final;
     void save() final;
 
-    Q_INVOKABLE void rebuildCache();
-
 private:
     ComponentChooser *m_browsers;
     ComponentChooser *m_emailClients;

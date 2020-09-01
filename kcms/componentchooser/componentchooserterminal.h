@@ -28,7 +28,7 @@ public:
     ComponentChooserTerminal(QObject *parent);
 
     void load() override;
-    void save() override;
+    void save(bool rebuildCache) override;
 };
 
 #endif

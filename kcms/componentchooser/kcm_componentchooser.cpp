@@ -71,16 +71,11 @@ void KcmComponentChooser::load()
 
 void KcmComponentChooser::save()
 {
-    m_browsers->save();
-    m_fileManagers->save();
-    m_terminalEmulators->save();
-    m_emailClients->save();
+    m_browsers->save(false);
+    m_fileManagers->save(false);
+    m_terminalEmulators->save(false);
+    m_emailClients->save(false);
 
-    KBuildSycocaProgressDialog::rebuildKSycoca(nullptr);
-}
-
-void KcmComponentChooser::rebuildCache()
-{
     KBuildSycocaProgressDialog::rebuildKSycoca(nullptr);
 }
 

@@ -27,7 +27,7 @@ class ComponentChooserEmail : public ComponentChooser
 public:
     ComponentChooserEmail(QObject *parent);
 
-    void save() override;
+    void save(bool rebuildCache) override;
 };
 
 #endif

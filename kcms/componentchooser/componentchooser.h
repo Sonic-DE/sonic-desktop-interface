@@ -36,9 +36,10 @@ public:
     bool defaults();
     virtual void load();
 
-    Q_INVOKABLE bool select(int index);
+    Q_INVOKABLE bool select(int index, bool rebuildCache);
 
-    virtual void save() = 0;
+
+    virtual void save(bool rebuildCache) = 0;
     void save(QString mime, QString storageId);
 
 

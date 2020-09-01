@@ -21,6 +21,7 @@
 
 #include "componentchooseremail.h"
 
+#include <KBuildSycocaProgressDialog>
 #include <KEMailSettings>
 #include <KService>
 
@@ -29,7 +30,7 @@ ComponentChooserEmail::ComponentChooserEmail(QObject *parent)
 {
 }
 
-void ComponentChooserEmail::save()
+void ComponentChooserEmail::save(bool rebuildCache)
 {
     const QString storageId = m_applications[m_index].toMap()["storageId"].toString();
     const KService::Ptr emailClientService = KService::serviceByStorageId(storageId);
@@ -51,4 +52,8 @@ void ComponentChooserEmail::save()
     delete emailSettings;
 
     ComponentChooser::save(QStringLiteral("x-scheme-handler/mailto"), storageId);
+
+    if(rebuildCache) {
+        KBuildSycocaProgressDialog::rebuildKSycoca(nullptr);
+    }
 }
