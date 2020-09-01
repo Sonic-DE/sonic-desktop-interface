@@ -39,8 +39,8 @@ ComponentChooser::ComponentChooser(QObject *parent, const QString &mimeType, con
 
 bool ComponentChooser::defaults()
 {
-    if(m_defaultIndex != -1)
-        return select(m_defaultIndex, false);
+    if (m_defaultIndex)
+        return select(*m_defaultIndex, false);
     return false;
 }
 
