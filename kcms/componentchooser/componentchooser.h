@@ -23,6 +23,8 @@
 #include <QString>
 #include <QVariant>
 
+#include <optional>
+
 class ComponentChooser : public QObject
 {
     Q_OBJECT
@@ -50,7 +52,7 @@ Q_SIGNALS:
 protected:
     QVariantList m_applications;
     int m_index;
-    int m_defaultIndex = -1;
+    std::optional<int> m_defaultIndex;
     QString m_mimeType;
     QString m_type;
     QString m_defaultApplication;
