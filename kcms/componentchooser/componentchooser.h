@@ -31,7 +31,7 @@ class ComponentChooser : public QObject
 
 public:
 
-    ComponentChooser(QObject *parent, QString mimeType, QString type, QString defaultApplication);
+    ComponentChooser(QObject *parent, const QString &mimeType, const QString &type, const QString &defaultApplication);
 
     bool defaults();
     virtual void load();
@@ -40,7 +40,7 @@ public:
 
 
     virtual void save(bool rebuildCache) = 0;
-    void save(QString mime, QString storageId);
+    void save(const QString &mime, const QString &storageId);
 
 
 Q_SIGNALS:

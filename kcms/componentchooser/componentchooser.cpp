@@ -29,7 +29,7 @@
 #include <KSharedConfig>
 #include <KConfigGroup>
 
-ComponentChooser::ComponentChooser(QObject *parent, QString mimeType, QString type, QString defaultApplication)
+ComponentChooser::ComponentChooser(QObject *parent, const QString &mimeType, const QString &type, const QString &defaultApplication)
     : QObject(parent)
     , m_mimeType(mimeType)
     , m_type(type)
@@ -133,7 +133,7 @@ bool ComponentChooser::select(int index, bool rebuildCache)
     return true;
 }
 
-void ComponentChooser::save(QString mime, QString storageId)
+void ComponentChooser::save(const QString &mime, const QString &storageId)
 {
     KSharedConfig::Ptr profile = KSharedConfig::openConfig(QStringLiteral("mimeapps.list"), KConfig::NoGlobals, QStandardPaths::GenericConfigLocation);
     if (profile->isConfigWritable(true)) {
