@@ -30,6 +30,7 @@ Item {
     height: isSeparator ? separatorHeight : itemHeight
     width: ListView.view.width
 
+    // if it's not disabled and is either a leaf node or a node with children
     enabled: !isSeparator && !model.disabled && (!isParent || (isParent && hasChildren))
 
     signal actionTriggered(string actionId, variant actionArgument)
