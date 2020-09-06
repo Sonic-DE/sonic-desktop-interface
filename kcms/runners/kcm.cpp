@@ -54,12 +54,13 @@ SearchConfigModule::SearchConfigModule(QWidget* parent, const QVariantList& args
     setAboutData(about);
     setButtons(Apply | Default);
 
-    if (args.at(0).toString() == QLatin1String("plasmashellrc")) {
+    const QString arg = args.at(0).toString();
+    if (arg == QLatin1String("plasmashellrc")) {
         m_krunnerSettings = false;
-        m_config = args.at(0).toString();
-    } else if(!args.at(0).toString().isEmpty()) {
+        m_config = arg;
+    } else if(!arg.isEmpty()) {
         m_krunnerSettings = true;
-        m_pluginID = args.at(0).toString();
+        m_pluginID = arg;
     }
 
     QVBoxLayout* layout = new QVBoxLayout(this);
@@ -151,7 +152,7 @@ void SearchConfigModule::save()
     }
     m_pluginSelector->save();
 
-    QDBusMessage message = QDBusMessage::createSignal(QStringLiteral("/krunnerrc"),
+    QDBusMessage message = QDBusMessage::createSignal(("/") + m_config,
                                                       QStringLiteral("org.kde.kconfig.notify"),
                                                       QStringLiteral("ConfigChanged"));
     const QHash<QString, QByteArrayList> changes = {{QStringLiteral("Plugins"), {}}};
