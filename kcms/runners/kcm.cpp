@@ -54,7 +54,11 @@ SearchConfigModule::SearchConfigModule(QWidget* parent, const QVariantList& args
     setAboutData(about);
     setButtons(Apply | Default);
 
-    if(!args.at(0).toString().isEmpty()) {
+    if (args.at(0).toString() == QLatin1String("plasmashellrc")) {
+        m_krunnerSettings = false;
+        m_config = args.at(0).toString();
+    } else if(!args.at(0).toString().isEmpty()) {
+        m_krunnerSettings = true;
         m_pluginID = args.at(0).toString();
     }
 
@@ -62,17 +66,113 @@ SearchConfigModule::SearchConfigModule(QWidget* parent, const QVariantList& args
 
     QHBoxLayout *headerLayout = new QHBoxLayout(this);
 
-    QLabel *label = new QLabel(i18n("Enable or disable KRunner plugins:"));
+    const QString text = m_krunnerSettings ? i18n("Enable or disable KRunner plugins:") : i18n("Enable or disable runners for Kickoff:");
+    QLabel *label = new QLabel(text);
+
 
     m_clearHistoryButton = new QPushButton(i18n("Clear History"));
     m_clearHistoryButton->setIcon(QIcon::fromTheme(isRightToLeft() ? QStringLiteral("edit-clear-locationbar-ltr")
                                                                    : QStringLiteral("edit-clear-locationbar-rtl")));
     connect(m_clearHistoryButton, &QPushButton::clicked, this, [this] {
-        KConfigGroup generalConfig(m_config.group("General"));
+        KConfigGroup generalConfig = KSharedConfig::openConfig(m_config)->group("General");
         generalConfig.deleteEntry("history", KConfig::Notify);
         generalConfig.sync();
     });
 
+    QHBoxLayout *configHeaderLayout = nullptr;
+    if (m_krunnerSettings) {
+        configHeaderLayout = setupKRunnerUIOptions();
+    }
+
+    headerLayout->addWidget(label);
+    headerLayout->addStretch();
+
+    m_pluginSelector = new KPluginSelector(this);
+
+    connect(m_pluginSelector, &KPluginSelector::changed, this, [this] { markAsChanged(); });
+    connect(m_pluginSelector, &KPluginSelector::defaulted, this, &KCModule::defaulted);
+
+    qDBusRegisterMetaType<QByteArrayList>();
+    qDBusRegisterMetaType<QHash<QString, QByteArrayList>>();
+    // This will trigger the reloadConfiguration method for the runner
+    connect(m_pluginSelector, &KPluginSelector::configCommitted, this, [this](const QByteArray &componentName){
+        QDBusMessage message = QDBusMessage::createSignal(QLatin1String("/") + m_config,
+                                                          QStringLiteral("org.kde.kconfig.notify"),
+                                                          QStringLiteral("ConfigChanged"));
+        const QHash<QString, QByteArrayList> changes = {{QStringLiteral("Runners"), {componentName}}};
+        message.setArguments({QVariant::fromValue(changes)});
+        QDBusConnection::sessionBus().send(message);
+    });
+
+    if (configHeaderLayout) {
+        layout->addLayout(configHeaderLayout);
+    }
+    layout->addSpacing(12);
+    layout->addLayout(headerLayout);
+    layout->addWidget(m_pluginSelector);
+}
+
+void SearchConfigModule::load()
+{
+    KSharedConfigPtr config = KSharedConfig::openConfig(m_config);
+    if (m_krunnerSettings) {
+        const KConfigGroup general = config->group("General");
+        bool freeFloating = general.readEntry("FreeFloating", false);
+        m_topPositioning->setChecked(!freeFloating);
+        m_freeFloating->setChecked(freeFloating);
+        m_retainPriorSearch->setChecked(general.readEntry("RetainPriorSearch", true));
+        bool historyEnabled = general.readEntry("HistoryEnabled", true);
+        m_enableHistory->setChecked(historyEnabled);
+        m_clearHistoryButton->setEnabled(historyEnabled);
+    }
+
+    // Set focus on the pluginselector to pass focus to search bar.
+    m_pluginSelector->setFocus(Qt::OtherFocusReason);
+
+    m_pluginSelector->addPlugins(Plasma::RunnerManager::listRunnerInfo(),
+                    KPluginSelector::ReadConfigFile,
+                    i18n("Available Plugins"), QString(),
+                    config);
+    m_pluginSelector->load();
+
+    if(!m_pluginID.isEmpty()){
+        m_pluginSelector->showConfiguration(m_pluginID);
+    }
+}
+
+
+void SearchConfigModule::save()
+{
+    if (m_krunnerSettings) {
+        KSharedConfigPtr config = KSharedConfig::openConfig(QStringLiteral("krunnerrc"));
+        config->group("General").writeEntry("FreeFloating", m_freeFloating->isChecked(), KConfig::Notify);
+        config->group("General").writeEntry("RetainPriorSearch", m_retainPriorSearch->isChecked(), KConfig::Notify);
+        config->group("General").writeEntry("HistoryEnabled", m_enableHistory->isChecked(), KConfig::Notify);
+    }
+    m_pluginSelector->save();
+
+    QDBusMessage message = QDBusMessage::createSignal(QStringLiteral("/krunnerrc"),
+                                                      QStringLiteral("org.kde.kconfig.notify"),
+                                                      QStringLiteral("ConfigChanged"));
+    const QHash<QString, QByteArrayList> changes = {{QStringLiteral("Plugins"), {}}};
+    message.setArguments({QVariant::fromValue(changes)});
+    QDBusConnection::sessionBus().send(message);
+}
+
+void SearchConfigModule::defaults()
+{
+    if (m_krunnerSettings) {
+        m_topPositioning->setChecked(true);
+        m_freeFloating->setChecked(false);
+        m_retainPriorSearch->setChecked(true);
+        m_enableHistory->setChecked(true);
+        m_clearHistoryButton->setEnabled(true);
+    }
+    m_pluginSelector->defaults();
+}
+
+QHBoxLayout* SearchConfigModule::setupKRunnerUIOptions()
+{
     QHBoxLayout *configHeaderLayout = new QHBoxLayout(this);
     QVBoxLayout *configHeaderLeft = new QVBoxLayout(this);
     QVBoxLayout *configHeaderRight = new QVBoxLayout(this);
@@ -105,83 +205,8 @@ SearchConfigModule::SearchConfigModule(QWidget* parent, const QVariantList& args
     configHeaderLayout->addStretch();
     configHeaderLayout->addLayout(configHeaderRight);
 
-    headerLayout->addWidget(label);
-    headerLayout->addStretch();
-
-    m_pluginSelector = new KPluginSelector(this);
-
-    connect(m_pluginSelector, &KPluginSelector::changed, this, [this] { markAsChanged(); });
-    connect(m_pluginSelector, &KPluginSelector::defaulted, this, &KCModule::defaulted);
-
-    qDBusRegisterMetaType<QByteArrayList>();
-    qDBusRegisterMetaType<QHash<QString, QByteArrayList>>();
-    // This will trigger the reloadConfiguration method for the runner
-    connect(m_pluginSelector, &KPluginSelector::configCommitted, this, [](const QByteArray &componentName){
-        QDBusMessage message = QDBusMessage::createSignal(QStringLiteral("/krunnerrc"),
-                                                          QStringLiteral("org.kde.kconfig.notify"),
-                                                          QStringLiteral("ConfigChanged"));
-        const QHash<QString, QByteArrayList> changes = {{QStringLiteral("Runners"), {componentName}}};
-        message.setArguments({QVariant::fromValue(changes)});
-        QDBusConnection::sessionBus().send(message);
-    });
-
-    layout->addLayout(configHeaderLayout);
-    layout->addSpacing(12);
-    layout->addLayout(headerLayout);
-    layout->addWidget(m_pluginSelector);
+    return configHeaderLayout;
 }
 
-void SearchConfigModule::load()
-{
-    KSharedConfigPtr config = KSharedConfig::openConfig(QStringLiteral("krunnerrc"));
-    const KConfigGroup general = config->group("General");
-    bool freeFloating = general.readEntry("FreeFloating", false);
-    m_topPositioning->setChecked(!freeFloating);
-    m_freeFloating->setChecked(freeFloating);
-    m_retainPriorSearch->setChecked(general.readEntry("RetainPriorSearch", true));
-    bool historyEnabled = general.readEntry("HistoryEnabled", true);
-    m_enableHistory->setChecked(historyEnabled);
-    m_clearHistoryButton->setEnabled(historyEnabled);
-
-    // Set focus on the pluginselector to pass focus to search bar.
-    m_pluginSelector->setFocus(Qt::OtherFocusReason);
-
-    m_pluginSelector->addPlugins(Plasma::RunnerManager::listRunnerInfo(),
-                    KPluginSelector::ReadConfigFile,
-                    i18n("Available Plugins"), QString(),
-                    config);
-    m_pluginSelector->load();
-
-    if(!m_pluginID.isEmpty()){
-        m_pluginSelector->showConfiguration(m_pluginID);
-    }
-}
-
-
-void SearchConfigModule::save()
-{
-    KSharedConfigPtr config = KSharedConfig::openConfig(QStringLiteral("krunnerrc"));
-    config->group("General").writeEntry("FreeFloating", m_freeFloating->isChecked(), KConfig::Notify);
-    config->group("General").writeEntry("RetainPriorSearch", m_retainPriorSearch->isChecked(), KConfig::Notify);
-    config->group("General").writeEntry("HistoryEnabled", m_enableHistory->isChecked(), KConfig::Notify);
-    m_pluginSelector->save();
-
-    QDBusMessage message = QDBusMessage::createSignal(QStringLiteral("/krunnerrc"),
-                                                      QStringLiteral("org.kde.kconfig.notify"),
-                                                      QStringLiteral("ConfigChanged"));
-    const QHash<QString, QByteArrayList> changes = {{QStringLiteral("Plugins"), {}}};
-    message.setArguments({QVariant::fromValue(changes)});
-    QDBusConnection::sessionBus().send(message);
-}
-
-void SearchConfigModule::defaults()
-{
-    m_topPositioning->setChecked(true);
-    m_freeFloating->setChecked(false);
-    m_retainPriorSearch->setChecked(true);
-    m_enableHistory->setChecked(true);
-    m_clearHistoryButton->setEnabled(true);
-    m_pluginSelector->defaults();
-}
 
 #include "kcm.moc"
