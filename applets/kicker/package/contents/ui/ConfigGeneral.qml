@@ -49,7 +49,6 @@ Kirigami.FormLayout {
     property alias cfg_showRecentDocs: showRecentDocs.checked
     property alias cfg_showRecentContacts: showRecentContacts.checked
 
-    property alias cfg_useExtraRunners: useExtraRunners.checked
     property alias cfg_alignResultsToBottom: alignResultsToBottom.checked
 
 
