@@ -25,6 +25,7 @@
 #include <QRadioButton>
 #include <QCheckBox>
 #include <QPushButton>
+#include <QHBoxLayout>
 
 
 
@@ -48,9 +49,11 @@ public Q_SLOTS:
     void defaults() override;
 
 private:
+    QHBoxLayout* setupKRunnerUIOptions();
     KPluginSelector *m_pluginSelector;
-    KConfig m_config;
+    QString m_config;
     QString m_pluginID;
+    bool m_krunnerSettings;
     QRadioButton *m_topPositioning;
     QRadioButton *m_freeFloating;
     QCheckBox *m_retainPriorSearch;
