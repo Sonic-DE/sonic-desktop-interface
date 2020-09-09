@@ -22,7 +22,9 @@ import QtQuick.Controls 2.3 as QQC2
 
 import org.kde.kirigami 2.10 as Kirigami
 import org.kde.kquickcontrols 2.0
-import org.kde.kcm 1.2 as KCM 
+import org.kde.kcm 1.5 as KCM
+import org.kde.private.kcms.keys 2.0 as Private
+
 
 Kirigami.AbstractListItem {
     id: root
@@ -98,6 +100,9 @@ Kirigami.AbstractListItem {
                             checked: activeShortcuts.indexOf(modelData) != -1
                             text: modelData
                             onToggled: originalIndex.model.toggleDefaultShortcut(originalIndex, modelData, checked)
+                            KCM.SettingHighlighter {
+                                highlight: !checked
+                            }
                         }
                     }
                 }
@@ -119,6 +124,9 @@ Kirigami.AbstractListItem {
                                 showClearButton: false
                                 onCaptureFinished: {
                                     originalIndex.model.changeShortcut(originalIndex, modelData, keySequence)
+                                }
+                                KCM.SettingHighlighter {
+                                    highlight: true
                                 }
                             }
                             QQC2.Button {
@@ -172,6 +180,49 @@ Kirigami.AbstractListItem {
             }
         }
     }
+    background: Rectangle {
+        property bool doHighlight: kcm.defaultsIndicatorsVisible && !model.isDefault
+        color: root.hovered ? root.activeBackgroundColor : root.backgroundColor
+        Kirigami.Separator {
+            anchors.bottom: parent.bottom
+            width: parent.width
+        }
+        Rectangle {
+            readonly property bool previousItemIsHighlighted: {
+                if (index == 0) {
+                    return false;
+                }
+                const previousIndex = dm.modelIndex(index - 1)
+                return !kcm.filteredModel.data(previousIndex, Private.BaseModel.IsDefaultRole)
+            }
+            visible: parent.doHighlight && !previousItemIsHighlighted
+            anchors.top: parent.top
+            width: parent.width
+            height: Kirigami.Units.devicePixelRatio * 2
+            color: Kirigami.Theme.neutralTextColor
+        }
+        Rectangle {
+            visible: parent.doHighlight
+            anchors.bottom: parent.bottom
+            width: parent.width
+            height: Kirigami.Units.devicePixelRatio * 2
+            color: Kirigami.Theme.neutralTextColor
+        }
+        Rectangle {
+            visible: parent.doHighlight
+            anchors.left: parent.left
+            width: Kirigami.Units.devicePixelRatio * 2
+            height: parent.height
+            color: Kirigami.Theme.neutralTextColor
+        }
+        Rectangle {
+            visible: parent.doHighlight
+            anchors.right: parent.right
+            width: Kirigami.Units.devicePixelRatio * 2
+            height: parent.height
+            color: Kirigami.Theme.neutralTextColor
+        }
+    }
     states: [
         State {
             name: "expanded"
@@ -197,6 +248,10 @@ Kirigami.AbstractListItem {
                 target: editLoader
                 active: true
                 visible: true
+            }
+            PropertyChanges {
+                target: background
+                doHighlight: false
             }
         }
     ]

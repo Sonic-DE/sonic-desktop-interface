@@ -40,7 +40,8 @@ void BaseModel::toggleDefaultShortcut(const QModelIndex &index, const QKeySequen
     } else {
         a.activeShortcuts.remove(shortcut);
     }
-    Q_EMIT dataChanged(index, index, {ActiveShortcutsRole, DefaultShortcutsRole});
+    Q_EMIT dataChanged(index, index, {ActiveShortcutsRole, DefaultShortcutsRole, IsDefaultRole});
+    Q_EMIT dataChanged(index.parent(), index.parent(), {IsDefaultRole});
 }
 
 void BaseModel::addShortcut(const QModelIndex &index, const QKeySequence &shortcut)
@@ -54,7 +55,8 @@ void BaseModel::addShortcut(const QModelIndex &index, const QKeySequence &shortc
     qCDebug(KCMKEYS) << "Adding shortcut" << index << shortcut;
     Action &a = m_components[index.parent().row()].actions[index.row()];
     a.activeShortcuts.insert(shortcut);
-    Q_EMIT dataChanged(index, index, {ActiveShortcutsRole, CustomShortcutsRole});
+    Q_EMIT dataChanged(index, index, {ActiveShortcutsRole, CustomShortcutsRole, IsDefaultRole});
+    Q_EMIT dataChanged(index.parent(), index.parent(), {IsDefaultRole});
 }
 
 void BaseModel::disableShortcut(const QModelIndex &index, const QKeySequence &shortcut)
@@ -65,7 +67,8 @@ void BaseModel::disableShortcut(const QModelIndex &index, const QKeySequence &sh
     qCDebug(KCMKEYS) << "Disabling shortcut" << index << shortcut;
     Action &a = m_components[index.parent().row()].actions[index.row()];
     a.activeShortcuts.remove(shortcut);
-    Q_EMIT dataChanged(index, index, {ActiveShortcutsRole, CustomShortcutsRole});
+    Q_EMIT dataChanged(index, index, {ActiveShortcutsRole, CustomShortcutsRole, IsDefaultRole});
+    Q_EMIT dataChanged(index.parent(), index.parent(), {IsDefaultRole});
 
 }
 
@@ -92,8 +95,9 @@ void BaseModel::defaults()
             action_it->activeShortcuts = action_it->defaultShortcuts;
         }
         Q_EMIT dataChanged(index(0, 0, componentIndex), index(m_components[i].actions.size() - 1, 0, componentIndex),
-            {ActiveShortcutsRole, CustomShortcutsRole});
+            {ActiveShortcutsRole, CustomShortcutsRole, IsDefaultRole});
     }
+    Q_EMIT dataChanged(index(0, 0), index(m_components.size(), 0), {IsDefaultRole});
 }
 
 bool BaseModel::needsSave() const
@@ -182,6 +186,8 @@ QVariant BaseModel::data(const QModelIndex &index, int role) const
             auto shortcuts = action.activeShortcuts;
             return QVariant::fromValue(shortcuts.subtract(action.defaultShortcuts));
         }
+        case IsDefaultRole:
+            return action.activeShortcuts == action.defaultShortcuts;
         }
         return QVariant();
     }
@@ -199,6 +205,10 @@ QVariant BaseModel::data(const QModelIndex &index, int role) const
         return component.checked;
     case PendingDeletionRole:
         return component.pendingDeletion;
+    case IsDefaultRole:
+        return std::all_of(component.actions.begin(), component.actions.end(), [] (const Action &action) {
+            return action.activeShortcuts == action.defaultShortcuts;
+        });
     }
     return QVariant();
 }
@@ -239,6 +249,7 @@ QHash<int, QByteArray> BaseModel::roleNames() const
         {DefaultShortcutsRole, QByteArrayLiteral("defaultShortcuts")},
         {CustomShortcutsRole, QByteArrayLiteral("customShortcuts")},
         {CheckedRole, QByteArrayLiteral("checked")},
-        {PendingDeletionRole, QByteArrayLiteral("pendingDeletion")}
+        {PendingDeletionRole, QByteArrayLiteral("pendingDeletion")},
+        {IsDefaultRole, QByteArrayLiteral("isDefault")}
         };
 }

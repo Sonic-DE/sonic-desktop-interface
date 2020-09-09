@@ -149,6 +149,14 @@ KCM.SimpleKCM {
                                 visible: exportActive
                                 onToggled: model.checked = checked
                             }
+                            Rectangle {
+                                id: defaultIndicator
+                                radius: width * 0.5
+                                implicitWidth: Kirigami.Units.largeSpacing
+                                implicitHeight: Kirigami.Units.largeSpacing
+                                opacity: kcm.defaultsIndicatorsVisible && !model.isDefault
+                                color: Kirigami.Theme.neutralTextColor
+                            }
                         }
                     }
                     section.property: "section"
