@@ -22,6 +22,7 @@
 
 #include <KQuickAddons/ConfigModule>
 #include "usermodel.h"
+#include "fingerprintmodel.h"
 
 class OrgFreedesktopAccountsInterface;
 
@@ -31,10 +32,12 @@ class KCMUser : public KQuickAddons::ConfigModule
 {
     Q_OBJECT
     Q_PROPERTY(UserModel* userModel MEMBER m_model CONSTANT)
-
+    Q_PROPERTY(FingerprintModel* fingerprintModel MEMBER m_fingerprintModel CONSTANT)
+    
 private:
     OrgFreedesktopAccountsInterface* m_dbusInterface;
     UserModel* m_model;
+    FingerprintModel* m_fingerprintModel;
 
 public:
     KCMUser(QObject *parent = nullptr, const QVariantList &args = QVariantList());

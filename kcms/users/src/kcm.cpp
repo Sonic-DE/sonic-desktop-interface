@@ -36,6 +36,7 @@
 #include <QTemporaryFile>
 
 #include "user.h"
+#include "fingerprintmodel.h"
 #include "accounts_interface.h"
 
 Q_LOGGING_CATEGORY(kcm_users, "kcm_users")
@@ -46,12 +47,14 @@ K_PLUGIN_FACTORY_WITH_JSON(KCMUserFactory, "kcm_users.json", registerPlugin<KCMU
 KCMUser::KCMUser(QObject *parent, const QVariantList &args)
     : KQuickAddons::ConfigModule(parent, args),
       m_dbusInterface(new OrgFreedesktopAccountsInterface(QStringLiteral("org.freedesktop.Accounts"), QStringLiteral("/org/freedesktop/Accounts"), QDBusConnection::systemBus(), this)),
-      m_model(new UserModel(this))
+      m_model(new UserModel(this)),
+      m_fingerprintModel(new FingerprintModel(this))
 {
     KAboutData* about = new KAboutData(QStringLiteral("kcm_users"), i18n("Manage user accounts"),
                                        QStringLiteral("0.1"), QString(), KAboutLicense::GPL);
     about->addAuthor(i18n("Nicolas Fella"), QString(), QStringLiteral("nicolas.fella@gmx.de"));
     about->addAuthor(i18n("Carson Black"), QString(), QStringLiteral("uhhadd@gmail.com"));
+    about->addAuthor(i18n("Devin Lin"), QString(), QStringLiteral("espidev@gmail.com"));
     setAboutData(about);
     setButtons(Apply);
     auto font = QApplication::font("QLabel");

@@ -2,6 +2,8 @@ set(kcm_users_SRCS
     kcm.cpp
     user.cpp
     usermodel.cpp
+    fprintdevice.cpp
+    fingerprintmodel.cpp
 )
 
 set_source_files_properties(org.freedesktop.Accounts.xml
