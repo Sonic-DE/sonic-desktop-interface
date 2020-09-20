@@ -1,0 +1,56 @@
+<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN"
+"http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
+
+<node name="/" xmlns:doc="http://www.freedesktop.org/dbus/1.0/doc.dtd">
+	<interface name="net.reactivated.Fprint.Device">
+		<annotation name="org.freedesktop.DBus.GLib.CSymbol"
+			value="fprint_device" />
+		<method name="ListEnrolledFingers">
+			<arg type="s" name="username" direction="in" />
+			<arg type="as" name="enrolled_fingers" direction="out" />
+			<annotation name="org.freedesktop.DBus.GLib.Async" value="" />
+		</method>
+		<method name="DeleteEnrolledFingers">
+			<arg type="s" name="username" direction="in" />
+			<annotation name="org.freedesktop.DBus.GLib.Async" value="" />
+		</method>
+		<method name="DeleteEnrolledFingers2">
+			<annotation name="org.freedesktop.DBus.GLib.Async" value="" />
+		</method>
+		<method name="Claim">
+			<arg type="s" name="username" direction="in" />
+			<annotation name="org.freedesktop.DBus.GLib.Async" value="" />
+		</method>
+		<method name="Release">
+			<annotation name="org.freedesktop.DBus.GLib.Async" value="" />
+		</method>
+		<method name="VerifyStart">
+			<arg type="s" name="finger_name" direction="in" />
+			<annotation name="org.freedesktop.DBus.GLib.Async" value="" />
+		</method>
+		<method name="VerifyStop">
+			<annotation name="org.freedesktop.DBus.GLib.Async" value="" />
+		</method>
+		<signal name="VerifyFingerSelected">
+			<arg type="s" name="finger_name" />
+		</signal>
+		<signal name="VerifyStatus">
+			<arg type="s" name="result" />
+			<arg type="b" name="done" />
+		</signal>
+		<method name="EnrollStart">
+			<arg type="s" name="finger_name" direction="in" />
+			<annotation name="org.freedesktop.DBus.GLib.Async" value="" />
+		</method>
+		<method name="EnrollStop">
+			<annotation name="org.freedesktop.DBus.GLib.Async" value="" />
+		</method>
+		<signal name="EnrollStatus">
+			<arg type="s" name="result" />
+			<arg type="b" name="done" />
+		</signal>
+		<property name="name" type="s" access="read" />
+		<property name="num-enroll-stages" type="i" access="read" />
+		<property name="scan-type" type="s" access="read" />
+	</interface>
+</node>
