@@ -18,7 +18,7 @@
     License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import QtQuick 2.6
+import QtQuick 2.12
 import QtQuick.Dialogs 1.1
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.5 as QQC2
@@ -27,7 +27,7 @@ import org.kde.kirigami 2.8 as Kirigami
 
 Kirigami.OverlaySheet {
     id: fingerprintRoot
-
+    
     property var account
     property var fingerprintModel: kcm.fingerprintModel
     
@@ -41,61 +41,75 @@ Kirigami.OverlaySheet {
     }
 
     ColumnLayout {
-        Layout.preferredWidth: Kirigami.Units.gridUnit * 16
-
-        QQC2.Label {
+        id: fingerprints
+        spacing: Kirigami.Units.smallSpacing
+        visible: !fingerprintModel.currentlyEnrolling
+        
+//             QQC2.ScrollBar.vertical: QQC2.ScrollBar {}
+        
+        Kirigami.InlineMessage {
+            id: errorMessage
+            type: Kirigami.MessageType.Error
             visible: fingerprintModel.currentError !== ""
             text: fingerprintModel.currentError
+            Layout.fillWidth: true
+            actions: [
+                Kirigami.Action {
+                    iconName: "dialog-close"
+                    onTriggered: fingerprintModel.currentError = ""
+                }
+            ]
         }
         
-        ColumnLayout {
-            id: fingerprints
-            spacing: Kirigami.Units.smallSpacing
-            visible: !fingerprintModel.currentlyEnrolling
-            Layout.alignment: Qt.AlignHCenter
-            
-            ListView {
-                model: fingerprintModel.fingerprints
-                Layout.fillWidth: true
-                Layout.leftMargin: Kirigami.Units.smallSpacing
-                Layout.rightMargin: Kirigami.Units.smallSpacing
+        ListView {
+            model: kcm.fingerprintModel.deviceFound ? fingerprintModel.fingerprints : 0
+            Layout.fillWidth: true
+            Layout.leftMargin: Kirigami.Units.smallSpacing
+            Layout.rightMargin: Kirigami.Units.smallSpacing
+            height: Kirigami.Units.gridUnit * 6
+            QQC2.ScrollBar.vertical: QQC2.ScrollBar {}
 
-                delegate: Kirigami.SwipeListItem {
-                    contentItem: RowLayout {
-                        Kirigami.Icon {
-                            source: "fingerprint-gui"
-                            height: Kirigami.Units.iconSizes.medium
-                            width: Kirigami.Units.iconSizes.medium
-                        }
-                        QQC2.Label {
-                            Layout.fillWidth: true
-                            text: modelData
-                        }
+            delegate: Kirigami.SwipeListItem {
+                contentItem: RowLayout {
+                    Kirigami.Icon {
+                        source: "fingerprint-gui"
+                        height: Kirigami.Units.iconSizes.medium
+                        width: Kirigami.Units.iconSizes.medium
+                    }
+                    QQC2.Label {
+                        Layout.fillWidth: true
+                        text: modelData
                     }
                 }
             }
-            
+        }
+        
+        RowLayout {
+            Layout.fillWidth: true
             QQC2.Button {
                 text: i18n("Clear Fingerprints")
-                enabled: fingerprintModel.fingerprints.size() !== 0
+                enabled: fingerprintModel.fingerprints.length !== 0
+                icon.name: "delete"
                 Layout.alignment: Qt.AlignLeft
                 onClicked: fingerprintModel.clearFingerprints();
             }
             QQC2.Button {
                 text: i18n("Add Fingerprint")
+                icon.name: "list-add"
                 Layout.alignment: Qt.AlignRight
                 onClicked: fingerprintModel.startEnrolling("left-index-finger");
             }
         }
-        ColumnLayout {
-            spacing: Kirigami.Units.smallSpacing
-            visible: fingerprintModel.currentlyEnrolling
-            Layout.alignment: Qt.AlignHCenter  
-            
-            QQC2.Label {
-                text: fingerprintModel.enrollFeedback
-            }
-        }
     }
+    
+    //ColumnLayout {
+        //spacing: Kirigami.Units.smallSpacing
+        //visible: fingerprintModel.currentlyEnrolling
+        //Layout.alignment: Qt.AlignHCenter  
+        
+        //QQC2.Label {
+            //text: fingerprintModel.enrollFeedback
+        //}
+    //}
 }
 
