@@ -25,7 +25,7 @@
 
 FprintDevice::FprintDevice(QObject* parent, QDBusObjectPath path)
     : QObject(parent)
-    , m_dbusInterface(new NetReactivatedFprintDeviceInterface(QStringLiteral("net.reactivated.Fprint.Device"), path.path(), QDBusConnection::systemBus(), this))
+    , m_dbusInterface(new NetReactivatedFprintDeviceInterface(QStringLiteral("net.reactivated.Fprint"), path.path(), QDBusConnection::systemBus(), this))
 {
     connect(m_dbusInterface, &NetReactivatedFprintDeviceInterface::EnrollStatus, this, &FprintDevice::enrollStatus);
 }

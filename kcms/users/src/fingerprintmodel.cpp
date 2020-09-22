@@ -27,12 +27,13 @@
 
 FingerprintModel::FingerprintModel(QObject* parent)
     : QObject(parent)
-    , m_managerDbusInterface(new NetReactivatedFprintManagerInterface(QStringLiteral("net.reactivated.Fprint.Manager"), QStringLiteral("/net/reactivated/Fprint/Manager"), QDBusConnection::systemBus(), this))
+    , m_managerDbusInterface(new NetReactivatedFprintManagerInterface(QStringLiteral("net.reactivated.Fprint"), QStringLiteral("/net/reactivated/Fprint/Manager"), QDBusConnection::systemBus(), this))
 {
     auto reply = m_managerDbusInterface->GetDefaultDevice();
     reply.waitForFinished();
     
     if (reply.isError()) {
+        qDebug() << reply.error().message();
         setCurrentError(reply.error().message());
         return;
     }
