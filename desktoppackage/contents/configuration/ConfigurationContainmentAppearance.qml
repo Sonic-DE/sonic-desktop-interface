@@ -23,6 +23,7 @@ import QtQuick.Layouts 1.1
 
 import org.kde.kconfig 1.0 // for KAuthorized
 import org.kde.plasma.private.shell 2.0 as ShellPrivate // for WallpaperPlugin
+import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.kirigami 2.5 as Kirigami
 
 ColumnLayout {

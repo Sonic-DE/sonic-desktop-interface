@@ -22,6 +22,7 @@ import QtQuick.Controls 1.1
 import QtQuick.Layouts 1.1
 
 import org.kde.private.desktopcontainment.folder 0.1 as Folder
+import org.kde.plasma.core 2.0 as PlasmaCore
 
 ApplicationWindow {
     id: dialog
