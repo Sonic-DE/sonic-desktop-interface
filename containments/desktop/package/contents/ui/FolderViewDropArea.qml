@@ -20,6 +20,7 @@
 import QtQuick 2.4
 
 import org.kde.draganddrop 2.0 as DragDrop
+import org.kde.plasma.core 2.0 as PlasmaCore
 
 DragDrop.DropArea {
     id: dropArea
