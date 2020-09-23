@@ -2,12 +2,15 @@ cmake_minimum_required(VERSION 3.0)
 
 project(plasma-desktop)
 
-set(PROJECT_VERSION "5.19.80")
+set(PROJECT_VERSION "5.20.80")
 set(PROJECT_VERSION_MAJOR 5)
 
-set(QT_MIN_VERSION "5.12.0")
-set(KF5_MIN_VERSION "5.73.0")
+set(QT_MIN_VERSION "5.15.0")
+set(KF5_MIN_VERSION "5.74")
 set(ACCOUNTSQT_DEP_VERSION "1.13")
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(ECM ${KF5_MIN_VERSION} REQUIRED NO_MODULE)
 set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules)
@@ -105,13 +108,6 @@ find_package(KF5Baloo ${KF5_MIN_VERSION})
 set_package_properties(KF5Baloo PROPERTIES DESCRIPTION "File Searching"
                        TYPE RECOMMENDED
                        PURPOSE "Needed to build the File Search KCM"
-                      )
-
-find_package(Fontconfig)
-set_package_properties(Fontconfig PROPERTIES DESCRIPTION "Font access configuration library"
-                       URL "https://www.freedesktop.org/wiki/Software/fontconfig"
-                       TYPE OPTIONAL
-                       PURPOSE "Needed to build font configuration and installation tools"
                       )
 
 find_package(X11)

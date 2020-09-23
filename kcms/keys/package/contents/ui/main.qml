@@ -103,6 +103,8 @@ KCM.SimpleKCM {
                     delegate: Kirigami.AbstractListItem {
                         id: componentDelegate
                         readonly property color foregroundColor: ListView.isCurrentItem ? activeTextColor : textColor
+                        KeyNavigation.right: shortcutsList
+                        height: Kirigami.Units.iconSizes.small + 2 * Kirigami.Units.smallSpacing + topPadding + bottomPadding
                         RowLayout {
                             Kirigami.Icon {
                                 id: appIcon
@@ -119,7 +121,7 @@ KCM.SimpleKCM {
                                 opacity: model.pendingDeletion ? 0.3 : 1
                             }
                             QQC2.ToolButton {
-                                Layout.preferredHeight: Kirigami.Units.iconSizes.small + Kirigami.Units.largeSpacing
+                                Layout.preferredHeight: Kirigami.Units.iconSizes.small + 2 * Kirigami.Units.smallSpacing
                                 Layout.preferredWidth: Layout.preferredHeight
                                 visible: model.section != i18n("Common Actions") && !exportActive && !model.pendingDeletion
                                 opacity: componentDelegate.containsMouse || componentDelegate.ListView.isCurrentItem ? 1 : 0
@@ -132,7 +134,7 @@ KCM.SimpleKCM {
                                 }
                             }
                             QQC2.ToolButton {
-                                Layout.preferredHeight: Kirigami.Units.iconSizes.small + Kirigami.Units.largeSpacing
+                                Layout.preferredHeight: Kirigami.Units.iconSizes.small +  2 * Kirigami.Units.smallSpacing
                                 Layout.preferredWidth: Layout.preferredHeight
                                 visible: !exportActive && model.pendingDeletion
                                 icon.name: "edit-undo"
@@ -147,6 +149,15 @@ KCM.SimpleKCM {
                                 checked: model.checked
                                 visible: exportActive
                                 onToggled: model.checked = checked
+                            }
+                            Rectangle {
+                                id: defaultIndicator
+                                radius: width * 0.5
+                                implicitWidth: Kirigami.Units.largeSpacing
+                                implicitHeight: Kirigami.Units.largeSpacing
+                                visible: kcm.defaultsIndicatorsVisible
+                                opacity: !model.isDefault
+                                color: Kirigami.Theme.neutralTextColor
                             }
                         }
                     }

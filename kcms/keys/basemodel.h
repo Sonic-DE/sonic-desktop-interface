@@ -59,13 +59,13 @@ public:
         DefaultShortcutsRole,
         CustomShortcutsRole,
         CheckedRole,
-        PendingDeletionRole
+        PendingDeletionRole,
+        IsDefaultRole
     };
     Q_ENUM(Roles)
 
     BaseModel(QObject *parent = nullptr);
 
-    Q_INVOKABLE void toggleDefaultShortcut(const QModelIndex &index, const QKeySequence &shortcut, bool enabled);
     Q_INVOKABLE void addShortcut(const QModelIndex &index, const QKeySequence &shortcut);
     Q_INVOKABLE void disableShortcut(const QModelIndex &index, const QKeySequence &shortcut);
     Q_INVOKABLE void changeShortcut(const QModelIndex &index, const QKeySequence &oldShortcut, const QKeySequence &newShortcut);
