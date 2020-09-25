@@ -233,7 +233,7 @@ void User::apply()
         case UserApplyJob::Error::Failed:
             [[fallthrough]]
         case UserApplyJob::Error::Unknown:
-            Q_EMIT applyError(i18n("There was an error while saving user %1", mName));
+            Q_EMIT applyError(i18n("There was an error while saving changes"));
             break;
         case UserApplyJob::Error::NoError: ; // Do nothing
         }
