@@ -23,7 +23,7 @@
 
 using namespace KAuth;
 
-ActionReply FprintHelper::enroll(QVariantMap args)
+ActionReply FprintHelper::enroll(const QVariantMap &args)
 {
     FprintDevice *device = args["device"].value<FprintDevice*>();
     
@@ -39,7 +39,7 @@ ActionReply FprintHelper::enroll(QVariantMap args)
     return ActionReply::SuccessReply();
 }
 
-ActionReply FprintHelper::claim(QVariantMap args) 
+ActionReply FprintHelper::claim(const QVariantMap &args) 
 {
     FprintDevice *device = args["device"].value<FprintDevice*>();
     
@@ -52,6 +52,16 @@ ActionReply FprintHelper::claim(QVariantMap args)
         return reply;
     }
     return ActionReply::SuccessReply();
+}
+
+ActionReply FprintHelper::enrollothers(const QVariantMap &args)
+{
+    return enroll(args);
+}
+
+ActionReply FprintHelper::claimothers(const QVariantMap &args)
+{
+    return claim(args);
 }
 
 KAUTH_HELPER_MAIN("org.kde.kcontrol.kcmusers.fingerprint", FprintHelper)

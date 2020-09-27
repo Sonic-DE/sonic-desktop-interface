@@ -4,10 +4,20 @@ Icon=preferences-system-users
 
 [org.kde.kcontrol.kcmusers.fingerprint.enroll]
 Name=Enroll fingerprint
-Description=Enroll a fingerprint into fprint for a user
+Description=Enroll a fingerprint into fprint for the current user
 Policy=auth_self
 
 [org.kde.kcontrol.kcmusers.fingerprint.claim]
 Name=Claim fprintd device
-Description=Claims the fprintd device for a user
+Description=Claims the fprintd device for the current user
 Policy=auth_self
+
+[org.kde.kcontrol.kcmusers.fingerprint.enrollothers]
+Name=Enroll fingerprint
+Description=Enroll a fingerprint into fprint for a user
+Policy=auth_admin
+
+[org.kde.kcontrol.kcmusers.fingerprint.claimothers]
+Name=Claim fprintd device
+Description=Claims the fprintd device for a user
+Policy=auth_admin

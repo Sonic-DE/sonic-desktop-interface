@@ -31,6 +31,8 @@ class FprintHelper : public QObject
     Q_OBJECT
 
 public Q_SLOTS:
-    ActionReply enroll(QVariantMap args);
-    ActionReply claim(QVariantMap args);
+    ActionReply enroll(const QVariantMap &args);
+    ActionReply claim(const QVariantMap &args);
+    ActionReply enrollothers(const QVariantMap &args);
+    ActionReply claimothers(const QVariantMap &args);
 };

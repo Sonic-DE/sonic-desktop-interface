@@ -41,11 +41,26 @@ Kirigami.OverlaySheet {
     }
 
     ColumnLayout {
+        id: enrollFeedback
+        spacing: Kirigami.Units.smallSpacing
+        visible: fingerprintModel.currentlyEnrolling
+        Layout.alignment: Qt.AlignHCenter  
+        
+        Kirigami.Icon {
+            source: "fingerprint-gui"
+            height: Kirigami.Units.iconSizes.huge
+            width: Kirigami.Units.iconSizes.huge
+        }
+        
+        QQC2.Label {
+            text: fingerprintModel.enrollFeedback
+        }
+    }
+    
+    ColumnLayout {
         id: fingerprints
         spacing: Kirigami.Units.smallSpacing
         visible: !fingerprintModel.currentlyEnrolling
-        
-//             QQC2.ScrollBar.vertical: QQC2.ScrollBar {}
         
         Kirigami.InlineMessage {
             id: errorMessage
@@ -101,15 +116,5 @@ Kirigami.OverlaySheet {
             }
         }
     }
-    
-    //ColumnLayout {
-        //spacing: Kirigami.Units.smallSpacing
-        //visible: fingerprintModel.currentlyEnrolling
-        //Layout.alignment: Qt.AlignHCenter  
-        
-        //QQC2.Label {
-            //text: fingerprintModel.enrollFeedback
-        //}
-    //}
 }
 

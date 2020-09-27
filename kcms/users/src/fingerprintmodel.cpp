@@ -76,7 +76,7 @@ bool FingerprintModel::claimDevice()
     args["device"] = p;
     args["username"] = m_username;
     
-    KAuth::Action action("org.kde.kcontrol.kcmusers.fingerprint.claim");
+    KAuth::Action action(m_username == "" ? "org.kde.kcontrol.kcmusers.fingerprint.claim" : "org.kde.kcontrol.kcmusers.fingerprint.claim.others");
     action.setArguments(args);
     KAuth::ExecuteJob *job = action.execute();
     if (!job->exec()) {
@@ -102,7 +102,7 @@ void FingerprintModel::startEnrolling(QString finger)
     args["finger"] = finger;
     args["username"] = m_username;
     
-    KAuth::Action action("org.kde.kcontrol.kcmusers.fingerprint.enroll");
+    KAuth::Action action(m_username == "" ? "org.kde.kcontrol.kcmusers.fingerprint.enroll" : "org.kde.kcontrol.kcmusers.fingerprint.enroll.others");
     action.setArguments(args);
     KAuth::ExecuteJob *job = action.execute();
     if (!job->exec()) {
