@@ -64,14 +64,45 @@ target_link_libraries(kcm_users
     Qt5::Quick
     Qt5::QuickWidgets
     Qt5::Concurrent
+    Qt5::DBus
     KF5::CoreAddons
     KF5::Declarative
     KF5::I18n
     KF5::QuickAddons
-    Qt5::DBus
+    KF5::AuthCore
     crypt
 )
 
 kcoreaddons_desktop_to_json(kcm_users "../kcm_users.desktop" SERVICE_TYPES kcmodule.desktop)
+
+### KAuth actions
+
+set(kcmusersfprinthelper_SRCS
+    fprintdevice.cpp
+    fprinthelper.cpp
+)
+
+qt5_add_dbus_interface(kcmusersfprinthelper_SRCS
+    net.reactivated.Fprint.Device.xml
+    fprint_device_interface
+)
+
+qt5_add_dbus_interface(kcmusersfprinthelper_SRCS
+    net.reactivated.Fprint.Manager.xml
+    fprint_manager_interface
+)
+
+add_executable(kcmusersfprinthelper ${kcmusersfprinthelper_SRCS})
+target_link_libraries(kcmusersfprinthelper 
+    KF5::AuthCore 
+    KF5::CoreAddons 
+    Qt5::DBus)
+
+install(TARGETS kcmusersfprinthelper DESTINATION ${KAUTH_HELPER_INSTALL_DIR})
+kauth_install_helper_files(kcmusersfprinthelper org.kde.kcontrol.kcmclock root)
+
+kauth_install_actions(org.kde.kcontrol.kcmusers.fingerprint kcmusers_actions.actions)
+
+#####
 
 install(TARGETS kcm_users DESTINATION ${PLUGIN_INSTALL_DIR}/kcms)
