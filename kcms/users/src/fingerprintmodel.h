@@ -39,6 +39,8 @@ public:
     ~FingerprintModel();
 
     Q_INVOKABLE void switchUser(QString username);
+    bool claimDevice();
+    
     Q_INVOKABLE void startEnrolling(QString finger);
     Q_INVOKABLE void stopEnrolling();
     Q_INVOKABLE void clearFingerprints();
@@ -86,7 +88,7 @@ Q_SIGNALS:
     void currentlyEnrollingChanged();
     
 private:
-    QString m_username;
+    QString m_username; // set to "" if it is the currently logged in user
     QString m_currentError, m_enrollFeedback;
     
     bool m_currentlyEnrolling = false;

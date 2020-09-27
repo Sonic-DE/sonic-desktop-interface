@@ -32,7 +32,7 @@ Kirigami.OverlaySheet {
     property var fingerprintModel: kcm.fingerprintModel
     
     function openAndClear() {
-        fingerprintModel.switchUser(account.username);
+        fingerprintModel.switchUser(account.name == kcm.userModel.getLoggedInUser().name ? "" : account.name);
         this.open();
     }
 

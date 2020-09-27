@@ -19,6 +19,8 @@
 */
 
 #include <KLocalizedString>
+#include <KAuthAction>
+#include <KAuthExecuteJob>
 
 #include "fingerprintmodel.h"
 
@@ -62,26 +64,49 @@ void FingerprintModel::switchUser(QString username)
         stopEnrolling(); // stop enrolling if ongoing
         m_device->release(); // release from old user
         
-        // claim for new user
-        QDBusError error = m_device->claim(m_username);
-        if (error.isValid()) {
-            qDebug() << error.message();
-            setCurrentError(error.message());
-        }
-        
         emit fingerprintsChanged();
     }
 }
 
+bool FingerprintModel::claimDevice()
+{
+    QVariantMap args;
+    QVariant p;
+    p.setValue(m_device);
+    args["device"] = p;
+    args["username"] = m_username;
+    
+    KAuth::Action action("org.kde.kcontrol.kcmusers.fingerprint.claim");
+    action.setArguments(args);
+    KAuth::ExecuteJob *job = action.execute();
+    if (!job->exec()) {
+        setCurrentError(job->errorString());
+        return false;
+    }
+    return true;
+}
 
 void FingerprintModel::startEnrolling(QString finger)
 {
     setEnrollFeedback("");
-    QDBusError error = m_device->startEnrolling(finger);
-    if (error.isValid()) {
-        qDebug() << error.message();
-        setCurrentError(error.message());
-        m_device->release();
+    
+    // claim device for user
+    if (!claimDevice()) {
+        return;
+    }
+    
+    QVariantMap args;
+    QVariant p;
+    p.setValue(m_device);
+    args["device"] = p;
+    args["finger"] = finger;
+    args["username"] = m_username;
+    
+    KAuth::Action action("org.kde.kcontrol.kcmusers.fingerprint.enroll");
+    action.setArguments(args);
+    KAuth::ExecuteJob *job = action.execute();
+    if (!job->exec()) {
+        setCurrentError(job->errorString());
         return;
     }
     
@@ -97,13 +122,13 @@ void FingerprintModel::stopEnrolling()
         
         QDBusError error = m_device->stopEnrolling();
         if (error.isValid()) {
-            qDebug() << error.message();
+            qDebug() << "error stop enrolling:" << error.message();
             setCurrentError(error.message());
             return;
         }
         error = m_device->release();
         if (error.isValid()) {
-            qDebug() << error.message();
+            qDebug() << "error releasing:" << error.message();
             setCurrentError(error.message());
         }
     }
@@ -111,11 +136,24 @@ void FingerprintModel::stopEnrolling()
 
 void FingerprintModel::clearFingerprints()
 {
+    // claim for user
+    if (!claimDevice()) {
+        return;
+    }
+    
     QDBusError error = m_device->deleteEnrolledFingers();
     if (error.isValid()) {
-        qDebug() << error.message();
+        qDebug() << "error clearing fingerprints:" << error.message();
         setCurrentError(error.message());
     }
+    
+    // release from user
+    error = m_device->release();
+    if (error.isValid()) {
+        qDebug() << "error releasing:" << error.message();
+        setCurrentError(error.message());
+    }
+    
     emit fingerprintsChanged();
 }
 
@@ -124,7 +162,7 @@ QStringList FingerprintModel::fingerprints()
     QDBusPendingReply reply = m_device->listEnrolledFingers(m_username);
     reply.waitForFinished();
     if (reply.isError()) {
-        qDebug() << reply.error().message();
+        qDebug() << "error listing enrolled fingers:" << reply.error().message();
         setCurrentError(reply.error().message());
         return QStringList();
     }
