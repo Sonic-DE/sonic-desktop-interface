@@ -99,7 +99,7 @@ target_link_libraries(kcmusersfprinthelper
     Qt5::DBus)
 
 install(TARGETS kcmusersfprinthelper DESTINATION ${KAUTH_HELPER_INSTALL_DIR})
-kauth_install_helper_files(kcmusersfprinthelper org.kde.kcontrol.kcmclock root)
+kauth_install_helper_files(kcmusersfprinthelper org.kde.kcontrol.kcmusers.fingerprint root)
 
 kauth_install_actions(org.kde.kcontrol.kcmusers.fingerprint kcmusers_actions.actions)
 
