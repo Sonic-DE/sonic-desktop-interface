@@ -88,4 +88,9 @@ void FprintDevice::enrollStatus(QString result, bool done)
     }
 }
 
+QString FprintDevice::service()
+{
+    return QDBusConnection::sessionBus().name();
+}
+
 

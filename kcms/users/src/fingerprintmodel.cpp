@@ -22,10 +22,14 @@
 #include <KAuthAction>
 #include <KAuthExecuteJob>
 
+#include "polkitqt1-authority.h"
+
 #include "fingerprintmodel.h"
 
 #include "fprint_device_interface.h"
 #include "fprint_manager_interface.h"
+
+using namespace PolkitQt1;
 
 FingerprintModel::FingerprintModel(QObject* parent)
     : QObject(parent)
@@ -68,19 +72,27 @@ void FingerprintModel::switchUser(QString username)
     }
 }
 
+Authority::Result FingerprintModel::checkEditSelfPermission()
+{
+    UnixProcessSubject subject(static_cast<uint>(QCoreApplication::applicationPid()));
+//     SystemBusNameSubject subject(m_device->service());
+    return Authority::instance()->checkAuthorizationSync("net.reactivated.fprint.device.enroll", subject, Authority::AllowUserInteraction);
+}
+
+
+Authority::Result FingerprintModel::checkEditOthersPermission()
+{
+    UnixProcessSubject subject(static_cast<uint>(QCoreApplication::applicationPid()));
+    return Authority::instance()->checkAuthorizationSync("net.reactivated.fprint.device.setusername", subject, Authority::AllowUserInteraction);
+}
+
+
 bool FingerprintModel::claimDevice()
 {
-    QVariantMap args;
-    QVariant p;
-    p.setValue(m_device);
-    args["device"] = p;
-    args["username"] = m_username;
-    
-    KAuth::Action action(m_username == "" ? "org.kde.kcontrol.kcmusers.fingerprint.claim" : "org.kde.kcontrol.kcmusers.fingerprint.claim.others");
-    action.setArguments(args);
-    KAuth::ExecuteJob *job = action.execute();
-    if (!job->exec()) {
-        setCurrentError(job->errorString());
+    QDBusError error = m_device->claim(m_username);
+    if (error.isValid()) {
+        qDebug() << "error claiming:" << error.message();
+        setCurrentError(error.message());
         return false;
     }
     return true;
@@ -95,18 +107,17 @@ void FingerprintModel::startEnrolling(QString finger)
         return;
     }
     
-    QVariantMap args;
-    QVariant p;
-    p.setValue(m_device);
-    args["device"] = p;
-    args["finger"] = finger;
-    args["username"] = m_username;
+    Authority::Result result = checkEditSelfPermission();
+    if (result == Authority::No) {
+        setCurrentError(i18n("Not authorized"));
+        return;
+    }
     
-    KAuth::Action action(m_username == "" ? "org.kde.kcontrol.kcmusers.fingerprint.enroll" : "org.kde.kcontrol.kcmusers.fingerprint.enroll.others");
-    action.setArguments(args);
-    KAuth::ExecuteJob *job = action.execute();
-    if (!job->exec()) {
-        setCurrentError(job->errorString());
+    QDBusError error = m_device->startEnrolling(finger);
+    if (error.isValid()) {
+        qDebug() << "error start enrolling:" << error.message();
+        setCurrentError(error.message());
+        m_device->release();
         return;
     }
     
@@ -135,12 +146,18 @@ void FingerprintModel::stopEnrolling()
 }
 
 void FingerprintModel::clearFingerprints()
-{
+{    
     // claim for user
     if (!claimDevice()) {
         return;
     }
-    
+ 
+    Authority::Result result = checkEditSelfPermission();
+    if (result == Authority::No) {
+        setCurrentError(i18n("Not authorized"));
+        return;
+    }
+ 
     QDBusError error = m_device->deleteEnrolledFingers();
     if (error.isValid()) {
         qDebug() << "error clearing fingerprints:" << error.message();
