@@ -148,7 +148,7 @@ void FingerprintModel::stopEnrolling()
 }
 
 void FingerprintModel::clearFingerprints()
-{    
+{
     // claim for user
     if (!claimDevice()) {
         return;
