@@ -107,9 +107,11 @@ void FingerprintModel::startEnrolling(QString finger)
         return;
     }
     
-    Authority::Result result = checkEditSelfPermission();
+    // this may not be necessary, as fprintd should also checks polkit and prompts if necessary
+    Authority::Result result = m_username == "" ? checkEditSelfPermission() : checkEditOthersPermission();
     if (result == Authority::No) {
         setCurrentError(i18n("Not authorized"));
+        m_device->release();
         return;
     }
     
@@ -152,9 +154,11 @@ void FingerprintModel::clearFingerprints()
         return;
     }
  
-    Authority::Result result = checkEditSelfPermission();
+    // this may not be necessary, as fprintd should also checks polkit and prompts if necessary
+    Authority::Result result = m_username == "" ? checkEditSelfPermission() : checkEditOthersPermission();
     if (result == Authority::No) {
         setCurrentError(i18n("Not authorized"));
+        m_device->release();
         return;
     }
  
