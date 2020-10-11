@@ -569,7 +569,7 @@
 
 		<!-- ************************************************************ -->
 
-		<property name="num-enroll-stages" type="i" access="read">
+		<property name="num_enroll_stages" type="i" access="read">
 			<doc:doc>
 				<doc:description>
 					<doc:para>
@@ -584,7 +584,7 @@
 
 		<!-- ************************************************************ -->
 
-		<property name="scan-type" type="s" access="read">
+		<property name="scan_type" type="s" access="read">
 			<doc:doc>
 				<doc:description>
 					<doc:para>

@@ -60,6 +60,85 @@ FingerprintModel::~FingerprintModel()
     delete m_managerDbusInterface;
 }
 
+QString FingerprintModel::currentError()
+{
+    return m_currentError;
+}
+
+void FingerprintModel::setCurrentError(QString error)
+{
+    m_currentError = error;
+    emit currentErrorChanged();
+}
+
+QString FingerprintModel::enrollFeedback()
+{
+    return m_enrollFeedback;
+}
+
+void FingerprintModel::setEnrollFeedback(QString feedback)
+{
+    m_enrollFeedback = feedback;
+    emit enrollFeedbackChanged();
+}
+
+bool FingerprintModel::currentlyEnrolling()
+{
+    return m_currentlyEnrolling;
+}
+
+bool FingerprintModel::deviceFound()
+{
+    return m_device != nullptr;
+}
+
+double FingerprintModel::enrollProgress()
+{
+    return deviceFound() ? ((double) m_enrollStage) / m_device->numOfEnrollStages() : 0;
+}
+
+void FingerprintModel::setEnrollStage(int stage)
+{
+    m_enrollStage = stage;
+    emit enrollProgressChanged();
+}
+
+QString FingerprintModel::dialogState()
+{
+    switch (m_dialogState) {
+        case DialogState::FingerprintList:
+            return "FingerprintList";
+        case DialogState::PickFinger:
+            return "PickFinger";
+        case DialogState::Enrolling:
+            return "Enrolling";
+        case DialogState::EnrollComplete:
+            return "EnrollComplete";
+    }
+    return "FingerprintList";
+}
+
+void FingerprintModel::setDialogState(DialogState dialogState)
+{
+    m_dialogState = dialogState;
+    emit dialogStateChanged();
+}
+
+void FingerprintModel::setDialogState(QString dialogState)
+{
+    if (dialogState == "FingerprintList") {
+        m_dialogState = DialogState::FingerprintList;
+    } else if (dialogState == "PickFinger") {
+        m_dialogState = DialogState::PickFinger;
+    } else if (dialogState == "Enrolling") {
+        m_dialogState = DialogState::Enrolling;
+    } else if (dialogState == "EnrollComplete") {
+        m_dialogState = DialogState::EnrollComplete;
+    }
+    emit dialogStateChanged();
+}
+
+
 void FingerprintModel::switchUser(QString username)
 {
     m_username = username;
@@ -68,14 +147,13 @@ void FingerprintModel::switchUser(QString username)
         stopEnrolling(); // stop enrolling if ongoing
         m_device->release(); // release from old user
         
-        emit fingerprintsChanged();
+        emit enrolledFingerprintsChanged();
     }
 }
 
 Authority::Result FingerprintModel::checkEditSelfPermission()
 {
     UnixProcessSubject subject(static_cast<uint>(QCoreApplication::applicationPid()));
-//     SystemBusNameSubject subject(m_device->service());
     return Authority::instance()->checkAuthorizationSync("net.reactivated.fprint.device.enroll", subject, Authority::AllowUserInteraction);
 }
 
@@ -100,6 +178,7 @@ bool FingerprintModel::claimDevice()
 
 void FingerprintModel::startEnrolling(QString finger)
 {
+    setEnrollStage(0);
     setEnrollFeedback("");
     
     // claim device for user
@@ -125,6 +204,8 @@ void FingerprintModel::startEnrolling(QString finger)
     
     m_currentlyEnrolling = true;
     emit currentlyEnrollingChanged();
+    
+    setDialogState(DialogState::Enrolling);
 }
 
 void FingerprintModel::stopEnrolling()
@@ -144,6 +225,8 @@ void FingerprintModel::stopEnrolling()
             qDebug() << "error releasing:" << error.message();
             setCurrentError(error.message());
         }
+        
+        setDialogState(DialogState::FingerprintList);
     }
 }
 
@@ -175,32 +258,52 @@ void FingerprintModel::clearFingerprints()
         setCurrentError(error.message());
     }
     
-    emit fingerprintsChanged();
+    emit enrolledFingerprintsChanged();
 }
 
-QStringList FingerprintModel::fingerprints()
+QStringList FingerprintModel::enrolledFingerprints()
 {
     QDBusPendingReply reply = m_device->listEnrolledFingers(m_username);
     reply.waitForFinished();
     if (reply.isError()) {
-        qDebug() << "error listing enrolled fingers:" << reply.error().message();
-        setCurrentError(reply.error().message());
+        // ignore net.reactivated.Fprint.Error.NoEnrolledPrints, as it shows up when there are no fingerprints
+        if (reply.error().name() != "net.reactivated.Fprint.Error.NoEnrolledPrints") {
+            qDebug() << "error listing enrolled fingers:" << reply.error().message();
+            setCurrentError(reply.error().message());
+        }
         return QStringList();
     }
     
     return reply.value();
 }
 
+QStringList FingerprintModel::availableFingersToEnroll()
+{
+    QStringList list, enrolled = enrolledFingerprints();
+    for (QString finger : FINGERS) {
+        if (!enrolled.contains(finger)) {
+            list.append(finger);
+        }
+    }
+    return list;
+}
+
 void FingerprintModel::handleEnrollCompleted()
 {
+    setEnrollStage(m_device->numOfEnrollStages());
     setEnrollFeedback("");
-    stopEnrolling();
-    emit fingerprintsChanged();
+    emit enrolledFingerprintsChanged();
+    
+    // stopEnrolling not called, as it is triggered only when the "complete" button is pressed
+    // (only change dialog state change after button is pressed)
+    setDialogState(DialogState::EnrollComplete);
 }
 
 void FingerprintModel::handleEnrollStagePassed()
 {
-    setEnrollFeedback(i18n("Good!"));
+    setEnrollStage(m_enrollStage + 1);
+    setEnrollFeedback("");
+    qDebug() << "fingerprint enroll stage pass:" << enrollProgress();
 }
 
 void FingerprintModel::handleEnrollRetryStage(QString feedback)
@@ -214,6 +317,7 @@ void FingerprintModel::handleEnrollRetryStage(QString feedback)
     } else if (feedback == "enroll-remove-and-retry") {
         setEnrollFeedback(i18n("Remove your finger from the reader, and try again."));
     }
+    qDebug() << "fingerprint enroll stage fail:" << feedback;
 }
 
 void FingerprintModel::handleEnrollFailed(QString error)
