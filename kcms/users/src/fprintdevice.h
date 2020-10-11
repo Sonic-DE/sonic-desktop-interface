@@ -40,7 +40,7 @@ public:
     QDBusError startEnrolling(QString finger);
     QDBusError stopEnrolling();
 
-    QString service();
+    int numOfEnrollStages();
     
 public Q_SLOTS:
     void enrollStatus(QString result, bool done);

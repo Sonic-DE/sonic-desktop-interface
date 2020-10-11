@@ -88,9 +88,9 @@ void FprintDevice::enrollStatus(QString result, bool done)
     }
 }
 
-QString FprintDevice::service()
+int FprintDevice::numOfEnrollStages()
 {
-    return QDBusConnection::sessionBus().name();
+    return m_dbusInterface->num_enroll_stages();
 }
 
 
