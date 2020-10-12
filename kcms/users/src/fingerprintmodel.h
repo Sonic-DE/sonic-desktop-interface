@@ -32,6 +32,7 @@
 class FingerprintModel : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(QString scanType READ scanType)
     Q_PROPERTY(QString currentError READ currentError WRITE setCurrentError NOTIFY currentErrorChanged) // error for ui to display
     Q_PROPERTY(QString enrollFeedback READ enrollFeedback WRITE setEnrollFeedback NOTIFY enrollFeedbackChanged)
     Q_PROPERTY(QStringList enrolledFingerprints READ enrolledFingerprints NOTIFY enrolledFingerprintsChanged)
@@ -68,6 +69,7 @@ public:
     QStringList enrolledFingerprints();
     QStringList availableFingersToEnroll();
     
+    QString scanType();
     QString currentError();
     void setCurrentError(QString error);
     QString enrollFeedback();
@@ -97,7 +99,7 @@ Q_SIGNALS:
     
 private:
     QString m_username; // set to "" if it is the currently logged in user
-    QString m_currentError, m_enrollFeedback, m_fingerToEnroll;
+    QString m_currentError, m_enrollFeedback;
     
     DialogState m_dialogState = DialogState::FingerprintList;
     
