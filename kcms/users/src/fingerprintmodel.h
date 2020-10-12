@@ -24,8 +24,6 @@
 
 #include <KLocalizedString>
 
-#include "polkitqt1-authority.h"
-
 #include "fprint_device_interface.h"
 #include "fprint_manager_interface.h"
 
@@ -62,9 +60,6 @@ public:
     Q_INVOKABLE void startEnrolling(QString finger);
     Q_INVOKABLE void stopEnrolling();
     Q_INVOKABLE void clearFingerprints();
-    
-    PolkitQt1::Authority::Result checkEditSelfPermission();
-    PolkitQt1::Authority::Result checkEditOthersPermission();
     
     QStringList enrolledFingerprints();
     QStringList availableFingersToEnroll();
