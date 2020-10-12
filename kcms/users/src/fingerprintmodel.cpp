@@ -19,17 +19,11 @@
 */
 
 #include <KLocalizedString>
-#include <KAuthAction>
-#include <KAuthExecuteJob>
-
-#include "polkitqt1-authority.h"
 
 #include "fingerprintmodel.h"
 
 #include "fprint_device_interface.h"
 #include "fprint_manager_interface.h"
-
-using namespace PolkitQt1;
 
 FingerprintModel::FingerprintModel(QObject* parent)
     : QObject(parent)
@@ -156,20 +150,6 @@ void FingerprintModel::switchUser(QString username)
     }
 }
 
-Authority::Result FingerprintModel::checkEditSelfPermission()
-{
-    UnixProcessSubject subject(static_cast<uint>(QCoreApplication::applicationPid()));
-    return Authority::instance()->checkAuthorizationSync("net.reactivated.fprint.device.enroll", subject, Authority::AllowUserInteraction);
-}
-
-
-Authority::Result FingerprintModel::checkEditOthersPermission()
-{
-    UnixProcessSubject subject(static_cast<uint>(QCoreApplication::applicationPid()));
-    return Authority::instance()->checkAuthorizationSync("net.reactivated.fprint.device.setusername", subject, Authority::AllowUserInteraction);
-}
-
-
 bool FingerprintModel::claimDevice()
 {
     QDBusError error = m_device->claim(m_username);
@@ -189,14 +169,6 @@ void FingerprintModel::startEnrolling(QString finger)
     // claim device for user
     if (!claimDevice()) {
         setDialogState(DialogState::FingerprintList);
-        return;
-    }
-    
-    // this may not be necessary, as fprintd should also checks polkit and prompts if necessary
-    Authority::Result result = m_username == "" ? checkEditSelfPermission() : checkEditOthersPermission();
-    if (result == Authority::No) {
-        setCurrentError(i18n("Not authorized"));
-        m_device->release();
         return;
     }
     
@@ -236,14 +208,6 @@ void FingerprintModel::clearFingerprints()
 {
     // claim for user
     if (!claimDevice()) {
-        return;
-    }
- 
-    // this may not be necessary, as fprintd should also checks polkit and prompts if necessary
-    Authority::Result result = m_username == "" ? checkEditSelfPermission() : checkEditOthersPermission();
-    if (result == Authority::No) {
-        setCurrentError(i18n("Not authorized"));
-        m_device->release();
         return;
     }
  

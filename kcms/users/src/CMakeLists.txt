@@ -60,19 +60,15 @@ ecm_qt_install_logging_categories(
 
 add_library(kcm_users MODULE ${kcm_users_SRCS})
 
-find_package(PolkitQt5-1 CONFIG REQUIRED)
-
 target_link_libraries(kcm_users
     Qt5::Quick
     Qt5::QuickWidgets
     Qt5::Concurrent
-    Qt5::DBus
     KF5::CoreAddons
     KF5::Declarative
     KF5::I18n
     KF5::QuickAddons
-    KF5::AuthCore
-    PolkitQt5-1::Core 
+    Qt5::DBus
     crypt
 )
 
