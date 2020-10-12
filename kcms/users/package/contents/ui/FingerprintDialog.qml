@@ -120,7 +120,7 @@ Kirigami.OverlaySheet {
             }
             
             QQC2.Label {
-                text: i18n("Please " + fingerprintModel.scanType + " your " + pickFingerBox.currentText + " on the fingerprint sensor.")
+                text: i18n("Please repeatedly " + fingerprintModel.scanType + " your " + pickFingerBox.currentText + " on the fingerprint sensor.")
                 Layout.alignment: Qt.AlignHCenter
             }
 
