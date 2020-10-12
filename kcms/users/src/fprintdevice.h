@@ -41,6 +41,7 @@ public:
     QDBusError stopEnrolling();
 
     int numOfEnrollStages();
+    QString scanType();
     
 public Q_SLOTS:
     void enrollStatus(QString result, bool done);

@@ -93,4 +93,9 @@ int FprintDevice::numOfEnrollStages()
     return m_dbusInterface->num_enroll_stages();
 }
 
+QString FprintDevice::scanType()
+{
+    return m_dbusInterface->scan_type();
+}
+
 

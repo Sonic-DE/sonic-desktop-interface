@@ -60,6 +60,11 @@ FingerprintModel::~FingerprintModel()
     delete m_managerDbusInterface;
 }
 
+QString FingerprintModel::scanType()
+{
+    return m_device == nullptr ? "" : m_device->scanType();
+}
+
 QString FingerprintModel::currentError()
 {
     return m_currentError;
@@ -168,7 +173,7 @@ Authority::Result FingerprintModel::checkEditOthersPermission()
 bool FingerprintModel::claimDevice()
 {
     QDBusError error = m_device->claim(m_username);
-    if (error.isValid()) {
+    if (error.isValid() && error.name() != "net.reactivated.Fprint.Error.AlreadyInUse") {
         qDebug() << "error claiming:" << error.message();
         setCurrentError(error.message());
         return false;
@@ -183,6 +188,7 @@ void FingerprintModel::startEnrolling(QString finger)
     
     // claim device for user
     if (!claimDevice()) {
+        setDialogState(DialogState::FingerprintList);
         return;
     }
     
@@ -199,6 +205,7 @@ void FingerprintModel::startEnrolling(QString finger)
         qDebug() << "error start enrolling:" << error.message();
         setCurrentError(error.message());
         m_device->release();
+        setDialogState(DialogState::FingerprintList);
         return;
     }
     
@@ -210,6 +217,7 @@ void FingerprintModel::startEnrolling(QString finger)
 
 void FingerprintModel::stopEnrolling()
 {
+    setDialogState(DialogState::FingerprintList);
     if (m_currentlyEnrolling) {
         m_currentlyEnrolling = false;
         emit currentlyEnrollingChanged();
@@ -220,13 +228,7 @@ void FingerprintModel::stopEnrolling()
             setCurrentError(error.message());
             return;
         }
-        error = m_device->release();
-        if (error.isValid()) {
-            qDebug() << "error releasing:" << error.message();
-            setCurrentError(error.message());
-        }
-        
-        setDialogState(DialogState::FingerprintList);
+        m_device->release();
     }
 }
 
