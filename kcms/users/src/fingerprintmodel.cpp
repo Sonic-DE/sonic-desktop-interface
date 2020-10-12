@@ -50,6 +50,9 @@ FingerprintModel::FingerprintModel(QObject* parent)
 FingerprintModel::~FingerprintModel()
 {
     stopEnrolling();
+    if (m_device) { // just in case device is claimed
+        m_device->release();
+    }
 }
 
 QString FingerprintModel::scanType()
@@ -296,6 +299,7 @@ void FingerprintModel::handleEnrollFailed(QString error)
         setCurrentError(i18n("The device was disconnected."));
         m_currentlyEnrolling = false;
         emit currentlyEnrollingChanged();
+        setDialogState(DialogState::FingerprintList);
     } else if (error == "enroll-unknown-error") {
         setCurrentError(i18n("An unknown error has occurred."));
         stopEnrolling();

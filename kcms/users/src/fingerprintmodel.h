@@ -30,7 +30,7 @@
 class FingerprintModel : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(QString scanType READ scanType)
+    Q_PROPERTY(QString scanType READ scanType NOTIFY scanTypeChanged)
     Q_PROPERTY(QString currentError READ currentError WRITE setCurrentError NOTIFY currentErrorChanged) // error for ui to display
     Q_PROPERTY(QString enrollFeedback READ enrollFeedback WRITE setEnrollFeedback NOTIFY enrollFeedbackChanged)
     Q_PROPERTY(QStringList enrolledFingerprints READ enrolledFingerprints NOTIFY enrolledFingerprintsChanged)
@@ -84,6 +84,7 @@ public Q_SLOTS:
     void handleEnrollFailed(QString error);
 
 Q_SIGNALS:
+    void scanTypeChanged(); // never emitted, used for getting rid of non-NOTIFYable warning
     void currentErrorChanged();
     void enrollFeedbackChanged();
     void enrolledFingerprintsChanged();
