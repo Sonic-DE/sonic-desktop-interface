@@ -29,15 +29,14 @@ class FprintDevice : public QObject
 
 public:
     explicit FprintDevice(QDBusObjectPath path, QObject* parent = nullptr);
-    ~FprintDevice();
 
-    QDBusPendingReply<QStringList> listEnrolledFingers(QString username);
+    QDBusPendingReply<QStringList> listEnrolledFingers(QString &username);
     
-    QDBusError claim(QString username);
+    QDBusError claim(QString &username);
     QDBusError release();
     
     QDBusError deleteEnrolledFingers();
-    QDBusError startEnrolling(QString finger);
+    QDBusError startEnrolling(QString &finger);
     QDBusError stopEnrolling();
 
     int numOfEnrollStages();

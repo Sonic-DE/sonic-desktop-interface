@@ -152,6 +152,10 @@ void FingerprintModel::switchUser(QString username)
 
 bool FingerprintModel::claimDevice()
 {
+    if (!deviceFound()) {
+        return false;
+    }
+    
     QDBusError error = m_device->claim(m_username);
     if (error.isValid() && error.name() != "net.reactivated.Fprint.Error.AlreadyInUse") {
         qDebug() << "error claiming:" << error.message();
@@ -163,6 +167,12 @@ bool FingerprintModel::claimDevice()
 
 void FingerprintModel::startEnrolling(QString finger)
 {
+    if (!deviceFound()) {
+        setCurrentError(i18n("No fingerprint device found."));
+        setDialogState(DialogState::FingerprintList);
+        return;
+    }
+
     setEnrollStage(0);
     setEnrollFeedback("");
     
@@ -229,18 +239,24 @@ void FingerprintModel::clearFingerprints()
 
 QStringList FingerprintModel::enrolledFingerprints()
 {
-    QDBusPendingReply reply = m_device->listEnrolledFingers(m_username);
-    reply.waitForFinished();
-    if (reply.isError()) {
-        // ignore net.reactivated.Fprint.Error.NoEnrolledPrints, as it shows up when there are no fingerprints
-        if (reply.error().name() != "net.reactivated.Fprint.Error.NoEnrolledPrints") {
-            qDebug() << "error listing enrolled fingers:" << reply.error().message();
-            setCurrentError(reply.error().message());
+    if (deviceFound()) {
+        QDBusPendingReply reply = m_device->listEnrolledFingers(m_username);
+        reply.waitForFinished();
+        if (reply.isError()) {
+            // ignore net.reactivated.Fprint.Error.NoEnrolledPrints, as it shows up when there are no fingerprints
+            if (reply.error().name() != "net.reactivated.Fprint.Error.NoEnrolledPrints") {
+                qDebug() << "error listing enrolled fingers:" << reply.error().message();
+                setCurrentError(reply.error().message());
+            }
+            return QStringList();
         }
+        
+        return reply.value();
+    } else {
+        setCurrentError(i18n("No fingerprint device found."));
+        setDialogState(DialogState::FingerprintList);
         return QStringList();
     }
-    
-    return reply.value();
 }
 
 QStringList FingerprintModel::availableFingersToEnroll()
