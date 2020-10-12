@@ -99,19 +99,20 @@ Kirigami.OverlaySheet {
     }
 
     contentItem: Item {
+        id: rootPanel
         // TODO figure out why specified width is not being used at all
-        Layout.preferredWidth: Kirigami.Units.gridUnit * 6
-        Layout.maximumWidth: Kirigami.Units.gridUnit * 6
+        Layout.preferredWidth: Kirigami.Units.gridUnit * 12
+        Layout.maximumWidth: Kirigami.Units.gridUnit * 12
         Layout.leftMargin: Kirigami.Units.smallSpacing
         Layout.rightMargin: Kirigami.Units.smallSpacing
-        width: Kirigami.Units.gridUnit * 6
+        width: Kirigami.Units.gridUnit * 12
         height: Kirigami.Units.gridUnit * 12
         
         ColumnLayout {
             id: enrollFeedback
-            spacing: Kirigami.Units.largeSpacing
+            spacing: Kirigami.Units.largeSpacing * 2
             visible: fingerprintModel.dialogState === "Enrolling"
-            anchors.fill: parent  
+            anchors.fill: parent
             
             Kirigami.Heading {
                 level: 2
@@ -122,6 +123,9 @@ Kirigami.OverlaySheet {
             QQC2.Label {
                 text: i18n("Please repeatedly " + fingerprintModel.scanType + " your " + pickFingerBox.currentText + " on the fingerprint sensor.")
                 Layout.alignment: Qt.AlignHCenter
+                wrapMode: Text.Wrap
+                horizontalAlignment: Text.AlignHCenter
+                Layout.maximumWidth: parent.width
             }
 
             // progress circle
@@ -190,12 +194,6 @@ Kirigami.OverlaySheet {
                 text: fingerprintModel.enrollFeedback
                 Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
             }
-            
-            //QQC2.ProgressBar {
-                //value: fingerprintModel.enrollProgress
-                //width: Kirigami.Units.gridUnit * 5
-                //Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
-            //}
         }
         
         ColumnLayout {
