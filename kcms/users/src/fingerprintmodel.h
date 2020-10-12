@@ -92,6 +92,10 @@ Q_SIGNALS:
     void currentlyEnrollingChanged();
     void enrollProgressChanged();
     void dialogStateChanged();
+
+    void scanComplete();
+    void scanSuccess();
+    void scanFailure();
     
 private:
     QString m_username; // set to "" if it is the currently logged in user

@@ -49,8 +49,8 @@ FingerprintModel::FingerprintModel(QObject* parent)
 
 FingerprintModel::~FingerprintModel()
 {
-    stopEnrolling();
     if (m_device) { // just in case device is claimed
+        m_device->stopEnrolling();
         m_device->release();
     }
 }
@@ -68,7 +68,7 @@ QString FingerprintModel::currentError()
 void FingerprintModel::setCurrentError(QString error)
 {
     m_currentError = error;
-    emit currentErrorChanged();
+    Q_EMIT currentErrorChanged();
 }
 
 QString FingerprintModel::enrollFeedback()
@@ -79,7 +79,7 @@ QString FingerprintModel::enrollFeedback()
 void FingerprintModel::setEnrollFeedback(QString feedback)
 {
     m_enrollFeedback = feedback;
-    emit enrollFeedbackChanged();
+    Q_EMIT enrollFeedbackChanged();
 }
 
 bool FingerprintModel::currentlyEnrolling()
@@ -100,7 +100,7 @@ double FingerprintModel::enrollProgress()
 void FingerprintModel::setEnrollStage(int stage)
 {
     m_enrollStage = stage;
-    emit enrollProgressChanged();
+    Q_EMIT enrollProgressChanged();
 }
 
 QString FingerprintModel::dialogState()
@@ -121,7 +121,7 @@ QString FingerprintModel::dialogState()
 void FingerprintModel::setDialogState(DialogState dialogState)
 {
     m_dialogState = dialogState;
-    emit dialogStateChanged();
+    Q_EMIT dialogStateChanged();
 }
 
 void FingerprintModel::setDialogState(QString dialogState)
@@ -135,9 +135,8 @@ void FingerprintModel::setDialogState(QString dialogState)
     } else if (dialogState == "EnrollComplete") {
         m_dialogState = DialogState::EnrollComplete;
     }
-    emit dialogStateChanged();
+    Q_EMIT dialogStateChanged();
 }
-
 
 void FingerprintModel::switchUser(QString username)
 {
@@ -147,7 +146,7 @@ void FingerprintModel::switchUser(QString username)
         stopEnrolling(); // stop enrolling if ongoing
         m_device->release(); // release from old user
         
-        emit enrolledFingerprintsChanged();
+        Q_EMIT enrolledFingerprintsChanged();
     }
 }
 
@@ -183,7 +182,7 @@ void FingerprintModel::startEnrolling(QString finger)
     }
     
     m_currentlyEnrolling = true;
-    emit currentlyEnrollingChanged();
+    Q_EMIT currentlyEnrollingChanged();
     
     setDialogState(DialogState::Enrolling);
 }
@@ -193,7 +192,7 @@ void FingerprintModel::stopEnrolling()
     setDialogState(DialogState::FingerprintList);
     if (m_currentlyEnrolling) {
         m_currentlyEnrolling = false;
-        emit currentlyEnrollingChanged();
+        Q_EMIT currentlyEnrollingChanged();
         
         QDBusError error = m_device->stopEnrolling();
         if (error.isValid()) {
@@ -225,7 +224,7 @@ void FingerprintModel::clearFingerprints()
         setCurrentError(error.message());
     }
     
-    emit enrolledFingerprintsChanged();
+    Q_EMIT enrolledFingerprintsChanged();
 }
 
 QStringList FingerprintModel::enrolledFingerprints()
@@ -259,7 +258,8 @@ void FingerprintModel::handleEnrollCompleted()
 {
     setEnrollStage(m_device->numOfEnrollStages());
     setEnrollFeedback("");
-    emit enrolledFingerprintsChanged();
+    Q_EMIT enrolledFingerprintsChanged();
+    Q_EMIT scanComplete();
     
     // stopEnrolling not called, as it is triggered only when the "complete" button is pressed
     // (only change dialog state change after button is pressed)
@@ -270,11 +270,13 @@ void FingerprintModel::handleEnrollStagePassed()
 {
     setEnrollStage(m_enrollStage + 1);
     setEnrollFeedback("");
+    Q_EMIT scanSuccess();
     qDebug() << "fingerprint enroll stage pass:" << enrollProgress();
 }
 
 void FingerprintModel::handleEnrollRetryStage(QString feedback)
 {
+    Q_EMIT scanFailure();
     if (feedback == "enroll-retry-scan") {
         setEnrollFeedback(i18n("Retry scanning your finger."));
     } else if (feedback == "enroll-swipe-too-short") {
@@ -298,7 +300,7 @@ void FingerprintModel::handleEnrollFailed(QString error)
     } else if (error == "enroll-disconnected") {
         setCurrentError(i18n("The device was disconnected."));
         m_currentlyEnrolling = false;
-        emit currentlyEnrollingChanged();
+        Q_EMIT currentlyEnrollingChanged();
         setDialogState(DialogState::FingerprintList);
     } else if (error == "enroll-unknown-error") {
         setCurrentError(i18n("An unknown error has occurred."));

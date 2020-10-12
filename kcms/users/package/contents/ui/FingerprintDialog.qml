@@ -111,13 +111,14 @@ Kirigami.OverlaySheet {
         ColumnLayout {
             id: enrollFeedback
             spacing: Kirigami.Units.largeSpacing * 2
-            visible: fingerprintModel.dialogState === "Enrolling"
+            visible: fingerprintModel.dialogState === "Enrolling" || fingerprintModel.dialogState === "EnrollComplete"
             anchors.fill: parent
             
             Kirigami.Heading {
                 level: 2
                 text: i18n("Enrolling Fingerprint")
                 Layout.alignment: Qt.AlignHCenter
+                visible: fingerprintModel.dialogState === "Enrolling"
             }
             
             QQC2.Label {
@@ -126,27 +127,74 @@ Kirigami.OverlaySheet {
                 wrapMode: Text.Wrap
                 horizontalAlignment: Text.AlignHCenter
                 Layout.maximumWidth: parent.width
+                visible: fingerprintModel.dialogState === "Enrolling"
+            }
+            
+            Kirigami.Heading {
+                level: 2
+                text: i18n("Finger Enrolled")
+                Layout.alignment: Qt.AlignHCenter
+                visible: fingerprintModel.dialogState === "EnrollComplete"
             }
 
+            // reset from back from whatever color was used before
+            onVisibleChanged: colorChangeBackTimer.restart();
+            
             // progress circle
             Item {
                 width: progressCircle.width
                 height: progressCircle.height
                 Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
+                
+                Timer {
+                    id: colorChangeBackTimer
+                    interval: 500
+                    onTriggered: {
+                        iconColorAnimation.to = Kirigami.Theme.textColor
+                        iconColorAnimation.start();
+                        circleColorAnimation.to = Kirigami.Theme.highlightColor
+                        circleColorAnimation.start();
+                    }
+                }
+                
+                Connections {
+                    target: fingerprintModel
+                    function onScanSuccess() {
+                        iconColorAnimation.to = Kirigami.Theme.highlightColor
+                        iconColorAnimation.start();
+                        colorChangeBackTimer.restart();
+                    }
+                    function onScanFailure() {
+                        iconColorAnimation.to = Kirigami.Theme.negativeTextColor
+                        iconColorAnimation.start();
+                        colorChangeBackTimer.restart();
+                    }
+                    function onScanComplete() {
+                        iconColorAnimation.to = Kirigami.Theme.positiveTextColor
+                        iconColorAnimation.start();
+                    }
+                }
+                
                 Kirigami.Icon {
                     id: fingerprintEnrollFeedback
                     source: "fingerprint"
                     implicitHeight: Kirigami.Units.iconSizes.huge
-                    implicitWidth: Kirigami.Units.iconSizes.huge
+                    implicitWidth: implicitHeight
                     anchors.centerIn: parent
+                
+                    ColorAnimation on color {
+                        id: iconColorAnimation
+                        easing.type: Easing.InOutQuad
+                        duration: 200
+                    }
                 }
                 
                 Shape {
                     id: progressCircle
                     anchors.horizontalCenter: fingerprintEnrollFeedback.horizontalCenter
                     anchors.verticalCenter: fingerprintEnrollFeedback.verticalCenter
-                    implicitWidth: fingerprintEnrollFeedback.implicitWidth + Kirigami.Units.gridUnit
-                    implicitHeight: fingerprintEnrollFeedback.implicitHeight + Kirigami.Units.gridUnit
+                    implicitWidth: Kirigami.Units.iconSizes.huge + Kirigami.Units.gridUnit
+                    implicitHeight: Kirigami.Units.iconSizes.huge + Kirigami.Units.gridUnit
                     layer.enabled: true
                     layer.samples: 40
                     anchors.centerIn: parent
@@ -166,11 +214,11 @@ Kirigami.OverlaySheet {
                     ShapePath {
                         strokeColor: "lightgrey"
                         fillColor: "transparent"
-                        strokeWidth: 4
+                        strokeWidth: 3
                         capStyle: ShapePath.FlatCap
                         PathAngleArc {
                             centerX: progressCircle.implicitWidth / 2; centerY: progressCircle.implicitHeight / 2;
-                            radiusX: fingerprintEnrollFeedback.width / 2; radiusY: radiusX;
+                            radiusX: (progressCircle.implicitWidth - Kirigami.Units.gridUnit) / 2; radiusY: radiusX;
                             startAngle: 0
                             sweepAngle: 360
                         }
@@ -178,11 +226,18 @@ Kirigami.OverlaySheet {
                     ShapePath {
                         strokeColor: Kirigami.Theme.highlightColor
                         fillColor: "transparent"
-                        strokeWidth: 4
+                        strokeWidth: 3
                         capStyle: ShapePath.RoundCap
+                        
+                        ColorAnimation on strokeColor {
+                            id: circleColorAnimation
+                            easing.type: Easing.InOutQuad
+                            duration: 200
+                        }
+                        
                         PathAngleArc {
                             centerX: progressCircle.implicitWidth / 2; centerY: progressCircle.implicitHeight / 2;
-                            radiusX: fingerprintEnrollFeedback.width / 2; radiusY: radiusX;
+                            radiusX: (progressCircle.implicitWidth - Kirigami.Units.gridUnit) / 2; radiusY: radiusX;
                             startAngle: -90
                             sweepAngle: progressCircle.renderedAngle
                         }
@@ -193,26 +248,6 @@ Kirigami.OverlaySheet {
             QQC2.Label {
                 text: fingerprintModel.enrollFeedback
                 Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
-            }
-        }
-        
-        ColumnLayout {
-            id: enrollComplete
-            visible: fingerprintModel.dialogState === "EnrollComplete"
-            anchors.centerIn: parent
-            spacing: Kirigami.Units.largeSpacing
-            
-            Kirigami.Icon {
-                source: "checkmark"
-                implicitHeight: Kirigami.Units.iconSizes.huge
-                implicitWidth: Kirigami.Units.iconSizes.huge
-                Layout.alignment: Qt.AlignHCenter
-            }
-            
-            Kirigami.Heading {
-                level: 2
-                text: i18n("Complete!")
-                Layout.alignment: Qt.AlignHCenter
             }
         }
         

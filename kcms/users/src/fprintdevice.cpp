@@ -78,13 +78,13 @@ QDBusError FprintDevice::stopEnrolling()
 void FprintDevice::enrollStatus(QString result, bool done)
 {
     if (result == "enroll-completed") {
-        emit enrollCompleted();
+        Q_EMIT enrollCompleted();
     } else if (result == "enroll-failed" || result == "enroll-data-full" || result == "enroll-disconnected" || result == "enroll-unknown-error") {
-        emit enrollFailed(result);
+        Q_EMIT enrollFailed(result);
     } else if (result == "enroll-stage-passed") {
-        emit enrollStagePassed();
+        Q_EMIT enrollStagePassed();
     } else if (result == "enroll-retry-scan" || result == "enroll-swipe-too-short" || result == "enroll-finger-not-centered" || result == "enroll-remove-and-retry") {
-        emit enrollRetryStage(result);
+        Q_EMIT enrollRetryStage(result);
     }
 }
 
