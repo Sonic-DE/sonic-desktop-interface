@@ -39,7 +39,7 @@ FingerprintModel::FingerprintModel(QObject* parent)
     }
 
     QDBusObjectPath path = reply.value();
-    m_device = new FprintDevice(this, path);
+    m_device = new FprintDevice(path, this);
     
     connect(m_device, &FprintDevice::enrollCompleted, this, &FingerprintModel::handleEnrollCompleted);
     connect(m_device, &FprintDevice::enrollStagePassed, this, &FingerprintModel::handleEnrollStagePassed);
@@ -50,8 +50,6 @@ FingerprintModel::FingerprintModel(QObject* parent)
 FingerprintModel::~FingerprintModel()
 {
     stopEnrolling();
-    if (m_device != nullptr) delete m_device;
-    delete m_managerDbusInterface;
 }
 
 QString FingerprintModel::scanType()

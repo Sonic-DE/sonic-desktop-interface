@@ -28,7 +28,7 @@ class FprintDevice : public QObject
     Q_OBJECT
 
 public:
-    explicit FprintDevice(QObject* parent = nullptr, QDBusObjectPath path = QDBusObjectPath());
+    explicit FprintDevice(QDBusObjectPath path, QObject* parent = nullptr);
     ~FprintDevice();
 
     QDBusPendingReply<QStringList> listEnrolledFingers(QString username);

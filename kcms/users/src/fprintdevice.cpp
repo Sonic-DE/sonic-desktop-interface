@@ -23,7 +23,7 @@
 #include "fprint_device_interface.h"
 #include "fprint_manager_interface.h"
 
-FprintDevice::FprintDevice(QObject* parent, QDBusObjectPath path)
+FprintDevice::FprintDevice(QDBusObjectPath path, QObject* parent)
     : QObject(parent)
     , m_dbusInterface(new NetReactivatedFprintDeviceInterface(QStringLiteral("net.reactivated.Fprint"), path.path(), QDBusConnection::systemBus(), this))
 {
