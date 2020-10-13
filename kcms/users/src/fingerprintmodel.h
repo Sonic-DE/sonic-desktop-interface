@@ -21,6 +21,7 @@
 #pragma once
 
 #include "fprintdevice.h"
+#include <qobjectdefs.h>
 
 #include <KLocalizedString>
 
@@ -38,7 +39,7 @@ class FingerprintModel : public QObject
     Q_PROPERTY(bool deviceFound READ deviceFound NOTIFY devicesFoundChanged)
     Q_PROPERTY(bool currentlyEnrolling READ currentlyEnrolling NOTIFY currentlyEnrollingChanged)
     Q_PROPERTY(double enrollProgress READ enrollProgress NOTIFY enrollProgressChanged)
-    Q_PROPERTY(QString dialogState READ dialogState WRITE setDialogState NOTIFY dialogStateChanged)
+    Q_PROPERTY(DialogState dialogState READ dialogState WRITE setDialogState NOTIFY dialogStateChanged)
     
 public:
     explicit FingerprintModel(QObject* parent = nullptr);
@@ -50,6 +51,7 @@ public:
         Enrolling,
         EnrollComplete,
     };
+    Q_ENUM(DialogState)
     
     const QList<QString> FINGERS = {"left-thumb", "left-index-finger", "left-middle-finger", "left-ring-finger", "left-little-finger", "right-thumb", "right-index-finger", "right-middle-finger", "right-ring-finger", "right-little-finger"};
     const QList<QString> FINGERS_FRIENDLY_NAME = {i18n("Left Thumb"), i18n("Left Index Finger"), i18n("Left Middle Finger"), i18n("Left Ring Finger"), i18n("Left Little Finger"), i18n("Right Thumb"), i18n("Right Index Finger"), i18n("Right Middle Finger"), i18n("Right Ring Finger"), i18n("Right Little Finger")};
@@ -73,9 +75,8 @@ public:
     bool deviceFound();
     double enrollProgress();
     void setEnrollStage(int stage);
-    QString dialogState();
+    DialogState dialogState();
     void setDialogState(DialogState dialogState);
-    void setDialogState(QString dialogState);
     
 public Q_SLOTS:
     void handleEnrollCompleted();

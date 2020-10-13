@@ -57,7 +57,7 @@ FingerprintModel::~FingerprintModel()
 
 QString FingerprintModel::scanType()
 {
-    return m_device == nullptr ? "" : m_device->scanType();
+    return !m_device ? "" : m_device->scanType();
 }
 
 QString FingerprintModel::currentError()
@@ -67,8 +67,10 @@ QString FingerprintModel::currentError()
 
 void FingerprintModel::setCurrentError(QString error)
 {
-    m_currentError = error;
-    Q_EMIT currentErrorChanged();
+    if (m_currentError != error) {
+        m_currentError = error;
+        Q_EMIT currentErrorChanged();
+    }
 }
 
 QString FingerprintModel::enrollFeedback()
@@ -103,38 +105,14 @@ void FingerprintModel::setEnrollStage(int stage)
     Q_EMIT enrollProgressChanged();
 }
 
-QString FingerprintModel::dialogState()
+FingerprintModel::DialogState FingerprintModel::dialogState()
 {
-    switch (m_dialogState) {
-        case DialogState::FingerprintList:
-            return "FingerprintList";
-        case DialogState::PickFinger:
-            return "PickFinger";
-        case DialogState::Enrolling:
-            return "Enrolling";
-        case DialogState::EnrollComplete:
-            return "EnrollComplete";
-    }
-    return "FingerprintList";
+    return m_dialogState;
 }
 
 void FingerprintModel::setDialogState(DialogState dialogState)
 {
     m_dialogState = dialogState;
-    Q_EMIT dialogStateChanged();
-}
-
-void FingerprintModel::setDialogState(QString dialogState)
-{
-    if (dialogState == "FingerprintList") {
-        m_dialogState = DialogState::FingerprintList;
-    } else if (dialogState == "PickFinger") {
-        m_dialogState = DialogState::PickFinger;
-    } else if (dialogState == "Enrolling") {
-        m_dialogState = DialogState::Enrolling;
-    } else if (dialogState == "EnrollComplete") {
-        m_dialogState = DialogState::EnrollComplete;
-    }
     Q_EMIT dialogStateChanged();
 }
 

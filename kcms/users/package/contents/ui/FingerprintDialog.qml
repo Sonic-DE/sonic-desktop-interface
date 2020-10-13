@@ -32,6 +32,13 @@ Kirigami.OverlaySheet {
     property var account
     property var fingerprintModel: kcm.fingerprintModel
     
+    enum DialogState {
+        FingerprintList,
+        PickFinger,
+        Enrolling,
+        EnrollComplete
+    }
+    
     function openAndClear() {
         fingerprintModel.switchUser(account.name == kcm.userModel.getLoggedInUser().name ? "" : account.name);
         this.open();
@@ -55,28 +62,28 @@ Kirigami.OverlaySheet {
         // FingerprintList State
         QQC2.Button {
             text: i18n("Clear Fingerprints")
-            visible: fingerprintModel.dialogState === "FingerprintList"
+            visible: fingerprintModel.dialogState === FingerprintDialog.DialogState.FingerprintList
             enabled: fingerprintModel.fingerprints.length !== 0
             icon.name: "delete"
             onClicked: fingerprintModel.clearFingerprints();
         }
         QQC2.Button {
             text: i18n("Add")
-            visible: fingerprintModel.dialogState === "FingerprintList"
+            visible: fingerprintModel.dialogState === FingerprintDialog.DialogState.FingerprintList
             icon.name: "list-add"
-            onClicked: fingerprintModel.dialogState = "PickFinger"
+            onClicked: fingerprintModel.dialogState = FingerprintDialog.DialogState.PickFinger
         }
         
         // PickFinger State
         QQC2.Button {
             text: i18n("Cancel")
-            visible: fingerprintModel.dialogState === "PickFinger"
+            visible: fingerprintModel.dialogState === FingerprintDialog.DialogState.PickFinger
             icon.name: "dialog-cancel"
-            onClicked: fingerprintModel.dialogState = "FingerprintList"
+            onClicked: fingerprintModel.dialogState = FingerprintDialog.DialogState.FingerprintList
         }
         QQC2.Button {
             text: i18n("Continue")
-            visible: fingerprintModel.dialogState === "PickFinger"
+            visible: fingerprintModel.dialogState === FingerprintDialog.DialogState.PickFinger
             icon.name: "dialog-ok"
             onClicked: fingerprintModel.startEnrolling(pickFingerBox.currentText);
         }
@@ -84,7 +91,7 @@ Kirigami.OverlaySheet {
         // Enrolling State
         QQC2.Button {
             text: i18n("Cancel")
-            visible: fingerprintModel.dialogState === "Enrolling"
+            visible: fingerprintModel.dialogState === FingerprintDialog.DialogState.Enrolling
             icon.name: "dialog-cancel"
             onClicked: fingerprintModel.stopEnrolling();
         }
@@ -92,7 +99,7 @@ Kirigami.OverlaySheet {
         // EnrollComplete State
         QQC2.Button {
             text: i18n("Done")
-            visible: fingerprintModel.dialogState === "EnrollComplete"
+            visible: fingerprintModel.dialogState === FingerprintDialog.DialogState.EnrollComplete
             icon.name: "dialog-ok"
             onClicked: fingerprintModel.stopEnrolling();
         }
@@ -111,14 +118,14 @@ Kirigami.OverlaySheet {
         ColumnLayout {
             id: enrollFeedback
             spacing: Kirigami.Units.largeSpacing * 2
-            visible: fingerprintModel.dialogState === "Enrolling" || fingerprintModel.dialogState === "EnrollComplete"
+            visible: fingerprintModel.dialogState === FingerprintDialog.DialogState.Enrolling || fingerprintModel.dialogState === FingerprintDialog.DialogState.EnrollComplete
             anchors.fill: parent
             
             Kirigami.Heading {
                 level: 2
                 text: i18n("Enrolling Fingerprint")
                 Layout.alignment: Qt.AlignHCenter
-                visible: fingerprintModel.dialogState === "Enrolling"
+                visible: fingerprintModel.dialogState === FingerprintDialog.DialogState.Enrolling
             }
             
             QQC2.Label {
@@ -127,14 +134,14 @@ Kirigami.OverlaySheet {
                 wrapMode: Text.Wrap
                 horizontalAlignment: Text.AlignHCenter
                 Layout.maximumWidth: parent.width
-                visible: fingerprintModel.dialogState === "Enrolling"
+                visible: fingerprintModel.dialogState === FingerprintDialog.DialogState.Enrolling
             }
             
             Kirigami.Heading {
                 level: 2
                 text: i18n("Finger Enrolled")
                 Layout.alignment: Qt.AlignHCenter
-                visible: fingerprintModel.dialogState === "EnrollComplete"
+                visible: fingerprintModel.dialogState === FingerprintDialog.DialogState.EnrollComplete
             }
 
             // reset from back from whatever color was used before
@@ -247,13 +254,15 @@ Kirigami.OverlaySheet {
             
             QQC2.Label {
                 text: fingerprintModel.enrollFeedback
+                wrapMode: Text.Wrap
+                Layout.maximumWidth: parent.width
                 Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
             }
         }
         
         ColumnLayout {
             id: pickFinger
-            visible: fingerprintModel.dialogState === "PickFinger"
+            visible: fingerprintModel.dialogState === FingerprintDialog.DialogState.PickFinger
             anchors.centerIn: parent
             spacing: Kirigami.Units.largeSpacing
             
@@ -280,7 +289,7 @@ Kirigami.OverlaySheet {
         ColumnLayout {
             id: fingerprints
             spacing: Kirigami.Units.smallSpacing
-            visible: fingerprintModel.dialogState === "FingerprintList"
+            visible: fingerprintModel.dialogState === FingerprintDialog.DialogState.FingerprintList
             anchors.fill: parent
             
             Kirigami.InlineMessage {
@@ -322,7 +331,7 @@ Kirigami.OverlaySheet {
                     anchors.centerIn: parent
                     width: parent.width - (Kirigami.Units.largeSpacing * 4)
                     visible: fingerprintsList.count == 0
-                    text: "No fingerprints added"
+                    text: i18n("No fingerprints added")
                     icon.name: "fingerprint"
                 }
             }
