@@ -96,7 +96,10 @@ bool FingerprintModel::deviceFound()
 
 double FingerprintModel::enrollProgress()
 {
-    return deviceFound() ? ((double) m_enrollStage) / m_device->numOfEnrollStages() : 0;
+    if (!deviceFound()) {
+        return 0;
+    }
+    return (m_device->numOfEnrollStages() == 0) ? 1 : ((double) m_enrollStage) / m_device->numOfEnrollStages();
 }
 
 void FingerprintModel::setEnrollStage(int stage)
@@ -215,7 +218,7 @@ void FingerprintModel::clearFingerprints()
     Q_EMIT enrolledFingerprintsChanged();
 }
 
-QStringList FingerprintModel::enrolledFingerprints()
+QStringList FingerprintModel::enrolledFingerprintsRaw()
 {
     if (deviceFound()) {
         QDBusPendingReply reply = m_device->listEnrolledFingers(m_username);
@@ -228,7 +231,6 @@ QStringList FingerprintModel::enrolledFingerprints()
             }
             return QStringList();
         }
-        
         return reply.value();
     } else {
         setCurrentError(i18n("No fingerprint device found."));
@@ -237,12 +239,30 @@ QStringList FingerprintModel::enrolledFingerprints()
     }
 }
 
-QStringList FingerprintModel::availableFingersToEnroll()
+QVariantList FingerprintModel::enrolledFingerprints()
 {
-    QStringList list, enrolled = enrolledFingerprints();
-    for (QString finger : FINGERS) {
-        if (!enrolled.contains(finger)) {
-            list.append(finger);
+    // convert fingers list to qlist of Finger objects
+    QVariantList fingers;
+    for (QString &finger : enrolledFingerprintsRaw()) {
+        for (Finger *storedFinger : FINGERS) {
+            if (storedFinger->internalName() == finger) {
+                fingers.append(QVariant::fromValue(storedFinger));
+                break;
+            }
+        }
+    }
+    return fingers;
+}
+
+QVariantList FingerprintModel::availableFingersToEnroll()
+{
+    QVariantList list; 
+    QStringList enrolled = enrolledFingerprintsRaw();
+    
+    // add fingerprints to list that are not in the enrolled list
+    for (Finger *finger : FINGERS) {
+        if (!enrolledFingerprintsRaw().contains(finger->internalName())) {
+            list.append(QVariant::fromValue(finger));
         }
     }
     return list;

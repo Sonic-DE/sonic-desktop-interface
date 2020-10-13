@@ -25,6 +25,7 @@ import QtQuick.Shapes 1.12
 import QtQuick.Controls 2.5 as QQC2
 
 import org.kde.kirigami 2.12 as Kirigami
+import FingerprintModel 1.0
 
 Kirigami.OverlaySheet {
     id: fingerprintRoot
@@ -63,13 +64,14 @@ Kirigami.OverlaySheet {
         QQC2.Button {
             text: i18n("Clear Fingerprints")
             visible: fingerprintModel.dialogState === FingerprintDialog.DialogState.FingerprintList
-            enabled: fingerprintModel.fingerprints.length !== 0
+            enabled: fingerprintModel.enrolledFingerprints.length !== 0
             icon.name: "delete"
             onClicked: fingerprintModel.clearFingerprints();
         }
         QQC2.Button {
             text: i18n("Add")
             visible: fingerprintModel.dialogState === FingerprintDialog.DialogState.FingerprintList
+            enabled: fingerprintModel.availableFingersToEnroll.length !== 0
             icon.name: "list-add"
             onClicked: fingerprintModel.dialogState = FingerprintDialog.DialogState.PickFinger
         }
@@ -85,7 +87,7 @@ Kirigami.OverlaySheet {
             text: i18n("Continue")
             visible: fingerprintModel.dialogState === FingerprintDialog.DialogState.PickFinger
             icon.name: "dialog-ok"
-            onClicked: fingerprintModel.startEnrolling(pickFingerBox.currentText);
+            onClicked: fingerprintModel.startEnrolling(pickFingerBox.currentValue);
         }
         
         // Enrolling State
@@ -129,7 +131,7 @@ Kirigami.OverlaySheet {
             }
             
             QQC2.Label {
-                text: i18n("Please repeatedly " + fingerprintModel.scanType + " your " + pickFingerBox.currentText + " on the fingerprint sensor.")
+                text: i18n("Please repeatedly " + fingerprintModel.scanType + " your " + pickFingerBox.currentText.toLowerCase() + " on the fingerprint sensor.")
                 Layout.alignment: Qt.AlignHCenter
                 wrapMode: Text.Wrap
                 horizontalAlignment: Text.AlignHCenter
@@ -282,6 +284,8 @@ Kirigami.OverlaySheet {
             QQC2.ComboBox {
                 id: pickFingerBox
                 model: fingerprintModel.availableFingersToEnroll
+                textRole: "friendlyName"
+                valueRole: "internalName"
                 Layout.alignment: Qt.AlignHCenter
             }
         }
@@ -314,6 +318,7 @@ Kirigami.OverlaySheet {
                 QQC2.ScrollBar.vertical: QQC2.ScrollBar {}
 
                 delegate: Kirigami.SwipeListItem {
+                    property Finger finger: modelData
                     contentItem: RowLayout {
                         Kirigami.Icon {
                             source: "fingerprint"
@@ -322,7 +327,8 @@ Kirigami.OverlaySheet {
                         }
                         QQC2.Label {
                             Layout.fillWidth: true
-                            text: modelData
+                            text: finger.internalName
+                            Component.onCompleted: console.log(finger)
                         }
                     }
                 }

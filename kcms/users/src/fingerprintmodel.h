@@ -28,14 +28,44 @@
 #include "fprint_device_interface.h"
 #include "fprint_manager_interface.h"
 
+class Finger : public QObject {
+    Q_OBJECT
+    Q_PROPERTY(QString internalName READ internalName CONSTANT)
+    Q_PROPERTY(QString friendlyName READ friendlyName CONSTANT)
+    
+public:
+    explicit Finger(const Finger &finger, QObject* parent = nullptr)
+    : QObject(parent)
+    , m_internalName(finger.internalName())
+    , m_friendlyName(finger.friendlyName())
+    {}
+
+    explicit Finger(QString internalName = "", QString friendlyName = "", QObject* parent = nullptr)
+    : QObject(parent)
+    , m_internalName(internalName)
+    , m_friendlyName(friendlyName)
+    {}
+    
+    QString internalName() const
+    {
+        return m_internalName;
+    }
+    QString friendlyName() const
+    {
+        return m_friendlyName;
+    }
+private:
+    QString m_internalName = "", m_friendlyName = "";
+};
+
 class FingerprintModel : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(QString scanType READ scanType NOTIFY scanTypeChanged)
+    Q_PROPERTY(QString scanType READ scanType CONSTANT)
     Q_PROPERTY(QString currentError READ currentError WRITE setCurrentError NOTIFY currentErrorChanged) // error for ui to display
     Q_PROPERTY(QString enrollFeedback READ enrollFeedback WRITE setEnrollFeedback NOTIFY enrollFeedbackChanged)
-    Q_PROPERTY(QStringList enrolledFingerprints READ enrolledFingerprints NOTIFY enrolledFingerprintsChanged)
-    Q_PROPERTY(QStringList availableFingersToEnroll READ availableFingersToEnroll NOTIFY enrolledFingerprintsChanged)
+    Q_PROPERTY(QVariantList enrolledFingerprints READ enrolledFingerprints NOTIFY enrolledFingerprintsChanged)
+    Q_PROPERTY(QVariantList availableFingersToEnroll READ availableFingersToEnroll NOTIFY enrolledFingerprintsChanged)
     Q_PROPERTY(bool deviceFound READ deviceFound NOTIFY devicesFoundChanged)
     Q_PROPERTY(bool currentlyEnrolling READ currentlyEnrolling NOTIFY currentlyEnrollingChanged)
     Q_PROPERTY(double enrollProgress READ enrollProgress NOTIFY enrollProgressChanged)
@@ -53,8 +83,18 @@ public:
     };
     Q_ENUM(DialogState)
     
-    const QList<QString> FINGERS = {"left-thumb", "left-index-finger", "left-middle-finger", "left-ring-finger", "left-little-finger", "right-thumb", "right-index-finger", "right-middle-finger", "right-ring-finger", "right-little-finger"};
-    const QList<QString> FINGERS_FRIENDLY_NAME = {i18n("Left Thumb"), i18n("Left Index Finger"), i18n("Left Middle Finger"), i18n("Left Ring Finger"), i18n("Left Little Finger"), i18n("Right Thumb"), i18n("Right Index Finger"), i18n("Right Middle Finger"), i18n("Right Ring Finger"), i18n("Right Little Finger")};
+    const QList<Finger *> FINGERS = {
+        new Finger("left-thumb", i18n("Left thumb"), this), 
+        new Finger("left-index-finger", i18n("Left index finger"), this),
+        new Finger("left-middle-finger", i18n("Left middle finger"), this),
+        new Finger("left-ring-finger", i18n("Left ring finger"), this),
+        new Finger("left-little-finger", i18n("Left little finger"), this),
+        new Finger("right-thumb", i18n("Right thumb"), this),
+        new Finger("right-index-finger", i18n("Right index finger"), this),
+        new Finger("right-middle-finger", i18n("Right middle finger"), this),
+        new Finger("right-ring-finger", i18n("Right ring finger"), this),
+        new Finger("right-little-finger", i18n("Right little finger"), this)
+    };
     
     Q_INVOKABLE void switchUser(QString username);
     bool claimDevice();
@@ -63,8 +103,9 @@ public:
     Q_INVOKABLE void stopEnrolling();
     Q_INVOKABLE void clearFingerprints();
     
-    QStringList enrolledFingerprints();
-    QStringList availableFingersToEnroll();
+    QStringList enrolledFingerprintsRaw();
+    QVariantList enrolledFingerprints();
+    QVariantList availableFingersToEnroll();
     
     QString scanType();
     QString currentError();
@@ -85,7 +126,6 @@ public Q_SLOTS:
     void handleEnrollFailed(QString error);
 
 Q_SIGNALS:
-    void scanTypeChanged(); // never emitted, used for getting rid of non-NOTIFYable warning
     void currentErrorChanged();
     void enrollFeedbackChanged();
     void enrolledFingerprintsChanged();

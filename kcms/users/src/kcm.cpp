@@ -60,6 +60,8 @@ KCMUser::KCMUser(QObject *parent, const QVariantList &args)
     auto font = QApplication::font("QLabel");
     auto fm = QFontMetrics(font);
     setColumnWidth(fm.capHeight()*30);
+    
+    qmlRegisterType<Finger>("FingerprintModel", 1, 0, "Finger");
 }
 
 bool KCMUser::createUser(const QString& name, const QString& realName, const QString& password, bool isAdmin)
