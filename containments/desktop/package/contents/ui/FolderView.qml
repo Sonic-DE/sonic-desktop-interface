@@ -466,10 +466,46 @@ FocusScope {
                     }
 
                     dir.pinSelection();
-                    main.rubberBand = Qt.createQmlObject("import QtQuick 2.0; import org.kde.private.desktopcontainment.folder 0.1 as Folder;"
-                        + "Folder.RubberBand { x: " + cPress.x + "; y: " + cPress.y + "; width: 0; height: 0; z: 99999; }",
-                        gridView.contentItem);
+                    main.rubberBand = rubberBandObject.createObject(gridView.contentItem, {x: cPress.x, y: cPress.y})
                     gridView.interactive = false;
+                }
+            }
+        }
+
+        Component {
+            id: rubberBandObject
+
+            Folder.RubberBand {
+                id: rubby
+
+                width: 0
+                height: 0
+                z: 99999
+
+                property alias closeAnimation: closeAni
+
+                SequentialAnimation {
+                    id: closeAni
+
+                    OpacityAnimator {
+                        target: rubby
+                        to: 0
+                        from: 1
+                        duration: PlasmaCore.Units.shortDuration
+
+                        easing {
+                            bezierCurve: [0.4, 0.0, 1, 1]
+                            type: Easing.Bezier
+                        }
+                    }
+
+                    ScriptAction {
+                        script: {
+                            rubby.visible = false
+                            rubby.enabled = false
+                            rubby.destroy()
+                        }
+                    }
                 }
             }
         }
@@ -494,10 +530,9 @@ FocusScope {
 
         function pressCanceled() {
             if (main.rubberBand) {
-                main.rubberBand.visible = false;
-                main.rubberBand.enabled = false;
-                main.rubberBand.destroy();
-                main.rubberBand = null;
+                main.rubberBand.closeAnimation.start()
+                main.rubberBand = null
+
                 gridView.interactive = true;
                 gridView.cachedRectangleSelection = null;
                 dir.unpinSelection();
