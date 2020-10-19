@@ -50,10 +50,20 @@ DragDrop.DropArea {
     property int fixedWidth: 0
     property int fixedHeight: 0
 
-    // This is invisible and only used to read panel margins
+    // These are invisible and only used to read panel margins
+    // Both will fallback to "standard" panel margins if the theme does not
+    // define a normal or a slim margin.
+    // TODO accidentally flipped the two
+    PlasmaCore.FrameSvgItem {
+        id: slimPanelSvg
+        visible: false
+        prefix: 'normal'
+        imagePath: "widgets/panel-background"
+    }
     PlasmaCore.FrameSvgItem {
         id: panelSvg
         visible: false
+        prefix: 'slim'
         imagePath: "widgets/panel-background"
     }
 
@@ -75,7 +85,8 @@ function addApplet(applet, x, y) {
 
     var container = appletContainerComponent.createObject(root, {
         applet: applet,
-        visible: visibleBinding
+        visible: visibleBinding,
+        inSlimArea: false
     });
 
     applet.parent = container;
@@ -260,6 +271,7 @@ function checkLastSpacer() {
         Loader {
             id: container
             visible: false
+            property bool inSlimArea: false
             property bool animationsEnabled: true
 
             //when the applet moves caused by its resize, don't animate.
@@ -280,15 +292,15 @@ function checkLastSpacer() {
             }
 
             //Margins are either the size of the margins in the SVG, unless that prevents the panel from being at least half a smallMedium icon + smallSpace) tall at which point we set the margin to whatever allows it to be that...or if it still won't fit, 1.
-
+            //TODO rewrite this sh!t
             //the size a margin should be to force a panel to be the required size above
             readonly property real spacingAtMinSize: Math.max(1, (currentLayout.isLayoutHorizontal ? root.height+panelSvg.fixedMargins.top*2 : root.width+panelSvg.fixedMargins.left*2) - units.iconSizes.smallMedium - units.smallSpacing*2)/2
             readonly property bool fillArea: applet && (applet.constraintHints & PlasmaCore.Types.CanFillArea)
 
-            Layout.topMargin: (currentLayout.isLayoutHorizontal && !fillArea) ?Math.round(Math.min(spacingAtMinSize, panelSvg.fixedMargins.top)) : 0
-            Layout.bottomMargin: (currentLayout.isLayoutHorizontal && !fillArea) ? Math.round(Math.min(spacingAtMinSize, panelSvg.fixedMargins.bottom)) : 0
-            Layout.leftMargin: (!currentLayout.isLayoutHorizontal && !fillArea) ? Math.round(Math.min(spacingAtMinSize, panelSvg.fixedMargins.left)) : 0
-            Layout.rightMargin: (!currentLayout.isLayoutHorizontal && !fillArea) ? Math.round(Math.min(spacingAtMinSize, panelSvg.fixedMargins.right)) : 0
+            Layout.topMargin: (currentLayout.isLayoutHorizontal && !fillArea) ?Math.round(Math.min(spacingAtMinSize, (inSlimArea ? slimPanelSvg.fixedMargins.top : panelSvg.fixedMargins.top))) : 0
+            Layout.bottomMargin: (currentLayout.isLayoutHorizontal && !fillArea) ? Math.round(Math.min(spacingAtMinSize, (inSlimArea ? slimPanelSvg.fixedMargins.bottom : panelSvg.fixedMargins.bottom))) : 0
+            Layout.leftMargin: (!currentLayout.isLayoutHorizontal && !fillArea) ? Math.round(Math.min(spacingAtMinSize, (inSlimArea ? slimPanelSvg.fixedMargins.left : panelSvg.fixedMargins.left))) : 0
+            Layout.rightMargin: (!currentLayout.isLayoutHorizontal && !fillArea) ? Math.round(Math.min(spacingAtMinSize, (inSlimArea ? slimPanelSvg.fixedMargins.right : panelSvg.fixedMargins.right))) : 0
 
             Layout.minimumWidth: (currentLayout.isLayoutHorizontal ? (applet && applet.Layout.minimumWidth > 0 ? applet.Layout.minimumWidth : root.height) : root.width) - Layout.leftMargin - Layout.rightMargin
             Layout.minimumHeight: (!currentLayout.isLayoutHorizontal ? (applet && applet.Layout.minimumHeight > 0 ? applet.Layout.minimumHeight : root.width) : root.height) - Layout.bottomMargin - Layout.topMargin

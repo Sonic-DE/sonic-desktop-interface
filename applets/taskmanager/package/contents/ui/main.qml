@@ -46,7 +46,7 @@ MouseArea {
 
     Plasmoid.preferredRepresentation: Plasmoid.fullRepresentation
 
-    Plasmoid.constraintHints: PlasmaCore.Types.CanFillArea
+    Plasmoid.constraintHints: PlasmaCore.Types.MarginAreasSeparator
 
     Plasmoid.onUserConfiguringChanged: {
         if (plasmoid.userConfiguring) {

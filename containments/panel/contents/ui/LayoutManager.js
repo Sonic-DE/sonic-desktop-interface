@@ -76,6 +76,7 @@ function removeApplet (applet) {
             child.destroy();
         }
     }
+    updateMargins();
 }
 
 //insert item2 before item1
@@ -103,6 +104,7 @@ function insertBefore(item1, item2) {
     for (var j = removed.length - 1; j >= 0; --j) {
         removed[j].parent = layout;
     }
+    updateMargins();
     return i;
 }
 
@@ -136,6 +138,7 @@ function insertAfter(item1, item2) {
     for (var j = removed.length - 1; j >= 0; --j) {
         removed[j].parent = layout;
     }
+    updateMargins();
     return i;
 }
 
@@ -161,6 +164,7 @@ function insertAtIndex(item, position) {
     for (var i in removedItems) {
         removedItems[i].parent = layout;
     }
+    updateMargins();
 }
 
 function insertAtCoordinates(item, x, y) {
@@ -200,11 +204,25 @@ function insertAtCoordinates(item, x, y) {
     }
     item.parent = root;
 
+	var i;
     //PlasmaCore.Types.Vertical = 3
     if ((plasmoid.formFactor === 3 && y < child.y + child.height/2) ||
         (plasmoid.formFactor !== 3 && x < child.x + child.width/2)) {
         return insertBefore(child, item);
     } else {
         return insertAfter(child, item);
+    }
+}
+
+function updateMargins() {
+    var inSlimArea = false;
+    for (var i = 0; i < layout.children.length; ++i) {
+        var child = layout.children[i];
+        if (child.applet) {
+            child.inSlimArea = inSlimArea;
+            if (child.applet.constraintHints & PlasmaCore.Types.MarginAreasSeparator) {
+                inSlimArea = !inSlimArea;
+            }
+        }
     }
 }
