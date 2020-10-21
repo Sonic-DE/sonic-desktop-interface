@@ -61,8 +61,8 @@ CustomConfigDialogManager::CustomConfigDialogManager(QWidget *parent,
         }
 
         QStringList choiceList;
-        const auto choicesList = asEnum->choices();
-        for (const auto &choice : choicesList) {
+        const auto asEnumChoices = asEnum->choices();
+        for (const auto &choice : asEnumChoices) {
             choiceList.append(!choice.label.isEmpty() ? choice.label : choice.name);
         }
 
