@@ -58,6 +58,7 @@ function restore() {
 }
 
 function save() {
+    updateMargins();
     var ids = new Array();
     for (var i = 0; i < layout.children.length; ++i) {
         var child = layout.children[i];
@@ -104,7 +105,6 @@ function insertBefore(item1, item2) {
     for (var j = removed.length - 1; j >= 0; --j) {
         removed[j].parent = layout;
     }
-    updateMargins();
     return i;
 }
 
@@ -138,7 +138,6 @@ function insertAfter(item1, item2) {
     for (var j = removed.length - 1; j >= 0; --j) {
         removed[j].parent = layout;
     }
-    updateMargins();
     return i;
 }
 
@@ -164,7 +163,6 @@ function insertAtIndex(item, position) {
     for (var i in removedItems) {
         removedItems[i].parent = layout;
     }
-    updateMargins();
 }
 
 function insertAtCoordinates(item, x, y) {
@@ -220,7 +218,7 @@ function updateMargins() {
         var child = layout.children[i];
         if (child.applet) {
             child.inSlimArea = inSlimArea;
-            if (child.applet.constraintHints & PlasmaCore.Types.MarginAreasSeparator) {
+            if ((child.applet.constraintHints & PlasmaCore.Types.MarginAreasSeparator) == PlasmaCore.Types.MarginAreasSeparator) {
                 inSlimArea = !inSlimArea;
             }
         }

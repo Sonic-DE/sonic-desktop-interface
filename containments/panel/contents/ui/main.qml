@@ -98,6 +98,7 @@ function addApplet(applet, x, y) {
     if (dndSpacer.parent === currentLayout) {
         LayoutManager.insertBefore(dndSpacer, container);
         dndSpacer.parent = root;
+        LayoutManager.updateMargins();
         return;
 
     // If the provided position is valid, use it.
@@ -135,6 +136,7 @@ function addApplet(applet, x, y) {
         //event compress the enable of animations
         startupTimer.restart();
     }
+    LayoutManager.updateMargins();
 }
 
 
@@ -191,7 +193,7 @@ function checkLastSpacer() {
     }
 
     onDragMove: {
-        LayoutManager.insertAtCoordinates(dndSpacer, event.x, event.y)
+        LayoutManager.insertAtCoordinates(dndSpacer, event.x, event.y);
     }
 
     onDragLeave: {
@@ -211,13 +213,11 @@ function checkLastSpacer() {
 
     Containment.onAppletAdded: {
         addApplet(applet, x, y);
-        checkLastSpacer();
         LayoutManager.save();
     }
 
     Containment.onAppletRemoved: {
         LayoutManager.removeApplet(applet);
-        checkLastSpacer();
         LayoutManager.save();
     }
 
@@ -253,7 +253,10 @@ function checkLastSpacer() {
     }
 
     Plasmoid.onFormFactorChanged: containmentSizeSyncTimer.restart();
-    Containment.onEditModeChanged: containmentSizeSyncTimer.restart();
+    Containment.onEditModeChanged: {
+        containmentSizeSyncTimer.restart();
+        marginHighlight.requestPaint();
+    }
 
     onToolBoxChanged: {
         containmentSizeSyncTimer.restart();
@@ -291,16 +294,23 @@ function checkLastSpacer() {
                 }
             }
 
-            //Margins are either the size of the margins in the SVG, unless that prevents the panel from being at least half a smallMedium icon + smallSpace) tall at which point we set the margin to whatever allows it to be that...or if it still won't fit, 1.
-            //TODO rewrite this sh!t
-            //the size a margin should be to force a panel to be the required size above
-            readonly property real spacingAtMinSize: Math.max(1, (currentLayout.isLayoutHorizontal ? root.height+panelSvg.fixedMargins.top*2 : root.width+panelSvg.fixedMargins.left*2) - units.iconSizes.smallMedium - units.smallSpacing*2)/2
-            readonly property bool fillArea: applet && (applet.constraintHints & PlasmaCore.Types.CanFillArea)
+            function getMargins(side) {
+                //Margins are either the size of the margins in the SVG, unless that prevents the panel from being at least half a smallMedium icon + smallSpace) tall at which point we set the margin to whatever allows it to be that...or if it still won't fit, 1.
+                var layout = {
+                    top: 'isLayoutHorizontal', bottom: 'isLayoutHorizontal',
+                    left: 'isLayoutVertical', right: 'isLayoutVertical'
+                };
+                var panelHeight = root.height+panelSvg.fixedMargins.top*2;
+                var panelWidth = root.width+panelSvg.fixedMargins.left*2;
+                var spacingAtMinSize = Math.max(1, (currentLayout.isLayoutHorizontal ? panelHeight : panelWidth ) - units.iconSizes.smallMedium - units.smallSpacing*2)/2;
+                var fillArea = applet && (applet.constraintHints & PlasmaCore.Types.CanFillArea);
+                return (currentLayout[layout[side]] && !fillArea) ?Math.round(Math.min(spacingAtMinSize, (inSlimArea ? slimPanelSvg.fixedMargins[side] : panelSvg.fixedMargins[side]))) : 0;
+            }
 
-            Layout.topMargin: (currentLayout.isLayoutHorizontal && !fillArea) ?Math.round(Math.min(spacingAtMinSize, (inSlimArea ? slimPanelSvg.fixedMargins.top : panelSvg.fixedMargins.top))) : 0
-            Layout.bottomMargin: (currentLayout.isLayoutHorizontal && !fillArea) ? Math.round(Math.min(spacingAtMinSize, (inSlimArea ? slimPanelSvg.fixedMargins.bottom : panelSvg.fixedMargins.bottom))) : 0
-            Layout.leftMargin: (!currentLayout.isLayoutHorizontal && !fillArea) ? Math.round(Math.min(spacingAtMinSize, (inSlimArea ? slimPanelSvg.fixedMargins.left : panelSvg.fixedMargins.left))) : 0
-            Layout.rightMargin: (!currentLayout.isLayoutHorizontal && !fillArea) ? Math.round(Math.min(spacingAtMinSize, (inSlimArea ? slimPanelSvg.fixedMargins.right : panelSvg.fixedMargins.right))) : 0
+            Layout.topMargin: getMargins('top')
+            Layout.bottomMargin: getMargins('bottom')
+            Layout.leftMargin: getMargins('left')
+            Layout.rightMargin: getMargins('right')
 
             Layout.minimumWidth: (currentLayout.isLayoutHorizontal ? (applet && applet.Layout.minimumWidth > 0 ? applet.Layout.minimumWidth : root.height) : root.width) - Layout.leftMargin - Layout.rightMargin
             Layout.minimumHeight: (!currentLayout.isLayoutHorizontal ? (applet && applet.Layout.minimumHeight > 0 ? applet.Layout.minimumHeight : root.width) : root.height) - Layout.bottomMargin - Layout.topMargin
@@ -384,6 +394,41 @@ function checkLastSpacer() {
         topMargin: currentLayout.isLayoutHorizontal ? 0 : panelSvg.fixedMargins.top
         bottomMargin: currentLayout.isLayoutHorizontal ? 0 : panelSvg.fixedMargins.bottom
     }
+
+    /*Canvas{
+        id: marginHighlight
+        anchors.fill: parent
+        opacity: 0.4
+
+        onPaint: {
+            var context = getContext("2d");
+            // the fill color
+            context.fillStyle = "#0000ff";
+            var x = 0;
+
+            // the triangle
+            context.beginPath();
+            context.moveTo(0, 0);
+            var inSlimArea = false;
+            var child;
+            for (var i = 0; i < LayoutManager.layout.children.length; ++i) {
+                child = LayoutManager.layout.children[i];
+                x += child.width;
+                if (child.applet) {
+                    context.lineTo(child.x-1, 2)
+                    context.lineTo(child.x, 40)
+                    context.lineTo(child.x+1, 2)
+                    if (child.applet.constraintHints & PlasmaCore.Types.MarginAreasSeparator) {
+                        inSlimArea = !inSlimArea;
+                    }
+                }
+            }
+            context.lineTo(parent.width, 2);
+            context.lineTo(parent.width, 0)
+            context.closePath();
+            context.fill();
+        }
+    }*/
 
     Item {
         id: lastSpacer
