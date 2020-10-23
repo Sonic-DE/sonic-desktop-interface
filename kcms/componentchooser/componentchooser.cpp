@@ -102,7 +102,7 @@ void ComponentChooser::select(int index)
         dialog->setSaveNewApplications(true);
         dialog->setAttribute(Qt::WA_DeleteOnClose);
         connect(dialog, &KOpenWithDialog::finished, this, [this, dialog] (int result) {
-            if(result != QDialog::Accepted) {
+            if (result != QDialog::Accepted) {
                 Q_EMIT indexChanged();
                 return;
             }
