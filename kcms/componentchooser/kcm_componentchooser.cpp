@@ -34,7 +34,7 @@ K_PLUGIN_CLASS_WITH_JSON(KcmComponentChooser, "metadata.json")
 KcmComponentChooser::KcmComponentChooser(QObject *parent, const QVariantList &args)
     : KQuickAddons::ManagedConfigModule(parent, args)
 {
-    KAboutData *aboutData = new KAboutData("kcm_componentchooser", i18nc("@title", "Standard Applications"), "1.0", QLatin1String(""), KAboutLicense::LicenseKey::GPL_V2);
+    KAboutData *aboutData = new KAboutData("kcm_componentchooser", i18nc("@title", "Default Applications"), "1.0", QLatin1String(""), KAboutLicense::LicenseKey::GPL_V2);
 
     aboutData->addAuthor(i18n("Joseph Wenninger"), QString(), QStringLiteral("jowenn@kde.org"));
     aboutData->addAuthor(i18n("Méven Car"), QString(), QStringLiteral("meven.car@kdemail.net"));
