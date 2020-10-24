@@ -10,5 +10,5 @@ X-KDE-FormFactors=desktop,handset,tablet,mediacenter
 X-Plasma-MainScript=ui/main.qml
 X-KDE-System-Settings-Parent-Category=applications
 X-KDE-ParentApp=kcontrol
-X-KDE-Keywords=default applications,components,component chooser,resources,e-mail,email client,text editor,instant messenger,terminal emulator,web browser,URL,hyperlinks
+X-KDE-Keywords=default applications,components,component chooser,resources,web browser,browser,internet,file manager,dolphin,email,e-mail,email client,terminal,terminal emulator,konsole
 
