@@ -25,6 +25,8 @@
 
 #include <optional>
 
+#include <KLocalizedString>
+
 class ComponentChooser : public QObject
 {
     Q_OBJECT
@@ -33,7 +35,7 @@ class ComponentChooser : public QObject
 
 public:
 
-    ComponentChooser(QObject *parent, const QString &mimeType, const QString &type, const QString &defaultApplication);
+    ComponentChooser(QObject *parent, const QString &mimeType, const QString &type, const QString &defaultApplication, const QString &dialogText);
 
     void defaults();
     virtual void load();
@@ -59,6 +61,7 @@ protected:
     QString m_type;
     QString m_defaultApplication;
     QString m_previousApplication;
+    QString m_dialogText;
 };
 
 #endif

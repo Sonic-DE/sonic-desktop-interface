@@ -31,11 +31,12 @@
 #include <KService>
 #include <KSharedConfig>
 
-ComponentChooser::ComponentChooser(QObject *parent, const QString &mimeType, const QString &type, const QString &defaultApplication)
+ComponentChooser::ComponentChooser(QObject *parent, const QString &mimeType, const QString &type, const QString &defaultApplication, const QString &dialogText)
     : QObject(parent)
     , m_mimeType(mimeType)
     , m_type(type)
     , m_defaultApplication(defaultApplication)
+    , m_dialogText(dialogText)
 {
 }
 
@@ -101,7 +102,7 @@ void ComponentChooser::select(int index)
         return;
     }
     if (index == m_applications.length() - 1) {
-        KOpenWithDialog *dialog = new KOpenWithDialog(m_mimeType, QString());
+        KOpenWithDialog *dialog = new KOpenWithDialog(QList<QUrl>(), m_mimeType, m_dialogText, QLatin1String(""));
         dialog->setSaveNewApplications(true);
         dialog->setAttribute(Qt::WA_DeleteOnClose);
         connect(dialog, &KOpenWithDialog::finished, this, [this, dialog] (int result) {

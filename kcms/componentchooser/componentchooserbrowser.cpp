@@ -24,7 +24,7 @@
 #include "browser_settings.h"
 
 ComponentChooserBrowser::ComponentChooserBrowser(QObject *parent)
-    : ComponentChooser(parent, QStringLiteral("x-scheme-handler/http"), QStringLiteral("WebBrowser"), QStringLiteral("org.kde.falkon.desktop"))
+    : ComponentChooser(parent, QStringLiteral("x-scheme-handler/http"), QStringLiteral("WebBrowser"), QStringLiteral("org.kde.falkon.desktop"), i18n("Select default browser"))
 {
 }
 
