@@ -137,6 +137,7 @@ Kirigami.AbstractListItem {
                             KeySequenceItem {
                                 keySequence: modelData
                                 showClearButton: false
+                                multiKeyShortcutsAllowed: kcm.filteredModel.data(dm.rootIndex, Private.BaseModel.SectionRole) == i18n("Common Actions")
                                 checkForConflictsAgainst: ShortcutType.None
                                 onCaptureFinished: {
                                     kcm.requestKeySequence(this, originalIndex, keySequence, modelData)
@@ -178,6 +179,7 @@ Kirigami.AbstractListItem {
                             signal finished
                             KeySequenceItem {
                                 showClearButton: false
+                                multiKeyShortcutsAllowed: kcm.filteredModel.data(dm.rootIndex, Private.BaseModel.SectionRole) == i18n("Common Actions")
                                 checkForConflictsAgainst: ShortcutType.None
                                 onCaptureFinished: {
                                     kcm.requestKeySequence(this, originalIndex, keySequence)
