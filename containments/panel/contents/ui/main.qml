@@ -66,6 +66,7 @@ DragDrop.DropArea {
         prefix: 'slim'
         imagePath: "widgets/panel-background"
     }
+    property var marginHighlightSvg: PlasmaCore.Svg{imagePath: "widgets/margins-highlight"}
 
 //END properties
 
@@ -167,6 +168,7 @@ function checkLastSpacer() {
         LayoutManager.root = root;
         LayoutManager.layout = currentLayout;
         LayoutManager.lastSpacer = lastSpacer;
+        LayoutManager.marginHighlights = [];
         LayoutManager.restore();
         containmentSizeSyncTimer.restart();
 
@@ -253,10 +255,7 @@ function checkLastSpacer() {
     }
 
     Plasmoid.onFormFactorChanged: containmentSizeSyncTimer.restart();
-    Containment.onEditModeChanged: {
-        containmentSizeSyncTimer.restart();
-        marginHighlight.requestPaint();
-    }
+    Containment.onEditModeChanged: containmentSizeSyncTimer.restart();
 
     onToolBoxChanged: {
         containmentSizeSyncTimer.restart();
@@ -384,51 +383,117 @@ function checkLastSpacer() {
             }
         }
     }
+    Component {
+        id: rectHighlightEl
+        Item {
+            visible: plasmoid.editMode
+            property Item startApplet
+            property Item endApplet
+            property bool slimArea
+
+            component HighlightPart: Item {
+                property bool topSide
+                property string part
+                // I don't know if the panel is vertical or horizontal, so I'll use panel
+                // (w) width and (h) height as a (w, h) coordinate system, defining two helper
+                // functions to switch between it and cartesian (x, y).
+                property bool horizontal: plasmoid.formFactor === PlasmaCore.Types.Horizontal
+                property int mod: topSide ? 1 : -1
+                property string svgSide: horizontal ? (topSide ? 'top' : 'bottom') : (topSide ? 'left' : 'right')
+                // Panel To Cartesian
+                property var ptc: ({
+                    w: horizontal ? 'x' : 'y', width: horizontal ? 'width' : 'height',
+                    h: horizontal ? 'y' : 'x', height: horizontal ? 'height' : 'width'
+                })
+                // Cartesian to Panel
+                property var ctp: ({
+                    x: horizontal ? 'w' : 'h', width: horizontal ? 'width' : 'height',
+                    y: horizontal ? 'h' : 'w', height: horizontal ? 'height' : 'width'
+                })
+                property var positions: ({
+                    fill: {
+                        w: startApplet ? (startApplet[ptc.w] + startApplet[ptc.width]) : 0,
+                        get width() {return positions.step.w - positions.fill.w},
+                        get h() {return topSide ? 0 : root[ptc.height]-this.height},
+                        height: (slimArea ? slimPanelSvg : panelSvg).fixedMargins[svgSide],
+                        elementId: 'fill', visible: true
+                    },
+                    step: {
+                        w: endApplet ? endApplet[ptc.w] : root[ptc.width],
+                        width: endApplet ? endApplet[ptc.width] : 0,
+                        get h() {return (topSide ? 0 : root[ptc.height]-this.height)+mod*panelSvg.fixedMargins[svgSide]},
+                        height: slimPanelSvg.fixedMargins[svgSide] - panelSvg.fixedMargins[svgSide],
+                        elementId: ((horizontal ? topSide : slimArea) ? 'top' : 'bottom') + ((horizontal ? slimArea : topSide) ? "left" : "right"),
+                        visible: endApplet
+                    },
+                    filledstep: {
+                        get w() {return positions.step.w},
+                        get width() {return positions.step.width},
+                        get h() {return topSide ? 0 : root[ptc.height]-this.height},
+                        height: panelSvg.fixedMargins[svgSide],
+                        elementId: 'fill', visible: endApplet
+                    }
+                })
+                PlasmaCore.SvgItem {
+                    svg: marginHighlightSvg
+                    elementId: positions[part].elementId
+                    x: positions[part][ctp.x]
+                    y: positions[part][ctp.y]
+                    width: positions[part][ctp.width]
+                    height: positions[part][ctp.height]
+                    visible: positions[part].elementId
+                }
+            }
+            HighlightPart{topSide: true; part: 'fill'}
+            HighlightPart{topSide: true; part: 'step'}
+            HighlightPart{topSide: true; part: 'filledstep'}
+            HighlightPart{topSide: false; part: 'fill'}
+            HighlightPart{topSide: false; part: 'step'}
+            HighlightPart{topSide: false; part: 'filledstep'}
+        }
+    }
 //END components
 
 //BEGIN UI elements
 
     anchors {
-        leftMargin: currentLayout.isLayoutHorizontal ? panelSvg.fixedMargins.left : 0
-        rightMargin: currentLayout.isLayoutHorizontal ? panelSvg.fixedMargins.right : 0
-        topMargin: currentLayout.isLayoutHorizontal ? 0 : panelSvg.fixedMargins.top
-        bottomMargin: currentLayout.isLayoutHorizontal ? 0 : panelSvg.fixedMargins.bottom
+        leftMargin: isHorizontal ? panelSvg.fixedMargins.left : 0
+        rightMargin: isHorizontal ? panelSvg.fixedMargins.right : 0
+        topMargin: isHorizontal ? 0 : panelSvg.fixedMargins.top
+        bottomMargin: isHorizontal ? 0 : panelSvg.fixedMargins.bottom
     }
 
-    /*Canvas{
-        id: marginHighlight
-        anchors.fill: parent
-        opacity: 0.4
-
-        onPaint: {
-            var context = getContext("2d");
-            // the fill color
-            context.fillStyle = "#0000ff";
-            var x = 0;
-
-            // the triangle
-            context.beginPath();
-            context.moveTo(0, 0);
-            var inSlimArea = false;
-            var child;
-            for (var i = 0; i < LayoutManager.layout.children.length; ++i) {
-                child = LayoutManager.layout.children[i];
-                x += child.width;
-                if (child.applet) {
-                    context.lineTo(child.x-1, 2)
-                    context.lineTo(child.x, 40)
-                    context.lineTo(child.x+1, 2)
-                    if (child.applet.constraintHints & PlasmaCore.Types.MarginAreasSeparator) {
-                        inSlimArea = !inSlimArea;
-                    }
-                }
-            }
-            context.lineTo(parent.width, 2);
-            context.lineTo(parent.width, 0)
-            context.closePath();
-            context.fill();
+    // Left and right margins
+    PlasmaCore.SvgItem {
+        anchors {
+            top: parent.top
+            left: parent.left
+            bottom: isHorizontal ? parent.bottom : undefined
+            right: isHorizontal ? undefined : parent.right
+            leftMargin: isHorizontal ? -root.anchors.leftMargin : 0
+            topMargin: isHorizontal ? 0 : -root.anchors.topMargin
         }
-    }*/
+        visible: plasmoid.editMode
+        width: isHorizontal ? root.anchors.leftMargin : undefined
+        height: isHorizontal ? undefined : root.anchors.topMargin
+        svg: marginHighlightSvg
+        elementId: "fill"
+    }
+    PlasmaCore.SvgItem {
+        anchors {
+            top: isHorizontal ? parent.top : undefined
+            left: isHorizontal ? undefined : parent.left
+            right: parent.right
+            bottom: parent.bottom
+            rightMargin: isHorizontal ? -root.anchors.rightMargin : 0
+            bottomMargin: isHorizontal ? 0 : -root.anchors.bottomMargin
+        }
+        visible: plasmoid.editMode
+        width: isHorizontal ? root.anchors.rightMargin : undefined
+        height: isHorizontal ? undefined : root.anchors.bottomMargin
+        svg: marginHighlightSvg
+        elementId: "fill"
+    }
 
     Item {
         id: lastSpacer
@@ -457,8 +522,8 @@ function checkLastSpacer() {
     GridLayout {
         id: currentLayout
         property bool isLayoutHorizontal
-        rowSpacing: PlasmaCore.Units.smallSpacing
-        columnSpacing: PlasmaCore.Units.smallSpacing
+        rowSpacing: 0//PlasmaCore.Units.smallSpacing
+        columnSpacing: 0//PlasmaCore.Units.smallSpacing
 
         Layout.preferredWidth: {
             var width = 0;

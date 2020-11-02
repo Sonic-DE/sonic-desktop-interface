@@ -21,6 +21,7 @@ var layout;
 var root;
 var plasmoid;
 var lastSpacer;
+var marginHighlights;
 
 
 function restore() {
@@ -58,7 +59,6 @@ function restore() {
 }
 
 function save() {
-    updateMargins();
     var ids = new Array();
     for (var i = 0; i < layout.children.length; ++i) {
         var child = layout.children[i];
@@ -68,16 +68,19 @@ function save() {
         }
     }
     plasmoid.configuration.AppletOrder = ids.join(';');
+    updateMargins();
 }
 
 function removeApplet (applet) {
     for (var i = layout.children.length - 1; i >= 0; --i) {
         var child = layout.children[i];
         if (child.applet === applet) {
+            // This makes sure the child is not in the layout.children anymore
+            // even while it's being destroyed.
+            child.parent = root;
             child.destroy();
         }
     }
-    updateMargins();
 }
 
 //insert item2 before item1
@@ -213,14 +216,34 @@ function insertAtCoordinates(item, x, y) {
 }
 
 function updateMargins() {
+    for (var i = 0; i < marginHighlights.length; ++i) {
+        marginHighlights[i].destroy();
+    }
+    marginHighlights = [];
+
     var inSlimArea = false;
+    var startApplet = undefined;
     for (var i = 0; i < layout.children.length; ++i) {
         var child = layout.children[i];
+        if (child.dragging) {child = child.dragging}
         if (child.applet) {
             child.inSlimArea = inSlimArea;
             if ((child.applet.constraintHints & PlasmaCore.Types.MarginAreasSeparator) == PlasmaCore.Types.MarginAreasSeparator) {
+                var marginRect = rectHighlightEl.createObject(root, {
+                    startApplet: startApplet,
+                    endApplet: child,
+                    slimArea: inSlimArea
+                });
+                marginHighlights.push(marginRect);
+                var startApplet = child;
                 inSlimArea = !inSlimArea;
             }
         }
     }
+    var marginRect = rectHighlightEl.createObject(root, {
+        startApplet: startApplet,
+        endApplet: undefined,
+        slimArea: inSlimArea
+    });
+    marginHighlights.push(marginRect);
 }
