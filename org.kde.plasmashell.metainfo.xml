@@ -51,7 +51,7 @@
   <summary>KDE's complete desktop experience. Simple by default, powerful when needed</summary>
   <summary xml:lang="ast">La esperiencia d'escritoriu completa de KDE. Cenciellu por defeutu, potente cuando se precisa</summary>
   <summary xml:lang="az">Tam KDE İş Masası. Başlanğıcda sadə görünsə də lazım gəldikdə çox güclüdür</summary>
-  <summary xml:lang="ca">Experiència completa de l'escriptori KDE. Senzilla per omissió, potent quan cal</summary>
+  <summary xml:lang="ca">Experiència completa de l'escriptori KDE. Senzill de manera predeterminada, potent quan cal</summary>
   <summary xml:lang="ca-valencia">Experiència completa de l'escriptori KDE. Senzilla per defecte, potent quan cal</summary>
   <summary xml:lang="cs">Úplné grafické prostředí KDE. Jednoduché, ale mocné</summary>
   <summary xml:lang="da">KDE's komplette desktop-oplevelse. Simpelt som standard, kraftfuldt når det behøves</summary>
@@ -143,9 +143,9 @@
     </screenshot>
   </screenshots>
   <releases>
+    <release version="5.20.2" date="2020-10-27"/>
+    <release version="5.20.1" date="2020-10-20"/>
     <release version="5.20.0" date="2020-10-13"/>
     <release version="5.19.90" date="2020-09-22"/>
-    <release version="5.19.90" date="2020-09-22"/>
-    <release version="5.19.5" date="2020-09-01"/>
   </releases>
 </component>
