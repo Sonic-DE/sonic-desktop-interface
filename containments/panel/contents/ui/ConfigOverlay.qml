@@ -377,18 +377,16 @@ MouseArea {
                 spacing: PlasmaCore.Units.smallSpacing
 
                 PlasmaExtras.PlasmoidHeading {
-                    Layout.fillWidth: true
-                    PlasmaExtras.Heading {
+                    implicitWidth: implicitContentWidth + leftPadding + rightPadding
+                    leftPadding: PlasmaCore.Units.smallSpacing * 2
+                    rightPadding: PlasmaCore.Units.smallSpacing * 2
+
+                    contentItem: PlasmaExtras.Heading {
                         id: label
-                        anchors {
-                            leftMargin: PlasmaCore.Units.smallSpacing * 2
-                            rightMargin: PlasmaCore.Units.smallSpacing * 2
-                            left: parent.left
-                            right: parent.right
-                        }
-                        horizontalAlignment: Text.AlignHCenter
                         level: 3
+                        horizontalAlignment: Text.AlignHCenter
                     }
+                }
                 }
                 PlasmaComponents.ToolButton {
                     Layout.fillWidth: true
