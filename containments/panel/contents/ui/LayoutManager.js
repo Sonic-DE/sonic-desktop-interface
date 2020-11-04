@@ -221,29 +221,29 @@ function updateMargins() {
     }
     marginHighlights = [];
 
-    var inSlimArea = false;
+    var inThickArea = false;
     var startApplet = undefined;
     for (var i = 0; i < layout.children.length; ++i) {
         var child = layout.children[i];
         if (child.dragging) {child = child.dragging}
         if (child.applet) {
-            child.inSlimArea = inSlimArea;
+            child.inThickArea = inThickArea;
             if ((child.applet.constraintHints & PlasmaCore.Types.MarginAreasSeparator) == PlasmaCore.Types.MarginAreasSeparator) {
                 var marginRect = rectHighlightEl.createObject(root, {
                     startApplet: startApplet,
                     endApplet: child,
-                    slimArea: inSlimArea
+                    thickArea: inThickArea
                 });
                 marginHighlights.push(marginRect);
                 var startApplet = child;
-                inSlimArea = !inSlimArea;
+                inThickArea = !inThickArea;
             }
         }
     }
     var marginRect = rectHighlightEl.createObject(root, {
         startApplet: startApplet,
         endApplet: undefined,
-        slimArea: inSlimArea
+        thickArea: inThickArea
     });
     marginHighlights.push(marginRect);
 }

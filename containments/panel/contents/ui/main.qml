@@ -52,18 +52,18 @@ DragDrop.DropArea {
 
     // These are invisible and only used to read panel margins
     // Both will fallback to "standard" panel margins if the theme does not
-    // define a normal or a slim margin.
+    // define a normal or a thick margin.
     // TODO accidentally flipped the two
     PlasmaCore.FrameSvgItem {
-        id: slimPanelSvg
+        id: panelSvg
         visible: false
         prefix: 'normal'
         imagePath: "widgets/panel-background"
     }
     PlasmaCore.FrameSvgItem {
-        id: panelSvg
+        id: thickPanelSvg
         visible: false
-        prefix: 'slim'
+        prefix: 'thick'
         imagePath: "widgets/panel-background"
     }
     property var marginHighlightSvg: PlasmaCore.Svg{imagePath: "widgets/margins-highlight"}
@@ -87,7 +87,7 @@ function addApplet(applet, x, y) {
     var container = appletContainerComponent.createObject(root, {
         applet: applet,
         visible: visibleBinding,
-        inSlimArea: false
+        inThickArea: false
     });
 
     applet.parent = container;
@@ -273,7 +273,7 @@ function checkLastSpacer() {
         Loader {
             id: container
             visible: false
-            property bool inSlimArea: false
+            property bool inThickArea: false
             property bool animationsEnabled: true
 
             //when the applet moves caused by its resize, don't animate.
@@ -303,7 +303,7 @@ function checkLastSpacer() {
                 var panelWidth = root.width+panelSvg.fixedMargins.left*2;
                 var spacingAtMinSize = Math.max(1, (currentLayout.isLayoutHorizontal ? panelHeight : panelWidth ) - units.iconSizes.smallMedium - units.smallSpacing*2)/2;
                 var fillArea = applet && (applet.constraintHints & PlasmaCore.Types.CanFillArea);
-                return (currentLayout[layout[side]] && !fillArea) ?Math.round(Math.min(spacingAtMinSize, (inSlimArea ? slimPanelSvg.fixedMargins[side] : panelSvg.fixedMargins[side]))) : 0;
+                return (currentLayout[layout[side]] && !fillArea) ?Math.round(Math.min(spacingAtMinSize, (inThickArea ? thickPanelSvg.fixedMargins[side] : panelSvg.fixedMargins[side]))) : 0;
             }
 
             Layout.topMargin: getMargins('top')
@@ -389,7 +389,7 @@ function checkLastSpacer() {
             visible: plasmoid.editMode
             property Item startApplet
             property Item endApplet
-            property bool slimArea
+            property bool thickArea
 
             component HighlightPart: Item {
                 property bool topSide
@@ -415,15 +415,15 @@ function checkLastSpacer() {
                         w: startApplet ? (startApplet[ptc.w] + startApplet[ptc.width]) : 0,
                         get width() {return positions.step.w - positions.fill.w},
                         get h() {return topSide ? 0 : root[ptc.height]-this.height},
-                        height: (slimArea ? slimPanelSvg : panelSvg).fixedMargins[svgSide],
+                        height: (thickArea ? thickPanelSvg : panelSvg).fixedMargins[svgSide],
                         elementId: 'fill', visible: true
                     },
                     step: {
                         w: endApplet ? endApplet[ptc.w] : root[ptc.width],
                         width: endApplet ? endApplet[ptc.width] : 0,
                         get h() {return (topSide ? 0 : root[ptc.height]-this.height)+mod*panelSvg.fixedMargins[svgSide]},
-                        height: slimPanelSvg.fixedMargins[svgSide] - panelSvg.fixedMargins[svgSide],
-                        elementId: ((horizontal ? topSide : slimArea) ? 'top' : 'bottom') + ((horizontal ? slimArea : topSide) ? "left" : "right"),
+                        height: thickPanelSvg.fixedMargins[svgSide] - panelSvg.fixedMargins[svgSide],
+                        elementId: ((horizontal ? topSide : thickArea) ? 'top' : 'bottom') + ((horizontal ? thickArea : topSide) ? "left" : "right"),
                         visible: endApplet
                     },
                     filledstep: {
@@ -522,8 +522,8 @@ function checkLastSpacer() {
     GridLayout {
         id: currentLayout
         property bool isLayoutHorizontal
-        rowSpacing: 0//PlasmaCore.Units.smallSpacing
-        columnSpacing: 0//PlasmaCore.Units.smallSpacing
+        rowSpacing: PlasmaCore.Units.smallSpacing
+        columnSpacing: PlasmaCore.Units.smallSpacing
 
         Layout.preferredWidth: {
             var width = 0;
