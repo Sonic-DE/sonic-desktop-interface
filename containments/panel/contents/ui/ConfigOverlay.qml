@@ -377,7 +377,6 @@ MouseArea {
                 spacing: PlasmaCore.Units.smallSpacing
 
                 PlasmaExtras.PlasmoidHeading {
-                    implicitWidth: implicitContentWidth + leftPadding + rightPadding
                     leftPadding: PlasmaCore.Units.smallSpacing * 2
                     rightPadding: PlasmaCore.Units.smallSpacing * 2
 
