@@ -66,6 +66,7 @@ DragDrop.DropArea {
         prefix: 'thick'
         imagePath: "widgets/panel-background"
     }
+    property bool marginAreasEnabled: panelSvg.margins != thickPanelSvg.margins
     property var marginHighlightSvg: PlasmaCore.Svg{imagePath: "widgets/margins-highlight"}
 
 //END properties
@@ -386,7 +387,7 @@ function checkLastSpacer() {
     Component {
         id: rectHighlightEl
         Item {
-            visible: plasmoid.editMode
+            visible: plasmoid.editMode && marginAreasEnabled
             property Item startApplet
             property Item endApplet
             property bool thickArea
@@ -412,14 +413,14 @@ function checkLastSpacer() {
                 })
                 property var positions: ({
                     fill: {
-                        w: startApplet ? (startApplet[ptc.w] + startApplet[ptc.width]) : 0,
+                        w: startApplet ? (startApplet[ptc.w] + startApplet[ptc.width]) : -panelSvg.margins[horizontal ? 'left' : 'top'],
                         get width() {return positions.step.w - positions.fill.w},
                         get h() {return topSide ? 0 : root[ptc.height]-this.height},
                         height: (thickArea ? thickPanelSvg : panelSvg).fixedMargins[svgSide],
                         elementId: 'fill', visible: true
                     },
                     step: {
-                        w: endApplet ? endApplet[ptc.w] : root[ptc.width],
+                        w: endApplet ? endApplet[ptc.w] : root[ptc.width] + panelSvg.margins[horizontal ? 'right' : 'bottom'],
                         width: endApplet ? endApplet[ptc.width] : 0,
                         get h() {return (topSide ? 0 : root[ptc.height]-this.height)+mod*panelSvg.fixedMargins[svgSide]},
                         height: thickPanelSvg.fixedMargins[svgSide] - panelSvg.fixedMargins[svgSide],
@@ -461,38 +462,6 @@ function checkLastSpacer() {
         rightMargin: isHorizontal ? panelSvg.fixedMargins.right : 0
         topMargin: isHorizontal ? 0 : panelSvg.fixedMargins.top
         bottomMargin: isHorizontal ? 0 : panelSvg.fixedMargins.bottom
-    }
-
-    // Left and right margins
-    PlasmaCore.SvgItem {
-        anchors {
-            top: parent.top
-            left: parent.left
-            bottom: isHorizontal ? parent.bottom : undefined
-            right: isHorizontal ? undefined : parent.right
-            leftMargin: isHorizontal ? -root.anchors.leftMargin : 0
-            topMargin: isHorizontal ? 0 : -root.anchors.topMargin
-        }
-        visible: plasmoid.editMode
-        width: isHorizontal ? root.anchors.leftMargin : undefined
-        height: isHorizontal ? undefined : root.anchors.topMargin
-        svg: marginHighlightSvg
-        elementId: "fill"
-    }
-    PlasmaCore.SvgItem {
-        anchors {
-            top: isHorizontal ? parent.top : undefined
-            left: isHorizontal ? undefined : parent.left
-            right: parent.right
-            bottom: parent.bottom
-            rightMargin: isHorizontal ? -root.anchors.rightMargin : 0
-            bottomMargin: isHorizontal ? 0 : -root.anchors.bottomMargin
-        }
-        visible: plasmoid.editMode
-        width: isHorizontal ? root.anchors.rightMargin : undefined
-        height: isHorizontal ? undefined : root.anchors.bottomMargin
-        svg: marginHighlightSvg
-        elementId: "fill"
     }
 
     Item {
