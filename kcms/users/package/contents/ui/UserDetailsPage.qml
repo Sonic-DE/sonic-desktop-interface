@@ -131,6 +131,7 @@ SimpleKCM {
                 Kirigami.Avatar {
                     source: usersDetailPage.user.face
                     name: user.realName
+                    cache: false // user picture path doesn't change after updating
                     anchors {
                         fill: parent
                         margins: Kirigami.Units.smallSpacing
