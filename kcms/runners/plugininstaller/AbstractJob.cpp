@@ -50,15 +50,12 @@ void AbstractJob::runScriptInTerminal(const QString &script, const QString &pwd)
     });
 }
 
-QString AbstractJob::terminalCloseMessage(Operation operation)
+QString AbstractJob::terminalCloseMessage(bool install)
 {
-    switch (operation) {
-    case Operation::Install:
+    if (install) {
         return i18nc("@info", "Installation executed successfully, you may now close this window");
-    case Operation::Uninstall:
+    } else {
         return i18nc("@info", "Uninstallation executed successfully, you may now close this window");
-    default:
-        return i18nc("@info", "Script executed successfully, you may now close this window");
     }
 }
 

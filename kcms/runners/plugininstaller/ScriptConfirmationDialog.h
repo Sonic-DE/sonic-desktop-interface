@@ -16,7 +16,7 @@
 class ScriptConfirmationDialog : public QDialog
 {
 public:
-    ScriptConfirmationDialog(const QString &installerPath, Operation operation, const QString &dir, QWidget *parent = nullptr) : QDialog(parent)
+    ScriptConfirmationDialog(const QString &installerPath, bool install, const QString &dir, QWidget *parent = nullptr) : QDialog(parent)
     {
         const auto readmes = QDir(dir).entryList({QStringLiteral("README*")});
         setWindowTitle(i18nc("@title:window", "Confirm Installation"));
@@ -24,11 +24,11 @@ public:
         const bool noInstaller = installerPath.isEmpty();
         QVBoxLayout *layout = new QVBoxLayout(this);
         QString msg;
-        if (operation == Operation::Uninstall && noInstaller && readmes.isEmpty()) {
+        if (!install && noInstaller && readmes.isEmpty()) {
             msg = xi18nc("@info", "This plugin does not provide an uninstall script. Please contact the author. "
                                   "You can try to uninstall the plugin manually.<nl/>"
                                   "If you do not feel capable or comfortable with this, click <interface>Cancel</interface>  now.");
-        } else if (operation == Operation::Uninstall && noInstaller) {
+        } else if (!install && noInstaller) {
             msg = xi18nc("@info", "This plugin does not provide an uninstallation script. Please contact the author. "
                                   "You can try to uninstall the plugin manually. Please have a look at the README "
                                   "for instructions from the author.<nl/>"
@@ -62,7 +62,7 @@ public:
         connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
 
         QString okText;
-        if (noInstaller && operation == Operation::Uninstall) {
+        if (noInstaller && !install) {
             okText = i18nc("@action:button", "Mark entry as uninstalled");
         } else if (noInstaller) {
             okText = i18nc("@action:button", "Mark entry as installed");

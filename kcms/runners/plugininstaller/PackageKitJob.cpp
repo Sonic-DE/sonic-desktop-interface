@@ -18,14 +18,14 @@
 
 #include "PackageKitConfirmationDialog.h"
 
-void PackageKitJob::executeOperation(const QFileInfo &fileInfo, const QString &mimeType, Operation operation)
+void PackageKitJob::executeOperation(const QFileInfo &fileInfo, const QString &mimeType, bool install)
 {
     if (!supportedPackagekitMimeTypes().contains(mimeType)) {
         Q_EMIT error(i18nc("@info", "The mime type %1 is not supported by the packagekit backend", mimeType));
         return;
     }
 
-    if (operation == Operation::Install) {
+    if (install) {
         PackageKitConfirmationDialog dlg(fileInfo.absoluteFilePath());
         if (dlg.exec() == QDialog::Accepted) {
             packageKitInstall(fileInfo.absoluteFilePath(), mimeType);
@@ -44,7 +44,7 @@ void PackageKitJob::packageKitInstall(const QString &fileName, const QString &mi
         const QString zypperCommand = QStringLiteral("sudo zypper install %1")
             .arg(KShell::quoteArg(fileInfo.absoluteFilePath()));
         const QString command = QStringLiteral("bash -c \"echo %1;%1 && echo %2\"")
-            .arg(zypperCommand, KShell::quoteArg(terminalCloseMessage(Operation::Install)));
+            .arg(zypperCommand, KShell::quoteArg(terminalCloseMessage(true)));
         runScriptInTerminal(command, fileInfo.absolutePath());
     } else {
         PackageKit::Transaction *transaction = PackageKit::Daemon::installFile(fileName, {});

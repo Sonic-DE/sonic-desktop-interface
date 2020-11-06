@@ -54,11 +54,11 @@ int main(int argc, char *argv[])
                                         QStringLiteral("application/x-rpm"),
                                         QStringLiteral("application/x-xz"),
                                         QStringLiteral("application/zstd")};
-    Operation operation;
+    bool install;
     if (cmd == QLatin1String("install")) {
-        operation = Operation::Install;
+        install = true;
     } else if (cmd == QLatin1String("uninstall")) {
-        operation = Operation::Uninstall;
+        install = false;
     } else {
         qWarning() << "Unsupported command" << cmd;
         return 1;
@@ -84,7 +84,7 @@ int main(int argc, char *argv[])
         fail(error);
     }, Qt::QueuedConnection);
 
-    job->executeOperation(fileInfo, mimeType, operation);
+    job->executeOperation(fileInfo, mimeType, install);
 
     return app.exec();
 }

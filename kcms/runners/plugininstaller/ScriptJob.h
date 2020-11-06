@@ -14,10 +14,10 @@ class ScriptJob : public AbstractJob
 Q_OBJECT
 
 public:
-    void executeOperation(const QFileInfo &fileInfo, const QString &mimeType, Operation operation) override;
+    void executeOperation(const QFileInfo &fileInfo, const QString &mimeType, bool install) override;
 
 private:
-    QString formatScriptCommand(Operation operation, const QString &installerPath);
+    QString formatScriptCommand(bool install, const QString &installerPath);
 };
 
 #endif //SCRIPTJOB_H

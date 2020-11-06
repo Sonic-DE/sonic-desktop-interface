@@ -13,9 +13,10 @@
 #include <QDebug>
 #include "ScriptConfirmationDialog.h"
 
-void ScriptJob::executeOperation(const QFileInfo &fileInfo, const QString &mimeType, Operation operation)
+void ScriptJob::executeOperation(const QFileInfo &fileInfo, const QString &mimeType, bool install)
 {
-    const bool install = operation == Operation::Install;
+    Q_UNUSED(mimeType)
+
     QString installerPath;
     const QFileInfoList archiveEntries = fileInfo.absoluteDir().entryInfoList(QDir::Files, QDir::Name);
     const QString scriptPrefix = install ? "install" : "uninstall";
@@ -30,24 +31,24 @@ void ScriptJob::executeOperation(const QFileInfo &fileInfo, const QString &mimeT
     }
     // We want the user to be exactly aware of whats going on
     if (install || installerPath.isEmpty()) {
-        ScriptConfirmationDialog dlg(installerPath, operation, fileInfo.absolutePath());
+        ScriptConfirmationDialog dlg(installerPath, install, fileInfo.absolutePath());
         if (dlg.exec() == QDialog::Accepted) {
             if (installerPath.isEmpty()) {
                 Q_EMIT finished(); // The "Mark entry as installed" button
             } else {
-                runScriptInTerminal(formatScriptCommand(operation, installerPath), fileInfo.absolutePath());
+                runScriptInTerminal(formatScriptCommand(install, installerPath), fileInfo.absolutePath());
             }
         } else {
             Q_EMIT error(QString());
         }
     } else {
-        runScriptInTerminal(formatScriptCommand(operation, installerPath), fileInfo.absolutePath());
+        runScriptInTerminal(formatScriptCommand(install, installerPath), fileInfo.absolutePath());
     }
 }
-QString ScriptJob::formatScriptCommand(Operation operation, const QString &installerPath)
+
+QString ScriptJob::formatScriptCommand(bool install, const QString &installerPath)
 {
     const QString bashCommand = QStringLiteral("echo %1;%1 || $SHELL && echo %2")
-        .arg(KShell::quoteArg(installerPath), KShell::quoteArg(terminalCloseMessage(operation)));
+        .arg(KShell::quoteArg(installerPath), KShell::quoteArg(terminalCloseMessage(install)));
     return QStringLiteral("sh -c %1").arg(KShell::quoteArg(bashCommand));
-
 }

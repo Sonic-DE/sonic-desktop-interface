@@ -16,7 +16,7 @@ class PackageKitJob : public AbstractJob
 Q_OBJECT
 
 public:
-    void executeOperation(const QFileInfo &fileInfo, const QString &mimeType, Operation operation) override;
+    void executeOperation(const QFileInfo &fileInfo, const QString &mimeType, bool install) override;
 
 private:
     QStringList supportedPackagekitMimeTypes();
