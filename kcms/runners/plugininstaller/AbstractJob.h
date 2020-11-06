@@ -11,20 +11,20 @@
 
 class QFileInfo;
 
-enum class Operation {
-    Install,
-    Uninstall
-};
-
 class AbstractJob: public QObject
 {
 Q_OBJECT
 
 public:
-    virtual void executeOperation(const QFileInfo &fileInfo, const QString &mimeType, Operation operation) = 0;
+    /**
+     * @param fileInfo QFileInfo of the file or directory
+     * @param mimeType Mime type of the file
+     * @param install Set to true if the entry should be installed, flase if it should be uninstalled
+     */
+    virtual void executeOperation(const QFileInfo &fileInfo, const QString &mimeType, bool install) = 0;
 
     void runScriptInTerminal(const QString &script, const QString &pwd);
-    QString terminalCloseMessage(Operation operation);
+    QString terminalCloseMessage(bool install);
 
 Q_SIGNALS:
     void finished();
