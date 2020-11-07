@@ -84,16 +84,16 @@ public:
     Q_ENUM(DialogState)
     
     const QList<Finger *> FINGERS = {
-        new Finger("left-thumb", i18n("Left thumb"), this), 
+        new Finger("right-index-finger", i18n("Right index finger"), this),
+        new Finger("right-middle-finger", i18n("Right middle finger"), this),
+        new Finger("right-ring-finger", i18n("Right ring finger"), this),
+        new Finger("right-little-finger", i18n("Right little finger"), this),
+        new Finger("right-thumb", i18n("Right thumb"), this),
         new Finger("left-index-finger", i18n("Left index finger"), this),
         new Finger("left-middle-finger", i18n("Left middle finger"), this),
         new Finger("left-ring-finger", i18n("Left ring finger"), this),
         new Finger("left-little-finger", i18n("Left little finger"), this),
-        new Finger("right-thumb", i18n("Right thumb"), this),
-        new Finger("right-index-finger", i18n("Right index finger"), this),
-        new Finger("right-middle-finger", i18n("Right middle finger"), this),
-        new Finger("right-ring-finger", i18n("Right ring finger"), this),
-        new Finger("right-little-finger", i18n("Right little finger"), this)
+        new Finger("left-thumb", i18n("Left thumb"), this)
     };
     
     Q_INVOKABLE void switchUser(QString username);

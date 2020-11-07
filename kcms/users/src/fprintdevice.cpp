@@ -30,12 +30,12 @@ FprintDevice::FprintDevice(QDBusObjectPath path, QObject* parent)
     connect(m_dbusInterface, &NetReactivatedFprintDeviceInterface::EnrollStatus, this, &FprintDevice::enrollStatus);
 }
 
-QDBusPendingReply<QStringList> FprintDevice::listEnrolledFingers(QString &username)
+QDBusPendingReply<QStringList> FprintDevice::listEnrolledFingers(const QString &username)
 {
     return m_dbusInterface->ListEnrolledFingers(username);
 }
 
-QDBusError FprintDevice::claim(QString &username)
+QDBusError FprintDevice::claim(const QString &username)
 {
     auto reply = m_dbusInterface->Claim(username);
     reply.waitForFinished();
@@ -56,7 +56,7 @@ QDBusError FprintDevice::deleteEnrolledFingers()
     return reply.error();
 }
 
-QDBusError FprintDevice::startEnrolling(QString &finger)
+QDBusError FprintDevice::startEnrolling(const QString &finger)
 {
     auto reply = m_dbusInterface->EnrollStart(finger);
     reply.waitForFinished();

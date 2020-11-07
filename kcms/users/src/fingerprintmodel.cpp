@@ -155,7 +155,7 @@ void FingerprintModel::startEnrolling(QString finger)
     }
 
     setEnrollStage(0);
-    setEnrollFeedback("");
+    setEnrollFeedback({});
     
     // claim device for user
     if (!claimDevice()) {
@@ -271,7 +271,7 @@ QVariantList FingerprintModel::availableFingersToEnroll()
 void FingerprintModel::handleEnrollCompleted()
 {
     setEnrollStage(m_device->numOfEnrollStages());
-    setEnrollFeedback("");
+    setEnrollFeedback({});
     Q_EMIT enrolledFingerprintsChanged();
     Q_EMIT scanComplete();
     
@@ -283,7 +283,7 @@ void FingerprintModel::handleEnrollCompleted()
 void FingerprintModel::handleEnrollStagePassed()
 {
     setEnrollStage(m_enrollStage + 1);
-    setEnrollFeedback("");
+    setEnrollFeedback({});
     Q_EMIT scanSuccess();
     qDebug() << "fingerprint enroll stage pass:" << enrollProgress();
 }
