@@ -25,7 +25,7 @@
 #include <QRadioButton>
 #include <QCheckBox>
 #include <QPushButton>
-
+#include <QtWidgets/QToolButton>
 
 
 class KPluginSelector;
@@ -46,6 +46,9 @@ public Q_SLOTS:
     void load() override;
     void save() override;
     void defaults() override;
+    void configureClearHistoryButton();
+    void deleteHistoryGroup(const QString &key);
+    void deleteAllHistory();
 
 private:
     KPluginSelector *m_pluginSelector;
@@ -54,7 +57,8 @@ private:
     QRadioButton *m_topPositioning;
     QRadioButton *m_freeFloating;
     QCheckBox *m_retainPriorSearch;
-    QPushButton *m_clearHistoryButton;
+    QCheckBox *m_activityAware;
+    QToolButton *m_clearHistoryButton;
     QCheckBox *m_enableHistory;
 };
 
