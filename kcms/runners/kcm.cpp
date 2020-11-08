@@ -28,6 +28,9 @@
 #include <KRunner/RunnerManager>
 #include <KPluginSelector>
 #include <KNS3/Button>
+#include <KActivities/Info>
+#include <KActivities/Consumer>
+
 #include <QApplication>
 #include <QDBusMessage>
 #include <QDBusConnection>
@@ -37,7 +40,10 @@
 #include <QDialog>
 #include <QPainter>
 #include <QFormLayout>
-
+#include <QFileInfo>
+#include <QMenu>
+#include <QAction>
+#include <QToolButton>
 #include "krunnersettings.h"
 #include "krunnerdata.h"
 
@@ -60,20 +66,21 @@ SearchConfigModule::SearchConfigModule(QWidget* parent, const QVariantList& args
     }
 
     QVBoxLayout *layout = new QVBoxLayout(this);
+    m_consumer = new KActivities::Consumer(this);
+    m_historyConfigGroup = KSharedConfig::openConfig(QStringLiteral("krunnerstaterc"), KConfig::NoGlobals,
+                                  QStandardPaths::GenericDataLocation)->group("PlasmaRunnerManager").group("History");
 
     QHBoxLayout *headerLayout = new QHBoxLayout;
     layout->addLayout(headerLayout);
 
     QLabel *label = new QLabel(i18n("Enable or disable plugins (used in KRunner and Application Launcher)"));
 
-    m_clearHistoryButton = new QPushButton(i18n("Clear History"));
+    m_clearHistoryButton = new QToolButton(this);
     m_clearHistoryButton->setIcon(QIcon::fromTheme(isRightToLeft() ? QStringLiteral("edit-clear-locationbar-ltr")
                                                                    : QStringLiteral("edit-clear-locationbar-rtl")));
-    connect(m_clearHistoryButton, &QPushButton::clicked, this, [this] {
-        KConfigGroup generalConfig(m_config->group("General"));
-        generalConfig.deleteEntry("history", KConfig::Notify);
-        generalConfig.sync();
-    });
+    m_clearHistoryButton->setPopupMode(QToolButton::InstantPopup);
+    m_clearHistoryButton->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+    connect(m_clearHistoryButton, &QPushButton::clicked, this, &SearchConfigModule::deleteAllHistory);
 
     QHBoxLayout *configHeaderLayout = new QHBoxLayout;
     QVBoxLayout *configHeaderLeft = new QVBoxLayout;
@@ -95,7 +102,13 @@ SearchConfigModule::SearchConfigModule(QWidget* parent, const QVariantList& args
     connect(m_enableHistory, &QCheckBox::toggled, m_clearHistoryButton, &QPushButton::setEnabled);
     m_retainPriorSearch = new QCheckBox(i18n("Retain previous search"), this);
     m_retainPriorSearch->setObjectName("kcfg_retainPriorSearch");
+    connect(m_retainPriorSearch, &QCheckBox::clicked, this, &SearchConfigModule::markAsChanged);
     positionLayout->addRow(QString(), m_retainPriorSearch);
+    m_activityAware = new QCheckBox(i18n("Activity aware (previous search and history)"), this);
+    m_activityAware->setObjectName("kcfg_activityAware");
+    connect(m_activityAware, &QRadioButton::toggled, this, &SearchConfigModule::updateUnmanagedState);
+    connect(m_activityAware, &QCheckBox::clicked, this, &SearchConfigModule::configureClearHistoryButton);
+    positionLayout->addRow(QString(), m_activityAware);
     configHeaderLeft->addLayout(positionLayout);
 
     configHeaderRight->setSizeConstraint(QLayout::SetNoConstraint);
@@ -160,6 +173,7 @@ void SearchConfigModule::load()
     m_freeFloating->setChecked(m_settings->freeFloating());
 
     m_clearHistoryButton->setEnabled(m_enableHistory->isChecked());
+    m_activityAware->setChecked(m_settings->activityAware());
 
     // Set focus on the pluginselector to pass focus to search bar.
     m_pluginSelector->setFocus(Qt::OtherFocusReason);
@@ -177,15 +191,33 @@ QT_WARNING_POP
     if(!m_pluginID.isEmpty()){
         m_pluginSelector->showConfiguration(m_pluginID);
     }
+    configureClearHistoryButton();
 }
 
 
 void SearchConfigModule::save()
 {
     m_settings->setFreeFloating(m_freeFloating->isChecked());
+    m_settings->setActivityAware(m_activityAware->isChecked());
     m_settings->save();
 
     KCModule::save();
+
+
+    // Combine & write history
+    if (!m_activityAware->isChecked()) {
+        if (!m_historyConfigGroup.hasKey(nullUuid)) {
+            QStringList activities = m_consumer->activities();
+            activities.removeOne(m_consumer->currentActivity());
+            QStringList newHistory = m_historyConfigGroup.readEntry(m_consumer->currentActivity(), QStringList());
+            for (const QString &activity : qAsConst(activities)) {
+                newHistory.append(m_historyConfigGroup.readEntry(activity, QStringList()));
+            }
+            newHistory.removeDuplicates();
+            m_historyConfigGroup.writeEntry(nullUuid, newHistory, KConfig::Notify);
+            m_historyConfigGroup.sync();
+        }
+    }
 
     m_pluginSelector->save();
 
@@ -203,8 +235,61 @@ void SearchConfigModule::defaults()
 
     m_topPositioning->setChecked(!m_settings->defaultFreeFloatingValue());
     m_freeFloating->setChecked(m_settings->defaultFreeFloatingValue());
+    m_enableHistory->setChecked(m_settings->defaultHistoryEnabledValue());
+    m_activityAware->setEnabled(m_settings->defaultActivityAwareValue());
 
     m_pluginSelector->defaults();
+}
+
+void SearchConfigModule::configureClearHistoryButton()
+{
+    const QStringList activities = m_consumer->activities();
+    const QStringList historyKeys = m_historyConfigGroup.keyList();
+    m_clearHistoryButton->setEnabled(true); // We always want to show the dropdown
+    if (m_activityAware->isChecked() && activities.length() > 1) {
+        auto *installMenu = new QMenu(m_clearHistoryButton);
+        QAction *all = installMenu->addAction(m_clearHistoryButton->icon(),
+                i18nc("delete history for all activities", "For all activities"));
+        installMenu->setEnabled(!historyKeys.isEmpty());
+        connect(all, &QAction::triggered, this, &SearchConfigModule::deleteAllHistory);
+        for (const auto &key : activities) {
+            KActivities::Info info(key);
+            QIcon icon;
+            const QString iconStr = info.icon();
+            if (iconStr.isEmpty()) {
+                icon = m_clearHistoryButton->icon();
+            } else if (QFileInfo::exists(iconStr)) {
+                icon = QIcon(iconStr);
+            } else {
+                icon = QIcon::fromTheme(iconStr);
+            }
+            QAction *singleActivity = installMenu->addAction(icon,
+                    i18nc("delete history for this activity", "For activity \"%1\"", info.name()));
+            singleActivity->setEnabled(historyKeys.contains(key)); // Otherwise there would be nothing to delete
+            connect(singleActivity, &QAction::triggered, this, [this, key](){ deleteHistoryGroup(key); });
+            installMenu->addAction(singleActivity);
+            m_clearHistoryButton->setText("Clear History...");
+        }
+        m_clearHistoryButton->setMenu(installMenu);
+    } else {
+        m_clearHistoryButton->setText("Clear History");
+        m_clearHistoryButton->setMenu(nullptr);
+        m_clearHistoryButton->setEnabled(!historyKeys.isEmpty());
+    }
+}
+
+void SearchConfigModule::deleteHistoryGroup(const QString &key)
+{
+    m_historyConfigGroup.deleteEntry(key, KConfig::Notify);
+    m_historyConfigGroup.sync();
+    configureClearHistoryButton();
+}
+
+void SearchConfigModule::deleteAllHistory()
+{
+    m_historyConfigGroup.deleteGroup(KConfig::Notify);
+    m_historyConfigGroup.sync();
+    configureClearHistoryButton();
 }
 
 void SearchConfigModule::updateUnmanagedState()
