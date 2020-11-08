@@ -28,6 +28,9 @@
 #include <KRunner/RunnerManager>
 #include <KPluginSelector>
 #include <KNS3/Button>
+#include <KActivities/Info>
+#include <KActivities/Consumer>
+
 #include <QApplication>
 #include <QDBusMessage>
 #include <QDBusConnection>
@@ -37,6 +40,10 @@
 #include <QDialog>
 #include <QPainter>
 #include <QFormLayout>
+#include <QFileInfo>
+#include <QMenu>
+#include <QAction>
+#include <QToolButton>
 
 K_PLUGIN_FACTORY(SearchConfigModuleFactory, registerPlugin<SearchConfigModule>();)
 
@@ -55,20 +62,20 @@ SearchConfigModule::SearchConfigModule(QWidget* parent, const QVariantList& args
         m_pluginID = args.at(0).toString();
     }
 
+    new KActivities::Consumer(this);
     QVBoxLayout* layout = new QVBoxLayout(this);
 
     QHBoxLayout *headerLayout = new QHBoxLayout(this);
 
     QLabel *label = new QLabel(i18n("Enable or disable plugins (used in KRunner and Application Launcher)"));
 
-    m_clearHistoryButton = new QPushButton(i18n("Clear History"));
+    m_clearHistoryButton = new QToolButton(this);
+    m_clearHistoryButton->setText("Clear History");
     m_clearHistoryButton->setIcon(QIcon::fromTheme(isRightToLeft() ? QStringLiteral("edit-clear-locationbar-ltr")
                                                                    : QStringLiteral("edit-clear-locationbar-rtl")));
-    connect(m_clearHistoryButton, &QPushButton::clicked, this, [this] {
-        KConfigGroup generalConfig(m_config.group("General"));
-        generalConfig.deleteEntry("history", KConfig::Notify);
-        generalConfig.sync();
-    });
+    m_clearHistoryButton->setPopupMode(QToolButton::InstantPopup);
+    m_clearHistoryButton->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+    connect(m_clearHistoryButton, &QPushButton::clicked, this, &SearchConfigModule::deleteAllHistory);
 
     QHBoxLayout *configHeaderLayout = new QHBoxLayout(this);
     QVBoxLayout *configHeaderLeft = new QVBoxLayout(this);
@@ -92,6 +99,10 @@ SearchConfigModule::SearchConfigModule(QWidget* parent, const QVariantList& args
     m_retainPriorSearch = new QCheckBox(i18n("Retain previous search"), this);
     connect(m_retainPriorSearch, &QCheckBox::clicked, this, &SearchConfigModule::markAsChanged);
     positionLayout->addRow(QString(), m_retainPriorSearch);
+    m_activityAware = new QCheckBox(i18n("Activity aware (previous search and history)"), this);
+    connect(m_activityAware, &QCheckBox::clicked, this, &SearchConfigModule::markAsChanged);
+    connect(m_activityAware, &QCheckBox::clicked, this, &SearchConfigModule::configureClearHistoryButton);
+    positionLayout->addRow(QString(), m_activityAware);
     configHeaderLeft->addLayout(positionLayout);
 
     configHeaderRight->setSizeConstraint(QLayout::SetNoConstraint);
@@ -158,6 +169,7 @@ void SearchConfigModule::load()
     bool historyEnabled = general.readEntry("HistoryEnabled", true);
     m_enableHistory->setChecked(historyEnabled);
     m_clearHistoryButton->setEnabled(historyEnabled);
+    m_activityAware->setChecked(general.readEntry("ActivityAware", true));
 
     // Set focus on the pluginselector to pass focus to search bar.
     m_pluginSelector->setFocus(Qt::OtherFocusReason);
@@ -175,6 +187,7 @@ QT_WARNING_POP
     if(!m_pluginID.isEmpty()){
         m_pluginSelector->showConfiguration(m_pluginID);
     }
+    configureClearHistoryButton();
 }
 
 
@@ -184,6 +197,7 @@ void SearchConfigModule::save()
     config->group("General").writeEntry("FreeFloating", m_freeFloating->isChecked(), KConfig::Notify);
     config->group("General").writeEntry("RetainPriorSearch", m_retainPriorSearch->isChecked(), KConfig::Notify);
     config->group("General").writeEntry("HistoryEnabled", m_enableHistory->isChecked(), KConfig::Notify);
+    config->group("General").writeEntry("ActivityAware", m_activityAware->isChecked(), KConfig::Notify);
     m_pluginSelector->save();
 
     QDBusMessage message = QDBusMessage::createSignal(QStringLiteral("/krunnerrc"),
@@ -201,7 +215,55 @@ void SearchConfigModule::defaults()
     m_retainPriorSearch->setChecked(true);
     m_enableHistory->setChecked(true);
     m_clearHistoryButton->setEnabled(true);
+    m_activityAware->setEnabled(true);
     m_pluginSelector->defaults();
+}
+
+void SearchConfigModule::configureClearHistoryButton()
+{
+    KConfigGroup historyGroup = m_config.group("PlasmaRunnerManager").group("History");
+    const QStringList keys = historyGroup.keyList();
+    if (m_activityAware->isChecked() && keys.length() > 1) {
+        auto *installMenu = new QMenu(m_clearHistoryButton);
+        QAction *all = installMenu->addAction(m_clearHistoryButton->icon(),
+                i18nc("delete history for all activities", "For all activities"));
+        connect(all, &QAction::triggered, this, &SearchConfigModule::deleteAllHistory);
+        for (const auto &key : keys) {
+            KActivities::Info info(key);
+            QIcon icon;
+            const QString iconStr = info.icon();
+            if (iconStr.isEmpty()) {
+                icon = m_clearHistoryButton->icon();
+            } else if (QFileInfo::exists(iconStr)) {
+                icon = QIcon(iconStr);
+            } else {
+                icon = QIcon::fromTheme(iconStr);
+            }
+            qWarning()<<key <<  info.isValid() << info.name();
+            QAction *singleActivity = installMenu->addAction(icon,
+                    i18nc("delete history for this activity", "For activity %1", info.name()));
+            connect(singleActivity, &QAction::triggered, this, [this, key](){ deleteHistoryGroup(key); });
+            installMenu->addAction(singleActivity);
+        }
+        m_clearHistoryButton->setMenu(installMenu);
+    } else {
+        m_clearHistoryButton->setMenu(nullptr);
+    }
+}
+
+void SearchConfigModule::deleteHistoryGroup(const QString &key)
+{
+    KConfigGroup historyGroup = m_config.group("PlasmaRunnerManager").group("History");
+    historyGroup.deleteEntry(key, KConfig::Notify);
+    historyGroup.sync();
+}
+
+void SearchConfigModule::deleteAllHistory()
+{
+    KConfigGroup historyGroup = m_config.group("PlasmaRunnerManager").group("History");
+    historyGroup.deleteGroup(KConfig::Notify);
+    historyGroup.sync();
+    historyGroup.sync();
 }
 
 #include "kcm.moc"
