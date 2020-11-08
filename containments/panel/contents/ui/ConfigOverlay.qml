@@ -133,7 +133,7 @@ MouseArea {
                 placeHolder.height = item.height;
                 placeHolder.parent = configurationArea;
                 var posInItem = mapToItem(item, mouse.x, mouse.y);
-                var i;
+                let i = 0;
 
                 if ((plasmoid.formFactor === PlasmaCore.Types.Vertical && posInItem.y < item.height/2) ||
                     (plasmoid.formFactor !== PlasmaCore.Types.Vertical && posInItem.x < item.width/2)) {
@@ -141,7 +141,7 @@ MouseArea {
                 } else {
                     i = root.layoutManager.insertAfter(item, placeHolder);
                 }
-                if (i) {root.layoutManager.updateMargins()}
+                if (i!=undefined) {root.layoutManager.updateMargins()}
             }
 
         } else {

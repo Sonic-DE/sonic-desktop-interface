@@ -205,7 +205,6 @@ function insertAtCoordinates(item, x, y) {
     }
     item.parent = root;
 
-	var i;
     //PlasmaCore.Types.Vertical = 3
     if ((plasmoid.formFactor === 3 && y < child.y + child.height/2) ||
         (plasmoid.formFactor !== 3 && x < child.x + child.width/2)) {
