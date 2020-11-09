@@ -68,6 +68,9 @@ DragDrop.DropArea {
     }
     property bool marginAreasEnabled: panelSvg.margins != thickPanelSvg.margins
     property var marginHighlightSvg: PlasmaCore.Svg{imagePath: "widgets/margins-highlight"}
+    //Margins are either the size of the margins in the SVG, unless that prevents the panel from being at least half a smallMedium icon + smallSpace) tall at which point we set the margin to whatever allows it to be that...or if it still won't fit, 1.
+    //the size a margin should be to force a panel to be the required size above
+    readonly property real spacingAtMinSize: Math.max(1, (currentLayout.isLayoutHorizontal ? root.height+panelSvg.fixedMargins.top*2 : root.width+panelSvg.fixedMargins.left*2) - units.iconSizes.smallMedium - units.smallSpacing*2)/2
 
 //END properties
 
@@ -302,7 +305,6 @@ function checkLastSpacer() {
                 };
                 var panelHeight = root.height+panelSvg.fixedMargins.top*2;
                 var panelWidth = root.width+panelSvg.fixedMargins.left*2;
-                var spacingAtMinSize = Math.max(1, (currentLayout.isLayoutHorizontal ? panelHeight : panelWidth ) - units.iconSizes.smallMedium - units.smallSpacing*2)/2;
                 var fillArea = applet && (applet.constraintHints & PlasmaCore.Types.CanFillArea);
                 return (currentLayout[layout[side]] && !fillArea) ?Math.round(Math.min(spacingAtMinSize, (inThickArea ? thickPanelSvg.fixedMargins[side] : panelSvg.fixedMargins[side]))) : 0;
             }
@@ -458,10 +460,10 @@ function checkLastSpacer() {
 //BEGIN UI elements
 
     anchors {
-        leftMargin: isHorizontal ? panelSvg.fixedMargins.left : 0
-        rightMargin: isHorizontal ? panelSvg.fixedMargins.right : 0
-        topMargin: isHorizontal ? 0 : panelSvg.fixedMargins.top
-        bottomMargin: isHorizontal ? 0 : panelSvg.fixedMargins.bottom
+        leftMargin: currentLayout.isLayoutHorizontal ? Math.min(spacingAtMinSize, panelSvg.fixedMargins.left) : 0
+        rightMargin: currentLayout.isLayoutHorizontal ? Math.min(spacingAtMinSize, panelSvg.fixedMargins.right) : 0
+        topMargin: currentLayout.isLayoutHorizontal ? 0 : Math.min(spacingAtMinSize, panelSvg.fixedMargins.top)
+        bottomMargin: currentLayout.isLayoutHorizontal ? 0 : Math.min(spacingAtMinSize, panelSvg.fixedMargins.bottom)
     }
 
     Item {
