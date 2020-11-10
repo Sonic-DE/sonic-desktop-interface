@@ -32,7 +32,7 @@ void ZypperRPMJob::executeOperation(const QFileInfo &fileInfo, const QString &mi
         }
         const QString rpmPackageName = KShell::quoteArg(infoMatch.captured(1));
         QProcess *process = new QProcess(this);
-        process->start(QStringLiteral("pkexec"), {"zypper", "remove", rpmPackageName, "--no-confirm"});
+        process->start(QStringLiteral("pkexec"), {"zypper", "remove", "--no-confirm", rpmPackageName});
         connectSignals(process);
     }
 }
