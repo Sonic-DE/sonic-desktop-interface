@@ -24,14 +24,13 @@ public:
      */
     virtual void executeOperation(const QFileInfo &fileInfo, const QString &mimeType, bool install) = 0;
 
-    void runScriptInTerminal(const QString &script, const QString &pwd);
-    QString terminalCloseMessage(bool install);
-
 Q_SIGNALS:
     void finished();
     void error(const QString &errorMessage);
 
 protected:
+    void runScriptInTerminal(const QString &script, const QString &pwd);
+    QString terminalCloseMessage(bool install);
     void connectSignals(QProcess *process);
 };
 
