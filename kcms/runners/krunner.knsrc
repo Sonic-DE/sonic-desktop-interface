@@ -8,5 +8,5 @@ ChecksumPolicy=ifpossible
 SignaturePolicy=ifpossible
 TargetDir=krunner-sources
 Uncompress=subdir-archive
-InstallationCommand=plugininstaller install %f
-UninstallCommand=plugininstaller uninstall %f
+InstallationCommand=krunner-plugininstaller install %f
+UninstallCommand=krunner-plugininstaller uninstall %f
