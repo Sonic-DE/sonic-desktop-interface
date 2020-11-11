@@ -92,8 +92,8 @@ PlasmaCore.SvgItem {
     onAlignmentChanged: syncPos()
     Connections {
         target: root.parent
-        onWidthChanged: syncPos()
-        onHeightChanged: syncPos()
+        function onWidthChanged() {syncPos()}
+        function onHeightChanged() {syncPos()}
     }
 
     MouseArea {
