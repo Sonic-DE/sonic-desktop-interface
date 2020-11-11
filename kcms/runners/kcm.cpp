@@ -105,7 +105,6 @@ SearchConfigModule::SearchConfigModule(QWidget* parent, const QVariantList& args
     headerLayout->addWidget(label);
     headerLayout->addStretch();
 
-
     m_pluginSelector = new KPluginSelector(this);
 
     connect(m_pluginSelector, &KPluginSelector::changed, this, [this] { markAsChanged(); });
