@@ -239,7 +239,6 @@ void SearchConfigModule::configureClearHistoryButton()
             } else {
                 icon = QIcon::fromTheme(iconStr);
             }
-            qWarning()<<key <<  info.isValid() << info.name();
             QAction *singleActivity = installMenu->addAction(icon,
                     i18nc("delete history for this activity", "For activity %1", info.name()));
             connect(singleActivity, &QAction::triggered, this, [this, key](){ deleteHistoryGroup(key); });
