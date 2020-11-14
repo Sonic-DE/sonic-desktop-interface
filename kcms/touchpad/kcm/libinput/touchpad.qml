@@ -738,16 +738,9 @@ Kirigami.ScrollablePage {
             enabled: touchpad.supportsClickMethodAreas && touchpad.supportsClickMethodClickfinger
 
             spacing: Kirigami.Units.smallSpacing
+            visible: touchpad.supportedButtons & Qt.LeftButton
 
             function load() {
-                visible = (touchpad.supportedButtons & Qt.LeftButton)
-
-                if (!visible) {
-                    rightClickMethodAreas.checked = false
-                    rightClickMethodClickfinger.checked = false
-                    return;
-                }
-
                 rightClickMethodAreas.enabled = touchpad.supportsClickMethodAreas
                 rightClickMethodClickfinger.enabled = touchpad.supportsClickMethodClickfinger
 
@@ -805,15 +798,9 @@ Kirigami.ScrollablePage {
             id: middleClickMethod
 
             spacing: Kirigami.Units.smallSpacing
+            visible: rightClickMethod.visible
 
             function load() {
-                visible = rightClickMethod.visible
-
-                if (!visible) {
-                    enabled = false
-                    return;
-                }
-
                 enabled = touchpad.supportsMiddleEmulation
                 if (enabled && touchpad.middleEmulation) {
                     middleSoftwareEmulation.checked = true
