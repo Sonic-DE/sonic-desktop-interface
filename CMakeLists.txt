@@ -6,7 +6,7 @@ set(PROJECT_VERSION "5.20.80")
 set(PROJECT_VERSION_MAJOR 5)
 
 set(QT_MIN_VERSION "5.15.0")
-set(KF5_MIN_VERSION "5.74")
+set(KF5_MIN_VERSION "5.77")
 set(ACCOUNTSQT_DEP_VERSION "1.13")
 
 set(CMAKE_CXX_STANDARD 17)
@@ -173,6 +173,16 @@ if(${Breeze_FOUND})
     endif()
 else()
     set(HAVE_BREEZE_DECO FALSE)
+endif()
+
+find_package(PackageKitQt5)
+set_package_properties(PackageKitQt5
+        PROPERTIES DESCRIPTION "Software Manager integration"
+        TYPE OPTIONAL
+        PURPOSE "Used in the KRunner plugin installer"
+        )
+if(PackageKitQt5_FOUND)
+    set(HAVE_PACKAGEKIT TRUE)
 endif()
 
 include_directories("${CMAKE_CURRENT_BINARY_DIR}")
