@@ -14,7 +14,7 @@ X-KDE-PluginInfo-Author=Niccolo Venerandi
 X-KDE-PluginInfo-Category=Utilities
 X-KDE-PluginInfo-Email=niccolo@venerandi.com
 X-KDE-PluginInfo-License=GPLv2
-X-KDE-PluginInfo-Name=org.kde.kde.marginsseparator
+X-KDE-PluginInfo-Name=org.kde.plasma.marginsseparator
 X-KDE-PluginInfo-Version=0.1
 X-KDE-ServiceTypes=Plasma/Applet
 
