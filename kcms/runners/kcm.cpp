@@ -70,7 +70,6 @@ SearchConfigModule::SearchConfigModule(QWidget* parent, const QVariantList& args
     QLabel *label = new QLabel(i18n("Enable or disable plugins (used in KRunner and Application Launcher)"));
 
     m_clearHistoryButton = new QToolButton(this);
-    m_clearHistoryButton->setText("Clear History");
     m_clearHistoryButton->setIcon(QIcon::fromTheme(isRightToLeft() ? QStringLiteral("edit-clear-locationbar-ltr")
                                                                    : QStringLiteral("edit-clear-locationbar-rtl")));
     m_clearHistoryButton->setPopupMode(QToolButton::InstantPopup);
@@ -240,12 +239,14 @@ void SearchConfigModule::configureClearHistoryButton()
                 icon = QIcon::fromTheme(iconStr);
             }
             QAction *singleActivity = installMenu->addAction(icon,
-                    i18nc("delete history for this activity", "For activity %1", info.name()));
+                    i18nc("delete history for this activity", "For activity \"%1\"", info.name()));
             connect(singleActivity, &QAction::triggered, this, [this, key](){ deleteHistoryGroup(key); });
             installMenu->addAction(singleActivity);
+            m_clearHistoryButton->setText("Clear History...");
         }
         m_clearHistoryButton->setMenu(installMenu);
     } else {
+        m_clearHistoryButton->setText("Clear History");
         m_clearHistoryButton->setMenu(nullptr);
     }
 }
