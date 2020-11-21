@@ -219,7 +219,6 @@ function updateMargins() {
         marginHighlights[i].destroy();
     }
     marginHighlights = [];
-
     var inThickArea = false;
     var startApplet = undefined;
     for (var i = 0; i < layout.children.length; ++i) {
@@ -239,6 +238,7 @@ function updateMargins() {
             }
         }
     }
+    if (marginHighlights.length == 0) return;
     var marginRect = rectHighlightEl.createObject(root, {
         startApplet: startApplet,
         endApplet: undefined,
