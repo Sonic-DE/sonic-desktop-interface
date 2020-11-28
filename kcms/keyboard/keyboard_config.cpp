@@ -173,7 +173,7 @@ void KeyboardConfig::save()
     QStringList variants;
     QStringList displayNames;
 //    QStringList shortcuts;
-    foreach(const LayoutUnit& layoutUnit, layouts) {
+    for (const LayoutUnit &layoutUnit : qAsConst(layouts)) {
         layoutStrings.append(layoutUnit.layout());
         variants.append(layoutUnit.variant());
         displayNames.append(layoutUnit.getRawDisplayName());
