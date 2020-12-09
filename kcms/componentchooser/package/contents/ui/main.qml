@@ -34,7 +34,7 @@ SimpleKCM {
         }
         ComponentComboBox {
             component: kcm.emailClients
-            label: i18n("E-Mail Client:")
+            label: i18n("Email client:")
         }
         ComponentComboBox {
             component: kcm.terminalEmulators
