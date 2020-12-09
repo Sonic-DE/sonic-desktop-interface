@@ -52,8 +52,9 @@ void ComponentChooserTerminal::load()
         application["name"] = service->name();
         application["icon"] = service->icon();
         application["storageId"] = service->storageId();
+        application["execLine"] = service->exec();
         m_applications += application;
-        if ((!preferredService.isEmpty() && preferredService == service->name())) {
+        if ((!preferredService.isEmpty() && preferredService == service->exec())) {
             m_index = m_applications.length() - 1;
             preferredServiceAdded = true;
         }
@@ -65,9 +66,18 @@ void ComponentChooserTerminal::load()
     if (!preferredService.isEmpty() && !preferredServiceAdded) {
         // standard application was specified by the user
         QVariantMap application;
-        application["name"] = preferredService;
-        application["icon"] = QStringLiteral("application-x-shellscript");
-        application["storageId"] = preferredService;
+        TerminalSettings settings;
+        auto service = KService::serviceByStorageId(QStringLiteral("org.kde.ksysguard.desktop"));
+        if (settings.defaultTerminalServiceValue() != settings.terminalService() && service != nullptr) {
+            application["name"] = service->name();
+            application["icon"] = service->icon();
+            application["storageId"] = service->storageId();
+            application["execLine"] = service->exec();
+        } else {
+            application["name"] = preferredService;
+            application["icon"] = QStringLiteral("application-x-shellscript");
+            application["execLine"] = preferredService;
+        }
         m_applications += application;
         m_index = m_applications.length() - 1;
     }
@@ -87,10 +97,9 @@ void ComponentChooserTerminal::load()
 
 void ComponentChooserTerminal::save()
 {
-    const QString storageId = m_applications[m_index].toMap()["storageId"].toString();
-
     TerminalSettings terminalSettings;
-    terminalSettings.setTerminalApplication(storageId);
+    terminalSettings.setTerminalApplication(m_applications[m_index].toMap()["execLine"].toString());
+    terminalSettings.setTerminalService(m_applications[m_index].toMap()["storageId"].toString());
     terminalSettings.save();
 
     QDBusMessage message = QDBusMessage::createMethodCall(QStringLiteral("org.kde.klauncher5"), QStringLiteral("/KLauncher"), QStringLiteral("org.kde.KLauncher"), QStringLiteral("reparseConfiguration"));

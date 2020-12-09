@@ -125,6 +125,7 @@ void ComponentChooser::select(int index)
             application["name"] = service->name();
             application["icon"] = icon;
             application["storageId"] = service->storageId();
+            application["execLine"] = service->exec();
             m_applications.insert(m_applications.length() - 1, application);
             m_index = m_applications.length() - 2;
             Q_EMIT applicationsChanged();
