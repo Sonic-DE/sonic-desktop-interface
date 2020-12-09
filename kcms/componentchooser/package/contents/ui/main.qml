@@ -26,7 +26,7 @@ SimpleKCM {
     Kirigami.FormLayout {
         ComponentComboBox {
             component: kcm.browsers
-            label: i18n("Web Browser:")
+            label: i18n("Web browser:")
         }
         ComponentComboBox {
             component: kcm.fileManagers
