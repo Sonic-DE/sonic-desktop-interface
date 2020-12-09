@@ -87,7 +87,7 @@ void ComponentChooserTerminal::load()
 
 void ComponentChooserTerminal::save()
 {
-    const QString storageId = m_applications[m_index].toMap()["name"].toString();
+    const QString storageId = m_applications[m_index].toMap()["storageId"].toString();
 
     TerminalSettings terminalSettings;
     terminalSettings.setTerminalApplication(storageId);
