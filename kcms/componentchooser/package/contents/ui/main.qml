@@ -38,7 +38,7 @@ SimpleKCM {
         }
         ComponentComboBox {
             component: kcm.terminalEmulators
-            label: i18n("Terminal Emulator:")
+            label: i18n("Terminal emulator:")
         }
     }
 }
