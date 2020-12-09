@@ -540,6 +540,14 @@ function checkLastSpacer() {
             dndSpacer.parent = root;
             currentLayout.x = (isHorizontal && toolBox && Qt.application.layoutDirection === Qt.RightToLeft && plasmoid.editMode) ? toolBox.width : 0;
             currentLayout.y = 0
+            //FIXME: get root to size better instead of having to force the geometry
+            if (isHorizontal) {
+                root.fixedHeight = 0
+                root.fixedWidth = Qt.binding(function() { return currentLayout.implicitWidth })
+            } else {
+                root.fixedHeight = Qt.binding(function() { return currentLayout.implicitHeight })
+                root.fixedWidth = 0
+            }
             currentLayout.width = root.width - (isHorizontal && toolBox && plasmoid.editMode ? toolBox.width : 0)
             currentLayout.height = root.height - (!isHorizontal && toolBox && plasmoid.editMode ? toolBox.height : 0)
             currentLayout.isLayoutHorizontal = isHorizontal
