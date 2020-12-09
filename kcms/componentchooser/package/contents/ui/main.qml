@@ -30,7 +30,7 @@ SimpleKCM {
         }
         ComponentComboBox {
             component: kcm.fileManagers
-            label: i18n("File Manager:")
+            label: i18n("File manager:")
         }
         ComponentComboBox {
             component: kcm.emailClients
