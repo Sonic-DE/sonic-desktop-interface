@@ -102,16 +102,16 @@ void ComponentChooser::select(int index)
         return;
     }
     if (index == m_applications.length() - 1) {
-        KOpenWithDialog *dialog = new KOpenWithDialog(QList<QUrl>(), m_mimeType, m_dialogText, QLatin1String(""));
+        KOpenWithDialog *dialog = new KOpenWithDialog(QList<QUrl>(), m_mimeType, m_dialogText, QString());
         dialog->setSaveNewApplications(true);
         dialog->setAttribute(Qt::WA_DeleteOnClose);
         connect(dialog, &KOpenWithDialog::finished, this, [this, dialog] (int result) {
-            if (result != QDialog::Accepted) {
+            if (result == QDialog::Rejected) {
                 Q_EMIT indexChanged();
                 return;
             }
 
-            const auto service = dialog->service();
+            const KService::Ptr service = dialog->service();
             // Check if the selected application is already in the list
             for (int i = 0; i < m_applications.length(); i++) {
                 if (m_applications[i].toMap()["storageId"] == service->storageId()) {
