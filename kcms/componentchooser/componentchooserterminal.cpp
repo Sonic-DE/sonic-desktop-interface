@@ -102,7 +102,10 @@ void ComponentChooserTerminal::save()
     terminalSettings.setTerminalService(m_applications[m_index].toMap()["storageId"].toString());
     terminalSettings.save();
 
-    QDBusMessage message = QDBusMessage::createMethodCall(QStringLiteral("org.kde.klauncher5"), QStringLiteral("/KLauncher"), QStringLiteral("org.kde.KLauncher"), QStringLiteral("reparseConfiguration"));
+    QDBusMessage message = QDBusMessage::createMethodCall(QStringLiteral("org.kde.klauncher5"),
+                                                          QStringLiteral("/KLauncher"),
+                                                          QStringLiteral("org.kde.KLauncher"),
+                                                          QStringLiteral("reparseConfiguration"));
     QDBusConnection::sessionBus().send(message);
 
     m_previousApplication = m_applications[m_index].toMap()["storageId"].toString();
