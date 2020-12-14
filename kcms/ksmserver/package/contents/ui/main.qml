@@ -122,33 +122,34 @@ KCM.SimpleKCM {
             Kirigami.FormData.label: i18n("Applications to be excluded from sessions")
             text: Settings.excludeApps
             onTextChanged: Settings.excludeApps = text
+            ToolTip.text: i18n("Here you can enter a colon or comma separated list of applications that should not be saved in sessions, and therefore will not be started when restoring a session. For example 'xterm:konsole' or 'xterm,konsole'.")
             KCM.SettingStateBinding {
                 configObject: Settings
                 settingName: "excludeApps"
             }
         }
         CheckBox {
-            text: i18n("Enter UEFI setup on next restart")
+            text: kcm.isUefi ? i18n("Enter UEFI setup on next restart") : i18n("Enter firmware setup on next restart")
             checked: kcm.restartInSetupScreen
             onCheckStateChanged: kcm.restartInSetupScreen = checked
             ToolTip.text: i18n("When the computer is restarted the next time, enter firmware setup screen (e.g. UEFI or BIOS setup)")
         }
         Kirigami.InlineMessage {
-            height: 40
-            width: 30
-            Kirigami.FormData.isSection: true
-            type: kcm.error.length > 0 ? Kirigami.MessageType.Error : Kirigami.MessageType.Information
-            visible: kcm.restartInSetupScreen || kcm.error
-            text: kcm.error.length > 0
-                ? i18n("Failed to request restart to firmware setup: %1", kcm.error)
-                : kcm.isUEFI ? i18n("Next time the computer is restarted, it will enter the UEFI setup screen.")
-                             : i18n("Next time the computer is restarted, it will enter the firmware setup screen.")
-            showCloseButton: true
-            actions: Kirigami.Action {
-                visible: kcm.error.length === 0
-                icon.name: "view-refresh"
-                onTriggered: kcm.reboot();
-            }
+        }
+    }
+
+    footer: Kirigami.InlineMessage {
+        type: kcm.error.length > 0 ? Kirigami.MessageType.Error : Kirigami.MessageType.Information
+        visible: kcm.restartInSetupScreen || kcm.error.length > 0
+        text: kcm.error.length > 0
+            ? i18n("Failed to request restart to firmware setup: %1", kcm.error)
+            : kcm.isUefi ? i18n("Next time the computer is restarted, it will enter the UEFI setup screen.")
+                         : i18n("Next time the computer is restarted, it will enter the firmware setup screen.")
+        showCloseButton: true
+        actions: Kirigami.Action {
+            icon.name: "view-refresh"
+            onTriggered: kcm.reboot();
+            text: i18n("Reboot Now")
         }
     }
 }
