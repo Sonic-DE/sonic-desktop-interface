@@ -31,6 +31,21 @@ KCM.SimpleKCM {
     implicitHeight: Kirigami.Units.gridUnit * 28
     implicitWidth: Kirigami.Units.gridUnit * 28
 
+    header: Kirigami.InlineMessage {
+        type: kcm.error.length > 0 ? Kirigami.MessageType.Error : Kirigami.MessageType.Information
+        visible: kcm.restartInSetupScreen || kcm.error.length > 0
+        text: kcm.error.length > 0
+            ? i18n("Failed to request restart to firmware setup: %1", kcm.error)
+            : kcm.isUefi ? i18n("Next time the computer is restarted, it will enter the UEFI setup screen.")
+                         : i18n("Next time the computer is restarted, it will enter the firmware setup screen.")
+        showCloseButton: true
+        actions: Kirigami.Action {
+            icon.name: "view-refresh"
+            onTriggered: kcm.reboot();
+            text: i18n("Reboot Now")
+        }
+    }
+
     Kirigami.FormLayout {
         CheckBox {
             text: i18n("Confirm logout")
@@ -50,6 +65,10 @@ KCM.SimpleKCM {
                 settingName: "offerShutdown"
             }
         }
+        Item {
+            Kirigami.FormData.isSection: true
+        }
+
         ButtonGroup {
             buttons: [leaveEnd, leaveRestart, leaveOff]
         }
@@ -83,6 +102,9 @@ KCM.SimpleKCM {
                 configObject: Settings
                 settingName: "shutdownType"
             }
+        }
+        Item {
+            Kirigami.FormData.isSection: true
         }
         ButtonGroup {
             buttons: [loginRestore, loginManual, loginEmpty]
@@ -118,6 +140,9 @@ KCM.SimpleKCM {
                 settingName: "loginMode"
             }
         }
+        Item {
+            Kirigami.FormData.isSection: true
+        }
         TextField {
             Kirigami.FormData.label: i18n("Don't restore these applications")
             text: Settings.excludeApps
@@ -128,6 +153,9 @@ KCM.SimpleKCM {
                 settingName: "excludeApps"
             }
         }
+        Item {
+            Kirigami.FormData.isSection: true
+        }
         CheckBox {
             text: kcm.isUefi ? i18n("Enter UEFI setup on next restart") : i18n("Enter firmware setup on next restart")
             checked: kcm.restartInSetupScreen
@@ -135,21 +163,6 @@ KCM.SimpleKCM {
             ToolTip.text: i18n("When the computer is restarted the next time, enter firmware setup screen (e.g. UEFI or BIOS setup)")
         }
         Kirigami.InlineMessage {
-        }
-    }
-
-    footer: Kirigami.InlineMessage {
-        type: kcm.error.length > 0 ? Kirigami.MessageType.Error : Kirigami.MessageType.Information
-        visible: kcm.restartInSetupScreen || kcm.error.length > 0
-        text: kcm.error.length > 0
-            ? i18n("Failed to request restart to firmware setup: %1", kcm.error)
-            : kcm.isUefi ? i18n("Next time the computer is restarted, it will enter the UEFI setup screen.")
-                         : i18n("Next time the computer is restarted, it will enter the firmware setup screen.")
-        showCloseButton: true
-        actions: Kirigami.Action {
-            icon.name: "view-refresh"
-            onTriggered: kcm.reboot();
-            text: i18n("Reboot Now")
         }
     }
 }
