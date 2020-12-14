@@ -106,8 +106,6 @@ void SMServerConfig::setRestartInSetupScreen(bool restartInSetupScreen)
     if (m_restartInSetupScreen == restartInSetupScreen) {
         return;
     }
-    m_restartInSetupScreen = restartInSetupScreen;
-    Q_EMIT restartInSetupScreenChanged();
 
     QDBusMessage message = QDBusMessage::createMethodCall(m_login1Manager->service(),
                                                           m_login1Manager->path(),
@@ -137,6 +135,8 @@ void SMServerConfig::setRestartInSetupScreen(bool restartInSetupScreen)
             m_error = QString();
             Q_EMIT errorChanged();
         }
+        m_restartInSetupScreen = restartInSetupScreen;
+        Q_EMIT restartInSetupScreenChanged();
 
         if (!restartInSetupScreen) {
             return;
