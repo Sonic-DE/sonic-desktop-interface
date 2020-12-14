@@ -119,7 +119,7 @@ KCM.SimpleKCM {
             }
         }
         TextField {
-            Kirigami.FormData.label: i18n("Applications to be excluded from sessions")
+            Kirigami.FormData.label: i18n("Don't restore these applications")
             text: Settings.excludeApps
             onTextChanged: Settings.excludeApps = text
             ToolTip.text: i18n("Here you can enter a colon or comma separated list of applications that should not be saved in sessions, and therefore will not be started when restoring a session. For example 'xterm:konsole' or 'xterm,konsole'.")
