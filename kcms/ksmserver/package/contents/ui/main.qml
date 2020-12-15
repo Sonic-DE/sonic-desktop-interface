@@ -144,10 +144,13 @@ KCM.SimpleKCM {
             Kirigami.FormData.isSection: true
         }
         TextField {
+            id: notRestoredApplications
             Kirigami.FormData.label: i18n("Don't restore these applications")
             text: Settings.excludeApps
             onAccepted: Settings.excludeApps = text
             ToolTip.text: i18n("Here you can enter a colon or comma separated list of applications that should not be saved in sessions, and therefore will not be started when restoring a session. For example 'xterm:konsole' or 'xterm,konsole'.")
+            ToolTip.visible: notRestoredApplications.hovered
+            ToolTip.delay: Kirigami.Units.toolTipDelay
             KCM.SettingStateBinding {
                 configObject: Settings
                 settingName: "excludeApps"
@@ -157,10 +160,13 @@ KCM.SimpleKCM {
             Kirigami.FormData.isSection: true
         }
         CheckBox {
+            id: uefi
             text: kcm.isUefi ? i18n("Enter UEFI setup on next restart") : i18n("Enter firmware setup on next restart")
             checked: kcm.restartInSetupScreen
             onToggled: Settings.restartInSetupScreen = checked
             ToolTip.text: i18n("When the computer is restarted the next time, enter firmware setup screen (e.g. UEFI or BIOS setup)")
+            ToolTip.visible: uefi.hovered
+            ToolTip.delay: Kirigami.Units.toolTipDelay
         }
     }
 }
