@@ -68,8 +68,6 @@ SMServerConfig::SMServerConfig(QObject *parent, const QVariantList &args)
 
     checkFirmwareSetupRequested();
 
-    //addConfig(m_data->settings(), this);
-
     KAboutData *about = new KAboutData(QStringLiteral("kcm_smserver"), i18n("Desktop Session"),
             QStringLiteral("1.0"), i18n("Desktop Session Login and Logout"), KAboutLicense::GPL,
             i18n("Copyright © 2000–2020 Desktop Session team"));
