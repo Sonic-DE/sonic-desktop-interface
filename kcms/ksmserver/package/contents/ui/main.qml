@@ -51,7 +51,7 @@ KCM.SimpleKCM {
             Kirigami.FormData.label: i18n("General:")
             text: i18n("Confirm logout")
             checked: Settings.confirmLogout
-            onToggled: Settings.confirmLogout = checked
+            onToggled: Settings.confirmLogout = true
             KCM.SettingStateBinding {
                 configObject: Settings
                 settingName: "confirmLogout"
@@ -60,7 +60,7 @@ KCM.SimpleKCM {
         CheckBox {
             text: i18n("Offer shutdown options")
             checked: Settings.offerShutdown
-            onToggled: Settings.offerShutdown = checked
+            onToggled: Settings.offerShutdown = true
             KCM.SettingStateBinding {
                 configObject: Settings
                 settingName: "offerShutdown"
@@ -88,7 +88,7 @@ KCM.SimpleKCM {
             id: leaveRestart
             text: i18n("Restart computer")
             checked: Settings.shutdownType === 1
-            onCheckedChanged: Settings.shutdownType = 1
+            onToggled: Settings.shutdownType = 1
             KCM.SettingStateBinding {
                 configObject: Settings
                 settingName: "shutdownType"
@@ -98,14 +98,11 @@ KCM.SimpleKCM {
             id: leaveOff
             text: i18n("Turn off computer")
             checked: Settings.shutdownType === 2
-            onCheckedChanged: Settings.shutdownType = 2
+            onToggled: Settings.shutdownType = 2
             KCM.SettingStateBinding {
                 configObject: Settings
                 settingName: "shutdownType"
             }
-        }
-        Text  {
-            text: Settings.shutdownType
         }
         Item {
             Kirigami.FormData.isSection: true
@@ -118,7 +115,7 @@ KCM.SimpleKCM {
             Kirigami.FormData.label: i18n("When logging in:")
             text: i18n("Restore previous saved session")
             checked: Settings.loginMode === 0
-            onCheckedChanged: Settings.loginMode = 0
+            onToggled: Settings.loginMode = 0
             KCM.SettingStateBinding {
                 configObject: Settings
                 settingName: "loginMode"
@@ -128,7 +125,7 @@ KCM.SimpleKCM {
             id: loginManual
             text: i18n("Restore manually saved session")
             checked: Settings.loginMode === 1
-            onCheckedChanged: Settings.loginMode = 1
+            onToggled: Settings.loginMode = 1
             KCM.SettingStateBinding {
                 configObject: Settings
                 settingName: "loginMode"
@@ -138,7 +135,7 @@ KCM.SimpleKCM {
             id: loginEmpty
             text: i18n("Start with an empty session")
             checked: Settings.loginMode === 2
-            onCheckedChanged: Settings.loginMode = 2
+            onToggled: Settings.loginMode = 2
             KCM.SettingStateBinding {
                 configObject: Settings
                 settingName: "loginMode"
