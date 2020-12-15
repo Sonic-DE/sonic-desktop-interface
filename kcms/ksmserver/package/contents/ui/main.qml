@@ -40,7 +40,7 @@ KCM.SimpleKCM {
                          : i18n("Next time the computer is restarted, it will enter the firmware setup screen.")
         showCloseButton: true
         actions: Kirigami.Action {
-            icon.name: "system-reboot
+            icon.name: "system-reboot"
             onTriggered: kcm.reboot();
             text: i18n("Restart Now")
         }
