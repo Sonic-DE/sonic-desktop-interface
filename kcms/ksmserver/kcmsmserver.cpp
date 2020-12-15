@@ -67,6 +67,7 @@ SMServerConfig::SMServerConfig(QObject *parent, const QVariantList &args)
     " exit by default."));
 
     checkFirmwareSetupRequested();
+    m_restartInSetupScreenInitial = m_restartInSetupScreen;
 
     KAboutData *about = new KAboutData(QStringLiteral("kcm_smserver"), i18n("Desktop Session"),
             QStringLiteral("1.0"), i18n("Desktop Session Login and Logout"), KAboutLicense::GPL,
@@ -102,9 +103,11 @@ bool SMServerConfig::restartInSetupScreen() const
 
 void SMServerConfig::setRestartInSetupScreen(bool restartInSetupScreen)
 {
+    qDebug() << "kcm.restartInSetupScreen" << restartInSetupScreen;
     if (m_restartInSetupScreen == restartInSetupScreen) {
         return;
     }
+    qDebug() << "kcm.restartInSetupScreen2" << restartInSetupScreen;
 
     QDBusMessage message = QDBusMessage::createMethodCall(m_login1Manager->service(),
                                                           m_login1Manager->path(),
@@ -122,6 +125,8 @@ void SMServerConfig::setRestartInSetupScreen(bool restartInSetupScreen)
         watcher->deleteLater();
 
         checkFirmwareSetupRequested();
+
+        settingsChanged();
 
         if (reply.isError()) {
             // User likely canceled the PolKit prompt, don't show an error in this case
@@ -172,6 +177,16 @@ void SMServerConfig::checkFirmwareSetupRequested()
 bool SMServerConfig::canFirmareSetup() const
 {
     return m_canFirmareSetup;
+}
+
+bool SMServerConfig::isSaveNeeded() const
+{
+    return m_restartInSetupScreen != m_restartInSetupScreenInitial;
+}
+
+bool SMServerConfig::isDefaults() const 
+{
+    return m_restartInSetupScreen;
 }
 
 #include "kcmsmserver.moc"

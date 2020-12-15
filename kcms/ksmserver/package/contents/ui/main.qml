@@ -104,6 +104,9 @@ KCM.SimpleKCM {
                 settingName: "shutdownType"
             }
         }
+        Text  {
+            text: Settings.shutdownType
+        }
         Item {
             Kirigami.FormData.isSection: true
         }
@@ -166,7 +169,7 @@ KCM.SimpleKCM {
             text: i18n("Enter firmware setup screen on next restart")
             visible: kcm.canFirmareSetup
             checked: kcm.restartInSetupScreen
-            onToggled: Settings.restartInSetupScreen = checked
+            onToggled: kcm.restartInSetupScreen = checked
         }
     }
 }
