@@ -42,7 +42,11 @@ class SMServerConfig : public KQuickAddons::ManagedConfigModule
     /// Config telling if we should restart in the setup screen next time we boot.
     Q_PROPERTY(bool restartInSetupScreen READ restartInSetupScreen WRITE setRestartInSetupScreen NOTIFY restartInSetupScreenChanged)
 
+    /// Error message, empty if there is no error
     Q_PROPERTY(QString error READ error NOTIFY errorChanged)
+
+    /// Can setup the firmware
+    Q_PROPERTY(bool canFirmareSetup READ canFirmareSetup CONSTANT)
 
 public:
     explicit SMServerConfig(QObject *parent = nullptr, const QVariantList &list = QVariantList());
@@ -54,6 +58,8 @@ public:
     void setRestartInSetupScreen(bool isUefi);
 
     QString error() const;
+
+    bool canFirmareSetup() const;
 
     /// Tell the computer to reboot.
     Q_INVOKABLE void reboot();
@@ -70,5 +76,6 @@ private:
     QAction *m_rebootNowAction = nullptr;
     bool m_isUefi = false;
     bool m_restartInSetupScreen;
+    bool m_canFirmareSetup = false;
     QString m_error;
 };

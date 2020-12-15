@@ -80,6 +80,7 @@ SMServerConfig::SMServerConfig(QObject *parent, const QVariantList &args)
 
     const QString canFirmareSetup = m_login1Manager->CanRebootToFirmwareSetup().value();
     if (canFirmareSetup == QLatin1String("yes") || canFirmareSetup == QLatin1String("challenge")) {
+        m_canFirmareSetup = true;
         // now check whether we're UEFI to provide a more descriptive button label
         if (QFileInfo(QStringLiteral("/sys/firmware/efi")).isDir()) {
             m_isUefi = true;
@@ -166,6 +167,11 @@ void SMServerConfig::checkFirmwareSetupRequested()
 {
     m_restartInSetupScreen = m_login1Manager->property("RebootToFirmwareSetup").toBool();
     Q_EMIT restartInSetupScreenChanged();
+}
+
+bool SMServerConfig::canFirmareSetup() const
+{
+    return m_canFirmareSetup;
 }
 
 #include "kcmsmserver.moc"

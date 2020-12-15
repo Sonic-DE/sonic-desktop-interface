@@ -159,10 +159,12 @@ KCM.SimpleKCM {
         }
         Item {
             Kirigami.FormData.isSection: true
+            visible: kcm.canFirmareSetup
         }
         CheckBox {
             id: uefi
             text: i18n("Enter firmware setup screen on next restart")
+            visible: kcm.canFirmareSetup
             checked: kcm.restartInSetupScreen
             onToggled: Settings.restartInSetupScreen = checked
         }
