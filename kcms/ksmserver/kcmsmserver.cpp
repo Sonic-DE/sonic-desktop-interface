@@ -103,11 +103,9 @@ bool SMServerConfig::restartInSetupScreen() const
 
 void SMServerConfig::setRestartInSetupScreen(bool restartInSetupScreen)
 {
-    qDebug() << "kcm.restartInSetupScreen" << restartInSetupScreen;
     if (m_restartInSetupScreen == restartInSetupScreen) {
         return;
     }
-    qDebug() << "kcm.restartInSetupScreen2" << restartInSetupScreen;
 
     QDBusMessage message = QDBusMessage::createMethodCall(m_login1Manager->service(),
                                                           m_login1Manager->path(),
