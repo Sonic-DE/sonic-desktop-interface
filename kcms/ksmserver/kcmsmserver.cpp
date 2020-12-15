@@ -187,4 +187,10 @@ bool SMServerConfig::isDefaults() const
     return m_restartInSetupScreen;
 }
 
+void SMServerConfig::defaults()
+{
+    ManagedConfigModule::defaults();
+    setRestartInSetupScreen(false);
+}
+
 #include "kcmsmserver.moc"
