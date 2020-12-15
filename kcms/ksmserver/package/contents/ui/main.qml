@@ -77,7 +77,7 @@ KCM.SimpleKCM {
             Kirigami.FormData.label: i18n("Default leave option")
             text: i18n("End current session")
             checked: Settings.shutdownType === 0
-            onCheckedChanged: Settings.shutdownType = 0
+            onToggled: Settings.shutdownType = 0
             KCM.SettingStateBinding {
                 configObject: Settings
                 settingName: "shutdownType"
