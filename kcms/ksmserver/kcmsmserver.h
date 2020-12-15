@@ -64,6 +64,8 @@ public:
     /// Tell the computer to reboot.
     Q_INVOKABLE void reboot();
 
+    void defaults() override;
+
 Q_SIGNALS:
     void isUefiChanged();
     void restartInSetupScreenChanged();
