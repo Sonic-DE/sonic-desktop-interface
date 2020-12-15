@@ -70,12 +70,16 @@ Q_SIGNALS:
     void errorChanged();
 
 private:
+    bool isSaveNeeded() const override;
+    bool isDefaults() const override;
+
     void checkFirmwareSetupRequested();
 
     OrgFreedesktopLogin1ManagerInterface *m_login1Manager = nullptr;
     QAction *m_rebootNowAction = nullptr;
     bool m_isUefi = false;
-    bool m_restartInSetupScreen;
+    bool m_restartInSetupScreen = false;
+    bool m_restartInSetupScreenInitial = false;
     bool m_canFirmareSetup = false;
     QString m_error;
 };
