@@ -50,7 +50,7 @@ KCM.SimpleKCM {
         CheckBox {
             text: i18n("Confirm logout")
             checked: Settings.confirmLogout
-            onCheckStateChanged: Settings.confirmLogout = checked
+            onToggled: Settings.confirmLogout = checked
             KCM.SettingStateBinding {
                 configObject: Settings
                 settingName: "confirmLogout"
@@ -59,7 +59,7 @@ KCM.SimpleKCM {
         CheckBox {
             text: i18n("Offer shutdown options")
             checked: Settings.offerShutdown
-            onCheckStateChanged: Settings.offerShutdown = checked
+            onToggled: Settings.offerShutdown = checked
             KCM.SettingStateBinding {
                 configObject: Settings
                 settingName: "offerShutdown"
@@ -159,10 +159,8 @@ KCM.SimpleKCM {
         CheckBox {
             text: kcm.isUefi ? i18n("Enter UEFI setup on next restart") : i18n("Enter firmware setup on next restart")
             checked: kcm.restartInSetupScreen
-            onCheckStateChanged: kcm.restartInSetupScreen = checked
+            onToggled: Settings.restartInSetupScreen = checked
             ToolTip.text: i18n("When the computer is restarted the next time, enter firmware setup screen (e.g. UEFI or BIOS setup)")
-        }
-        Kirigami.InlineMessage {
         }
     }
 }
