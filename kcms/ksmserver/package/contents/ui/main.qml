@@ -40,9 +40,9 @@ KCM.SimpleKCM {
                          : i18n("Next time the computer is restarted, it will enter the firmware setup screen.")
         showCloseButton: true
         actions: Kirigami.Action {
-            icon.name: "view-refresh"
+            icon.name: "system-reboot
             onTriggered: kcm.reboot();
-            text: i18n("Reboot Now")
+            text: i18n("Restart Now")
         }
     }
 
@@ -75,7 +75,7 @@ KCM.SimpleKCM {
         }
         RadioButton {
             id: leaveEnd
-            Kirigami.FormData.label: i18n("Default leave option")
+            Kirigami.FormData.label: i18n("Default leave option:")
             text: i18n("End current session")
             checked: Settings.shutdownType === 0
             onToggled: Settings.shutdownType = 0
@@ -112,7 +112,7 @@ KCM.SimpleKCM {
         }
         RadioButton {
             id: loginRestore
-            Kirigami.FormData.label: i18n("On login")
+            Kirigami.FormData.label: i18n("When logging in:")
             text: i18n("Restore previous saved session")
             checked: Settings.loginMode === 0
             onCheckedChanged: Settings.loginMode = 0
@@ -162,7 +162,7 @@ KCM.SimpleKCM {
         }
         CheckBox {
             id: uefi
-            text: kcm.isUefi ? i18n("Enter UEFI setup on next restart") : i18n("Enter firmware setup on next restart")
+            text: i18n("Enter firmware setup screen on next restart")
             checked: kcm.restartInSetupScreen
             onToggled: Settings.restartInSetupScreen = checked
             ToolTip.text: i18n("When the computer is restarted the next time, enter firmware setup screen (e.g. UEFI or BIOS setup)")
