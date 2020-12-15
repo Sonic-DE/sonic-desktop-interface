@@ -165,9 +165,6 @@ KCM.SimpleKCM {
             text: i18n("Enter firmware setup screen on next restart")
             checked: kcm.restartInSetupScreen
             onToggled: Settings.restartInSetupScreen = checked
-            ToolTip.text: i18n("When the computer is restarted the next time, enter firmware setup screen (e.g. UEFI or BIOS setup)")
-            ToolTip.visible: uefi.hovered
-            ToolTip.delay: Kirigami.Units.toolTipDelay
         }
     }
 }
