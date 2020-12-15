@@ -48,6 +48,7 @@ KCM.SimpleKCM {
 
     Kirigami.FormLayout {
         CheckBox {
+            Kirigami.FormData.label: i18n("General:")
             text: i18n("Confirm logout")
             checked: Settings.confirmLogout
             onToggled: Settings.confirmLogout = checked
