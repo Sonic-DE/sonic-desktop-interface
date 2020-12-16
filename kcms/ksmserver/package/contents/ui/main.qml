@@ -148,10 +148,10 @@ KCM.SimpleKCM {
             id: notRestoredApplications
             Kirigami.FormData.label: i18n("Don't restore these applications:")
             text: Settings.excludeApps
-            // onTextChanged instead of onAccepted because otherwise the apply and
+            // onTextEdited instead of onAccepted because otherwise the apply and
             // reset buttons won't work, since otherwise in many case no change will
             // be sent to the kconfigXt backend.
-            onTextChanged: Settings.excludeApps = text
+            onTextEdited: Settings.excludeApps = text
             ToolTip.text: i18n("Here you can enter a colon or comma separated list of applications that should not be saved in sessions, and therefore will not be started when restoring a session. For example 'xterm:konsole' or 'xterm,konsole'.")
             ToolTip.visible: notRestoredApplications.hovered
             ToolTip.delay: Kirigami.Units.toolTipDelay
