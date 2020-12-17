@@ -36,6 +36,6 @@ void ComponentChooserBrowser::save()
     browserSettings.setBrowserApplication(storageId);
     browserSettings.save();
 
-    ComponentChooser::save(QStringLiteral("x-scheme-handler/http"), storageId);
-    ComponentChooser::save(QStringLiteral("x-scheme-handler/https"), storageId);
+    saveMimeTypeAssociation(QStringLiteral("x-scheme-handler/http"), storageId);
+    saveMimeTypeAssociation(QStringLiteral("x-scheme-handler/https"), storageId);
 }

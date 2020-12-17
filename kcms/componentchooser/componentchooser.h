@@ -46,7 +46,7 @@ public:
 
 
     virtual void save() = 0;
-    void save(const QString &mime, const QString &storageId);
+    void saveMimeTypeAssociation(const QString &mime, const QString &storageId);
 
 
 Q_SIGNALS:

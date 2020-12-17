@@ -138,7 +138,7 @@ void ComponentChooser::select(int index)
     Q_EMIT indexChanged();
 }
 
-void ComponentChooser::save(const QString &mime, const QString &storageId)
+void ComponentChooser::saveMimeTypeAssociation(const QString &mime, const QString &storageId)
 {
     KSharedConfig::Ptr profile = KSharedConfig::openConfig(QStringLiteral("mimeapps.list"), KConfig::NoGlobals, QStandardPaths::GenericConfigLocation);
     if (profile->isConfigWritable(true)) {

@@ -50,5 +50,5 @@ void ComponentChooserEmail::save()
 
     delete emailSettings;
 
-    ComponentChooser::save(QStringLiteral("x-scheme-handler/mailto"), storageId);
+    saveMimeTypeAssociation(QStringLiteral("x-scheme-handler/mailto"), storageId);
 }
