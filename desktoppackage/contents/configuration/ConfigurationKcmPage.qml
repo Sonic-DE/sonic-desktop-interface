@@ -22,7 +22,6 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 
 Item {
     id: page
-    title: kcm.title
 
     property QtObject kcm
 
