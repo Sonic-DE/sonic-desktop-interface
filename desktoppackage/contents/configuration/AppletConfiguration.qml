@@ -72,6 +72,11 @@ Rectangle {
             app.pageStack.replace(item, config);
         }
     }
+    Component {
+        id: configurationKcmPageComponent
+        ConfigurationKcmPage {
+        }
+    }
 
     function open(item) {
         if (item.source) {
@@ -81,7 +86,7 @@ Rectangle {
                 pushReplace(Qt.resolvedUrl("ConfigurationAppletPage.qml"), {configItem: item, title: item.name});
             }
         } else if (item.kcm) {
-            pushReplace(Qt.resolvedUrl("ConfigurationKcmPage.qml"), {kcm: item.kcm, title: item.name});
+            pushReplace(configurationKcmPageComponent, {kcm: item.kcm, internalPage: item.kcm.mainUi});
         } else {
             app.pageStack.pop();
         }
@@ -190,7 +195,7 @@ Rectangle {
                                     return model.kcm == app.pageStack.currentItem.kcm
                                 }
 
-                                if (app.pageStack.currentItem.configItem) {
+                                if (app.pageStack.currentItem && app.pageStack.currentItem.configItem) {
                                     return model.source == app.pageStack.currentItem.configItem.source
                                 }
 
