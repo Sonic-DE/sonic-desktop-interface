@@ -1,5 +1,6 @@
 /*
  *  Copyright 2013 Marco Martin <mart@kde.org>
+ *  Copyright 2020 Carl Schwan <carlschwan@kde.org>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -25,15 +26,14 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.kquickcontrolsaddons 2.0
 import org.kde.kirigami 2.5 as Kirigami
 
-MouseArea {
+QtControls.ItemDelegate {
     id: delegate
 
     signal activated()
 
 //BEGIN properties
-    implicitWidth: delegateContents.implicitWidth + 4 * PlasmaCore.Units.smallSpacing
-    implicitHeight: delegateContents.height + PlasmaCore.Units.smallSpacing * 4
     Layout.fillWidth: true
+    Layout.maximumWidth: Kirigami.Units.gridUnit * 7
     hoverEnabled: true
 
     property var item
@@ -41,7 +41,7 @@ MouseArea {
 //END properties
 
 //BEGIN connections
-    onPressed: {
+    onClicked: {
         categoriesScroll.forceActiveFocus()
 
         if (current) {
@@ -58,41 +58,9 @@ MouseArea {
 //END connections
 
 //BEGIN UI components
-    Rectangle {
-        anchors.fill: parent
-        color: Kirigami.Theme.highlightColor
-        opacity: { // try to match Breeze style hover handling
-            var active = categoriesScroll.activeFocus && Window.active
-            if (current) {
-                if (active) {
-                    return 1
-                } else if (delegate.containsMouse) {
-                    return 0.6
-                } else {
-                    return 0.3
-                }
-            } else if (delegate.containsMouse) {
-                if (active) {
-                    return 0.3
-                } else {
-                    return 0.1
-                }
-            }
-            return 0
-        }
-        Behavior on opacity {
-            NumberAnimation {
-                duration: PlasmaCore.Units.longDuration
-                easing.type: Easing.InOutQuad
-            }
-        }
-    }
-
-    ColumnLayout {
+    contentItem: ColumnLayout {
         id: delegateContents
         spacing: PlasmaCore.Units.smallSpacing
-        width: parent.width
-        anchors.verticalCenter: parent.verticalCenter
 
         QIconItem {
             id: iconItem

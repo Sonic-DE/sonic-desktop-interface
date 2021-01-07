@@ -21,10 +21,11 @@ import QtQuick 2.0
 import org.kde.kirigami 2.10 as Kirigami
 
 Kirigami.ScrollablePage {
-
     id: root
 
-    property var configItem
+    title: configItem.name
+
+    required property var configItem
 
     signal settingValueChanged()
 
@@ -53,6 +54,7 @@ Kirigami.ScrollablePage {
         height: Math.max(root.availableHeight, item.implicitHeight ? item.implicitHeight : item.childrenRect.height)
 
         Component.onCompleted: {
+            console.log("Loaded :", configItem, configItem.name)
             var plasmoidConfig = plasmoid.configuration
 
             var props = {}
