@@ -54,7 +54,6 @@ Kirigami.ScrollablePage {
         height: Math.max(root.availableHeight, item.implicitHeight ? item.implicitHeight : item.childrenRect.height)
 
         Component.onCompleted: {
-            console.log("Loaded :", configItem, configItem.name)
             var plasmoidConfig = plasmoid.configuration
 
             var props = {}
