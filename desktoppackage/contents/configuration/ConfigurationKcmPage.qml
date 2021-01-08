@@ -25,12 +25,12 @@ import org.kde.kirigami 2.5 as Kirigami
 Kirigami.Page {
     id: container
 
-    property QtObject kcm
+    required property QtObject kcm
     required property Item internalPage
 
     signal settingValueChanged()
 
-    title: internalPage.title
+    title: kcm.name
     topPadding: 0
     leftPadding: 0
     rightPadding: 0
