@@ -65,9 +65,14 @@ void ComponentChooserTerminal::load()
     if (!preferredService.isEmpty() && !preferredServiceAdded) {
         // standard application was specified by the user
         QVariantMap application;
+<<<<<<< Updated upstream
         TerminalSettings settings;
-        auto service = KService::serviceByStorageId(QStringLiteral("org.kde.ksysguard.desktop"));
+        auto service = KService::serviceByStorageId(m_defaultApplication);
         if (settings.defaultTerminalServiceValue() != settings.terminalService() && service != nullptr) {
+=======
+        auto service = KService::serviceByStorageId(settings.terminalService());
+        if (service != nullptr) {
+>>>>>>> Stashed changes
             application["name"] = service->name();
             application["icon"] = service->icon();
             application["storageId"] = service->storageId();
