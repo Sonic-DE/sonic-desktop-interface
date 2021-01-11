@@ -66,7 +66,7 @@ void ComponentChooserTerminal::load()
         // standard application was specified by the user
         QVariantMap application;
         TerminalSettings settings;
-        auto service = KService::serviceByStorageId(QStringLiteral("org.kde.ksysguard.desktop"));
+        auto service = KService::serviceByStorageId(m_defaultApplication);
         if (settings.defaultTerminalServiceValue() != settings.terminalService() && service != nullptr) {
             application["name"] = service->name();
             application["icon"] = service->icon();
