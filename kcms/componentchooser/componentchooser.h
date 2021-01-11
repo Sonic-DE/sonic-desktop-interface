@@ -32,6 +32,7 @@ class ComponentChooser : public QObject
     Q_OBJECT
     Q_PROPERTY(QVariantList applications MEMBER m_applications NOTIFY applicationsChanged)
     Q_PROPERTY(int index MEMBER m_index NOTIFY indexChanged)
+    Q_PROPERTY(bool isDefaults READ isDefaults NOTIFY isDefaultsChanged)
 
 public:
 
@@ -48,10 +49,12 @@ public:
     virtual void save() = 0;
     void saveMimeTypeAssociation(const QString &mime, const QString &storageId);
 
+    bool isDefault() const;
 
 Q_SIGNALS:
     void applicationsChanged();
     void indexChanged();
+    void isDefaultsChanged();
 
 protected:
     QVariantList m_applications;
