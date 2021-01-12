@@ -66,7 +66,7 @@ void ComponentChooserTerminal::load()
         // standard application was specified by the user
         QVariantMap application;
         auto service = KService::serviceByStorageId(settings.terminalService());
-        if (service != nullptr) {
+        if (service) {
             application["name"] = service->name();
             application["icon"] = service->icon();
             application["storageId"] = service->storageId();
