@@ -128,6 +128,7 @@ Rectangle {
             leftPadding: 0
             rightPadding: 0
             topPadding: 0
+            Kirigami.Theme.colorSet: Kirigami.Theme.View
 
             contentItem: QtControls.ScrollView {
                 id: categoriesScroll
