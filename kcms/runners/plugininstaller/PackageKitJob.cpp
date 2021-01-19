@@ -6,15 +6,15 @@
 
 #include "PackageKitJob.h"
 
-#include <QFileInfo>
+#include <KOSRelease>
 #include <KShell>
 #include <PackageKit/Daemon>
 #include <PackageKit/Details>
-#include <QRegularExpression>
-#include <KOSRelease>
-#include <QMimeDatabase>
 #include <QDBusConnection>
+#include <QFileInfo>
+#include <QMimeDatabase>
 #include <QProcess>
+#include <QRegularExpression>
 
 #include "PackageKitConfirmationDialog.h"
 
@@ -47,8 +47,9 @@ void PackageKitJob::packageKitInstall(const QString &fileName)
 void PackageKitJob::packageKitUninstall(const QString &fileName)
 {
     PackageKit::Transaction *transaction = PackageKit::Daemon::getDetailsLocal(fileName);
-    connect(transaction, &PackageKit::Transaction::details,
-        this, [this](const PackageKit::Details &details) { removePackage(details.packageId()); });
+    connect(transaction, &PackageKit::Transaction::details, this, [this](const PackageKit::Details &details) {
+        removePackage(details.packageId());
+    });
     connect(transaction, &PackageKit::Transaction::errorCode, this, &PackageKitJob::transactionError);
 }
 
@@ -73,7 +74,7 @@ void PackageKitJob::transactionFinished(PackageKit::Transaction::Exit status, ui
 
 QStringList PackageKitJob::supportedPackagekitMimeTypes()
 {
-    QDBusMessage message = QDBusMessage::createMethodCall("org.freedesktop.PackageKit",
+    QDBusMessage message = QDBusMessage::createMethodCall("org.freedesktop.PackageKit", //
                                                           "/org/freedesktop/PackageKit",
                                                           "org.freedesktop.DBus.Properties",
                                                           "Get");

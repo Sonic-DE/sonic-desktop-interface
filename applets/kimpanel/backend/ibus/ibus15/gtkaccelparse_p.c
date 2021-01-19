@@ -15,15 +15,14 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
-#include <glib.h>
-#include <string.h>
-#include <stdlib.h>
-#include "gdkkeysyms_p.h"
 #include "gtkaccelparse_p.h"
 #include "gdkkeynames_p.h"
+#include "gdkkeysyms_p.h"
+#include <glib.h>
+#include <stdlib.h>
+#include <string.h>
 
-static inline gboolean
-is_alt (const gchar *string)
+static inline gboolean is_alt(const gchar *string)
 {
     // clang-format off
     return ((string[0] == '<') &&
@@ -34,8 +33,7 @@ is_alt (const gchar *string)
     // clang-format on
 }
 
-static inline gboolean
-is_ctl (const gchar *string)
+static inline gboolean is_ctl(const gchar *string)
 {
     // clang-format off
     return ((string[0] == '<') &&
@@ -46,8 +44,7 @@ is_ctl (const gchar *string)
     // clang-format on
 }
 
-static inline gboolean
-is_modx (const gchar *string)
+static inline gboolean is_modx(const gchar *string)
 {
     // clang-format off
     return ((string[0] == '<') &&
@@ -59,8 +56,7 @@ is_modx (const gchar *string)
     // clang-format on
 }
 
-static inline gboolean
-is_ctrl (const gchar *string)
+static inline gboolean is_ctrl(const gchar *string)
 {
     // clang-format off
     return ((string[0] == '<') &&
@@ -72,8 +68,7 @@ is_ctrl (const gchar *string)
     // clang-format on
 }
 
-static inline gboolean
-is_shft (const gchar *string)
+static inline gboolean is_shft(const gchar *string)
 {
     // clang-format off
   return ((string[0] == '<') &&
@@ -85,8 +80,7 @@ is_shft (const gchar *string)
     // clang-format on
 }
 
-static inline gboolean
-is_shift (const gchar *string)
+static inline gboolean is_shift(const gchar *string)
 {
     // clang-format off
     return ((string[0] == '<') &&
@@ -99,8 +93,7 @@ is_shift (const gchar *string)
     // clang-format on
 }
 
-static inline gboolean
-is_control (const gchar *string)
+static inline gboolean is_control(const gchar *string)
 {
     // clang-format off
     return  ((string[0] == '<') &&
@@ -115,8 +108,7 @@ is_control (const gchar *string)
     // clang-format on
 }
 
-static inline gboolean
-is_release (const gchar *string)
+static inline gboolean is_release(const gchar *string)
 {
     // clang-format off
     return  ((string[0] == '<') &&
@@ -131,8 +123,7 @@ is_release (const gchar *string)
     // clang-format on
 }
 
-static inline gboolean
-is_meta (const gchar *string)
+static inline gboolean is_meta(const gchar *string)
 {
     // clang-format off
     return  ((string[0] == '<') &&
@@ -144,8 +135,7 @@ is_meta (const gchar *string)
     // clang-format on
 }
 
-static inline gboolean
-is_super (const gchar *string)
+static inline gboolean is_super(const gchar *string)
 {
     // clang-format off
     return  ((string[0] == '<') &&
@@ -158,8 +148,7 @@ is_super (const gchar *string)
     // clang-format on
 }
 
-static inline gboolean
-is_hyper (const gchar *string)
+static inline gboolean is_hyper(const gchar *string)
 {
     // clang-format off
     return  ((string[0] == '<') &&
@@ -172,8 +161,7 @@ is_hyper (const gchar *string)
     // clang-format on
 }
 
-static inline gboolean
-is_keycode (const gchar *string)
+static inline gboolean is_keycode(const gchar *string)
 {
     // clang-format off
     return (string[0] == '0' &&
@@ -183,162 +171,121 @@ is_keycode (const gchar *string)
     // clang-format on
 }
 
-void
-_gtk_accelerator_parse (const gchar     *accelerator,
-                        guint           *accelerator_key,
-                        GdkModifierType *accelerator_mods)
+void _gtk_accelerator_parse(const gchar *accelerator, guint *accelerator_key, GdkModifierType *accelerator_mods)
 {
-  guint keyval;
-  GdkModifierType mods;
-  gint len;
-  gboolean error;
+    guint keyval;
+    GdkModifierType mods;
+    gint len;
+    gboolean error;
 
-  if (accelerator_key)
-    *accelerator_key = 0;
-  if (accelerator_mods)
-    *accelerator_mods = 0;
+    if (accelerator_key)
+        *accelerator_key = 0;
+    if (accelerator_mods)
+        *accelerator_mods = 0;
 
-  g_return_if_fail (accelerator != NULL);
+    g_return_if_fail(accelerator != NULL);
 
-  error = FALSE;
-  keyval = 0;
-  mods = 0;
-  len = strlen (accelerator);
-  while (len)
-    {
-      if (*accelerator == '<')
-        {
-          if (len >= 9 && is_release (accelerator))
-            {
-              accelerator += 9;
-              len -= 9;
-              mods |= GDK_RELEASE_MASK;
-            }
-          else if (len >= 9 && is_control (accelerator))
-            {
-              accelerator += 9;
-              len -= 9;
-              mods |= GDK_CONTROL_MASK;
-            }
-          else if (len >= 7 && is_shift (accelerator))
-            {
-              accelerator += 7;
-              len -= 7;
-              mods |= GDK_SHIFT_MASK;
-            }
-          else if (len >= 6 && is_shft (accelerator))
-            {
-              accelerator += 6;
-              len -= 6;
-              mods |= GDK_SHIFT_MASK;
-            }
-          else if (len >= 6 && is_ctrl (accelerator))
-            {
-              accelerator += 6;
-              len -= 6;
-              mods |= GDK_CONTROL_MASK;
-            }
-          else if (len >= 6 && is_modx (accelerator))
-            {
-              static const guint mod_vals[] = {
-                GDK_MOD1_MASK, GDK_MOD2_MASK, GDK_MOD3_MASK,
-                GDK_MOD4_MASK, GDK_MOD5_MASK
-              };
+    error = FALSE;
+    keyval = 0;
+    mods = 0;
+    len = strlen(accelerator);
+    while (len) {
+        if (*accelerator == '<') {
+            if (len >= 9 && is_release(accelerator)) {
+                accelerator += 9;
+                len -= 9;
+                mods |= GDK_RELEASE_MASK;
+            } else if (len >= 9 && is_control(accelerator)) {
+                accelerator += 9;
+                len -= 9;
+                mods |= GDK_CONTROL_MASK;
+            } else if (len >= 7 && is_shift(accelerator)) {
+                accelerator += 7;
+                len -= 7;
+                mods |= GDK_SHIFT_MASK;
+            } else if (len >= 6 && is_shft(accelerator)) {
+                accelerator += 6;
+                len -= 6;
+                mods |= GDK_SHIFT_MASK;
+            } else if (len >= 6 && is_ctrl(accelerator)) {
+                accelerator += 6;
+                len -= 6;
+                mods |= GDK_CONTROL_MASK;
+            } else if (len >= 6 && is_modx(accelerator)) {
+                static const guint mod_vals[] = {GDK_MOD1_MASK, GDK_MOD2_MASK, GDK_MOD3_MASK, GDK_MOD4_MASK, GDK_MOD5_MASK};
 
-              len -= 6;
-              accelerator += 4;
-              mods |= mod_vals[*accelerator - '1'];
-              accelerator += 2;
-            }
-          else if (len >= 5 && is_ctl (accelerator))
-            {
-              accelerator += 5;
-              len -= 5;
-              mods |= GDK_CONTROL_MASK;
-            }
-          else if (len >= 5 && is_alt (accelerator))
-            {
-              accelerator += 5;
-              len -= 5;
-              mods |= GDK_MOD1_MASK;
-            }
-          else if (len >= 6 && is_meta (accelerator))
-            {
-              accelerator += 6;
-              len -= 6;
-              // mods |= GDK_META_MASK;
-            }
-          else if (len >= 7 && is_hyper (accelerator))
-            {
-              accelerator += 7;
-              len -= 7;
-              mods |= GDK_MOD4_MASK;
-            }
-          else if (len >= 7 && is_super (accelerator))
-            {
-              accelerator += 7;
-              len -= 7;
-              mods |= GDK_MOD4_MASK;
-            }
-          else
-            {
-              gchar last_ch;
+                len -= 6;
+                accelerator += 4;
+                mods |= mod_vals[*accelerator - '1'];
+                accelerator += 2;
+            } else if (len >= 5 && is_ctl(accelerator)) {
+                accelerator += 5;
+                len -= 5;
+                mods |= GDK_CONTROL_MASK;
+            } else if (len >= 5 && is_alt(accelerator)) {
+                accelerator += 5;
+                len -= 5;
+                mods |= GDK_MOD1_MASK;
+            } else if (len >= 6 && is_meta(accelerator)) {
+                accelerator += 6;
+                len -= 6;
+                // mods |= GDK_META_MASK;
+            } else if (len >= 7 && is_hyper(accelerator)) {
+                accelerator += 7;
+                len -= 7;
+                mods |= GDK_MOD4_MASK;
+            } else if (len >= 7 && is_super(accelerator)) {
+                accelerator += 7;
+                len -= 7;
+                mods |= GDK_MOD4_MASK;
+            } else {
+                gchar last_ch;
 
-              last_ch = *accelerator;
-              while (last_ch && last_ch != '>')
-                {
-                  last_ch = *accelerator;
-                  accelerator += 1;
-                  len -= 1;
+                last_ch = *accelerator;
+                while (last_ch && last_ch != '>') {
+                    last_ch = *accelerator;
+                    accelerator += 1;
+                    len -= 1;
                 }
             }
-        }
-      else
-        {
-          if (len >= 4 && is_keycode (accelerator))
-            {
-               char keystring[5];
-               gchar *endptr;
+        } else {
+            if (len >= 4 && is_keycode(accelerator)) {
+                char keystring[5];
+                gchar *endptr;
 
-               memcpy (keystring, accelerator, 4);
-               keystring [4] = '\000';
+                memcpy(keystring, accelerator, 4);
+                keystring[4] = '\000';
 
-               strtol (keystring, &endptr, 16);
+                strtol(keystring, &endptr, 16);
 
-               if (endptr == NULL || *endptr != '\000')
-                 {
-                   error = TRUE;
-                   goto out;
-                 }
-               else
-                 {
-                   /* There was a keycode in the string, but
-                    * we cannot store it, so we have an error */
-                   error = TRUE;
-                   goto out;
-                 }
+                if (endptr == NULL || *endptr != '\000') {
+                    error = TRUE;
+                    goto out;
+                } else {
+                    /* There was a keycode in the string, but
+                     * we cannot store it, so we have an error */
+                    error = TRUE;
+                    goto out;
+                }
+            } else {
+                keyval = _gdk_keyval_from_name(accelerator);
+                if (keyval == GDK_KEY_VoidSymbol) {
+                    error = TRUE;
+                    goto out;
+                }
             }
-      else
-        {
-          keyval = _gdk_keyval_from_name (accelerator);
-          if (keyval == GDK_KEY_VoidSymbol)
-            {
-              error = TRUE;
-              goto out;
-        }
-        }
 
-          accelerator += len;
-          len -= len;
+            accelerator += len;
+            len -= len;
         }
     }
 
 out:
-  if (error)
-    keyval = mods = 0;
+    if (error)
+        keyval = mods = 0;
 
-  if (accelerator_key)
-    *accelerator_key = keyval;
-  if (accelerator_mods)
-    *accelerator_mods = mods;
+    if (accelerator_key)
+        *accelerator_key = keyval;
+    if (accelerator_mods)
+        *accelerator_mods = mods;
 }
