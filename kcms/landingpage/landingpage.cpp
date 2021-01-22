@@ -27,6 +27,10 @@
 
 #include <QDBusMessage>
 #include <QDBusConnection>
+#include <QQuickItem>
+#include <QQuickWindow>
+#include <QQuickRenderControl>
+#include <QScreen>
 
 #include "landingpagedata.h"
 #include "landingpage_kdeglobalssettings.h"
@@ -66,6 +70,47 @@ void KCMLandingPage::save()
     args.append(KGlobalSettings::SETTINGS_MOUSE);
     message.setArguments(args);
     QDBusConnection::sessionBus().send(message);
+}
+
+void KCMLandingPage::openWallpaperDialog()
+{
+    QString connector;
+
+    QQuickItem *item = mainUi();
+    if (!item) {
+        return;
+    }
+
+    QQuickWindow *quickWindow = item->window();
+    if (!quickWindow) {
+        return;
+    }
+
+    QWindow *window = QQuickRenderControl::renderWindowFor(quickWindow);
+    if (!window) {
+        return;
+    }
+
+    QScreen *screen = window->screen();
+    if (screen) {
+        connector = screen->name();
+    }
+
+    QDBusMessage message = QDBusMessage::createMethodCall(QStringLiteral("org.kde.plasmashell"), QStringLiteral("/PlasmaShell"),
+                                                   QStringLiteral("org.kde.PlasmaShell"), QStringLiteral("evaluateScript"));
+
+    QList<QVariant> args;
+    args << QStringLiteral(R"(
+        let id = screenForConnector("%1");
+
+        if (id >= 0) {
+            let desktop = desktopForScreen(id);
+            desktop.showConfigurationInterface();
+        })").arg(connector);
+
+    message.setArguments(args);
+
+    QDBusConnection::sessionBus().call(message, QDBus::NoBlock);
 }
 
 #include "landingpage.moc"
