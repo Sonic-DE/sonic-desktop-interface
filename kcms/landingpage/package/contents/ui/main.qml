@@ -78,9 +78,15 @@ KCM.SimpleKCM {
                 }
             }
         }
-        QQC2.Button {
-            text: i18n("Change Wallpaper...")
-            onClicked: kcm.openWallpaperDialog()
+        RowLayout {
+            QQC2.Button {
+                text: i18n("More Appearance Settings...")
+                onClicked: kcm.openKCM("kcm_lookandfeel")
+            }
+            QQC2.Button {
+                text: i18n("Change Wallpaper...")
+                onClicked: kcm.openWallpaperDialog()
+            }
         }
 
         Item {
@@ -137,6 +143,10 @@ KCM.SimpleKCM {
             onCheckStateChanged: {
                 kcm.balooSettings.indexingEnabled = checked
             }
+        }
+        QQC2.Button {
+            text: i18n("More Behavior Settings...")
+            onClicked: kcm.openKCM("kcm_workspace")
         }
     }
 }
