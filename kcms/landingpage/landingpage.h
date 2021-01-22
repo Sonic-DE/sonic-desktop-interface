@@ -25,16 +25,21 @@
 class LandingPageData;
 class LandingPageGlobalsSettings;
 
+class BalooSettings;
+class BalooData;
+
 class KCMLandingPage : public KQuickAddons::ManagedConfigModule
 {
     Q_OBJECT
     Q_PROPERTY(LandingPageGlobalsSettings *globalsSettings READ globalsSettings CONSTANT)
+    Q_PROPERTY(BalooSettings *balooSettings READ balooSettings CONSTANT)
 
 public:
     KCMLandingPage(QObject *parent, const QVariantList &args);
     ~KCMLandingPage() override {}
 
     LandingPageGlobalsSettings *globalsSettings() const;
+    BalooSettings *balooSettings() const;
 
     Q_INVOKABLE void openWallpaperDialog();
 
