@@ -78,6 +78,10 @@ KCM.SimpleKCM {
                 }
             }
         }
+        QQC2.Button {
+            text: i18n("Change Wallpaper...")
+            onClicked: kcm.openWallpaperDialog()
+        }
 
         Item {
             Kirigami.FormData.isSection: false
@@ -126,48 +130,6 @@ KCM.SimpleKCM {
             Kirigami.FormData.isSection: false
         }
 
-        // scroll handle settings
-
-        QQC2.ButtonGroup { id: scrollHandleBehaviorGroup }
-
-        QQC2.RadioButton {
-            id: scrollbarLeftClickNavigatesByPage
-            Kirigami.FormData.label: i18n("Clicking in scrollbar track:")
-            text: i18nc("@radio part of a complete sentence: 'Clicking in scrollbar track scrolls one page up or down'", "Scrolls one page up or down")
-            checked: kcm.globalsSettings.scrollbarLeftClickNavigatesByPage
-            onToggled: kcm.globalsSettings.scrollbarLeftClickNavigatesByPage = true
-            QQC2.ButtonGroup.group: scrollHandleBehaviorGroup
-
-            KCM.SettingStateBinding {
-                configObject: kcm.globalsSettings
-                settingName: "scrollbarLeftClickNavigatesByPage"
-            }
-        }
-
-        QQC2.RadioButton {
-            id: scrollBarLeftClickWarpsScrollHandle
-            text: i18nc("@radio part of a complete sentence: 'Clicking in scrollbar track scrolls to the clicked location'", "Scrolls to the clicked location")
-            checked: !kcm.globalsSettings.scrollbarLeftClickNavigatesByPage
-            onToggled: kcm.globalsSettings.scrollbarLeftClickNavigatesByPage = false
-            QQC2.ButtonGroup.group: scrollHandleBehaviorGroup
-
-            KCM.SettingStateBinding {
-                configObject: kcm.globalsSettings
-                settingName: "scrollbarLeftClickNavigatesByPage"
-                extraEnabledConditions: scrollbarLeftClickNavigatesByPage.enabled
-            }
-        }
-
-        // Don't show a label for what middle-clicking does when using the
-        // "click to zoom the handle" behavior because Qt doesn't invert the
-        // middle-click functionality when using this; see
-        // https://bugreports.qt.io/browse/QTBUG-80728
-        QQC2.Label {
-            Layout.fillWidth: true
-            visible: scrollbarLeftClickNavigatesByPage.checked
-            text: i18n("Middle-click to scroll to clicked location")
-            elide: Text.ElideRight
-            font: theme.smallestFont
-        }
+        
     }
 }
