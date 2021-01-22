@@ -36,6 +36,8 @@ public:
 
     LandingPageGlobalsSettings *globalsSettings() const;
 
+    Q_INVOKABLE void openWallpaperDialog();
+
 public Q_SLOTS:
     void save() override;
 
