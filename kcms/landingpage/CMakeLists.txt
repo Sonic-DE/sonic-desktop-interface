@@ -11,11 +11,12 @@ kcmutils_generate_module_data(
     kcm_landingpage_SRCS
     MODULE_DATA_HEADER landingpagedata.h
     MODULE_DATA_CLASS_NAME LandingPageData
-    SETTINGS_HEADERS landingpage_kdeglobalssettings.h
-    SETTINGS_CLASSES LandingPageGlobalsSettings
+    SETTINGS_HEADERS landingpage_kdeglobalssettings.h baloosettings.h
+    SETTINGS_CLASSES LandingPageGlobalsSettings BalooSettings
 )
 
 kconfig_add_kcfg_files(kcm_landingpage_SRCS landingpage_kdeglobalssettings.kcfgc GENERATE_MOC)
+kconfig_add_kcfg_files(kcm_landingpage_SRCS baloosettings.kcfgc GENERATE_MOC)
 
 add_library(kcm_landingpage MODULE ${kcm_landingpage_SRCS})
 
