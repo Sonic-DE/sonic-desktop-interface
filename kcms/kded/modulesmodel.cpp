@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2020 Kai Uwe Broulik <kde@broulik.de>
+ * Copyright (C) 2021 Harald Sitter <sitter@kde.org>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -21,7 +22,11 @@
 #include "modulesmodel.h"
 
 #include <QCollator>
+#include <QQuickItem>
+#include <QQuickWindow>
 
+#include <KCModuleInfo>
+#include <KCMultiDialog>
 #include <KConfig>
 #include <KConfigGroup>
 #include <KPluginInfo>
@@ -81,6 +86,8 @@ QVariant ModulesModel::data(const QModelIndex &index, int role) const
         return item.moduleName;
     case ImmutableRole:
         return item.immutable;
+    case HasKCMsRole:
+        return item.kcms.size() > 0;
     }
 
     return QVariant();
@@ -155,6 +162,7 @@ QHash<int, QByteArray> ModulesModel::roleNames() const
         {StatusRole, QByteArrayLiteral("status")},
         {ModuleNameRole, QByteArrayLiteral("moduleName")},
         {ImmutableRole, QByteArrayLiteral("immutable")},
+        {HasKCMsRole, QByteArrayLiteral("hasKCMs")},
     };
 }
 
@@ -231,7 +239,26 @@ void ModulesModel::load()
         const bool autoloadEnabled = cg.readEntry("autoload", true);
         const bool immutable = cg.isEntryImmutable("autoload");
 
-        ModulesModelData data{module.name(), module.description(), KDEDConfig::UnknownType, autoloadEnabled, dbusModuleName, immutable, autoloadEnabled};
+        auto kcms = KPluginInfo(module).kcmServices();
+        // Filter out KCMs that can't conceivably be visualized in an effort to not hint at configurability when in fact we'll not be able to display anything
+        // upon activation.
+        kcms.erase(std::remove_if(kcms.begin(),
+                                  kcms.end(),
+                                  [](KService::Ptr ptr) {
+                                      return !ptr->isValid() || ptr->noDisplay();
+                                  }),
+                   kcms.end());
+
+        ModulesModelData data{
+            module.name(),
+            module.description(),
+            KDEDConfig::UnknownType,
+            autoloadEnabled,
+            dbusModuleName,
+            immutable,
+            autoloadEnabled,
+            kcms,
+        };
 
         // The logic has to be identical to Kded::initModules.
         // They interpret X-KDE-Kded-autoload as false if not specified
@@ -300,4 +327,49 @@ void ModulesModel::refreshAutoloadEnabledSavedState()
         auto &item = m_data[i];
         item.savedAutoloadEnabled = item.autoloadEnabled;
     }
+}
+
+void ModulesModel::showConfig(const QModelIndex &index, QQuickItem *windowItem, int minimumSize)
+{
+    // minimumSize is a bit of a hack. I want the minimumSize derived form kirigami units which are easiest to forward from qml
+
+    if (!checkIndex(index)) {
+        return;
+    }
+
+    const ModulesModelData &item = m_data.value(index.row());
+
+    auto dialog = new KCMultiDialog;
+    dialog->setWindowTitle(item.display);
+    dialog->setAttribute(Qt::WA_DeleteOnClose);
+    dialog->setMinimumSize(minimumSize, minimumSize);
+
+    dialog->winId(); // trigger windowHandle construction
+    if (dialog->windowHandle()) {
+        dialog->windowHandle()->setTransientParent(windowItem->window());
+    }
+
+    uint pages = 0;
+    for (const auto &service : item.kcms) {
+        if (dialog->addModule(KCModuleInfo(service))) {
+            ++pages;
+        }
+    }
+
+    if (pages == 0) {
+        // This should largely be covered by the filtering we do in load() but there's always a chance of things falling through the cracks, debug that
+        // no modules qualified for visualizing.
+        // The warning is intentionally not categorized to make it readily accessible!
+        qWarning() << "kded kcm: module has kcms listed but KCMultiDialog doesn't want to visualize them!" << item.moduleName;
+        for (const auto &service : item.kcms) {
+            qWarning() << "  service" << service->desktopEntryName() << service->library();
+        }
+        delete dialog;
+        return;
+    }
+
+    // Since the dialog is modal we won't be getting any other click events on the main window, so there's only ever one sub config window open => no need to
+    // handle scenarios with multiple windows at the same time.
+    dialog->setModal(true);
+    dialog->show();
 }

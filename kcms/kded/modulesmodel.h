@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2020 Kai Uwe Broulik <kde@pbroulik.de>
+ * Copyright (C) 2021 Harald Sitter <sitter@kde.org>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -20,6 +21,7 @@
 
 #pragma once
 
+#include <KService>
 #include <QAbstractListModel>
 #include <QString>
 #include <QVector>
@@ -34,6 +36,7 @@ struct ModulesModelData {
     QString moduleName;
     bool immutable;
     bool savedAutoloadEnabled;
+    QList<KService::Ptr> kcms;
 };
 Q_DECLARE_TYPEINFO(ModulesModelData, Q_MOVABLE_TYPE);
 
@@ -52,6 +55,7 @@ public:
         StatusRole,
         ModuleNameRole,
         ImmutableRole,
+        HasKCMsRole,
     };
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
@@ -70,6 +74,8 @@ public:
     bool representsDefault() const;
     bool needsSave() const;
     void refreshAutoloadEnabledSavedState();
+
+    Q_INVOKABLE void showConfig(const QModelIndex &index, QQuickItem *windowItem, int minimumSize);
 
 signals:
     void autoloadedModulesChanged();
