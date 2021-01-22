@@ -130,6 +130,13 @@ KCM.SimpleKCM {
             Kirigami.FormData.isSection: false
         }
 
-        
+        QQC2.CheckBox {
+            Kirigami.FormData.label: i18n("File Indexing:")
+            text: i18n("Enabled")
+            checked: kcm.balooSettings.indexingEnabled
+            onCheckStateChanged: {
+                kcm.balooSettings.indexingEnabled = checked
+            }
+        }
     }
 }
