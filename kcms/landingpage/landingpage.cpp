@@ -35,7 +35,7 @@
 
 #include "landingpagedata.h"
 #include "landingpage_kdeglobalssettings.h"
-#include "baloosettings.h"
+#include "landingpage_baloosettings.h"
 
 K_PLUGIN_FACTORY_WITH_JSON(KCMLandingPageFactory, "kcm_landingpage.json", registerPlugin<KCMLandingPage>(); registerPlugin<LandingPageData>();)
 

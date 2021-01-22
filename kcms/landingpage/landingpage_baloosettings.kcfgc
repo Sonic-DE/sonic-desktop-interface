@@ -1,4 +1,4 @@
-File=baloosettings.kcfg
+File=landingpage_baloosettings.kcfg
 ClassName=BalooSettings
 Mutators=true
 DefaultValueGetters=true
