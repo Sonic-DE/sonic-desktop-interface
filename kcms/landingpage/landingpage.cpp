@@ -47,7 +47,7 @@ KCMLandingPage::KCMLandingPage(QObject *parent, const QVariantList &args)
     qmlRegisterType<BalooSettings>();
 
     KAboutData *about = new KAboutData(QStringLiteral("kcm_landingpage"),
-                                       i18n("Basic Settings"),
+                                       i18n("Quick Settings"),
                                        QStringLiteral("1.1"),
                                        i18n("Landing page with some basic settings."),
                                        KAboutLicense::GPL);
@@ -131,6 +131,11 @@ void KCMLandingPage::openWallpaperDialog()
     message.setArguments(args);
 
     QDBusConnection::sessionBus().call(message, QDBus::NoBlock);
+}
+
+Q_INVOKABLE void KCMLandingPage::openKCM(const QString &kcm)
+{
+    QProcess::startDetached(QStringLiteral("systemsettings5"), QStringList({kcm}));
 }
 
 #include "landingpage.moc"
