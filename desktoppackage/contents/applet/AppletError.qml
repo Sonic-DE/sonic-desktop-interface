@@ -34,6 +34,17 @@ Item {
 
     clip: true
 
+    PlasmaComponents.ToolButton {
+        icon.name: "arrow-up"
+        visible: !copyHelper.visible
+        onClicked: copyHelper.visible = true
+
+        anchors {
+            bottom: parent.bottom
+            right: parent.right
+        }
+    }
+
     ColumnLayout {
         anchors {
             verticalCenter: parent.verticalCenter
