@@ -83,6 +83,7 @@ Item {
             readOnly: true
             Layout.fillHeight: true
             Layout.fillWidth: true
+            Layout.maximumHeight: PlasmaCore.Units.gridUnit*8
 
             function copyText() {
                 selectAll()
