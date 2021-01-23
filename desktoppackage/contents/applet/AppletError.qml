@@ -45,49 +45,53 @@ Item {
         }
     }
 
-    ColumnLayout {
-        anchors {
-            verticalCenter: parent.verticalCenter
-            left: parent.left
-            right: parent.right
-        }
+    RowLayout {
+        anchors.fill: parent
 
-        PlasmaCore.IconItem {
-            Layout.minimumWidth: PlasmaCore.Units.iconSizes.huge
-            Layout.minimumHeight: PlasmaCore.Units.iconSizes.huge
-            source: "dialog-error"
-            Layout.alignment: Qt.AlignHCenter
-        }
-
-        PlasmaExtras.Heading {
-            text: i18nd("plasma_shell_org.kde.plasma.desktop", "Sorry! There was an error loading %1.", root.errorInformation.appletName)
-            level: 2
-            wrapMode: Text.Wrap
-            horizontalAlignment: Text.AlignHCenter
-            Layout.fillWidth: true
-        }
-
-        PlasmaComponents.Button {
-            text: i18nd("plasma_shell_org.kde.plasma.desktop", "Copy Error Details to Clipboard")
-            icon.name: "edit-copy"
-
-            onClicked: copyHelper.copyText()
-            Layout.alignment: Qt.AlignHCenter
-        }
-
-        PlasmaComponents.TextArea {
-            id: copyHelper
-            visible: root.errorInformation.isDebugMode
-
-            text: root.errorInformation.errors.join("\n\n")
-            readOnly: true
-            Layout.fillHeight: true
+        ColumnLayout {
+            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
             Layout.fillWidth: true
 
-            function copyText() {
-                selectAll()
-                copy()
+            PlasmaCore.IconItem {
+                Layout.minimumWidth: PlasmaCore.Units.iconSizes.huge
+                Layout.minimumHeight: PlasmaCore.Units.iconSizes.huge
+                source: "dialog-error"
+                Layout.alignment: Qt.AlignHCenter
+            }
+
+            PlasmaExtras.Heading {
+                text: i18nd("plasma_shell_org.kde.plasma.desktop", "Sorry! There was an error loading %1.", root.errorInformation.appletName)
+                level: 2
+                wrapMode: Text.Wrap
+                horizontalAlignment: Text.AlignHCenter
+                Layout.fillWidth: true
+            }
+
+            PlasmaComponents.Button {
+                text: i18nd("plasma_shell_org.kde.plasma.desktop", "Copy Error Details to Clipboard")
+                icon.name: "edit-copy"
+
+                onClicked: copyHelper.copyText()
+                Layout.alignment: Qt.AlignHCenter
+            }
+
+            PlasmaComponents.TextArea {
+                id: copyHelper
+                visible: root.errorInformation.isDebugMode
+
+                wrapMode: TextEdit.Wrap
+
+                text: root.errorInformation.errors.join("\n\n")
+                readOnly: true
+                Layout.fillHeight: true
+                Layout.fillWidth: true
+
+                function copyText() {
+                    selectAll()
+                    copy()
+                }
             }
         }
     }
+
 }
