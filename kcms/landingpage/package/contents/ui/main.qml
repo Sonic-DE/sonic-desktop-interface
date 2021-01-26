@@ -89,8 +89,8 @@ KCM.SimpleKCM {
             }
         }
 
-        Item {
-            Kirigami.FormData.isSection: false
+        Kirigami.Separator {
+            Kirigami.FormData.isSection: true
         }
 
         // Click behavior settings
