@@ -33,6 +33,33 @@ KCM.SimpleKCM {
     Kirigami.FormLayout {
         id: formLayout
 
+        QQC2.ButtonGroup { id: themeGroup }
+
+        QQC2.RadioButton {
+            id: lightTheme
+            Kirigami.FormData.label: i18n("Appearance:")
+            text: i18n("Light Theme")
+            checked: kcm.globalsSettings.colorScheme === "BreezeLight"
+            onToggled: kcm.globalsSettings.colorScheme = "BreezeLight"
+            QQC2.ButtonGroup.group: themeGroup
+
+            KCM.SettingStateBinding {
+                configObject: kcm.globalsSettings
+                settingName: "colorScheme"
+            }
+        }
+        QQC2.RadioButton {
+            id: darkTheme
+            text: i18n("Dark Theme")
+            checked: kcm.globalsSettings.colorScheme === "BreezeDark"
+            onToggled: kcm.globalsSettings.colorScheme = "BreezeDark"
+            QQC2.ButtonGroup.group: themeGroup
+
+            KCM.SettingStateBinding {
+                configObject: kcm.globalsSettings
+                settingName: "colorScheme"
+            }
+        }
 
         // We want to show the slider in a logarithmic way. ie
         // move from 4x, 3x, 2x, 1x, 0.5x, 0.25x, 0.125x

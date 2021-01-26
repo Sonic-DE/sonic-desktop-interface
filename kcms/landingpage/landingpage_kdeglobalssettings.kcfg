@@ -4,6 +4,12 @@
       xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0
       http://www.kde.org/standards/kcfg/1.0/kcfg.xsd" >
   <kcfgfile name="kdeglobals" />
+  <group name="General">
+    <entry name="colorScheme" key="ColorScheme" type="String">
+      <label>Color scheme name</label>
+      <default>BreezeLight</default>
+    </entry>
+  </group>
   <group name="KDE">
     <entry name="singleClick" key="SingleClick" type="Bool">
       <label>Single click to open files</label>
@@ -13,6 +19,5 @@
       <label>Animation speed</label>
       <default>1.0</default>
     </entry>
-    
   </group>
 </kcfg>
