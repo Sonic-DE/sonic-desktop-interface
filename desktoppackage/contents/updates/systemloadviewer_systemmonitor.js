@@ -18,12 +18,12 @@ for (var i in containments) {
             geometry.width = geometry.width/3
             
             widget.remove();
-            cont.addWidget("org.kde.ksysguard.sensorchart.cpuusage", geometry.x, geometry.y, geometry.width, geometry.height);
+            cont.addWidget("org.kde.plasma.systemmonitor.cpuusage", geometry.x, geometry.y, geometry.width, geometry.height);
             geometry.x += geometry.width;
-            cont.addWidget("org.kde.ksysguard.sensorchart.memoryusage", geometry.x, geometry.y, geometry.width, geometry.height);
+            cont.addWidget("org.kde.plasma.systemmonitor.memoryusage", geometry.x, geometry.y, geometry.width, geometry.height);
             geometry.x += geometry.width;
 
-            let swapWidget = cont.addWidget("org.kde.ksysguard.sensorchart", geometry.x, geometry.y, geometry.width, geometry.height);
+            let swapWidget = cont.addWidget("org.kde.plasma.systemmonitor", geometry.x, geometry.y, geometry.width, geometry.height);
             swapWidget.currentConfigGroup = ["Appearance"];
             swapWidget.writeConfig("title", "Swap");
             swapWidget.currentConfigGroup = ["Sensors"];
