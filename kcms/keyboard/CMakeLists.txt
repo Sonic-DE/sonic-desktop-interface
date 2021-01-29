@@ -68,7 +68,7 @@ target_link_libraries(kded_keyboard
  )
 
 if (HAVE_XINPUT)
-    target_link_libraries(kded_keyboard ${X11_Xinput_LIB})
+    target_link_libraries(kded_keyboard X11::Xi)
 endif()
 
 if (HAVE_UDEV)
@@ -123,9 +123,8 @@ target_link_libraries(kcm_keyboard
     KF5::GuiAddons
     XCB::XCB
     XCB::XKB
-    ${X11_Xkbfile_LIB}
-    ${X11_LIBRARIES}
-    ${text_paint_LIB}
+    X11::X11
+    X11::xkbfile
 )
 
 install(TARGETS kcm_keyboard DESTINATION ${KDE_INSTALL_PLUGINDIR} )
