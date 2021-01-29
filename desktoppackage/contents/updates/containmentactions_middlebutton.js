@@ -1,3 +1,5 @@
+// MidButton got deprecated and doesn't really work anymore as a stringified enum value
+// for the middle button  Qt::MouseButton, we need to update our config to "MiddleButton"
 var plasmaConfig = ConfigFile("plasma-org.kde.plasma.desktop-appletsrc", "ActionPlugins");
 
 for (let i in plasmaConfig.groupList) {
