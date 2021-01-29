@@ -53,9 +53,11 @@ DeviceAutomounterKCM::DeviceAutomounterKCM(QWidget *parent, const QVariantList &
 
     connect(kcfg_AutomountOnLogin, &QCheckBox::stateChanged, this, [this](int state) {
         m_devices->setAutomaticMountOnLogin(state == Qt::Checked);
+        kcfg_AutomountUnknownDevices->setEnabled(kcfg_AutomountOnPlugin->isChecked() || kcfg_AutomountOnLogin->isChecked());
     });
     connect(kcfg_AutomountOnPlugin, &QCheckBox::stateChanged, this, [this](int state) {
         m_devices->setAutomaticMountOnPlugin(state == Qt::Checked);
+        kcfg_AutomountUnknownDevices->setEnabled(kcfg_AutomountOnPlugin->isChecked() || kcfg_AutomountOnLogin->isChecked());
     });
 
     connect(deviceView->selectionModel(), &QItemSelectionModel::selectionChanged, this, &DeviceAutomounterKCM::updateForgetDeviceButton);
@@ -101,9 +103,10 @@ void DeviceAutomounterKCM::load()
 {
     KCModule::load();
 
-    kcfg_AutomountUnknownDevices->setEnabled(m_settings->automountEnabled());
     kcfg_AutomountOnLogin->setEnabled(m_settings->automountEnabled());
     kcfg_AutomountOnPlugin->setEnabled(m_settings->automountEnabled());
+
+    kcfg_AutomountUnknownDevices->setEnabled(m_settings->automountEnabled() && (m_settings->automountOnLogin() || m_settings->automountOnPlugin()));
 
     m_devices->reload();
     loadLayout();
