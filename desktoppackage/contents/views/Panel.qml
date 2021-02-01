@@ -36,9 +36,8 @@ PlasmaCore.FrameSvgItem {
     readonly property bool verticalPanel: containment && containment.formFactor === PlasmaCore.Types.Vertical
 
     readonly property real spacingAtMinSize: Math.round(Math.max(1, (verticalPanel ? root.width : root.height) - units.iconSizes.smallMedium)/2)
-    PlasmaCore.FrameSvgItem {
+    PlasmaCore.FrameSvg {
         id: thickPanelSvg
-        visible: false
         prefix: 'thick'
         imagePath: "widgets/panel-background"
     }
