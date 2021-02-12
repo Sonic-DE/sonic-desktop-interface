@@ -22,8 +22,10 @@
 
 #include <KPluginFactory>
 #include <KAboutData>
+#include <KColorScheme>
 #include <KLocalizedString>
 #include <KGlobalSettings>
+#include <KPackage/PackageLoader>
 
 #include <QDBusMessage>
 #include <QDBusConnection>
@@ -36,6 +38,7 @@
 #include "landingpagedata.h"
 #include "landingpage_kdeglobalssettings.h"
 #include "landingpage_baloosettings.h"
+
 
 K_PLUGIN_FACTORY_WITH_JSON(KCMLandingPageFactory, "kcm_landingpage.json", registerPlugin<KCMLandingPage>(); registerPlugin<LandingPageData>();)
 
@@ -56,6 +59,15 @@ KCMLandingPage::KCMLandingPage(QObject *parent, const QVariantList &args)
     setAboutData(about);
 
     setButtons(Apply | Default | Help);
+
+    m_breezeLightPackage = KPackage::PackageLoader::self()->loadPackage(QStringLiteral("Plasma/LookAndFeel"));
+    m_breezeLightPackage.setPath(QStringLiteral("org.kde.breeze.desktop"));
+
+    m_breezeDarkPackage = KPackage::PackageLoader::self()->loadPackage(QStringLiteral("Plasma/LookAndFeel"));
+    m_breezeDarkPackage.setPath(QStringLiteral("org.kde.breezedark.desktop"));
+
+    connect(globalsSettings(), &LandingPageGlobalsSettings::lookAndFeelPackageChanged,
+            this, [this]() {m_lnfDirty = true;});
 }
 
 LandingPageGlobalsSettings *KCMLandingPage::globalsSettings() const
@@ -90,7 +102,30 @@ void KCMLandingPage::save()
 
         QDBusConnection::sessionBus().asyncCall(message);
     }
+
+
+    if (m_lnfDirty) {
+        QProcess::startDetached(QStringLiteral("lookandfeeltool"), QStringList({QStringLiteral("-a"), m_data->landingPageGlobalsSettings()->lookAndFeelPackage()}));
+    }
 }
+
+static void copyEntry(KConfigGroup &from, KConfigGroup &to, const QString &entry)
+{
+    if (from.hasKey(entry)) {
+        to.writeEntry(entry, from.readEntry(entry));
+    }
+}
+
+QString KCMLandingPage::breezeLightThumbnail() const
+{
+    return m_breezeLightPackage.filePath("preview");
+}
+
+QString KCMLandingPage::breezeDarkThumbnail() const
+{
+    return m_breezeDarkPackage.filePath("preview");
+}
+
 
 void KCMLandingPage::openWallpaperDialog()
 {
