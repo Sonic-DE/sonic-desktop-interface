@@ -27,9 +27,14 @@ target_link_libraries(kcm_landingpage
     KF5::ConfigWidgets
     KF5::Declarative
     KF5::KDELibs4Support # kglobalsettings
+    PW::KWorkspace
 
     Qt5::DBus
 )
+
+if(X11_FOUND)
+    target_link_libraries(kcm_landingpage ${X11_LIBRARIES} Qt5::X11Extras)
+endif()
 
 kcoreaddons_desktop_to_json(kcm_landingpage "kcm_landingpage.desktop" SERVICE_TYPES kcmodule.desktop)
 

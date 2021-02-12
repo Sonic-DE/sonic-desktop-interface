@@ -15,6 +15,10 @@
       <label>Single click to open files</label>
       <default>true</default>
     </entry>
+    <entry name="lookAndFeelPackage" key="LookAndFeelPackage" type="String">
+      <label>Global Look and Feel package</label>
+      <default>org.kde.breeze.desktop</default>
+    </entry>
     <entry name="animationDurationFactor" key="AnimationDurationFactor" type="Double">
       <label>Animation speed</label>
       <default>1.0</default>

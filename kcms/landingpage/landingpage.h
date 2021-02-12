@@ -21,6 +21,7 @@
 #define _KCM_LANDINGPAGE_H
 
 #include <KQuickAddons/ManagedConfigModule>
+#include <KPackage/Package>
 
 class LandingPageData;
 class LandingPageGlobalsSettings;
@@ -33,6 +34,8 @@ class KCMLandingPage : public KQuickAddons::ManagedConfigModule
     Q_OBJECT
     Q_PROPERTY(LandingPageGlobalsSettings *globalsSettings READ globalsSettings CONSTANT)
     Q_PROPERTY(BalooSettings *balooSettings READ balooSettings CONSTANT)
+    Q_PROPERTY(QString breezeLightThumbnail READ breezeLightThumbnail CONSTANT)
+    Q_PROPERTY(QString breezeDarkThumbnail READ breezeDarkThumbnail CONSTANT)
 
 public:
     KCMLandingPage(QObject *parent, const QVariantList &args);
@@ -40,6 +43,9 @@ public:
 
     LandingPageGlobalsSettings *globalsSettings() const;
     BalooSettings *balooSettings() const;
+
+    QString breezeLightThumbnail() const;
+    QString breezeDarkThumbnail() const;
 
     Q_INVOKABLE void openWallpaperDialog();
     Q_INVOKABLE void openKCM(const QString &kcm);
@@ -49,6 +55,11 @@ public Q_SLOTS:
 
 private:
     LandingPageData *m_data;
+
+    KPackage::Package m_breezeLightPackage;
+    KPackage::Package m_breezeDarkPackage;
+
+    bool m_lnfDirty = false;
 };
 
 #endif  // _KCM_LANDINGPAGE_H
