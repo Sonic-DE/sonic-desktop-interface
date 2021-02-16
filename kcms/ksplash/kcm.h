@@ -40,6 +40,7 @@ public:
         PluginNameRole = Qt::UserRole + 1,
         ScreenshotRole,
         DescriptionRole,
+        UninstallableRole,
     };
 
     KCMSplashScreen(QObject *parent, const QVariantList &args);
@@ -49,6 +50,7 @@ public:
     bool testing() const;
 
     Q_INVOKABLE int pluginIndex(const QString &pluginName) const;
+    Q_INVOKABLE void uninstall(const QString &plugin);
 
 public Q_SLOTS:
     void ghnsEntriesChanged(const QQmlListReference &changedEntries);
@@ -58,6 +60,7 @@ public Q_SLOTS:
 Q_SIGNALS:
     void testingChanged();
     void testingFailed();
+    void error(const QString &message);
 
 private:
     void loadModel();
@@ -67,6 +70,7 @@ private:
     QStandardItemModel *m_model;
 
     QProcess *m_testProcess = nullptr;
+    QString m_packageRoot;
 };
 
 #endif

@@ -30,6 +30,8 @@
 #include <QStandardPaths>
 
 #include <KPackage/PackageLoader>
+#include <KPackage/Package>
+#include <KPackage/PackageStructure>
 
 #include "splashscreendata.h"
 #include "splashscreensettings.h"
@@ -53,6 +55,7 @@ KCMSplashScreen::KCMSplashScreen(QObject *parent, const QVariantList &args)
     roles[PluginNameRole] = "pluginName";
     roles[ScreenshotRole] = "screenshot";
     roles[DescriptionRole] = "description";
+    roles[UninstallableRole] = "uninstallable";
     m_model->setItemRoleNames(roles);
     loadModel();
 }
@@ -102,11 +105,14 @@ void KCMSplashScreen::loadModel()
     m_model->clear();
 
     const QList<KPackage::Package> pkgs = availablePackages(QStringLiteral("splashmainscript"));
+    const QString writableLocation = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation);
     for (const KPackage::Package &pkg : pkgs) {
         QStandardItem *row = new QStandardItem(pkg.metadata().name());
         row->setData(pkg.metadata().pluginId(), PluginNameRole);
         row->setData(pkg.filePath("previews", QStringLiteral("splash.png")), ScreenshotRole);
         row->setData(pkg.metadata().description(), DescriptionRole);
+        row->setData(pkg.path().startsWith(writableLocation), UninstallableRole);
+        m_packageRoot = writableLocation + QLatin1Char('/') + pkg.defaultPackageRoot();
         m_model->appendRow(row);
     }
     m_model->sort(0 /*column*/);
@@ -114,6 +120,7 @@ void KCMSplashScreen::loadModel()
     QStandardItem *row = new QStandardItem(i18n("None"));
     row->setData("None", PluginNameRole);
     row->setData(i18n("No splash screen will be shown"), DescriptionRole);
+    row->setData(false, UninstallableRole);
     m_model->insertRow(0, row);
 
     if (-1 == pluginIndex(m_data->settings()->theme())) {
@@ -166,6 +173,19 @@ void KCMSplashScreen::test(const QString &plugin)
 
     emit testingChanged();
     m_testProcess->start(QStringLiteral("ksplashqml"), {plugin, QStringLiteral("--test")});
+}
+
+void KCMSplashScreen::uninstall(const QString &plugin)
+{
+    using namespace KPackage;
+    PackageStructure *structure = PackageLoader::self()->loadPackageStructure(QStringLiteral("Plasma/LookAndFeel"));
+    KJob *uninstallJob = Package(structure).uninstall(plugin, m_packageRoot);
+    connect(uninstallJob, &KJob::result, this, [this, uninstallJob](){
+        if (uninstallJob->error()) {
+            Q_EMIT error(uninstallJob->errorString());
+        }
+        loadModel();
+    });
 }
 
 #include "kcm.moc"
