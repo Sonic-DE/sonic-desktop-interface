@@ -1,0 +1,6 @@
+Version=5
+
+Id=kcminputrc_fix_botched_5_21_0
+File=kcminputrc
+Group=Keyboard
+Script=kcminputrc_fix_botched_5_21_0.py
