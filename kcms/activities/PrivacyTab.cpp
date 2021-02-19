@@ -21,8 +21,12 @@
 #include "PrivacyTab.h"
 #include "kactivitymanagerd_plugins_settings.h"
 #include "kactivitymanagerd_settings.h"
+#include "resourcescoring_interface.h"
 
 #include <QDBusPendingCall>
+#include <QDBusInterface>
+#include <QDBusConnection>
+
 #include <QMenu>
 #include <QQmlComponent>
 #include <QQmlContext>
@@ -135,9 +139,8 @@ void PrivacyTab::save()
 
 void PrivacyTab::forget(int count, const QString &what)
 {
-    KAMD_DBUS_DECL_INTERFACE(rankingsservice, Resources / Scoring, ResourcesScoring);
-
-    rankingsservice.asyncCall(QStringLiteral("DeleteRecentStats"), QString(), count, what);
+    org::kde::ActivityManager::ResourcesScoring rankingsservice(KAMD_DBUS_SERVICE, KAMD_DBUS_RESOURCES_SCORING_PATH, QDBusConnection::sessionBus());
+    rankingsservice.DeleteRecentStats(QString(), count, what);
 
     d->messageWidget->animatedShow();
 }
