@@ -49,4 +49,5 @@ if "kcminputrc_repeat.upd:kcminputrc_migrate_repeat_value" in content:
         # "enable key repeat." We delete instead of reassigning to "repeat" because
         # we would prefer to have a deleted field act as our "default" value.
         #
-        print("# DELETE KeyRepeat")
+        print("# DELETE [Keyboard]KeyRepeat")
+    print("# DELETEGROUP Tmp")
