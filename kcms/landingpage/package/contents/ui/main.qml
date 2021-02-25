@@ -178,7 +178,7 @@ KCM.SimpleKCM {
                 Kirigami.FormData.label: i18n("File Indexing:")
                 text: i18n("Enabled")
                 checked: kcm.balooSettings.indexingEnabled
-                onCheckStateChanged: {
+                onToggled: {
                     kcm.balooSettings.indexingEnabled = checked
                 }
             }
