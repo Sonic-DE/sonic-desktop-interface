@@ -67,7 +67,8 @@ KCM.SimpleKCM {
 
             QQC2.Button {
                 //Layout.alignment: Qt.AlignCenter
-                text: i18n("Custom Theme...")
+                text: i18n("Show More Appearance Settings...")
+                icon.name: "preferences-desktop-theme-global"
                 onClicked: kcm.openKCM("kcm_lookandfeel")
             }
 
