@@ -46,11 +46,19 @@ QQC2.RadioButton {
             shadow.yOffset: 2
             shadow.size: 10
             shadow.color: Qt.rgba(0, 0, 0, 0.3)
-            Rectangle {
-                anchors.fill: parent
-                radius: Kirigami.Units.smallSpacing
-                opacity: delegate.checked
-                color: Kirigami.Theme.highlightColor
+
+            color: {
+                if (delegate.checked) {
+                    return Kirigami.Theme.highlightColor;
+                } else if (delegate.hovered) {
+                    // Match appearance of hovered list items
+                    return Qt.rgba(Kirigami.Theme.highlightColor.r,
+                                Kirigami.Theme.highlightColor.g,
+                                Kirigami.Theme.highlightColor.b,
+                                0.5);
+                } else {
+                    return Kirigami.Theme.backgroundColor;
+                }
             }
 
             Image {
