@@ -183,7 +183,8 @@ KCM.SimpleKCM {
                 }
             }
             QQC2.Button {
-                text: i18n("More Behavior Settings...")
+                text: i18n("Show More Behavior Settings...")
+                icon.name: "preferences-desktop"
                 onClicked: kcm.openKCM("kcm_workspace")
             }
         }
