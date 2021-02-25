@@ -122,6 +122,7 @@ KCM.SimpleKCM {
             }
 
             QQC2.Button {
+                icon.name: "preferences-desktop-wallpaper"
                 text: i18n("Change Wallpaper...")
                 onClicked: kcm.openWallpaperDialog()
             }
