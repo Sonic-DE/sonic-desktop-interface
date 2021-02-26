@@ -27,6 +27,7 @@
 #include <KGlobalSettings>
 #include <KPackage/PackageLoader>
 #include <KService>
+#include <KCModuleInfo>
 
 #include <QDBusMessage>
 #include <QDBusConnection>
@@ -135,10 +136,13 @@ QVariant MostUsedModel::data(const QModelIndex &index, int role) const
             return service->name();
         case Qt::DecorationRole:
             return service->icon();
-        case KcmPluginRole:
-            return service->library();
+        case KcmPluginRole: {
+            return service->desktopEntryName();
+            KCModuleInfo info(service);
+            return info.handle();
+        }
         case ResultModel::ScoreRole:
-            return QSortFilterProxyModel::data(index, ResultModel::ScoreRole).toInt();
+            return QSortFilterProxyModel::data(index, ResultModel::ScoreRole);
         default:
             return QVariant();
     }
@@ -282,7 +286,7 @@ void KCMLandingPage::openWallpaperDialog()
 }
 
 Q_INVOKABLE void KCMLandingPage::openKCM(const QString &kcm)
-{
+{qWarning()<<kcm;
     QProcess::startDetached(QStringLiteral("systemsettings5"), QStringList({kcm}));
 }
 

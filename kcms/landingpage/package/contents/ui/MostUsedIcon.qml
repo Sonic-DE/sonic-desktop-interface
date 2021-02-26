@@ -35,21 +35,11 @@ MouseArea {
     Layout.alignment: Qt.AlignTop
     activeFocusOnTab: true
     hoverEnabled: true
-/*
-    Keys.onTabPressed: {
-        if (index < (mostUsedRepeater.count-1)) {
-            event.accepted = false;
-        } else {
-            root.focusNextRequest();
-        }
+
+    Keys.onPressed: {
+       print (key)
     }
-    Keys.onBacktabPressed: {
-        if (index > 0) {
-            event.accepted = false;
-        } else {
-            root.focusPreviousRequest();
-        }
-    }*/
+
     Kirigami.Separator {
         anchors{
             left: parent.left
@@ -83,6 +73,6 @@ MouseArea {
     Accessible.role: Accessible.Button
     Accessible.name: label.text
     Accessible.description: i18n("Most used module number %1", index+1)
-    Accessible.onPressAction: systemsettings.loadMostUsed(index);
+    Accessible.onPressAction: item.clicked();
 }
 
