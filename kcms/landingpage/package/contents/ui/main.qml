@@ -29,10 +29,18 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 KCM.SimpleKCM {
     id: root
 
-    implicitWidth: Kirigami.Units.gridUnit * 40
+    //implicitWidth: Kirigami.Units.gridUnit * 40
 
     ColumnLayout {
+        height: Math.max(implicitHeight, root.flickable.height - root.topPadding - root.bottomPadding)
         QQC2.ButtonGroup { id: themeGroup }
+
+        // Spacer for vertical centering
+        Item {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+        }
+
         RowLayout {
             Layout.alignment: Qt.AlignCenter
             Thumbnail {
@@ -189,13 +197,25 @@ KCM.SimpleKCM {
                 icon.name: "preferences-desktop"
                 onClicked: kcm.openKCM("kcm_workspace")
             }
+            Kirigami.Separator {
+                Kirigami.FormData.isSection: true
+            }
+        }
+
+        Kirigami.Heading {
+            level: 2
+            text: i18n("Most Used Settings")
+            Layout.fillWidth: true
+            horizontalAlignment: Text.AlignHCenter
         }
         RowLayout {
+            Layout.fillHeight: false
             Item {
+                Layout.fillHeight: true
                 Layout.fillWidth: true
+                Layout.preferredWidth: Kirigami.Units.gridUnit * 2
             }
             Repeater {
-                Layout.fillWidth: false
                 model: kcm.mostUsedModel
                 delegate: MostUsedIcon {
                     icon: model.decoration
@@ -204,8 +224,16 @@ KCM.SimpleKCM {
                 }
             }
             Item {
+                Layout.preferredWidth: Kirigami.Units.gridUnit * 2
+                Layout.fillHeight: true
                 Layout.fillWidth: true
             }
+        }
+
+        // Spacer for vertical centering
+        Item {
+            Layout.fillHeight: true
+            Layout.fillWidth: true
         }
     }
 }
