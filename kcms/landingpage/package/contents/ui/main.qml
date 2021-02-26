@@ -32,6 +32,7 @@ KCM.SimpleKCM {
     implicitWidth: Kirigami.Units.gridUnit * 40
 
     ColumnLayout {
+        QQC2.ButtonGroup { id: themeGroup }
         RowLayout {
             Layout.alignment: Qt.AlignCenter
             Thumbnail {
@@ -187,6 +188,23 @@ KCM.SimpleKCM {
                 text: i18n("Show More Behavior Settings...")
                 icon.name: "preferences-desktop"
                 onClicked: kcm.openKCM("kcm_workspace")
+            }
+        }
+        RowLayout {
+            Item {
+                Layout.fillWidth: true
+            }
+            Repeater {
+                Layout.fillWidth: false
+                model: kcm.mostUsedModel
+                delegate: MostUsedIcon {
+                    icon: model.decoration
+                    text: model.display
+                    onClicked: kcm.openKCM(model.kcmPlugin)
+                }
+            }
+            Item {
+                Layout.fillWidth: true
             }
         }
     }

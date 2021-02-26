@@ -23,15 +23,46 @@
 #include <KQuickAddons/ManagedConfigModule>
 #include <KPackage/Package>
 
+class QStandardItemModel;
+
 class LandingPageData;
 class LandingPageGlobalsSettings;
 
 class BalooSettings;
 class BalooData;
 
+namespace KActivities {
+    namespace Stats {
+        class ResultModel;
+    }
+}
+
+class MostUsedModel : public QSortFilterProxyModel
+{
+    Q_OBJECT
+
+public:
+    enum Roles {
+        KcmPluginRole = Qt::UserRole + 1000
+    };
+
+    explicit MostUsedModel(QObject *parent = nullptr);
+    void setResultModel(KActivities::Stats::ResultModel *model);
+    QHash<int, QByteArray> roleNames() const override;
+    bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const override;
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+
+private:
+    // Model when there is nothing from kactivities-stat
+    QStandardItemModel *m_defaultModel;
+    // Model fed by kactivities-stats
+    KActivities::Stats::ResultModel *m_resultModel;
+};
+
 class KCMLandingPage : public KQuickAddons::ManagedConfigModule
 {
     Q_OBJECT
+    Q_PROPERTY(MostUsedModel *mostUsedModel READ mostUsedModel CONSTANT)
     Q_PROPERTY(LandingPageGlobalsSettings *globalsSettings READ globalsSettings CONSTANT)
     Q_PROPERTY(BalooSettings *balooSettings READ balooSettings CONSTANT)
     Q_PROPERTY(QString breezeLightThumbnail READ breezeLightThumbnail CONSTANT)
@@ -40,6 +71,8 @@ class KCMLandingPage : public KQuickAddons::ManagedConfigModule
 public:
     KCMLandingPage(QObject *parent, const QVariantList &args);
     ~KCMLandingPage() override {}
+
+    MostUsedModel *mostUsedModel() const;
 
     LandingPageGlobalsSettings *globalsSettings() const;
     BalooSettings *balooSettings() const;
@@ -58,6 +91,8 @@ private:
 
     KPackage::Package m_breezeLightPackage;
     KPackage::Package m_breezeDarkPackage;
+
+    MostUsedModel *m_mostUsedModel = nullptr;
 
     bool m_lnfDirty = false;
 };
