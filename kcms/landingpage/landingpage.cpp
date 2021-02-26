@@ -26,6 +26,7 @@
 #include <KLocalizedString>
 #include <KGlobalSettings>
 #include <KPackage/PackageLoader>
+#include <KService>
 
 #include <QDBusMessage>
 #include <QDBusConnection>
@@ -34,13 +35,116 @@
 #include <QQuickWindow>
 #include <QQuickRenderControl>
 #include <QScreen>
+#include <QStandardItemModel>
+#include <QGuiApplication>
 
 #include "landingpagedata.h"
 #include "landingpage_kdeglobalssettings.h"
 #include "landingpage_baloosettings.h"
 
+#include <KActivities/Stats/ResultModel>
+#include <KActivities/Stats/ResultSet>
+#include <KActivities/Stats/Terms>
+
+namespace KAStats = KActivities::Stats;
+
+using namespace KAStats;
+using namespace KAStats::Terms;
+
+
 
 K_PLUGIN_FACTORY_WITH_JSON(KCMLandingPageFactory, "kcm_landingpage.json", registerPlugin<KCMLandingPage>(); registerPlugin<LandingPageData>();)
+
+
+
+MostUsedModel::MostUsedModel(QObject *parent)
+    : QSortFilterProxyModel (parent)
+{
+    sort(0, Qt::DescendingOrder);
+    setSortRole(ResultModel::ScoreRole);
+    setDynamicSortFilter(true);
+    //prepare default items
+    m_defaultModel = new QStandardItemModel(this);
+
+    KService::Ptr service = KService::serviceByDesktopName(qGuiApp->desktopFileName());
+    if (service) {
+        const auto actions = service->actions();
+        for (const KServiceAction &action : actions) {
+            QStandardItem *item = new QStandardItem();
+            item->setData(QUrl(QStringLiteral("kcm:%1.desktop").arg(action.name())), ResultModel::ResourceRole);
+            m_defaultModel->appendRow(item);
+        }
+    } else {
+        qCritical() << "Failed to find desktop file for" << qGuiApp->desktopFileName();
+    }
+}
+
+void MostUsedModel::setResultModel(ResultModel *model)
+{
+    if (m_resultModel == model) {
+        return;
+    }
+
+    auto updateModel = [this]() {
+        if (m_resultModel->rowCount() >= 5) {
+            setSourceModel(m_resultModel);
+        } else {
+            setSourceModel(m_defaultModel);
+        }
+    };
+
+    m_resultModel = model;
+
+    connect(m_resultModel, &QAbstractItemModel::rowsInserted, this, updateModel);
+    connect(m_resultModel, &QAbstractItemModel::rowsRemoved, this, updateModel);
+
+    updateModel();
+}
+
+QHash<int, QByteArray> MostUsedModel::roleNames() const
+{
+    QHash<int, QByteArray> roleNames;
+    roleNames.insert(Qt::DisplayRole, "display");
+    roleNames.insert(Qt::DecorationRole, "decoration");
+    roleNames.insert(ResultModel::ScoreRole, "score");
+    roleNames.insert(KcmPluginRole, "kcmPlugin");
+    return roleNames;
+}
+
+bool MostUsedModel::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const
+{
+    const QString desktopName = sourceModel()->index(source_row, 0, source_parent).data(ResultModel::ResourceRole).toUrl().path();
+    KService::Ptr service = KService::serviceByStorageId(desktopName);
+    return service;
+}
+
+QVariant MostUsedModel::data(const QModelIndex &index, int role) const
+{
+    //MenuItem *mi;
+    const QString desktopName = QSortFilterProxyModel::data(index, ResultModel::ResourceRole).toUrl().path();
+
+    KService::Ptr service = KService::serviceByStorageId(desktopName);
+
+    if (!service) {
+        return QVariant();
+    }
+
+    switch (role) {
+
+        case Qt::DisplayRole:
+            return service->name();
+        case Qt::DecorationRole:
+            return service->icon();
+        case KcmPluginRole:
+            return service->library();
+        case ResultModel::ScoreRole:
+            return QSortFilterProxyModel::data(index, ResultModel::ScoreRole).toInt();
+        default:
+            return QVariant();
+    }
+}
+
+
 
 KCMLandingPage::KCMLandingPage(QObject *parent, const QVariantList &args)
     : KQuickAddons::ManagedConfigModule(parent, args)
@@ -48,6 +152,7 @@ KCMLandingPage::KCMLandingPage(QObject *parent, const QVariantList &args)
 {
     qmlRegisterType<LandingPageGlobalsSettings>();
     qmlRegisterType<BalooSettings>();
+    qmlRegisterType<MostUsedModel>();
 
     KAboutData *about = new KAboutData(QStringLiteral("kcm_landingpage"),
                                        i18n("Quick Settings"),
@@ -60,6 +165,9 @@ KCMLandingPage::KCMLandingPage(QObject *parent, const QVariantList &args)
 
     setButtons(Apply | Default | Help);
 
+    m_mostUsedModel = new MostUsedModel(this);
+    m_mostUsedModel->setResultModel(new ResultModel( AllResources | Agent(QStringLiteral("org.kde.systemsettings")) | HighScoredFirst | Limit(5), this));
+
     m_breezeLightPackage = KPackage::PackageLoader::self()->loadPackage(QStringLiteral("Plasma/LookAndFeel"));
     m_breezeLightPackage.setPath(QStringLiteral("org.kde.breeze.desktop"));
 
@@ -68,6 +176,11 @@ KCMLandingPage::KCMLandingPage(QObject *parent, const QVariantList &args)
 
     connect(globalsSettings(), &LandingPageGlobalsSettings::lookAndFeelPackageChanged,
             this, [this]() {m_lnfDirty = true;});
+}
+
+MostUsedModel *KCMLandingPage::mostUsedModel() const
+{
+    return m_mostUsedModel;
 }
 
 LandingPageGlobalsSettings *KCMLandingPage::globalsSettings() const
