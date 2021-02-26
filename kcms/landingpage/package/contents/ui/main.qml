@@ -29,8 +29,6 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 KCM.SimpleKCM {
     id: root
 
-    //implicitWidth: Kirigami.Units.gridUnit * 40
-
     ColumnLayout {
         height: Math.max(implicitHeight, root.flickable.height - root.topPadding - root.bottomPadding)
         QQC2.ButtonGroup { id: themeGroup }
