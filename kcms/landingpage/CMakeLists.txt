@@ -28,6 +28,7 @@ target_link_libraries(kcm_landingpage
     KF5::Declarative
     KF5::KDELibs4Support # kglobalsettings
     PW::KWorkspace
+    KF5::ActivitiesStats
 
     Qt5::DBus
 )
