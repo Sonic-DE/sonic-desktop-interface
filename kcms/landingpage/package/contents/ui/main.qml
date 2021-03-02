@@ -41,6 +41,7 @@ KCM.SimpleKCM {
 
         RowLayout {
             Layout.alignment: Qt.AlignCenter
+            spacing: Kirigami.Units.gridUnit * 2
             Thumbnail {
                 imageSource: kcm.breezeLightThumbnail
                 text: i18n("Light Theme")
