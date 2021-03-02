@@ -27,7 +27,7 @@ MouseArea {
     property alias icon: iconItem.source
     property alias text: label.text
     property string module
-    property int iconSize: Kirigami.Units.iconSizes.huge
+    property int iconSize: Kirigami.Units.iconSizes.large
     Layout.minimumWidth: Kirigami.Units.iconSizes.medium
     Layout.minimumHeight: column.implicitHeight
     cursorShape: Qt.PointingHandCursor
