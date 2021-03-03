@@ -18,7 +18,7 @@
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  2.010-1301, USA.
  */
 
-import QtQuick 2.6
+import QtQuick 2.15
 import QtQuick.Dialogs 1.1
 import QtQuick.Controls 2.3 as QtControls
 import QtQuick.Layouts 1.1
@@ -123,6 +123,7 @@ Rectangle {
         anchors.fill: parent
 
         pageStack.globalToolBar.style: Kirigami.ApplicationHeaderStyle.Breadcrumb
+        wideScreen: true
 
         // HACK: setting columnResizeMode to DynamicColumns has weird effects
         // and since we only have maximum 2 pages, settings the left page with
@@ -140,106 +141,111 @@ Rectangle {
             bottomPadding: 0
             focus: true
 
+            FocusScope {
+                focus: true
+                ColumnLayout {
+                    id: categories
+                    Keys.onUpPressed: {
+                        var buttons = categories.children
 
-            Keys.onUpPressed: {
-                var buttons = categories.children
-
-                var foundPrevious = false
-                for (var i = buttons.length - 1; i >= 0; --i) {
-                    var button = buttons[i];
-                    if (!button.hasOwnProperty("current")) {
-                        // not a ConfigCategoryDelegate
-                        continue;
-                    }
-
-                    if (foundPrevious) {
-                        categories.openCategory(button.item)
-                        return
-                    } else if (button.current) {
-                        foundPrevious = true
-                    }
-                }
-            }
-
-            Keys.onDownPressed: {
-                var buttons = categories.children
-
-                var foundNext = false
-                for (var i = 0, length = buttons.length; i < length; ++i) {
-                    var button = buttons[i];
-                    if (!button.hasOwnProperty("current")) {
-                        continue;
-                    }
-
-                    if (foundNext) {
-                        categories.openCategory(button.item)
-                        return
-                    } else if (button.current) {
-                        foundNext = true
-                    }
-                }
-            }
-            ColumnLayout {
-                id: categories
-                spacing: 0
-
-                function openCategory(item) {
-                    if (applyButton.enabled) {
-                        messageDialog.item = item;
-                        messageDialog.open();
-                        return;
-                    }
-                    open(item)
-                }
-
-                Component {
-                    id: categoryDelegate
-                    ConfigCategoryDelegate {
-                        id: delegate
-                        onActivated: {
-                            categories.openCategory(model);
-                            categories.currentItem = delegate;
-                            console.log(categories.currentItem, delegate, highlighted);
-                        }
-                        highlighted: {
-                            if (model.kcm && app.pageStack.currentItem.kcm) {
-                                return model.kcm == app.pageStack.currentItem.kcm
+                        var foundPrevious = false
+                        for (var i = buttons.length - 1; i >= 0; --i) {
+                            var button = buttons[i];
+                            console.log(button)
+                            if (!button.hasOwnProperty("highlighted")) {
+                                // not a ConfigCategoryDelegate
+                                continue;
                             }
 
-                            if (app.pageStack.currentItem && app.pageStack.currentItem.configItem) {
-                                return model.source == app.pageStack.currentItem.configItem.source
+                            if (foundPrevious) {
+                                categories.openCategory(button.item)
+                                return
+                            } else if (button.highlighted) {
+                                foundPrevious = true
                             }
-                            return app.pageStack.currentItem.source == Qt.resolvedUrl(model.source)
                         }
-                        item: model
                     }
-                }
 
-                Repeater {
-                    Layout.fillWidth: true
-                    model: root.isContainment ? globalConfigModel : undefined
-                    delegate: categoryDelegate
-                }
-                Repeater {
-                    Layout.fillWidth: true
-                    model: configDialogFilterModel
-                    delegate: categoryDelegate
-                }
-                Repeater {
-                    Layout.fillWidth: true
-                    model: !root.isContainment ? globalConfigModel : undefined
-                    delegate: categoryDelegate
-                }
-                Repeater {
-                    Layout.fillWidth: true
-                    model: ConfigModel {
-                        ConfigCategory{
-                            name: i18nd("plasma_shell_org.kde.plasma.desktop", "About")
-                            icon: "help-about"
-                            source: "AboutPlugin.qml"
+                    Keys.onDownPressed: {
+                        var buttons = categories.children
+
+                        var foundNext = false
+                        for (var i = 0, length = buttons.length; i < length; ++i) {
+                            var button = buttons[i];
+                            if (!button.hasOwnProperty("highlighted")) {
+                                continue;
+                            }
+
+                            if (foundNext) {
+                                categories.openCategory(button.item)
+                                return
+                            } else if (button.highlighted) {
+                                foundNext = true
+                            }
                         }
                     }
-                    delegate: categoryDelegate
+                    spacing: 0
+                    anchors.fill: parent
+                    focus: true
+
+                    function openCategory(item) {
+                        if (applyButton.enabled) {
+                            messageDialog.item = item;
+                            messageDialog.open();
+                            return;
+                        }
+                        open(item)
+                    }
+
+                    Component {
+                        id: categoryDelegate
+                        ConfigCategoryDelegate {
+                            id: delegate
+                            onActivated: {
+                                categories.openCategory(model);
+                                categories.currentItem = delegate;
+                                console.log(categories.currentItem, delegate, highlighted);
+                            }
+                            highlighted: {
+                                if (model.kcm && app.pageStack.currentItem.kcm) {
+                                    return model.kcm == app.pageStack.currentItem.kcm
+                                }
+
+                                if (app.pageStack.currentItem && app.pageStack.currentItem.configItem) {
+                                    return model.source == app.pageStack.currentItem.configItem.source
+                                }
+                                return app.pageStack.currentItem.source == Qt.resolvedUrl(model.source)
+                            }
+                            item: model
+                        }
+                    }
+
+                    Repeater {
+                        Layout.fillWidth: true
+                        model: root.isContainment ? globalConfigModel : undefined
+                        delegate: categoryDelegate
+                    }
+                    Repeater {
+                        Layout.fillWidth: true
+                        model: configDialogFilterModel
+                        delegate: categoryDelegate
+                    }
+                    Repeater {
+                        Layout.fillWidth: true
+                        model: !root.isContainment ? globalConfigModel : undefined
+                        delegate: categoryDelegate
+                    }
+                    Repeater {
+                        Layout.fillWidth: true
+                        model: ConfigModel {
+                            ConfigCategory{
+                                name: i18nd("plasma_shell_org.kde.plasma.desktop", "About")
+                                icon: "help-about"
+                                source: "AboutPlugin.qml"
+                            }
+                        }
+                        delegate: categoryDelegate
+                    }
                 }
             }
         }
@@ -261,15 +267,19 @@ Rectangle {
         }
 
         footer: QtControls.ToolBar {
-            contentItem: Row {
+            contentItem: RowLayout {
                 id: buttonsRow
                 spacing: Kirigami.Units.smallSpacing
-                layoutDirection: Qt.RightToLeft
+
+                Item {
+                    Layout.fillWidth: true
+                }
 
                 QtControls.Button {
-                    icon.name: "dialog-ok"
-                    text: i18nd("plasma_shell_org.kde.plasma.desktop", "OK")
-                    onClicked: acceptAction.trigger()
+                    icon.name: "dialog-cancel"
+                    text: i18nd("plasma_shell_org.kde.plasma.desktop", "Cancel")
+                    onClicked: cancelAction.trigger()
+                    KeyNavigation.tab: categories
                 }
                 QtControls.Button {
                     id: applyButton
@@ -280,9 +290,9 @@ Rectangle {
                     onClicked: applyAction.trigger()
                 }
                 QtControls.Button {
-                    icon.name: "dialog-cancel"
-                    text: i18nd("plasma_shell_org.kde.plasma.desktop", "Cancel")
-                    onClicked: cancelAction.trigger()
+                    icon.name: "dialog-ok"
+                    text: i18nd("plasma_shell_org.kde.plasma.desktop", "OK")
+                    onClicked: acceptAction.trigger()
                 }
             }
         }
