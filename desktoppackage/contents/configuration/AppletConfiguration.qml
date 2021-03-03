@@ -143,6 +143,8 @@ Rectangle {
 
             FocusScope {
                 focus: true
+                Accessible.role: Accessible.MenuBar
+                Accessible.name: i18n("Categories")
                 ColumnLayout {
                     id: categories
                     Keys.onUpPressed: {

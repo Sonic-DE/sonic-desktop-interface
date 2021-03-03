@@ -36,6 +36,10 @@ QtControls.ItemDelegate {
     Layout.maximumWidth: Kirigami.Units.gridUnit * 7
     hoverEnabled: true
 
+    Accessible.role: Accessible.MenuItem
+    Accessible.name: model.name
+    Accessible.description: i18n("Open configuration page")
+
     property var item
 //END properties
 
