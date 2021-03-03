@@ -138,6 +138,7 @@ Rectangle {
             rightPadding: 0
             topPadding: 0
             bottomPadding: 0
+            focus: true
 
 
             Keys.onUpPressed: {
@@ -182,8 +183,6 @@ Rectangle {
                 id: categories
                 spacing: 0
 
-                property Item currentItem: children[1]
-
                 function openCategory(item) {
                     if (applyButton.enabled) {
                         messageDialog.item = item;
@@ -196,8 +195,13 @@ Rectangle {
                 Component {
                     id: categoryDelegate
                     ConfigCategoryDelegate {
-                        onActivated: categories.openCategory(model)
-                        current: {
+                        id: delegate
+                        onActivated: {
+                            categories.openCategory(model);
+                            categories.currentItem = delegate;
+                            console.log(categories.currentItem, delegate, highlighted);
+                        }
+                        highlighted: {
                             if (model.kcm && app.pageStack.currentItem.kcm) {
                                 return model.kcm == app.pageStack.currentItem.kcm
                             }
@@ -205,7 +209,6 @@ Rectangle {
                             if (app.pageStack.currentItem && app.pageStack.currentItem.configItem) {
                                 return model.source == app.pageStack.currentItem.configItem.source
                             }
-
                             return app.pageStack.currentItem.source == Qt.resolvedUrl(model.source)
                         }
                         item: model

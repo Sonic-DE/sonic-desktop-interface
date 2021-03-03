@@ -37,23 +37,15 @@ QtControls.ItemDelegate {
     hoverEnabled: true
 
     property var item
-    property bool current: false
 //END properties
 
 //BEGIN connections
     onClicked: {
-        categoriesScroll.forceActiveFocus()
-
-        if (current) {
+        if (highlighted) {
             return;
         }
 
         activated()
-    }
-    onCurrentChanged: {
-        if (current) {
-            categories.currentItem = delegate;
-        }
     }
 //END connections
 
@@ -68,7 +60,7 @@ QtControls.ItemDelegate {
             width: PlasmaCore.Units.iconSizes.medium
             height: width
             icon: model.icon
-            state: current && categoriesScroll.activeFocus ? QIconItem.SelectedState : QIconItem.DefaultState
+            state: highlighted && categoriesScroll.activeFocus ? QIconItem.SelectedState : QIconItem.DefaultState
         }
 
         QtControls.Label {
@@ -79,7 +71,7 @@ QtControls.ItemDelegate {
             text: model.name
             wrapMode: Text.Wrap
             horizontalAlignment: Text.AlignHCenter
-            color: current && categoriesScroll.activeFocus ? Kirigami.Theme.highlightedTextColor : Kirigami.Theme.textColor
+            color: highlighted && categoriesScroll.activeFocus ? Kirigami.Theme.highlightedTextColor : Kirigami.Theme.textColor
             Behavior on color {
                 ColorAnimation {
                     duration: PlasmaCore.Units.longDuration
