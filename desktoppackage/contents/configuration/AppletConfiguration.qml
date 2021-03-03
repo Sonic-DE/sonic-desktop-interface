@@ -279,7 +279,6 @@ Rectangle {
                     icon.name: "dialog-cancel"
                     text: i18nd("plasma_shell_org.kde.plasma.desktop", "Cancel")
                     onClicked: cancelAction.trigger()
-                    KeyNavigation.tab: categories
                 }
                 QtControls.Button {
                     id: applyButton
@@ -293,6 +292,7 @@ Rectangle {
                     icon.name: "dialog-ok"
                     text: i18nd("plasma_shell_org.kde.plasma.desktop", "OK")
                     onClicked: acceptAction.trigger()
+                    KeyNavigation.tab: categories
                 }
             }
         }
