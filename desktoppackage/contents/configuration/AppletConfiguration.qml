@@ -124,7 +124,10 @@ Rectangle {
 
         pageStack.globalToolBar.style: Kirigami.ApplicationHeaderStyle.Breadcrumb
 
-        pageStack.columnView.columnResizeMode: Kirigami.ColumnView.DynamicColumns
+        // HACK: setting columnResizeMode to DynamicColumns has weird effects
+        // and since we only have maximum 2 pages, settings the left page with
+        // columnWidth also works.
+        pageStack.columnView.columnWidth: Kirigami.Units.gridUnit * 7
         pageStack.initialPage: Kirigami.ScrollablePage {
             id: categoriesScroll
             title: i18n("Settings")
