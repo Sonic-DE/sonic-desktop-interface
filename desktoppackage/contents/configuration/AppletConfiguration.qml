@@ -95,7 +95,7 @@ Rectangle {
     }
 
     Connections {
-        target: app.pageStack.currentItem
+        target: app.pageStack.currentIndex > 1 ? app.pageStack.currentItem : null
 
         function onSettingValueChanged() {
             if (app.pageStack.currentIndex !== 1) {
@@ -148,12 +148,11 @@ Rectangle {
                 ColumnLayout {
                     id: categories
                     Keys.onUpPressed: {
-                        var buttons = categories.children
+                        const buttons = categories.children
 
-                        var foundPrevious = false
-                        for (var i = buttons.length - 1; i >= 0; --i) {
-                            var button = buttons[i];
-                            console.log(button)
+                        let foundPrevious = false
+                        for (let i = buttons.length - 1; i >= 0; --i) {
+                            const button = buttons[i];
                             if (!button.hasOwnProperty("highlighted")) {
                                 // not a ConfigCategoryDelegate
                                 continue;
@@ -169,11 +168,11 @@ Rectangle {
                     }
 
                     Keys.onDownPressed: {
-                        var buttons = categories.children
+                        const buttons = categories.children
 
-                        var foundNext = false
-                        for (var i = 0, length = buttons.length; i < length; ++i) {
-                            var button = buttons[i];
+                        let foundNext = false
+                        for (let i = 0, length = buttons.length; i < length; ++i) {
+                            const button = buttons[i];
                             if (!button.hasOwnProperty("highlighted")) {
                                 continue;
                             }
@@ -203,11 +202,7 @@ Rectangle {
                         id: categoryDelegate
                         ConfigCategoryDelegate {
                             id: delegate
-                            onActivated: {
-                                categories.openCategory(model);
-                                categories.currentItem = delegate;
-                                console.log(categories.currentItem, delegate, highlighted);
-                            }
+                            onActivated: categories.openCategory(model);
                             highlighted: {
                                 if (model.kcm && app.pageStack.currentItem.kcm) {
                                     return model.kcm == app.pageStack.currentItem.kcm
