@@ -30,8 +30,8 @@ import org.kde.plasma.configuration 2.0
 
 Rectangle {
     id: root
-    Layout.minimumWidth: PlasmaCore.Units.gridUnit * 30
-    Layout.minimumHeight: PlasmaCore.Units.gridUnit * 20
+    Layout.minimumWidth: PlasmaCore.Units.gridUnit * 40
+    Layout.minimumHeight: PlasmaCore.Units.gridUnit * 30
 
     LayoutMirroring.enabled: Qt.application.layoutDirection === Qt.RightToLeft
     LayoutMirroring.childrenInherit: true
