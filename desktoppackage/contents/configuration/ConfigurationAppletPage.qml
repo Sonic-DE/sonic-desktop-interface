@@ -45,6 +45,7 @@ Kirigami.ScrollablePage {
     Loader {
         id: loader
         width: parent.width
+        height: Math.max(root.height - Kirigami.Units.gridUnit * 2, item.implicitHeight)
         Component.onCompleted: {
             const plasmoidConfig = plasmoid.configuration
 

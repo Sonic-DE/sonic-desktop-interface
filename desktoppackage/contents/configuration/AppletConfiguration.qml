@@ -31,13 +31,13 @@ import org.kde.plasma.configuration 2.0
 Rectangle {
     id: root
     Layout.minimumWidth: PlasmaCore.Units.gridUnit * 40
-    Layout.minimumHeight: PlasmaCore.Units.gridUnit * 30
+    Layout.minimumHeight: PlasmaCore.Units.gridUnit * 31
 
     LayoutMirroring.enabled: Qt.application.layoutDirection === Qt.RightToLeft
     LayoutMirroring.childrenInherit: true
 
     width: PlasmaCore.Units.gridUnit * 40
-    height: PlasmaCore.Units.gridUnit * 30
+    height: PlasmaCore.Units.gridUnit * 31
 
     color: Kirigami.Theme.backgroundColor
 
