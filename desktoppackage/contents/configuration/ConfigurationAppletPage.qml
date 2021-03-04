@@ -42,10 +42,18 @@ Kirigami.ScrollablePage {
         }
     }
 
+    implicitHeight: loader.height
+
     Loader {
         id: loader
         width: parent.width
-        height: Math.max(root.height - Kirigami.Units.gridUnit * 2, item.implicitHeight)
+        // HACK the height of the loader is based on the implicitHeight of the content.
+        // Unfortunately not all content items have a sensible implicitHeight.
+        // If it is zero fall back to the height of its children
+        // Also make it at least as high as the page itself. Some existing configs assume they fill the whole space
+        // TODO KF6 clean this up by making all configs based on SimpleKCM/ScrollViewKCM/GridViewKCM
+        height: Math.max(root.availableHeight, item.implicitHeight ? item.implicitHeight : item.childrenRect.height)
+
         Component.onCompleted: {
             const plasmoidConfig = plasmoid.configuration
 
