@@ -43,12 +43,12 @@ KCM.SimpleKCM {
             Layout.alignment: Qt.AlignCenter
             spacing: Kirigami.Units.gridUnit * 2
             Thumbnail {
-                imageSource: kcm.breezeLightThumbnail
-                text: i18n("Light Theme")
-                checked: kcm.globalsSettings.lookAndFeelPackage === "org.kde.breeze.desktop"
+                imageSource: kcm.defaultLookAndFeel.thumbnail
+                text: kcm.defaultLookAndFeel.name
+                checked: kcm.globalsSettings.lookAndFeelPackage === kcm.defaultLookAndFeel.id
                 QQC2.ButtonGroup.group: themeGroup
 
-                onToggled: kcm.globalsSettings.lookAndFeelPackage = "org.kde.breeze.desktop"
+                onToggled: kcm.globalsSettings.lookAndFeelPackage = kcm.defaultLookAndFeel.id
 
                 KCM.SettingStateBinding {
                     configObject: kcm.globalsSettings
@@ -56,12 +56,12 @@ KCM.SimpleKCM {
                 }
             }
             Thumbnail {
-                imageSource: kcm.breezeDarkThumbnail
-                text: i18n("Dark Theme")
-                checked: kcm.globalsSettings.lookAndFeelPackage === "org.kde.breezedark.desktop"
+                imageSource: kcm.alternateDefaultLookAndFeel.thumbnail
+                text: kcm.alternateDefaultLookAndFeel.name
+                checked: kcm.globalsSettings.lookAndFeelPackage === kcm.alternateDefaultLookAndFeel.id
                 QQC2.ButtonGroup.group: themeGroup
 
-                onToggled: kcm.globalsSettings.lookAndFeelPackage = "org.kde.breezedark.desktop"
+                onToggled: kcm.globalsSettings.lookAndFeelPackage = kcm.alternateDefaultLookAndFeel.id
 
                 KCM.SettingStateBinding {
                     configObject: kcm.globalsSettings
