@@ -59,14 +59,29 @@ private:
     KActivities::Stats::ResultModel *m_resultModel;
 };
 
+class LookAndFeelGroup : public QObject {
+    Q_OBJECT
+    Q_PROPERTY(QString id READ id CONSTANT)
+    Q_PROPERTY(QString name READ name CONSTANT)
+    Q_PROPERTY(QString thumbnail READ thumbnail CONSTANT)
+
+public:
+    LookAndFeelGroup(QObject *parent = nullptr);
+    QString id() const;
+    QString name() const;
+    QString thumbnail() const;
+
+    KPackage::Package m_package;
+};
+
 class KCMLandingPage : public KQuickAddons::ManagedConfigModule
 {
     Q_OBJECT
     Q_PROPERTY(MostUsedModel *mostUsedModel READ mostUsedModel CONSTANT)
     Q_PROPERTY(LandingPageGlobalsSettings *globalsSettings READ globalsSettings CONSTANT)
     Q_PROPERTY(BalooSettings *balooSettings READ balooSettings CONSTANT)
-    Q_PROPERTY(QString breezeLightThumbnail READ breezeLightThumbnail CONSTANT)
-    Q_PROPERTY(QString breezeDarkThumbnail READ breezeDarkThumbnail CONSTANT)
+    Q_PROPERTY(LookAndFeelGroup *defaultLookAndFeel READ defaultLookAndFeel CONSTANT)
+    Q_PROPERTY(LookAndFeelGroup *alternateDefaultLookAndFeel READ alternateDefaultLookAndFeel CONSTANT)
 
 public:
     KCMLandingPage(QObject *parent, const QVariantList &args);
@@ -77,8 +92,8 @@ public:
     LandingPageGlobalsSettings *globalsSettings() const;
     BalooSettings *balooSettings() const;
 
-    QString breezeLightThumbnail() const;
-    QString breezeDarkThumbnail() const;
+    LookAndFeelGroup *defaultLookAndFeel() const;
+    LookAndFeelGroup *alternateDefaultLookAndFeel() const;
 
     Q_INVOKABLE void openWallpaperDialog();
     Q_INVOKABLE void openKCM(const QString &kcm);
@@ -89,8 +104,11 @@ public Q_SLOTS:
 private:
     LandingPageData *m_data;
 
-    KPackage::Package m_breezeLightPackage;
-    KPackage::Package m_breezeDarkPackage;
+    LookAndFeelGroup *m_defaultLookAndFeel = nullptr;
+    LookAndFeelGroup *m_alternateDefaultLookAndFeel = nullptr;
+
+    KPackage::Package m_defaultLookAndFeelPackage;
+    KPackage::Package m_alternateDefaultLookAndFeelPackage;
 
     MostUsedModel *m_mostUsedModel = nullptr;
 

@@ -150,6 +150,29 @@ QVariant MostUsedModel::data(const QModelIndex &index, int role) const
 
 
 
+LookAndFeelGroup::LookAndFeelGroup(QObject *parent)
+    : QObject(parent)
+{
+    m_package = KPackage::PackageLoader::self()->loadPackage(QStringLiteral("Plasma/LookAndFeel"));
+}
+
+QString LookAndFeelGroup::id() const
+{
+    return m_package.metadata().pluginId();
+}
+
+QString LookAndFeelGroup::name() const
+{
+    return m_package.metadata().name();
+}
+
+QString LookAndFeelGroup::thumbnail() const
+{
+    return m_package.filePath("preview");;
+}
+
+
+
 KCMLandingPage::KCMLandingPage(QObject *parent, const QVariantList &args)
     : KQuickAddons::ManagedConfigModule(parent, args)
     , m_data(new LandingPageData(this))
@@ -157,6 +180,7 @@ KCMLandingPage::KCMLandingPage(QObject *parent, const QVariantList &args)
     qmlRegisterType<LandingPageGlobalsSettings>();
     qmlRegisterType<BalooSettings>();
     qmlRegisterType<MostUsedModel>();
+    qmlRegisterType<LookAndFeelGroup>();
 
     KAboutData *about = new KAboutData(QStringLiteral("kcm_landingpage"),
                                        i18n("Quick Settings"),
@@ -167,16 +191,34 @@ KCMLandingPage::KCMLandingPage(QObject *parent, const QVariantList &args)
     about->addAuthor(i18n("Marco Martin"), QString(), QStringLiteral("mart@kde.org"));
     setAboutData(about);
 
-    setButtons(Apply | Default | Help);
+    setButtons(Apply | Help);
 
     m_mostUsedModel = new MostUsedModel(this);
     m_mostUsedModel->setResultModel(new ResultModel( AllResources | Agent(QStringLiteral("org.kde.systemsettings")) | HighScoredFirst | Limit(5), this));
 
-    m_breezeLightPackage = KPackage::PackageLoader::self()->loadPackage(QStringLiteral("Plasma/LookAndFeel"));
-    m_breezeLightPackage.setPath(QStringLiteral("org.kde.breeze.desktop"));
+    KConfigSkeletonItem *item = m_data->landingPageGlobalsSettings()->findItem("lookAndFeelPackage");
+    QString defaultLookAndFeel;
+    if (item) {
+        defaultLookAndFeel = item->getDefault().toString();
+    }
+    if (defaultLookAndFeel.isEmpty()) {
+        defaultLookAndFeel = QStringLiteral("org.kde.breeze.desktop");
+    }
 
-    m_breezeDarkPackage = KPackage::PackageLoader::self()->loadPackage(QStringLiteral("Plasma/LookAndFeel"));
-    m_breezeDarkPackage.setPath(QStringLiteral("org.kde.breezedark.desktop"));
+    item = m_data->landingPageGlobalsSettings()->findItem("alternateLookAndFeelPackage");
+    QString alternateDefaultLookAndFeel;
+    if (item) {
+        alternateDefaultLookAndFeel = item->getDefault().toString();
+    }
+    if (alternateDefaultLookAndFeel.isEmpty()) {
+        alternateDefaultLookAndFeel = QStringLiteral("org.kde.breezedark.desktop");
+    }
+
+    m_defaultLookAndFeel = new LookAndFeelGroup(this);
+    m_alternateDefaultLookAndFeel = new LookAndFeelGroup(this);
+
+    m_defaultLookAndFeel->m_package.setPath(defaultLookAndFeel);
+    m_alternateDefaultLookAndFeel->m_package.setPath(alternateDefaultLookAndFeel);
 
     connect(globalsSettings(), &LandingPageGlobalsSettings::lookAndFeelPackageChanged,
             this, [this]() {m_lnfDirty = true;});
@@ -233,16 +275,15 @@ static void copyEntry(KConfigGroup &from, KConfigGroup &to, const QString &entry
     }
 }
 
-QString KCMLandingPage::breezeLightThumbnail() const
+LookAndFeelGroup *KCMLandingPage::defaultLookAndFeel() const
 {
-    return m_breezeLightPackage.filePath("preview");
+    return m_defaultLookAndFeel;
 }
 
-QString KCMLandingPage::breezeDarkThumbnail() const
+LookAndFeelGroup *KCMLandingPage::alternateDefaultLookAndFeel() const
 {
-    return m_breezeDarkPackage.filePath("preview");
+    return m_alternateDefaultLookAndFeel;
 }
-
 
 void KCMLandingPage::openWallpaperDialog()
 {
@@ -286,7 +327,7 @@ void KCMLandingPage::openWallpaperDialog()
 }
 
 Q_INVOKABLE void KCMLandingPage::openKCM(const QString &kcm)
-{qWarning()<<kcm;
+{
     QProcess::startDetached(QStringLiteral("systemsettings5"), QStringList({kcm}));
 }
 
