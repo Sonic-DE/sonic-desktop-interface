@@ -71,15 +71,9 @@ KCM.SimpleKCM {
         }
 
         Kirigami.FormLayout {
-            id: formLayout
+            id: appearanceForm
 
-            QQC2.Button {
-                //Layout.alignment: Qt.AlignCenter
-                text: i18n("Show More Appearance Settings...")
-                icon.name: "preferences-desktop-theme-global"
-                onClicked: kcm.openKCM("kcm_lookandfeel")
-            }
-
+            twinFormLayouts: behaviorForm
             Item {
                 Kirigami.FormData.isSection: true
             }
@@ -128,15 +122,30 @@ KCM.SimpleKCM {
                     }
                 }
             }
+        }
 
+        RowLayout {
+            Layout.alignment: Qt.AlignCenter
             QQC2.Button {
                 icon.name: "preferences-desktop-wallpaper"
                 text: i18n("Change Wallpaper...")
                 onClicked: kcm.openWallpaperDialog()
             }
+            QQC2.Button {
+                //Layout.alignment: Qt.AlignCenter
+                text: i18n("Show More Appearance Settings...")
+                icon.name: "preferences-desktop-theme-global"
+                onClicked: kcm.openKCM("kcm_lookandfeel")
+            }
+        }
 
+        Kirigami.FormLayout {
+            id: behaviorForm
+
+            twinFormLayouts: appearanceForm
 
             Kirigami.Separator {
+                id: separator
                 Kirigami.FormData.isSection: true
             }
 
@@ -191,14 +200,23 @@ KCM.SimpleKCM {
                     kcm.balooSettings.indexingEnabled = checked
                 }
             }
-            QQC2.Button {
-                text: i18n("Show More Behavior Settings...")
-                icon.name: "preferences-desktop"
-                onClicked: kcm.openKCM("kcm_workspace")
-            }
-            Kirigami.Separator {
-                Kirigami.FormData.isSection: true
-            }
+        }
+
+        QQC2.Button {
+            Layout.alignment: Qt.AlignCenter
+            text: i18n("Show More Behavior Settings...")
+            icon.name: "preferences-desktop"
+            onClicked: kcm.openKCM("kcm_workspace")
+        }
+        Item {
+            Layout.preferredHeight: Kirigami.Units.largeSpacing
+        }
+        Kirigami.Separator {
+            Layout.alignment: Qt.AlignCenter
+            Layout.preferredWidth: separator.width
+        }
+        Item {
+            Layout.preferredHeight: Kirigami.Units.largeSpacing
         }
 
         Kirigami.Heading {
