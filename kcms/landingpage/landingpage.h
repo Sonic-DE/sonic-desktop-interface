@@ -80,8 +80,8 @@ class KCMLandingPage : public KQuickAddons::ManagedConfigModule
     Q_PROPERTY(MostUsedModel *mostUsedModel READ mostUsedModel CONSTANT)
     Q_PROPERTY(LandingPageGlobalsSettings *globalsSettings READ globalsSettings CONSTANT)
     Q_PROPERTY(BalooSettings *balooSettings READ balooSettings CONSTANT)
-    Q_PROPERTY(LookAndFeelGroup *defaultLookAndFeel READ defaultLookAndFeel CONSTANT)
-    Q_PROPERTY(LookAndFeelGroup *alternateDefaultLookAndFeel READ alternateDefaultLookAndFeel CONSTANT)
+    Q_PROPERTY(LookAndFeelGroup *defaultLightLookAndFeel READ defaultLightLookAndFeel CONSTANT)
+    Q_PROPERTY(LookAndFeelGroup *defaultDarkLookAndFeel READ defaultDarkLookAndFeel CONSTANT)
 
 public:
     KCMLandingPage(QObject *parent, const QVariantList &args);
@@ -92,8 +92,8 @@ public:
     LandingPageGlobalsSettings *globalsSettings() const;
     BalooSettings *balooSettings() const;
 
-    LookAndFeelGroup *defaultLookAndFeel() const;
-    LookAndFeelGroup *alternateDefaultLookAndFeel() const;
+    LookAndFeelGroup *defaultLightLookAndFeel() const;
+    LookAndFeelGroup *defaultDarkLookAndFeel() const;
 
     Q_INVOKABLE void openWallpaperDialog();
     Q_INVOKABLE void openKCM(const QString &kcm);
@@ -104,11 +104,8 @@ public Q_SLOTS:
 private:
     LandingPageData *m_data;
 
-    LookAndFeelGroup *m_defaultLookAndFeel = nullptr;
-    LookAndFeelGroup *m_alternateDefaultLookAndFeel = nullptr;
-
-    KPackage::Package m_defaultLookAndFeelPackage;
-    KPackage::Package m_alternateDefaultLookAndFeelPackage;
+    LookAndFeelGroup *m_defaultLightLookAndFeel = nullptr;
+    LookAndFeelGroup *m_defaultDarkLookAndFeel = nullptr;
 
     MostUsedModel *m_mostUsedModel = nullptr;
 
