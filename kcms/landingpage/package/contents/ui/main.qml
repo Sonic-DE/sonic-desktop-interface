@@ -43,12 +43,12 @@ KCM.SimpleKCM {
             Layout.alignment: Qt.AlignCenter
             spacing: Kirigami.Units.gridUnit * 2
             Thumbnail {
-                imageSource: kcm.defaultLookAndFeel.thumbnail
-                text: kcm.defaultLookAndFeel.name
-                checked: kcm.globalsSettings.lookAndFeelPackage === kcm.defaultLookAndFeel.id
+                imageSource: kcm.defaultLightLookAndFeel.thumbnail
+                text: i18n("Light Theme")
+                checked: kcm.globalsSettings.lookAndFeelPackage === kcm.defaultLightLookAndFeel.id
                 QQC2.ButtonGroup.group: themeGroup
 
-                onToggled: kcm.globalsSettings.lookAndFeelPackage = kcm.defaultLookAndFeel.id
+                onToggled: kcm.globalsSettings.lookAndFeelPackage = kcm.defaultLightLookAndFeel.id
 
                 KCM.SettingStateBinding {
                     configObject: kcm.globalsSettings
@@ -56,12 +56,12 @@ KCM.SimpleKCM {
                 }
             }
             Thumbnail {
-                imageSource: kcm.alternateDefaultLookAndFeel.thumbnail
-                text: kcm.alternateDefaultLookAndFeel.name
-                checked: kcm.globalsSettings.lookAndFeelPackage === kcm.alternateDefaultLookAndFeel.id
+                imageSource: kcm.defaultDarkLookAndFeel.thumbnail
+                text: i18n("Dark Theme")
+                checked: kcm.globalsSettings.lookAndFeelPackage === kcm.defaultDarkLookAndFeel.id
                 QQC2.ButtonGroup.group: themeGroup
 
-                onToggled: kcm.globalsSettings.lookAndFeelPackage = kcm.alternateDefaultLookAndFeel.id
+                onToggled: kcm.globalsSettings.lookAndFeelPackage = kcm.defaultDarkLookAndFeel.id
 
                 KCM.SettingStateBinding {
                     configObject: kcm.globalsSettings

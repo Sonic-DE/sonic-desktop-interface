@@ -196,29 +196,11 @@ KCMLandingPage::KCMLandingPage(QObject *parent, const QVariantList &args)
     m_mostUsedModel = new MostUsedModel(this);
     m_mostUsedModel->setResultModel(new ResultModel( AllResources | Agent(QStringLiteral("org.kde.systemsettings")) | HighScoredFirst | Limit(5), this));
 
-    KConfigSkeletonItem *item = m_data->landingPageGlobalsSettings()->findItem("lookAndFeelPackage");
-    QString defaultLookAndFeel;
-    if (item) {
-        defaultLookAndFeel = item->getDefault().toString();
-    }
-    if (defaultLookAndFeel.isEmpty()) {
-        defaultLookAndFeel = QStringLiteral("org.kde.breeze.desktop");
-    }
+    m_defaultLightLookAndFeel = new LookAndFeelGroup(this);
+    m_defaultDarkLookAndFeel = new LookAndFeelGroup(this);
 
-    item = m_data->landingPageGlobalsSettings()->findItem("alternateLookAndFeelPackage");
-    QString alternateDefaultLookAndFeel;
-    if (item) {
-        alternateDefaultLookAndFeel = item->getDefault().toString();
-    }
-    if (alternateDefaultLookAndFeel.isEmpty()) {
-        alternateDefaultLookAndFeel = QStringLiteral("org.kde.breezedark.desktop");
-    }
-
-    m_defaultLookAndFeel = new LookAndFeelGroup(this);
-    m_alternateDefaultLookAndFeel = new LookAndFeelGroup(this);
-
-    m_defaultLookAndFeel->m_package.setPath(defaultLookAndFeel);
-    m_alternateDefaultLookAndFeel->m_package.setPath(alternateDefaultLookAndFeel);
+    m_defaultLightLookAndFeel->m_package.setPath(m_data->landingPageGlobalsSettings()->defaultLightLookAndFeel());
+    m_defaultDarkLookAndFeel->m_package.setPath(m_data->landingPageGlobalsSettings()->defaultDarkLookAndFeel());
 
     connect(globalsSettings(), &LandingPageGlobalsSettings::lookAndFeelPackageChanged,
             this, [this]() {m_lnfDirty = true;});
@@ -275,14 +257,14 @@ static void copyEntry(KConfigGroup &from, KConfigGroup &to, const QString &entry
     }
 }
 
-LookAndFeelGroup *KCMLandingPage::defaultLookAndFeel() const
+LookAndFeelGroup *KCMLandingPage::defaultLightLookAndFeel() const
 {
-    return m_defaultLookAndFeel;
+    return m_defaultLightLookAndFeel;
 }
 
-LookAndFeelGroup *KCMLandingPage::alternateDefaultLookAndFeel() const
+LookAndFeelGroup *KCMLandingPage::defaultDarkLookAndFeel() const
 {
-    return m_alternateDefaultLookAndFeel;
+    return m_defaultDarkLookAndFeel;
 }
 
 void KCMLandingPage::openWallpaperDialog()
