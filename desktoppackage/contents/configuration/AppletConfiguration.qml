@@ -31,8 +31,8 @@ import org.kde.plasma.configuration 2.0
 Rectangle {
     id: root
 
-    width: PlasmaCore.Units.gridUnit * 40
-    height: PlasmaCore.Units.gridUnit * 31
+    implicitWidth: PlasmaCore.Units.gridUnit * 40
+    implicitHeight: PlasmaCore.Units.gridUnit * 31
 
     Layout.minimumWidth: PlasmaCore.Units.gridUnit * 40
     Layout.minimumHeight: PlasmaCore.Units.gridUnit * 31
