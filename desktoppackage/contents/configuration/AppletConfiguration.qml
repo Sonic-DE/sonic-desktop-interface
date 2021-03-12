@@ -30,14 +30,15 @@ import org.kde.plasma.configuration 2.0
 
 Rectangle {
     id: root
+
+    width: PlasmaCore.Units.gridUnit * 40
+    height: PlasmaCore.Units.gridUnit * 31
+
     Layout.minimumWidth: PlasmaCore.Units.gridUnit * 40
     Layout.minimumHeight: PlasmaCore.Units.gridUnit * 31
 
     LayoutMirroring.enabled: Qt.application.layoutDirection === Qt.RightToLeft
     LayoutMirroring.childrenInherit: true
-
-    width: PlasmaCore.Units.gridUnit * 40
-    height: PlasmaCore.Units.gridUnit * 31
 
     color: Kirigami.Theme.backgroundColor
 
@@ -66,11 +67,13 @@ Rectangle {
     }
 
     function pushReplace(item, config) {
+        let page;
         if (app.pageStack.depth === 1) {
-            app.pageStack.push(item, config);
+            page = app.pageStack.push(item, config);
         } else {
-            app.pageStack.replace(item, config);
+            page = app.pageStack.replace(item, config);
         }
+        app.currentConfigPage = page;
     }
     Component {
         id: configurationKcmPageComponent
@@ -79,7 +82,9 @@ Rectangle {
     }
 
     function open(item) {
+        app.isAboutPage = false;
         if (item.source) {
+            app.isAboutPage = item.source === "AboutPlugin.qml";
             if (item.source === "ConfigurationContainmentAppearance.qml") {
                 pushReplace(Qt.resolvedUrl(item.source), {title: item.name});
             } else {
@@ -95,12 +100,10 @@ Rectangle {
     }
 
     Connections {
-        target: app.pageStack.currentIndex > 1 ? app.pageStack.currentItem : null
+        target: app.currentConfigPage
 
         function onSettingValueChanged() {
-            if (app.pageStack.currentIndex !== 1) {
-                applyButton.enabled = true;
-            }
+            applyButton.enabled = true;
         }
     }
 
@@ -125,6 +128,9 @@ Rectangle {
         pageStack.globalToolBar.style: Kirigami.ApplicationHeaderStyle.Breadcrumb
         wideScreen: true
 
+        property var currentConfigPage: null
+        property bool isAboutPage: false
+
         // HACK: setting columnResizeMode to DynamicColumns has weird effects
         // and since we only have maximum 2 pages, settings the left page with
         // columnWidth also works.
@@ -133,8 +139,6 @@ Rectangle {
             id: categoriesScroll
             title: i18n("Settings")
             Kirigami.Theme.colorSet: Kirigami.Theme.View
-            implicitWidth: Kirigami.Units.gridUnit * 7
-            width: implicitWidth
             leftPadding: 0
             rightPadding: 0
             topPadding: 0
@@ -144,7 +148,6 @@ Rectangle {
             FocusScope {
                 focus: true
                 Accessible.role: Accessible.MenuBar
-                Accessible.name: i18n("Categories")
                 ColumnLayout {
                     id: categories
                     Keys.onUpPressed: {
@@ -273,16 +276,11 @@ Rectangle {
                 }
 
                 QtControls.Button {
-                    icon.name: "dialog-cancel"
-                    text: i18nd("plasma_shell_org.kde.plasma.desktop", "Cancel")
-                    onClicked: cancelAction.trigger()
-                }
-                QtControls.Button {
                     id: applyButton
                     enabled: false
                     icon.name: "dialog-ok-apply"
                     text: i18nd("plasma_shell_org.kde.plasma.desktop", "Apply")
-                    visible: app.pageStack.currentItem && (!app.pageStack.currentItem.kcm || app.pageStack.currentItem.kcm.buttons & 4) // 4 = Apply button
+                    visible: !app.isAboutPage && app.pageStack.currentItem && (!app.pageStack.currentItem.kcm || app.pageStack.currentItem.kcm.buttons & 4) // 4 = Apply button
                     onClicked: applyAction.trigger()
                 }
                 QtControls.Button {
@@ -290,6 +288,12 @@ Rectangle {
                     text: i18nd("plasma_shell_org.kde.plasma.desktop", "OK")
                     onClicked: acceptAction.trigger()
                     KeyNavigation.tab: categories
+                }
+                QtControls.Button {
+                    icon.name: "dialog-cancel"
+                    text: i18nd("plasma_shell_org.kde.plasma.desktop", "Cancel")
+                    onClicked: cancelAction.trigger()
+                    visible: !app.isAboutPage
                 }
             }
         }
