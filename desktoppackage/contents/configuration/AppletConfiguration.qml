@@ -276,18 +276,18 @@ Rectangle {
                 }
 
                 QtControls.Button {
+                    icon.name: "dialog-ok"
+                    text: i18nd("plasma_shell_org.kde.plasma.desktop", "OK")
+                    onClicked: acceptAction.trigger()
+                    KeyNavigation.tab: categories
+                }
+                QtControls.Button {
                     id: applyButton
                     enabled: false
                     icon.name: "dialog-ok-apply"
                     text: i18nd("plasma_shell_org.kde.plasma.desktop", "Apply")
                     visible: !app.isAboutPage && app.pageStack.currentItem && (!app.pageStack.currentItem.kcm || app.pageStack.currentItem.kcm.buttons & 4) // 4 = Apply button
                     onClicked: applyAction.trigger()
-                }
-                QtControls.Button {
-                    icon.name: "dialog-ok"
-                    text: i18nd("plasma_shell_org.kde.plasma.desktop", "OK")
-                    onClicked: acceptAction.trigger()
-                    KeyNavigation.tab: categories
                 }
                 QtControls.Button {
                     icon.name: "dialog-cancel"
