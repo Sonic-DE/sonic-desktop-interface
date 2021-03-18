@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Emoji Keyboard
+Exec=emoji-im
+Type=Application
+X-KDE-Wayland-VirtualKeyboard=true
+Icon=input-keyboard-virtual
+NoDisplay=true
