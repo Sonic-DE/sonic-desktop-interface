@@ -36,12 +36,12 @@
 #include <KPropertiesDialog>
 
 // FDO user autostart directories are
-// .config/autostart which has .desktop files executed by klaunch
+// .config/autostart which has .desktop files executed by klaunch or systemd, some of which might be scripts
 
 // Then we have Plasma-specific locations which run scripts
-// .config/autostart-scripts which has scripts executed by ksmserver
-// .config/plasma-workspace/shutdown which has scripts executed by startkde
-// .config/plasma-workspace/env which has scripts executed by startkde
+// .config/autostart-scripts which has scripts executed by plasma_session (now migrated to .desktop files)
+// .config/plasma-workspace/shutdown which has scripts executed by plasma-shutdown
+// .config/plasma-workspace/env which has scripts executed by startplasma
 
 // in the case of pre-startup they have to end in .sh
 // everywhere else it doesn't matter
@@ -49,6 +49,8 @@
 // the comment above describes how autostart *currently* works, it is not definitive documentation on how autostart *should* work
 
 // share/autostart shouldn't be an option as this should be reserved for global autostart entries
+
+static QString autoStartScriptServiceType = QStringLiteral("Plasma/AutostartScript");
 
 static std::optional<AutostartEntry> loadDesktopEntry(const QString &fileName)
 {
@@ -76,6 +78,8 @@ static std::optional<AutostartEntry> loadDesktopEntry(const QString &fileName)
 
     const QString tryCommand = grp.readEntry("TryExec");
 
+    const bool isScript = KService(&config).hasServiceType(autoStartScriptServiceType);
+
     // Try to filter out entries that point to nonexistant programs
     // If TryExec is either found in $PATH or is an absolute file path that exists
     // This doesn't detect uninstalled Flatpaks for example though
@@ -84,7 +88,8 @@ static std::optional<AutostartEntry> loadDesktopEntry(const QString &fileName)
     }
 
     return std::optional<AutostartEntry>({name,
-                                          AutostartModel::AutostartEntrySource::XdgAutoStart, // .config/autostart load desktop at startup
+                                          isScript ? AutostartModel::AutostartEntrySource::XdgScripts
+                                                   : AutostartModel::AutostartEntrySource::XdgAutoStart, // .config/autostart load desktop at startup
                                           enabled,
                                           fileName,
                                           onlyInPlasma,
@@ -129,7 +134,6 @@ void AutostartModel::load()
         m_entries.push_back(entry.value());
     }
 
-    loadScriptsFromDir(QStringLiteral("/autostart-scripts/"), AutostartModel::AutostartEntrySource::XdgScripts);
     // Treat them as XdgScripts so they appear together in the UI
     loadScriptsFromDir(QStringLiteral("/plasma-workspace/env/"), AutostartModel::AutostartEntrySource::XdgScripts);
 
@@ -231,6 +235,9 @@ void AutostartModel::addApplication(const KService::Ptr &service)
         kcg.writeEntry("Path", "");
         kcg.writeEntry("Terminal", service->terminal() ? "True" : "False");
         kcg.writeEntry("Type", "Application");
+        if (service->hasServiceType(autoStartScriptServiceType)) {
+            kcg.writeEntry("X-KDE-ServiceTypes", autoStartScriptServiceType);
+        }
         desktopFile.sync();
 
     } else {
@@ -331,43 +338,47 @@ void AutostartModel::addScript(const QUrl &url, AutostartModel::AutostartEntrySo
         }
 
         index = lastLoginScript + 1;
-        folder = QStringLiteral("/autostart-scripts/");
+
+        KService::Ptr service(new KService(fileName, file.filePath(), QString()));
+        service->serviceTypes().append(autoStartScriptServiceType);
+        addApplication(service);
     } else if (kind == AutostartModel::AutostartEntrySource::PlasmaShutdown) {
         index = m_entries.size();
         folder = QStringLiteral("/plasma-workspace/shutdown/");
+        QUrl destinationScript = QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::GenericConfigLocation) + folder + fileName);
+        KIO::CopyJob *job = KIO::link(url, destinationScript, KIO::HideProgressInfo);
+        job->setAutoRename(true);
+        job->setProperty("finalUrl", destinationScript);
+
+        connect(job, &KIO::CopyJob::renamed, this, [](KIO::Job *job, const QUrl &from, const QUrl &to) {
+            Q_UNUSED(from)
+            // in case the destination filename had to be renamed
+            job->setProperty("finalUrl", to);
+        });
+
+        connect(job, &KJob::finished, this, [this, index, url, kind](KJob *theJob) {
+            if (theJob->error()) {
+                qWarning() << "Could add script entry" << theJob->errorString();
+                return;
+            }
+            insertScriptEntry(index, theJob->property("finalUrl").toUrl(), kind);
+        });
+
+        job->start();
     } else {
         Q_ASSERT(0);
     }
+}
 
-    QUrl destinationScript = QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::GenericConfigLocation) + folder + fileName);
-    KIO::CopyJob *job = KIO::link(url, destinationScript, KIO::HideProgressInfo);
-    job->setAutoRename(true);
-    job->setProperty("finalUrl", destinationScript);
+void AutostartModel::insertScriptEntry(int index, const QUrl &dest, AutostartModel::AutostartEntrySource kind)
+{
+    beginInsertRows(QModelIndex(), index, index);
 
-    connect(job, &KIO::CopyJob::renamed, this, [](KIO::Job *job, const QUrl &from, const QUrl &to) {
-        Q_UNUSED(from)
-        // in case the destination filename had to be renamed
-        job->setProperty("finalUrl", to);
-    });
+    AutostartEntry entry = AutostartEntry{dest.fileName(), kind, true, dest.path(), false, QStringLiteral("dialog-scripts")};
 
-    connect(job, &KJob::finished, this, [this, index, url, kind](KJob *theJob) {
-        if (theJob->error()) {
-            qWarning() << "Could add script entry" << theJob->errorString();
-            return;
-        }
+    m_entries.insert(index, entry);
 
-        beginInsertRows(QModelIndex(), index, index);
-
-        const QUrl dest = theJob->property("finalUrl").toUrl();
-
-        AutostartEntry entry = AutostartEntry{dest.fileName(), kind, true, dest.path(), false, QStringLiteral("dialog-scripts")};
-
-        m_entries.insert(index, entry);
-
-        endInsertRows();
-    });
-
-    job->start();
+    endInsertRows();
 }
 
 void AutostartModel::removeEntry(int row)
