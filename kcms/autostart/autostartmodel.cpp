@@ -235,9 +235,6 @@ void AutostartModel::addApplication(const KService::Ptr &service)
         kcg.writeEntry("Path", "");
         kcg.writeEntry("Terminal", service->terminal() ? "True" : "False");
         kcg.writeEntry("Type", "Application");
-        if (service->hasServiceType(autoStartScriptServiceType)) {
-            kcg.writeEntry("X-KDE-ServiceTypes", autoStartScriptServiceType);
-        }
         desktopFile.sync();
 
     } else {
@@ -339,9 +336,17 @@ void AutostartModel::addScript(const QUrl &url, AutostartModel::AutostartEntrySo
 
         index = lastLoginScript + 1;
 
-        KService::Ptr service(new KService(fileName, file.filePath(), QString()));
-        service->serviceTypes().append(autoStartScriptServiceType);
-        addApplication(service);
+        const QString desktopPath = XdgAutoStartPath() + fileName + QStringLiteral(".desktop");
+        KDesktopFile desktopFile(desktopPath);
+        KConfigGroup kcg = desktopFile.desktopGroup();
+        kcg.writeEntry("Name", fileName);
+        kcg.writeEntry("Exec", file.filePath());
+        kcg.writeEntry("Path", "");
+        kcg.writeEntry("Type", "Application");
+        kcg.writeEntry("X-KDE-ServiceTypes", autoStartScriptServiceType);
+        desktopFile.sync();
+
+        insertScriptEntry(index, QUrl::fromLocalFile(desktopPath), kind);
     } else if (kind == AutostartModel::AutostartEntrySource::PlasmaShutdown) {
         index = m_entries.size();
         folder = QStringLiteral("/plasma-workspace/shutdown/");
