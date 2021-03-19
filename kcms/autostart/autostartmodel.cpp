@@ -78,7 +78,9 @@ static std::optional<AutostartEntry> loadDesktopEntry(const QString &fileName)
 
     const QString tryCommand = grp.readEntry("TryExec");
 
-    const bool isScript = KService(&config).hasServiceType(autoStartScriptServiceType);
+    const auto kind = KService(&config).hasServiceType(autoStartScriptServiceType)
+        ? AutostartModel::AutostartEntrySource::XdgScripts
+        : AutostartModel::AutostartEntrySource::XdgAutoStart; // .config/autostart load desktop at startup
 
     // Try to filter out entries that point to nonexistant programs
     // If TryExec is either found in $PATH or is an absolute file path that exists
@@ -87,13 +89,7 @@ static std::optional<AutostartEntry> loadDesktopEntry(const QString &fileName)
         return {};
     }
 
-    return std::optional<AutostartEntry>({name,
-                                          isScript ? AutostartModel::AutostartEntrySource::XdgScripts
-                                                   : AutostartModel::AutostartEntrySource::XdgAutoStart, // .config/autostart load desktop at startup
-                                          enabled,
-                                          fileName,
-                                          onlyInPlasma,
-                                          iconName});
+    return std::optional<AutostartEntry>({name, kind, enabled, fileName, onlyInPlasma, iconName});
 }
 
 AutostartModel::AutostartModel(QObject *parent)
@@ -119,6 +115,7 @@ void AutostartModel::load()
 
     autostartdir.setFilter(QDir::Files | QDir::NoDotAndDotDot);
 
+    QVector<AutostartEntry> scriptEntries;
     const auto filesInfo = autostartdir.entryInfoList();
     for (const QFileInfo &fi : filesInfo) {
         if (!KDesktopFile::isDesktopFile(fi.fileName())) {
@@ -131,9 +128,14 @@ void AutostartModel::load()
             continue;
         }
 
-        m_entries.push_back(entry.value());
+        if (entry->source == XdgScripts) {
+            scriptEntries.push_back(entry.value());
+        } else {
+            m_entries.push_back(entry.value());
+        }
     }
 
+    m_entries.append(scriptEntries);
     // Treat them as XdgScripts so they appear together in the UI
     loadScriptsFromDir(QStringLiteral("/plasma-workspace/env/"), AutostartModel::AutostartEntrySource::XdgScripts);
 
@@ -235,9 +237,6 @@ void AutostartModel::addApplication(const KService::Ptr &service)
         kcg.writeEntry("Path", "");
         kcg.writeEntry("Terminal", service->terminal() ? "True" : "False");
         kcg.writeEntry("Type", "Application");
-        if (service->hasServiceType(autoStartScriptServiceType)) {
-            kcg.writeEntry("X-KDE-ServiceTypes", autoStartScriptServiceType);
-        }
         desktopFile.sync();
 
     } else {
@@ -339,9 +338,17 @@ void AutostartModel::addScript(const QUrl &url, AutostartModel::AutostartEntrySo
 
         index = lastLoginScript + 1;
 
-        KService::Ptr service(new KService(fileName, file.filePath(), QString()));
-        service->serviceTypes().append(autoStartScriptServiceType);
-        addApplication(service);
+        const QString desktopPath = XdgAutoStartPath() + fileName + QStringLiteral(".desktop");
+        KDesktopFile desktopFile(desktopPath);
+        KConfigGroup kcg = desktopFile.desktopGroup();
+        kcg.writeEntry("Name", fileName);
+        kcg.writeEntry("Exec", file.filePath());
+        kcg.writeEntry("Path", "");
+        kcg.writeEntry("Type", "Application");
+        kcg.writeEntry("X-KDE-ServiceTypes", autoStartScriptServiceType);
+        desktopFile.sync();
+
+        insertScriptEntry(index, QUrl::fromLocalFile(desktopPath), kind);
     } else if (kind == AutostartModel::AutostartEntrySource::PlasmaShutdown) {
         index = m_entries.size();
         folder = QStringLiteral("/plasma-workspace/shutdown/");
