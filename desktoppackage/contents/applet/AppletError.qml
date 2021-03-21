@@ -18,6 +18,7 @@
 
 import QtQuick 2.0
 import QtQuick.Layouts 1.1
+import QtQuick.Window 2.15
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 3.0 as PlasmaComponents
 import org.kde.plasma.extras 2.0 as PlasmaExtras
@@ -36,8 +37,8 @@ Item {
 
     PlasmaComponents.ToolButton {
         icon.name: "arrow-up"
-        visible: !copyHelper.visible
-        onClicked: copyHelper.visible = true
+        visible: !dialog.visible
+        onClicked: dialog.visible = true
 
         anchors {
             bottom: parent.bottom
@@ -75,6 +76,25 @@ Item {
                 Layout.alignment: Qt.AlignHCenter
             }
 
+            Window {
+                id: dialog
+
+                width: PlasmaCore.Units.gridUnit * 20
+                height: PlasmaCore.Units.gridUnit * 20
+                visible: false
+
+                color: PlasmaCore.Theme.backgroundColor
+
+                PlasmaComponents.TextArea {
+                    wrapMode: TextEdit.Wrap
+
+                    text: root.errorInformation.errors.join("\n\n")
+                    readOnly: true
+                    background: null
+
+                    anchors.fill: parent
+                }
+            }
             PlasmaComponents.TextArea {
                 id: copyHelper
                 visible: root.errorInformation.isDebugMode
