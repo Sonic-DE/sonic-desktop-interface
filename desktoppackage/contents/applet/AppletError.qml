@@ -86,13 +86,13 @@ Item {
                 color: PlasmaCore.Theme.backgroundColor
 
                 PlasmaComponents.TextArea {
-                    wrapMode: TextEdit.Wrap
+                    anchors.fill: parent
 
                     text: root.errorInformation.errors.join("\n\n")
                     readOnly: true
-                    background: null
+                    wrapMode: TextEdit.Wrap
 
-                    anchors.fill: parent
+                    background: null
                 }
             }
             PlasmaComponents.TextArea {
