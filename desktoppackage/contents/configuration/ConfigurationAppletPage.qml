@@ -27,42 +27,36 @@ Kirigami.ScrollablePage {
 
     required property var configItem
 
+    property Item loadedItem: null
+
     signal settingValueChanged()
 
     function saveConfig() {
         for (let key in plasmoid.configuration) {
-            if (loader.item["cfg_" + key] != undefined) {
-                plasmoid.configuration[key] = loader.item["cfg_" + key]
+            if (root.loadedItem["cfg_" + key] != undefined) {
+                plasmoid.configuration[key] = root.loadedItem["cfg_" + key]
             }
         }
 
         // For ConfigurationContainmentActions.qml
-        if (loader.item.hasOwnProperty("saveConfig")) {
-            loader.item.saveConfig()
+        if (root.loadedItem.hasOwnProperty("saveConfig")) {
+            root.loadedItem.saveConfig()
         }
     }
 
-    implicitHeight: loader.height
-
-    Loader {
-        id: loader
-        width: parent.width
-        // HACK the height of the loader is based on the implicitHeight of the content.
-        // Unfortunately not all content items have a sensible implicitHeight.
-        // If it is zero fall back to the height of its children
-        // Also make it at least as high as the page itself. Some existing configs assume they fill the whole space
-        // TODO KF6 clean this up by making all configs based on SimpleKCM/ScrollViewKCM/GridViewKCM
-        height: Math.max(root.availableHeight, item.implicitHeight ? item.implicitHeight : item.childrenRect.height)
-
+    // We wrap this in a QtObject so that we can run some code before the
+    // ScrollablePage completes
+    QtObject {
         Component.onCompleted: {
-            const plasmoidConfig = plasmoid.configuration
+            const component = Qt.createComponent(configItem.source)
 
+            const plasmoidConfig = plasmoid.configuration
             const props = {}
             for (let key in plasmoidConfig) {
                 props["cfg_" + key] = plasmoid.configuration[key]
             }
 
-            setSource(configItem.source, props)
+            const item = component.createObject(root, props)
 
             for (let key in plasmoidConfig) {
                 const changedSignal = item["cfg_" + key + "Changed"]
@@ -75,6 +69,9 @@ Kirigami.ScrollablePage {
             if (configurationChangedSignal) {
                 configurationChangedSignal.connect(root.settingValueChanged)
             }
+
+            root.mainItem = item
+            root.loadedItem = item
         }
     }
 }
