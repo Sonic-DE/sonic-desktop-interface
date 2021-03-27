@@ -63,7 +63,7 @@ DirModel::DirModel(QObject *parent)
 
 DirModel::~DirModel()
 {
-    delete m_imageCache;
+//     delete m_imageCache;
 }
 
 QHash<int, QByteArray> DirModel::roleNames() const
@@ -141,9 +141,9 @@ QVariant DirModel::data(const QModelIndex &index, int role) const
         KFileItem item = itemForIndex(index);
         QImage preview = QImage(m_screenshotSize, QImage::Format_ARGB32_Premultiplied);
 
-        if (m_imageCache->findImage(item.url().toString(), &preview)) {
-            return preview;
-        }
+//         if (m_imageCache->findImage(item.url().toString(), &preview)) {
+//             return preview;
+//         }
 
         m_previewTimer->start(100);
         const_cast<DirModel *>(this)->m_filesToPreview[item.url()] = QPersistentModelIndex(index);
@@ -192,7 +192,7 @@ void DirModel::showPreview(const KFileItem &item, const QPixmap &preview)
         return;
     }
 
-    m_imageCache->insertImage(item.url().toString(), preview.toImage());
+//     m_imageCache->insertImage(item.url().toString(), preview.toImage());
     // qDebug() << "preview size:" << preview.size();
     emit dataChanged(index, index);
 }
