@@ -58,7 +58,6 @@ using namespace KAStats::Terms;
 
 Backend::Backend(QObject *parent)
     : QObject(parent)
-    , m_panelWinId(0)
     , m_highlightWindows(false)
     , m_actionGroup(new QActionGroup(this))
 {
@@ -585,48 +584,24 @@ void Backend::windowsHovered(const QVariant &_winIds, bool hovered)
     m_windowsToHighlight.clear();
 
     if (hovered) {
-        const QVariantList &winIds = _winIds.toList();
-
-        foreach (const QVariant &_winId, winIds) {
-            bool ok = false;
-            qlonglong winId = _winId.toLongLong(&ok);
-
-            if (ok) {
-                m_windowsToHighlight.append(winId);
-            }
-        }
+        m_windowsToHighlight = _winIds.value<QStringList>();
     }
 
     updateWindowHighlight();
 }
 
+#include <QDBusConnection>
+#include <QDBusMessage>
+#include <QDBusMetaType>
+#include <QDBusPendingCall>
+
 void Backend::updateWindowHighlight()
 {
-    if (!m_highlightWindows) {
-        if (m_panelWinId) {
-            KWindowEffects::highlightWindows(m_panelWinId, QList<WId>());
-
-            m_panelWinId = 0;
-        }
-
-        return;
-    }
-
-    if (m_taskManagerItem && m_taskManagerItem->window()) {
-        m_panelWinId = m_taskManagerItem->window()->winId();
-    } else {
-        return;
-    }
-
-    QList<WId> windows = m_windowsToHighlight;
-
-    if (!windows.isEmpty() && m_toolTipItem && m_toolTipItem->window()) {
-        windows.append(m_toolTipItem->window()->winId());
-    }
-
-    if (!windows.isEmpty() && m_groupDialog) {
-        windows.append(m_groupDialog->winId());
-    }
-
-    KWindowEffects::highlightWindows(m_panelWinId, windows);
+    auto message = QDBusMessage::createMethodCall(QStringLiteral("org.kde.KWin"),
+                                                  QStringLiteral("/HighlightWindow"),
+                                                  QStringLiteral("org.kde.kwin.HighlightWindow"),
+                                                  QStringLiteral("highlightWindows"));
+    message << m_windowsToHighlight;
+    qDebug() << "call" << m_windowsToHighlight;
+    QDBusConnection::sessionBus().asyncCall(message);
 }
