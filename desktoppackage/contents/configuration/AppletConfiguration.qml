@@ -276,10 +276,6 @@ Rectangle {
         property var currentConfigPage: null
         property bool isAboutPage: false
 
-        // HACK: setting columnResizeMode to DynamicColumns has weird effects
-        // and since we only have maximum 2 pages, settings the left page with
-        // columnWidth also works.
-
         MessageDialog {
             id: messageDialog
             icon: StandardIcon.Warning
