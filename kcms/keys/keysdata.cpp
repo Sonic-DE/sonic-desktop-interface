@@ -27,57 +27,58 @@
 #include <kglobalaccel_component_interface.h>
 #include <kglobalaccel_interface.h>
 
-// Short timeout, rather fail than block isDefaults for to long which needs to be sync
-constexpr int dbusTimeout = 5; // milliseconds
-
 KeysData::KeysData(QObject *parent, const QVariantList &args)
+    : KCModuleData(parent, args)
 {
-    Q_UNUSED(parent)
-    Q_UNUSED(args)
-}
 
-bool KeysData::isDefaults() const
-{
     for (int i = KStandardShortcut::AccelNone + 1; i < KStandardShortcut::StandardShortcutCount; ++i) {
         const auto id = static_cast<KStandardShortcut::StandardShortcut>(i);
         const QList<QKeySequence> activeShortcuts = KStandardShortcut::shortcut(id);
         const QList<QKeySequence> defaultShortcuts = KStandardShortcut::hardcodedDefaultShortcut(id);
         if (activeShortcuts != defaultShortcuts) {
-            return false;
+            m_isDefault = false;
+            return;
         }
     }
 
-    // need to do this blocking
+    disconnect(this, &KCModuleData::aboutToLoad, this, &KCModuleData::loaded);
+
     KGlobalAccelInterface globalAccelInterface(QStringLiteral("org.kde.kglobalaccel"), QStringLiteral("/kglobalaccel"), QDBusConnection::sessionBus());
-    globalAccelInterface.setTimeout(dbusTimeout);
     if (!globalAccelInterface.isValid()) {
-        return true;
+        return;
     }
-    auto componentsCall = globalAccelInterface.allComponents();
-    componentsCall.waitForFinished();
-    if (componentsCall.isError()) {
-        return true;
-    }
-    const auto components = componentsCall.value();
-    for (const auto &componentPath : components) {
-        KGlobalAccelComponentInterface component(globalAccelInterface.service(), componentPath.path(), QDBusConnection::sessionBus());
-        component.setTimeout(dbusTimeout);
-        if (!component.isValid()) {
-            return true;
+    auto componentsWatcher = new QDBusPendingCallWatcher(globalAccelInterface.allComponents());
+    connect(componentsWatcher, &QDBusPendingCallWatcher::finished, this, [this](QDBusPendingCallWatcher *watcher) {
+        QDBusPendingReply<QList<QDBusObjectPath>> componentsReply = *watcher;
+        if (componentsReply.isError()) {
+            return;
         }
-        auto allShortcutsCall = component.allShortcutInfos();
-        allShortcutsCall.waitForFinished();
-        if (allShortcutsCall.isError()) {
-            return true;
-        }
-        const auto allShortcuts = allShortcutsCall.value();
-        for (const auto &shortcutInfo : allShortcuts) {
-            if (shortcutInfo.defaultKeys() != shortcutInfo.keys()) {
-                return false;
+        const auto components = componentsReply.value();
+        for (const auto &componentPath : components) {
+            KGlobalAccelComponentInterface component(QStringLiteral("org.kde.kglobalaccel"), componentPath.path(), QDBusConnection::sessionBus());
+            if (!component.isValid()) {
+                return;
             }
+            ++m_pendingComponentCalls;
+            auto shortcutsWatcher = new QDBusPendingCallWatcher(component.allShortcutInfos());
+            connect(shortcutsWatcher, &QDBusPendingCallWatcher::finished, this, [this](QDBusPendingCallWatcher *watcher) {
+                QDBusPendingReply<QList<KGlobalShortcutInfo>> shortcutsReply = *watcher;
+                if (shortcutsReply.isValid()) {
+                    const auto allShortcuts = shortcutsReply.value();
+                    bool isNotDefault = std::any_of(allShortcuts.cbegin(), allShortcuts.cend(), [](const KGlobalShortcutInfo &info) {
+                        return info.defaultKeys() != info.keys();
+                    });
+                    m_isDefault &= isNotDefault;
+                }
+                if (--m_pendingComponentCalls == 0) {
+                    Q_EMIT loaded();
+                }
+            });
         }
-    }
-    return true;
+    });
 }
 
-#include "keysdata.moc"
+bool KeysData::isDefaults() const
+{
+    return m_isDefault;
+}
