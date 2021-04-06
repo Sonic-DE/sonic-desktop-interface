@@ -106,7 +106,12 @@ KCM.GridViewKCM {
             text: i18n("&Get New Splash Screens...")
             configFile: "ksplash.knsrc"
             viewMode: NewStuff.Page.ViewMode.Preview
-            onChangedEntriesChanged: kcm.ghnsEntriesChanged(newStuffButton.changedEntries);
+            onChangedEntriesChanged: {
+                var length = newStuffButton.changedEntries.length;
+                if (length > 0) {
+                    kcm.ghnsEntryChanged(newStuffButton.changedEntries[length - 1]);
+                }
+            }
         }
     }
 }
