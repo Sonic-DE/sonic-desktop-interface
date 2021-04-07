@@ -28,8 +28,6 @@ class QStandardItemModel;
 class LandingPageData;
 class LandingPageGlobalsSettings;
 
-class BalooSettings;
-class BalooData;
 class FeedbackSettings;
 
 namespace KActivities {
@@ -80,7 +78,6 @@ class KCMLandingPage : public KQuickAddons::ManagedConfigModule
     Q_OBJECT
     Q_PROPERTY(MostUsedModel *mostUsedModel READ mostUsedModel CONSTANT)
     Q_PROPERTY(LandingPageGlobalsSettings *globalsSettings READ globalsSettings CONSTANT)
-    Q_PROPERTY(BalooSettings *balooSettings READ balooSettings CONSTANT)
     Q_PROPERTY(LookAndFeelGroup *defaultLightLookAndFeel READ defaultLightLookAndFeel CONSTANT)
     Q_PROPERTY(LookAndFeelGroup *defaultDarkLookAndFeel READ defaultDarkLookAndFeel CONSTANT)
 
@@ -91,7 +88,6 @@ public:
     MostUsedModel *mostUsedModel() const;
 
     LandingPageGlobalsSettings *globalsSettings() const;
-    BalooSettings *balooSettings() const;
     FeedbackSettings *feedbackSettings() const;
 
     LookAndFeelGroup *defaultLightLookAndFeel() const;
