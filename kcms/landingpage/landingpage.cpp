@@ -41,6 +41,7 @@
 #include "landingpagedata.h"
 #include "landingpage_kdeglobalssettings.h"
 #include "landingpage_baloosettings.h"
+#include "landingpage_feedbacksettings.h"
 
 #include <KActivities/Stats/ResultModel>
 #include <KActivities/Stats/ResultSet>
@@ -218,6 +219,11 @@ LandingPageGlobalsSettings *KCMLandingPage::globalsSettings() const
 BalooSettings *KCMLandingPage::balooSettings() const
 {
     return m_data->balooSettings();
+}
+
+FeedbackSettings *KCMLandingPage::feedbackSettings() const
+{
+    return m_data->feedbackSettings();
 }
 
 void KCMLandingPage::save()
