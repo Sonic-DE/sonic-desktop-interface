@@ -11,12 +11,13 @@ kcmutils_generate_module_data(
     kcm_landingpage_SRCS
     MODULE_DATA_HEADER landingpagedata.h
     MODULE_DATA_CLASS_NAME LandingPageData
-    SETTINGS_HEADERS landingpage_kdeglobalssettings.h landingpage_baloosettings.h
-    SETTINGS_CLASSES LandingPageGlobalsSettings BalooSettings
+    SETTINGS_HEADERS landingpage_kdeglobalssettings.h landingpage_baloosettings.h landingpage_feedbacksettings.h
+    SETTINGS_CLASSES LandingPageGlobalsSettings BalooSettings FeedbackSettings
 )
 
 kconfig_add_kcfg_files(kcm_landingpage_SRCS landingpage_kdeglobalssettings.kcfgc GENERATE_MOC)
 kconfig_add_kcfg_files(kcm_landingpage_SRCS landingpage_baloosettings.kcfgc GENERATE_MOC)
+kconfig_add_kcfg_files(kcm_landingpage_SRCS landingpage_feedbacksettings.kcfgc GENERATE_MOC)
 
 add_library(kcm_landingpage MODULE ${kcm_landingpage_SRCS})
 
@@ -28,6 +29,7 @@ target_link_libraries(kcm_landingpage
     KF5::Declarative
     PW::KWorkspace
     KF5::ActivitiesStats
+    KUserFeedbackCore
 
     Qt5::DBus
 )
@@ -41,6 +43,7 @@ kcoreaddons_desktop_to_json(kcm_landingpage "kcm_landingpage.desktop" SERVICE_TY
 ########### install files ###############
 install(FILES landingpage_kdeglobalssettings.kcfg DESTINATION ${KDE_INSTALL_KCFGDIR})
 install(FILES landingpage_baloosettings.kcfg DESTINATION ${KDE_INSTALL_KCFGDIR})
+install(FILES landingpage_feedbacksettings.kcfg DESTINATION ${KDE_INSTALL_KCFGDIR})
 install(FILES kcm_landingpage.desktop DESTINATION ${KDE_INSTALL_KSERVICES5DIR})
 install(TARGETS kcm_landingpage DESTINATION ${KDE_INSTALL_PLUGINDIR}/kcms)
 

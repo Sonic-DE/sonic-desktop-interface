@@ -30,6 +30,7 @@ class LandingPageGlobalsSettings;
 
 class BalooSettings;
 class BalooData;
+class FeedbackSettings;
 
 namespace KActivities {
     namespace Stats {
@@ -91,6 +92,7 @@ public:
 
     LandingPageGlobalsSettings *globalsSettings() const;
     BalooSettings *balooSettings() const;
+    FeedbackSettings *feedbackSettings() const;
 
     LookAndFeelGroup *defaultLightLookAndFeel() const;
     LookAndFeelGroup *defaultDarkLookAndFeel() const;
