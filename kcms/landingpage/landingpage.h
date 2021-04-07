@@ -78,6 +78,7 @@ class KCMLandingPage : public KQuickAddons::ManagedConfigModule
     Q_OBJECT
     Q_PROPERTY(MostUsedModel *mostUsedModel READ mostUsedModel CONSTANT)
     Q_PROPERTY(LandingPageGlobalsSettings *globalsSettings READ globalsSettings CONSTANT)
+    Q_PROPERTY(FeedbackSettings *feedbackSettings READ feedbackSettings CONSTANT)
     Q_PROPERTY(LookAndFeelGroup *defaultLightLookAndFeel READ defaultLightLookAndFeel CONSTANT)
     Q_PROPERTY(LookAndFeelGroup *defaultDarkLookAndFeel READ defaultDarkLookAndFeel CONSTANT)
 
