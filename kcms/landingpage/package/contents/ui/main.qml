@@ -188,6 +188,9 @@ KCM.SimpleKCM {
                 font: Kirigami.Theme.smallFont
             }
 
+            Item {
+                Kirigami.FormData.isSection: false
+            }
             QQC2.Slider {
                 id: statisticsModeSlider
                 Kirigami.FormData.label: i18n("Send User Feedback:")
@@ -226,9 +229,6 @@ KCM.SimpleKCM {
                     id: feedbackController
                     applicationName: i18n("Plasma")
                 }
-            }
-            Item {
-                Kirigami.FormData.isSection: false
             }
 
             QQC2.Label {
