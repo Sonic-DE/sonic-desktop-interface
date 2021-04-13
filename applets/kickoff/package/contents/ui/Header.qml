@@ -18,123 +18,136 @@
  *    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-import QtQuick 2.12
-import QtQuick.Layouts 1.12
+import QtQuick 2.15
+import QtQuick.Layouts 1.15
+import QtQuick.Templates 2.15 as T
+import QtGraphicalEffects 1.15
 import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.plasma.components 3.0 as PlasmaComponents
+import org.kde.plasma.components 3.0 as PC3
 import org.kde.plasma.extras 2.0 as PlasmaExtras
-import org.kde.kcoreaddons 1.0 as KCoreAddons
-// While using Kirigami in applets is normally a no, we
-// use Avatar, which doesn't need to read the colour scheme
-// at all to function, so there won't be any oddities with colours.
 import org.kde.kirigami 2.13 as Kirigami
+import org.kde.kcoreaddons 1.0 as KCoreAddons
 import org.kde.kquickcontrolsaddons 2.0 as KQuickAddons
 
 PlasmaExtras.PlasmoidHeading {
-    id: header
+    id: root
 
-    implicitHeight: Math.round(PlasmaCore.Units.gridUnit * 2.5)
-    rightPadding: rightInset
+    contentHeight: Math.max(searchField.implicitHeight, configureButton.implicitHeight)
+    implicitWidth: Math.max(implicitBackgroundWidth + leftInset + rightInset,
+                            contentWidth + leftPadding + rightPadding)
+    implicitHeight: Math.max(implicitBackgroundHeight + topInset + bottomInset,
+                             contentHeight + topPadding + bottomPadding)
 
-    property alias query: queryField.text
-    property Item input: queryField
+    property alias searchText: searchField.text
+    property PC3.TextField searchField: searchField
     property Item configureButton: configureButton
-    property Item avatar: avatarButton
+    property Item avatar: avatar
+    property real preferredNameAndIconWidth: 0
 
     KCoreAddons.KUser {
         id: kuser
     }
 
-    state: "name"
-
-    states: [
-        State {
-            name: "name"
-            PropertyChanges {
-                target: nameLabel
-                opacity: 1
-            }
-            PropertyChanges {
-                target: infoLabel
-                opacity: 0
-            }
-        },
-        State {
-            name: "info"
-            PropertyChanges {
-                target: nameLabel
-                opacity: 0
-            }
-            PropertyChanges {
-                target: infoLabel
-                opacity: 1
-            }
-        }
-    ] // states
+    spacing: KickoffSingleton.backgroundMetrics.margins.left
 
     RowLayout {
         id: nameAndIcon
+        spacing: root.spacing
         anchors.left: parent.left
-        anchors.leftMargin: PlasmaCore.Units.gridUnit + header.leftInset + PlasmaCore.Units.devicePixelRatio //border width
-        anchors.right: parent.right
-        anchors.verticalCenter: parent.verticalCenter
-        anchors.rightMargin: Math.round(parent.width/1.5) + PlasmaCore.Units.gridUnit
-        PlasmaComponents.RoundButton {
-            id: avatarButton
+        height: parent.height
+        width: root.preferredNameAndIconWidth
+
+        PC3.RoundButton {
+            id: avatar
             visible: KQuickAddons.KCMShell.authorize("kcm_users.desktop").length > 0
-
-            flat: true
-
-            Layout.preferredWidth: PlasmaCore.Units.gridUnit * 2
-            Layout.preferredHeight: PlasmaCore.Units.gridUnit * 2
-
-            Accessible.name: nameLabel.text
-            Accessible.description: i18n("Go to user settings")
-
-            Kirigami.Avatar {
-                source: kuser.faceIconUrl
-                name: nameLabel.text
-                anchors {
-                    fill: parent
-                    margins: PlasmaCore.Units.smallSpacing
+            hoverEnabled: true
+            Layout.fillHeight: true
+            Layout.minimumWidth: height
+            Layout.maximumWidth: height
+            // FIXME: Not using text with display because of RoundButton bugs in plasma-framework
+            Accessible.name: i18n("Go to user settings")
+            leftPadding: PlasmaCore.Units.devicePixelRatio
+            rightPadding: PlasmaCore.Units.devicePixelRatio
+            topPadding: PlasmaCore.Units.devicePixelRatio
+            bottomPadding: PlasmaCore.Units.devicePixelRatio
+            contentItem: Loader {
+                sourceComponent: kuser.faceIconUrl ? imageComponent : icon
+                Component {
+                    id: imageComponent
+                    Image {
+                        id: imageItem
+                        anchors.fill: avatar.contentItem
+                        source: kuser.faceIconUrl
+                        smooth: true
+                        sourceSize.width: avatar.contentItem.width
+                        sourceSize.height: avatar.contentItem.height
+                        fillMode: Image.PreserveAspectCrop
+                    }
                 }
-                // NOTE: for some reason Avatar eats touch events even though it shouldn't
-                // Ideally we'd be using Avatar but it doesn't have proper key nav yet
-                // see https://invent.kde.org/frameworks/kirigami/-/merge_requests/218
-                actions.main: Kirigami.Action {
-                    text: avatarButton.Accessible.description
-                    onTriggered: avatarButton.clicked()
+                Component {
+                    id: iconComponent
+                    PlasmaCore.IconItem {
+                        id: iconItem
+                        anchors.fill: avatar.contentItem
+                        source: "user"
+                    }
                 }
-                // no keyboard nav
-                activeFocusOnTab: false
-                // ignore accessibility (done by the button)
-                Accessible.ignored: true
-            }
-
-            onClicked: {
-                KQuickAddons.KCMShell.openSystemSettings("kcm_users")
-            }
-
-            Keys.onPressed: {
-                // In search on backtab focus on search pane
-                if (event.key == Qt.Key_Backtab && (root.state == "Search" || mainTabGroup.state == "top")) {
-                    navigationMethod.state = "keyboard"
-                    keyboardNavigation.state = "RightColumn"
-                    root.currentContentView.forceActiveFocus()
-                    event.accepted = true;
-                    return;
+                layer.enabled: kuser.faceIconUrl
+                layer.effect: OpacityMask {
+                    anchors.fill: avatar.contentItem
+                    source: avatar.contentItem
+                    maskSource: Rectangle {
+                        visible: false
+                        radius: height/2
+                        width: avatar.contentItem.width
+                        height: avatar.contentItem.height
+                    }
                 }
             }
+            Rectangle {
+                parent: avatar.background
+                anchors.fill: avatar.background
+                anchors.margins: -PlasmaCore.Units.devicePixelRatio
+                z: 1
+                radius: height/2
+                color: "transparent"
+                border.width: avatar.visualFocus ? PlasmaCore.Units.devicePixelRatio * 2 : 0
+                border.color: PlasmaCore.Theme.buttonFocusColor
+            }
+            // Only used to keep the exact circular shape consistent with the image.
+            // Without this, it looks significantly worse.
+            background.layer.enabled: kuser.faceIconUrl
+            background.layer.effect: OpacityMask {
+                anchors.fill: avatar.background
+                source: avatar.background
+                maskSource: Rectangle {
+                    visible: false
+                    radius: height/2
+                    width: avatar.background.width
+                    height: avatar.background.height
+                }
+            }
+            HoverHandler {
+                id: hoverHandler
+                cursorShape: Qt.PointingHandCursor
+            }
+            PC3.ToolTip.text: Accessible.name
+            PC3.ToolTip.visible: hovered
+            PC3.ToolTip.delay: Kirigami.Units.toolTipDelay
+            onClicked: KQuickAddons.KCMShell.openSystemSettings("kcm_users")
         }
 
-        Item {
+        MouseArea {
+            id: nameAndInfoMouseArea
+            hoverEnabled: true
+
+            Layout.fillHeight: true
             Layout.fillWidth: true
-            Layout.preferredHeight: PlasmaCore.Units.gridUnit
-            Layout.alignment: Layout.AlignVCenter | Qt.AlignLeft
 
             PlasmaExtras.Heading {
                 id: nameLabel
                 anchors.fill: parent
+                opacity: parent.containsMouse ? 0 : 1
 
                 level: 2
                 text: kuser.fullName
@@ -148,26 +161,14 @@ PlasmaExtras.PlasmoidHeading {
                         easing.type: Easing.InOutQuad
                     }
                 }
-
-                // Show the info instead of the user's name when hovering over it
-                MouseArea {
-                    anchors.fill: nameLabel
-                    hoverEnabled: true
-                    onEntered: {
-                        header.state = "info"
-                    }
-                    onExited: {
-                        header.state = "name"
-                    }
-                }
             }
 
             PlasmaExtras.Heading {
                 id: infoLabel
                 anchors.fill: parent
                 level: 5
-                opacity: 0
-                text: kuser.os !== "" ? i18n("%2@%3 (%1)", kuser.os, kuser.loginName, kuser.host) : i18n("%1@%2", kuser.loginName, kuser.host)
+                opacity: parent.containsMouse ? 1 : 0
+                text: kuser.os !== "" ? `${kuser.loginName}@${kuser.host} (${kuser.os})` : `${kuser.loginName}@${kuser.host}`
                 elide: Text.ElideRight
                 horizontalAlignment: Text.AlignLeft
                 verticalAlignment: Text.AlignVCenter
@@ -179,23 +180,35 @@ PlasmaExtras.PlasmoidHeading {
                     }
                 }
             }
+
+            PC3.ToolTip.text: infoLabel.text
+            PC3.ToolTip.delay: Kirigami.Units.toolTipDelay
+            PC3.ToolTip.visible: infoLabel.truncated && containsMouse
         }
     }
-
     RowLayout {
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.rightMargin: PlasmaCore.Units.gridUnit - PlasmaCore.Units.devicePixelRatio - PlasmaCore.Units.smallSpacing //separator width
-        anchors.verticalCenter: parent.verticalCenter
-        anchors.leftMargin: Math.round(parent.width/3) + PlasmaCore.Units.gridUnit + header.leftInset
+        id: rowLayout
+        spacing: root.spacing
+        height: parent.height
+        anchors {
+            left: nameAndIcon.right
+            right: parent.right
+        }
+        PlasmaCore.SvgItem {
+            id: separator
+            Layout.fillHeight: true
+            implicitWidth: naturalSize.width
+            implicitHeight: 0
+            elementId: "vertical-line"
+            svg: KickoffSingleton.lineSvg
+        }
 
-        // looks visually balanced that way
-        spacing: Math.round(PlasmaCore.Units.smallSpacing * 2.5)
+        PC3.TextField {
+            id: searchField
 
-        PlasmaComponents.TextField {
-            id: queryField
-
+            Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
             Layout.fillWidth: true
+            focus: true
 
             placeholderText: i18n("Search...")
             clearButtonShown: true
@@ -203,31 +216,30 @@ PlasmaExtras.PlasmoidHeading {
             Accessible.editable: true
             Accessible.searchEdit: true
 
-            onTextChanged: {
-                if (root.state != "Search") {
-                    root.previousState = root.state;
-                    root.state = "Search";
-                }
-                if (text == "") {
-                    root.state = root.previousState;
+            Connections {
+                target: plasmoid
+                function onExpandedChanged() {
+                    if(!plasmoid.expanded) {
+                        searchField.clear()
+                    }
                 }
             }
         }
 
-        PlasmaComponents.ToolButton {
+        PC3.ToolButton {
             id: configureButton
-
+            Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
             visible: plasmoid.action("configure").enabled
             icon.name: "configure"
+            text: plasmoid.action("configure").text
+            display: PC3.ToolButton.IconOnly
 
-            Accessible.name: plasmoid.action("configure").text
+            PC3.ToolTip.text: text
+            PC3.ToolTip.delay: Kirigami.Units.toolTipDelay
+            PC3.ToolTip.visible: hovered
 
             onClicked: plasmoid.action("configure").trigger()
-            PlasmaComponents.ToolTip {
-                text: plasmoid.action("configure").text
-            }
-
-            Keys.onPressed: {
+            /*Keys.onPressed: {
                 // On tab focus on left pane (or search when searching)
                 if (event.key == Qt.Key_Tab) {
                     navigationMethod.state = "keyboard"
@@ -244,6 +256,22 @@ PlasmaExtras.PlasmoidHeading {
                     event.accepted = true;
                     return;
                 }
+            }*/
+        }
+        PC3.ToolButton {
+            checkable: true
+            checked: plasmoid.configuration.pin
+            icon.name: "window-pin"
+            text: i18n("Keep Open")
+            display: PC3.ToolButton.IconOnly
+            PC3.ToolTip.text: text
+            PC3.ToolTip.delay: Kirigami.Units.toolTipDelay
+            PC3.ToolTip.visible: hovered
+            onToggled: plasmoid.configuration.pin = checked
+            Binding {
+                target: plasmoid
+                property: "hideOnWindowDeactivate"
+                value: !plasmoid.configuration.pin
             }
         }
     }
