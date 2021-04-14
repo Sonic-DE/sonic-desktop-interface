@@ -44,6 +44,7 @@ class Q_DECL_EXPORT KeyboardDaemon : public KDEDModule
     LayoutMemory layoutMemory;
     LayoutUnit currentLayout;
     const Rules *rules;
+    ushort mPunchedLayoutIndex;
 
     void registerListeners();
     void registerShortcut();
