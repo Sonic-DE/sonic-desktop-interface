@@ -22,6 +22,8 @@
 
 #include <KQuickAddons/ManagedConfigModule>
 #include <KPackage/Package>
+#include <QJsonValue>
+#include <QJsonArray>
 
 class QStandardItemModel;
 
@@ -81,10 +83,14 @@ class KCMLandingPage : public KQuickAddons::ManagedConfigModule
     Q_PROPERTY(FeedbackSettings *feedbackSettings READ feedbackSettings CONSTANT)
     Q_PROPERTY(LookAndFeelGroup *defaultLightLookAndFeel READ defaultLightLookAndFeel CONSTANT)
     Q_PROPERTY(LookAndFeelGroup *defaultDarkLookAndFeel READ defaultDarkLookAndFeel CONSTANT)
+    Q_PROPERTY(QJsonArray feedbackSources MEMBER m_feedbackSources NOTIFY feedbackSourcesChanged)
 
 public:
     KCMLandingPage(QObject *parent, const QVariantList &args);
     ~KCMLandingPage() override {}
+
+    
+    void programFinished(int exitCode);
 
     MostUsedModel *mostUsedModel() const;
 
@@ -100,6 +106,9 @@ public:
 public Q_SLOTS:
     void save() override;
 
+Q_SIGNALS:
+    void feedbackSourcesChanged();
+
 private:
     LandingPageData *m_data;
 
@@ -107,6 +116,9 @@ private:
     LookAndFeelGroup *m_defaultDarkLookAndFeel = nullptr;
 
     MostUsedModel *m_mostUsedModel = nullptr;
+
+    QHash<int, QHash<QString, QJsonArray>> m_uses;
+    QJsonArray m_feedbackSources;
 
     bool m_lnfDirty = false;
 };
