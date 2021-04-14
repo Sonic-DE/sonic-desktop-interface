@@ -191,43 +191,58 @@ KCM.SimpleKCM {
             Item {
                 Kirigami.FormData.isSection: false
             }
-            QQC2.Slider {
-                id: statisticsModeSlider
-                Kirigami.FormData.label: i18n("Send User Feedback:")
-                readonly property var currentMode: modeOptions[value]
-                Layout.fillWidth: true
-                Layout.minimumWidth: Kirigami.Units.gridUnit * 21
-                Layout.maximumWidth: Kirigami.Units.gridUnit * 21
+            RowLayout {
+                QQC2.Slider {
+                    id: statisticsModeSlider
+                    Kirigami.FormData.label: i18n("Send User Feedback:")
+                    readonly property var currentMode: modeOptions[value]
+                    Layout.fillWidth: true
+                    Layout.minimumWidth: Kirigami.Units.gridUnit * 21
+                    Layout.maximumWidth: Kirigami.Units.gridUnit * 21
 
-                readonly property var modeOptions: [UserFeedback.Provider.NoTelemetry, UserFeedback.Provider.BasicSystemInformation, UserFeedback.Provider.BasicUsageStatistics,
-                                                    UserFeedback.Provider.DetailedSystemInformation, UserFeedback.Provider.DetailedUsageStatistics]
-                from: 0
-                to: modeOptions.length - 1
-                stepSize: 1
-                snapMode: QQC2.Slider.SnapAlways
+                    readonly property var modeOptions: [UserFeedback.Provider.NoTelemetry, UserFeedback.Provider.BasicSystemInformation, UserFeedback.Provider.BasicUsageStatistics,
+                                                        UserFeedback.Provider.DetailedSystemInformation, UserFeedback.Provider.DetailedUsageStatistics]
+                    from: 0
+                    to: modeOptions.length - 1
+                    stepSize: 1
+                    snapMode: QQC2.Slider.SnapAlways
 
-                function findIndex(array, what, defaultValue) {
-                    for (var v in array) {
-                        if (array[v] == what)
-                            return v;
+                    function findIndex(array, what, defaultValue) {
+                        for (var v in array) {
+                            if (array[v] == what)
+                                return v;
+                        }
+                        return defaultValue;
                     }
-                    return defaultValue;
-                }
 
-                value: findIndex(modeOptions, kcm.feedbackSettings.feedbackLevel, 0)
+                    value: findIndex(modeOptions, kcm.feedbackSettings.feedbackLevel, 0)
 
-                onMoved: {
-                    kcm.feedbackSettings.feedbackLevel = modeOptions[value]
-                }
+                    onMoved: {
+                        kcm.feedbackSettings.feedbackLevel = modeOptions[value]
+                    }
 
-                KCM.SettingStateBinding {
-                    configObject: kcm.feedbackSettings
-                    settingName: "feedbackLevel"
-                    extraEnabledConditions: kcm.feedbackEnabled
+                    KCM.SettingStateBinding {
+                        configObject: kcm.feedbackSettings
+                        settingName: "feedbackLevel"
+                        extraEnabledConditions: kcm.feedbackEnabled
+                    }
+                    UserFeedback.FeedbackConfigUiController {
+                        id: feedbackController
+                        applicationName: i18n("Plasma")
+                    }
                 }
-                UserFeedback.FeedbackConfigUiController {
-                    id: feedbackController
-                    applicationName: i18n("Plasma")
+                ContextualHelpButton {
+                    toolTipText: {
+                        if (kcm.feedbackSettings.feedbackLevel === UserFeedback.Provider.NoTelemetry) {
+                            return i18n("No data will be sent");
+                        }
+                        let text = "<h4>" + i18n("The following information will be sent:") + "</h4><ul>";
+                        for (let i in kcm.feedbackSources) {
+                            text += "<li>" + kcm.feedbackSources[i].description + "</li>";
+                        }
+                        text += "</ul>";
+                        return text;
+                    }
                 }
             }
 
