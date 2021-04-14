@@ -94,6 +94,9 @@ void KeyboardDaemon::configureKeyboard()
     init_keyboard_hardware();
 
     keyboardConfig.load();
+    if (keyboardConfig.layoutLoopCount != KeyboardConfig::NO_LOOPING) {
+        mPunchedLayoutIndex = keyboardConfig.layoutLoopCount - 1;
+    }
     XkbHelper::initializeKeyboardLayouts(keyboardConfig);
     layoutMemory.configChanged();
     keyboardConfig.save();
@@ -222,6 +225,14 @@ bool KeyboardDaemon::setLayout(QAction *action)
 
 bool KeyboardDaemon::setLayout(uint index)
 {
+//    if ( keyboardConfig.layoutLoopCount == KeyboardConfig::NO_LOOPING || index < uint(keyboardConfig.layoutLoopCount) )
+    if (keyboardConfig.layoutLoopCount != KeyboardConfig::NO_LOOPING && index >= uint(keyboardConfig.layoutLoopCount)) {
+        QList<LayoutUnit> layouts = keyboardConfig.getDefaultLayouts();
+        layouts.removeLast();
+        layouts.append(keyboardConfig.layouts.at(mPunchedLayoutIndex = index > mPunchedLayoutIndex ? index : index - 1));
+        XkbHelper::initializeKeyboardLayouts(layouts);
+        index = layouts.size() - 1;
+    }
     return X11Helper::setGroup(index);
 }
 
@@ -234,7 +245,11 @@ QVector<LayoutNames> KeyboardDaemon::getLayoutsList() const
 {
     QVector<LayoutNames> ret;
 
-    const auto layoutsList = X11Helper::getLayoutsList();
+    auto layoutsList = X11Helper::getLayoutsList();
+    if (keyboardConfig.layoutLoopCount != KeyboardConfig::NO_LOOPING) {
+        layoutsList.append(keyboardConfig.layouts.mid(keyboardConfig.layoutLoopCount - 1));
+        layoutsList.removeAt(mPunchedLayoutIndex);
+    }
     for (auto &layoutUnit : layoutsList) {
         ret.append({layoutUnit.layout(), Flags::getShortText(layoutUnit, keyboardConfig), Flags::getLongText(layoutUnit, rules)});
     }
