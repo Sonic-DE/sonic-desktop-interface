@@ -222,6 +222,12 @@ bool KeyboardDaemon::setLayout(QAction *action)
 
 bool KeyboardDaemon::setLayout(uint index)
 {
+    if (keyboardConfig.layoutLoopCount != KeyboardConfig::NO_LOOPING && index >= uint(keyboardConfig.layoutLoopCount)) {
+        QList<LayoutUnit> layouts = keyboardConfig.getDefaultLayouts();
+        layouts.append(keyboardConfig.layouts.at( int(index) > keyboardConfig.layouts.lastIndexOf(layouts.takeLast()) ? index : index - 1 ));
+        XkbHelper::initializeKeyboardLayouts(layouts);
+        index = layouts.size() - 1;
+    }
     return X11Helper::setGroup(index);
 }
 
@@ -234,7 +240,12 @@ QVector<LayoutNames> KeyboardDaemon::getLayoutsList() const
 {
     QVector<LayoutNames> ret;
 
-    const auto layoutsList = X11Helper::getLayoutsList();
+    auto layoutsList = X11Helper::getLayoutsList();
+    if (keyboardConfig.layoutLoopCount != KeyboardConfig::NO_LOOPING) {
+        auto extraLayouts = keyboardConfig.layouts.mid(keyboardConfig.layoutLoopCount - 1);
+        extraLayouts.removeOne(layoutsList.last());
+        layoutsList.append(extraLayouts);
+    }
     for (auto &layoutUnit : layoutsList) {
         ret.append({layoutUnit.layout(), Flags::getShortText(layoutUnit, keyboardConfig), Flags::getLongText(layoutUnit, rules)});
     }
