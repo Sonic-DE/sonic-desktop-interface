@@ -218,11 +218,9 @@ PlasmaExtras.PlasmoidHeading {
                 }
             }
             onAccepted: {
-                //console.log("shit")
-//                 console.log(KickoffSingleton.contentAreaView.currentItem)
                 KickoffSingleton.contentAreaView.currentItem.action.triggered()
+                KickoffSingleton.contentAreaView.currentItem.forceActiveFocus(Qt.ShortcutFocusReason)
             }
-            onEditingFinished: {}
         }
 
         PC3.ToolButton {

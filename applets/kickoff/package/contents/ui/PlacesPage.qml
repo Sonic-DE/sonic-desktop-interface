@@ -13,12 +13,8 @@ BasePage {
         model: placesCategoryModel
         delegate: KickoffItemDelegate {
             action: null
-            width: view.contentItem.width
+            width: view.width - view.leftMargin - view.rightMargin
             indicator.visible: true
-            onClicked: {
-                view.currentIndex = index
-                forceActiveFocus(Qt.MouseFocusReason)
-            }
         }
     }
     contentAreaComponent: KickoffListView {
@@ -32,6 +28,11 @@ BasePage {
                 case 0: return KickoffSingleton.computerModel
                 case 1: return KickoffSingleton.recentUsageModel
                 case 2: return KickoffSingleton.frequentUsageModel
+            }
+        }
+        onActiveFocusChanged: {
+            if (activeFocus && count <= 0) {
+                root.sideBarItem.forceActiveFocus()
             }
         }
     }
