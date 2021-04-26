@@ -19,32 +19,57 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 import QtQuick 2.15
+import QtQuick.Templates 2.15 as T
+import QtQml 2.15
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 3.0 as PC3
 import org.kde.plasma.extras 2.0 as PlasmaExtras
-import QtQml 2.15
+import org.kde.kirigami 2.16 as Kirigami
 
-EmptyScrollView {
+EmptyPage {
     id: root
-    property alias model: listView.model
-    property alias count: listView.count
-    property alias currentIndex: listView.currentIndex
-    property alias currentItem: listView.currentItem
-    property alias delegate: listView.delegate
-    property alias section: listView.section
+    property alias model: view.model
+    property alias count: view.count
+    property alias currentIndex: view.currentIndex
+    property alias currentItem: view.currentItem
+    property alias delegate: view.delegate
+    property alias section: view.section
 
-    clip: listView.interactive
+    clip: view.interactive
 
-    // If either uses a grid, use grid cells to determine size
-    contentHeight: plasmoid.configuration.favoritesDisplay == 0 || plasmoid.configuration.applicationsDisplay == 0
-        ? KickoffSingleton.gridCellSize * 4 : KickoffSingleton.listDelegateHeight * 10
+    property rect mappedViewRect: view.mapFromItem(
+        view.contentItem,
+        view.contentX, view.contentY,
+        view.contentWidth, view.contentHeight
+    )
 
-    verticalPadding: KickoffSingleton.backgroundMetrics.margins.top
-    horizontalPadding: KickoffSingleton.backgroundMetrics.margins.left
+    header: MouseArea {
+        implicitHeight: KickoffSingleton.backgroundMetrics.margins.top
+        hoverEnabled: true
+        onEntered: {
+            view.currentIndex = view.indexAt(0, view.contentY)
+            view.forceActiveFocus(Qt.MouseFocusReason)
+        }
+    }
+
+    footer: MouseArea {
+        implicitHeight: KickoffSingleton.backgroundMetrics.margins.bottom
+        hoverEnabled: true
+        onEntered: {
+            view.currentIndex = view.indexAt(0, view.contentHeight - view.contentY)
+            view.forceActiveFocus(Qt.MouseFocusReason)
+        }
+    }
 
     contentItem: ListView {
         width: root.availableWidth
-        id: listView
+        id: view
+
+        property real viewWidth: width - leftMargin - rightMargin
+        property real viewHeight: height - topMargin - bottomMargin
+
+        leftMargin: verticalScrollBar.width
+        rightMargin: verticalScrollBar.width
 
         // Currently narrator only notifies about focus changes
         // That means that if item has focus narrator won't notify about name/description changes, like count changing
@@ -55,6 +80,12 @@ EmptyScrollView {
 
         // Determines whether or not we tell the amount of items in the list
         property bool accessibilityCount: true
+
+        implicitWidth: contentWidth + leftMargin + rightMargin
+        // If either uses a grid, use grid cells to determine size
+        implicitHeight: plasmoid.configuration.favoritesDisplay == 0 || plasmoid.configuration.applicationsDisplay == 0
+            ? KickoffSingleton.gridCellSize * 4 : KickoffSingleton.listDelegateHeight * 10
+            + topMargin + bottomMargin
 
         currentIndex: count > 0 ? 0 : -1
         focus: true
@@ -70,35 +101,34 @@ EmptyScrollView {
         highlightResizeDuration: 0
         highlightMoveDuration: 0
         highlight: PlasmaCore.FrameSvgItem {
-            opacity: listView.activeFocus ? 1 : 0.5
+            opacity: view.activeFocus ? 1 : 0.5
             imagePath: "widgets/viewitem"
             prefix: "hover"
-            //opacity: navigationMethod.state != "keyboard" || (listView.hasKeyboardFocus && listView.activeFocus) ? 1 : 0.5
+            //opacity: navigationMethod.state != "keyboard" || (view.hasKeyboardFocus && view.activeFocus) ? 1 : 0.5
         }
 
         delegate: KickoffItemDelegate {
             id: itemDelegate
-            viewScrolling: root.PC3.ScrollBar.vertical.active
-            width: view && view.width || implicitWidth
+            extendHoverMargins: true
+            width: view.viewWidth
         }
 
         section {
             property: "group"
             criteria: ViewSection.FullString
             delegate: PC3.Label {
-                property real delegateContentHeight: Math.max(PlasmaCore.Units.iconSizes.smallMedium, PlasmaCore.Theme.mSize(root.font).height)
-                width: section.length === 1 ? delegateContentHeight + leftPadding + rightPadding : listView.contentItem.width
+                width: section.length === 1 ? KickoffSingleton.listDelegateContentHeight + leftPadding + rightPadding : view.contentItem.width
                 height: KickoffSingleton.listDelegateHeight
-                leftPadding: listView.effectiveLayoutDirection === Qt.LeftToRight
+                leftPadding: view.effectiveLayoutDirection === Qt.LeftToRight
                     ? KickoffSingleton.listItemMetrics.margins.left : 0
-                rightPadding: listView.effectiveLayoutDirection === Qt.RightToLeft
+                rightPadding: view.effectiveLayoutDirection === Qt.RightToLeft
                     ? KickoffSingleton.listItemMetrics.margins.right : 0
                 // important for RTL (otherwise label won't reverse)
                 horizontalAlignment: section.length === 1 ? Text.AlignHCenter : Text.AlignLeft
                 verticalAlignment: Text.AlignVCenter
                 maximumLineCount: 1
                 elide: Text.ElideRight
-                font.pixelSize: delegateContentHeight
+                font.pixelSize: KickoffSingleton.listDelegateContentHeight
                 enabled: false
                 // Force it to be uppercase or else if the first item in a section starts
                 // with a lowercase letter, the header letter will be lowercase too!
@@ -107,12 +137,9 @@ EmptyScrollView {
             }
         }
 
-        //add: normalTransition
-        //displaced: normalTransition
         move: normalTransition
         moveDisplaced: normalTransition
-//         populate: normalTransition
-        //remove: normalTransition
+
         Transition {
             id: normalTransition
             NumberAnimation {
@@ -121,6 +148,34 @@ EmptyScrollView {
                 easing.type: Easing.OutCubic
             }
         }
+
+        PC3.ScrollBar.vertical: PC3.ScrollBar {
+            id: verticalScrollBar
+            visible: size < 1 && policy !== PC3.ScrollBar.AlwaysOff
+            z: 2
+        }
+
+        Kirigami.WheelHandler {
+            target: view
+        }
+
+        //MouseArea {
+            //id: marginMouseArea
+            //parent: view
+            //anchors.fill: parent
+            //z: 1
+            //enabled: !verticalScrollBar.active
+            //hoverEnabled: true
+            //propagateComposedEvents: true
+            //onEntered: {
+                //view.forceActiveFocus(Qt.MouseFocusReason)
+            //}
+            //onPositionChanged: {
+                //let oldIndex = view.currentIndex
+                //let newIndex = view.indexAt(0, mouseY + view.contentY)
+                //view.currentIndex = newIndex >= 0 ? newIndex : oldIndex
+            //}
+        //}
 
         // These have to be defined here because ListView will eat the up/down
         // events even if it can't go any further up or down
@@ -137,7 +192,7 @@ EmptyScrollView {
         Binding {
             target: KickoffSingleton
             property: "lastFocusedView"
-            value: listView
+            value: view
             when: activeFocus
             restoreMode: Binding.RestoreBinding
         }
@@ -146,7 +201,7 @@ EmptyScrollView {
             target: plasmoid
             function onExpandedChanged() {
                 if(!plasmoid.expanded) {
-                    listView.positionViewAtBeginning()
+                    view.positionViewAtBeginning()
                 }
             }
         }

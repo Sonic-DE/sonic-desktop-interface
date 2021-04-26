@@ -12,16 +12,6 @@ BasePage {
         id: sideBarView
         focus: true // needed for Loaders
         model: KickoffSingleton.rootModel
-        delegate: KickoffItemDelegate {
-            width: view.contentItem.width
-            onClicked: {
-                view.currentIndex = index
-                forceActiveFocus(Qt.MouseFocusReason)
-            }
-        }
-        //KeyNavigation.backtab: KickoffSingleton.header
-        //KeyNavigation.right: root.contentAreaItem
-        //KeyNavigation.tab: root.contentAreaItem
     }
     contentAreaComponent: VerticalStackView {
         id: stackView
@@ -29,9 +19,11 @@ BasePage {
         readonly property Component preferredFavoritesViewComponent: plasmoid.configuration.favoritesDisplay == 0 ? favoritesGridViewComponent : favoritesListViewComponent
         readonly property string preferredAppsViewObjectName: plasmoid.configuration.applicationsDisplay == 0 ? "applicationsGridView" : "applicationsListView"
         readonly property Component preferredAppsViewComponent: plasmoid.configuration.applicationsDisplay == 0 ? applicationsGridViewComponent : applicationsListViewComponent
-        // Prevents creating and destroying the model a lot
-        readonly property Kicker.AppsModel appsModel: KickoffSingleton.rootModel.modelForRow(root.sideBarItem.currentIndex)
 
+        // TODO: find a better way to detect when a new model is null and keep the old model
+        // instead of using 2 model properties
+        property var testModel: KickoffSingleton.rootModel.modelForRow(root.sideBarItem.currentIndex)
+        property var appsModel
         focus: true
         initialItem: preferredFavoritesViewComponent
 
@@ -85,6 +77,12 @@ BasePage {
         onPreferredAppsViewComponentChanged: {
             if (root.sideBarItem != null && root.sideBarItem.currentIndex > 1) {
                 stackView.replace(stackView.preferredAppsViewComponent)
+            }
+        }
+
+        onTestModelChanged: {
+            if (testModel != null) {
+                appsModel = testModel
             }
         }
 
