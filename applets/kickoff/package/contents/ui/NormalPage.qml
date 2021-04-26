@@ -56,9 +56,11 @@ EmptyPage {
         }
     }
 
-    Item {
+    MouseArea {
         id: mouseFilterArea
         property bool filtered: false
+        property real enterY: -1
+        property real enterX: -1
         parent: root
         z: 1
         anchors {
@@ -67,34 +69,35 @@ EmptyPage {
             bottom: parent.bottom
         }
         width: preferredSideBarWidth + KickoffSingleton.backgroundMetrics.margins.left
+
+        hoverEnabled: true
+        propagateComposedEvents: true
+
         // NOTE: This is rather delicate, so be careful about changing it.
-        HoverHandler {
-            property real enterY: -1
-            property real enterX: -1
-            signal entered()
-            signal exited()
-            // Give the user some visual feedback
-            cursorShape: mouseFilterArea.filtered ? Qt.BusyCursor : Qt.ArrowCursor
-            onHoveredChanged: hovered ? entered() : exited()
-            onEntered: {
-                enterX = point.position.x
-                enterY = point.position.y
+
+        // Give the user some visual feedback
+        cursorShape: mouseFilterArea.filtered ? Qt.BusyCursor : Qt.ArrowCursor
+        onEntered: {
+            enterX = mouseX
+            enterY = mouseY
+        }
+        onExited: {
+            // For LTR: If moved right and up, filter
+            // For RTL: If moved left and up, filter
+            // I think moving in the opposite direction cancels the filter with a slight delay.
+            // This is desireable, but I'm not sure why it works.
+            if ((root.mirrored ? enterX > mouseX : enterX < mouseX) && enterY > mouseY) {
+                mouseFilterArea.filtered = true
+                mouseFilterTimer.restart()
+            } else {
+                mouseFilterArea.filtered = false
+                mouseFilterTimer.stop()
             }
-            onExited: {
-                // For LTR: If moved right and up, filter
-                // For RTL: If moved left and up, filter
-                // I think moving in the opposite direction cancels the filter with a slight delay.
-                // This is desireable, but I'm not sure why it works.
-                if ((root.mirrored ? enterX > point.position.x : enterX < point.position.x) && enterY > point.position.y) {
-                    mouseFilterArea.filtered = true
-                    mouseFilterTimer.restart()
-                } else {
-                    mouseFilterArea.filtered = false
-                    mouseFilterTimer.stop()
-                }
-                enterX = -1
-                enterY = -1
-            }
+            enterX = -1
+            enterY = -1
+        }
+        onPressed: {
+            filtered = false
         }
     }
     Timer {
