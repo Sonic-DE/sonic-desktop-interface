@@ -69,9 +69,8 @@ RowLayout {
             onClicked: model.trigger(index, "", "")
         }
 
-        onObjectAdded: {
-            contextMenu.addMenuItem(object);
-        }
+        onObjectAdded: contextMenu.addMenuItem(object)
+        onObjectRemoved: contextMenu.removeMenuItem(object)
     }
 
     // Not a QQC1 Menu. It's actually a custom QObject that uses a QMenu.

@@ -6,31 +6,47 @@
 */
 
 import QtQuick 2.15
+import QtQml 2.15
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 3.0 as PC3
-import QtQml 2.15
 
-EmptyScrollView {
+EmptyPage {
     id: root
-    property alias model: gridView.model
-    property alias count: gridView.count
-    property alias currentIndex: gridView.currentIndex
-    property alias currentItem: gridView.currentItem
-    property alias delegate: gridView.delegate
+    property alias model: view.model
+    property alias count: view.count
+    property alias currentIndex: view.currentIndex
+    property alias currentItem: view.currentItem
+    property alias delegate: view.delegate
 
-    PC3.ScrollBar.vertical.policy: PC3.ScrollBar.AlwaysOn
+    clip: view.interactive
 
-    horizontalPadding: 8//KickoffSingleton.backgroundMetrics.margins.left
-    verticalPadding: 8//KickoffSingleton.backgroundMetrics.margins.top
+    header: MouseArea {
+        implicitHeight: KickoffSingleton.backgroundMetrics.margins.top
+        hoverEnabled: true
+        onEntered: {
+            listView.currentIndex = listView.indexAt(0,0)
+        }
+    }
 
-    clip: gridView.interactive
-
-    // implicitContentWidth returns -1 for some reason
-    implicitWidth: gridView.cellHeight * 4 + leftPadding + rightPadding
-    contentHeight: gridView.cellHeight * 4
+    footer: MouseArea {
+        implicitHeight: KickoffSingleton.backgroundMetrics.margins.bottom
+        hoverEnabled: true
+        onEntered: {
+            listView.currentIndex = listView.indexAt(0, listView.height)
+        }
+    }
 
     contentItem: GridView {
-        id: gridView
+        id: view
+
+        property real viewWidth: width - leftMargin - rightMargin
+        property real viewHeight: height - topMargin - bottomMargin
+
+        implicitWidth: view.cellHeight * 4 + leftMargin + rightMargin
+        implicitHeight: view.cellHeight * 4 + topMargin + bottomMargin
+
+        leftMargin: verticalScrollBar.width
+        rightMargin: verticalScrollBar.width
 
         cellHeight: KickoffSingleton.gridCellSize
         cellWidth: KickoffSingleton.gridCellSize
@@ -46,9 +62,9 @@ EmptyScrollView {
 
         highlightMoveDuration: 0
         highlight: PlasmaCore.FrameSvgItem {
-            opacity: gridView.activeFocus ? 1 : 0.5
-            width: gridView.cellWidth
-            height: gridView.cellHeight
+            opacity: view.activeFocus ? 1 : 0.5
+            width: view.cellWidth
+            height: view.cellHeight
             imagePath: "widgets/viewitem"
             prefix: "hover"
         }
@@ -58,8 +74,58 @@ EmptyScrollView {
             icon.width: PlasmaCore.Units.iconSizes.large
             icon.height: PlasmaCore.Units.iconSizes.large
             display: PC3.AbstractButton.TextUnderIcon
-            width: view && view.cellWidth || implicitWidth
+            width: view.cellWidth
+            Item {
+                parent: itemDelegate
+                anchors.fill: parent
+                anchors.margins: 1
+                enabled: !verticalScrollBar.active
+                HoverHandler {
+                    onPointChanged: {
+                        if (hovered) {
+                            itemDelegate.forceActiveFocus(Qt.MouseFocusReason)
+                            view.currentIndex = index
+                        }
+                    }
+                }
+            }
         }
+
+        move: normalTransition
+        moveDisplaced: normalTransition
+
+        Transition {
+            id: normalTransition
+            NumberAnimation {
+                duration: Plasma.Units.shortDuration
+                properties: "x, y"
+                easing.type: Easing.OutCubic
+            }
+        }
+
+        PC3.ScrollBar.vertical: PC3.ScrollBar {
+            id: verticalScrollBar
+            visible: size < 1 && policy !== PC3.ScrollBar.AlwaysOff
+            z: 2
+        }
+
+        //MouseArea {
+            //id: marginMouseArea
+            //parent: view
+            //anchors.fill: parent
+            //z: 1
+            //enabled: !verticalScrollBar.active
+            //hoverEnabled: true
+            //propagateComposedEvents: true
+            //onEntered: {
+                //view.forceActiveFocus(Qt.MouseFocusReason)
+            //}
+            //onPositionChanged: {
+                //let oldIndex = view.currentIndex
+                //let newIndex = view.indexAt(mouseX + view.contentX, mouseY + view.contentY)
+                //view.currentIndex = newIndex >= 0 ? newIndex : oldIndex
+            //}
+        //}
 
         // These have to be defined here because GridView will eat the up/down
         // events even if it can't go any further up or down
@@ -76,7 +142,7 @@ EmptyScrollView {
         Binding {
             target: KickoffSingleton
             property: "lastFocusedView"
-            value: gridView
+            value: view
             when: activeFocus
             restoreMode: Binding.RestoreBinding
         }
@@ -85,7 +151,7 @@ EmptyScrollView {
             target: plasmoid
             function onExpandedChanged() {
                 if(!plasmoid.expanded) {
-                    gridView.positionViewAtBeginning()
+                    view.positionViewAtBeginning()
                 }
             }
         }
