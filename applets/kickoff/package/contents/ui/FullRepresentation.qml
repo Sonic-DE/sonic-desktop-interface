@@ -97,30 +97,12 @@ EmptyPage {
             KickoffListView {
                 id: searchView
                 objectName: "searchView"
-                model: KickoffSingleton.runnerModel.modelForRow(0)
-                currentIndex: count > 0 ? 0 : -1
+                // Forces the function be re-run every time runnerModel.count changes.
+                // This is absolutely necessary to make the search view work reliably.
+                model: runnerModel.count ? KickoffSingleton.runnerModel.modelForRow(0) : null
                 activeFocusOnTab: true
                 // always focus the first item in the header focus chain
                 KeyNavigation.tab: root.header.nextItemInFocusChain()
-                function updateModel() {
-                    if (KickoffSingleton.runnerModel.count) {
-                        searchView.model = KickoffSingleton.runnerModel.modelForRow(0)
-                    } else {
-                        searchView.model = null
-                    }
-                }
-                Connections {
-                    target: KickoffSingleton.runnerModel
-
-                    // This is absolutely necessary to make the search view work reliably.
-                    // Seems like it could be wasteful without callLater() though.
-                    function onCountChanged() {
-                        // call later prevents the model from changing too rapidly,
-                        // so it can stand up to some abuse without segfaulting.
-                        // doesn't negatively affect the user experience from what I can see.
-                        Qt.callLater(searchView.updateModel)
-                    }
-                }
                 T.StackView.onActivated: {
                     KickoffSingleton.sideBarView = null
                     KickoffSingleton.contentAreaView = searchView
@@ -150,9 +132,9 @@ EmptyPage {
         Component.onCompleted: {
             // Break bindings after completing to keep a consistent implicit size.
             // It's unlikely that any more or any less width or height will be needed.
-            //implicitWidth = currentItem.implicitWidth + leftPadding + rightPadding
-            //implicitHeight = currentItem.implicitHeight + leftPadding + rightPadding
-            header.preferredNameAndIconWidth = currentItem.preferredSideBarWidth
+            implicitWidth = currentItem.implicitWidth + leftPadding + rightPadding
+            implicitHeight = currentItem.implicitHeight + leftPadding + rightPadding
+            header.preferredNameAndIconWidth = normalPage.preferredSideBarWidth
         }
     }
 
@@ -183,7 +165,6 @@ EmptyPage {
         showPowerSession: false
         showFavoritesPlaceholder: true
 
-        // Triggered earlier than Component.onCompleted
         Component.onCompleted: {
             favoritesModel.initForClient("org.kde.plasma.kickoff.favorites.instance-" + plasmoid.id)
 
@@ -199,7 +180,7 @@ EmptyPage {
 
     Kicker.RunnerModel {
         id: runnerModel
-//         query: root.header.searchText
+        query: root.header.searchText
         appletInterface: plasmoid
         mergeResults: true
         favoritesModel: rootModel.favoritesModel
@@ -208,13 +189,11 @@ EmptyPage {
 
     Kicker.ComputerModel {
         id: computerModel
-
         appletInterface: plasmoid
-
         favoritesModel: rootModel.favoritesModel
-
+        systemApplications: plasmoid.configuration.systemApplications
         Component.onCompleted: {
-            systemApplications = plasmoid.configuration.systemApplications;
+            //systemApplications = plasmoid.configuration.systemApplications;
             KickoffSingleton.computerModel = Qt.binding(() => { return computerModel })
         }
     }
@@ -230,23 +209,5 @@ EmptyPage {
         favoritesModel: rootModel.favoritesModel
         ordering: 1 // Popular / Frequently Used
         Component.onCompleted: KickoffSingleton.frequentUsageModel = Qt.binding(() => { return frequentUsageModel })
-    }
-
-    // Can't put these inside of runnerModel because there is no default property
-    function updateQuery() {
-        if (root.header.searchText.length > 0) {
-            runnerModel.query = root.header.searchText
-        } else {
-            runnerModel.query = ""
-        }
-    }
-    Connections {
-        target: root.header
-        function onSearchTextChanged() {
-            // call later prevents the query from changing too rapidly,
-            // so it can stand up to some abuse without segfaulting.
-            // doesn't negatively affect the user experience from what I can see.
-            Qt.callLater(root.updateQuery)
-        }
     }
 }

@@ -69,6 +69,7 @@ Item {
 
     property real gridCellSize: gridDelegate.implicitHeight
     property real listDelegateHeight: listDelegate.implicitHeight
+    property real listDelegateContentHeight: listDelegate.implicitContentHeight
 
     KickoffItemDelegate {
         id: gridDelegate

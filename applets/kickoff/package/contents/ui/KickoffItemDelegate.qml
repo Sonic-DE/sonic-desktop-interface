@@ -22,6 +22,7 @@
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Templates 2.15 as T
+import QtQml 2.15
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PC2 // for Menu + MenuItem
 import org.kde.plasma.components 3.0 as PC3
@@ -32,12 +33,14 @@ import org.kde.kirigami 2.16 as Kirigami
 PC3.ItemDelegate {
     id: root
 
-    readonly property Item view: ListView.view || GridView.view
+    readonly property Item view: ListView.view ?? GridView.view
     readonly property bool textUnderIcon: display === PC3.AbstractButton.TextUnderIcon
     property var decoration: model.decoration
     property string description: model.description ? model.description : ""
-    property bool viewScrolling: false
-    property bool delayHover: false
+//     property alias tapHandler: tapHandler
+//     property alias hoverHandler: hoverHandler
+    property alias mouseArea: mouseArea
+    property bool extendHoverMargins: false
 
     leftPadding: KickoffSingleton.listItemMetrics.margins.left
     rightPadding: KickoffSingleton.listItemMetrics.margins.right
@@ -45,6 +48,7 @@ PC3.ItemDelegate {
     bottomPadding: KickoffSingleton.listItemMetrics.margins.bottom
 
     enabled: !model.disabled
+    hoverEnabled: false//Qt.styleHints.useHoverEffects
 
     icon.width: PlasmaCore.Units.iconSizes.smallMedium
     icon.height: PlasmaCore.Units.iconSizes.smallMedium
@@ -56,6 +60,7 @@ PC3.ItemDelegate {
     // `model` not having the trigger() function
     action: T.Action {
         onTriggered: {
+            view.currentIndex = index
             // if successfully triggered, close popup
             if(root.view.model.trigger(index, "", null)) {
                 plasmoid.expanded = false
@@ -142,57 +147,53 @@ PC3.ItemDelegate {
     }
 
     // Not a QQC1 Menu. It's actually a custom QObject that uses a QMenu.
-    PC2.Menu {
-        id: contextMenu
-        visualParent: root
-    }
+    //PC2.Menu {
+        //id: contextMenu
+        //visualParent: root
+    //}
 
-    Instantiator {
-        model: systemModel
-        // Not a QQC1 MenuItem. It's actually a custom QQuickItem. It uses QAction for its action.
-        delegate: PlasmaComponents.MenuItem {
-            text: model.display
-            icon: model.decoration
-            // TODO: Don't generate items that will never be seen. Maybe DelegateModel can help?
-            visible: !String(plasmoid.configuration.systemFavorites).includes(model.favoriteId)
+    //Instantiator {
+        //model: 
+        ////Not a QQC1 MenuItem. It's actually a custom QQuickItem. It uses QAction for its action.
+        //delegate: PlasmaComponents.MenuItem {
+            //text: model.display
+            //icon: model.decoration
+        //}
 
-            onClicked: model.trigger(index, "", "")
+        //onObjectAdded: contextMenu.addMenuItem(object)
+        //onObjectRemoved: contextMenu.removeMenuItem(object)
+    //}
+
+    MouseArea {
+        id: mouseArea
+        parent: root
+        anchors.fill: parent
+        anchors.margins: 1
+        anchors.leftMargin: root.extendHoverMargins ? (!mirrored ? -root.view.leftMargin : -root.view.rightMargin) : anchors.margins
+        anchors.rightMargin: root.extendHoverMargins ? (mirrored ? -root.view.rightMargin : -root.view.leftMargin) : anchors.margins
+        hoverEnabled: !(root.view && root.view.PC3.ScrollBar.vertical && root.view.PC3.ScrollBar.vertical.active)
+        acceptedButtons: Qt.LeftButton | Qt.RightButton
+        onEntered: {
+            root.forceActiveFocus(Qt.MouseFocusReason)
+            root.view.currentIndex = index
         }
-
-        onObjectAdded: {
-            contextMenu.addMenuItem(object);
-        }
-    }
-
-    Keys.priority: Keys.AfterItem
-    Keys.onPressed: {
-        switch (event.key) {
-            case Qt.Key_Enter:
-            case Qt.Key_Return:
-                clicked()
-                break
-        }
-    }
-
-    hoverEnabled: !root.delayHover
-    Timer {
-        id: scrollHoverDelayTimer
-        interval: 100
-        onTriggered: {
-            root.delayHover = false
-            if (hovered) {
-                view.currentIndex = index
+        onClicked: {
+            if (mouse.button === Qt.LeftButton) {
+                root.forceActiveFocus(Qt.MouseFocusReason)
+                root.action.trigger()
+            } else if (mouse.button === Qt.RightButton) {
+                
             }
         }
     }
 
-    onViewScrollingChanged: {
-        root.delayHover = true
-        scrollHoverDelayTimer.restart()
-    }
+    // clicked is emmitted when action is triggered
+    //onClicked: action != null ? action.trigger();
 
-    onHoveredChanged: {
-        view.currentIndex = index
-        Qt.callLater(forceActiveFocus, Qt.MouseFocusReason) // prevents segfaults
-    }
+    //Connections {
+        //target: root.view
+        //function onMovementStarted() {
+            
+        //}
+    //}
 }
