@@ -20,28 +20,27 @@ T.ScrollView {
     implicitHeight: Math.max(implicitBackgroundHeight + topInset + bottomInset,
                              contentHeight + topPadding + bottomPadding)
 
-//     horizontalPadding: PC3.ScrollBar.vertical.width
-//     verticalPadding: PC3.ScrollBar.horizontal.height
-    //leftPadding: {
-        //if (mirrored && PC3.ScrollBar.vertical.visible) {
-            //return PC3.ScrollBar.vertical.width// + horizontalPadding
-        //} else {
-            //return horizontalPadding
-        //}
-    //}
-    //rightPadding: {
-        //if (!mirrored && PC3.ScrollBar.vertical.visible) {
-            //return PC3.ScrollBar.vertical.width// + horizontalPadding
-        //} else {
-            //return horizontalPadding
-        //}
-    //}
-    //topPadding: verticalPadding
-    //bottomPadding: PC3.ScrollBar.vertical.visible ? PC3.ScrollBar.horizontal.height : verticalPadding
+    leftPadding: {
+        if (mirrored && PC3.ScrollBar.vertical.visible) {
+            return PC3.ScrollBar.vertical.width
+        } else {
+            return horizontalPadding
+        }
+    }
+    rightPadding: {
+        if (!mirrored && PC3.ScrollBar.vertical.visible) {
+            return PC3.ScrollBar.vertical.width
+        } else {
+            return horizontalPadding
+        }
+    }
+    topPadding: verticalPadding
+    bottomPadding: PC3.ScrollBar.vertical.visible ? PC3.ScrollBar.horizontal.height : verticalPadding
 
     PC3.ScrollBar.vertical: PC3.ScrollBar {
         visible: size < 1 && policy !== PC3.ScrollBar.AlwaysOff
         parent: root
+        z: 1
         anchors {
             right: parent.right
             top: parent.top
@@ -49,22 +48,18 @@ T.ScrollView {
             topMargin: root.topPadding
             bottomMargin: root.bottomPadding
         }
-        height: root.availableHeight
     }
 
     PC3.ScrollBar.horizontal: PC3.ScrollBar {
         visible: size < 1 && policy !== PC3.ScrollBar.AlwaysOff
         parent: root
+        z: 1
         anchors {
             left: parent.left
             right: parent.right
             bottom: parent.bottom
-            leftMargin: root.leftPadding
-            rightMargin: root.rightPadding
+            leftMargin: root.mirrored ? root.rightPadding : root.leftPadding
+            rightMargin: root.mirrored ? root.leftPadding : root.rightPadding
         }
     }
-
-    //Kirigami.WheelHandler {
-        //target: root.contentItem
-    //}
 }
