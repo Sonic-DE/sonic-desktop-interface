@@ -24,10 +24,11 @@ import QtQuick.Window 2.2
 import org.kde.kirigami 2.5 as Kirigami
 import org.kde.kcm 1.4 as KCM
 
-KCM.SimpleKCM {
+KCM.AbstractKCM {
     id: root
 
     ColumnLayout {
+        anchors.fill: parent
 
         QQC2.ButtonGroup { id: themeGroup }
 
