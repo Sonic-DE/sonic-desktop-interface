@@ -28,13 +28,11 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.userfeedback 1.0 as UserFeedback
 
 ColumnLayout {
-    Item {
-        Layout.preferredHeight: Kirigami.Units.smallSpacing
-    }
+    property alias slider: statisticsModeSlider
+
     RowLayout {
         QQC2.Slider {
             id: statisticsModeSlider
-            Kirigami.FormData.label: i18n("Send User Feedback:")
             readonly property var currentMode: modeOptions[value]
             Layout.fillWidth: true
             Layout.minimumWidth: Kirigami.Units.gridUnit * 21
