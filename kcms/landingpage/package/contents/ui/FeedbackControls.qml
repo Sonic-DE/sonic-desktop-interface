@@ -30,6 +30,8 @@ import org.kde.userfeedback 1.0 as UserFeedback
 ColumnLayout {
     property alias slider: statisticsModeSlider
 
+    enabled: kcm.feedbackEnabled
+
     RowLayout {
         QQC2.Slider {
             id: statisticsModeSlider
