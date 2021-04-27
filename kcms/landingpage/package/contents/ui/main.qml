@@ -236,7 +236,7 @@ KCM.SimpleKCM {
                         if (kcm.feedbackSettings.feedbackLevel === UserFeedback.Provider.NoTelemetry) {
                             return i18n("No data will be sent");
                         }
-                        let text = "<p>You can help KDE improve Plasma by contributing information on how you use it, so we can focus on things that matter to you.<nl/><nl/>Contributing this information is optional and entirely anonymous. We never collect your personal data, files you use, websites you visit, or information that could identify you.</p><nl/>" + "<h4>" + i18n("The following information will be sent:") + "</h4><ul>";
+                        let text = "<p>" + i18n("You can help KDE improve Plasma by contributing information on how you use it, so we can focus on things that matter to you.<nl/><nl/>Contributing this information is optional and entirely anonymous. We never collect your personal data, files you use, websites you visit, or information that could identify you.") + "</p><nl/><h4>" + i18n("The following information will be sent:") + "</h4><ul>";
                         for (let i in kcm.feedbackSources) {
                             text += "<li>" + kcm.feedbackSources[i].description + "</li>";
                         }
