@@ -188,7 +188,16 @@ KCM.SimpleKCM {
                 font: Kirigami.Theme.smallFont
             }
 
+            Item {
+                // This is outside the loaded in order to have perfect label alignemnt
+                Layout.preferredHeight: Kirigami.Units.smallSpacing
+                visible: feedbackLoader.visible
+            }
             Loader {
+                id: feedbackLoader
+                visible: item !== null
+                Kirigami.FormData.label: item ? i18n("Send User Feedback:") : ""
+                Kirigami.FormData.buddyFor: item ? item.slider : null
                 source: Qt.resolvedUrl("FeedbackControls.qml")
             }
         }
