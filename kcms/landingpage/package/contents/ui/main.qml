@@ -28,7 +28,6 @@ KCM.SimpleKCM {
     id: root
 
     ColumnLayout {
-        anchors.fill: parent
 
         QQC2.ButtonGroup { id: themeGroup }
 
