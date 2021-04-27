@@ -261,6 +261,7 @@ void KCMLandingPage::programFinished(int exitCode)
         m_uses[modeValue][description] << s_programs[program];
     }
     p->deleteLater();
+#if HAVE_KUSERFEEDBACK
     m_feedbackSources = {};
     for (auto it = m_uses.constBegin(), itEnd = m_uses.constEnd(); it != itEnd; ++it) {
         const auto modeUses = *it;
@@ -274,6 +275,7 @@ void KCMLandingPage::programFinished(int exitCode)
         return modeL < modeR || (modeL == modeR && objL["description"].toString() < objR["description"].toString());
     });
     Q_EMIT feedbackSourcesChanged();
+#endif
 }
 
 MostUsedModel *KCMLandingPage::mostUsedModel() const
@@ -286,10 +288,18 @@ LandingPageGlobalsSettings *KCMLandingPage::globalsSettings() const
     return m_data->landingPageGlobalsSettings();
 }
 
+#if HAVE_KUSERFEEDBACK
+bool KCMLandingPage::feedbackEnabled() const
+{
+    KUserFeedback::Provider p;
+    return p.isEnabled();
+}
+
 FeedbackSettings *KCMLandingPage::feedbackSettings() const
 {
     return m_data->feedbackSettings();
 }
+#endif
 
 void KCMLandingPage::save()
 {

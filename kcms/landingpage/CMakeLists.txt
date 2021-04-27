@@ -1,6 +1,10 @@
 # KI18N Translation Domain for this library
 add_definitions(-DTRANSLATION_DOMAIN=\"kcm_landingpage\")
 
+set(HAVE_KUSERFEEDBACK ${KUserFeedback_FOUND})
+
+configure_file(config-landingpage.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-landingpage.h)
+
 ########### next target ###############
 set(kcm_landingpage_SRCS
   landingpage.cpp
@@ -28,13 +32,16 @@ target_link_libraries(kcm_landingpage
     KF5::Declarative
     PW::KWorkspace
     KF5::ActivitiesStats
-    KUserFeedbackCore
 
     Qt5::DBus
 )
 
 if(X11_FOUND)
     target_link_libraries(kcm_landingpage ${X11_LIBRARIES} Qt5::X11Extras)
+endif()
+
+if (KUserFeedback_FOUND)
+    target_link_libraries(kcm_landingpage KUserFeedbackCore)
 endif()
 
 kcoreaddons_desktop_to_json(kcm_landingpage "kcm_landingpage.desktop" SERVICE_TYPES kcmodule.desktop)

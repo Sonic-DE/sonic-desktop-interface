@@ -20,6 +20,8 @@
 #ifndef _KCM_LANDINGPAGE_H
 #define _KCM_LANDINGPAGE_H
 
+#include "config-landingpage.h"
+
 #include <KQuickAddons/ManagedConfigModule>
 #include <KPackage/Package>
 #include <QJsonValue>
@@ -80,10 +82,13 @@ class KCMLandingPage : public KQuickAddons::ManagedConfigModule
     Q_OBJECT
     Q_PROPERTY(MostUsedModel *mostUsedModel READ mostUsedModel CONSTANT)
     Q_PROPERTY(LandingPageGlobalsSettings *globalsSettings READ globalsSettings CONSTANT)
+#if HAVE_KUSERFEEDBACK
+    Q_PROPERTY(bool feedbackEnabled READ feedbackEnabled CONSTANT)
     Q_PROPERTY(FeedbackSettings *feedbackSettings READ feedbackSettings CONSTANT)
+    Q_PROPERTY(QJsonArray feedbackSources MEMBER m_feedbackSources NOTIFY feedbackSourcesChanged)
+#endif
     Q_PROPERTY(LookAndFeelGroup *defaultLightLookAndFeel READ defaultLightLookAndFeel CONSTANT)
     Q_PROPERTY(LookAndFeelGroup *defaultDarkLookAndFeel READ defaultDarkLookAndFeel CONSTANT)
-    Q_PROPERTY(QJsonArray feedbackSources MEMBER m_feedbackSources NOTIFY feedbackSourcesChanged)
 
 public:
     KCMLandingPage(QObject *parent, const QVariantList &args);
@@ -95,7 +100,10 @@ public:
     MostUsedModel *mostUsedModel() const;
 
     LandingPageGlobalsSettings *globalsSettings() const;
+#if HAVE_KUSERFEEDBACK
+    bool feedbackEnabled() const;
     FeedbackSettings *feedbackSettings() const;
+#endif
 
     LookAndFeelGroup *defaultLightLookAndFeel() const;
     LookAndFeelGroup *defaultDarkLookAndFeel() const;
@@ -106,8 +114,10 @@ public:
 public Q_SLOTS:
     void save() override;
 
+#if HAVE_KUSERFEEDBACK
 Q_SIGNALS:
     void feedbackSourcesChanged();
+#endif
 
 private:
     LandingPageData *m_data;
@@ -118,8 +128,9 @@ private:
     MostUsedModel *m_mostUsedModel = nullptr;
 
     QHash<int, QHash<QString, QJsonArray>> m_uses;
+#if HAVE_KUSERFEEDBACK
     QJsonArray m_feedbackSources;
-
+#endif
     bool m_lnfDirty = false;
 };
 
