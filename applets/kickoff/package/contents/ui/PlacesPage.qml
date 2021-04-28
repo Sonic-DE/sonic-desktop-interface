@@ -13,6 +13,7 @@ BasePage {
         model: placesCategoryModel
         delegate: KickoffItemDelegate {
             action: null
+            description: ""
             width: view.width - view.leftMargin - view.rightMargin
             indicator.visible: true
         }

@@ -30,30 +30,45 @@ import org.kde.kirigami 2.16 as Kirigami
 
 //import "code/tools.js" as Tools
 
-PC3.ItemDelegate {
+T.ItemDelegate {
     id: root
 
-    readonly property Item view: ListView.view ?? GridView.view
-    readonly property bool textUnderIcon: display === PC3.AbstractButton.TextUnderIcon
-    property var decoration: model.decoration
-    property string description: model.description ? model.description : ""
-//     property alias tapHandler: tapHandler
-//     property alias hoverHandler: hoverHandler
+    // model properties
+    required property var model
+    required property int index
+    required property var decoration
+    required property string description
+
+    readonly property Flickable view: ListView.view ?? GridView.view
     property alias mouseArea: mouseArea
+    readonly property bool textUnderIcon: display === PC3.AbstractButton.TextUnderIcon
     property bool extendHoverMargins: false
+    readonly property bool hasActionList: model && ((model.favoriteId !== null)
+        || (("hasActionList" in model) && (model.hasActionList === true)))
+
+    implicitWidth: Math.max(implicitBackgroundWidth + leftInset + rightInset,
+                            implicitContentWidth + leftPadding + rightPadding,
+                            implicitIndicatorWidth + leftPadding + rightPadding)
+    implicitHeight: Math.max(implicitBackgroundHeight + topInset + bottomInset,
+                             implicitContentHeight + topPadding + bottomPadding,
+                             implicitIndicatorHeight + topPadding + bottomPadding)
 
     leftPadding: KickoffSingleton.listItemMetrics.margins.left
     rightPadding: KickoffSingleton.listItemMetrics.margins.right
     topPadding: KickoffSingleton.listItemMetrics.margins.top
     bottomPadding: KickoffSingleton.listItemMetrics.margins.bottom
 
+    spacing: PlasmaCore.Units.smallSpacing
+
     enabled: !model.disabled
-    hoverEnabled: false//Qt.styleHints.useHoverEffects
+    hoverEnabled: false
 
     icon.width: PlasmaCore.Units.iconSizes.smallMedium
     icon.height: PlasmaCore.Units.iconSizes.smallMedium
 
-    text: model.name ? model.name : model.display
+    text: model.name ?? model.display
+    Accessible.role: view instanceof GridView ? Accessible.Cell : Accessible.ListItem
+    Accessible.description: root.description != root.text ? root.description : ""
 
     // Using an action so that it can be replaced or manually triggered
     // using `model` () instead of `root.model` leads to errors about
@@ -62,13 +77,13 @@ PC3.ItemDelegate {
         onTriggered: {
             view.currentIndex = index
             // if successfully triggered, close popup
-            if(root.view.model.trigger(index, "", null)) {
+            if(view.model.trigger(index, "", null)) {
                 plasmoid.expanded = false
             }
         }
     }
 
-    background: null
+    background: null // saves RAM, reduces load times
     contentItem: GridLayout {
         baselineOffset: label.y + label.baselineOffset
         columnSpacing: parent.spacing
@@ -114,18 +129,6 @@ PC3.ItemDelegate {
         elementId: parent.mirrored ? "left-arrow" : "right-arrow"
     }
 
-    PC3.ToolTip.text: {
-        if (label.truncated && descriptionLabel.truncated) {
-            return `${text} (${description})`
-        } else if (descriptionLabel.truncated) {
-            return description
-        } else {
-            return text
-        }
-    }
-    PC3.ToolTip.visible: hovered && (label.truncated || descriptionLabel.truncated)
-    PC3.ToolTip.delay: Kirigami.Units.toolTipDelay
-
     PC3.Label {
         id: descriptionLabel
         parent: root
@@ -146,24 +149,6 @@ PC3.ItemDelegate {
         maximumLineCount: 1
     }
 
-    // Not a QQC1 Menu. It's actually a custom QObject that uses a QMenu.
-    //PC2.Menu {
-        //id: contextMenu
-        //visualParent: root
-    //}
-
-    //Instantiator {
-        //model: 
-        ////Not a QQC1 MenuItem. It's actually a custom QQuickItem. It uses QAction for its action.
-        //delegate: PlasmaComponents.MenuItem {
-            //text: model.display
-            //icon: model.decoration
-        //}
-
-        //onObjectAdded: contextMenu.addMenuItem(object)
-        //onObjectRemoved: contextMenu.removeMenuItem(object)
-    //}
-
     MouseArea {
         id: mouseArea
         parent: root
@@ -171,29 +156,42 @@ PC3.ItemDelegate {
         anchors.margins: 1
         anchors.leftMargin: root.extendHoverMargins ? (!mirrored ? -root.view.leftMargin : -root.view.rightMargin) : anchors.margins
         anchors.rightMargin: root.extendHoverMargins ? (mirrored ? -root.view.rightMargin : -root.view.leftMargin) : anchors.margins
-        hoverEnabled: !(root.view && root.view.PC3.ScrollBar.vertical && root.view.PC3.ScrollBar.vertical.active)
+        hoverEnabled: !KickoffSingleton.filteringMouseHover
         acceptedButtons: Qt.LeftButton | Qt.RightButton
-        onEntered: {
-            root.forceActiveFocus(Qt.MouseFocusReason)
+        // Using onPositionChanged instead of onEntered to prevent changing
+        // categories while scrolling with the mouse wheel.
+        onPositionChanged: {
+            // forceActiveFocus() can be expensive when done this rapidly
+            // so check for activeFocus first.
+            if (!activeFocus) {
+                root.forceActiveFocus(Qt.MouseFocusReason)
+            }
+            // No need to check currentIndex first because it's
+            // built into QQuickListView::setCurrentIndex() already
             root.view.currentIndex = index
         }
         onClicked: {
             if (mouse.button === Qt.LeftButton) {
                 root.forceActiveFocus(Qt.MouseFocusReason)
-                root.action.trigger()
+                root.action.trigger() // clicked() is emmitted when action is triggered
             } else if (mouse.button === Qt.RightButton) {
-                
+                root.forceActiveFocus(Qt.MouseFocusReason)
+                root.clicked() // does not trigger the action
+                KickoffSingleton.actionMenu.visualParent = root
+                KickoffSingleton.actionMenu.openRelative()
             }
         }
     }
 
-    // clicked is emmitted when action is triggered
-    //onClicked: action != null ? action.trigger();
-
-    //Connections {
-        //target: root.view
-        //function onMovementStarted() {
-            
-        //}
-    //}
+    PC3.ToolTip.text: {
+        if (label.truncated && descriptionLabel.truncated) {
+            return `${text} (${description})`
+        } else if (descriptionLabel.truncated) {
+            return description
+        } else {
+            return text
+        }
+    }
+    PC3.ToolTip.visible: mouseArea.containsMouse && ((label.visible && label.truncated) || (descriptionLabel.visible && descriptionLabel.truncated))
+    PC3.ToolTip.delay: Kirigami.Units.toolTipDelay
 }
