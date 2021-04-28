@@ -2,6 +2,7 @@
  * SPDX-License-Identifier: LGPL-2.0-or-later
  */
 
+import QtQuick 2.15
 import QtQuick.Templates 2.15 as T
 
 /**
@@ -18,4 +19,6 @@ T.Page {
                              contentHeight + topPadding + bottomPadding
                              + (implicitHeaderHeight > 0 ? implicitHeaderHeight + spacing : 0)
                              + (implicitFooterHeight > 0 ? implicitFooterHeight + spacing : 0))
+
+    Accessible.ignored: true
 }
