@@ -104,34 +104,6 @@ PlasmaExtras.PlasmoidHeading {
             icon.name: "compass"
             text: i18n("Places") //Explore?
         }
-
-        // Using item containing WheelHandler instead of MouseArea because
-        // MouseArea doesn't keep track to the total amount of rotation.
-        // Keeping track of the total amount of rotation makes it work
-        // better for touch pads.
-        Item {
-            parent: tabBar
-            anchors.fill: parent
-            z: 1 // Has to be above contentItem to recieve mouse wheel events
-            WheelHandler {
-                id: tabScrollHandler
-                acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad
-                onWheel: {
-                    let shouldDec = rotation >= 15
-                    let shouldInc = rotation <= -15
-                    let shouldReset = (rotation > 0 && tabBar.currentIndex == 0) || (rotation < 0 && tabBar.currentIndex == tabBar.count-1)
-                    if (shouldDec) {
-                        tabBar.decrementCurrentIndex();
-                        rotation = 0
-                    } else if (shouldInc) {
-                        tabBar.incrementCurrentIndex();
-                        rotation = 0
-                    } else if (shouldReset) {
-                        rotation = 0
-                    }
-                }
-            }
-        }
     }
     PlasmaCore.SvgItem {
         id: separator
@@ -160,6 +132,74 @@ PlasmaExtras.PlasmoidHeading {
         NumberAnimation {
             duration: PlasmaCore.Units.longDuration
             easing.type: Easing.InQuad
+        }
+    }
+
+    // Using item containing WheelHandler instead of MouseArea because
+    // MouseArea doesn't keep track to the total amount of rotation.
+    // Keeping track of the total amount of rotation makes it work
+    // better for touch pads.
+    Item {
+        id: mouseItem
+        property bool filtered: false
+        property real enterX
+        property real enterY
+        parent: root
+        anchors.left: parent.left
+        height: root.height
+        width: tabBar.width
+        z: 1 // Has to be above contentItem to recieve mouse wheel events
+        WheelHandler {
+            id: tabScrollHandler
+            acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad
+            onWheel: {
+                let shouldDec = rotation >= 15
+                let shouldInc = rotation <= -15
+                let shouldReset = (rotation > 0 && tabBar.currentIndex == 0) || (rotation < 0 && tabBar.currentIndex == tabBar.count-1)
+                if (shouldDec) {
+                    tabBar.decrementCurrentIndex();
+                    rotation = 0
+                } else if (shouldInc) {
+                    tabBar.incrementCurrentIndex();
+                    rotation = 0
+                } else if (shouldReset) {
+                    rotation = 0
+                }
+            }
+        }
+        HoverHandler {
+            id: mouseFilterHandler
+            grabPermissions: PointerHandler.TakeOverForbidden
+            acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad
+            onHoveredChanged: if (hovered) {
+                mouseItem.enterX = point.position.x
+                mouseItem.enterY = point.position.y
+            } else {
+                // For LTR: If moved right and up, filter
+                // For RTL: If moved left and up, filter
+                // I think moving in the opposite direction cancels the filter with a slight delay.
+                // This is desireable, but I'm not sure why it works.
+                if ((root.mirrored ? mouseItem.enterX > point.position.x : mouseItem.enterX < point.position.x) && mouseItem.enterY > point.position.y) {
+                    mouseItem.filtered = true
+                    mouseFilterTimer.restart()
+                } else {
+                    mouseItem.filtered = false
+                    mouseFilterTimer.stop()
+                }
+                mouseItem.enterX = -1
+                mouseItem.enterY = -1
+            }
+        }
+        Timer {
+            id: mouseFilterTimer
+            interval: root.height // Not sure, but maybe 1ms per pixel is a good way to pick a timer
+            onTriggered: mouseItem.filtered = false
+        }
+        Binding {
+            target: KickoffSingleton
+            property: "filteringMouseHover"
+            value: mouseItem.filtered
+            restoreMode: Binding.RestoreBindingOrValue
         }
     }
 }
