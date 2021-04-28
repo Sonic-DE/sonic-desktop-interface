@@ -35,17 +35,23 @@ EmptyPage {
 
     header: MouseArea {
         implicitHeight: KickoffSingleton.backgroundMetrics.margins.top
-        hoverEnabled: true
+        hoverEnabled: !KickoffSingleton.filteringMouseHover
         onEntered: {
-            listView.currentIndex = listView.indexAt(0,0)
+            if (containsMouse) {
+                view.currentIndex = view.indexAt(mouseX + view.contentX, view.contentY)
+                view.forceActiveFocus(Qt.MouseFocusReason)
+            }
         }
     }
 
     footer: MouseArea {
         implicitHeight: KickoffSingleton.backgroundMetrics.margins.bottom
-        hoverEnabled: true
+        hoverEnabled: !KickoffSingleton.filteringMouseHover
         onEntered: {
-            listView.currentIndex = listView.indexAt(0, listView.height)
+            if (containsMouse) {
+                view.currentIndex = view.indexAt(mouseX + view.contentX, view.height + view.contentY - 1)
+                view.forceActiveFocus(Qt.MouseFocusReason)
+            }
         }
     }
 
@@ -54,6 +60,8 @@ EmptyPage {
 
         property real viewWidth: width - leftMargin - rightMargin
         property real viewHeight: height - topMargin - bottomMargin
+
+        Accessible.role: Accessible.Table
 
         implicitWidth: view.cellHeight * 4 + leftMargin + rightMargin
         implicitHeight: view.cellHeight * 4 + topMargin + bottomMargin
@@ -88,20 +96,6 @@ EmptyPage {
             icon.height: PlasmaCore.Units.iconSizes.large
             display: PC3.AbstractButton.TextUnderIcon
             width: view.cellWidth
-            Item {
-                parent: itemDelegate
-                anchors.fill: parent
-                anchors.margins: 1
-                enabled: !verticalScrollBar.active
-                HoverHandler {
-                    onPointChanged: {
-                        if (hovered) {
-                            itemDelegate.forceActiveFocus(Qt.MouseFocusReason)
-                            view.currentIndex = index
-                        }
-                    }
-                }
-            }
         }
 
         move: normalTransition
@@ -121,24 +115,6 @@ EmptyPage {
             visible: size < 1 && policy !== PC3.ScrollBar.AlwaysOff
             z: 2
         }
-
-        //MouseArea {
-            //id: marginMouseArea
-            //parent: view
-            //anchors.fill: parent
-            //z: 1
-            //enabled: !verticalScrollBar.active
-            //hoverEnabled: true
-            //propagateComposedEvents: true
-            //onEntered: {
-                //view.forceActiveFocus(Qt.MouseFocusReason)
-            //}
-            //onPositionChanged: {
-                //let oldIndex = view.currentIndex
-                //let newIndex = view.indexAt(mouseX + view.contentX, mouseY + view.contentY)
-                //view.currentIndex = newIndex >= 0 ? newIndex : oldIndex
-            //}
-        //}
 
         // These have to be defined here because GridView will eat the up/down
         // events even if it can't go any further up or down

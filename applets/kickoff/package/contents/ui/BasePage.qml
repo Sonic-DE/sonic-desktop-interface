@@ -51,7 +51,6 @@ FocusScope {
         edge: LayoutMirroring.enabled ? Qt.LeftEdge : Qt.RightEdge
         Loader {
             id: sideBarLoader
-            focus: true
             anchors.fill: parent
             // backtab is implicitly set by the last button in Header.qml
             KeyNavigation.right: root.contentAreaItem

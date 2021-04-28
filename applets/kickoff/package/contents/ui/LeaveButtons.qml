@@ -56,6 +56,7 @@ RowLayout {
     PC3.ToolButton {
         id: leaveButton
         readonly property int currentId: plasmoid.configuration.primaryActions
+        Accessible.role: Accessible.ButtonMenu
         display: PC3.AbstractButton.IconOnly
         icon.width: PlasmaCore.Units.iconSizes.smallMedium
         icon.height: PlasmaCore.Units.iconSizes.smallMedium
@@ -77,6 +78,7 @@ RowLayout {
             icon: model.decoration
             // TODO: Don't generate items that will never be seen. Maybe DelegateModel can help?
             visible: !String(plasmoid.configuration.systemFavorites).includes(model.favoriteId)
+            Accessible.role: Accessible.MenuItem
 
             onClicked: model.trigger(index, "", "")
         }

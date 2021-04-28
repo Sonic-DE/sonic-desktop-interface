@@ -26,6 +26,7 @@ import QtQuick.Templates 2.15 as T
 import QtQuick.Layouts 1.15
 import QtQml 2.15
 import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.plasma.components 2.0 as PC2
 import org.kde.plasma.private.kicker 0.1 as Kicker
 
 EmptyPage {
@@ -210,4 +211,20 @@ EmptyPage {
         ordering: 1 // Popular / Frequently Used
         Component.onCompleted: KickoffSingleton.frequentUsageModel = Qt.binding(() => { return frequentUsageModel })
     }
+
+    //Connections {
+        //target: computerModel
+
+        //function onSystemApplicationsChanged() {
+            //plasmoid.configuration.systemApplications = target.systemApplications;
+        //}
+    //}
+
+    //Connections {
+        //target: plasmoid.configuration
+
+        //function onSystemApplicationsChanged() {
+            //computerModel.systemApplications = plasmoid.configuration.systemApplications;
+        //}
+    //}
 }
