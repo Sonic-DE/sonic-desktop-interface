@@ -25,27 +25,25 @@ EmptyPage {
 
     clip: view.interactive
 
-    property rect mappedViewRect: view.mapFromItem(
-        view.contentItem,
-        view.contentX, view.contentY,
-        view.contentWidth, view.contentHeight
-    )
-
     header: MouseArea {
         implicitHeight: KickoffSingleton.backgroundMetrics.margins.top
-        hoverEnabled: true
+        hoverEnabled: !KickoffSingleton.filteringMouseHover
         onEntered: {
-            view.currentIndex = view.indexAt(0, view.contentY)
-            view.forceActiveFocus(Qt.MouseFocusReason)
+            if (containsMouse) {
+                view.currentIndex = view.indexAt(mouseX + view.contentX, view.contentY)
+                view.forceActiveFocus(Qt.MouseFocusReason)
+            }
         }
     }
 
     footer: MouseArea {
         implicitHeight: KickoffSingleton.backgroundMetrics.margins.bottom
-        hoverEnabled: true
+        hoverEnabled: !KickoffSingleton.filteringMouseHover
         onEntered: {
-            view.currentIndex = view.indexAt(0, view.contentHeight - view.contentY)
-            view.forceActiveFocus(Qt.MouseFocusReason)
+            if (containsMouse) {
+                view.currentIndex = view.indexAt(mouseX + view.contentX, view.height + view.contentY - 1)
+                view.forceActiveFocus(Qt.MouseFocusReason)
+            }
         }
     }
 
@@ -68,6 +66,8 @@ EmptyPage {
 
         // Determines whether or not we tell the amount of items in the list
         property bool accessibilityCount: true
+
+        Accessible.role: Accessible.List
 
         implicitWidth: contentWidth + leftMargin + rightMargin
         // If either uses a grid, use grid cells to determine size
@@ -146,24 +146,6 @@ EmptyPage {
         Kirigami.WheelHandler {
             target: view
         }
-
-        //MouseArea {
-            //id: marginMouseArea
-            //parent: view
-            //anchors.fill: parent
-            //z: 1
-            //enabled: !verticalScrollBar.active
-            //hoverEnabled: true
-            //propagateComposedEvents: true
-            //onEntered: {
-                //view.forceActiveFocus(Qt.MouseFocusReason)
-            //}
-            //onPositionChanged: {
-                //let oldIndex = view.currentIndex
-                //let newIndex = view.indexAt(0, mouseY + view.contentY)
-                //view.currentIndex = newIndex >= 0 ? newIndex : oldIndex
-            //}
-        //}
 
         // These have to be defined here because ListView will eat the up/down
         // events even if it can't go any further up or down

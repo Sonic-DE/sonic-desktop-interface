@@ -6,13 +6,18 @@ pragma Singleton
 
 import QtQml.Models 2.15
 import QtQuick 2.15
+import QtQuick.Templates 2.15 as T
+import QtQml 2.15
 import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.plasma.components 2.0 as PC2
 import org.kde.plasma.components 3.0 as PC3
-import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.private.kicker 0.1 as Kicker
 
+// Using Item because it has a default property.
+// Trying to create a default property for a QtObject seems to cause segfaults.
 Item {
     id: root
+    //BEGIN Models and Data Sources
     // These are set in FullRepresentation.qml because the `plasmoid` context property
     // doesn't work here and using `Plasmoid` from org.kde.plasma.plasmoid doesn't work either.
     property Kicker.RootModel rootModel
@@ -21,62 +26,99 @@ Item {
     property Kicker.RecentUsageModel recentUsageModel
     property Kicker.RecentUsageModel frequentUsageModel
 
-    property PlasmaCore.DataSource powerManagement: PlasmaCore.DataSource {
+    property DelegateModel actionMenuDelegateModel: DelegateModel {
+        id: actionMenuDelegateModel
+        // Not a QQC1 MenuItem. It's actually a custom QQuickItem.
+        // It uses a QAction for its action, but that's not available in QML,
+        // so don't try to use the action property.
+        delegate: PC2.MenuItem {
+            required property var model
+            required property int index
+            text: model.display
+            icon: model.decoration
+        }
+    }
+
+    readonly property PlasmaCore.DataSource powerManagement: PlasmaCore.DataSource {
         engine: "powermanagement"
         connectedSources: ["PowerDevil"]
     }
+    //END
 
-    property PlasmaCore.FrameSvgItem backgroundMetrics: PlasmaCore.FrameSvgItem {
-        visible: false
-        imagePath: "dialogs/background"
+    //BEGIN UI elements
+    // Set in FullRepresentation.qml
+    property Item header: null
+
+    // Set in Header.qml
+    property PC3.TextField searchField: null
+
+    // Set in FullRepresentation.qml, ApplicationPage.qml, PlacesPage.qml
+    property Item sideBarView: null // is null when searching
+    property Item contentAreaView: null // is searchView when searching
+
+    // Set in FullRepresentation.qml, ApplicationPage.qml, PlacesPage.qml, KickoffListView.qml, KickoffGridView.qml
+    property Item lastFocusedView: null
+
+    // Set in NormalPage.qml
+    property Item footer: null
+
+    // Set in FullRepresentation.qml
+    property PC2.Menu actionMenu: PC2.Menu { // Not a QQC1 Menu. It's actually a custom QObject that uses a QMenu.
+        id: actionMenu
+        visualParent: null
+        onVisualParentChanged: {
+            if (visualParent != null) {
+                clearMenuItems()
+            }
+        }
     }
+    //END
 
-    property PlasmaCore.FrameSvgItem listItemMetrics: PlasmaCore.FrameSvgItem {
-        visible: false
-        imagePath: "widgets/listitem"
-        prefix: "normal"
-    }
-
-    // We don't need to make more than one of these
-    property PlasmaCore.Svg lineSvg: PlasmaCore.Svg {
+    //BEGIN Reusable Objects
+    readonly property PlasmaCore.Svg lineSvg: PlasmaCore.Svg {
         imagePath: "widgets/line"
     }
-    property PlasmaCore.Svg arrowsSvg: PlasmaCore.Svg {
+    readonly property PlasmaCore.Svg arrowsSvg: PlasmaCore.Svg {
         imagePath: "widgets/arrows"
     }
+    //END
 
+    //BEGIN State Properties
     // Set in Kickoff.qml
     property bool reverseVerticalLayout: false
     property bool inPanel: false
     property bool vertical: false
 
-    // Set in FullRepresentation.qml
-    property Item header
+    // Set in Footer.qml
+    property bool filteringMouseHover: false
+    //END
 
-    // Set in Header.qml
-    property PC3.TextField searchField
+    //BEGIN Metrics
+    readonly property PlasmaCore.FrameSvgItem backgroundMetrics: PlasmaCore.FrameSvgItem {
+        visible: false
+        imagePath: "dialogs/background"
+    }
 
-    // Set in FullRepresentation.qml, ApplicationPage.qml and PlacesPage.qml
-    // contentAreaView is the searchView when available.
-    property Item sideBarView
-    property Item contentAreaView
+    readonly property PlasmaCore.FrameSvgItem listItemMetrics: PlasmaCore.FrameSvgItem {
+        visible: false
+        imagePath: "widgets/listitem"
+        prefix: "normal"
+    }
 
-    // Set in KickoffListView.qml and KickoffGridView.qml
-    property Item lastFocusedView
+    readonly property real gridCellSize: gridDelegate.implicitHeight
+    readonly property real listDelegateHeight: listDelegate.implicitHeight
+    readonly property real listDelegateContentHeight: listDelegate.implicitContentHeight
+    //END
 
-    // Set in NormalPage.qml
-    property Item footer
-
-    property real gridCellSize: gridDelegate.implicitHeight
-    property real listDelegateHeight: listDelegate.implicitHeight
-    property real listDelegateContentHeight: listDelegate.implicitContentHeight
-
+    //BEGIN Private
     KickoffItemDelegate {
         id: gridDelegate
         visible: false
         enabled: false
         icon.width: PlasmaCore.Units.iconSizes.large
         icon.height: PlasmaCore.Units.iconSizes.large
+        model: null
+        index: -1
         text: "asdf"
         decoration: "start-here-kde"
         description: "asdf"
@@ -91,10 +133,13 @@ Item {
         enabled: false
         icon.width: PlasmaCore.Units.iconSizes.smallMedium
         icon.height: PlasmaCore.Units.iconSizes.smallMedium
+        model: null
+        index: -1
         text: "asdf"
         decoration: "start-here-kde"
         description: "asdf"
         action: null
         indicator: null
     }
+    //END
 }

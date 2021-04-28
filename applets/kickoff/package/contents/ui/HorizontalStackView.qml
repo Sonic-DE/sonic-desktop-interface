@@ -15,6 +15,7 @@ T.StackView {
     implicitHeight: implicitContentHeight + topPadding + bottomPadding
     clip: busy
     contentItem: currentItem
+    Accessible.ignored: true
     popEnter: enterTransition
     popExit: exitTransition
     pushEnter: enterTransition
