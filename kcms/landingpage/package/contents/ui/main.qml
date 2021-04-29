@@ -193,6 +193,7 @@ KCM.AbstractKCM {
                 Layout.preferredHeight: Kirigami.Units.smallSpacing
                 visible: feedbackLoader.visible
             }
+            // This is in a loader because the import FeedbackControls uses won't always exist being KUserFeedback optional
             Loader {
                 id: feedbackLoader
                 visible: item !== null
