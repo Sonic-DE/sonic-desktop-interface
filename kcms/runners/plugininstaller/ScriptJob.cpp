@@ -39,7 +39,9 @@ void ScriptJob::executeOperation(const QFileInfo &fileInfo, const QString &mimeT
                 runScriptInTerminal(formatScriptCommand(install, installerPath), fileInfo.absolutePath());
             }
         } else {
-            Q_EMIT error(QString());
+            // 130 means Ctrl+C as an exit code this is interpreted by KNewStuff as cancel operation
+            // and no error will be displayed to the user, BUG: 436355
+            exit(130);
         }
     } else {
         runScriptInTerminal(formatScriptCommand(install, installerPath), fileInfo.absolutePath());
