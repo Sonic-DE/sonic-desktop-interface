@@ -53,6 +53,7 @@ Kirigami.OverlaySheet {
     }
     
     header: Kirigami.Heading {
+        level: 2
         text: i18n("Fingerprint")
     }
     
@@ -114,7 +115,7 @@ Kirigami.OverlaySheet {
     contentItem: Item {
         id: rootPanel
         // TODO figure out why specified width is not being used at all
-        Layout.preferredWidth: Kirigami.Units.gridUnit * 12
+        implicitWidth: Kirigami.Units.gridUnit * 12
         Layout.maximumWidth: Kirigami.Units.gridUnit * 12
         Layout.leftMargin: Kirigami.Units.smallSpacing
         Layout.rightMargin: Kirigami.Units.smallSpacing
@@ -243,7 +244,16 @@ Kirigami.OverlaySheet {
                                 fingerprintModel.startEnrolling(finger.internalName);
                             }
                             tooltip: i18n("Re-enroll finger")
-                        }
+                        }//,
+                        // TODO uncomment when fprintd releases with the delete fingerprint dbus call 
+                        // (it's in their documentation but not released as of 04/30/2021)
+                        //Kirigami.Action {
+                            //iconName: "entry-delete"
+                            //onTriggered: {
+                                //fingerprintModel.deleteFingerprint(finger.internalName);
+                            //}
+                            //tooltip: i18n("Delete fingerprint")
+                        //}
                     ]
                 }
                 

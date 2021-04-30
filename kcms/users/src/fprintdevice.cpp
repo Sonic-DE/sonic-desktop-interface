@@ -23,49 +23,59 @@
 #include "fprint_device_interface.h"
 #include "fprint_manager_interface.h"
 
-FprintDevice::FprintDevice(QDBusObjectPath path, QObject* parent)
+FprintDevice::FprintDevice(QDBusObjectPath path, QObject *parent)
     : QObject(parent)
-    , m_dbusInterface(new NetReactivatedFprintDeviceInterface(QStringLiteral("net.reactivated.Fprint"), path.path(), QDBusConnection::systemBus(), this))
+    , m_devicePath(path.path())
+    , m_fprintInterface(new NetReactivatedFprintDeviceInterface(QStringLiteral("net.reactivated.Fprint"), path.path(), QDBusConnection::systemBus(), this))
+    , m_freedesktopInterface(
+          new QDBusInterface(QStringLiteral("net.reactivated.Fprint"), path.path(), "org.freedesktop.DBus.Properties", QDBusConnection::systemBus(), this))
 {
-    connect(m_dbusInterface, &NetReactivatedFprintDeviceInterface::EnrollStatus, this, &FprintDevice::enrollStatus);
+    connect(m_fprintInterface, &NetReactivatedFprintDeviceInterface::EnrollStatus, this, &FprintDevice::enrollStatus);
 }
 
 QDBusPendingReply<QStringList> FprintDevice::listEnrolledFingers(const QString &username)
 {
-    return m_dbusInterface->ListEnrolledFingers(username);
+    return m_fprintInterface->ListEnrolledFingers(username);
 }
 
 QDBusError FprintDevice::claim(const QString &username)
 {
-    auto reply = m_dbusInterface->Claim(username);
+    auto reply = m_fprintInterface->Claim(username);
     reply.waitForFinished();
     return reply.error();
 }
 
 QDBusError FprintDevice::release()
 {
-    auto reply = m_dbusInterface->Release();
+    auto reply = m_fprintInterface->Release();
     reply.waitForFinished();
     return reply.error();
 }
 
 QDBusError FprintDevice::deleteEnrolledFingers()
 {
-    auto reply = m_dbusInterface->DeleteEnrolledFingers2();
+    auto reply = m_fprintInterface->DeleteEnrolledFingers2();
+    reply.waitForFinished();
+    return reply.error();
+}
+
+QDBusError FprintDevice::deleteEnrolledFinger(QString &finger)
+{
+    auto reply = m_fprintInterface->DeleteEnrolledFinger(finger);
     reply.waitForFinished();
     return reply.error();
 }
 
 QDBusError FprintDevice::startEnrolling(const QString &finger)
 {
-    auto reply = m_dbusInterface->EnrollStart(finger);
+    auto reply = m_fprintInterface->EnrollStart(finger);
     reply.waitForFinished();
     return reply.error();
 }
 
 QDBusError FprintDevice::stopEnrolling()
 {
-    auto reply = m_dbusInterface->EnrollStop();
+    auto reply = m_fprintInterface->EnrollStop();
     reply.waitForFinished();
     return reply.error();
 }
@@ -85,12 +95,40 @@ void FprintDevice::enrollStatus(QString result, bool done)
 
 int FprintDevice::numOfEnrollStages()
 {
-    return m_dbusInterface->num_enroll_stages();
+    QDBusReply<QDBusVariant> reply = m_freedesktopInterface->call("Get", "net.reactivated.Fprint.Device", "num-enroll-stages");
+    if (!reply.isValid()) {
+        qDebug() << "error fetching num-enroll-stages:" << reply.error();
+        return 0;
+    }
+    return reply.value().variant().toInt();
 }
 
 QString FprintDevice::scanType()
 {
-    return m_dbusInterface->scan_type();
+    QDBusReply<QDBusVariant> reply = m_freedesktopInterface->call("Get", "net.reactivated.Fprint.Device", "scan-type");
+    if (!reply.isValid()) {
+        qDebug() << "error fetching scan-type:" << reply.error();
+        return "";
+    }
+    return reply.value().variant().toString();
 }
 
+bool FprintDevice::fingerPresent()
+{
+    QDBusReply<QDBusVariant> reply = m_freedesktopInterface->call("Get", "net.reactivated.Fprint.Device", "finger-present");
+    if (!reply.isValid()) {
+        qDebug() << "error fetching finger-present:" << reply.error();
+        return "";
+    }
+    return reply.value().variant().toBool();
+}
 
+bool FprintDevice::fingerNeeded()
+{
+    QDBusReply<QDBusVariant> reply = m_freedesktopInterface->call("Get", "net.reactivated.Fprint.Device", "finger-needed");
+    if (!reply.isValid()) {
+        qDebug() << "error fetching finger-needed:" << reply.error();
+        return "";
+    }
+    return reply.value().variant().toBool();
+}

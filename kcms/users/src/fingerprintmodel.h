@@ -101,6 +101,7 @@ public:
     
     Q_INVOKABLE void startEnrolling(QString finger);
     Q_INVOKABLE void stopEnrolling();
+    Q_INVOKABLE void deleteFingerprint(QString finger);
     Q_INVOKABLE void clearFingerprints();
     
     QStringList enrolledFingerprintsRaw();

@@ -195,6 +195,29 @@ void FingerprintModel::stopEnrolling()
     }
 }
 
+void FingerprintModel::deleteFingerprint(QString finger)
+{
+    // claim for user
+    if (!claimDevice()) {
+        return;
+    }
+
+    QDBusError error = m_device->deleteEnrolledFinger(finger);
+    if (error.isValid()) {
+        qDebug() << "error deleting fingerprint:" << error.message();
+        setCurrentError(error.message());
+    }
+
+    // release from user
+    error = m_device->release();
+    if (error.isValid()) {
+        qDebug() << "error releasing:" << error.message();
+        setCurrentError(error.message());
+    }
+
+    Q_EMIT enrolledFingerprintsChanged();
+}
+
 void FingerprintModel::clearFingerprints()
 {
     // claim for user

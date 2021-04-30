@@ -36,15 +36,18 @@ public:
     QDBusError release();
     
     QDBusError deleteEnrolledFingers();
+    QDBusError deleteEnrolledFinger(QString &finger);
     QDBusError startEnrolling(const QString &finger);
     QDBusError stopEnrolling();
 
     int numOfEnrollStages();
     QString scanType();
-    
+    bool fingerPresent();
+    bool fingerNeeded();
+
 public Q_SLOTS:
     void enrollStatus(QString result, bool done);
-    
+
 Q_SIGNALS:
     void enrollCompleted();
     void enrollStagePassed();
@@ -52,7 +55,9 @@ Q_SIGNALS:
     void enrollFailed(QString error);
     
 private:
+    QString m_devicePath;
     QString m_username;
-    NetReactivatedFprintDeviceInterface* m_dbusInterface;
+    NetReactivatedFprintDeviceInterface *m_fprintInterface;
+    QDBusInterface *m_freedesktopInterface;
 };
 

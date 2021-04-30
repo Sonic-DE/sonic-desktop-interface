@@ -8,13 +8,12 @@
 <!ENTITY ERROR_NO_ENROLLED_PRINTS "net.reactivated.Fprint.Error.NoEnrolledPrints">
 <!ENTITY ERROR_NO_ACTION_IN_PROGRESS "net.reactivated.Fprint.Error.NoActionInProgress">
 <!ENTITY ERROR_INVALID_FINGERNAME "net.reactivated.Fprint.Error.InvalidFingername">
+<!ENTITY ERROR_PRINTS_NOT_DELETED "net.reactivated.Fprint.Error.PrintsNotDeleted">
+<!ENTITY ERROR_PRINTS_NOT_DELETED_FROM_DEVICE "net.reactivated.Fprint.Error.PrintsNotDeletedFromDevice">
 ]>
 
 <node name="/" xmlns:doc="http://www.freedesktop.org/dbus/1.0/doc.dtd">
 	<interface name="net.reactivated.Fprint.Device">
-		<annotation name="org.freedesktop.DBus.GLib.CSymbol"
-			value="fprint_device" />
-
 		<doc:doc>
 			<doc:title id="polkit-integration">
 				PolicyKit integration
@@ -250,9 +249,19 @@
 						<doc:definition>
 							No further prints can be enrolled on this device, <doc:ref type="method" to="Device.EnrollStop">Device.EnrollStop</doc:ref> should now be called.
 
-							<doc:ref type="method" to="DeleteEnrolledFingers2">Delete other prints</doc:ref> from the device first to continue
+							<doc:ref type="method" to="DeleteEnrolledFinger">Delete other prints</doc:ref> from the device first to continue
 							(e.g. from other users). Note that old prints or prints from other operating systems may be deleted automatically
 							to resolve this error without any notification.
+						</doc:definition>
+					</doc:item>
+					<doc:item>
+						<doc:term>enroll-duplicate</doc:term>
+						<doc:definition>
+							The print has already been enrolled, <doc:ref type="method" to="Device.EnrollStop">Device.EnrollStop</doc:ref> should now be called.
+
+							The user should enroll a different finger, or delete the print that has been enrolled already.
+							This print may be enrolled for a different user.
+							Note that an old duplicate (e.g. from a previous install) will be automatically garbage collected and should not cause any issues.
 						</doc:definition>
 					</doc:item>
 					<doc:item>
@@ -282,8 +291,6 @@
 			<arg type="as" name="enrolled_fingers" direction="out">
 				<doc:doc><doc:summary>An array of strings representing the enrolled fingerprints. See <doc:ref type="description" to="fingerprint-names">Fingerprint names</doc:ref>.</doc:summary></doc:doc>
 			</arg>
-			<annotation name="org.freedesktop.DBus.GLib.Async" value="" />
-
 			<doc:doc>
 				<doc:description>
 					<doc:para>
@@ -304,8 +311,6 @@
 			<arg type="s" name="username" direction="in">
 				<doc:doc><doc:summary>The username for whom to delete the enrolled fingerprints. See <doc:ref type="description" to="usernames">Usernames</doc:ref>.</doc:summary></doc:doc>
 			</arg>
-			<annotation name="org.freedesktop.DBus.GLib.Async" value="" />
-
 			<doc:doc>
 				<doc:description>
 					<doc:para>
@@ -314,12 +319,14 @@
 					<doc:para>
 						This call only exists for compatibility reasons, you should instead claim the device using
 						<doc:ref type="method" to="Device.Claim">Device.Claim</doc:ref> and then call
-						<doc:ref type="method" to="DeleteEnrolledFingers2">DeleteEnrolledFingers2</doc:ref>.
+						<doc:ref type="method" to="DeleteEnrolledFingers2">DeleteEnrolledFingers2</doc:ref> or
+						<doc:ref type="method" to="DeleteEnrolledFinger">DeleteEnrolledFinger</doc:ref>.
 					</doc:para>
 				</doc:description>
 
 				<doc:errors>
 					<doc:error name="&ERROR_PERMISSION_DENIED;">if the caller lacks the appropriate PolicyKit authorization</doc:error>
+					<doc:error name="&ERROR_PRINTS_NOT_DELETED;">if the fingerprint is not deleted from fprintd storage</doc:error>
 				</doc:errors>
 			</doc:doc>
 		</method>
@@ -327,8 +334,6 @@
 		<!-- ************************************************************ -->
 
 		<method name="DeleteEnrolledFingers2">
-			<annotation name="org.freedesktop.DBus.GLib.Async" value="" />
-
 			<doc:doc>
 				<doc:description>
 					<doc:para>
@@ -338,6 +343,34 @@
 
 				<doc:errors>
 					<doc:error name="&ERROR_PERMISSION_DENIED;">if the caller lacks the appropriate PolicyKit authorization</doc:error>
+					<doc:error name="&ERROR_PRINTS_NOT_DELETED;">if the fingerprint is not deleted from fprintd storage</doc:error>
+				</doc:errors>
+			</doc:doc>
+		</method>
+
+		<!-- ************************************************************ -->
+
+		<method name="DeleteEnrolledFinger">
+			<arg type="s" name="finger_name" direction="in">
+				<doc:doc>
+					<doc:summary>A string representing the finger to delete. See
+						<doc:ref type="description" to="fingerprint-names">Fingerprint names</doc:ref>.
+				Note that "any" is not a valid finger name for this method.</doc:summary>
+				</doc:doc>
+			</arg>
+			<doc:doc>
+				<doc:description>
+					<doc:para>
+						Delete the enrolled fingerprint for the user currently claiming the device with <doc:ref type="method" to="Device.Claim">Device.Claim</doc:ref>.
+					</doc:para>
+				</doc:description>
+
+				<doc:errors>
+					<doc:error name="&ERROR_PERMISSION_DENIED;">if the caller lacks the appropriate PolicyKit authorization</doc:error>
+					<doc:error name="&ERROR_CLAIM_DEVICE;">if the device was not claimed</doc:error>
+					<doc:error name="&ERROR_INVALID_FINGERNAME;">if the finger name passed is invalid</doc:error>
+					<doc:error name="&ERROR_NO_ENROLLED_PRINTS;">if the chosen user doesn't have the requsted fingerprint enrolled</doc:error>
+					<doc:error name="&ERROR_PRINTS_NOT_DELETED;">if the fingerprint is not deleted from fprintd storage</doc:error>
 				</doc:errors>
 			</doc:doc>
 		</method>
@@ -348,8 +381,6 @@
 			<arg type="s" name="username" direction="in">
 				<doc:doc><doc:summary>The username for whom to claim the device. See <doc:ref type="description" to="usernames">Usernames</doc:ref>.</doc:summary></doc:doc>
 			</arg>
-			<annotation name="org.freedesktop.DBus.GLib.Async" value="" />
-
 			<doc:doc>
 				<doc:description>
 					<doc:para>
@@ -368,8 +399,6 @@
 		<!-- ************************************************************ -->
 
 		<method name="Release">
-			<annotation name="org.freedesktop.DBus.GLib.Async" value="" />
-
 			<doc:doc>
 				<doc:description>
 					<doc:para>
@@ -390,8 +419,6 @@
 			<arg type="s" name="finger_name" direction="in">
 				<doc:doc><doc:summary>A string representing the finger to verify. See <doc:ref type="description" to="fingerprint-names">Fingerprint names</doc:ref>.</doc:summary></doc:doc>
 			</arg>
-			<annotation name="org.freedesktop.DBus.GLib.Async" value="" />
-
 			<doc:doc>
 				<doc:description>
 					<doc:para>
@@ -415,8 +442,6 @@
 		<!-- ************************************************************ -->
 
 		<method name="VerifyStop">
-			<annotation name="org.freedesktop.DBus.GLib.Async" value="" />
-
 			<doc:doc>
 				<doc:description>
 					<doc:para>
@@ -486,8 +511,6 @@
 				<doc:ref type="description" to="fingerprint-names">Fingerprint names</doc:ref>.
 				Note that "any" is not a valid finger name for this method.</doc:summary></doc:doc>
 			</arg>
-			<annotation name="org.freedesktop.DBus.GLib.Async" value="" />
-
 			<doc:doc>
 				<doc:description>
 					<doc:para>
@@ -502,6 +525,7 @@
 					<doc:error name="&ERROR_CLAIM_DEVICE;">if the device was not claimed</doc:error>
 					<doc:error name="&ERROR_ALREADY_IN_USE;">if the device was already being used</doc:error>
 					<doc:error name="&ERROR_INVALID_FINGERNAME;">if the finger name passed is invalid</doc:error>
+					<doc:error name="&FINGER_ALREADY_ENROLLED;">if the finger has been already enrolled by the user</doc:error>
 					<doc:error name="&ERROR_INTERNAL;">if there was an internal error</doc:error>
 				</doc:errors>
 
@@ -511,8 +535,6 @@
 		<!-- ************************************************************ -->
 
 		<method name="EnrollStop">
-			<annotation name="org.freedesktop.DBus.GLib.Async" value="" />
-
 			<doc:doc>
 				<doc:description>
 					<doc:para>
@@ -569,7 +591,7 @@
 
 		<!-- ************************************************************ -->
 
-		<property name="num_enroll_stages" type="i" access="read">
+		<property name="num-enroll-stages" type="i" access="read">
 			<doc:doc>
 				<doc:description>
 					<doc:para>
@@ -584,11 +606,35 @@
 
 		<!-- ************************************************************ -->
 
-		<property name="scan_type" type="s" access="read">
+		<property name="scan-type" type="s" access="read">
 			<doc:doc>
 				<doc:description>
 					<doc:para>
 						The scan type of the device, either "press" if you place your finger on the device, or "swipe" if you have to swipe your finger.
+					</doc:para>
+				</doc:description>
+			</doc:doc>
+		</property>
+
+		<!-- ************************************************************ -->
+
+		<property name="finger-present" type="b" access="read">
+			<doc:doc>
+				<doc:description>
+					<doc:para>
+						Whether the finger is on sensor.
+					</doc:para>
+				</doc:description>
+			</doc:doc>
+		</property>
+
+		<!-- ************************************************************ -->
+
+		<property name="finger-needed" type="b" access="read">
+			<doc:doc>
+				<doc:description>
+					<doc:para>
+						Whether the sensor is waiting for the finger.
 					</doc:para>
 				</doc:description>
 			</doc:doc>
