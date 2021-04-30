@@ -114,12 +114,10 @@ Kirigami.OverlaySheet {
 
     contentItem: Item {
         id: rootPanel
-        // TODO figure out why specified width is not being used at all
         implicitWidth: Kirigami.Units.gridUnit * 12
-        Layout.maximumWidth: Kirigami.Units.gridUnit * 12
+        Layout.maximumWidth: Kirigami.Units.gridUnit * 24
         Layout.leftMargin: Kirigami.Units.smallSpacing
         Layout.rightMargin: Kirigami.Units.smallSpacing
-        width: Kirigami.Units.gridUnit * 12
         height: Kirigami.Units.gridUnit * 12
         
         ColumnLayout {
