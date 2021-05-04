@@ -156,13 +156,13 @@ T.ItemDelegate {
         anchors.margins: 1
         anchors.leftMargin: root.extendHoverMargins ? (!mirrored ? -root.view.leftMargin : -root.view.rightMargin) : anchors.margins
         anchors.rightMargin: root.extendHoverMargins ? (mirrored ? -root.view.rightMargin : -root.view.leftMargin) : anchors.margins
-        hoverEnabled: !KickoffSingleton.filteringMouseHover
+        hoverEnabled: !KickoffSingleton.filteringMouseHover && root.view && !root.view.movedWithKeyboard
         acceptedButtons: Qt.LeftButton | Qt.RightButton
         // Using onPositionChanged instead of onEntered to prevent changing
         // categories while scrolling with the mouse wheel.
         onPositionChanged: {
-            // forceActiveFocus() can be expensive when done this rapidly
-            // so check for activeFocus first.
+            // forceActiveFocus() touches multiple items, so check for
+            // activeFocus first to be more efficient.
             if (!activeFocus) {
                 root.forceActiveFocus(Qt.MouseFocusReason)
             }
