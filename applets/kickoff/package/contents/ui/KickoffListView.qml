@@ -30,7 +30,8 @@ EmptyPage {
         hoverEnabled: !KickoffSingleton.filteringMouseHover
         onEntered: {
             if (containsMouse) {
-                view.currentIndex = view.indexAt(mouseX + view.contentX, view.contentY)
+                let targetIndex = view.indexAt(mouseX + view.contentX, view.contentY)
+                view.currentIndex = targetIndex >= 0 ? targetIndex : 0
                 view.forceActiveFocus(Qt.MouseFocusReason)
             }
         }
@@ -41,7 +42,8 @@ EmptyPage {
         hoverEnabled: !KickoffSingleton.filteringMouseHover
         onEntered: {
             if (containsMouse) {
-                view.currentIndex = view.indexAt(mouseX + view.contentX, view.height + view.contentY - 1)
+                let targetIndex = view.indexAt(mouseX + view.contentX, view.height + view.contentY - 1)
+                view.currentIndex = targetIndex >= 0 ? targetIndex : view.count - 1
                 view.forceActiveFocus(Qt.MouseFocusReason)
             }
         }
@@ -53,6 +55,7 @@ EmptyPage {
 
         property real viewWidth: width - leftMargin - rightMargin
         property real viewHeight: height - topMargin - bottomMargin
+        property bool movedWithKeyboard: false
 
         leftMargin: verticalScrollBar.width
         rightMargin: verticalScrollBar.width
@@ -81,7 +84,9 @@ EmptyPage {
         pixelAligned: true
         reuseItems: true
         boundsBehavior: Flickable.StopAtBounds
-        keyNavigationEnabled: true
+        // default keyboard navigation doesn't allow focus reasons to be used
+        // and eats up/down key events when at the beginning or end of the list.
+        keyNavigationEnabled: false
         keyNavigationWraps: false
     //     verticalLayoutDirection: root.upsideDown ? ListView.BottomToTop : ListView.TopToBottom
 
@@ -105,7 +110,8 @@ EmptyPage {
             property: "group"
             criteria: ViewSection.FullString
             delegate: PC3.Label {
-                width: section.length === 1 ? KickoffSingleton.listDelegateContentHeight + leftPadding + rightPadding : view.contentItem.width
+                //readonly property bool visualFocus: false
+                width: section.length === 1 ? KickoffSingleton.listDelegateContentHeight + leftPadding + rightPadding : view.contentWidth
                 height: KickoffSingleton.listDelegateHeight
                 leftPadding: view.effectiveLayoutDirection === Qt.LeftToRight
                     ? KickoffSingleton.listItemMetrics.margins.left : 0
@@ -147,18 +153,6 @@ EmptyPage {
             target: view
         }
 
-        // These have to be defined here because ListView will eat the up/down
-        // events even if it can't go any further up or down
-        Keys.priority: Keys.AfterItem
-        // Not using KeyNavigation.up because otherwise pressing down when the
-        // header or search field is focused will focus the contentAreaView
-        // instead of the lastFocusedView.
-        Keys.onUpPressed: {
-            KickoffSingleton.searchField.forceActiveFocus(Qt.BacktabFocusReason)
-        }
-        // The issue above does not apply to this when pressing up in the footer
-        KeyNavigation.down: KickoffSingleton.footer
-
         Binding {
             target: KickoffSingleton
             property: "lastFocusedView"
@@ -173,6 +167,71 @@ EmptyPage {
                 if(!plasmoid.expanded) {
                     view.positionViewAtBeginning()
                 }
+            }
+        }
+
+        Timer {
+            id: movedWithKeyboardTimer
+            interval: 200
+            onTriggered: view.movedWithKeyboard = false
+        }
+
+        function focusCurrentItem(event, focusReason) {
+            view.currentItem.forceActiveFocus(focusReason)
+            event.accepted = true
+        }
+
+        Keys.onPressed: {
+            let targetX = view.currentItem.x
+            let targetY = view.currentItem.y
+            let targetIndex = -1
+            let atFirst = view.currentIndex === 0
+            let atLast = view.currentIndex === view.count - 1
+            if (view.count > 1) {
+                switch (event.key) {
+                    case Qt.Key_Up: if (!atFirst) {
+                        view.decrementCurrentIndex()
+                        focusCurrentItem(event, Qt.BacktabFocusReason)
+                    } break
+                    case Qt.Key_Down: if (!atLast) {
+                        view.incrementCurrentIndex()
+                        focusCurrentItem(event, Qt.TabFocusReason)
+                    } break
+                    case Qt.Key_Home: if (!atFirst) {
+                        view.currentIndex = 0
+                        focusCurrentItem(event, Qt.BacktabFocusReason)
+                    } break
+                    case Qt.Key_End: if (!atLast) {
+                        view.currentIndex = view.count - 1
+                        focusCurrentItem(event, Qt.TabFocusReason)
+                    } break
+                    case Qt.Key_PageUp: if (!atFirst) {
+                        targetY = targetY - view.height + 1
+                        targetIndex = view.indexAt(targetX, targetY)
+                        // TODO: Find a more efficient, but accurate way to do this
+                        while (targetIndex === -1) {
+                            targetY += 1
+                            targetIndex = view.indexAt(targetX, targetY)
+                        }
+                        view.currentIndex = Math.max(targetIndex, 0)
+                        focusCurrentItem(event, Qt.BacktabFocusReason)
+                    } break
+                    case Qt.Key_PageDown: if (!atLast) {
+                        targetY = targetY + view.height - 1
+                        targetIndex = view.indexAt(targetX, targetY)
+                        // TODO: Find a more efficient, but accurate way to do this
+                        while (targetIndex === -1) {
+                            targetY -= 1
+                            targetIndex = view.indexAt(targetX, targetY)
+                        }
+                        view.currentIndex = Math.min(targetIndex, view.count - 1)
+                        focusCurrentItem(event, Qt.TabFocusReason)
+                    } break
+                }
+            }
+            view.movedWithKeyboard = event.accepted
+            if (view.movedWithKeyboard) {
+                movedWithKeyboardTimer.restart()
             }
         }
     }
