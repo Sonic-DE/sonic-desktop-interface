@@ -35,6 +35,9 @@ EmptyPage {
                 }
             }
         }
+        KeyNavigation.down: footer
+        KeyNavigation.up: null
+        Keys.onUpPressed: KickoffSingleton.searchField.forceActiveFocus(Qt.BacktabFocusReason)
     }
 
     footer: Footer {
@@ -46,13 +49,6 @@ EmptyPage {
             value: footer
             restoreMode: Binding.RestoreBinding
         }
-        Keys.priority: Keys.BeforeItem
-        Keys.onUpPressed: {
-            if (KickoffSingleton.lastFocusedView) {
-                KickoffSingleton.lastFocusedView.forceActiveFocus(Qt.BacktabFocusReason)
-            } else {
-                root.contentItem.forceActiveFocus(Qt.BacktabFocusReason)
-            }
-        }
+        KeyNavigation.up: stackView
     }
 }
