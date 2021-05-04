@@ -46,6 +46,9 @@ EmptyPage {
      * Be mindful of this when using `Keys.forwardTo`.
      *
      * - Keys defaults to BeforeItem while KeyNavigation defaults to AfterItem.
+     * 
+     * - When Keys and KeyNavigation are using the same priority, it seems like
+     * the one declared first in the QML file gets priority over the other.
      *
      * - Except for Keys.onPressed, all Keys.on*Pressed signals automatically
      * set `event.accepted = true`.
@@ -65,17 +68,7 @@ EmptyPage {
     header: Header {
         id: header
         focus: true
-        Keys.priority: Keys.AfterItem
-        // Not using KeyNavigation.down because otherwise pressing down when the
-        // header or search field is focused will focus the contentAreaView
-        // instead of the lastFocusedView.
-        Keys.onDownPressed: {
-            if (KickoffSingleton.lastFocusedView != null) {
-                KickoffSingleton.lastFocusedView.forceActiveFocus(Qt.TabFocusReason)
-            } else {
-                root.contentItem.forceActiveFocus(Qt.TabFocusReason)
-            }
-        }
+        KeyNavigation.down: normalPage.T.StackView.status === T.StackView.Active ? normalPage.contentItem : contentItemStackView.currentItem
         Binding {
             target: KickoffSingleton
             property: "header"
@@ -104,6 +97,8 @@ EmptyPage {
                 activeFocusOnTab: true
                 // always focus the first item in the header focus chain
                 KeyNavigation.tab: root.header.nextItemInFocusChain()
+                KeyNavigation.up: null
+                Keys.onUpPressed: KickoffSingleton.searchField.forceActiveFocus(Qt.BacktabFocusReason)
                 T.StackView.onActivated: {
                     KickoffSingleton.sideBarView = null
                     KickoffSingleton.contentAreaView = searchView
