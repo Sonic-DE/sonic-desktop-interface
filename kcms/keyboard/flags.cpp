@@ -53,6 +53,8 @@ int iconSize(int s)
     }
 }
 
+Flags::~Flags() = default;
+
 const QIcon Flags::getIcon(const QString &layout)
 {
     if (!iconMap.contains(layout)) {
