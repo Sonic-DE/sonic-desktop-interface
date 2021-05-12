@@ -33,6 +33,8 @@ class Flags : public QObject
     Q_OBJECT
 
 public:
+    ~Flags() override;
+
     const QIcon getIcon(const QString &layout);
 
     static QString getLongText(const LayoutUnit &layoutUnit, const Rules *rules);
