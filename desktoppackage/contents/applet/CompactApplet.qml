@@ -97,23 +97,41 @@ PlasmaCore.ToolTipArea {
 
     PlasmaCore.FrameSvgItem {
         id: expandedItem
-        anchors.fill: parent
+
+        property var containerLayoutObject: {
+            var item = root;
+            while (item.parent) {
+                item = item.parent;
+                if (item.isAppletContainer) {
+                    return item.Layout;
+                }
+            }
+            return undefined;
+        }
+
+        anchors {
+            fill: parent
+            bottomMargin: containerLayoutObject ? -containerLayoutObject.bottomMargin : 0;
+            topMargin: containerLayoutObject ? -containerLayoutObject.topMargin : 0;
+            leftMargin: containerLayoutObject ? -containerLayoutObject.leftMargin : 0;
+            rightMargin: containerLayoutObject ? -containerLayoutObject.rightMargin : 0;
+        }
         imagePath: "widgets/tabbar"
         visible: fromCurrentTheme && opacity > 0
         prefix: {
             var prefix;
             switch (plasmoid.location) {
                 case PlasmaCore.Types.LeftEdge:
-                    prefix = "west-active-tab";
-                    break;
-                case PlasmaCore.Types.TopEdge:
-                    prefix = "north-active-tab";
-                    break;
-                case PlasmaCore.Types.RightEdge:
                     prefix = "east-active-tab";
                     break;
-                default:
+                case PlasmaCore.Types.TopEdge:
                     prefix = "south-active-tab";
+                    break;
+                case PlasmaCore.Types.RightEdge:
+                    prefix = "west-active-tab";
+                    break;
+                default:
+                    prefix = "north-active-tab";
                 }
                 if (!hasElementPrefix(prefix)) {
                     prefix = "active-tab";
