@@ -277,6 +277,7 @@ function checkLastSpacer() {
             id: container
             visible: false
             property bool inThickArea: false
+            property bool isAppletContainer: true
             property bool animationsEnabled: true
 
             //when the applet moves caused by its resize, don't animate.    
