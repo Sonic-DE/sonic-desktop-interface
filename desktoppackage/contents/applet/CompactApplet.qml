@@ -122,16 +122,16 @@ PlasmaCore.ToolTipArea {
             var prefix;
             switch (plasmoid.location) {
                 case PlasmaCore.Types.LeftEdge:
-                    prefix = "west-active-tab";
-                    break;
-                case PlasmaCore.Types.TopEdge:
-                    prefix = "north-active-tab";
-                    break;
-                case PlasmaCore.Types.RightEdge:
                     prefix = "east-active-tab";
                     break;
-                default:
+                case PlasmaCore.Types.TopEdge:
                     prefix = "south-active-tab";
+                    break;
+                case PlasmaCore.Types.RightEdge:
+                    prefix = "west-active-tab";
+                    break;
+                default:
+                    prefix = "north-active-tab";
                 }
                 if (!hasElementPrefix(prefix)) {
                     prefix = "active-tab";
