@@ -37,10 +37,10 @@ PlasmaExtras.PlasmoidHeading {
     implicitHeight: Math.max(implicitBackgroundHeight + topInset + bottomInset,
                              contentHeight + topPadding + bottomPadding)
 
-    leftPadding: KickoffSingleton.backgroundMetrics.margins.left
-    rightPadding: KickoffSingleton.backgroundMetrics.margins.right
-    topPadding: KickoffSingleton.backgroundMetrics.margins.top
-    bottomPadding: KickoffSingleton.backgroundMetrics.margins.bottom
+    leftPadding: background.margins.left
+    rightPadding: background.margins.right
+    topPadding: background.margins.top
+    bottomPadding: background.margins.bottom
 
     leftInset: 0
     rightInset: 0
@@ -141,9 +141,6 @@ PlasmaExtras.PlasmoidHeading {
     // better for touch pads.
     Item {
         id: mouseItem
-        property bool filtered: false
-        property real enterX
-        property real enterY
         parent: root
         anchors.left: parent.left
         height: root.height
@@ -166,40 +163,6 @@ PlasmaExtras.PlasmoidHeading {
                     rotation = 0
                 }
             }
-        }
-        HoverHandler {
-            id: mouseFilterHandler
-            grabPermissions: PointerHandler.TakeOverForbidden
-            acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad
-            onHoveredChanged: if (hovered) {
-                mouseItem.enterX = point.position.x
-                mouseItem.enterY = point.position.y
-            } else {
-                // For LTR: If moved right and up, filter
-                // For RTL: If moved left and up, filter
-                // I think moving in the opposite direction cancels the filter with a slight delay.
-                // This is desireable, but I'm not sure why it works.
-                if ((root.mirrored ? mouseItem.enterX > point.position.x : mouseItem.enterX < point.position.x) && mouseItem.enterY > point.position.y) {
-                    mouseItem.filtered = true
-                    mouseFilterTimer.restart()
-                } else {
-                    mouseItem.filtered = false
-                    mouseFilterTimer.stop()
-                }
-                mouseItem.enterX = -1
-                mouseItem.enterY = -1
-            }
-        }
-        Timer {
-            id: mouseFilterTimer
-            interval: root.height // Not sure, but maybe 1ms per pixel is a good way to pick a timer
-            onTriggered: mouseItem.filtered = false
-        }
-        Binding {
-            target: KickoffSingleton
-            property: "filteringMouseHover"
-            value: mouseItem.filtered
-            restoreMode: Binding.RestoreBindingOrValue
         }
     }
 }
