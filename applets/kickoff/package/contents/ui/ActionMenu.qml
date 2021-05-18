@@ -11,6 +11,7 @@ pragma Singleton
 import QtQml.Models 2.15
 import QtQuick 2.15
 import QtQuick.Templates 2.15 as T
+import Qt.labs.platform 1.1 as Platform
 import QtQml 2.15
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PC2
@@ -19,51 +20,45 @@ import org.kde.plasma.private.kicker 0.1 as Kicker
 
 Item {
     id: root
+    visible: false
 
-    property Item visualParent: null
-    property list actions: [
-        T.Action {
-            text: "test"
-        }
-    ]
+    property var modelData: null
+    property var actionList: null
 
     // Not a QQC1 Menu. It's actually a custom QObject that uses a QMenu.
     property PC2.Menu menu: PC2.Menu {
         id: menu
+        placement: root.placement
         visualParent: root.visualParent
-        onVisualParentChanged: {
-            if (visualParent != null) {
-                clearMenuItems()
-            }
-        }
+        //onVisualParentChanged: {
+            //if (visualParent != null) {
+                //clearMenuItems()
+            //}
+        //}
     }
 
-    signal actionClicked(string actionId, variant actionArgument)
-
-    onActionListChanged: refreshMenu();
-
-    function open(x, y) {
-        if (!actionList || !actionList.length) {
-            return;
+    Instantiator {
+        id: instantiator
+        model: 3
+        delegate: PC2.MenuItem {
+            text: "asdf " + index
         }
-
-        if (x && y) {
-            menu.open(x, y);
-        } else {
-            menu.open();
-        }
+        onObjectAdded: menu.addMenuItem(object)
+        onObjectRemoved: menu.removeMenuItem(object)
     }
+
+    signal actionClicked(string actionId, var actionArgument)
+
+    //onActionListChanged: refreshMenu();
 
     function refreshMenu() {
-        if (menu) {
-            menu.destroy();
+        if (menu != null) {
+            menu.clearMenuItems();
         }
 
         if (!actionList) {
             return;
         }
-
-        menu = contextMenuComponent.createObject(root);
 
         // actionList.forEach(function(actionItem) {
         //     var item = contextMenuItemComponent.createObject(menu, {
@@ -75,30 +70,15 @@ Item {
     }
 
     function fillMenu(menu, items) {
-        items.forEach(function(actionItem) {
+        items.forEach((actionItem) => {
             if (actionItem.subActions) {
                 // This is a menu
-                var submenuItem = contextSubmenuItemComponent.createObject(
-                                        menu, { "actionItem" : actionItem });
-
+                var submenuItem = contextSubmenuItemComponent.createObject(menu, { "actionItem" : actionItem });
                 fillMenu(submenuItem.submenu, actionItem.subActions);
-
             } else {
-                var item = contextMenuItemComponent.createObject(
-                                menu,
-                                {
-                                    "actionItem": actionItem,
-                                }
-                );
+                var item = contextMenuItemComponent.createObject(menu, { "actionItem": actionItem });
             }
         });
-
-    }
-
-    Component {
-        id: contextMenuComponent
-
-        
     }
 
     Component {
@@ -107,14 +87,12 @@ Item {
         PC2.MenuItem {
             id: submenuItem
 
-            property variant actionItem
+            property var actionItem
 
             text: actionItem.text ? actionItem.text : ""
             icon: actionItem.icon ? actionItem.icon : null
 
-            property variant submenu : submenu_
-
-            PC2.Menu {
+            property var submenu: PC2.Menu {
                 id: submenu_
                 visualParent: submenuItem.action
             }
@@ -125,7 +103,7 @@ Item {
         id: contextMenuItemComponent
 
         PC2.MenuItem {
-            property variant actionItem
+            property var actionItem
 
             text      : actionItem.text ? actionItem.text : ""
             enabled   : actionItem.type !== "title" && ("enabled" in actionItem ? actionItem.enabled : true)
