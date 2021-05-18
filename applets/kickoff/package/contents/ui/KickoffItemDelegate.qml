@@ -178,7 +178,7 @@ T.ItemDelegate {
                 root.forceActiveFocus(Qt.MouseFocusReason)
                 root.clicked() // does not trigger the action
                 ActionMenu.menu.visualParent = root
-                ActionMenu.menu.openRelative()
+                ActionMenu.menu.open(mouseX, mouseY)
             }
         }
     }

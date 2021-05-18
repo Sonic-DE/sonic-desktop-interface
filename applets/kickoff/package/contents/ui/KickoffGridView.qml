@@ -11,7 +11,7 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 3.0 as PC3
 import org.kde.kirigami 2.16 as Kirigami
 
-// ScrollView makes it difficult to get the implicit size from the contentItem.
+// ScrollView makes it difficult to control implicit size using the contentItem.
 // Using EmptyPage instead.
 EmptyPage {
     id: root
@@ -114,10 +114,11 @@ EmptyPage {
 
         PC3.ScrollBar.vertical: PC3.ScrollBar {
             id: verticalScrollBar
+            parent: root
             visible: size < 1 && policy !== PC3.ScrollBar.AlwaysOff
             z: 2
-            y: -root.implicitHeaderHeight
             height: root.height
+            anchors.right: parent.right
         }
 
         Kirigami.WheelHandler {

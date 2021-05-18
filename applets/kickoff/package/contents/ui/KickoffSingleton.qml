@@ -17,6 +17,7 @@ import org.kde.plasma.private.kicker 0.1 as Kicker
 // Trying to create a default property for a QtObject seems to cause segfaults.
 Item {
     id: root
+    visible: false
     //BEGIN Models and Data Sources
     // These are set in FullRepresentation.qml because the `plasmoid` context property
     // doesn't work here and using `Plasmoid` from org.kde.plasma.plasmoid doesn't work either.
