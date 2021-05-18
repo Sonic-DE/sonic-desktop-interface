@@ -14,6 +14,8 @@ import org.kde.plasma.components 3.0 as PC3
 import org.kde.plasma.extras 2.0 as PlasmaExtras
 import org.kde.kirigami 2.16 as Kirigami
 
+// ScrollView makes it difficult to get the implicit size from the contentItem.
+// Using EmptyPage instead.
 EmptyPage {
     id: root
     property alias model: view.model
@@ -26,31 +28,34 @@ EmptyPage {
     clip: view.interactive
 
     header: MouseArea {
-        implicitHeight: KickoffSingleton.backgroundMetrics.margins.top
+        implicitHeight: KickoffSingleton.listItemMetrics.margins.top
         hoverEnabled: !KickoffSingleton.filteringMouseHover
         onEntered: {
             if (containsMouse) {
                 let targetIndex = view.indexAt(mouseX + view.contentX, view.contentY)
-                view.currentIndex = targetIndex >= 0 ? targetIndex : 0
-                view.forceActiveFocus(Qt.MouseFocusReason)
+                if (targetIndex >= 0) {
+                    view.currentIndex = targetIndex
+                    view.forceActiveFocus(Qt.MouseFocusReason)
+                }
             }
         }
     }
 
     footer: MouseArea {
-        implicitHeight: KickoffSingleton.backgroundMetrics.margins.bottom
+        implicitHeight: KickoffSingleton.listItemMetrics.margins.bottom
         hoverEnabled: !KickoffSingleton.filteringMouseHover
         onEntered: {
             if (containsMouse) {
                 let targetIndex = view.indexAt(mouseX + view.contentX, view.height + view.contentY - 1)
-                view.currentIndex = targetIndex >= 0 ? targetIndex : view.count - 1
-                view.forceActiveFocus(Qt.MouseFocusReason)
+                if (targetIndex >= 0) {
+                    view.currentIndex = targetIndex
+                    view.forceActiveFocus(Qt.MouseFocusReason)
+                }
             }
         }
     }
 
     contentItem: ListView {
-        width: root.availableWidth
         id: view
 
         property real viewWidth: width - leftMargin - rightMargin
@@ -74,8 +79,8 @@ EmptyPage {
 
         implicitWidth: contentWidth + leftMargin + rightMargin
         // If either uses a grid, use grid cells to determine size
-        implicitHeight: plasmoid.configuration.favoritesDisplay == 0 || plasmoid.configuration.applicationsDisplay == 0
-            ? KickoffSingleton.gridCellSize * 4 : KickoffSingleton.listDelegateHeight * 10
+        implicitHeight: (plasmoid.configuration.favoritesDisplay == 0 || plasmoid.configuration.applicationsDisplay == 0
+            ? KickoffSingleton.gridCellSize * 4 : KickoffSingleton.listDelegateHeight * 10)
             + topMargin + bottomMargin
 
         currentIndex: count > 0 ? 0 : -1
@@ -147,6 +152,8 @@ EmptyPage {
             id: verticalScrollBar
             visible: size < 1 && policy !== PC3.ScrollBar.AlwaysOff
             z: 2
+            y: -root.implicitHeaderHeight
+            height: root.height
         }
 
         Kirigami.WheelHandler {
@@ -177,60 +184,60 @@ EmptyPage {
         }
 
         function focusCurrentItem(event, focusReason) {
-            view.currentItem.forceActiveFocus(focusReason)
+            currentItem.forceActiveFocus(focusReason)
             event.accepted = true
         }
 
         Keys.onPressed: {
-            let targetX = view.currentItem.x
-            let targetY = view.currentItem.y
-            let targetIndex = -1
-            let atFirst = view.currentIndex === 0
-            let atLast = view.currentIndex === view.count - 1
-            if (view.count > 1) {
+            let targetX = currentItem ? currentItem.x : contentX
+            let targetY = currentItem ? currentItem.y : contentY
+            let targetIndex = currentIndex
+            let atFirst = currentIndex === 0
+            let atLast = currentIndex === count - 1
+            if (count > 1) {
                 switch (event.key) {
                     case Qt.Key_Up: if (!atFirst) {
-                        view.decrementCurrentIndex()
+                        decrementCurrentIndex()
                         focusCurrentItem(event, Qt.BacktabFocusReason)
                     } break
                     case Qt.Key_Down: if (!atLast) {
-                        view.incrementCurrentIndex()
+                        incrementCurrentIndex()
                         focusCurrentItem(event, Qt.TabFocusReason)
                     } break
                     case Qt.Key_Home: if (!atFirst) {
-                        view.currentIndex = 0
+                        currentIndex = 0
                         focusCurrentItem(event, Qt.BacktabFocusReason)
                     } break
                     case Qt.Key_End: if (!atLast) {
-                        view.currentIndex = view.count - 1
+                        currentIndex = count - 1
                         focusCurrentItem(event, Qt.TabFocusReason)
                     } break
                     case Qt.Key_PageUp: if (!atFirst) {
-                        targetY = targetY - view.height + 1
-                        targetIndex = view.indexAt(targetX, targetY)
+                        targetY = targetY - height + 1
+                        targetIndex = indexAt(targetX, targetY)
                         // TODO: Find a more efficient, but accurate way to do this
                         while (targetIndex === -1) {
                             targetY += 1
-                            targetIndex = view.indexAt(targetX, targetY)
+                            targetIndex = indexAt(targetX, targetY)
                         }
-                        view.currentIndex = Math.max(targetIndex, 0)
+                        currentIndex = Math.max(targetIndex, 0)
                         focusCurrentItem(event, Qt.BacktabFocusReason)
                     } break
                     case Qt.Key_PageDown: if (!atLast) {
-                        targetY = targetY + view.height - 1
-                        targetIndex = view.indexAt(targetX, targetY)
+                        targetY = targetY + height - 1
+                        targetIndex = indexAt(targetX, targetY)
                         // TODO: Find a more efficient, but accurate way to do this
                         while (targetIndex === -1) {
                             targetY -= 1
-                            targetIndex = view.indexAt(targetX, targetY)
+                            targetIndex = indexAt(targetX, targetY)
                         }
-                        view.currentIndex = Math.min(targetIndex, view.count - 1)
+                        currentIndex = Math.min(targetIndex, count - 1)
                         focusCurrentItem(event, Qt.TabFocusReason)
                     } break
                 }
             }
-            view.movedWithKeyboard = event.accepted
-            if (view.movedWithKeyboard) {
+            movedWithKeyboard = event.accepted
+            if (movedWithKeyboard) {
                 movedWithKeyboardTimer.restart()
             }
         }

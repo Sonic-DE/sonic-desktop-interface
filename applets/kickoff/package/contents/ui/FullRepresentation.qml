@@ -14,16 +14,13 @@ import QtQuick.Templates 2.15 as T
 import QtQuick.Layouts 1.15
 import QtQml 2.15
 import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.plasma.components 2.0 as PC2
+import org.kde.plasma.extras 2.0 as PlasmaExtras
 import org.kde.plasma.private.kicker 0.1 as Kicker
 
-EmptyPage {
+PlasmaExtras.Representation {
     id: root
 
-    // Make contentItem completely fill the area of the popup below the header
-    leftPadding: -KickoffSingleton.backgroundMetrics.margins.left
-    rightPadding: -KickoffSingleton.backgroundMetrics.margins.right
-    bottomPadding: -KickoffSingleton.backgroundMetrics.margins.bottom
+    collapseMarginsHint: true
 
     Layout.minimumWidth: implicitWidth
     Layout.minimumHeight: implicitHeight
