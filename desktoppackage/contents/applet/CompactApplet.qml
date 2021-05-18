@@ -122,16 +122,16 @@ PlasmaCore.ToolTipArea {
             var prefix;
             switch (plasmoid.location) {
                 case PlasmaCore.Types.LeftEdge:
-                    prefix = "east-active-tab";
-                    break;
-                case PlasmaCore.Types.TopEdge:
-                    prefix = "south-active-tab";
-                    break;
-                case PlasmaCore.Types.RightEdge:
                     prefix = "west-active-tab";
                     break;
-                default:
+                case PlasmaCore.Types.TopEdge:
                     prefix = "north-active-tab";
+                    break;
+                case PlasmaCore.Types.RightEdge:
+                    prefix = "east-active-tab";
+                    break;
+                default:
+                    prefix = "south-active-tab";
                 }
                 if (!hasElementPrefix(prefix)) {
                     prefix = "active-tab";
@@ -200,6 +200,26 @@ PlasmaCore.ToolTipArea {
             onActiveFocusChanged: {
                 if (activeFocus && fullRepresentation) {
                     fullRepresentation.forceActiveFocus()
+                }
+            }
+
+            PlasmaCore.SvgItem {
+                anchors {
+                    top: plasmoid.location == PlasmaCore.Types.BottomEdge ? undefined : parent.top
+                    left: plasmoid.location == PlasmaCore.Types.RightEdge ? undefined : parent.left
+                    right: plasmoid.location == PlasmaCore.Types.LeftEdge ? undefined : parent.right
+                    bottom: plasmoid.location == PlasmaCore.Types.TopEdge ? undefined : parent.bottom
+                    topMargin: plasmoid.location == PlasmaCore.Types.BottomEdge ? undefined : -popupWindow.margins.top
+                    leftMargin: plasmoid.location == PlasmaCore.Types.RightEdge ? undefined : -popupWindow.margins.left
+                    rightMargin: plasmoid.location == PlasmaCore.Types.LeftEdge ? undefined : -popupWindow.margins.right
+                    bottomMargin: plasmoid.location == PlasmaCore.Types.TopEdge ? undefined : -popupWindow.margins.bottom
+                }
+                height: (plasmoid.location == PlasmaCore.Types.TopEdge || plasmoid.location == PlasmaCore.Types.BottomEdge) ? 1 : undefined
+                width: (plasmoid.location == PlasmaCore.Types.LeftEdge || plasmoid.location == PlasmaCore.Types.RightEdge) ? 1 : undefined
+                z: 100 /* Draw the line on top of the applet */
+                elementId: (plasmoid.location == PlasmaCore.Types.TopEdge || plasmoid.location == PlasmaCore.Types.BottomEdge) ? "horizontal-line" : "vertical-line"
+                svg: PlasmaCore.Svg {
+                    imagePath: "widgets/line"
                 }
             }
         }
