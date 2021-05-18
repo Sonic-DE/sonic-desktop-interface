@@ -177,8 +177,8 @@ T.ItemDelegate {
             } else if (mouse.button === Qt.RightButton) {
                 root.forceActiveFocus(Qt.MouseFocusReason)
                 root.clicked() // does not trigger the action
-                KickoffSingleton.actionMenu.visualParent = root
-                KickoffSingleton.actionMenu.openRelative()
+                ActionMenu.menu.visualParent = root
+                ActionMenu.menu.openRelative()
             }
         }
     }
