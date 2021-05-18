@@ -61,17 +61,6 @@ Item {
 
     // Set in NormalPage.qml
     property Item footer: null
-
-    // Set in FullRepresentation.qml
-    property PC2.Menu actionMenu: PC2.Menu { // Not a QQC1 Menu. It's actually a custom QObject that uses a QMenu.
-        id: actionMenu
-        visualParent: null
-        onVisualParentChanged: {
-            if (visualParent != null) {
-                clearMenuItems()
-            }
-        }
-    }
     //END
 
     //BEGIN Reusable Objects

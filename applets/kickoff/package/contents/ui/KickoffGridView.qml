@@ -24,6 +24,8 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 3.0 as PC3
 import org.kde.kirigami 2.16 as Kirigami
 
+// ScrollView makes it difficult to get the implicit size from the contentItem.
+// Using EmptyPage instead.
 EmptyPage {
     id: root
     property alias model: view.model
@@ -35,25 +37,29 @@ EmptyPage {
     clip: view.interactive
 
     header: MouseArea {
-        implicitHeight: KickoffSingleton.backgroundMetrics.margins.top
+        implicitHeight: KickoffSingleton.listItemMetrics.margins.top
         hoverEnabled: !KickoffSingleton.filteringMouseHover
         onEntered: {
             if (containsMouse) {
                 let targetIndex = view.indexAt(mouseX + view.contentX, view.contentY)
-                view.currentIndex = targetIndex >= 0 ? targetIndex : 0
-                view.forceActiveFocus(Qt.MouseFocusReason)
+                if (targetIndex >= 0) {
+                    view.currentIndex = targetIndex
+                    view.forceActiveFocus(Qt.MouseFocusReason)
+                }
             }
         }
     }
 
     footer: MouseArea {
-        implicitHeight: KickoffSingleton.backgroundMetrics.margins.bottom
+        implicitHeight: KickoffSingleton.listItemMetrics.margins.bottom
         hoverEnabled: !KickoffSingleton.filteringMouseHover
         onEntered: {
             if (containsMouse) {
                 let targetIndex = view.indexAt(mouseX + view.contentX, view.height + view.contentY - 1)
-                view.currentIndex = targetIndex >= 0 ? targetIndex : view.count - 1
-                view.forceActiveFocus(Qt.MouseFocusReason)
+                if (targetIndex >= 0) {
+                    view.currentIndex = targetIndex
+                    view.forceActiveFocus(Qt.MouseFocusReason)
+                }
             }
         }
     }
@@ -123,6 +129,8 @@ EmptyPage {
             id: verticalScrollBar
             visible: size < 1 && policy !== PC3.ScrollBar.AlwaysOff
             z: 2
+            y: -root.implicitHeaderHeight
+            height: root.height
         }
 
         Kirigami.WheelHandler {
