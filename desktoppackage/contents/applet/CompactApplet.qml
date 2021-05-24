@@ -98,12 +98,12 @@ PlasmaCore.ToolTipArea {
     PlasmaCore.FrameSvgItem {
         id: expandedItem
 
-        property var containerLayoutObject: {
+        property var containerMargins: {
             var item = root;
             while (item.parent) {
                 item = item.parent;
                 if (item.isAppletContainer) {
-                    return item.Layout;
+                    return item.getMargins;
                 }
             }
             return undefined;
@@ -111,10 +111,10 @@ PlasmaCore.ToolTipArea {
 
         anchors {
             fill: parent
-            bottomMargin: containerLayoutObject ? -containerLayoutObject.bottomMargin : 0;
-            topMargin: containerLayoutObject ? -containerLayoutObject.topMargin : 0;
-            leftMargin: containerLayoutObject ? -containerLayoutObject.leftMargin : 0;
-            rightMargin: containerLayoutObject ? -containerLayoutObject.rightMargin : 0;
+            bottomMargin: containerMargins ? -containerMargins('bottom', true) : 0;
+            topMargin: containerMargins ? -containerMargins('top', true) : 0;
+            leftMargin: containerMargins ? -containerMargins('left', true) : 0;
+            rightMargin: containerMargins ? -containerMargins('right', true) : 0;
         }
         imagePath: "widgets/tabbar"
         visible: fromCurrentTheme && opacity > 0
