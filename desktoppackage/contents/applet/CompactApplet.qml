@@ -216,7 +216,7 @@ PlasmaCore.ToolTipArea {
                 }
                 height: (plasmoid.location == PlasmaCore.Types.TopEdge || plasmoid.location == PlasmaCore.Types.BottomEdge) ? 1 : undefined
                 width: (plasmoid.location == PlasmaCore.Types.LeftEdge || plasmoid.location == PlasmaCore.Types.RightEdge) ? 1 : undefined
-                z: 100 /* Draw the line on top of the applet */
+                z: 999 /* Draw the line on top of the applet */
                 elementId: (plasmoid.location == PlasmaCore.Types.TopEdge || plasmoid.location == PlasmaCore.Types.BottomEdge) ? "horizontal-line" : "vertical-line"
                 svg: PlasmaCore.Svg {
                     imagePath: "widgets/line"
