@@ -203,6 +203,7 @@ PlasmaCore.ToolTipArea {
                 }
             }
 
+            // Draws a line between the applet dialog and the panel
             PlasmaCore.SvgItem {
                 anchors {
                     top: plasmoid.location == PlasmaCore.Types.BottomEdge ? undefined : parent.top
