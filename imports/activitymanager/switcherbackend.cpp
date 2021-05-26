@@ -28,6 +28,8 @@
 #include <QDBusConnection>
 #include <QDBusMessage>
 #include <QDateTime>
+#include <QGuiApplication>
+#include <QWindow>
 #include <QX11Info>
 
 // Qml and QtQuick
@@ -110,6 +112,8 @@ bool x11_areModKeysDepressed(const QKeySequence &seq)
         return false;
     }
     int mod = seq[seq.count() - 1] & Qt::KeyboardModifierMask;
+    qDebug() << seq << Qt::hex << mod << int(qGuiApp->queryKeyboardModifiers()) << (qGuiApp->queryKeyboardModifiers() & mod);
+    return qGuiApp->keyboardModifiers() & mod;
 
     if (mod & Qt::SHIFT) {
         rgKeySyms[nKeySyms++] = XK_Shift_L;
@@ -132,13 +136,13 @@ bool x11_areModKeysDepressed(const QKeySequence &seq)
         rgKeySyms[nKeySyms++] = XK_Meta_L;
         rgKeySyms[nKeySyms++] = XK_Meta_R;
     }
-
     return x11_areKeySymXsDepressed(false, rgKeySyms, nKeySyms);
 }
 
 bool x11_isReverseTab(const QKeySequence &prevAction)
 {
     if (prevAction == QKeySequence(Qt::ShiftModifier | Qt::Key_Tab)) {
+        qDebug() << prevAction << x11_areModKeysDepressed(Qt::SHIFT);
         return x11_areModKeysDepressed(Qt::SHIFT);
     } else {
         return false;
@@ -263,7 +267,7 @@ SwitcherBackend::SwitcherBackend(QObject *parent)
 
     connect(this, &SwitcherBackend::shouldShowSwitcherChanged, m_runningActivitiesModel, &SortedActivitiesModel::setInhibitUpdates);
 
-    m_modKeyPollingTimer.setInterval(100);
+    m_modKeyPollingTimer.setInterval(1000);
     connect(&m_modKeyPollingTimer, &QTimer::timeout, this, &SwitcherBackend::showActivitySwitcherIfNeeded);
 
     m_dropModeHider.setInterval(500);
@@ -274,10 +278,22 @@ SwitcherBackend::SwitcherBackend(QObject *parent)
 
     connect(&m_activities, &KActivities::Controller::currentActivityChanged, this, &SwitcherBackend::onCurrentActivityChanged);
     m_previousActivity = m_activities.currentActivity();
+    qGuiApp->installEventFilter(this);
 }
 
 SwitcherBackend::~SwitcherBackend()
 {
+}
+
+bool SwitcherBackend::eventFilter(QObject *o, QEvent *e)
+{
+    if (e->type() == 6) {
+        qDebug() << "key press" << e;
+    }
+    if (e->type() == 7) {
+        qDebug() << "key relase" << e;
+    }
+    return QObject::eventFilter(o, e);
 }
 
 QObject *SwitcherBackend::instance(QQmlEngine *engine, QJSEngine *scriptEngine)
@@ -289,17 +305,11 @@ QObject *SwitcherBackend::instance(QQmlEngine *engine, QJSEngine *scriptEngine)
 
 void SwitcherBackend::keybdSwitchToNextActivity()
 {
-    if (isPlatformX11()) {
-        // If we are on X11, we have all needed features for meta+tab
-        // to work properly
-        if (x11_isReverseTab(m_actionShortcut[QString::fromLatin1(s_action_name_previous_activity)])) {
-            switchToActivity(Previous);
-        } else {
-            switchToActivity(Next);
-        }
-
+    // If we are on X11, we have all needed features for meta+tab
+    // to work properly
+    if (qGuiApp->keyboardModifiers() & m_actionShortcut[QString::fromLatin1(s_action_name_previous_activity)][0]) {
+        switchToActivity(Previous);
     } else {
-        // If we are on wayland, just switch to the next activity
         switchToActivity(Next);
     }
 }
@@ -326,8 +336,15 @@ void SwitcherBackend::switchToActivity(Direction direction)
 void SwitcherBackend::keybdSwitchedToAnotherActivity()
 {
     m_lastInvokedAction = dynamic_cast<QAction *>(sender());
-
-    QTimer::singleShot(90, this, &SwitcherBackend::showActivitySwitcherIfNeeded);
+    if (!m_shouldShowSwitcher) {
+        qDebug() << "creating invisible window";
+        m_inputWindow = new QWindow;
+        m_inputWindow->setFlags(Qt::FramelessWindowHint);
+        m_inputWindow->setGeometry(0, 0, 1, 1);
+        m_inputWindow->show();
+        m_inputWindow->requestActivate();
+    }
+    QTimer::singleShot(1000, this, &SwitcherBackend::showActivitySwitcherIfNeeded);
 }
 
 void SwitcherBackend::showActivitySwitcherIfNeeded()
@@ -336,26 +353,23 @@ void SwitcherBackend::showActivitySwitcherIfNeeded()
         return;
     }
 
+    delete m_inputWindow;
+    m_inputWindow = nullptr;
+
     auto actionName = m_lastInvokedAction->objectName();
 
     if (!m_actionShortcut.contains(actionName)) {
         return;
     }
 
-    if (isPlatformX11()) {
-        if (!x11_areModKeysDepressed(m_actionShortcut[actionName])) {
-            m_lastInvokedAction = nullptr;
-            setShouldShowSwitcher(false);
-            return;
-        }
-
-        setShouldShowSwitcher(true);
-
-    } else {
-        // We are not showing the switcher on wayland
-        // TODO: This is a regression on wayland
+    qDebug() << qGuiApp->keyboardModifiers();
+    if (!qGuiApp->keyboardModifiers() & m_actionShortcut[actionName][0]) {
+        m_lastInvokedAction = nullptr;
         setShouldShowSwitcher(false);
+        return;
     }
+
+    setShouldShowSwitcher(true);
 }
 
 void SwitcherBackend::init()
