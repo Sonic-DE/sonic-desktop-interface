@@ -80,6 +80,8 @@ public Q_SLOTS:
 
     void toggleActivityManager();
 
+    bool eventFilter(QObject *, QEvent *);
+
 private:
     template<typename Handler>
     inline void registerShortcut(const QString &actionName, const QString &name, const QKeySequence &shortcut, Handler &&handler);
@@ -107,6 +109,7 @@ private:
     bool m_shouldShowSwitcher;
     QTimer m_modKeyPollingTimer;
     QString m_previousActivity;
+    QWindow *m_inputWindow;
 
     bool m_dropModeActive;
     QTimer m_dropModeHider;
