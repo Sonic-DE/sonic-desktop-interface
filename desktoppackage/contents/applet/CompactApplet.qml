@@ -99,7 +99,7 @@ PlasmaCore.ToolTipArea {
         id: expandedItem
 
         property var containerMargins: {
-            var item = root;
+            let item = root;
             while (item.parent) {
                 item = item.parent;
                 if (item.isAppletContainer) {
