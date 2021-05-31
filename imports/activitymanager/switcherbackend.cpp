@@ -56,94 +56,22 @@ static const char *s_action_name_previous_activity = "previous activity";
 
 namespace
 {
-bool isPlatformX11()
+bool areModifiersPressed(const QKeySequence &seq)
 {
-    static const bool isX11 = QX11Info::isPlatformX11();
-    return isX11;
-}
-
-// Taken from kwin/tabbox/tabbox.cpp
-Display *x11_display()
-{
-    static Display *s_display = nullptr;
-    if (!s_display) {
-        s_display = QX11Info::display();
-    }
-    return s_display;
-}
-
-bool x11_areKeySymXsDepressed(bool bAll, const uint keySyms[], int nKeySyms)
-{
-    char keymap[32];
-
-    XQueryKeymap(x11_display(), keymap);
-
-    for (int iKeySym = 0; iKeySym < nKeySyms; iKeySym++) {
-        uint keySymX = keySyms[iKeySym];
-        uchar keyCodeX = XKeysymToKeycode(x11_display(), keySymX);
-        int i = keyCodeX / 8;
-        char mask = 1 << (keyCodeX - (i * 8));
-
-        // Abort if bad index value,
-        if (i < 0 || i >= 32)
-            return false;
-
-        // If ALL keys passed need to be depressed,
-        if (bAll) {
-            if ((keymap[i] & mask) == 0)
-                return false;
-        } else {
-            // If we are looking for ANY key press, and this key is depressed,
-            if (keymap[i] & mask)
-                return true;
-        }
-    }
-
-    // If we were looking for ANY key press, then none was found, return false,
-    // If we were looking for ALL key presses, then all were found, return true.
-    return bAll;
-}
-
-bool x11_areModKeysDepressed(const QKeySequence &seq)
-{
-    uint rgKeySyms[10];
-    int nKeySyms = 0;
     if (seq.isEmpty()) {
         return false;
     }
     int mod = seq[seq.count() - 1] & Qt::KeyboardModifierMask;
-    qDebug() << seq << Qt::hex << mod << int(qGuiApp->queryKeyboardModifiers()) << (qGuiApp->queryKeyboardModifiers() & mod);
-    return qGuiApp->keyboardModifiers() & mod;
-
-    if (mod & Qt::SHIFT) {
-        rgKeySyms[nKeySyms++] = XK_Shift_L;
-        rgKeySyms[nKeySyms++] = XK_Shift_R;
-    }
-    if (mod & Qt::CTRL) {
-        rgKeySyms[nKeySyms++] = XK_Control_L;
-        rgKeySyms[nKeySyms++] = XK_Control_R;
-    }
-    if (mod & Qt::ALT) {
-        rgKeySyms[nKeySyms++] = XK_Alt_L;
-        rgKeySyms[nKeySyms++] = XK_Alt_R;
-    }
-    if (mod & Qt::META) {
-        // It would take some code to determine whether the Win key
-        // is associated with Super or Meta, so check for both.
-        // See bug #140023 for details.
-        rgKeySyms[nKeySyms++] = XK_Super_L;
-        rgKeySyms[nKeySyms++] = XK_Super_R;
-        rgKeySyms[nKeySyms++] = XK_Meta_L;
-        rgKeySyms[nKeySyms++] = XK_Meta_R;
-    }
-    return x11_areKeySymXsDepressed(false, rgKeySyms, nKeySyms);
+    auto activeMods = qGuiApp->queryKeyboardModifiers();
+    qDebug() << seq << Qt::hex << mod << int(activeMods) << (activeMods & mod) << (seq[seq.count() - 1] & Qt::KeyboardModifierMask);
+    return activeMods & mod;
 }
 
-bool x11_isReverseTab(const QKeySequence &prevAction)
+bool isReverseTab(const QKeySequence &prevAction)
 {
     if (prevAction == QKeySequence(Qt::ShiftModifier | Qt::Key_Tab)) {
-        qDebug() << prevAction << x11_areModKeysDepressed(Qt::SHIFT);
-        return x11_areModKeysDepressed(Qt::SHIFT);
+        qDebug() << prevAction << areModifiersPressed(Qt::SHIFT);
+        return areModifiersPressed(Qt::SHIFT);
     } else {
         return false;
     }
@@ -267,7 +195,7 @@ SwitcherBackend::SwitcherBackend(QObject *parent)
 
     connect(this, &SwitcherBackend::shouldShowSwitcherChanged, m_runningActivitiesModel, &SortedActivitiesModel::setInhibitUpdates);
 
-    m_modKeyPollingTimer.setInterval(1000);
+    m_modKeyPollingTimer.setInterval(100);
     connect(&m_modKeyPollingTimer, &QTimer::timeout, this, &SwitcherBackend::showActivitySwitcherIfNeeded);
 
     m_dropModeHider.setInterval(500);
@@ -305,9 +233,7 @@ QObject *SwitcherBackend::instance(QQmlEngine *engine, QJSEngine *scriptEngine)
 
 void SwitcherBackend::keybdSwitchToNextActivity()
 {
-    // If we are on X11, we have all needed features for meta+tab
-    // to work properly
-    if (qGuiApp->keyboardModifiers() & m_actionShortcut[QString::fromLatin1(s_action_name_previous_activity)][0]) {
+    if (qGuiApp->queryKeyboardModifiers() & isReverseTab(QString::fromLatin1(s_action_name_previous_activity))) {
         switchToActivity(Previous);
     } else {
         switchToActivity(Next);
@@ -339,12 +265,12 @@ void SwitcherBackend::keybdSwitchedToAnotherActivity()
     if (!m_shouldShowSwitcher) {
         qDebug() << "creating invisible window";
         m_inputWindow = new QWindow;
-        m_inputWindow->setFlags(Qt::FramelessWindowHint);
+        //         m_inputWindow->setFlags(Qt::FramelessWindowHint);
         m_inputWindow->setGeometry(0, 0, 1, 1);
         m_inputWindow->show();
         m_inputWindow->requestActivate();
     }
-    QTimer::singleShot(1000, this, &SwitcherBackend::showActivitySwitcherIfNeeded);
+    QTimer::singleShot(90, this, &SwitcherBackend::showActivitySwitcherIfNeeded);
 }
 
 void SwitcherBackend::showActivitySwitcherIfNeeded()
@@ -361,9 +287,8 @@ void SwitcherBackend::showActivitySwitcherIfNeeded()
     if (!m_actionShortcut.contains(actionName)) {
         return;
     }
-
-    qDebug() << qGuiApp->keyboardModifiers();
-    if (!qGuiApp->keyboardModifiers() & m_actionShortcut[actionName][0]) {
+    qDebug() << m_actionShortcut[actionName] << areModifiersPressed(m_actionShortcut[actionName]);
+    if (!areModifiersPressed(m_actionShortcut[actionName])) {
         m_lastInvokedAction = nullptr;
         setShouldShowSwitcher(false);
         return;
