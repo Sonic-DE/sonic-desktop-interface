@@ -29,7 +29,7 @@
 #include <QDBusMessage>
 #include <QDateTime>
 #include <QGuiApplication>
-#include <QWindow>
+#include <QRasterWindow>
 #include <QX11Info>
 
 // Qml and QtQuick
@@ -63,14 +63,13 @@ bool areModifiersPressed(const QKeySequence &seq)
     }
     int mod = seq[seq.count() - 1] & Qt::KeyboardModifierMask;
     auto activeMods = qGuiApp->queryKeyboardModifiers();
-    qDebug() << seq << Qt::hex << mod << int(activeMods) << (activeMods & mod) << (seq[seq.count() - 1] & Qt::KeyboardModifierMask);
+    qDebug() << "queryKeyboardModifiers" << activeMods;
     return activeMods & mod;
 }
 
 bool isReverseTab(const QKeySequence &prevAction)
 {
     if (prevAction == QKeySequence(Qt::ShiftModifier | Qt::Key_Tab)) {
-        qDebug() << prevAction << areModifiersPressed(Qt::SHIFT);
         return areModifiersPressed(Qt::SHIFT);
     } else {
         return false;
@@ -263,14 +262,19 @@ void SwitcherBackend::keybdSwitchedToAnotherActivity()
 {
     m_lastInvokedAction = dynamic_cast<QAction *>(sender());
     if (!m_shouldShowSwitcher) {
-        qDebug() << "creating invisible window";
-        m_inputWindow = new QWindow;
-        //         m_inputWindow->setFlags(Qt::FramelessWindowHint);
+        qDebug() << "creating rasterWindow";
+        // create a new Window so the compositor sends us modifier info
+        auto m_inputWindow = new QRasterWindow;
         m_inputWindow->setGeometry(0, 0, 1, 1);
         m_inputWindow->show();
-        m_inputWindow->requestActivate();
+        m_inputWindow->update();
+        connect(m_inputWindow, &QWindow::activeChanged, this, [m_inputWindow, this] {
+           delete m_inputWindow;
+           showActivitySwitcherIfNeeded();
+        });
+    } else {
+        QTimer::singleShot(100, this, &SwitcherBackend::showActivitySwitcherIfNeeded);
     }
-    QTimer::singleShot(90, this, &SwitcherBackend::showActivitySwitcherIfNeeded);
 }
 
 void SwitcherBackend::showActivitySwitcherIfNeeded()
@@ -278,16 +282,13 @@ void SwitcherBackend::showActivitySwitcherIfNeeded()
     if (!m_lastInvokedAction || m_dropModeActive) {
         return;
     }
-
-    delete m_inputWindow;
-    m_inputWindow = nullptr;
-
+    
     auto actionName = m_lastInvokedAction->objectName();
 
     if (!m_actionShortcut.contains(actionName)) {
         return;
     }
-    qDebug() << m_actionShortcut[actionName] << areModifiersPressed(m_actionShortcut[actionName]);
+
     if (!areModifiersPressed(m_actionShortcut[actionName])) {
         m_lastInvokedAction = nullptr;
         setShouldShowSwitcher(false);

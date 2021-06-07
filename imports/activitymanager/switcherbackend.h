@@ -109,7 +109,6 @@ private:
     bool m_shouldShowSwitcher;
     QTimer m_modKeyPollingTimer;
     QString m_previousActivity;
-    QWindow *m_inputWindow;
 
     bool m_dropModeActive;
     QTimer m_dropModeHider;
