@@ -78,9 +78,6 @@ Item {
     property bool reverseVerticalLayout: false
     property bool inPanel: false
     property bool vertical: false
-
-    // Set in Footer.qml
-    property bool filteringMouseHover: false
     //END
 
     //BEGIN Metrics
