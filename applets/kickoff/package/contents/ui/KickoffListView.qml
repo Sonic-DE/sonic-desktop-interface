@@ -29,7 +29,7 @@ EmptyPage {
 
     header: MouseArea {
         implicitHeight: KickoffSingleton.listItemMetrics.margins.top
-        hoverEnabled: !KickoffSingleton.filteringMouseHover
+        hoverEnabled: true
         onEntered: {
             if (containsMouse) {
                 let targetIndex = view.indexAt(mouseX + view.contentX, view.contentY)
@@ -43,7 +43,7 @@ EmptyPage {
 
     footer: MouseArea {
         implicitHeight: KickoffSingleton.listItemMetrics.margins.bottom
-        hoverEnabled: !KickoffSingleton.filteringMouseHover
+        hoverEnabled: true
         onEntered: {
             if (containsMouse) {
                 let targetIndex = view.indexAt(mouseX + view.contentX, view.height + view.contentY - 1)
