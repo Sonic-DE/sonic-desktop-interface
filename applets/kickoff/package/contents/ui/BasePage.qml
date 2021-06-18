@@ -53,7 +53,6 @@ FocusScope {
             id: sideBarLoader
             anchors.fill: parent
             // backtab is implicitly set by the last button in Header.qml
-            KeyNavigation.right: root.contentAreaItem
             KeyNavigation.tab: root.contentAreaItem
         }
     }
@@ -78,7 +77,6 @@ FocusScope {
             top: parent.top
             bottom: parent.bottom
         }
-        KeyNavigation.left: root.sideBarItem
         KeyNavigation.backtab: root.sideBarItem
         // Tab should go to the start of the footer focus chain
         KeyNavigation.tab: KickoffSingleton.footer.nextItemInFocusChain()
