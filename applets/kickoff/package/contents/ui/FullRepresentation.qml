@@ -53,7 +53,6 @@ PlasmaExtras.Representation {
     header: Header {
         id: header
         focus: true
-        KeyNavigation.down: normalPage.T.StackView.status === T.StackView.Active ? normalPage.contentItem : contentItemStackView.currentItem
         Binding {
             target: KickoffSingleton
             property: "header"
@@ -82,8 +81,6 @@ PlasmaExtras.Representation {
                 activeFocusOnTab: true
                 // always focus the first item in the header focus chain
                 KeyNavigation.tab: root.header.nextItemInFocusChain()
-                KeyNavigation.up: null
-                Keys.onUpPressed: KickoffSingleton.searchField.forceActiveFocus(Qt.BacktabFocusReason)
                 T.StackView.onActivated: {
                     KickoffSingleton.sideBarView = null
                     KickoffSingleton.contentAreaView = searchView
