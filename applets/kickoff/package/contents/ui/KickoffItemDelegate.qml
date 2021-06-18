@@ -156,7 +156,7 @@ T.ItemDelegate {
         anchors.margins: 1
         anchors.leftMargin: root.extendHoverMargins ? (!mirrored ? -root.view.leftMargin : -root.view.rightMargin) : anchors.margins
         anchors.rightMargin: root.extendHoverMargins ? (mirrored ? -root.view.rightMargin : -root.view.leftMargin) : anchors.margins
-        hoverEnabled: !KickoffSingleton.filteringMouseHover && root.view && !root.view.movedWithKeyboard
+        hoverEnabled: root.view && !root.view.movedWithKeyboard
         acceptedButtons: Qt.LeftButton | Qt.RightButton
         // Using onPositionChanged instead of onEntered to prevent changing
         // categories while scrolling with the mouse wheel.
