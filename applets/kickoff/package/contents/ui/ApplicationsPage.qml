@@ -20,15 +20,12 @@ BasePage {
     }
     contentAreaComponent: VerticalStackView {
         id: stackView
-        readonly property string preferredFavoritesViewObjectName: plasmoid.configuration.favoritesDisplay == 0 ? "favoritesGridViewComponent" : "favoritesListViewComponent"
+        readonly property string preferredFavoritesViewObjectName: plasmoid.configuration.favoritesDisplay == 0 ? "favoritesGridView" : "favoritesListView"
         readonly property Component preferredFavoritesViewComponent: plasmoid.configuration.favoritesDisplay == 0 ? favoritesGridViewComponent : favoritesListViewComponent
         readonly property string preferredAppsViewObjectName: plasmoid.configuration.applicationsDisplay == 0 ? "applicationsGridView" : "applicationsListView"
         readonly property Component preferredAppsViewComponent: plasmoid.configuration.applicationsDisplay == 0 ? applicationsGridViewComponent : applicationsListViewComponent
-
-        // TODO: find a better way to detect when a new model is null and keep the old model
-        // instead of using 2 model properties
-        property var testModel: KickoffSingleton.rootModel.modelForRow(root.sideBarItem.currentIndex)
-        property var appsModel
+        // NOTE: The 0 index modelForRow isn't supposed to be used. That's just how it works.
+        property Kicker.AppsModel appsModel: KickoffSingleton.rootModel.modelForRow(root.sideBarItem.currentIndex)
         focus: true
         initialItem: preferredFavoritesViewComponent
 
@@ -85,22 +82,21 @@ BasePage {
             }
         }
 
-        onTestModelChanged: {
-            if (testModel != null) {
-                appsModel = testModel
-            }
-        }
-
         Connections {
             target: root.sideBarItem
             function onCurrentIndexChanged() {
-                if (root.sideBarItem.currentIndex === 0) {
+                if (root.sideBarItem.currentIndex === 0
+                    && stackView.currentItem.objectName !== stackView.preferredFavoritesViewObjectName) {
                     stackView.replace(stackView.preferredFavoritesViewComponent)
-                } else if (root.sideBarItem.currentIndex === 1 && stackView.currentItem.objectName !== "applicationsListView") {
+                } else if (root.sideBarItem.currentIndex === 1
+                    && stackView.appsModel != null
+                    && stackView.currentItem.objectName !== "applicationsListView") {
                     // Always use list view for alphabetical apps view since grid view doesn't have sections
                     // TODO: maybe find a way to have a list view with grids in each section?
                     stackView.replace(applicationsListViewComponent)
-                } else if (root.sideBarItem.currentIndex > 1 && stackView.currentItem.objectName !== stackView.preferredAppsViewObjectName) {
+                } else if (root.sideBarItem.currentIndex > 1
+                    && stackView.appsModel != null
+                    && stackView.currentItem.objectName !== stackView.preferredAppsViewObjectName) {
                     stackView.replace(stackView.preferredAppsViewComponent)
                 }
             }
