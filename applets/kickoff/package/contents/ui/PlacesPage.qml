@@ -47,10 +47,9 @@ BasePage {
         ListElement { display: "Frequently Used"; decoration: "clock" }
         Component.onCompleted: {
             // Can't use a function in a QML ListElement declaration
-            placesCategoryModel.setProperty(0, "display", i18n("Computer"))
-            placesCategoryModel.setProperty(1, "display", i18n("History"))
-            placesCategoryModel.setProperty(2, "display", i18n("Frequently Used"))
-
+            placesCategoryModel.setProperty(0, "display", i18nc("category in Places sidebar", "Computer"))
+            placesCategoryModel.setProperty(1, "display", i18nc("category in Places sidebar", "History"))
+            placesCategoryModel.setProperty(2, "display", i18nc("category in Places sidebar", "Frequently Used"))
             if (KickoffSingleton.powerManagement.data["PowerDevil"]
                 && KickoffSingleton.powerManagement.data["PowerDevil"]["Is Lid Present"]) {
                 placesCategoryModel.setProperty(0, "decoration", "computer-laptop")
