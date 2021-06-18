@@ -212,9 +212,11 @@ PlasmaExtras.PlasmoidHeading {
                     }
                 }
             }
-            onTextChanged: {
-                if (!activeFocus) {
-                    forceActiveFocus()
+            Shortcut {
+                sequence: StandardKey.Find
+                onActivated: {
+                    searchField.forceActiveFocus(Qt.ShortcutFocusReason)
+                    searchField.selectAll()
                 }
             }
             onAccepted: {
