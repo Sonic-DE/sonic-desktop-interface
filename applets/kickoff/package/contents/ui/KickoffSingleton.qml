@@ -43,6 +43,14 @@ Item {
     readonly property PlasmaCore.DataSource powerManagement: PlasmaCore.DataSource {
         engine: "powermanagement"
         connectedSources: ["PowerDevil"]
+        // For some reason, these signal handlers need to be here for `data` to actually contain data.
+        onSourceAdded: {
+            disconnectSource(source);
+            connectSource(source);
+        }
+        onSourceRemoved: {
+            disconnectSource(source);
+        }
     }
     //END
 
