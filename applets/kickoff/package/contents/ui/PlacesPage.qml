@@ -29,17 +29,13 @@ BasePage {
         // use same width as applicationsGridView
         implicitWidth: KickoffSingleton.gridCellSize * 4 + leftPadding + rightPadding
         objectName: "frequentlyUsedView"
-        model: {
-            switch (root.sideBarItem.currentIndex) {
-                case 0: return KickoffSingleton.computerModel
-                case 1: return KickoffSingleton.recentUsageModel
-                case 2: return KickoffSingleton.frequentUsageModel
-            }
+        model: switch (root.sideBarItem.currentIndex) {
+            case 0: return KickoffSingleton.computerModel
+            case 1: return KickoffSingleton.recentUsageModel
+            case 2: return KickoffSingleton.frequentUsageModel
         }
-        onActiveFocusChanged: {
-            if (activeFocus && count <= 0) {
-                root.sideBarItem.forceActiveFocus()
-            }
+        onActiveFocusChanged: if (activeFocus && count < 1) {
+            root.sideBarItem.forceActiveFocus()
         }
     }
 
