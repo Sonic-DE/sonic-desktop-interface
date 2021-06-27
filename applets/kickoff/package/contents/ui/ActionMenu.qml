@@ -17,104 +17,69 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PC2
 import org.kde.plasma.components 3.0 as PC3
 import org.kde.plasma.private.kicker 0.1 as Kicker
+import "code/tools.js" as Tools
 
 Item {
     id: root
-    visible: false
-
-    property var modelData: null
-    property var actionList: null
+    property var actionList: menu.visualParent ? menu.visualParent.actionList : null
+    // Workaround for `plasmoid` context property not working in singletons
+    readonly property var plasmoid: KickoffSingleton.plasmoid
 
     // Not a QQC1 Menu. It's actually a custom QObject that uses a QMenu.
-    property PC2.Menu menu: PC2.Menu {
+    readonly property PC2.Menu menu: PC2.Menu {
         id: menu
-        placement: root.placement
-        visualParent: root.visualParent
-        //onVisualParentChanged: {
-            //if (visualParent != null) {
-                //clearMenuItems()
-            //}
-        //}
+        visualParent: root.parent
     }
 
+    visible: false
+
     Instantiator {
-        id: instantiator
-        model: 3
-        delegate: PC2.MenuItem {
-            text: "asdf " + index
-        }
+        active: actionList != null
+        model: actionList
+        delegate: menuItemComponent
         onObjectAdded: menu.addMenuItem(object)
         onObjectRemoved: menu.removeMenuItem(object)
     }
 
-    signal actionClicked(string actionId, var actionArgument)
+    Component { id: menuComponent; PC2.Menu {} }
 
-    //onActionListChanged: refreshMenu();
-
-    function refreshMenu() {
-        if (menu != null) {
-            menu.clearMenuItems();
-        }
-
-        if (!actionList) {
-            return;
-        }
-
-        // actionList.forEach(function(actionItem) {
-        //     var item = contextMenuItemComponent.createObject(menu, {
-        //         "actionItem": actionItem,
-        //     });
-        // });
-
-        fillMenu(menu, actionList);
-    }
-
-    function fillMenu(menu, items) {
-        items.forEach((actionItem) => {
-            if (actionItem.subActions) {
-                // This is a menu
-                var submenuItem = contextSubmenuItemComponent.createObject(menu, { "actionItem" : actionItem });
-                fillMenu(submenuItem.submenu, actionItem.subActions);
+    Component {
+        id: menuItemComponent
+        PC2.MenuItem {
+            id: menuItem
+            required property var modelData
+            property PC2.Menu subMenu: if (modelData.subActions) {
+                return menuComponent.createObject(menuItem, {visualParent: menuItem.action})
             } else {
-                var item = contextMenuItemComponent.createObject(menu, { "actionItem": actionItem });
+                return null
             }
-        });
-    }
 
-    Component {
-        id: contextSubmenuItemComponent
+            text: modelData.text ? modelData.text : ""
+            enabled: modelData.type !== "title" && ("enabled" in modelData ? modelData.enabled : true)
+            separator: modelData.type === "separator"
+            section: modelData.type === "title"
+            icon: modelData.icon ? modelData.icon : null
+            checkable: modelData.hasOwnProperty("checkable") ? modelData.checkable : false
+            checked: modelData.hasOwnProperty("checked") ? modelData.checked : false
 
-        PC2.MenuItem {
-            id: submenuItem
-
-            property var actionItem
-
-            text: actionItem.text ? actionItem.text : ""
-            icon: actionItem.icon ? actionItem.icon : null
-
-            property var submenu: PC2.Menu {
-                id: submenu_
-                visualParent: submenuItem.action
+            Instantiator {
+                active: menuItem.subMenu != null
+                model: modelData.subActions
+                delegate: menuItemComponent
+                onObjectAdded: subMenu.addMenuItem(object)
+                onObjectRemoved: subMenu.removeMenuItem(object)
             }
-        }
-    }
-
-    Component {
-        id: contextMenuItemComponent
-
-        PC2.MenuItem {
-            property var actionItem
-
-            text      : actionItem.text ? actionItem.text : ""
-            enabled   : actionItem.type !== "title" && ("enabled" in actionItem ? actionItem.enabled : true)
-            separator : actionItem.type === "separator"
-            section   : actionItem.type === "title"
-            icon      : actionItem.icon ? actionItem.icon : null
-            checkable : actionItem.checkable ? actionItem.checkable : false
-            checked   : actionItem.checked ? actionItem.checked : false
 
             onClicked: {
-                root.actionClicked(actionItem.actionId, actionItem.actionArgument);
+                const modelActionTriggered = Tools.triggerAction(
+                    menu.visualParent.view.model,
+                    menu.visualParent.index,
+                    modelData.actionId,
+                    modelData.actionArgument
+                )
+                if (modelActionTriggered) {
+                    root.plasmoid.expanded = false
+                }
             }
         }
     }

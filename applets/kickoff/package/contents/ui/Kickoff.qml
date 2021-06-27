@@ -121,6 +121,14 @@ Item {
         id: processRunner;
     }
 
+    // Workaround for `plasmoid` context property not working in singletons
+    // and `Plasmoid` not giving access to the plasmoid either.
+    Binding {
+        target: KickoffSingleton
+        property: "plasmoid"
+        value: plasmoid
+        restoreMode: Binding.RestoreBindingOrValue
+    }
     Binding {
         target: KickoffSingleton
         property: "reverseVerticalLayout"
