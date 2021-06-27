@@ -27,8 +27,7 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PC2 // for Menu + MenuItem
 import org.kde.plasma.components 3.0 as PC3
 import org.kde.kirigami 2.16 as Kirigami
-
-//import "code/tools.js" as Tools
+import "code/tools.js" as Tools
 
 T.ItemDelegate {
     id: root
@@ -43,8 +42,24 @@ T.ItemDelegate {
     property alias mouseArea: mouseArea
     readonly property bool textUnderIcon: display === PC3.AbstractButton.TextUnderIcon
     property bool extendHoverMargins: false
-    readonly property bool hasActionList: model && ((model.favoriteId !== null)
-        || (("hasActionList" in model) && (model.hasActionList === true)))
+    readonly property var actionList: {
+        const hasActionList = model && (model.favoriteId !== null || ("hasActionList" in model && model.hasActionList === true))
+        if (!hasActionList) {
+            return null
+        }
+
+        let allActions = model.actionList
+        const favoriteActions = Tools.createFavoriteActions(i18n, view.model.favoritesModel, model.favoriteId)
+        if (favoriteActions) {
+            if (allActions && allActions.length > 0) {
+                allActions.push({ "type": "separator" });
+                allActions.push.apply(allActions, favoriteActions);
+            } else {
+                allActions = favoriteActions;
+            }
+        }
+        return allActions
+    }
 
     implicitWidth: Math.max(implicitBackgroundWidth + leftInset + rightInset,
                             implicitContentWidth + leftPadding + rightPadding,
