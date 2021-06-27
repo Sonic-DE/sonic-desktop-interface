@@ -2,21 +2,15 @@
     SPDX-FileCopyrightText: 2013 Aurélien Gâteau <agateau@kde.org>
     SPDX-FileCopyrightText: 2014-2015 Eike Hein <hein@kde.org>
     SPDX-FileCopyrightText: 2021 Mikel Johnson <mikel5764@gmail.com>
+    SPDX-FileCopyrightText: 2021 Noah Davis <noahadvs@gmail.com>
 
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 
 pragma Singleton
 
-import QtQml.Models 2.15
 import QtQuick 2.15
-import QtQuick.Templates 2.15 as T
-import Qt.labs.platform 1.1 as Platform
-import QtQml 2.15
-import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PC2
-import org.kde.plasma.components 3.0 as PC3
-import org.kde.plasma.private.kicker 0.1 as Kicker
 import "code/tools.js" as Tools
 
 Item {
