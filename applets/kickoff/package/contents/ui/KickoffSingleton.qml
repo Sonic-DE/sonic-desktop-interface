@@ -18,9 +18,13 @@ import org.kde.plasma.private.kicker 0.1 as Kicker
 Item {
     id: root
     visible: false
+    // Workaround for `plasmoid` context property not working in singletons
+    property var plasmoid: null
     //BEGIN Models and Data Sources
     // These are set in FullRepresentation.qml because the `plasmoid` context property
     // doesn't work here and using `Plasmoid` from org.kde.plasma.plasmoid doesn't work either.
+    // Even the `plasmoid` property defined above doesn't quite work,
+    // but it works better than nothing for things like `plasmoid.expanded`
     property Kicker.RootModel rootModel
     property Kicker.RunnerModel runnerModel
     property Kicker.ComputerModel computerModel
