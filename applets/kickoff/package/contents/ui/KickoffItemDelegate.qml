@@ -4,6 +4,7 @@
     Copyright 2014 Sebastian Kügler <sebas@kde.org>
     Copyright (C) 2015-2018  Eike Hein <hein@kde.org>
     Copyright (C) 2021 by Mikel Johnson <mikel5764@gmail.com>
+    Copyright (C) 2021 by Noah Davis <noahadvs@gmail.com>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -22,9 +23,7 @@
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Templates 2.15 as T
-import QtQml 2.15
 import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.plasma.components 2.0 as PC2 // for Menu + MenuItem
 import org.kde.plasma.components 3.0 as PC3
 import org.kde.kirigami 2.16 as Kirigami
 import "code/tools.js" as Tools
