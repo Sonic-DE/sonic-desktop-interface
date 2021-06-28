@@ -243,6 +243,7 @@ MouseArea {
     }
 
     function showContextMenu(args) {
+        toolTipArea.hideImmediately();
         contextMenu = tasks.createContextMenu(task, modelIndex(), args);
         contextMenu.show();
     }
