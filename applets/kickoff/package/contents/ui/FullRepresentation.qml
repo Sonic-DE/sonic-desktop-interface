@@ -39,11 +39,10 @@ PlasmaExtras.Representation {
      * set `event.accepted = true`.
      *
      * - If you do `item.forceActiveFocus()` and `item` is a focus scope, the
-     * children of `item` won't necessarily get focus. It seems like Keys is
-     * better for forcing a specific thing to be focused while KeyNavigation is
-     * better at passing focus down to children of the thing you want to focus
-     * when dealing with focus scopes.
-     * This is why a mixture of Keys and KeyNavigation are used.
+     * children of `item` won't necessarily get focus. It seems like
+     * `forceActiveFocus()` is better for forcing a specific thing to be focused
+     * while KeyNavigation is better at passing focus down to children of the
+     * thing you want to focus when dealing with focus scopes.
      *
      * - KeyNavigation uses BacktabFocusReason (TabFocusReason if mirrored) for left,
      * TabFocusReason (BacktabFocusReason if mirrored) for right,
