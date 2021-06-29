@@ -41,24 +41,8 @@ T.ItemDelegate {
     property alias mouseArea: mouseArea
     readonly property bool textUnderIcon: display === PC3.AbstractButton.TextUnderIcon
     property bool extendHoverMargins: false
-    readonly property var actionList: {
-        const hasActionList = model && (model.favoriteId !== null || ("hasActionList" in model && model.hasActionList === true))
-        if (!hasActionList) {
-            return null
-        }
-
-        let allActions = model.actionList
-        const favoriteActions = Tools.createFavoriteActions(i18n, view.model.favoritesModel, model.favoriteId)
-        if (favoriteActions) {
-            if (allActions && allActions.length > 0) {
-                allActions.push({ "type": "separator" });
-                allActions.push.apply(allActions, favoriteActions);
-            } else {
-                allActions = favoriteActions;
-            }
-        }
-        return allActions
-    }
+    readonly property bool hasActionList: model && (model.favoriteId !== null || ("hasActionList" in model && model.hasActionList === true))
+    property var actionList: null
 
     implicitWidth: Math.max(implicitBackgroundWidth + leftInset + rightInset,
                             implicitContentWidth + leftPadding + rightPadding,
@@ -191,6 +175,20 @@ T.ItemDelegate {
             } else if (mouse.button === Qt.RightButton) {
                 root.forceActiveFocus(Qt.MouseFocusReason)
                 root.clicked() // does not trigger the action
+                // fill actionList when needed to prevent slowness when changing app categories rapidly.
+                if (root.actionList == null && root.hasActionList) {
+                    let allActions = model.actionList
+                    const favoriteActions = Tools.createFavoriteActions(i18n, view.model.favoritesModel, model.favoriteId)
+                    if (favoriteActions) {
+                        if (allActions && allActions.length > 0) {
+                            allActions.push({ "type": "separator" });
+                            allActions.push.apply(allActions, favoriteActions);
+                        } else {
+                            allActions = favoriteActions;
+                        }
+                    }
+                    root.actionList = allActions
+                }
                 ActionMenu.menu.visualParent = root
                 ActionMenu.menu.open(mouseX, mouseY)
             }
