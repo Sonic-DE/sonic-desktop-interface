@@ -68,6 +68,9 @@ EmptyPage {
 
         leftMargin: verticalScrollBar.width
         rightMargin: verticalScrollBar.width
+        // extra on top and bottom
+        topMargin: root.implicitHeaderHeight
+        bottomMargin: root.implicitFooterHeight
 
         cellHeight: KickoffSingleton.gridCellSize
         cellWidth: KickoffSingleton.gridCellSize
