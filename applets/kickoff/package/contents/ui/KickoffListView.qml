@@ -65,6 +65,9 @@ EmptyPage {
 
         leftMargin: verticalScrollBar.width
         rightMargin: verticalScrollBar.width
+        // extra on top and bottom
+        topMargin: root.implicitHeaderHeight
+        bottomMargin: root.implicitFooterHeight
 
         // Currently narrator only notifies about focus changes
         // That means that if item has focus narrator won't notify about name/description changes, like count changing
