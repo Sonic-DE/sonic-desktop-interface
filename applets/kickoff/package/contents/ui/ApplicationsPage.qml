@@ -25,7 +25,7 @@ BasePage {
         readonly property string preferredAppsViewObjectName: plasmoid.configuration.applicationsDisplay == 0 ? "applicationsGridView" : "applicationsListView"
         readonly property Component preferredAppsViewComponent: plasmoid.configuration.applicationsDisplay == 0 ? applicationsGridViewComponent : applicationsListViewComponent
         // NOTE: The 0 index modelForRow isn't supposed to be used. That's just how it works.
-        property Kicker.AppsModel appsModel: KickoffSingleton.rootModel.modelForRow(root.sideBarItem.currentIndex)
+        property Kicker.AppsModel appsModel: KickoffSingleton.rootModel.modelForRow(Math.max(1, root.sideBarItem.currentIndex))
         focus: true
         initialItem: preferredFavoritesViewComponent
 
@@ -89,13 +89,11 @@ BasePage {
                     && stackView.currentItem.objectName !== stackView.preferredFavoritesViewObjectName) {
                     stackView.replace(stackView.preferredFavoritesViewComponent)
                 } else if (root.sideBarItem.currentIndex === 1
-                    && stackView.appsModel != null
                     && stackView.currentItem.objectName !== "applicationsListView") {
                     // Always use list view for alphabetical apps view since grid view doesn't have sections
                     // TODO: maybe find a way to have a list view with grids in each section?
                     stackView.replace(applicationsListViewComponent)
                 } else if (root.sideBarItem.currentIndex > 1
-                    && stackView.appsModel != null
                     && stackView.currentItem.objectName !== stackView.preferredAppsViewObjectName) {
                     stackView.replace(stackView.preferredAppsViewComponent)
                 }
