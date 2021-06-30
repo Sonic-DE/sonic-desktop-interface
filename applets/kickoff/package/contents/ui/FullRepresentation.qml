@@ -51,7 +51,6 @@ PlasmaExtras.Representation {
 
     header: Header {
         id: header
-        focus: true
         Binding {
             target: KickoffSingleton
             property: "header"
@@ -62,6 +61,7 @@ PlasmaExtras.Representation {
 
     contentItem: VerticalStackView {
         id: contentItemStackView
+        focus: true
         movementTransitionsEnabled: true
         // Not using a component to prevent it from being destroyed
         initialItem: NormalPage {
