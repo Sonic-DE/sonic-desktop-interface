@@ -25,7 +25,7 @@ BasePage {
         readonly property string preferredAppsViewObjectName: plasmoid.configuration.applicationsDisplay == 0 ? "applicationsGridView" : "applicationsListView"
         readonly property Component preferredAppsViewComponent: plasmoid.configuration.applicationsDisplay == 0 ? applicationsGridViewComponent : applicationsListViewComponent
         // NOTE: The 0 index modelForRow isn't supposed to be used. That's just how it works.
-        property Kicker.AppsModel appsModel: KickoffSingleton.rootModel.modelForRow(Math.max(1, root.sideBarItem.currentIndex))
+        property Kicker.AppsModel appsModel: KickoffSingleton.rootModel.modelForRow(1)
         focus: true
         initialItem: preferredFavoritesViewComponent
 
@@ -85,6 +85,11 @@ BasePage {
         Connections {
             target: root.sideBarItem
             function onCurrentIndexChanged() {
+                if (root.sideBarItem.currentIndex > 0) {
+                    if (sideBarItem.currentItem.model.hasChildren) {
+                        stackView.appsModel = KickoffSingleton.rootModel.modelForRow(root.sideBarItem.currentIndex)
+                    }
+                }
                 if (root.sideBarItem.currentIndex === 0
                     && stackView.currentItem.objectName !== stackView.preferredFavoritesViewObjectName) {
                     stackView.replace(stackView.preferredFavoritesViewComponent)
