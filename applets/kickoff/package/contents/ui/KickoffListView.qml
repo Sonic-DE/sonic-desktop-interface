@@ -97,7 +97,6 @@ EmptyPage {
         // and eats up/down key events when at the beginning or end of the list.
         keyNavigationEnabled: false
         keyNavigationWraps: false
-    //     verticalLayoutDirection: root.upsideDown ? ListView.BottomToTop : ListView.TopToBottom
 
         // This is actually needed. The highlight will animate from thin to wide otherwise.
         highlightResizeDuration: 0
@@ -163,14 +162,6 @@ EmptyPage {
 
         Kirigami.WheelHandler {
             target: view
-        }
-
-        Binding {
-            target: KickoffSingleton
-            property: "lastFocusedView"
-            value: view
-            when: activeFocus
-            restoreMode: Binding.RestoreBinding
         }
 
         Connections {

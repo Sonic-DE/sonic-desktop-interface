@@ -83,7 +83,6 @@ PlasmaExtras.Representation {
                 T.StackView.onActivated: {
                     KickoffSingleton.sideBarView = null
                     KickoffSingleton.contentAreaView = searchView
-                    KickoffSingleton.lastFocusedView = searchView
                 }
             }
         }

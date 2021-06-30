@@ -69,9 +69,6 @@ Item {
     property Item sideBarView: null // is null when searching
     property Item contentAreaView: null // is searchView when searching
 
-    // Set in FullRepresentation.qml, ApplicationPage.qml, PlacesPage.qml, KickoffListView.qml, KickoffGridView.qml
-    property Item lastFocusedView: null
-
     // Set in NormalPage.qml
     property Item footer: null
     //END

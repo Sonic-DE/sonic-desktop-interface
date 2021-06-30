@@ -122,11 +122,4 @@ BasePage {
         when: root.T.StackView.status === T.StackView.Active && root.visible
         restoreMode: Binding.RestoreBinding
     }
-    Binding {
-        target: KickoffSingleton
-        property: "lastFocusedView"
-        value: root.contentAreaItem.currentItem // NOT just root.contentAreaItem
-        when: root.T.StackView.status === T.StackView.Active && root.visible
-        restoreMode: Binding.RestoreBinding
-    }
 }

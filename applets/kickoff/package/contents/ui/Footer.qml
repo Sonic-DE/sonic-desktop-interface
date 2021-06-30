@@ -93,7 +93,7 @@ PlasmaExtras.PlasmoidHeading {
             icon.height: PlasmaCore.Units.iconSizes.smallMedium
             icon.name: "applications-other"
             text: i18n("Applications")
-            KeyNavigation.backtab: KickoffSingleton.contentAreaView != null ? KickoffSingleton.contentAreaView : null
+            KeyNavigation.backtab: KickoffSingleton.contentAreaView ? KickoffSingleton.contentAreaView : null
         }
         PC3.TabButton {
             id: placesTab

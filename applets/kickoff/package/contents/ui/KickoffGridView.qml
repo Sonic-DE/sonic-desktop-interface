@@ -129,14 +129,6 @@ EmptyPage {
             target: view
         }
 
-        Binding {
-            target: KickoffSingleton
-            property: "lastFocusedView"
-            value: view
-            when: activeFocus
-            restoreMode: Binding.RestoreBinding
-        }
-
         Connections {
             target: plasmoid
             function onExpandedChanged() {
