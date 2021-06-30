@@ -254,14 +254,10 @@ PlasmaExtras.PlasmoidHeading {
                 value: !plasmoid.configuration.pin
             }
             KeyNavigation.backtab: configureButton
-            KeyNavigation.tab: {
-                if (KickoffSingleton.sideBarView != null) {
-                    return KickoffSingleton.sideBarView
-                } else if (KickoffSingleton.contentAreaView != null) {
-                    return KickoffSingleton.contentAreaView
-                } else {
-                    return nextItemInFocusChain()
-                }
+            KeyNavigation.tab: if (KickoffSingleton.sideBarView) {
+                return KickoffSingleton.sideBarView
+            } else {
+                return nextItemInFocusChain()
             }
             onToggled: plasmoid.configuration.pin = checked
         }
