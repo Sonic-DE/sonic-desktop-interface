@@ -299,8 +299,8 @@ void KCMKeyboardWidget::initializeLayoutsUI()
 
     uiWidget->kdeKeySequence->setModifierlessAllowed(false);
 
-    uiWidget->showOSD_Chk->setText(m_workspaceOptions.osdKbdLayoutChangedEnabledItem()->label());
-    uiWidget->showOSD_Chk->setToolTip(m_workspaceOptions.osdKbdLayoutChangedEnabledItem()->toolTip());
+    uiWidget->showOSD_Chk->setText(i18nc("@action:check Option to show on screen display", "OSD on layout change"));
+    uiWidget->showOSD_Chk->setToolTip(i18nc("@info:tooltip", "Show a popup on layout changes"));
 
     connect(uiWidget->addLayoutBtn, &QAbstractButton::clicked, this, &KCMKeyboardWidget::addLayout);
     connect(uiWidget->removeLayoutBtn, &QAbstractButton::clicked, this, &KCMKeyboardWidget::removeLayout);
