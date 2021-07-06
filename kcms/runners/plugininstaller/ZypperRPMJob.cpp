@@ -39,7 +39,7 @@ void ZypperRPMJob::executeOperation(const QFileInfo &fileInfo, const QString &mi
             }
         });
         connect(process, &QProcess::errorOccurred, this, [this, process](QProcess::ProcessError) {
-            Q_EMIT error(i18nc("@info", "Failed to run install script in terminal \"%1\"", process->program()));
+            Q_EMIT error(i18nc("@info", "Failed to run install command: <message>%1</message>", process->errorString()));
         });
     }
 }
