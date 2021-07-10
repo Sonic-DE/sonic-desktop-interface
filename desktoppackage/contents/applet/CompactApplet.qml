@@ -151,7 +151,7 @@ PlasmaCore.ToolTipArea {
 
     Connections {
         target: plasmoid
-        function onContextualActionsAboutToShow() { root.hideToolTip() }
+        function onContextualActionsAboutToShow() { root.hideImmediately() }
     }
 
     PlasmaCore.Dialog {
