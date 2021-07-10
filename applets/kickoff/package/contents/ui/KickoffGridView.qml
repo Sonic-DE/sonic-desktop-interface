@@ -64,16 +64,31 @@ EmptyPage {
 //         Accessible.role: Accessible.List
         //Accessible.description: i18n("Grid with %1 rows, %2 columns", rows, columns) // can't use i18np here
 
-        implicitWidth: view.cellHeight * 4 + leftMargin + rightMargin
+        implicitWidth: {
+            if (plasmoid.configuration.favoritesDisplay === 0
+                && plasmoid.configuration.applicationsDisplay !== 0
+                && KickoffSingleton.rootModel.favoritesModel.count <= 16) {
+                return KickoffSingleton.gridCellSize * 4
+                    + KickoffSingleton.leftPadding
+                    + KickoffSingleton.rightPadding
+            } else if (plasmoid.configuration.favoritesDisplay === 0
+                || plasmoid.configuration.applicationsDisplay === 0) {
+                return KickoffSingleton.gridCellSize * 4
+                    + KickoffSingleton.leftPadding
+                    + KickoffSingleton.rightPadding
+                    + verticalScrollBar.implicitWidth
+            }
+            return view.cellHeight * 4 + leftMargin + rightMargin
+        }
         implicitHeight: view.cellHeight * 4 + topMargin + bottomMargin
 
-        leftMargin: if (verticalScrollBar.visible) {
-            return root.mirrored ? verticalScrollBar.width : KickoffSingleton.leftPadding
+        leftMargin: if (mirrored && verticalScrollBar.visible) {
+            return verticalScrollBar.implicitWidth + KickoffSingleton.leftPadding
         } else {
             return KickoffSingleton.leftPadding
         }
-        rightMargin: if (verticalScrollBar.visible) {
-            return root.mirrored ? KickoffSingleton.rightPadding : verticalScrollBar.width
+        rightMargin: if (!mirrored && verticalScrollBar.visible) {
+            return verticalScrollBar.implicitWidth + KickoffSingleton.rightPadding
         } else {
             return KickoffSingleton.rightPadding
         }

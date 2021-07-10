@@ -78,19 +78,36 @@ EmptyPage {
 
         Accessible.role: Accessible.List
 
-        implicitWidth: (mainContentView ? KickoffSingleton.gridCellSize * 4 : contentWidth) + leftMargin + rightMargin
+        implicitWidth: {
+            if (mainContentView) {
+                if (plasmoid.configuration.favoritesDisplay === 0
+                    && plasmoid.configuration.applicationsDisplay !== 0
+                    && KickoffSingleton.rootModel.favoritesModel.count <= 16) {
+                    return KickoffSingleton.gridCellSize * 4
+                        + KickoffSingleton.leftPadding
+                        + KickoffSingleton.rightPadding
+                } else if (plasmoid.configuration.favoritesDisplay === 0
+                    || plasmoid.configuration.applicationsDisplay === 0) {
+                    return KickoffSingleton.gridCellSize * 4
+                        + KickoffSingleton.leftPadding
+                        + KickoffSingleton.rightPadding
+                        + verticalScrollBar.implicitWidth
+                }
+            }
+            return contentWidth + leftMargin + rightMargin
+        }
         // If either uses a grid, use grid cells to determine size
         implicitHeight: (plasmoid.configuration.favoritesDisplay == 0 || plasmoid.configuration.applicationsDisplay == 0
             ? KickoffSingleton.gridCellSize * 4 : KickoffSingleton.listDelegateHeight * 10)
             + topMargin + bottomMargin
 
-        leftMargin: if (verticalScrollBar.visible) {
-            return root.mirrored ? verticalScrollBar.width : KickoffSingleton.leftPadding
+        leftMargin: if (root.mirrored && verticalScrollBar.visible) {
+            return verticalScrollBar.implicitWidth + KickoffSingleton.leftPadding
         } else {
             return KickoffSingleton.leftPadding
         }
-        rightMargin: if (verticalScrollBar.visible) {
-            return root.mirrored ? KickoffSingleton.rightPadding : verticalScrollBar.width
+        rightMargin: if (!root.mirrored && verticalScrollBar.visible) {
+            return verticalScrollBar.implicitWidth + KickoffSingleton.rightPadding
         } else {
             return KickoffSingleton.rightPadding
         }
