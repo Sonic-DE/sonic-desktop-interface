@@ -78,6 +78,7 @@ EmptyPage {
                 id: searchView
                 objectName: "searchView"
                 implicitWidth: normalPage.implicitWidth
+                implicitHeight: normalPage.implicitHeight
                 mainContentView: true
                 // Forces the function be re-run every time runnerModel.count changes.
                 // This is absolutely necessary to make the search view work reliably.
