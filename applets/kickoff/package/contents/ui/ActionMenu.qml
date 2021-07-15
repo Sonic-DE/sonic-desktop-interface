@@ -11,7 +11,7 @@ pragma Singleton
 
 import QtQuick 2.15
 import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.plasma.components 2.0 as PC2
+import org.kde.plasma.components 2.0 as PC2 // for Menu + MenuItem
 import "code/tools.js" as Tools
 
 Item {
