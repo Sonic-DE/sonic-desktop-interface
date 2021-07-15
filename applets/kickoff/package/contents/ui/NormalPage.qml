@@ -12,6 +12,7 @@ import org.kde.plasma.components 3.0 as PC3
 EmptyPage {
     id: root
     property real preferredSideBarWidth: 0
+    property real preferredSideBarHeight: 0
 
     contentItem: HorizontalStackView {
         id: stackView
@@ -22,12 +23,14 @@ EmptyPage {
             id: applicationsPage
             ApplicationsPage {
                 preferredSideBarWidth: root.preferredSideBarWidth + KickoffSingleton.backgroundMetrics.margins.left
+                preferredSideBarHeight: root.preferredSideBarHeight
             }
         }
         Component {
             id: placesPage
             PlacesPage {
                 preferredSideBarWidth: root.preferredSideBarWidth + KickoffSingleton.backgroundMetrics.margins.left
+                preferredSideBarHeight: root.preferredSideBarHeight
             }
         }
         Connections {
@@ -53,5 +56,8 @@ EmptyPage {
         }
     }
 
-    Component.onCompleted: preferredSideBarWidth = Math.max(footer.implicitTabBarWidth, stackView.currentItem ? stackView.currentItem.implicitSideBarWidth : 0)
+    Component.onCompleted: {
+        preferredSideBarWidth = Math.max(footer.implicitTabBarWidth, stackView.currentItem ? stackView.currentItem.implicitSideBarWidth : 0)
+        preferredSideBarHeight = stackView.currentItem.implicitSideBarHeight
+    }
 }
