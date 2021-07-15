@@ -66,7 +66,6 @@ EmptyPage {
         id: contentItemStackView
         focus: true
         movementTransitionsEnabled: true
-        implicitHeight: normalPage.implicitHeight + leftPadding + rightPadding
         // Not using a component to prevent it from being destroyed
         initialItem: NormalPage {
             id: normalPage
@@ -109,6 +108,12 @@ EmptyPage {
                     contentItemStackView.replace(searchViewComponent)
                 }
             }
+        }
+
+        Component.onCompleted: {
+            // Break bindings after completing to keep a consistent implicit size.
+            // It's unlikely that any more or any less width or height will be needed.
+            implicitHeight = normalPage.implicitHeight + leftPadding + rightPadding
         }
     }
 
