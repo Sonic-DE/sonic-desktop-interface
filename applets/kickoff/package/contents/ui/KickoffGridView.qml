@@ -155,6 +155,9 @@ EmptyPage {
             }
         }
 
+        // Used to block hover events temporarily after using keyboard navigation.
+        // If you have one hand on the touch pad or mouse and another hand on the keyboard,
+        // it's easy to accidentally reset the highlight/focus position to the mouse position.
         Timer {
             id: movedWithKeyboardTimer
             interval: 200
