@@ -95,7 +95,7 @@ ColumnLayout {
         RadioButton {
             id: showFavoritesInGrid
             Kirigami.FormData.label: i18n("Show favorites:")
-            text: i18n("In a grid")
+            text: i18nc("Part of a sentence: 'Show favorites in a grid'", "In a grid")
             ButtonGroup.group: favoritesDisplayGroup
             property int index: 0
             checked: plasmoid.configuration.favoritesDisplay == index
@@ -103,7 +103,7 @@ ColumnLayout {
 
         RadioButton {
             id: showFavoritesInList
-            text: i18n("In a list")
+            text: i18nc("Part of a sentence: 'Show favorites in a list'", "In a list")
             ButtonGroup.group: favoritesDisplayGroup
             property int index: 1
             checked: plasmoid.configuration.favoritesDisplay == index
@@ -112,7 +112,7 @@ ColumnLayout {
         RadioButton {
             id: showAppsInGrid
             Kirigami.FormData.label: i18n("Show other applications:")
-            text: i18n("In a grid")
+            text: i18nc("Part of a sentence: 'Show other applications in a grid'", "In a grid")
             ButtonGroup.group: applicationsDisplayGroup
             property int index: 0
             checked: plasmoid.configuration.applicationsDisplay == index
@@ -120,7 +120,7 @@ ColumnLayout {
 
         RadioButton {
             id: showAppsInList
-            text: i18n("In a list")
+            text: i18nc("Part of a sentence: 'Show other applications in a list'", "In a list")
             ButtonGroup.group: applicationsDisplayGroup
             property int index: 1
             checked: plasmoid.configuration.applicationsDisplay == index
@@ -158,7 +158,7 @@ ColumnLayout {
             }
         }
     }
-    
+
     ButtonGroup {
         id: applicationsDisplayGroup
         onCheckedButtonChanged: {
