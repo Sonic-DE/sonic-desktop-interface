@@ -77,8 +77,12 @@ T.ItemDelegate {
     implicitHeight: Math.max(implicitBackgroundHeight + topInset + bottomInset,
                              implicitContentHeight + topPadding + bottomPadding)
 
-    leftPadding: KickoffSingleton.listItemMetrics.margins.left
-    rightPadding: KickoffSingleton.listItemMetrics.margins.right
+    leftPadding: textUnderIcon ?
+        KickoffSingleton.listItemMetrics.margins.left * 2
+        : KickoffSingleton.listItemMetrics.margins.left
+    rightPadding: textUnderIcon ?
+        KickoffSingleton.listItemMetrics.margins.right * 2
+        : KickoffSingleton.listItemMetrics.margins.right
     topPadding: textUnderIcon ?
         KickoffSingleton.listItemMetrics.margins.top * 2
         : KickoffSingleton.listItemMetrics.margins.top
