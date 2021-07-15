@@ -7,7 +7,7 @@
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import org.kde.plasma.private.kicker 0.1 as Kicker
-import org.kde.plasma.components 2.0 as PlasmaComponents // for Menu + MenuItem
+import org.kde.plasma.components 2.0 as PC2 // for Menu + MenuItem
 import org.kde.plasma.components 3.0 as PC3
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.kirigami 2.16 as Kirigami
@@ -51,7 +51,7 @@ RowLayout {
         icon.name: ["system-log-out", "system-shutdown", "view-more-symbolic"][currentId];
         text: [i18n("Leave…"), i18n("Power…"), i18n("More…")][currentId]
         // Make it look pressed while the menu is open
-        down: contextMenu.status === PlasmaComponents.DialogStatus.Open || pressed
+        down: contextMenu.status === PC2.DialogStatus.Open || pressed
         PC3.ToolTip.text: [i18n("Leave"), i18n("Power"), i18n("More")][leaveButton.currentId]
         PC3.ToolTip.visible: leaveButton.display === PC3.AbstractButton.IconOnly && leaveButton.hovered
         PC3.ToolTip.delay: Kirigami.Units.toolTipDelay
@@ -61,7 +61,7 @@ RowLayout {
     Instantiator {
         model: systemModel
         // Not a QQC1 MenuItem. It's actually a custom QQuickItem.
-        delegate: PlasmaComponents.MenuItem {
+        delegate: PC2.MenuItem {
             text: model.display
             icon: model.decoration
             // TODO: Don't generate items that will never be seen. Maybe DelegateModel can help?
@@ -76,7 +76,7 @@ RowLayout {
     }
 
     // Not a QQC1 Menu. It's actually a custom QObject that uses a QMenu.
-    PlasmaComponents.Menu {
+    PC2.Menu {
         id: contextMenu
         visualParent: leaveButton
         placement: {
