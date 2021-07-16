@@ -66,16 +66,6 @@ EmptyPage {
         property real availableHeight: height - topMargin - bottomMargin
         property bool movedWithKeyboard: false
 
-        // Currently narrator only notifies about focus changes
-        // That means that if item has focus narrator won't notify about name/description changes, like count changing
-        // which is most apparent with submenus
-        // We work around this by having the first focused item having the list count and name as a description
-        // When we unfocus it goes back to only reporting it's name
-        // That way we create a seamless experience where when model changes we always report the new item count
-
-        // Determines whether or not we tell the amount of items in the list
-        property bool accessibilityCount: true
-
         Accessible.role: Accessible.List
 
         implicitWidth: {
