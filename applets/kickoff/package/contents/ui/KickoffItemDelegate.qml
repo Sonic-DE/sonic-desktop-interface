@@ -77,20 +77,12 @@ T.ItemDelegate {
     implicitHeight: Math.max(implicitBackgroundHeight + topInset + bottomInset,
                              implicitContentHeight + topPadding + bottomPadding)
 
-    leftPadding: textUnderIcon ?
-        KickoffSingleton.listItemMetrics.margins.left * 2
-        : KickoffSingleton.listItemMetrics.margins.left
-    rightPadding: textUnderIcon ?
-        KickoffSingleton.listItemMetrics.margins.right * 2
-        : KickoffSingleton.listItemMetrics.margins.right
-    topPadding: textUnderIcon ?
-        KickoffSingleton.listItemMetrics.margins.top * 2
-        : KickoffSingleton.listItemMetrics.margins.top
-    bottomPadding: textUnderIcon ?
-        KickoffSingleton.listItemMetrics.margins.bottom * 2
-        : KickoffSingleton.listItemMetrics.margins.bottom
+    leftPadding: KickoffSingleton.listItemMetrics.margins.left
+    rightPadding: KickoffSingleton.listItemMetrics.margins.right
+    topPadding: KickoffSingleton.listItemMetrics.margins.top
+    bottomPadding: KickoffSingleton.listItemMetrics.margins.bottom
 
-    spacing: textUnderIcon ? 0 : PlasmaCore.Units.smallSpacing
+    spacing: PlasmaCore.Units.smallSpacing
 
     enabled: !model.disabled
     hoverEnabled: false
