@@ -190,20 +190,4 @@ EmptyPage {
         ordering: 1 // Popular / Frequently Used
         Component.onCompleted: KickoffSingleton.frequentUsageModel = Qt.binding(() => { return frequentUsageModel })
     }
-
-    //Connections {
-        //target: computerModel
-
-        //function onSystemApplicationsChanged() {
-            //plasmoid.configuration.systemApplications = target.systemApplications;
-        //}
-    //}
-
-    //Connections {
-        //target: plasmoid.configuration
-
-        //function onSystemApplicationsChanged() {
-            //computerModel.systemApplications = plasmoid.configuration.systemApplications;
-        //}
-    //}
 }
