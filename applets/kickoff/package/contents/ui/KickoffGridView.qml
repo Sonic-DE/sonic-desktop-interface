@@ -56,10 +56,10 @@ EmptyPage {
     contentItem: GridView {
         id: view
 
-        property real viewWidth: width - leftMargin - rightMargin
-        property real viewHeight: height - topMargin - bottomMargin
+        property real availableWidth: width - leftMargin - rightMargin
+        property real availableHeight: height - topMargin - bottomMargin
         property bool movedWithKeyboard: false
-        property int columns: Math.floor(viewWidth / cellWidth)
+        property int columns: Math.floor(availableWidth / cellWidth)
 
 //         Accessible.role: Accessible.List
         //Accessible.description: i18n("Grid with %1 rows, %2 columns", rows, columns) // can't use i18np here
