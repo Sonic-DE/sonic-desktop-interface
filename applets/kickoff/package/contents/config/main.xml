@@ -34,7 +34,7 @@
             <default>0</default>
         </entry>
         <entry name="applicationsDisplay" type="Int">
-            <label>How to display applications: 0 = List for all, 1 = Grid for favorites, 2 = Grid for all</label>
+            <label>How to display applications: 0 = Grid, 1 = List</label>
             <default>1</default>
         </entry>
         <entry name="alphaSort" type="Bool">
