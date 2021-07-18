@@ -25,7 +25,7 @@ Item {
 
     Plasmoid.preferredRepresentation: plasmoid.compactRepresentation
 
-    Plasmoid.fullRepresentation: FullRepresentation { id: fullRepresentationRoot; focus: true }
+    Plasmoid.fullRepresentation: FullRepresentation { focus: true }
 
     Plasmoid.icon: plasmoid.configuration.icon
 

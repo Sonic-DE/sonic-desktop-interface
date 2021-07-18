@@ -11,14 +11,20 @@ import QtQuick.Templates 2.15 as T
  */
 T.Page {
     id: root
+    // implicitFooter/HeaderWidth and implicitFooter/HeaderHeight are 0 when footer is not visible
+    // using a custom implementation that only checks if footer is defined.
+    property real implicitHeaderWidth2: header ? header.implicitWidth : 0
+    property real implicitHeaderHeight2: header ? header.implicitHeight : 0
+    property real implicitFooterWidth2: footer ? footer.implicitWidth : 0
+    property real implicitFooterHeight2: footer ? footer.implicitHeight : 0
     implicitWidth: Math.max(implicitBackgroundWidth + leftInset + rightInset,
                             contentWidth + leftPadding + rightPadding,
-                            implicitHeaderWidth,
-                            implicitFooterWidth)
+                            implicitHeaderWidth2,
+                            implicitFooterWidth2)
     implicitHeight: Math.max(implicitBackgroundHeight + topInset + bottomInset,
                              contentHeight + topPadding + bottomPadding
-                             + (implicitHeaderHeight > 0 ? implicitHeaderHeight + spacing : 0)
-                             + (implicitFooterHeight > 0 ? implicitFooterHeight + spacing : 0))
+                             + (implicitHeaderHeight2 > 0 ? implicitHeaderHeight2 + spacing : 0)
+                             + (implicitFooterHeight2 > 0 ? implicitFooterHeight2 + spacing : 0))
 
     Accessible.ignored: true
 }

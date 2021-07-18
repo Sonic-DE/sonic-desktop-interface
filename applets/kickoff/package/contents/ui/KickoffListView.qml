@@ -86,7 +86,9 @@ EmptyPage {
         }
         // If either uses a grid, use grid cells to determine size
         implicitHeight: (plasmoid.configuration.favoritesDisplay == 0 || plasmoid.configuration.applicationsDisplay == 0
-            ? KickoffSingleton.gridCellSize * 4 : KickoffSingleton.listDelegateHeight * 10)
+                ? KickoffSingleton.gridCellSize * 4
+                : Math.floor(KickoffSingleton.gridCellSize * 4 / KickoffSingleton.listDelegateHeight)
+                    * KickoffSingleton.listDelegateHeight)
             + topMargin + bottomMargin
 
         leftMargin: if (root.mirrored && verticalScrollBar.visible) {
@@ -118,7 +120,6 @@ EmptyPage {
             opacity: view.activeFocus ? 1 : 0.5
             imagePath: "widgets/viewitem"
             prefix: "hover"
-            //opacity: navigationMethod.state != "keyboard" || (view.hasKeyboardFocus && view.activeFocus) ? 1 : 0.5
         }
 
         delegate: KickoffItemDelegate {

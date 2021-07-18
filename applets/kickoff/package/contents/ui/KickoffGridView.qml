@@ -68,12 +68,12 @@ EmptyPage {
             if (plasmoid.configuration.applicationsDisplay === 0
                 || (plasmoid.configuration.favoritesDisplay === 0
                     && KickoffSingleton.rootModel.favoritesModel.count > 16)) {
-                return KickoffSingleton.gridCellSize * 4
+                return view.cellWidth * 4
                     + KickoffSingleton.leftPadding
                     + KickoffSingleton.rightPadding
                     + verticalScrollBar.implicitWidth
             }
-            return view.cellHeight * 4 + leftMargin + rightMargin
+            return view.cellWidth * 4 + leftMargin + rightMargin
         }
         implicitHeight: view.cellHeight * 4 + topMargin + bottomMargin
 

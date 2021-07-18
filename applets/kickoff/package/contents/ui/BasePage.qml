@@ -29,8 +29,8 @@ import org.kde.plasma.private.kicker 0.1 as Kicker
 
 FocusScope {
     id: root
-    property real preferredSideBarWidth: 0
-    property real preferredSideBarHeight: 0
+    property real preferredSideBarWidth: implicitSideBarWidth
+    property real preferredSideBarHeight: implicitSideBarHeight
 
     property alias sideBarComponent: sideBarLoader.sourceComponent
     property alias sideBarItem: sideBarLoader.item
@@ -40,8 +40,8 @@ FocusScope {
     property alias implicitSideBarWidth: sideBarLoader.implicitWidth
     property alias implicitSideBarHeight: sideBarLoader.implicitHeight
 
-    implicitWidth: sideBarFilter.implicitWidth + separator.implicitWidth + contentAreaLoader.implicitWidth
-    implicitHeight: Math.max(sideBarFilter.implicitHeight, contentAreaLoader.implicitHeight)
+    implicitWidth: root.preferredSideBarWidth + separator.implicitWidth + contentAreaLoader.implicitWidth
+    implicitHeight: Math.max(root.preferredSideBarHeight, contentAreaLoader.implicitHeight)
 
     Kicker.TriangleMouseFilter {
         id: sideBarFilter
@@ -50,8 +50,8 @@ FocusScope {
             top: parent.top
             bottom: parent.bottom
         }
-        implicitWidth: root.preferredSideBarWidth > 0 ? root.preferredSideBarWidth : sideBarLoader.implicitWidth
-        implicitHeight: root.preferredSideBarHeight > 0 ? root.preferredSideBarHeight : sideBarLoader.implicitHeight
+        implicitWidth: root.preferredSideBarWidth
+        implicitHeight: root.preferredSideBarHeight
         edge: LayoutMirroring.enabled ? Qt.LeftEdge : Qt.RightEdge
         Loader {
             id: sideBarLoader

@@ -82,7 +82,7 @@ T.ItemDelegate {
     topPadding: textUnderIcon ? KickoffSingleton.listItemMetrics.margins.top + KickoffSingleton.fontMetrics.descent : KickoffSingleton.listItemMetrics.margins.top
     bottomPadding: KickoffSingleton.listItemMetrics.margins.bottom
 
-    spacing: textUnderIcon ? KickoffSingleton.fontMetrics.descent : KickoffSingleton.listItemMetrics.margins.left
+    spacing: KickoffSingleton.fontMetrics.descent
 
     enabled: !model.disabled
     hoverEnabled: false

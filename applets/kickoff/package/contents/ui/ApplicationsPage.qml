@@ -16,13 +16,6 @@ BasePage {
     sideBarComponent: KickoffListView {
         id: sideBar
         focus: true // needed for Loaders
-        contentHeight: {
-            // If either uses a grid, use grid cells to determine default height
-            const defaultHeight = plasmoid.configuration.favoritesDisplay == 0 || plasmoid.configuration.applicationsDisplay == 0 ?
-                KickoffSingleton.gridCellSize * 4 : KickoffSingleton.listDelegateHeight * 10
-            return Math.max(view.contentHeight, defaultHeight)
-                + view.topMargin + view.bottomMargin
-        }
         model: KickoffSingleton.rootModel
         delegate: KickoffItemDelegate {
             id: itemDelegate
