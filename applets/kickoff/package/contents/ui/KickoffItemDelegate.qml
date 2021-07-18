@@ -79,10 +79,10 @@ T.ItemDelegate {
 
     leftPadding: KickoffSingleton.listItemMetrics.margins.left
     rightPadding: KickoffSingleton.listItemMetrics.margins.right
-    topPadding: KickoffSingleton.listItemMetrics.margins.top
+    topPadding: textUnderIcon ? KickoffSingleton.listItemMetrics.margins.top + KickoffSingleton.fontMetrics.descent : KickoffSingleton.listItemMetrics.margins.top
     bottomPadding: KickoffSingleton.listItemMetrics.margins.bottom
 
-    spacing: PlasmaCore.Units.smallSpacing
+    spacing: textUnderIcon ? KickoffSingleton.fontMetrics.descent : KickoffSingleton.listItemMetrics.margins.left
 
     enabled: !model.disabled
     hoverEnabled: false
