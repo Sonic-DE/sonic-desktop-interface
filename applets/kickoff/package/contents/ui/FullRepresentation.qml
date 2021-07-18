@@ -77,9 +77,9 @@ EmptyPage {
             KickoffListView {
                 id: searchView
                 objectName: "searchView"
+                mainContentView: true
                 implicitWidth: normalPage.implicitWidth
                 implicitHeight: normalPage.implicitHeight
-                mainContentView: true
                 // Forces the function be re-run every time runnerModel.count changes.
                 // This is absolutely necessary to make the search view work reliably.
                 model: runnerModel.count ? KickoffSingleton.runnerModel.modelForRow(0) : null
@@ -109,12 +109,6 @@ EmptyPage {
                     contentItemStackView.replace(searchViewComponent)
                 }
             }
-        }
-
-        Component.onCompleted: {
-            // Break bindings after completing to keep a consistent implicit size.
-            // It's unlikely that any more or any less width or height will be needed.
-            implicitHeight = normalPage.implicitHeight + leftPadding + rightPadding
         }
     }
 
