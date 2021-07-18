@@ -87,6 +87,11 @@ Item {
         prefix: "normal"
     }
 
+    readonly property FontMetrics fontMetrics: FontMetrics {
+        id: fontMetrics
+        font: PlasmaCore.Theme.defaultFont
+    }
+
     readonly property real leftPadding: backgroundMetrics.margins.left - backgroundMetrics.inset.left
     readonly property real rightPadding: backgroundMetrics.margins.right - backgroundMetrics.inset.right
     readonly property real topPadding: backgroundMetrics.margins.top - backgroundMetrics.inset.top
