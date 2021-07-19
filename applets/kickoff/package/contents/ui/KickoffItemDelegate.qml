@@ -78,7 +78,9 @@ T.ItemDelegate {
                              implicitContentHeight + topPadding + bottomPadding)
 
     leftPadding: KickoffSingleton.listItemMetrics.margins.left
+        + (!textUnderIcon && mirrored ? KickoffSingleton.fontMetrics.descent : 0)
     rightPadding: KickoffSingleton.listItemMetrics.margins.right
+        + (!textUnderIcon && !mirrored ? KickoffSingleton.fontMetrics.descent : 0)
     topPadding: textUnderIcon ? KickoffSingleton.listItemMetrics.margins.top + KickoffSingleton.fontMetrics.descent : KickoffSingleton.listItemMetrics.margins.top
     bottomPadding: KickoffSingleton.listItemMetrics.margins.bottom
 
