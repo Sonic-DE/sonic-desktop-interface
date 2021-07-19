@@ -60,9 +60,9 @@ EmptyPage {
         property real availableHeight: height - topMargin - bottomMargin
         property bool movedWithKeyboard: false
         property int columns: Math.floor(availableWidth / cellWidth)
+        property int rows: Math.floor(availableHeight / cellHeight)
 
-//         Accessible.role: Accessible.List
-        //Accessible.description: i18n("Grid with %1 rows, %2 columns", rows, columns) // can't use i18np here
+        Accessible.description: i18n("Grid with %1 rows, %2 columns", rows, columns) // can't use i18np here
 
         implicitWidth: {
             if (plasmoid.configuration.applicationsDisplay === 0
