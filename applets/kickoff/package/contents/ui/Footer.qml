@@ -35,8 +35,8 @@ PlasmaExtras.PlasmoidHeading {
 
     leftPadding: KickoffSingleton.leftPadding
     rightPadding: KickoffSingleton.rightPadding
-    topPadding: KickoffSingleton.topPadding
-    bottomPadding: KickoffSingleton.bottomPadding
+    topPadding: background.margins.top
+    bottomPadding: background.margins.bottom
 
     leftInset: 0
     rightInset: 0
@@ -53,15 +53,10 @@ PlasmaExtras.PlasmoidHeading {
         width: root.preferredTabBarWidth > 0 ? root.preferredTabBarWidth : implicitWidth
         implicitWidth: contentWidth + leftPadding + rightPadding
         implicitHeight: contentHeight + topPadding + bottomPadding
-        contentHeight: root.height
 
         // This is needed to keep the sparators horizontally aligned
         leftPadding: mirrored ? root.spacing : 0
         rightPadding: !mirrored ? root.spacing : 0
-
-        // make highlight touch top, center content
-        topPadding: -root.topPadding
-        bottomPadding: -root.bottomPadding
 
         anchors {
             left: parent.left
@@ -69,22 +64,38 @@ PlasmaExtras.PlasmoidHeading {
             bottom:parent.bottom
         }
 
-        position: KickoffSingleton.reverseVerticalLayout ? PC3.TabBar.Header : PC3.TabBar.Footer
+        position: PC3.TabBar.Footer
 
-        // Workaround contentItem not having `focus: true`
-        Binding {
-            target: tabBar.contentItem
-            when: tabBar.contentItem !== null
-            property: "focus"
-            value: true
-            restoreMode: Binding.RestoreBindingOrValue
+        contentItem: ListView {
+            focus: true
+            model: tabBar.contentModel
+            currentIndex: tabBar.currentIndex
+
+            spacing: tabBar.spacing
+            orientation: ListView.Horizontal
+            boundsBehavior: Flickable.StopAtBounds
+            flickableDirection: Flickable.AutoFlickIfNeeded
+            snapMode: ListView.SnapToItem
+
+            highlightMoveDuration: PlasmaCore.Units.longDuration
+            highlightRangeMode: ListView.ApplyRange
+            preferredHighlightBegin: tabBar.tabWidth
+            preferredHighlightEnd: width - tabBar.tabWidth
+            highlight: PlasmaCore.FrameSvgItem {
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                anchors.topMargin: -root.topPadding
+                anchors.bottomMargin: -root.bottomPadding
+                imagePath: "widgets/tabbar"
+                prefix: tabBar.position == PC3.TabBar.Header ? "north-active-tab" : "south-active-tab"
+                colorGroup: PlasmaCore.ColorScope.colorGroup
+            }
         }
 
         PC3.TabButton {
             id: applicationsTab
             focus: true
             width: tabBar.tabWidth
-            height: parent.height
             icon.width: PlasmaCore.Units.iconSizes.smallMedium
             icon.height: PlasmaCore.Units.iconSizes.smallMedium
             icon.name: "applications-other"
@@ -94,7 +105,6 @@ PlasmaExtras.PlasmoidHeading {
         PC3.TabButton {
             id: placesTab
             width: tabBar.tabWidth
-            height: parent.height
             icon.width: PlasmaCore.Units.iconSizes.smallMedium
             icon.height: PlasmaCore.Units.iconSizes.smallMedium
             icon.name: "compass"

@@ -31,11 +31,11 @@ PlasmaExtras.PlasmoidHeading {
     leftPadding: 0
     rightPadding: 0
     topPadding: 0
-    bottomPadding: KickoffSingleton.bottomPadding
+    bottomPadding: background.margins.bottom
 
     leftInset: -KickoffSingleton.leftPadding
     rightInset: -KickoffSingleton.rightPadding
-    topInset: -KickoffSingleton.topPadding
+    topInset: -background.margins.top
     bottomInset: 0
 
     KCoreAddons.KUser {
@@ -142,7 +142,7 @@ PlasmaExtras.PlasmoidHeading {
                 id: nameLabel
                 anchors.fill: parent
                 opacity: parent.containsMouse ? 0 : 1
-
+                color: PlasmaCore.Theme.textColor
                 level: 2
                 text: kuser.fullName
                 elide: Text.ElideRight
@@ -162,6 +162,7 @@ PlasmaExtras.PlasmoidHeading {
                 anchors.fill: parent
                 level: 5
                 opacity: parent.containsMouse ? 1 : 0
+                color: PlasmaCore.Theme.textColor
                 text: kuser.os !== "" ? `${kuser.loginName}@${kuser.host} (${kuser.os})` : `${kuser.loginName}@${kuser.host}`
                 elide: Text.ElideRight
                 horizontalAlignment: Text.AlignLeft
