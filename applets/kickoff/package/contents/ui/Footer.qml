@@ -67,6 +67,7 @@ PlasmaExtras.PlasmoidHeading {
         position: PC3.TabBar.Footer
 
         contentItem: ListView {
+            id: tabBarListView
             focus: true
             model: tabBar.contentModel
             currentIndex: tabBar.currentIndex
@@ -82,8 +83,8 @@ PlasmaExtras.PlasmoidHeading {
             preferredHighlightBegin: tabBar.tabWidth
             preferredHighlightEnd: width - tabBar.tabWidth
             highlight: PlasmaCore.FrameSvgItem {
-                anchors.top: parent.top
-                anchors.bottom: parent.bottom
+                anchors.top: tabBarListView.contentItem.top
+                anchors.bottom: tabBarListView.contentItem.bottom
                 anchors.topMargin: -root.topPadding
                 anchors.bottomMargin: -root.bottomPadding
                 imagePath: "widgets/tabbar"
