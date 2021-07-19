@@ -77,12 +77,12 @@ EmptyPage {
         }
         implicitHeight: view.cellHeight * 4 + topMargin + bottomMargin
 
-        leftMargin: if (mirrored && verticalScrollBar.visible) {
+        leftMargin: if (root.mirrored && verticalScrollBar.visible) {
             return verticalScrollBar.implicitWidth + KickoffSingleton.leftPadding
         } else {
             return KickoffSingleton.leftPadding
         }
-        rightMargin: if (!mirrored && verticalScrollBar.visible) {
+        rightMargin: if (!root.mirrored && verticalScrollBar.visible) {
             return verticalScrollBar.implicitWidth + KickoffSingleton.rightPadding
         } else {
             return KickoffSingleton.rightPadding
