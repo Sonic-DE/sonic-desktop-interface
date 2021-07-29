@@ -37,6 +37,8 @@ T.ItemDelegate {
     required property var decoration
     required property string description
 
+    property bool showIcon: true
+
     readonly property Flickable view: ListView.view ?? GridView.view
     property alias mouseArea: mouseArea
     readonly property bool textUnderIcon: display === PC3.AbstractButton.TextUnderIcon
@@ -81,8 +83,8 @@ T.ItemDelegate {
         + (!textUnderIcon && mirrored ? KickoffSingleton.fontMetrics.descent : 0)
     rightPadding: KickoffSingleton.listItemMetrics.margins.right
         + (!textUnderIcon && !mirrored ? KickoffSingleton.fontMetrics.descent : 0)
-    topPadding: textUnderIcon ? KickoffSingleton.listItemMetrics.margins.top + KickoffSingleton.fontMetrics.descent : KickoffSingleton.listItemMetrics.margins.top
-    bottomPadding: KickoffSingleton.listItemMetrics.margins.bottom
+    topPadding: Math.round(KickoffSingleton.topPadding * 1.5)
+    bottomPadding: Math.round(KickoffSingleton.bottomPadding * 1.5)
 
     spacing: KickoffSingleton.fontMetrics.descent
 
@@ -119,6 +121,7 @@ T.ItemDelegate {
             Layout.alignment: root.textUnderIcon ? Qt.AlignHCenter | Qt.AlignBottom : Qt.AlignLeft | Qt.AlignVCenter
             implicitWidth: root.icon.width
             implicitHeight: root.icon.height
+            visible: root.showIcon
             animated: false
             usesPlasmaTheme: false
             source: root.decoration || root.icon.name || root.icon.source

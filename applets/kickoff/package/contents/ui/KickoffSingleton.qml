@@ -95,7 +95,9 @@ Item {
     readonly property real leftPadding: backgroundMetrics.margins.left - backgroundMetrics.inset.left
     readonly property real rightPadding: backgroundMetrics.margins.right - backgroundMetrics.inset.right
     readonly property real topPadding: backgroundMetrics.margins.top - backgroundMetrics.inset.top
+    readonly property real smallTopPadding: Math.round(topPadding / 2.0)
     readonly property real bottomPadding: backgroundMetrics.margins.bottom - backgroundMetrics.inset.bottom
+    readonly property real smallBottomPadding: Math.round(bottomPadding / 2.0)
     readonly property real spacing: KickoffSingleton.leftPadding
     readonly property real gridCellSize: gridDelegate.implicitHeight
     readonly property real listDelegateHeight: listDelegate.implicitHeight

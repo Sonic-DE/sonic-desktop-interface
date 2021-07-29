@@ -22,6 +22,7 @@ BasePage {
             extendHoverMargins: true
             width: view.availableWidth
             isCategory: model.hasChildren
+            showIcon: false
         }
     }
     contentAreaComponent: VerticalStackView {
