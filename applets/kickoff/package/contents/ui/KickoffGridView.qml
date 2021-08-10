@@ -95,6 +95,15 @@ EmptyPage {
         keyNavigationEnabled: false
         keyNavigationWraps: false
 
+        // handle highlight behaviour
+        HoverHandler {
+            id: hoverHandler
+            property bool showHover: hovered // also changed by keyboard event
+            onHoveredChanged: showHover = hovered
+        }
+        
+        property bool showHighlight: true
+        
         highlightMoveDuration: 0
         highlight: PlasmaCore.FrameSvgItem {
             opacity: view.activeFocus ? 1 : 0.5
@@ -102,6 +111,7 @@ EmptyPage {
             height: view.cellHeight
             imagePath: "widgets/viewitem"
             prefix: "hover"
+            visible: view.showHighlight
         }
 
         delegate: KickoffItemDelegate {
@@ -111,6 +121,14 @@ EmptyPage {
             display: PC3.AbstractButton.TextUnderIcon
             width: view.cellWidth
             Accessible.role: Accessible.Cell
+            
+            // update whether highlight should be shown based on if item delegate is hovered
+            Connections {
+                target: mouseArea
+                function onContainsMouseChanged() {
+                    view.showHighlight = mouseArea.containsMouse;
+                }
+            }
         }
 
         move: normalTransition
@@ -160,6 +178,9 @@ EmptyPage {
         function focusCurrentItem(event, focusReason) {
             currentItem.forceActiveFocus(focusReason)
             event.accepted = true
+            
+            // show delegate highlight on keyboard move
+            view.showHighlight = true;
         }
 
         Keys.onPressed: {

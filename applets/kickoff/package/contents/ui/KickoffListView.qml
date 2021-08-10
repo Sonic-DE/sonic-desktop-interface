@@ -112,7 +112,9 @@ EmptyPage {
         // and eats up/down key events when at the beginning or end of the list.
         keyNavigationEnabled: false
         keyNavigationWraps: false
-
+        
+        property bool showHighlight: true
+        
         // This is actually needed. The highlight will animate from thin to wide otherwise.
         highlightResizeDuration: 0
         highlightMoveDuration: 0
@@ -120,12 +122,21 @@ EmptyPage {
             opacity: view.activeFocus ? 1 : 0.5
             imagePath: "widgets/viewitem"
             prefix: "hover"
+            visible: view.showHighlight
         }
 
         delegate: KickoffItemDelegate {
             id: itemDelegate
             extendHoverMargins: true
             width: view.availableWidth
+            
+            // update whether highlight should be shown based on if item delegate is hovered
+            Connections {
+                target: mouseArea
+                function onContainsMouseChanged() {
+                    view.showHighlight = mouseArea.containsMouse;
+                }
+            }
         }
 
         section {
@@ -196,6 +207,9 @@ EmptyPage {
         function focusCurrentItem(event, focusReason) {
             currentItem.forceActiveFocus(focusReason)
             event.accepted = true
+            
+            // show delegate highlight on keyboard move
+            view.showHighlight = true;
         }
 
         Keys.onPressed: {
