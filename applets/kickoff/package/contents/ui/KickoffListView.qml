@@ -112,7 +112,15 @@ EmptyPage {
         // and eats up/down key events when at the beginning or end of the list.
         keyNavigationEnabled: false
         keyNavigationWraps: false
-
+        
+        property bool showHighlight: !root.mainContentView
+        
+        // turn on highlight when you start searching 
+        Connections {
+            target: KickoffSingleton.searchField
+            onTextEdited: view.showHighlight = true
+        }
+        
         // This is actually needed. The highlight will animate from thin to wide otherwise.
         highlightResizeDuration: 0
         highlightMoveDuration: 0
@@ -120,12 +128,27 @@ EmptyPage {
             opacity: view.activeFocus ? 1 : 0.5
             imagePath: "widgets/viewitem"
             prefix: "hover"
+            visible: view.showHighlight
         }
 
         delegate: KickoffItemDelegate {
             id: itemDelegate
             extendHoverMargins: true
             width: view.availableWidth
+            
+            // if menu has closed, remove highlight if not hovering
+            onMenuClosedChanged: if (menuClosed) view.showHighlight = mouseArea.containsMouse;
+            
+            // update whether highlight should be shown based on if item delegate is hovered
+            Connections {
+                target: mouseArea
+                function onContainsMouseChanged() {
+                    // don't remove highlight when opening right click menu
+                    if (itemDelegate.menuClosed || mouseArea.containsMouse) {
+                        view.showHighlight = mouseArea.containsMouse;
+                    }
+                }
+            }
         }
 
         section {
@@ -196,6 +219,9 @@ EmptyPage {
         function focusCurrentItem(event, focusReason) {
             currentItem.forceActiveFocus(focusReason)
             event.accepted = true
+            
+            // show delegate highlight on keyboard move
+            view.showHighlight = true;
         }
 
         Keys.onPressed: {
