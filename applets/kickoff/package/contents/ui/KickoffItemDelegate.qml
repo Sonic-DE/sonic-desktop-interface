@@ -44,6 +44,7 @@ T.ItemDelegate {
     property bool isCategory: false
     readonly property bool hasActionList: model && (model.favoriteId !== null || ("hasActionList" in model && model.hasActionList === true))
     property var actionList: null
+    readonly property bool menuClosed: ActionMenu.menu.status == 3 // corresponds to DialogStatus.Closed
 
     function openActionMenu(x = undefined, y = undefined) {
         if (!root.hasActionList) { return }
