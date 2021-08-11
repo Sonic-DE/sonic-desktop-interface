@@ -95,6 +95,8 @@ EmptyPage {
         keyNavigationEnabled: false
         keyNavigationWraps: false
 
+        property bool showHighlight: false
+        
         highlightMoveDuration: 0
         highlight: PlasmaCore.FrameSvgItem {
             opacity: view.activeFocus ? 1 : 0.5
@@ -102,6 +104,7 @@ EmptyPage {
             height: view.cellHeight
             imagePath: "widgets/viewitem"
             prefix: "hover"
+            visible: view.showHighlight
         }
 
         delegate: KickoffItemDelegate {
@@ -111,6 +114,20 @@ EmptyPage {
             display: PC3.AbstractButton.TextUnderIcon
             width: view.cellWidth
             Accessible.role: Accessible.Cell
+            
+            // if menu has closed, remove highlight if not hovering
+            onMenuClosedChanged: if (menuClosed) view.showHighlight = mouseArea.containsMouse;
+            
+            // update whether highlight should be shown based on if item delegate is hovered
+            Connections {
+                target: mouseArea
+                function onContainsMouseChanged() {
+                    // don't remove highlight when opening right click menu
+                    if (itemDelegate.menuClosed || mouseArea.containsMouse) {
+                        view.showHighlight = mouseArea.containsMouse;
+                    }
+                }
+            }
         }
 
         move: normalTransition
@@ -160,6 +177,9 @@ EmptyPage {
         function focusCurrentItem(event, focusReason) {
             currentItem.forceActiveFocus(focusReason)
             event.accepted = true
+            
+            // show delegate highlight on keyboard move
+            view.showHighlight = true;
         }
 
         Keys.onPressed: {
