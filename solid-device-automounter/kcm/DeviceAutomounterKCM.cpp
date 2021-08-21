@@ -112,29 +112,20 @@ void DeviceAutomounterKCM::save()
     bool enabled = m_devices->automountOnLogin() || m_devices->automountOnPlugin();
 
     QStringList validDevices;
-    for (int i = 0; i < m_devices->rowCount(); ++i) {
-        const QModelIndex &idx = m_devices->index(i, 0);
+    for (int i = 1; i < m_devices->rowCount(); ++i) {
+        const QModelIndex &parentIdx = m_devices->index(i, 0);
 
-        for (int j = 0; j < m_devices->rowCount(idx); ++j) {
-            QModelIndex dev = m_devices->index(j, 1, idx);
-            const QString device = dev.data(DeviceModel::UdiRole).toString();
+        for (int j = 0; j < m_devices->rowCount(parentIdx); ++j) {
+            const QString device = m_devices->index(j, 0, parentIdx).data(DeviceModel::UdiRole).toString();
             validDevices << device;
 
-            if (dev.data(Qt::CheckStateRole).toInt() == Qt::Checked) {
-                m_settings->deviceSettings(device).writeEntry("ForceLoginAutomount", true);
-                enabled = true;
-            } else {
-                m_settings->deviceSettings(device).writeEntry("ForceLoginAutomount", false);
-            }
+            const bool mountOnLogin = m_devices->index(j, 1, parentIdx).data(Qt::CheckStateRole).toInt() == Qt::Checked;
+            m_settings->deviceSettings(device)->setMountOnLogin(mountOnLogin);
 
-            dev = dev.sibling(j, 2);
+            const bool mountOnAttach = m_devices->index(j, 2, parentIdx).data(Qt::CheckStateRole).toInt() == Qt::Checked;
+            m_settings->deviceSettings(device)->setMountOnAttach(mountOnAttach);
 
-            if (dev.data(Qt::CheckStateRole).toInt() == Qt::Checked) {
-                m_settings->deviceSettings(device).writeEntry("ForceAttachAutomount", true);
-                enabled = true;
-            } else {
-                m_settings->deviceSettings(device).writeEntry("ForceAttachAutomount", false);
-            }
+            enabled |= mountOnLogin | mountOnAttach;
         }
     }
 
@@ -143,7 +134,7 @@ void DeviceAutomounterKCM::save()
     const auto knownDevices = m_settings->knownDevices();
     for (const QString &possibleDevice : knownDevices) {
         if (!validDevices.contains(possibleDevice)) {
-            m_settings->deviceSettings(possibleDevice).deleteGroup();
+            m_settings->removeDeviceGroup(possibleDevice);
         }
     }
 
