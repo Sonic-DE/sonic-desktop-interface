@@ -53,6 +53,11 @@ DeviceAutomounterKCM::DeviceAutomounterKCM(QWidget *parent, const QVariantList &
 
     connect(m_devices, &DeviceModel::automaticMountOnLoginChanged, m_settings, &AutomounterSettings::setAutomountOnLogin);
     connect(m_devices, &DeviceModel::automaticMountOnPluginChanged, m_settings, &AutomounterSettings::setAutomountOnPlugin);
+    // TODO: This is a bit generic way to mark changes on the KCM, but improves the current situation.
+    // More integration with AutomounterSettings is required to make it fully change-aware.
+    connect(m_devices, &QAbstractItemModel::dataChanged, this, [this]() {
+        markAsChanged();
+    });
 
     connect(deviceView->selectionModel(), &QItemSelectionModel::selectionChanged, this, &DeviceAutomounterKCM::updateForgetDeviceButton);
 
