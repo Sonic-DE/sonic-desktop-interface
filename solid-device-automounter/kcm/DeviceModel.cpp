@@ -393,7 +393,7 @@ void DeviceModel::setAutomaticMountOnLogin(bool automaticLogin)
     }
 
     m_settings->setAutomountOnLogin(automaticLogin);
-    for (int parent = 0; parent < rowCount(); parent++) {
+    for (int parent = 1; parent < rowCount(); parent++) {
         const auto parentIndex = index(parent, 0);
         Q_EMIT dataChanged(index(0, 1, parentIndex), index(rowCount(parentIndex), 1, parentIndex));
     }
@@ -406,7 +406,7 @@ void DeviceModel::setAutomaticMountOnPlugin(bool automaticAttached)
     }
 
     m_settings->setAutomountOnPlugin(automaticAttached);
-    for (int parent = 0; parent < rowCount(); parent++) {
+    for (int parent = 1; parent < rowCount(); parent++) {
         const auto parentIndex = index(parent, 0);
         Q_EMIT dataChanged(index(0, 2, parentIndex), index(rowCount(parentIndex), 2, parentIndex));
     }
