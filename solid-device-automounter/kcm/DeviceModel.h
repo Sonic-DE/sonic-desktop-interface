@@ -46,15 +46,11 @@ public:
 
     bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
 
-    bool automaticMountOnLogin() const;
-    bool automaticMountOnPlugin() const;
+    bool automountOnLogin() const;
+    bool automountOnPlugin() const;
 
     void setAutomaticMountOnLogin(bool automaticLogin);
     void setAutomaticMountOnPlugin(bool automaticAttached);
-
-Q_SIGNALS:
-    void automaticMountOnLoginChanged(bool automaticLogin);
-    void automaticMountOnPluginChanged(bool automaticAttached);
 
 public Q_SLOTS:
     void forgetDevice(const QString &udi);
@@ -71,8 +67,6 @@ private:
     QList<QString> m_disconnected;
     QHash<QString, bool> m_loginForced;
     QHash<QString, bool> m_attachedForced;
-    bool m_automaticLogin;
-    bool m_automaticAttached;
     AutomounterSettings *m_settings;
 };
 

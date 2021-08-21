@@ -51,8 +51,6 @@ DeviceAutomounterKCM::DeviceAutomounterKCM(QWidget *parent, const QVariantList &
     deviceView->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
     deviceView->header()->setSectionResizeMode(0, QHeaderView::Stretch);
 
-    connect(m_devices, &DeviceModel::automaticMountOnLoginChanged, m_settings, &AutomounterSettings::setAutomountOnLogin);
-    connect(m_devices, &DeviceModel::automaticMountOnPluginChanged, m_settings, &AutomounterSettings::setAutomountOnPlugin);
     // TODO: This is a bit generic way to mark changes on the KCM, but improves the current situation.
     // More integration with AutomounterSettings is required to make it fully change-aware.
     connect(m_devices, &QAbstractItemModel::dataChanged, this, [this]() {
@@ -111,7 +109,7 @@ void DeviceAutomounterKCM::save()
     KCModule::save();
     saveLayout();
 
-    bool enabled = m_devices->automaticMountOnLogin() || m_devices->automaticMountOnPlugin();
+    bool enabled = m_devices->automountOnLogin() || m_devices->automountOnPlugin();
 
     QStringList validDevices;
     for (int i = 0; i < m_devices->rowCount(); ++i) {
