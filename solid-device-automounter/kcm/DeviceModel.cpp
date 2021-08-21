@@ -31,12 +31,12 @@ void DeviceModel::forgetDevice(const QString &udi)
 {
     if (m_disconnected.contains(udi)) {
         const int deviceIndex = m_disconnected.indexOf(udi);
-        beginRemoveRows(index(1, 0), deviceIndex, deviceIndex);
+        beginRemoveRows(index(2, 0), deviceIndex, deviceIndex);
         m_disconnected.removeOne(udi);
         endRemoveRows();
     } else if (m_attached.contains(udi)) {
         const int deviceIndex = m_attached.indexOf(udi);
-        beginRemoveRows(index(0, 0), deviceIndex, deviceIndex);
+        beginRemoveRows(index(1, 0), deviceIndex, deviceIndex);
         m_attached.removeOne(udi);
         endRemoveRows();
     }

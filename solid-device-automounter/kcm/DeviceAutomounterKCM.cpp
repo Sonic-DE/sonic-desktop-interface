@@ -73,14 +73,11 @@ DeviceAutomounterKCM::~DeviceAutomounterKCM()
 
 void DeviceAutomounterKCM::updateForgetDeviceButton()
 {
-    const auto selectedIndex = deviceView->selectionModel()->selectedIndexes();
-    for (const QModelIndex &idx : selectedIndex) {
-        if (idx.data(DeviceModel::TypeRole) == DeviceModel::Detached) {
-            forgetDevice->setEnabled(true);
-            return;
-        }
-    }
-    forgetDevice->setEnabled(false);
+    const auto selectedIndexes = deviceView->selectionModel()->selectedIndexes();
+    const bool isAnyDettached = std::any_of(selectedIndexes.cbegin(), selectedIndexes.cend(), [](const auto &idx) {
+        return idx.data(DeviceModel::TypeRole) == DeviceModel::Detached;
+    });
+    forgetDevice->setEnabled(isAnyDettached);
 }
 
 void DeviceAutomounterKCM::forgetSelectedDevices()
