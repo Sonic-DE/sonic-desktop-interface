@@ -135,9 +135,6 @@ void DeviceModel::reload()
     m_attached.clear();
     m_disconnected.clear();
 
-    m_automaticLogin = m_settings->automountOnLogin();
-    m_automaticAttached = m_settings->automountOnPlugin();
-
     const auto knownDevices = m_settings->knownDevices();
     for (const QString &dev : knownDevices) {
         addNewDevice(dev);
@@ -190,28 +187,23 @@ Qt::ItemFlags DeviceModel::flags(const QModelIndex &index) const
         if (index.row() == 0) {
             return Qt::ItemIsEnabled | (index.column() > 0 ? Qt::ItemIsUserCheckable : Qt::NoItemFlags);
         } else {
-            return (m_automaticLogin && m_automaticAttached) ? Qt::NoItemFlags : Qt::ItemIsEnabled;
+            return (automountOnLogin() && automountOnPlugin()) ? Qt::NoItemFlags : Qt::ItemIsEnabled;
         }
     }
 
+    // Select only detached devices to be removed
+    Qt::ItemFlag selectableFlag = index.parent().row() == 2 ? Qt::ItemIsSelectable : Qt::NoItemFlags;
+
     switch (index.column()) {
     case 0:
-        // first column
-        return (m_automaticLogin && m_automaticAttached) ? Qt::NoItemFlags : Qt::ItemIsEnabled;
+        if (automountOnLogin() && automountOnPlugin()) {
+            return Qt::NoItemFlags;
+        }
+        return selectableFlag | Qt::ItemIsEnabled;
     case 1:
-        // on login column
-        if (m_automaticLogin) {
-            // automount on login was checked
-            return Qt::ItemIsSelectable | Qt::ItemIsUserCheckable;
-        }
-        return Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsUserCheckable;
+        return Qt::ItemIsUserCheckable | selectableFlag | (automountOnLogin() ? Qt::NoItemFlags : Qt::ItemIsEnabled);
     case 2:
-        // on attached column
-        if (m_automaticAttached) {
-            // automount on attach was checked
-            return Qt::ItemIsSelectable | Qt::ItemIsUserCheckable;
-        }
-        return Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsUserCheckable;
+        return Qt::ItemIsUserCheckable | selectableFlag | (automountOnPlugin() ? Qt::NoItemFlags : Qt::ItemIsEnabled);
     default:
         Q_UNREACHABLE();
     }
@@ -266,12 +258,11 @@ QVariant DeviceModel::data(const QModelIndex &index, int role) const
         }
         if (role == Qt::CheckStateRole && index.row() == 0) {
             if (index.column() == 1) {
-                return m_automaticLogin ? Qt::Checked : Qt::Unchecked;
+                return automountOnLogin() ? Qt::Checked : Qt::Unchecked;
             } else if (index.column() == 2) {
-                return m_automaticAttached ? Qt::Checked : Qt::Unchecked;
+                return automountOnPlugin() ? Qt::Checked : Qt::Unchecked;
             }
         }
-
         return QVariant();
     }
 
@@ -385,36 +376,38 @@ int DeviceModel::columnCount(const QModelIndex &parent) const
     return 3;
 }
 
-bool DeviceModel::automaticMountOnLogin() const
+bool DeviceModel::automountOnLogin() const
 {
-    return m_automaticLogin;
+    return m_settings->automountOnLogin();
 }
 
-bool DeviceModel::automaticMountOnPlugin() const
+bool DeviceModel::automountOnPlugin() const
 {
-    return m_automaticAttached;
+    return m_settings->automountOnPlugin();
 }
 
 void DeviceModel::setAutomaticMountOnLogin(bool automaticLogin)
 {
-    if (m_automaticLogin != automaticLogin) {
-        m_automaticLogin = automaticLogin;
-        for (int parent = 0; parent < rowCount(); parent++) {
-            const auto parentIndex = index(parent, 0);
-            Q_EMIT dataChanged(index(0, 1, parentIndex), index(rowCount(parentIndex), 1, parentIndex));
-        }
-        Q_EMIT(automaticMountOnLoginChanged(automaticLogin));
+    if (automountOnLogin() == automaticLogin) {
+        return;
+    }
+
+    m_settings->setAutomountOnLogin(automaticLogin);
+    for (int parent = 0; parent < rowCount(); parent++) {
+        const auto parentIndex = index(parent, 0);
+        Q_EMIT dataChanged(index(0, 1, parentIndex), index(rowCount(parentIndex), 1, parentIndex));
     }
 }
 
 void DeviceModel::setAutomaticMountOnPlugin(bool automaticAttached)
 {
-    if (m_automaticAttached != automaticAttached) {
-        m_automaticAttached = automaticAttached;
-        for (int parent = 0; parent < rowCount(); parent++) {
-            const auto parentIndex = index(parent, 0);
-            Q_EMIT dataChanged(index(0, 2, parentIndex), index(rowCount(parentIndex), 2, parentIndex));
-        }
-        Q_EMIT(automaticMountOnPluginChanged(automaticAttached));
+    if (automountOnPlugin() == automaticAttached) {
+        return;
+    }
+
+    m_settings->setAutomountOnPlugin(automaticAttached);
+    for (int parent = 0; parent < rowCount(); parent++) {
+        const auto parentIndex = index(parent, 0);
+        Q_EMIT dataChanged(index(0, 2, parentIndex), index(rowCount(parentIndex), 2, parentIndex));
     }
 }
