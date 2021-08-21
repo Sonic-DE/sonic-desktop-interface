@@ -149,18 +149,20 @@ void DeviceModel::reload()
 
 QModelIndex DeviceModel::index(int row, int column, const QModelIndex &parent) const
 {
+    if (column < 0 || column >= columnCount()) {
+        return QModelIndex();
+    }
     if (parent.isValid()) {
         if (parent.column() > 0 || parent.row() == 0) {
             return QModelIndex();
         }
 
         const int deviceCount = (parent.row() == 1) ? m_attached.size() : m_disconnected.size();
-        if (row < 0 || row > deviceCount || column < 0 || column > 2) {
-            return QModelIndex();
+        if (row < deviceCount) {
+            return createIndex(row, column, parent.row());
         }
-        return createIndex(row, column, parent.row());
     } else {
-        if (row >= 0 && row <= 2 && column >= 0 && column <= 2) {
+        if (row <= 2) {
             return createIndex(row, column, 3);
         }
     }
