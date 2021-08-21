@@ -114,7 +114,7 @@ void DeviceAutomounterKCM::save()
     KCModule::save();
     saveLayout();
 
-    const bool enabled = kcfg_AutomountEnabled->isChecked();
+    bool enabled = m_devices->automaticMountOnLogin() || m_devices->automaticMountOnPlugin();
 
     QStringList validDevices;
     for (int i = 0; i < m_devices->rowCount(); ++i) {
@@ -127,6 +127,7 @@ void DeviceAutomounterKCM::save()
 
             if (dev.data(Qt::CheckStateRole).toInt() == Qt::Checked) {
                 m_settings->deviceSettings(device).writeEntry("ForceLoginAutomount", true);
+                enabled = true;
             } else {
                 m_settings->deviceSettings(device).writeEntry("ForceLoginAutomount", false);
             }
@@ -135,11 +136,14 @@ void DeviceAutomounterKCM::save()
 
             if (dev.data(Qt::CheckStateRole).toInt() == Qt::Checked) {
                 m_settings->deviceSettings(device).writeEntry("ForceAttachAutomount", true);
+                enabled = true;
             } else {
                 m_settings->deviceSettings(device).writeEntry("ForceAttachAutomount", false);
             }
         }
     }
+
+    m_settings->setAutomountEnabled(enabled);
 
     const auto knownDevices = m_settings->knownDevices();
     for (const QString &possibleDevice : knownDevices) {
