@@ -46,8 +46,15 @@ public:
 
     bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
 
+    bool automaticMountOnLogin() const;
+    bool automaticMountOnPlugin() const;
+
     void setAutomaticMountOnLogin(bool automaticLogin);
     void setAutomaticMountOnPlugin(bool automaticAttached);
+
+Q_SIGNALS:
+    void automaticMountOnLoginChanged(bool automaticLogin);
+    void automaticMountOnPluginChanged(bool automaticAttached);
 
 public Q_SLOTS:
     void forgetDevice(const QString &udi);
