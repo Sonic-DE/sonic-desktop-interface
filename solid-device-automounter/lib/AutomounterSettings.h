@@ -30,6 +30,8 @@ public:
     void saveDevice(const Solid::Device &dev);
     void removeDeviceGroup(const QString &udi);
 
+    bool usrIsSaveNeeded();
+
 private:
     void usrRead() override;
     bool usrSave() override;
