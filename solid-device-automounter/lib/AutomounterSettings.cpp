@@ -25,36 +25,14 @@ bool AutomounterSettings::usrSave()
     return saveOk;
 }
 
-KConfigGroup AutomounterSettings::deviceSettingsGroup(const QString &udi)
-{
-    return config()->group("Devices").group(udi);
-}
-
-DeviceSettings *AutomounterSettings::deviceSettings(const QString &udi) const
-{
-    return m_devices.value(udi);
-}
-
 QStringList AutomounterSettings::knownDevices() const
 {
     return config()->group("Devices").groupList();
 }
 
-bool AutomounterSettings::deviceIsKnown(const QString &udi)
+DeviceSettings *AutomounterSettings::deviceSettings(const QString &udi) const
 {
-    return deviceSettings(udi)->isKnown();
-}
-
-bool AutomounterSettings::deviceAutomountIsForced(const QString &udi, AutomountType type)
-{
-    switch (type) {
-    case Login:
-        return deviceSettings(udi)->mountOnLogin();
-    case Attach:
-        return deviceSettings(udi)->mountOnAttach();
-    }
-
-    return false;
+    return m_devices.value(udi);
 }
 
 bool AutomounterSettings::shouldAutomountDevice(const QString &udi, AutomountType type) const
@@ -95,11 +73,6 @@ void AutomounterSettings::setDeviceLastSeenMounted(const QString &udi, bool moun
     deviceSettings(udi)->setLastSeenMounted(mounted);
 }
 
-QString AutomounterSettings::getDeviceName(const QString &udi)
-{
-    return deviceSettings(udi)->name();
-}
-
 void AutomounterSettings::saveDevice(const Solid::Device &dev)
 {
     const QString udi = dev.udi();
@@ -115,14 +88,4 @@ void AutomounterSettings::saveDevice(const Solid::Device &dev)
 void AutomounterSettings::removeDeviceGroup(const QString &udi)
 {
     config()->group("Devices").group(udi).deleteGroup();
-}
-
-bool AutomounterSettings::getDeviceForcedAutomount(const QString &udi)
-{
-    return deviceSettings(udi)->forceAutomount();
-}
-
-QString AutomounterSettings::getDeviceIcon(const QString &udi)
-{
-    return deviceSettings(udi)->icon();
 }

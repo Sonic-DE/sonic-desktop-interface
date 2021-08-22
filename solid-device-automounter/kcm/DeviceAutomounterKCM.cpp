@@ -97,9 +97,6 @@ void DeviceAutomounterKCM::load()
 {
     KCModule::load();
 
-    m_devices->setAutomaticMountOnLogin(m_settings->automountOnLogin());
-    m_devices->setAutomaticMountOnPlugin(m_settings->automountOnPlugin());
-
     m_devices->reload();
     loadLayout();
 }
@@ -109,23 +106,18 @@ void DeviceAutomounterKCM::save()
     KCModule::save();
     saveLayout();
 
+    // Housekeeping before saving.
+    // 1. Detect if any of the automount options is set to globally enable automounting
+    // 2. Clean-up removed setting groups
     bool enabled = m_devices->automountOnLogin() || m_devices->automountOnPlugin();
-
     QStringList validDevices;
+
     for (int i = 1; i < m_devices->rowCount(); ++i) {
         const QModelIndex &parentIdx = m_devices->index(i, 0);
-
         for (int j = 0; j < m_devices->rowCount(parentIdx); ++j) {
-            const QString device = m_devices->index(j, 0, parentIdx).data(DeviceModel::UdiRole).toString();
-            validDevices << device;
-
-            const bool mountOnLogin = m_devices->index(j, 1, parentIdx).data(Qt::CheckStateRole).toInt() == Qt::Checked;
-            m_settings->deviceSettings(device)->setMountOnLogin(mountOnLogin);
-
-            const bool mountOnAttach = m_devices->index(j, 2, parentIdx).data(Qt::CheckStateRole).toInt() == Qt::Checked;
-            m_settings->deviceSettings(device)->setMountOnAttach(mountOnAttach);
-
-            enabled |= mountOnLogin | mountOnAttach;
+            const QString udi = m_devices->index(j, 0, parentIdx).data(DeviceModel::UdiRole).toString();
+            validDevices << udi;
+            enabled |= m_settings->deviceSettings(udi)->mountOnLogin() | m_settings->deviceSettings(udi)->mountOnAttach();
         }
     }
 

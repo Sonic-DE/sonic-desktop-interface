@@ -65,8 +65,6 @@ private:
 
     QList<QString> m_attached;
     QList<QString> m_disconnected;
-    QHash<QString, bool> m_loginForced;
-    QHash<QString, bool> m_attachedForced;
     AutomounterSettings *m_settings;
 };
 
