@@ -51,14 +51,8 @@ DeviceAutomounterKCM::DeviceAutomounterKCM(QWidget *parent, const QVariantList &
     deviceView->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
     deviceView->header()->setSectionResizeMode(0, QHeaderView::Stretch);
 
-    // TODO: This is a bit generic way to mark changes on the KCM, but improves the current situation.
-    // More integration with AutomounterSettings is required to make it fully change-aware.
-    connect(m_devices, &QAbstractItemModel::dataChanged, this, [this]() {
-        markAsChanged();
-    });
-
+    connect(m_devices, &QAbstractItemModel::dataChanged, this, &DeviceAutomounterKCM::updateState);
     connect(deviceView->selectionModel(), &QItemSelectionModel::selectionChanged, this, &DeviceAutomounterKCM::updateForgetDeviceButton);
-
     connect(forgetDevice, &QAbstractButton::clicked, this, &DeviceAutomounterKCM::forgetSelectedDevices);
 
     forgetDevice->setEnabled(false);
@@ -67,6 +61,12 @@ DeviceAutomounterKCM::DeviceAutomounterKCM(QWidget *parent, const QVariantList &
 DeviceAutomounterKCM::~DeviceAutomounterKCM()
 {
     saveLayout();
+}
+
+void DeviceAutomounterKCM::updateState()
+{
+    unmanagedWidgetChangeState(m_unmanagedChanges || m_settings->usrIsSaveNeeded());
+    unmanagedWidgetDefaultState(m_settings->isDefaults());
 }
 
 void DeviceAutomounterKCM::updateForgetDeviceButton()
@@ -90,7 +90,8 @@ void DeviceAutomounterKCM::forgetSelectedDevices()
         }
     }
 
-    markAsChanged();
+    m_unmanagedChanges = true;
+    updateState();
 }
 
 void DeviceAutomounterKCM::load()
@@ -99,6 +100,9 @@ void DeviceAutomounterKCM::load()
 
     m_devices->reload();
     loadLayout();
+
+    m_unmanagedChanges = false;
+    updateState();
 }
 
 void DeviceAutomounterKCM::save()
@@ -148,6 +152,14 @@ void DeviceAutomounterKCM::save()
                                          enabled ? QStringLiteral("loadModule") : QStringLiteral("unloadModule"));
     msg.setArguments({QVariant(QStringLiteral("device_automounter"))});
     dbus.call(msg, QDBus::NoBlock);
+}
+
+void DeviceAutomounterKCM::defaults()
+{
+    KCModule::defaults();
+
+    m_settings->setDefaults();
+    Q_EMIT m_devices->dataChanged(m_devices->index(0, 1), m_devices->index(0, 2));
 }
 
 void DeviceAutomounterKCM::saveLayout()

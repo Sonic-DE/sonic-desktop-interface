@@ -25,6 +25,13 @@ bool AutomounterSettings::usrSave()
     return saveOk;
 }
 
+bool AutomounterSettings::usrIsSaveNeeded()
+{
+    return isSaveNeeded() || std::any_of(m_devices.cbegin(), m_devices.cend(), [](const DeviceSettings *device) {
+               return device->isSaveNeeded();
+           });
+}
+
 QStringList AutomounterSettings::knownDevices() const
 {
     return config()->group("Devices").groupList();
