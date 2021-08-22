@@ -22,12 +22,13 @@ public:
         Login,
         Attach,
     };
+
     DeviceSettings *deviceSettings(const QString &udi) const;
     QStringList knownDevices() const;
     bool shouldAutomountDevice(const QString &udi, AutomountType type) const;
-    void setDeviceLastSeenMounted(const QString &udi, bool mounted);
 
-    void saveDevice(const Solid::Device &dev);
+    void setDeviceLastSeenMounted(const QString &udi, bool mounted);
+    void setDeviceInfo(const Solid::Device &dev);
     void removeDeviceGroup(const QString &udi);
 
 private:
