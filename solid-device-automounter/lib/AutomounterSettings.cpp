@@ -67,13 +67,16 @@ bool AutomounterSettings::shouldAutomountDevice(const QString &udi, AutomountTyp
 
 void AutomounterSettings::setDeviceLastSeenMounted(const QString &udi, bool mounted)
 {
+    if (!m_devices.contains(udi)) {
+        m_devices[udi] = new DeviceSettings(sharedConfig(), udi, this);
+    }
     if (mounted) {
         deviceSettings(udi)->setIsKnown(true);
     }
     deviceSettings(udi)->setLastSeenMounted(mounted);
 }
 
-void AutomounterSettings::saveDevice(const Solid::Device &dev)
+void AutomounterSettings::setDeviceInfo(const Solid::Device &dev)
 {
     const QString udi = dev.udi();
     if (!m_devices.contains(udi)) {
@@ -82,10 +85,11 @@ void AutomounterSettings::saveDevice(const Solid::Device &dev)
     auto settings = deviceSettings(udi);
     settings->setName(dev.description());
     settings->setIcon(dev.icon());
-    settings->save();
 }
 
 void AutomounterSettings::removeDeviceGroup(const QString &udi)
 {
-    config()->group("Devices").group(udi).deleteGroup();
+    if (config()->group("Devices").hasGroup(udi)) {
+        config()->group("Devices").group(udi).deleteGroup();
+    }
 }
