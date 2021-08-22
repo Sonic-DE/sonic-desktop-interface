@@ -31,16 +31,8 @@ public:
     void removeDeviceGroup(const QString &udi);
 
 private:
-    bool deviceIsKnown(const QString &udi);
-    bool deviceAutomountIsForced(const QString &udi, AutomountType type);
-    QString getDeviceName(const QString &udi);
-    bool getDeviceForcedAutomount(const QString &udi);
-    QString getDeviceIcon(const QString &udi);
-
-private:
     void usrRead() override;
     bool usrSave() override;
-    KConfigGroup deviceSettingsGroup(const QString &udi);
 
 private:
     QHash<QString, DeviceSettings *> m_devices;
