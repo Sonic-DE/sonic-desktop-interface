@@ -121,7 +121,7 @@ void DeviceAutomounterKCM::save()
     bool enabled = m_devices->automountOnLogin() || m_devices->automountOnPlugin();
     QStringList validDevices;
 
-    for (int i = 1; i < m_devices->rowCount(); ++i) {
+    for (int i = DeviceModel::RowAttached; i < m_devices->rowCount(); ++i) {
         const QModelIndex &parentIdx = m_devices->index(i, 0);
         for (int j = 0; j < m_devices->rowCount(parentIdx); ++j) {
             const QString udi = m_devices->index(j, 0, parentIdx).data(DeviceModel::UdiRole).toString();
@@ -178,9 +178,8 @@ void DeviceAutomounterKCM::saveLayout()
     }
 
     LayoutSettings::setHeaderWidths(widths);
-    // Check DeviceModel.cpp, thats where the magic row numbers come from.
-    LayoutSettings::setAttachedExpanded(deviceView->isExpanded(m_devices->index(1, 0)));
-    LayoutSettings::setDetachedExpanded(deviceView->isExpanded(m_devices->index(2, 0)));
+    LayoutSettings::setAttachedExpanded(deviceView->isExpanded(m_devices->index(DeviceModel::RowAttached, 0)));
+    LayoutSettings::setDetachedExpanded(deviceView->isExpanded(m_devices->index(DeviceModel::RowDetached, 0)));
     LayoutSettings::self()->save();
 }
 
@@ -199,8 +198,8 @@ void DeviceAutomounterKCM::loadLayout()
         deviceView->setColumnWidth(i, widths[i]);
     }
 
-    deviceView->setExpanded(m_devices->index(1, 0), LayoutSettings::attachedExpanded());
-    deviceView->setExpanded(m_devices->index(2, 0), LayoutSettings::detachedExpanded());
+    deviceView->setExpanded(m_devices->index(DeviceModel::RowAttached, 0), LayoutSettings::attachedExpanded());
+    deviceView->setExpanded(m_devices->index(DeviceModel::RowDetached, 0), LayoutSettings::detachedExpanded());
 }
 
 #include "DeviceAutomounterKCM.moc"
