@@ -52,6 +52,8 @@ public:
     void setAutomaticMountOnLogin(bool automaticLogin);
     void setAutomaticMountOnPlugin(bool automaticAttached);
 
+    void updateCheckedColumns(int column = -1);
+
 public Q_SLOTS:
     void forgetDevice(const QString &udi);
     void reload();

@@ -276,7 +276,7 @@ QVariant DeviceModel::data(const QModelIndex &index, int role) const
         } else if (index.column() == 1) {
             switch (role) {
             case Qt::CheckStateRole:
-                return m_settings->deviceSettings(udi)->mountOnLogin() ? Qt::Checked : Qt::Unchecked;
+                return m_settings->shouldAutomountDevice(udi, AutomounterSettings::Login) ? Qt::Checked : Qt::Unchecked;
             case Qt::ToolTipRole:
                 if (m_settings->shouldAutomountDevice(udi, AutomounterSettings::Login))
                     return i18n("This device will be automatically mounted at login.");
@@ -285,7 +285,7 @@ QVariant DeviceModel::data(const QModelIndex &index, int role) const
         } else if (index.column() == 2) {
             switch (role) {
             case Qt::CheckStateRole:
-                return m_settings->deviceSettings(udi)->mountOnAttach() ? Qt::Checked : Qt::Unchecked;
+                return m_settings->shouldAutomountDevice(udi, AutomounterSettings::Attach) ? Qt::Checked : Qt::Unchecked;
             case Qt::ToolTipRole:
                 if (m_settings->shouldAutomountDevice(udi, AutomounterSettings::Attach))
                     return i18n("This device will be automatically mounted when attached.");
@@ -315,7 +315,7 @@ QVariant DeviceModel::data(const QModelIndex &index, int role) const
         } else if (index.column() == 1) {
             switch (role) {
             case Qt::CheckStateRole:
-                return m_settings->deviceSettings(udi)->mountOnLogin() ? Qt::Checked : Qt::Unchecked;
+                return m_settings->shouldAutomountDevice(udi, AutomounterSettings::Login) ? Qt::Checked : Qt::Unchecked;
             case Qt::ToolTipRole:
                 if (m_settings->shouldAutomountDevice(udi, AutomounterSettings::Login))
                     return i18n("This device will be automatically mounted at login.");
@@ -324,7 +324,7 @@ QVariant DeviceModel::data(const QModelIndex &index, int role) const
         } else if (index.column() == 2) {
             switch (role) {
             case Qt::CheckStateRole:
-                return m_settings->deviceSettings(udi)->mountOnAttach() ? Qt::Checked : Qt::Unchecked;
+                return m_settings->shouldAutomountDevice(udi, AutomounterSettings::Attach) ? Qt::Checked : Qt::Unchecked;
             case Qt::ToolTipRole:
                 if (m_settings->shouldAutomountDevice(udi, AutomounterSettings::Attach))
                     return i18n("This device will be automatically mounted when attached.");
@@ -379,10 +379,7 @@ void DeviceModel::setAutomaticMountOnLogin(bool automaticLogin)
     }
 
     m_settings->setAutomountOnLogin(automaticLogin);
-    for (int parent = 1; parent < rowCount(); parent++) {
-        const auto parentIndex = index(parent, 0);
-        Q_EMIT dataChanged(index(0, 1, parentIndex), index(rowCount(parentIndex), 1, parentIndex));
-    }
+    updateCheckedColumns(1);
 }
 
 void DeviceModel::setAutomaticMountOnPlugin(bool automaticAttached)
@@ -392,8 +389,15 @@ void DeviceModel::setAutomaticMountOnPlugin(bool automaticAttached)
     }
 
     m_settings->setAutomountOnPlugin(automaticAttached);
+    updateCheckedColumns(2);
+}
+
+void DeviceModel::updateCheckedColumns(int column)
+{
     for (int parent = 1; parent < rowCount(); parent++) {
         const auto parentIndex = index(parent, 0);
-        Q_EMIT dataChanged(index(0, 2, parentIndex), index(rowCount(parentIndex), 2, parentIndex));
+        Q_EMIT dataChanged(index(0, (column > 0 ? column : 1), parentIndex), // OnLogin column
+                           index(rowCount(parentIndex), column > 0 ? column : 2, parentIndex), // OnAttach column
+                           {Qt::CheckStateRole, Qt::ToolTipRole});
     }
 }
