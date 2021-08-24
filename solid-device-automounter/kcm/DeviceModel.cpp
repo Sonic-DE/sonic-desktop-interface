@@ -235,7 +235,7 @@ QVariant DeviceModel::data(const QModelIndex &index, int role) const
         if (role == Qt::DisplayRole && index.column() == 0) {
             switch (index.row()) {
             case 0:
-                return i18n("All Devices");
+                return m_settings->automountUnknownDevices() ? i18n("All Devices") : i18n("All Known Devices");
             case 1:
                 return i18n("Attached Devices");
             case 2:
@@ -390,6 +390,17 @@ void DeviceModel::setAutomaticMountOnPlugin(bool automaticAttached)
 
     m_settings->setAutomountOnPlugin(automaticAttached);
     updateCheckedColumns(2);
+}
+
+void DeviceModel::setAutomaticUnknown(bool automaticUnknown)
+{
+    if (m_settings->automountUnknownDevices() == automaticUnknown) {
+        return;
+    }
+
+    m_settings->setAutomountUnknownDevices(automaticUnknown);
+    Q_EMIT dataChanged(index(0, 0), index(0, 0), {Qt::DisplayRole});
+    updateCheckedColumns();
 }
 
 void DeviceModel::updateCheckedColumns(int column)
