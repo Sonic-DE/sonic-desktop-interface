@@ -51,7 +51,12 @@ DeviceAutomounterKCM::DeviceAutomounterKCM(QWidget *parent, const QVariantList &
     deviceView->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
     deviceView->header()->setSectionResizeMode(0, QHeaderView::Stretch);
 
+    connect(kcfg_AutomountUnknownDevices, &QCheckBox::toggled, this, [this](int state) {
+        m_devices->setAutomaticUnknown(state == Qt::Checked);
+    });
+
     connect(m_devices, &QAbstractItemModel::dataChanged, this, &DeviceAutomounterKCM::updateState);
+
     connect(deviceView->selectionModel(), &QItemSelectionModel::selectionChanged, this, &DeviceAutomounterKCM::updateForgetDeviceButton);
     connect(forgetDevice, &QAbstractButton::clicked, this, &DeviceAutomounterKCM::forgetSelectedDevices);
 
