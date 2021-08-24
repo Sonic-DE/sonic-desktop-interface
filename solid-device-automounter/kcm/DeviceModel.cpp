@@ -31,12 +31,12 @@ void DeviceModel::forgetDevice(const QString &udi)
 {
     if (m_disconnected.contains(udi)) {
         const int deviceIndex = m_disconnected.indexOf(udi);
-        beginRemoveRows(index(1, 0), deviceIndex, deviceIndex);
+        beginRemoveRows(index(RowDetached, 0), deviceIndex, deviceIndex);
         m_disconnected.removeOne(udi);
         endRemoveRows();
     } else if (m_attached.contains(udi)) {
         const int deviceIndex = m_attached.indexOf(udi);
-        beginRemoveRows(index(0, 0), deviceIndex, deviceIndex);
+        beginRemoveRows(index(RowAttached, 0), deviceIndex, deviceIndex);
         m_attached.removeOne(udi);
         endRemoveRows();
     }
@@ -67,7 +67,7 @@ void DeviceModel::deviceAttached(const QString &udi)
     if (volume && !volume->isIgnored()) {
         if (m_disconnected.contains(udi)) {
             const int deviceIndex = m_disconnected.indexOf(udi);
-            beginRemoveRows(index(1, 0), deviceIndex, deviceIndex);
+            beginRemoveRows(index(RowDetached, 0), deviceIndex, deviceIndex);
             m_disconnected.removeOne(udi);
             endRemoveRows();
         }
@@ -81,7 +81,7 @@ void DeviceModel::deviceRemoved(const QString &udi)
     if (m_attached.contains(udi)) {
         const int deviceIndex = m_attached.indexOf(udi);
 
-        beginRemoveRows(index(0, 0), deviceIndex, deviceIndex);
+        beginRemoveRows(index(RowAttached, 0), deviceIndex, deviceIndex);
         m_attached.removeOne(udi);
         endRemoveRows();
 
@@ -92,7 +92,7 @@ void DeviceModel::deviceRemoved(const QString &udi)
         // (don't show partition tables and other garbage) but this information
         // is no longer available once the device is gone
         if (m_settings->knownDevices().contains(udi)) {
-            beginInsertRows(index(1, 0), m_disconnected.size(), m_disconnected.size());
+            beginInsertRows(index(RowDetached, 0), m_disconnected.size(), m_disconnected.size());
             m_disconnected << udi;
             endInsertRows();
         }
@@ -103,25 +103,18 @@ void DeviceModel::addNewDevice(const QString &udi)
 {
     m_settings->load();
 
-    if (!m_loginForced.contains(udi)) {
-        m_loginForced[udi] = m_settings->deviceAutomountIsForced(udi, AutomounterSettings::Login);
-    }
-    if (!m_attachedForced.contains(udi)) {
-        m_loginForced[udi] = m_settings->deviceAutomountIsForced(udi, AutomounterSettings::Attach);
-    }
-
     const Solid::Device dev(udi);
     if (dev.isValid()) {
         if (dev.is<Solid::StorageAccess>()) {
             const Solid::StorageAccess *access = dev.as<Solid::StorageAccess>();
             if (!access->isIgnored() || !access->isAccessible()) {
-                beginInsertRows(index(0, 0), m_attached.size(), m_attached.size());
+                beginInsertRows(index(RowAttached, 0), m_attached.size(), m_attached.size());
                 m_attached << udi;
                 endInsertRows();
             }
         }
     } else {
-        beginInsertRows(index(1, 0), m_disconnected.size(), m_disconnected.size());
+        beginInsertRows(index(RowDetached, 0), m_disconnected.size(), m_disconnected.size());
         m_disconnected << udi;
         endInsertRows();
     }
@@ -342,18 +335,21 @@ QVariant DeviceModel::data(const QModelIndex &index, int role) const
 
 int DeviceModel::rowCount(const QModelIndex &parent) const
 {
-    if (parent.isValid()) {
-        if (parent.internalId() < 3 || parent.column() > 0) {
-            return 0;
-        }
-        if (parent.row() == 0) {
-            return m_attached.size();
-        }
+    if (!parent.isValid()) {
+        return 2;
+    }
+    if (parent.internalId() < 3 || parent.column() > 0) {
+        return 0;
+    }
 
+    switch (parent.row()) {
+    case RowAttached:
+        return m_attached.size();
+    case RowDetached:
         return m_disconnected.size();
     }
 
-    return 2;
+    return 0;
 }
 
 int DeviceModel::columnCount(const QModelIndex &parent) const

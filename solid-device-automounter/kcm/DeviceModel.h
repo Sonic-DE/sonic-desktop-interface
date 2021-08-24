@@ -34,6 +34,11 @@ public:
         TypeRole,
     };
 
+    enum {
+        RowAttached,
+        RowDetached,
+    };
+
     Qt::ItemFlags flags(const QModelIndex &index) const override;
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
@@ -48,6 +53,9 @@ public:
 
     void setAutomaticMountOnLogin(bool automaticLogin);
     void setAutomaticMountOnPlugin(bool automaticAttached);
+    void setAutomaticUnknown(bool automaticUnknown);
+
+    void updateCheckedColumns(int column = -1);
 
 public Q_SLOTS:
     void forgetDevice(const QString &udi);
