@@ -51,6 +51,7 @@ public:
 
     void setAutomaticMountOnLogin(bool automaticLogin);
     void setAutomaticMountOnPlugin(bool automaticAttached);
+    void setAutomaticUnknown(bool automaticUnknown);
 
     void updateCheckedColumns(int column = -1);
 
