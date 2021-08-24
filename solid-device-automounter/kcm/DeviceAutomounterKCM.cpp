@@ -159,7 +159,7 @@ void DeviceAutomounterKCM::defaults()
     KCModule::defaults();
 
     m_settings->setDefaults();
-    Q_EMIT m_devices->dataChanged(m_devices->index(0, 1), m_devices->index(0, 2));
+    m_devices->updateCheckedColumns();
 }
 
 void DeviceAutomounterKCM::saveLayout()

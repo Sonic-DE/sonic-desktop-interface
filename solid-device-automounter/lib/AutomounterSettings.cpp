@@ -50,7 +50,6 @@ bool AutomounterSettings::shouldAutomountDevice(const QString &udi, AutomountTyp
     //     and auto-mounting on login/attach is configured
     //     and the device is known, has been seen mounted last, or is unknown to us
 
-    const bool enabled = automountEnabled();
     const bool automountUnknown = automountUnknownDevices();
     const bool known = deviceSettings(udi)->isKnown();
     const bool lastSeenMounted = deviceSettings(udi)->lastSeenMounted();
@@ -68,8 +67,7 @@ bool AutomounterSettings::shouldAutomountDevice(const QString &udi, AutomountTyp
         break;
     }
 
-    bool shouldAutomount = deviceAutomount || (enabled && typeCondition && (known || lastSeenMounted || automountUnknown));
-    return shouldAutomount;
+    return deviceAutomount || (typeCondition && (known || lastSeenMounted || automountUnknown));
 }
 
 void AutomounterSettings::setDeviceLastSeenMounted(const QString &udi, bool mounted)
