@@ -47,7 +47,7 @@ QVariant DeviceModel::headerData(int section, Qt::Orientation orientation, int r
     if (orientation == Qt::Horizontal && role == Qt::DisplayRole) {
         switch (section) {
         case 0:
-            return i18n("Device");
+            return i18n("Automount Device");
         case 1:
             return i18nc("As in automount on login", "On Login");
         case 2:
@@ -137,7 +137,7 @@ QModelIndex DeviceModel::index(int row, int column, const QModelIndex &parent) c
         return QModelIndex();
     }
     if (parent.isValid()) {
-        if (parent.column() > 0) {
+        if (parent.column() > 0 || parent.row() == RowAll) {
             return QModelIndex();
         }
 
@@ -170,6 +170,9 @@ Qt::ItemFlags DeviceModel::flags(const QModelIndex &index) const
     }
 
     if (!index.parent().isValid()) {
+        if (index.row() == RowAll) {
+            return Qt::ItemIsEnabled | (index.column() > 0 ? Qt::ItemIsUserCheckable : Qt::NoItemFlags);
+        }
         return (m_settings->automountOnLogin() && m_settings->automountOnPlugin()) ? Qt::NoItemFlags : Qt::ItemIsEnabled;
     }
 
@@ -197,14 +200,25 @@ bool DeviceModel::setData(const QModelIndex &index, const QVariant &value, int r
         return false;
     }
 
-    const QString &udi = index.data(Qt::UserRole).toString();
-    switch (index.column()) {
-    case 1:
-        m_settings->deviceSettings(udi)->setMountOnLogin(value.toInt() == Qt::Checked);
-        break;
-    case 2:
-        m_settings->deviceSettings(udi)->setMountOnAttach(value.toInt() == Qt::Checked);
-        break;
+    if (!index.parent().isValid() && index.row() == RowAll) {
+        switch (index.column()) {
+        case 1:
+            setAutomaticMountOnLogin(value.toInt() == Qt::Checked);
+            break;
+        case 2:
+            setAutomaticMountOnPlugin(value.toInt() == Qt::Checked);
+            break;
+        }
+    } else {
+        const QString &udi = index.data(Qt::UserRole).toString();
+        switch (index.column()) {
+        case 1:
+            m_settings->deviceSettings(udi)->setMountOnLogin(value.toInt() == Qt::Checked);
+            break;
+        case 2:
+            m_settings->deviceSettings(udi)->setMountOnAttach(value.toInt() == Qt::Checked);
+            break;
+        }
     }
 
     Q_EMIT dataChanged(index, index);
@@ -220,10 +234,19 @@ QVariant DeviceModel::data(const QModelIndex &index, int role) const
     if (!index.parent().isValid()) {
         if (role == Qt::DisplayRole && index.column() == 0) {
             switch (index.row()) {
+            case RowAll:
+                return m_settings->automountUnknownDevices() ? i18n("All Devices") : i18n("All Known Devices");
             case RowAttached:
                 return i18n("Attached Devices");
             case RowDetached:
                 return i18n("Disconnected Devices");
+            }
+        }
+        if (role == Qt::CheckStateRole && index.row() == RowAll) {
+            if (index.column() == 1) {
+                return m_settings->automountOnLogin() ? Qt::Checked : Qt::Unchecked;
+            } else if (index.column() == 2) {
+                return m_settings->automountOnPlugin() ? Qt::Checked : Qt::Unchecked;
             }
         }
         return QVariant();
@@ -288,13 +311,15 @@ QVariant DeviceModel::data(const QModelIndex &index, int role) const
 int DeviceModel::rowCount(const QModelIndex &parent) const
 {
     if (!parent.isValid()) {
-        return 2;
+        return 3;
     }
     if (parent.internalId() < 3 || parent.column() > 0) {
         return 0;
     }
 
     switch (parent.row()) {
+    case RowAll:
+        return 0;
     case RowAttached:
         return m_attached.size();
     case RowDetached:
