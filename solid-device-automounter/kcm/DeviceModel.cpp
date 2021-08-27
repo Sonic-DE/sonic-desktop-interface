@@ -330,24 +330,53 @@ int DeviceModel::columnCount(const QModelIndex &parent) const
     return 3;
 }
 
+bool DeviceModel::automountOnLogin() const
+{
+    return m_settings->automountOnLogin();
+}
+
+bool DeviceModel::automountOnPlugin() const
+{
+    return m_settings->automountOnPlugin();
+}
+
 void DeviceModel::setAutomaticMountOnLogin(bool automaticLogin)
 {
-    if (m_automaticLogin != automaticLogin) {
-        m_automaticLogin = automaticLogin;
-        for (int parent = 0; parent < rowCount(); parent++) {
-            const auto parentIndex = index(parent, 0);
-            Q_EMIT dataChanged(index(0, 1, parentIndex), index(rowCount(parentIndex), 1, parentIndex));
-        }
+    if (automountOnLogin() == automaticLogin) {
+        return;
     }
+
+    m_settings->setAutomountOnLogin(automaticLogin);
+    updateCheckedColumns(1);
 }
 
 void DeviceModel::setAutomaticMountOnPlugin(bool automaticAttached)
 {
-    if (m_automaticAttached != automaticAttached) {
-        m_automaticAttached = automaticAttached;
-        for (int parent = 0; parent < rowCount(); parent++) {
-            const auto parentIndex = index(parent, 0);
-            Q_EMIT dataChanged(index(0, 2, parentIndex), index(rowCount(parentIndex), 2, parentIndex));
-        }
+    if (automountOnPlugin() == automaticAttached) {
+        return;
+    }
+
+    m_settings->setAutomountOnPlugin(automaticAttached);
+    updateCheckedColumns(2);
+}
+
+void DeviceModel::setAutomaticUnknown(bool automaticUnknown)
+{
+    if (m_settings->automountUnknownDevices() == automaticUnknown) {
+        return;
+    }
+
+    m_settings->setAutomountUnknownDevices(automaticUnknown);
+    Q_EMIT dataChanged(index(0, 0), index(0, 0), {Qt::DisplayRole});
+    updateCheckedColumns();
+}
+
+void DeviceModel::updateCheckedColumns(int column)
+{
+    for (int parent = RowAttached; parent < rowCount(); parent++) {
+        const auto parentIndex = index(parent, 0);
+        Q_EMIT dataChanged(index(0, (column > 0 ? column : 1), parentIndex), // OnLogin column
+                           index(rowCount(parentIndex), column > 0 ? column : 2, parentIndex), // OnAttach column
+                           {Qt::CheckStateRole, Qt::ToolTipRole});
     }
 }

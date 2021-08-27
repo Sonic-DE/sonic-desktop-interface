@@ -51,6 +51,9 @@ public:
 
     bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
 
+    bool automountOnLogin() const;
+    bool automountOnPlugin() const;
+
     void setAutomaticMountOnLogin(bool automaticLogin);
     void setAutomaticMountOnPlugin(bool automaticAttached);
     void setAutomaticUnknown(bool automaticUnknown);
