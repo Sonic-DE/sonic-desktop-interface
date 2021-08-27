@@ -31,12 +31,12 @@ void DeviceModel::forgetDevice(const QString &udi)
 {
     if (m_disconnected.contains(udi)) {
         const int deviceIndex = m_disconnected.indexOf(udi);
-        beginRemoveRows(index(1, 0), deviceIndex, deviceIndex);
+        beginRemoveRows(index(RowDetached, 0), deviceIndex, deviceIndex);
         m_disconnected.removeOne(udi);
         endRemoveRows();
     } else if (m_attached.contains(udi)) {
         const int deviceIndex = m_attached.indexOf(udi);
-        beginRemoveRows(index(0, 0), deviceIndex, deviceIndex);
+        beginRemoveRows(index(RowAttached, 0), deviceIndex, deviceIndex);
         m_attached.removeOne(udi);
         endRemoveRows();
     }
@@ -67,7 +67,7 @@ void DeviceModel::deviceAttached(const QString &udi)
     if (volume && !volume->isIgnored()) {
         if (m_disconnected.contains(udi)) {
             const int deviceIndex = m_disconnected.indexOf(udi);
-            beginRemoveRows(index(1, 0), deviceIndex, deviceIndex);
+            beginRemoveRows(index(RowDetached, 0), deviceIndex, deviceIndex);
             m_disconnected.removeOne(udi);
             endRemoveRows();
         }
@@ -81,7 +81,7 @@ void DeviceModel::deviceRemoved(const QString &udi)
     if (m_attached.contains(udi)) {
         const int deviceIndex = m_attached.indexOf(udi);
 
-        beginRemoveRows(index(0, 0), deviceIndex, deviceIndex);
+        beginRemoveRows(index(RowAttached, 0), deviceIndex, deviceIndex);
         m_attached.removeOne(udi);
         endRemoveRows();
 
@@ -92,7 +92,7 @@ void DeviceModel::deviceRemoved(const QString &udi)
         // (don't show partition tables and other garbage) but this information
         // is no longer available once the device is gone
         if (m_settings->knownDevices().contains(udi)) {
-            beginInsertRows(index(1, 0), m_disconnected.size(), m_disconnected.size());
+            beginInsertRows(index(RowDetached, 0), m_disconnected.size(), m_disconnected.size());
             m_disconnected << udi;
             endInsertRows();
         }
@@ -115,13 +115,13 @@ void DeviceModel::addNewDevice(const QString &udi)
         if (dev.is<Solid::StorageAccess>()) {
             const Solid::StorageAccess *access = dev.as<Solid::StorageAccess>();
             if (!access->isIgnored() || !access->isAccessible()) {
-                beginInsertRows(index(0, 0), m_attached.size(), m_attached.size());
+                beginInsertRows(index(RowAttached, 0), m_attached.size(), m_attached.size());
                 m_attached << udi;
                 endInsertRows();
             }
         }
     } else {
-        beginInsertRows(index(1, 0), m_disconnected.size(), m_disconnected.size());
+        beginInsertRows(index(RowDetached, 0), m_disconnected.size(), m_disconnected.size());
         m_disconnected << udi;
         endInsertRows();
     }
@@ -152,22 +152,20 @@ void DeviceModel::reload()
 
 QModelIndex DeviceModel::index(int row, int column, const QModelIndex &parent) const
 {
+    if (column < 0 || column >= columnCount()) {
+        return QModelIndex();
+    }
     if (parent.isValid()) {
         if (parent.column() > 0) {
             return QModelIndex();
         }
 
-        if (parent.row() == 0) {
-            if (row >= 0 && row < m_attached.size() && column >= 0 && column <= 2) {
-                return createIndex(row, column, static_cast<quintptr>(0));
-            }
-        } else if (parent.row() == 1) {
-            if (row >= 0 && row < m_disconnected.size() && column >= 0 && column <= 2) {
-                return createIndex(row, column, 1);
-            }
+        const int deviceCount = (parent.row() == RowAttached) ? m_attached.size() : m_disconnected.size();
+        if (row < deviceCount) {
+            return createIndex(row, column, parent.row());
         }
     } else {
-        if ((row == 0 || row == 1) && column >= 0 && column <= 2) {
+        if (row < rowCount()) {
             return createIndex(row, column, 3);
         }
     }
@@ -191,36 +189,22 @@ Qt::ItemFlags DeviceModel::flags(const QModelIndex &index) const
     }
 
     if (!index.parent().isValid()) {
-        // first child section elements
-        if (m_automaticLogin && m_automaticAttached) {
-            return Qt::NoItemFlags;
-        } else {
-            return Qt::ItemIsEnabled;
-        }
+        return (m_automaticLogin && m_automaticAttached) ? Qt::NoItemFlags : Qt::ItemIsEnabled;
     }
+
+    // Select only detached devices to be removed
+    Qt::ItemFlag selectableFlag = index.parent().row() == RowDetached ? Qt::ItemIsSelectable : Qt::NoItemFlags;
 
     switch (index.column()) {
     case 0:
-        // first column
         if (m_automaticLogin && m_automaticAttached) {
             return Qt::NoItemFlags;
-        } else {
-            return Qt::ItemIsEnabled;
         }
+        return selectableFlag | Qt::ItemIsEnabled;
     case 1:
-        // on login column
-        if (m_automaticLogin) {
-            // automount on login was checked
-            return Qt::ItemIsSelectable | Qt::ItemIsUserCheckable;
-        }
-        return Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsUserCheckable;
+        return Qt::ItemIsUserCheckable | selectableFlag | (m_automaticLogin ? Qt::NoItemFlags : Qt::ItemIsEnabled);
     case 2:
-        // on attached column
-        if (m_automaticAttached) {
-            // automount on attach was checked
-            return Qt::ItemIsSelectable | Qt::ItemIsUserCheckable;
-        }
-        return Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsUserCheckable;
+        return Qt::ItemIsUserCheckable | selectableFlag | (m_automaticAttached ? Qt::NoItemFlags : Qt::ItemIsEnabled);
     default:
         Q_UNREACHABLE();
     }
@@ -342,18 +326,21 @@ QVariant DeviceModel::data(const QModelIndex &index, int role) const
 
 int DeviceModel::rowCount(const QModelIndex &parent) const
 {
-    if (parent.isValid()) {
-        if (parent.internalId() < 3 || parent.column() > 0) {
-            return 0;
-        }
-        if (parent.row() == 0) {
-            return m_attached.size();
-        }
+    if (!parent.isValid()) {
+        return 2;
+    }
+    if (parent.internalId() < 3 || parent.column() > 0) {
+        return 0;
+    }
 
+    switch (parent.row()) {
+    case RowAttached:
+        return m_attached.size();
+    case RowDetached:
         return m_disconnected.size();
     }
 
-    return 2;
+    return 0;
 }
 
 int DeviceModel::columnCount(const QModelIndex &parent) const
