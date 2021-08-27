@@ -197,10 +197,10 @@ bool DeviceModel::setData(const QModelIndex &index, const QVariant &value, int r
         const QString &udi = index.data(Qt::UserRole).toString();
         switch (index.column()) {
         case 1:
-            m_loginForced[udi] = (value.toInt() == Qt::Checked) ? true : false;
+            m_settings->deviceSettings(udi)->setMountOnLogin(value.toInt() == Qt::Checked);
             break;
         case 2:
-            m_attachedForced[udi] = (value.toInt() == Qt::Checked) ? true : false;
+            m_settings->deviceSettings(udi)->setMountOnAttach(value.toInt() == Qt::Checked);
             break;
         }
         Q_EMIT dataChanged(index, index);
