@@ -40,8 +40,6 @@ void DeviceModel::forgetDevice(const QString &udi)
         m_attached.removeOne(udi);
         endRemoveRows();
     }
-    m_loginForced.remove(udi);
-    m_attachedForced.remove(udi);
 }
 
 QVariant DeviceModel::headerData(int section, Qt::Orientation orientation, int role) const
@@ -123,44 +121,32 @@ void DeviceModel::addNewDevice(const QString &udi)
 void DeviceModel::reload()
 {
     beginResetModel();
-    m_loginForced.clear();
-    m_attachedForced.clear();
     m_attached.clear();
     m_disconnected.clear();
-
-    m_automaticLogin = m_settings->automountOnLogin();
-    m_automaticAttached = m_settings->automountOnPlugin();
 
     const auto knownDevices = m_settings->knownDevices();
     for (const QString &dev : knownDevices) {
         addNewDevice(dev);
-    }
-    const auto keys = m_loginForced.keys();
-    for (const QString &udi : keys) {
-        m_loginForced[udi] = m_settings->deviceAutomountIsForced(udi, AutomounterSettings::Login);
-        m_attachedForced[udi] = m_settings->deviceAutomountIsForced(udi, AutomounterSettings::Attach);
     }
     endResetModel();
 }
 
 QModelIndex DeviceModel::index(int row, int column, const QModelIndex &parent) const
 {
+    if (column < 0 || column >= columnCount()) {
+        return QModelIndex();
+    }
     if (parent.isValid()) {
         if (parent.column() > 0) {
             return QModelIndex();
         }
 
-        if (parent.row() == 0) {
-            if (row >= 0 && row < m_attached.size() && column >= 0 && column <= 2) {
-                return createIndex(row, column, static_cast<quintptr>(0));
-            }
-        } else if (parent.row() == 1) {
-            if (row >= 0 && row < m_disconnected.size() && column >= 0 && column <= 2) {
-                return createIndex(row, column, 1);
-            }
+        const int deviceCount = (parent.row() == RowAttached) ? m_attached.size() : m_disconnected.size();
+        if (row < deviceCount) {
+            return createIndex(row, column, parent.row());
         }
     } else {
-        if ((row == 0 || row == 1) && column >= 0 && column <= 2) {
+        if (row < rowCount()) {
             return createIndex(row, column, 3);
         }
     }
@@ -184,36 +170,22 @@ Qt::ItemFlags DeviceModel::flags(const QModelIndex &index) const
     }
 
     if (!index.parent().isValid()) {
-        // first child section elements
-        if (m_automaticLogin && m_automaticAttached) {
-            return Qt::NoItemFlags;
-        } else {
-            return Qt::ItemIsEnabled;
-        }
+        return (automountOnLogin() && automountOnPlugin()) ? Qt::NoItemFlags : Qt::ItemIsEnabled;
     }
+
+    // Select only detached devices to be removed
+    Qt::ItemFlag selectableFlag = index.parent().row() == RowDetached ? Qt::ItemIsSelectable : Qt::NoItemFlags;
 
     switch (index.column()) {
     case 0:
-        // first column
-        if (m_automaticLogin && m_automaticAttached) {
+        if (automountOnLogin() && automountOnPlugin()) {
             return Qt::NoItemFlags;
-        } else {
-            return Qt::ItemIsEnabled;
         }
+        return selectableFlag | Qt::ItemIsEnabled;
     case 1:
-        // on login column
-        if (m_automaticLogin) {
-            // automount on login was checked
-            return Qt::ItemIsSelectable | Qt::ItemIsUserCheckable;
-        }
-        return Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsUserCheckable;
+        return Qt::ItemIsUserCheckable | selectableFlag | (automountOnLogin() ? Qt::NoItemFlags : Qt::ItemIsEnabled);
     case 2:
-        // on attached column
-        if (m_automaticAttached) {
-            // automount on attach was checked
-            return Qt::ItemIsSelectable | Qt::ItemIsUserCheckable;
-        }
-        return Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsUserCheckable;
+        return Qt::ItemIsUserCheckable | selectableFlag | (automountOnPlugin() ? Qt::NoItemFlags : Qt::ItemIsEnabled);
     default:
         Q_UNREACHABLE();
     }
