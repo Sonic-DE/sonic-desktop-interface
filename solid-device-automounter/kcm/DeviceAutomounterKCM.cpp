@@ -57,9 +57,13 @@ DeviceAutomounterKCM::DeviceAutomounterKCM(QWidget *parent, const QVariantList &
     connect(kcfg_AutomountOnPlugin, &QCheckBox::stateChanged, this, [this](int state) {
         m_devices->setAutomaticMountOnPlugin(state == Qt::Checked);
     });
+    connect(kcfg_AutomountUnknownDevices, &QCheckBox::stateChanged, this, [this](int state) {
+        m_devices->setAutomaticUnknown(state == Qt::Checked);
+    });
+
+    connect(m_devices, &QAbstractItemModel::dataChanged, this, &DeviceAutomounterKCM::updateState);
 
     connect(deviceView->selectionModel(), &QItemSelectionModel::selectionChanged, this, &DeviceAutomounterKCM::updateForgetDeviceButton);
-
     connect(forgetDevice, &QAbstractButton::clicked, this, &DeviceAutomounterKCM::forgetSelectedDevices);
 
     forgetDevice->setEnabled(false);
@@ -68,6 +72,12 @@ DeviceAutomounterKCM::DeviceAutomounterKCM(QWidget *parent, const QVariantList &
 DeviceAutomounterKCM::~DeviceAutomounterKCM()
 {
     saveLayout();
+}
+
+void DeviceAutomounterKCM::updateState()
+{
+    unmanagedWidgetChangeState(m_unmanagedChanges || m_settings->usrIsSaveNeeded());
+    unmanagedWidgetDefaultState(m_settings->isDefaults());
 }
 
 void DeviceAutomounterKCM::updateForgetDeviceButton()
@@ -94,19 +104,19 @@ void DeviceAutomounterKCM::forgetSelectedDevices()
         }
     }
 
-    markAsChanged();
+    m_unmanagedChanges = true;
+    updateState();
 }
 
 void DeviceAutomounterKCM::load()
 {
     KCModule::load();
 
-    kcfg_AutomountUnknownDevices->setEnabled(m_settings->automountEnabled());
-    kcfg_AutomountOnLogin->setEnabled(m_settings->automountEnabled());
-    kcfg_AutomountOnPlugin->setEnabled(m_settings->automountEnabled());
-
     m_devices->reload();
     loadLayout();
+
+    m_unmanagedChanges = false;
+    updateState();
 }
 
 void DeviceAutomounterKCM::save()
@@ -114,37 +124,27 @@ void DeviceAutomounterKCM::save()
     KCModule::save();
     saveLayout();
 
-    const bool enabled = kcfg_AutomountEnabled->isChecked();
-
+    // Housekeeping before saving.
+    // 1. Detect if any of the automount options is set to globally enable automounting
+    // 2. Clean-up removed setting groups
+    bool enabled = m_devices->automountOnLogin() || m_devices->automountOnPlugin();
     QStringList validDevices;
-    for (int i = 0; i < m_devices->rowCount(); ++i) {
-        const QModelIndex &idx = m_devices->index(i, 0);
 
-        for (int j = 0; j < m_devices->rowCount(idx); ++j) {
-            QModelIndex dev = m_devices->index(j, 1, idx);
-            const QString device = dev.data(DeviceModel::UdiRole).toString();
-            validDevices << device;
-
-            if (dev.data(Qt::CheckStateRole).toInt() == Qt::Checked) {
-                m_settings->deviceSettings(device).writeEntry("ForceLoginAutomount", true);
-            } else {
-                m_settings->deviceSettings(device).writeEntry("ForceLoginAutomount", false);
-            }
-
-            dev = dev.sibling(j, 2);
-
-            if (dev.data(Qt::CheckStateRole).toInt() == Qt::Checked) {
-                m_settings->deviceSettings(device).writeEntry("ForceAttachAutomount", true);
-            } else {
-                m_settings->deviceSettings(device).writeEntry("ForceAttachAutomount", false);
-            }
+    for (int i = DeviceModel::RowAttached; i < m_devices->rowCount(); ++i) {
+        const QModelIndex &parentIdx = m_devices->index(i, 0);
+        for (int j = 0; j < m_devices->rowCount(parentIdx); ++j) {
+            const QString udi = m_devices->index(j, 0, parentIdx).data(DeviceModel::UdiRole).toString();
+            validDevices << udi;
+            enabled |= m_settings->deviceSettings(udi)->mountOnLogin() | m_settings->deviceSettings(udi)->mountOnAttach();
         }
     }
+
+    m_settings->setAutomountEnabled(enabled);
 
     const auto knownDevices = m_settings->knownDevices();
     for (const QString &possibleDevice : knownDevices) {
         if (!validDevices.contains(possibleDevice)) {
-            m_settings->deviceSettings(possibleDevice).deleteGroup();
+            m_settings->removeDeviceGroup(possibleDevice);
         }
     }
 
@@ -168,6 +168,14 @@ void DeviceAutomounterKCM::save()
     dbus.call(msg, QDBus::NoBlock);
 }
 
+void DeviceAutomounterKCM::defaults()
+{
+    KCModule::defaults();
+
+    m_settings->setDefaults();
+    m_devices->updateCheckedColumns();
+}
+
 void DeviceAutomounterKCM::saveLayout()
 {
     QList<int> widths;
@@ -179,9 +187,8 @@ void DeviceAutomounterKCM::saveLayout()
     }
 
     LayoutSettings::setHeaderWidths(widths);
-    // Check DeviceModel.cpp, thats where the magic row numbers come from.
-    LayoutSettings::setAttachedExpanded(deviceView->isExpanded(m_devices->index(0, 0)));
-    LayoutSettings::setDetachedExpanded(deviceView->isExpanded(m_devices->index(1, 0)));
+    LayoutSettings::setAttachedExpanded(deviceView->isExpanded(m_devices->index(DeviceModel::RowAttached, 0)));
+    LayoutSettings::setDetachedExpanded(deviceView->isExpanded(m_devices->index(DeviceModel::RowDetached, 0)));
     LayoutSettings::self()->save();
 }
 
@@ -200,8 +207,8 @@ void DeviceAutomounterKCM::loadLayout()
         deviceView->setColumnWidth(i, widths[i]);
     }
 
-    deviceView->setExpanded(m_devices->index(0, 0), LayoutSettings::attachedExpanded());
-    deviceView->setExpanded(m_devices->index(1, 0), LayoutSettings::detachedExpanded());
+    deviceView->setExpanded(m_devices->index(DeviceModel::RowAttached, 0), LayoutSettings::attachedExpanded());
+    deviceView->setExpanded(m_devices->index(DeviceModel::RowDetached, 0), LayoutSettings::detachedExpanded());
 }
 
 #include "DeviceAutomounterKCM.moc"
