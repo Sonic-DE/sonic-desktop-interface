@@ -64,6 +64,16 @@ QQC2.RadioButton {
             text: delegate.text
             horizontalAlignment: Text.AlignHCenter
         }
+
+        Rectangle {
+            Layout.preferredWidth: label.paintedWidth
+            Layout.preferredHeight: 1
+            Layout.alignment: Qt.AlignHCenter
+
+            color: Kirigami.Theme.highlightColor
+
+            opacity: delegate.visualFocus ? 1 : 0
+        }
     }
 
     indicator: Item {}
