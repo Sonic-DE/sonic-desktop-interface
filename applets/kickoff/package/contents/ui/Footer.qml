@@ -26,8 +26,7 @@ import org.kde.plasma.extras 2.0 as PlasmaExtras
 PlasmaExtras.PlasmoidHeading {
     id: root
 
-    property alias tabBarCurrentIndex: tabBar.currentIndex
-    readonly property real implicitTabBarWidth: tabBar.implicitWidth
+    readonly property alias tabBar: tabBar
     property real preferredTabBarWidth: 0
 
     contentWidth: tabBar.implicitWidth + root.spacing + separator.implicitWidth + root.spacing + leaveButtons.implicitWidth
@@ -91,6 +90,7 @@ PlasmaExtras.PlasmoidHeading {
                 prefix: tabBar.position == PC3.TabBar.Header ? "north-active-tab" : "south-active-tab"
                 colorGroup: PlasmaCore.ColorScope.colorGroup
             }
+            keyNavigationEnabled: false
         }
 
         PC3.TabButton {
@@ -126,6 +126,37 @@ PlasmaExtras.PlasmoidHeading {
                 if(!plasmoid.expanded) {
                     tabBar.currentIndex = 0
                 }
+            }
+        }
+
+        Keys.onLeftPressed: {
+            let moved = false
+            if (LayoutMirroring.enabled && currentIndex === 0) {
+                incrementCurrentIndex()
+                currentItem.forceActiveFocus(Qt.TabFocusReason)
+                moved = true
+            } else if (currentIndex === 1) {
+                decrementCurrentIndex()
+                currentItem.forceActiveFocus(Qt.BacktabFocusReason)
+                moved = true
+            }
+            if (!moved && currentIndex === 1 && plasmoid.configuration.useControllerNavigation) {
+                leaveButtons.nextItemInFocusChain().forceActiveFocus(Qt.TabFocusReason)
+            }
+        }
+        Keys.onRightPressed: {
+            let moved = false
+            if (LayoutMirroring.enabled && currentIndex === 1) {
+                decrementCurrentIndex()
+                currentItem.forceActiveFocus(Qt.BacktabFocusReason)
+                moved = true
+            } else if (currentIndex === 0) {
+                incrementCurrentIndex()
+                currentItem.forceActiveFocus(Qt.TabFocusReason)
+                moved = true
+            }
+            if (!moved && currentIndex === 1 && plasmoid.configuration.useControllerNavigation) {
+                leaveButtons.nextItemInFocusChain().forceActiveFocus(Qt.TabFocusReason)
             }
         }
     }
