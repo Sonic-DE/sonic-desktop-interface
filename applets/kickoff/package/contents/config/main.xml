@@ -49,5 +49,9 @@
             <label>Whether to display captions ("shut down", "log out", etc.) for the footer action buttons</label>
             <default>true</default>
         </entry>
+        <entry name="useControllerNavigation" type="Bool">
+            <label>Whether to enable shortcuts for better navigation with a controller or arrow keys. Good for sighted people, not so good for blind people.</label>
+            <default>true</default>
+        </entry>
     </group>
 </kcfg>
