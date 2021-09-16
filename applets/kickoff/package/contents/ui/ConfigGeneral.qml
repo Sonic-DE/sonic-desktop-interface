@@ -6,19 +6,21 @@
 */
 
 import QtQuick 2.15
-import QtQuick.Layouts 1.1
-import QtQuick.Controls 2.5
+import QtQuick.Layouts 1.15
+import QtQuick.Controls 2.15
 
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.kquickcontrolsaddons 2.0 as KQuickAddons
-import org.kde.kirigami 2.5 as Kirigami
+import org.kde.kirigami 2.15 as Kirigami
 
 ColumnLayout {
+    id: root
 
     property string cfg_icon: plasmoid.configuration.icon
     property int cfg_favoritesDisplay: plasmoid.configuration.favoritesDisplay
     property int cfg_applicationsDisplay: plasmoid.configuration.applicationsDisplay
     property alias cfg_alphaSort: alphaSort.checked
+    property bool cfg_useControllerNavigation: plasmoid.configuration.useControllerNavigation
     property var cfg_systemFavorites: String(plasmoid.configuration.systemFavorites)
     property int cfg_primaryActions: plasmoid.configuration.primaryActions
     property alias cfg_showActionButtonCaptions: showActionButtonCaptions.checked
@@ -78,15 +80,35 @@ ColumnLayout {
             Kirigami.FormData.isSection: true
         }
 
+        Button {
+            icon.name: "settings-configure"
+            text: i18n("Configure enabled search plugins")
+            onClicked: KQuickAddons.KCMShell.openSystemSettings("kcm_plasmasearch")
+        }
+
         CheckBox {
             id: alphaSort
             text: i18n("Always sort applications alphabetically")
         }
 
-        Button {
-            icon.name: "settings-configure"
-            text: i18n("Configure enabled search plugins")
-            onClicked: KQuickAddons.KCMShell.openSystemSettings("kcm_plasmasearch")
+        Item {
+            Kirigami.FormData.isSection: true
+        }
+
+        ButtonGroup { id: navigationGroup; buttons: [controllerShortcutsRB, blindShortcutsRB] }
+        // FIXME: these options need better descriptions
+        RadioButton {
+            id: controllerShortcutsRB
+            Kirigami.FormData.label: i18nc("@title:group", "Navigation preferences:")
+            text: i18nc("@option:radio", "Better controller and arrow key navigation")
+            checked: plasmoid.configuration.useControllerNavigation
+            onToggled: root.cfg_useControllerNavigation = checked
+        }
+        RadioButton {
+            id: blindShortcutsRB
+            text: i18nc("@option:radio", "Blind accessible navigation")
+            checked: !plasmoid.configuration.useControllerNavigation
+            onToggled: root.cfg_useControllerNavigation = !checked
         }
 
         Item {
