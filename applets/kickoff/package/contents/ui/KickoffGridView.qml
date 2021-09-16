@@ -201,7 +201,7 @@ EmptyPage {
             if (count > 1) {
                 switch (event.key) {
                     // allow going to previous row like normal GridView key navigation
-                    case Qt.Key_Left: if (currentIndex !== 0) {
+                    case Qt.Key_Left: if (plasmoid.configuration.useControllerNavigation ? !atLeft : currentIndex !== 0) {
                         moveCurrentIndexLeft()
                         focusCurrentItem(event, Qt.BacktabFocusReason)
                     } break
@@ -210,7 +210,7 @@ EmptyPage {
                         focusCurrentItem(event, Qt.BacktabFocusReason)
                     } break
                     // allow going to next row like normal GridView key navigation
-                    case Qt.Key_Right: if (currentIndex !== count - 1) {
+                    case Qt.Key_Right: if (plasmoid.configuration.useControllerNavigation ? !atRight : currentIndex !== count - 1) {
                         moveCurrentIndexRight()
                         focusCurrentItem(event, Qt.TabFocusReason)
                     } break
