@@ -58,6 +58,7 @@ FocusScope {
             anchors.fill: parent
             // backtab is implicitly set by the last button in Header.qml
             KeyNavigation.tab: root.contentAreaItem
+            KeyNavigation.right: plasmoid.configuration.useControllerNavigation ? contentAreaLoader : null
         }
     }
     PlasmaCore.SvgItem {
@@ -84,5 +85,6 @@ FocusScope {
         KeyNavigation.backtab: root.sideBarItem
         // Tab should go to the start of the footer focus chain
         KeyNavigation.tab: KickoffSingleton.footer.nextItemInFocusChain()
+        KeyNavigation.left: plasmoid.configuration.useControllerNavigation ? sideBarLoader : null
     }
 }
