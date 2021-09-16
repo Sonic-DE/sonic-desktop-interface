@@ -129,6 +129,14 @@ PlasmaExtras.PlasmoidHeading {
             PC3.ToolTip.text: Accessible.name
             PC3.ToolTip.visible: hovered
             PC3.ToolTip.delay: Kirigami.Units.toolTipDelay
+
+            Keys.onLeftPressed: if (LayoutMirroring.enabled) {
+                searchField.forceActiveFocus(Qt.TabFocusReason)
+            }
+            Keys.onRightPressed: if (!LayoutMirroring.enabled) {
+                searchField.forceActiveFocus(Qt.TabFocusReason)
+            }
+
             onClicked: KQuickAddons.KCMShell.openSystemSettings("kcm_users")
         }
 
@@ -237,6 +245,20 @@ PlasmaExtras.PlasmoidHeading {
             }
             Keys.priority: Keys.AfterItem
             Keys.forwardTo: KickoffSingleton.contentArea.view
+            Keys.onLeftPressed: if (activeFocus) {
+                if (LayoutMirroring.enabled) {
+                    nextItemInFocusChain().forceActiveFocus(Qt.TabFocusReason)
+                } else {
+                    nextItemInFocusChain(false).forceActiveFocus(Qt.BacktabFocusReason)
+                }
+            }
+            Keys.onRightPressed: if (activeFocus) {
+                if (!LayoutMirroring.enabled) {
+                    nextItemInFocusChain().forceActiveFocus(Qt.TabFocusReason)
+                } else {
+                    nextItemInFocusChain(false).forceActiveFocus(Qt.BacktabFocusReason)
+                }
+            }
         }
 
         PC3.ToolButton {
@@ -250,6 +272,16 @@ PlasmaExtras.PlasmoidHeading {
             PC3.ToolTip.text: text
             PC3.ToolTip.delay: Kirigami.Units.toolTipDelay
             PC3.ToolTip.visible: hovered
+            Keys.onLeftPressed: if (LayoutMirroring.enabled) {
+                nextItemInFocusChain().forceActiveFocus(Qt.TabFocusReason)
+            } else {
+                nextItemInFocusChain(false).forceActiveFocus(Qt.BacktabFocusReason)
+            }
+            Keys.onRightPressed: if (!LayoutMirroring.enabled) {
+                nextItemInFocusChain().forceActiveFocus(Qt.TabFocusReason)
+            } else {
+                nextItemInFocusChain(false).forceActiveFocus(Qt.BacktabFocusReason)
+            }
             onClicked: plasmoid.action("configure").trigger()
         }
         PC3.ToolButton {
@@ -271,6 +303,12 @@ PlasmaExtras.PlasmoidHeading {
                 return KickoffSingleton.sideBar
             } else {
                 return nextItemInFocusChain()
+            }
+            Keys.onLeftPressed: if (!LayoutMirroring.enabled) {
+                nextItemInFocusChain(false).forceActiveFocus(Qt.BacktabFocusReason)
+            }
+            Keys.onRightPressed: if (LayoutMirroring.enabled) {
+                nextItemInFocusChain(false).forceActiveFocus(Qt.BacktabFocusReason)
             }
             onToggled: plasmoid.configuration.pin = checked
         }

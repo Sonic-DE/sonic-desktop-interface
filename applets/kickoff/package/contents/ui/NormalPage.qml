@@ -11,12 +11,12 @@ import org.kde.plasma.components 3.0 as PC3
 
 EmptyPage {
     id: root
-    property real preferredSideBarWidth: Math.max(footer.implicitTabBarWidth, applicationsPage.implicitSideBarWidth)
+    property real preferredSideBarWidth: Math.max(footer.tabBar.implicitWidth, applicationsPage.implicitSideBarWidth)
 
     contentItem: HorizontalStackView {
         id: stackView
         focus: true
-        reverseTransitions: footer.tabBarCurrentIndex === 1
+        reverseTransitions: footer.tabBar.currentIndex === 1
         initialItem: ApplicationsPage {
             id: applicationsPage
             preferredSideBarWidth: root.preferredSideBarWidth + KickoffSingleton.leftPadding
@@ -29,15 +29,16 @@ EmptyPage {
             }
         }
         Connections {
-            target: footer
-            function onTabBarCurrentIndexChanged() {
-                if (footer.tabBarCurrentIndex === 0) {
+            target: footer.tabBar
+            function onCurrentIndexChanged() {
+                if (footer.tabBar.currentIndex === 0) {
                     stackView.replace(applicationsPage)
-                } else if (footer.tabBarCurrentIndex === 1) {
+                } else if (footer.tabBar.currentIndex === 1) {
                     stackView.replace(placesPage)
                 }
             }
         }
+        Keys.onDownPressed: footer.tabBar.forceActiveFocus(Qt.TabFocusReason)
     }
 
     footer: Footer {
@@ -49,5 +50,8 @@ EmptyPage {
             value: footer
             restoreMode: Binding.RestoreBinding
         }
+        Keys.onUpPressed: stackView.currentItem.forceActiveFocus(Qt.BacktabFocusReason)
+        // Eat down events to prevent them from reaching the contentArea or searchField
+        Keys.onDownPressed: {}
     }
 }
