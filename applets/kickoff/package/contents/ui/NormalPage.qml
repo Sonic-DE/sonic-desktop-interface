@@ -38,7 +38,6 @@ EmptyPage {
                 }
             }
         }
-        Keys.onDownPressed: footer.tabBar.forceActiveFocus(Qt.TabFocusReason)
     }
 
     footer: Footer {
@@ -50,7 +49,6 @@ EmptyPage {
             value: footer
             restoreMode: Binding.RestoreBinding
         }
-        Keys.onUpPressed: stackView.currentItem.forceActiveFocus(Qt.BacktabFocusReason)
         // Eat down events to prevent them from reaching the contentArea or searchField
         Keys.onDownPressed: {}
     }

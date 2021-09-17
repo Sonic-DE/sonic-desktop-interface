@@ -28,6 +28,7 @@ PlasmaExtras.PlasmoidHeading {
 
     readonly property alias tabBar: tabBar
     property real preferredTabBarWidth: 0
+    readonly property alias leaveButtons: leaveButtons
 
     contentWidth: tabBar.implicitWidth + root.spacing + separator.implicitWidth + root.spacing + leaveButtons.implicitWidth
     contentHeight: leaveButtons.implicitHeight
@@ -159,6 +160,7 @@ PlasmaExtras.PlasmoidHeading {
                 leaveButtons.nextItemInFocusChain().forceActiveFocus(Qt.TabFocusReason)
             }
         }
+        Keys.onUpPressed: KickoffSingleton.sideBar.forceActiveFocus(Qt.BacktabFocusReason)
     }
     PlasmaCore.SvgItem {
         id: separator
@@ -181,6 +183,7 @@ PlasmaExtras.PlasmoidHeading {
             bottom: parent.bottom
             leftMargin: root.spacing
         }
+        Keys.onUpPressed: KickoffSingleton.contentArea.forceActiveFocus(Qt.BacktabFocusReason)
     }
 
     Behavior on height {
