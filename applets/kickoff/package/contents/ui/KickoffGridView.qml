@@ -185,8 +185,7 @@ EmptyPage {
             // Implements the keyboard navigation described in https://www.w3.org/TR/wai-aria-practices-1.2/#grid
             if (count > 1) {
                 switch (event.key) {
-                    // allow going to previous row like normal GridView key navigation
-                    case Qt.Key_Left: if (!atLeft) {
+                    case Qt.Key_Left: if (!atLeft && !KickoffSingleton.searchField.activeFocus) {
                         moveCurrentIndexLeft()
                         focusCurrentItem(event, Qt.BacktabFocusReason)
                     } break
@@ -194,8 +193,7 @@ EmptyPage {
                         moveCurrentIndexUp()
                         focusCurrentItem(event, Qt.BacktabFocusReason)
                     } break
-                    // allow going to next row like normal GridView key navigation
-                    case Qt.Key_Right: if (!atRight) {
+                    case Qt.Key_Right: if (!atRight && !KickoffSingleton.searchField.activeFocus) {
                         moveCurrentIndexRight()
                         focusCurrentItem(event, Qt.TabFocusReason)
                     } break
