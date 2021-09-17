@@ -136,6 +136,11 @@ PlasmaExtras.PlasmoidHeading {
             Keys.onRightPressed: if (!LayoutMirroring.enabled) {
                 searchField.forceActiveFocus(Qt.TabFocusReason)
             }
+            Keys.onDownPressed: if (KickoffSingleton.sideBar) {
+                KickoffSingleton.sideBar.forceActiveFocus(Qt.TabFocusReason)
+            } else {
+                KickoffSingleton.contentArea.forceActiveFocus(Qt.TabFocusReason)
+            }
 
             onClicked: KQuickAddons.KCMShell.openSystemSettings("kcm_users")
         }
@@ -198,6 +203,7 @@ PlasmaExtras.PlasmoidHeading {
             left: nameAndIcon.right
             right: parent.right
         }
+        Keys.onDownPressed: KickoffSingleton.contentArea.forceActiveFocus(Qt.TabFocusReason)
         PlasmaCore.SvgItem {
             id: separator
             Layout.fillHeight: true

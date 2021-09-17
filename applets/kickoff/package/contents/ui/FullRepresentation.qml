@@ -60,7 +60,6 @@ EmptyPage {
             value: header
             restoreMode: Binding.RestoreBinding
         }
-        Keys.onDownPressed: contentItemStackView.currentItem.forceActiveFocus(Qt.TabFocusReason)
     }
 
     contentItem: VerticalStackView {
@@ -98,7 +97,6 @@ EmptyPage {
         // This is here rather than root because events are implicitly forwarded
         // to parent items. Don't want to send multiple events to searchField.
         Keys.forwardTo: KickoffSingleton.searchField
-        Keys.onUpPressed: KickoffSingleton.searchField.forceActiveFocus(Qt.BacktabFocusReason)
 
         Connections {
             target: root.header
