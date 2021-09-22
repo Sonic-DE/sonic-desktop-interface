@@ -51,77 +51,22 @@ PlasmaExtras.PlasmoidHeading {
         height: parent.height
         width: root.preferredNameAndIconWidth
 
-        PC3.RoundButton {
+        Kirigami.Avatar {
             id: avatar
             visible: KQuickAddons.KCMShell.authorize("kcm_users.desktop").length > 0
             hoverEnabled: true
             Layout.fillHeight: true
             Layout.minimumWidth: height
             Layout.maximumWidth: height
-            // FIXME: Not using text with display because of RoundButton bugs in plasma-framework
-            // See https://bugs.kde.org/show_bug.cgi?id=440022
             Accessible.name: i18n("Go to user settings")
             leftPadding: PlasmaCore.Units.devicePixelRatio
             rightPadding: PlasmaCore.Units.devicePixelRatio
             topPadding: PlasmaCore.Units.devicePixelRatio
             bottomPadding: PlasmaCore.Units.devicePixelRatio
-            contentItem: Loader {
-                sourceComponent: kuser.faceIconUrl ? imageComponent : icon
-                Component {
-                    id: imageComponent
-                    Image {
-                        id: imageItem
-                        anchors.fill: avatar.contentItem
-                        source: kuser.faceIconUrl
-                        smooth: true
-                        sourceSize.width: avatar.contentItem.width
-                        sourceSize.height: avatar.contentItem.height
-                        fillMode: Image.PreserveAspectCrop
-                    }
-                }
-                Component {
-                    id: iconComponent
-                    PlasmaCore.IconItem {
-                        id: iconItem
-                        anchors.fill: avatar.contentItem
-                        source: "user"
-                    }
-                }
-                layer.enabled: kuser.faceIconUrl
-                layer.effect: OpacityMask {
-                    anchors.fill: avatar.contentItem
-                    source: avatar.contentItem
-                    maskSource: Rectangle {
-                        visible: false
-                        radius: height/2
-                        width: avatar.contentItem.width
-                        height: avatar.contentItem.height
-                    }
-                }
-            }
-            Rectangle {
-                parent: avatar.background
-                anchors.fill: avatar.background
-                anchors.margins: -PlasmaCore.Units.devicePixelRatio
-                z: 1
-                radius: height/2
-                color: "transparent"
-                border.width: avatar.visualFocus ? PlasmaCore.Units.devicePixelRatio * 2 : 0
-                border.color: PlasmaCore.Theme.buttonFocusColor
-            }
-            // Only used to keep the exact circular shape consistent with the image.
-            // Without this, it looks significantly worse.
-            background.layer.enabled: kuser.faceIconUrl
-            background.layer.effect: OpacityMask {
-                anchors.fill: avatar.background
-                source: avatar.background
-                maskSource: Rectangle {
-                    visible: false
-                    radius: height/2
-                    width: avatar.background.width
-                    height: avatar.background.height
-                }
-            }
+
+            source: kuser.faceIconUrl
+            name: kuser.fullName
+
             HoverHandler {
                 id: hoverHandler
                 cursorShape: Qt.PointingHandCursor
@@ -129,6 +74,15 @@ PlasmaExtras.PlasmoidHeading {
             PC3.ToolTip.text: Accessible.name
             PC3.ToolTip.visible: hovered
             PC3.ToolTip.delay: Kirigami.Units.toolTipDelay
+
+            actions {
+                main: Kirigami.Action {
+                    text: i18n("Go to user settings")
+                    onTriggered: {
+                        KQuickAddons.KCMShell.openSystemSettings("kcm_users")
+                    }
+                }
+            }
 
             Keys.onLeftPressed: if (LayoutMirroring.enabled) {
                 searchField.forceActiveFocus(Qt.TabFocusReason)
@@ -141,8 +95,6 @@ PlasmaExtras.PlasmoidHeading {
             } else {
                 KickoffSingleton.contentArea.forceActiveFocus(Qt.TabFocusReason)
             }
-
-            onClicked: KQuickAddons.KCMShell.openSystemSettings("kcm_users")
         }
 
         MouseArea {
