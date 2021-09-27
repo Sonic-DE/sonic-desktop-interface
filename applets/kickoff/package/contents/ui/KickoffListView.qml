@@ -8,11 +8,9 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 import QtQuick 2.15
-import QtQuick.Templates 2.15 as T
 import QtQml 2.15
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 3.0 as PC3
-import org.kde.plasma.extras 2.0 as PlasmaExtras
 import org.kde.kirigami 2.16 as Kirigami
 
 // ScrollView makes it difficult to control implicit size using the contentItem.
@@ -29,7 +27,7 @@ EmptyPage {
 
     property bool mainContentView: false
 
-    clip: view.interactive
+    clip: view.height < view.contentHeight
 
     header: MouseArea {
         implicitHeight: KickoffSingleton.listItemMetrics.margins.top
@@ -117,6 +115,10 @@ EmptyPage {
         highlightResizeDuration: 0
         highlightMoveDuration: 0
         highlight: PlasmaCore.FrameSvgItem {
+            // The default Z value for delegates is 1. The default Z value for the section delegate is 2.
+            // The highlight gets a value of 3 while the drag is active and then goes back to the default value of 0.
+            z: root.currentItem && root.currentItem.dragActive ?
+                3 : 0
             opacity: view.activeFocus
                 || (KickoffSingleton.contentArea === root
                     && KickoffSingleton.searchField.activeFocus) ? 1 : 0.5
@@ -165,6 +167,22 @@ EmptyPage {
                 duration: PlasmaCore.Units.shortDuration
                 properties: "x, y"
                 easing.type: Easing.OutCubic
+            }
+        }
+
+        MouseArea { // Filter mouse events to avoid flicking like ScrollView
+            parent: view // Set the Flickable as the parent
+            z: 1
+            anchors.fill: parent
+            onPressed: if (mouse.source === Qt.MouseEventNotSynthesized) { // Mouse
+                view.interactive = false
+                verticalScrollBar.interactive = true
+                mouse.accepted = false
+            } else if (mouse.source === MouseEventSynthesizedBySystem) { // Touch
+                // No need for binding. Touching will cause pressed() to be emitted again.
+                view.interactive = view.height < view.contentHeight
+                verticalScrollBar.interactive = false
+                mouse.accepted = false
             }
         }
 
