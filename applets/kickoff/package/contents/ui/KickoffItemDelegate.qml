@@ -21,6 +21,7 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 import QtQuick 2.15
+import QtQml 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Templates 2.15 as T
 import org.kde.plasma.core 2.0 as PlasmaCore
@@ -34,6 +35,7 @@ T.ItemDelegate {
     // model properties
     required property var model
     required property int index
+    required property url url
     required property var decoration
     required property string description
 
@@ -73,6 +75,15 @@ T.ItemDelegate {
             ActionMenu.menu.openRelative()
         }
     }
+
+    property point dragStartPosition: Qt.point(x,y)
+    property int dragStartIndex: index
+    readonly property alias dragActive: mouseArea.drag.active
+    property int lastDeviceType: 0
+
+    // The default Z value for delegates is 1. The default Z value for the section delegate is 2.
+    // The highlight gets a value of 3 while the drag is active and then goes back to the default value of 0.
+    z: dragActive ? 4 : 1
 
     implicitWidth: Math.max(implicitBackgroundWidth + leftInset + rightInset,
                             implicitContentWidth + leftPadding + rightPadding)
@@ -181,6 +192,24 @@ T.ItemDelegate {
             // to change while delegates are moving under the mouse cursor
             && plasmoid.fullRepresentationItem && !plasmoid.fullRepresentationItem.contentItem.busy
         acceptedButtons: Qt.LeftButton | Qt.RightButton
+        drag {
+            axis: Drag.XAndYAxis
+            target: plasmoid.immutability !== PlasmaCore.Types.SystemImmutable && !root.isCategory ? root : undefined
+            minimumX: 0
+            maximumX: root.view ? Math.min(root.parent.width - root.width, root.view.availableWidth - root.width) : 0
+            minimumY: 0
+            maximumY: root.view ? Math.min(root.parent.height - root.height, root.view.availableHeight - root.height) : 0
+        }
+        Binding {
+            target: KickoffSingleton; when: root.dragActive
+            property: "dragSource"; value: root
+            restoreMode: Binding.RestoreBindingOrValue
+        }
+        Binding {
+            target: KickoffSingleton.dragHelper; when: root.dragActive
+            property: "dragIconSize"; value: root.icon.height
+            restoreMode: Binding.RestoreBindingOrValue
+        }
         // Using onPositionChanged instead of onEntered to prevent changing
         // categories while scrolling with the mouse wheel.
         onPositionChanged: {
@@ -193,20 +222,24 @@ T.ItemDelegate {
             // built into QQuickListView::setCurrentIndex() already
             root.view.currentIndex = index
         }
-        onClicked: {
-            if (mouse.button === Qt.LeftButton) {
-                root.forceActiveFocus(Qt.MouseFocusReason)
-                root.action.trigger() // clicked() is emmitted when action is triggered
-            } else if (mouse.button === Qt.RightButton) {
-                root.forceActiveFocus(Qt.MouseFocusReason)
-                root.clicked() // does not trigger the action
-                root.openActionMenu(mouseX, mouseY)
-            }
-        }
-        onPressAndHold: { // act like right click on press and hold (with touch)
+        onClicked: if (mouse.button === Qt.LeftButton) {
+            root.forceActiveFocus(Qt.MouseFocusReason)
+            root.action.trigger() // clicked() is emmitted when action is triggered
+        } else if (mouse.button === Qt.RightButton) {
             root.forceActiveFocus(Qt.MouseFocusReason)
             root.clicked() // does not trigger the action
             root.openActionMenu(mouseX, mouseY)
+        }
+        // act like right click on press and hold (with touch)
+        onPressAndHold: if (root.lastDeviceType === PointerDevice.TouchScreen) {
+            root.forceActiveFocus(Qt.MouseFocusReason)
+            root.pressAndHold()
+            root.openActionMenu(mouseX, mouseY)
+        }
+        TapHandler {
+            onGrabChanged: {
+                root.lastDeviceType = point.event.device.type
+            }
         }
     }
 
@@ -240,5 +273,18 @@ T.ItemDelegate {
         } else {
             indicator = null
         }
+    }
+
+    // NOTE: Not using Drag attached properties because we're using DragHelper instead.
+    // Drag doesn't support QIcons for the imageSource, only URLs.
+    onDragActiveChanged: if (dragActive) {
+        dragStartPosition = Qt.point(x,y)
+        dragStartIndex = index
+        // Fixes warning: "Passing incompatible arguments to C++ functions from JavaScript is dangerous and deprecated."
+        //const url = root.url ? root.url : ""
+        KickoffSingleton.dragHelper.startDrag(root, url, decoration)
+    } else if (dragStartIndex === index) {
+        x = dragStartPosition.x
+        y = dragStartPosition.y
     }
 }
