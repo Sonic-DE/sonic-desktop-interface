@@ -23,7 +23,7 @@ EmptyPage {
     property alias delegate: view.delegate
     property alias view: view
 
-    clip: view.interactive
+    clip: view.height < view.contentHeight
 
     header: MouseArea {
         implicitHeight: KickoffSingleton.listItemMetrics.margins.top
@@ -113,6 +113,10 @@ EmptyPage {
 
             highlightMoveDuration: 0
             highlight: PlasmaCore.FrameSvgItem {
+                // The default Z value for delegates is 1. The default Z value for the section delegate is 2.
+                // The highlight gets a value of 3 while the drag is active and then goes back to the default value of 0.
+                z: root.currentItem && root.currentItem.dragActive ?
+                    3 : 0
                 opacity: view.activeFocus
                     || (KickoffSingleton.contentArea === root
                         && KickoffSingleton.searchField.activeFocus) ? 1 : 0.5
