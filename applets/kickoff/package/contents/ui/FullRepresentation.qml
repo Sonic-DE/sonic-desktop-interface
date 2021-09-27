@@ -118,13 +118,6 @@ EmptyPage {
         }
     }
 
-    Kicker.DragHelper {
-        id: dragHelper
-
-        dragIconSize: PlasmaCore.Units.iconSizes.medium
-        onDropped: root.parent.dragSource = null
-    }
-
     Kicker.RootModel {
         id: rootModel
 
