@@ -57,7 +57,7 @@ Joystick::Joystick(QWidget *parent, const QVariantList &)
 
     QVBoxLayout *top = new QVBoxLayout(this);
     top->setContentsMargins(0, 0, 0, 0);
-    top->setSpacing(style()->pixelMetric(QStyle::PM_DefaultLayoutSpacing));
+    top->setSpacing(style()->pixelMetric(QStyle::PM_LayoutVerticalSpacing));
     top->addWidget(joyWidget);
 }
 

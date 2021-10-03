@@ -52,7 +52,7 @@ JoyWidget::JoyWidget(QWidget *parent)
     , joydev(nullptr)
 {
     QVBoxLayout *mainVbox = new QVBoxLayout(this);
-    int defaultSpacing = style()->pixelMetric(QStyle::PM_DefaultLayoutSpacing);
+    int defaultSpacing = style()->pixelMetric(QStyle::PM_LayoutVerticalSpacing);
     mainVbox->setSpacing(defaultSpacing);
     mainVbox->setContentsMargins(0, 0, 0, 0);
 

@@ -75,7 +75,7 @@ Dtime::Dtime(QWidget *parent, bool haveTimeDated)
     kclock->setMinimumSize(150, 150);
     v2->addWidget(kclock);
 
-    v2->addSpacing(style()->pixelMetric(QStyle::PM_DefaultLayoutSpacing));
+    v2->addSpacing(style()->pixelMetric(QStyle::PM_LayoutVerticalSpacing));
 
     QHBoxLayout *v3 = new QHBoxLayout();
     v2->addLayout(v3);
