@@ -170,21 +170,28 @@ EmptyPage {
             }
         }
 
-        MouseArea { // Filter mouse events to avoid flicking like ScrollView
-            parent: view // Set the Flickable as the parent
-            z: 1
+        Item {
+            parent: view
             anchors.fill: parent
-            onPressed: if (mouse.source === Qt.MouseEventNotSynthesized) { // Mouse
-                view.interactive = false
-                verticalScrollBar.interactive = true
-                mouse.accepted = false
-            } else if (mouse.source === Qt.MouseEventSynthesizedBySystem) { // Touch
-                // No need for binding. Touching will cause pressed() to be emitted again.
-                view.interactive = view.height < view.contentHeight
-                verticalScrollBar.interactive = false
-                mouse.accepted = false
+            z: 1
+            TapHandler { // Filter mouse events to avoid flicking like ScrollView
+                onGrabChanged: {
+                    let pressed = (transition === EventPoint.GrabPassive || transition === EventPoint.GrabExclusive)
+                    pressed &= point.state === EventPoint.Pressed
+                    const deviceType = point.event.device.type
+                    if (pressed && (deviceType === PointerDevice.Mouse || deviceType === PointerDevice.TouchPad)) {
+                        view.interactive = false
+                        verticalScrollBar.interactive = true
+                    } else if (pressed && deviceType === PointerDevice.TouchScreen) {
+                        // No need for binding. Touching will cause pressed() to be emitted again.
+                        view.interactive = view.height < view.contentHeight
+                        verticalScrollBar.interactive = false
+                    }
+                    point.accepted = false
+                }
             }
         }
+
 
         PC3.ScrollBar.vertical: PC3.ScrollBar {
             id: verticalScrollBar
