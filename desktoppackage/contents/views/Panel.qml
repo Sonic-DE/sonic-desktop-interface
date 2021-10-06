@@ -231,6 +231,13 @@ Item {
         restoreMode: Binding.RestoreBinding
     }
 
+    Connections {
+        target: containment
+        function onActivated() {
+            containment.status = PlasmaCore.Types.AcceptingInputStatus
+        }
+    }
+
     Item {
         id: containmentParent
         anchors.fill: parent
