@@ -149,6 +149,12 @@ Item {
         }
     ]
 
+    Connections {
+        target: containment
+        function onActivated() {
+            containment.status = PlasmaCore.Types.AcceptingInputStatus
+        }
+    }
     Component.onCompleted: {
         state = Qt.binding(function() {
             let mstate = '';
