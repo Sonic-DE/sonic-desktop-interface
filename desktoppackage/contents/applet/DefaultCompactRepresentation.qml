@@ -43,6 +43,9 @@ PlasmaCore.IconItem {
 
     source: plasmoid.icon ? plasmoid.icon : "plasma"
     active: mouseArea.containsMouse
+    function activateSysTray() {
+        plasmoid.expanded = !plasmoid.expanded
+    }
 
     MouseArea {
         id: mouseArea
