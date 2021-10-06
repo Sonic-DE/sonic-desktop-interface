@@ -4,7 +4,7 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 
-import QtQuick 2.0
+import QtQuick 2.15
 import QtQuick.Layouts 1.1
 import QtQml 2.15
 
@@ -94,6 +94,10 @@ Item {
         imagePath: containment && containment.backgroundHints === PlasmaCore.Types.NoBackground ? "" : "solid/widgets/panel-background"
     }
 
+    Keys.onEscapePressed: {
+        containment.status = PlasmaCore.Types.PassiveStatus;
+        containmentParent.parent.parent.focus = false; // TODO manage a way to lose focus
+    }
     transitions: [
         Transition {
             from: "*"
@@ -155,6 +159,14 @@ Item {
             containment.status = PlasmaCore.Types.AcceptingInputStatus
         }
     }
+
+    Connections {
+        target: parent
+        function onActiveFocusChanged() {
+            containment.status = PlasmaCore.Types.ActiveStatus;
+        }
+    }
+
     Component.onCompleted: {
         state = Qt.binding(function() {
             let mstate = '';
