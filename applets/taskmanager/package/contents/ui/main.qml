@@ -4,7 +4,7 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 
-import QtQuick 2.0
+import QtQuick 2.15
 import QtQuick.Layouts 1.1
 import QtQml 2.15
 
@@ -19,7 +19,7 @@ import "code/tools.js" as TaskTools
 
 MouseArea {
     id: tasks
-
+    activeFocusOnTab: true
     anchors.fill: parent
     hoverEnabled: true
 

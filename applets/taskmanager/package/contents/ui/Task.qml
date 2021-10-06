@@ -4,7 +4,7 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 
-import QtQuick 2.0
+import QtQuick 2.15
 
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
@@ -23,6 +23,7 @@ MouseArea {
 
     visible: false
 
+    activeFocusOnTab: true
     LayoutMirroring.enabled: (Qt.application.layoutDirection == Qt.RightToLeft)
     LayoutMirroring.childrenInherit: (Qt.application.layoutDirection == Qt.RightToLeft)
 
@@ -59,7 +60,7 @@ MouseArea {
         return item.muted
     })
 
-    readonly property bool highlighted: (inPopup && activeFocus) || (!inPopup && containsMouse)
+    readonly property bool highlighted: (inPopup && activeFocus) || (!inPopup && containsMouse) || activeFocus
         || (task.contextMenu && task.contextMenu.status === PlasmaComponents.DialogStatus.Open)
         || (groupDialog.visible && groupDialog.visualParent === task)
 
@@ -328,7 +329,7 @@ MouseArea {
             anchors.fill: parent
             location: plasmoid.location
 
-            active: !inPopup && !groupDialog.visible && plasmoid.configuration.showToolTips
+            active: true;//!inPopup && !groupDialog.visible && plasmoid.configuration.showToolTips
             interactive: model.IsWindow === true
 
             mainItem: (model.IsWindow === true) ? openWindowToolTipDelegate : pinnedAppToolTipDelegate
