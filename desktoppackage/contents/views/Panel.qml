@@ -4,7 +4,7 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 
-import QtQuick 2.0
+import QtQuick 2.15
 import QtQuick.Layouts 1.1
 import QtQml 2.15
 
@@ -94,6 +94,10 @@ Item {
         imagePath: containment && containment.backgroundHints === PlasmaCore.Types.NoBackground ? "" : "solid/widgets/panel-background"
     }
 
+    Keys.onEscapePressed: {
+        root.parent.focus = false
+    }
+
     transitions: [
         Transition {
             from: "*"
@@ -153,6 +157,7 @@ Item {
         if (containment) {
             if (state === 'opaque') {
                 containment.containmentDisplayHints |= PlasmaCore.Types.DesktopFullyCovered;
+
             } else {
                 containment.containmentDisplayHints &= ~PlasmaCore.Types.DesktopFullyCovered;
             }
@@ -235,6 +240,16 @@ Item {
         target: containment
         function onActivated() {
             containment.status = PlasmaCore.Types.AcceptingInputStatus
+            root.nextItemInFocusChain().forceActiveFocus()
+        }
+    }
+
+    Connections {
+        target: parent
+        function onActiveFocusChanged() {
+            if (!parent.activeFocus) {
+                containment.status = PlasmaCore.Types.PassiveStatus
+            }
         }
     }
 

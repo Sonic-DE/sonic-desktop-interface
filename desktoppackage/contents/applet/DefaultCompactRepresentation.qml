@@ -7,6 +7,7 @@
 import QtQuick 2.0
 import QtQuick.Layouts 1.1
 import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.plasma.plasmoid 2.0
 
 PlasmaCore.IconItem {
     id: icon
@@ -43,6 +44,9 @@ PlasmaCore.IconItem {
 
     source: plasmoid.icon ? plasmoid.icon : "plasma"
     active: mouseArea.containsMouse
+    Plasmoid.onActivated: {
+        plasmoid.expanded = !plasmoid.expanded
+    }
 
     MouseArea {
         id: mouseArea
