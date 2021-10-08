@@ -8,6 +8,7 @@
 #define KCM_ADD_LAYOUT_DIALOG_H_
 
 #include <QDialog>
+#include <QListWidgetItem>
 
 #include "keyboard_config.h"
 
@@ -16,6 +17,9 @@
 struct Rules;
 class Flags;
 class Ui_AddLayoutDialog;
+
+const int LayoutNameRole = Qt::UserRole;
+const int VariantNameRole = Qt::UserRole + 1;
 
 class AddLayoutDialog : public QDialog
 {
@@ -31,8 +35,8 @@ public:
     void accept() override;
 
 public Q_SLOTS:
-    void languageChanged(int langIdx);
-    void layoutChanged(int layoutIdx);
+    void layoutChanged(QListWidgetItem *, QListWidgetItem *);
+    void layoutSearched(const QString &);
     void preview();
 
 private:
@@ -41,7 +45,6 @@ private:
     const QString &model;
     const QStringList &options;
     Ui_AddLayoutDialog *layoutDialogUi;
-    QString selectedLanguage;
     QString selectedLayout;
     LayoutUnit selectedLayoutUnit;
 };
