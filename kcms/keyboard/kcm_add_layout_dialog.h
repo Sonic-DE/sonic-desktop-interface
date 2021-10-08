@@ -18,8 +18,7 @@ struct Rules;
 class Flags;
 class Ui_AddLayoutDialog;
 
-const int LayoutNameRole = Qt::UserRole;
-const int VariantNameRole = Qt::UserRole + 1;
+enum LayoutDataRoles { LayoutNameRole = Qt::UserRole, VariantNameRole };
 
 class AddLayoutDialog : public QDialog
 {
