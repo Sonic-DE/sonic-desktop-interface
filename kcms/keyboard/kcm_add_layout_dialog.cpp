@@ -67,6 +67,8 @@ AddLayoutDialog::AddLayoutDialog(const Rules *rules_, Flags *flags_, const QStri
 
     connect(layoutDialogUi->prevbutton, &QPushButton::clicked, this, &AddLayoutDialog::preview);
     layoutDialogUi->prevbutton->setVisible(Tastenbrett::exists());
+    layoutDialogUi->prevbutton->setEnabled(false);
+    layoutDialogUi->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
 }
 
 void AddLayoutDialog::layoutSearched(const QString &text)
@@ -87,9 +89,13 @@ void AddLayoutDialog::layoutSearched(const QString &text)
 
 void AddLayoutDialog::layoutChanged(QListWidgetItem *current, QListWidgetItem *previous)
 {
-    selectedLayout = current->data(LayoutNameRole).toString();
-    selectedLayoutUnit.setLayout(selectedLayout);
-    selectedLayoutUnit.setVariant(current->data(VariantNameRole).toString());
+    if (current) {
+        selectedLayout = current->data(LayoutNameRole).toString();
+        selectedLayoutUnit.setLayout(selectedLayout);
+        selectedLayoutUnit.setVariant(current->data(VariantNameRole).toString());
+    }
+    layoutDialogUi->prevbutton->setEnabled((bool)(current));
+    layoutDialogUi->buttonBox->button(QDialogButtonBox::Ok)->setEnabled((bool)(current));
 }
 
 void AddLayoutDialog::accept()
