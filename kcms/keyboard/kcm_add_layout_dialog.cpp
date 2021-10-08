@@ -79,8 +79,8 @@ void AddLayoutDialog::layoutSearched(const QString &searchText)
     for (int row = 0; row < list->count(); ++row) {
         QString itemText = list->item(row)->text();
         bool match = (itemText.contains(searchText, Qt::CaseInsensitive));
-        QStringList words = searchText.split(QLatin1Char(' '), Qt::SkipEmptyParts);
-        match = match || std::all_of(words.begin(), words.end(), [&](QString word) {
+        const QStringList words = searchText.split(QLatin1Char(' '), Qt::SkipEmptyParts);
+        match = match || std::all_of(words.cbegin(), words.cend(), [&itemText](const QString &word) {
                     return itemText.contains(word, Qt::CaseInsensitive);
                 });
         list->item(row)->setHidden(!match);
