@@ -89,6 +89,7 @@ void AddLayoutDialog::layoutSearched(const QString &text)
 
 void AddLayoutDialog::layoutChanged(QListWidgetItem *current, QListWidgetItem *previous)
 {
+    Q_UNUSED(previous);
     if (current) {
         selectedLayout = current->data(LayoutNameRole).toString();
         selectedLayoutUnit.setLayout(selectedLayout);
