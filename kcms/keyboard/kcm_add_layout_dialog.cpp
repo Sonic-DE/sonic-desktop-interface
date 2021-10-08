@@ -4,6 +4,8 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 
+#include <algorithm>
+
 #include "kcm_add_layout_dialog.h"
 #include <KLocalizedString>
 #include <QDebug>
@@ -71,18 +73,16 @@ AddLayoutDialog::AddLayoutDialog(const Rules *rules_, Flags *flags_, const QStri
     layoutDialogUi->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
 }
 
-void AddLayoutDialog::layoutSearched(const QString &text)
+void AddLayoutDialog::layoutSearched(const QString &searchText)
 {
     QListWidget *list = layoutDialogUi->layoutListWidget;
     for (int row = 0; row < list->count(); ++row) {
-        bool match = (list->item(row)->text().contains(text, Qt::CaseInsensitive));
-        QStringList words = text.split(QLatin1Char(' '), Qt::SkipEmptyParts);
-        if (!match) {
-            match = true;
-            for (const QString &word : words) {
-                match = match && list->item(row)->text().contains(word, Qt::CaseInsensitive);
-            }
-        }
+        QString itemText = list->item(row)->text();
+        bool match = (itemText.contains(searchText, Qt::CaseInsensitive));
+        QStringList words = searchText.split(QLatin1Char(' '), Qt::SkipEmptyParts);
+        match = match || std::all_of(words.begin(), words.end(), [&](QString word) {
+                    return itemText.contains(word, Qt::CaseInsensitive);
+                });
         list->item(row)->setHidden(!match);
     }
 }
