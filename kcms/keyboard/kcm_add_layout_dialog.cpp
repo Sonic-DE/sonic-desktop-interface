@@ -31,7 +31,9 @@ AddLayoutDialog::AddLayoutDialog(const Rules *rules_, Flags *flags_, const QStri
         if (flags) {
             QIcon icon(flags->getIcon(layoutInfo->name));
             if (icon.isNull()) {
-                QPixmap emptyPixmap(layoutDialogUi->layoutListWidget->iconSize());
+                // HACK: QListWidget->iconSize() returns an invalid size, so we can't use that to construct an empty icon
+                // instead we pick a large size and QListWidget will scale it down automatically
+                QPixmap emptyPixmap(QSize(48, 48));
                 emptyPixmap.fill(Qt::transparent);
                 icon = QIcon(emptyPixmap); // align text with no icons
             }
