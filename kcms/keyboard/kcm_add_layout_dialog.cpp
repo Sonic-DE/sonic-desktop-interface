@@ -28,8 +28,9 @@ AddLayoutDialog::AddLayoutDialog(const Rules *rules_, Flags *flags_, const QStri
     layoutDialogUi->setupUi(this);
 
     for (const LayoutInfo *layoutInfo : qAsConst(rules->layoutInfos)) {
+        QIcon icon;
         if (flags) {
-            QIcon icon(flags->getIcon(layoutInfo->name));
+            icon = flags->getIcon(layoutInfo->name);
             if (icon.isNull()) {
                 // HACK: QListWidget->iconSize() returns an invalid size, so we can't use that to construct an empty icon
                 // instead we pick a large size and QListWidget will scale it down automatically
@@ -37,19 +38,15 @@ AddLayoutDialog::AddLayoutDialog(const Rules *rules_, Flags *flags_, const QStri
                 emptyPixmap.fill(Qt::transparent);
                 icon = QIcon(emptyPixmap); // align text with no icons
             }
-            for (const VariantInfo *variantInfo : layoutInfo->variantInfos) {
-                QListWidgetItem *newItem = new QListWidgetItem(icon, variantInfo->description);
-                newItem->setData(LayoutNameRole, layoutInfo->name);
-                newItem->setData(VariantNameRole, variantInfo->name);
-                layoutDialogUi->layoutListWidget->addItem(newItem);
+        }
+        for (const VariantInfo *variantInfo : layoutInfo->variantInfos) {
+            QListWidgetItem *newItem = new QListWidgetItem(variantInfo->description);
+            if (flags) {
+                newItem->setIcon(icon);
             }
-        } else {
-            for (const VariantInfo *variantInfo : layoutInfo->variantInfos) {
-                QListWidgetItem *newItem = new QListWidgetItem(variantInfo->description);
-                newItem->setData(LayoutNameRole, layoutInfo->name);
-                newItem->setData(VariantNameRole, variantInfo->name);
-                layoutDialogUi->layoutListWidget->addItem(newItem);
-            }
+            newItem->setData(LayoutNameRole, layoutInfo->name);
+            newItem->setData(VariantNameRole, variantInfo->name);
+            layoutDialogUi->layoutListWidget->addItem(newItem);
         }
     }
 
