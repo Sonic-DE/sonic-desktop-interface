@@ -39,6 +39,13 @@ AddLayoutDialog::AddLayoutDialog(const Rules *rules_, Flags *flags_, const QStri
                 icon = QIcon(emptyPixmap); // align text with no icons
             }
         }
+        QListWidgetItem *defaultVariantItem = new QListWidgetItem(layoutInfo->description);
+        if (flags) {
+            defaultVariantItem->setIcon(icon);
+        }
+        defaultVariantItem->setData(LayoutNameRole, layoutInfo->name);
+        defaultVariantItem->setData(VariantNameRole, QStringLiteral(""));
+        layoutDialogUi->layoutListWidget->addItem(defaultVariantItem);
         for (const VariantInfo *variantInfo : layoutInfo->variantInfos) {
             QListWidgetItem *newItem = new QListWidgetItem(variantInfo->description);
             if (flags) {
