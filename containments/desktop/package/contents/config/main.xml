@@ -33,7 +33,7 @@
       <default>true</default>
     </entry>
 
-    <entry name="positions" type="StringList" hidden="true">
+    <entry name="positions" type="String" hidden="true">
         <default></default>
     </entry>
 
