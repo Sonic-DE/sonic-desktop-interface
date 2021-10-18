@@ -29,6 +29,12 @@ FocusScope {
     property alias overflowing: folderView.overflowing
     property alias flow: folderView.flow
 
+    property string resolution: Math.round(plasmoid.screenGeometry.width) + "x" + Math.round(plasmoid.screenGeometry.height)
+
+    onResolutionChanged: {
+        folderView.positions = getPositions();
+    }
+
     readonly property bool lockedByKiosk: !KAuthorized.authorize("editable_desktop_icons")
 
     focus: true
@@ -178,6 +184,27 @@ FocusScope {
         }
     }
 
+    function getPositions() {
+        try {
+            var allPositions = JSON.parse(plasmoid.configuration.positions);
+        } catch (err) {
+            var allPositions = {};
+            allPositions[resolution] = plasmoid.configuration.positions;
+        }
+        return allPositions[resolution] || "";
+        plasmoid.configuration.positions = allPositions;
+    }
+
+    function savePositions(positions) {
+        try {
+            var allPositions = JSON.parse(plasmoid.configuration.positions);
+        } catch (err) {
+            var allPositions = {};
+        }
+        allPositions[resolution] = positions;
+        plasmoid.configuration.positions = JSON.stringify(allPositions, Object.keys(allPositions).sort());
+    }
+
     Connections {
         target: plasmoid.configuration
 
@@ -211,7 +238,7 @@ FocusScope {
         }
 
         function onPositionsChanged() {
-            folderView.positions = plasmoid.configuration.positions;
+            folderView.positions = getPositions();
         }
     }
 
@@ -241,12 +268,12 @@ FocusScope {
         }
 
         onPositionsChanged: {
-            plasmoid.configuration.positions = folderView.positions;
+            savePositions(folderView.positions);
         }
 
         Component.onCompleted: {
             folderView.sortMode = plasmoid.configuration.sortMode;
-            folderView.positions = plasmoid.configuration.positions;
+            folderView.positions = getPositions();
         }
     }
 
