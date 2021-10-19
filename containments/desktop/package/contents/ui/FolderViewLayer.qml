@@ -31,18 +31,6 @@ FocusScope {
 
     property string resolution: Math.round(plasmoid.screenGeometry.width) + "x" + Math.round(plasmoid.screenGeometry.height)
 
-    /*onResolutionChanged: {
-        console.log("folderview: resolution changed", resolution);
-        console.log("old positions:", folderView.positions);
-        var gridView = folderView.view;
-        var newPerStripe = Math.floor(((gridView.flow == GridView.FlowLeftToRight)
-                ? gridView.width : gridView.height) / ((gridView.flow == GridView.FlowLeftToRight)
-                ? gridView.cellWidth : gridView.cellHeight));
-        //folderView.perStripe = newPerStripe;
-        folderView.positions = getPositions();
-        console.log("new positions:", folderView.positions);
-    }*/
-
     readonly property bool lockedByKiosk: !KAuthorized.authorize("editable_desktop_icons")
 
     focus: true
@@ -200,7 +188,6 @@ FocusScope {
             allPositions[resolution] = plasmoid.configuration.positions;
         }
         return allPositions[resolution] || "";
-        plasmoid.configuration.positions = allPositions;
     }
 
     function savePositions(positions) {
@@ -246,10 +233,7 @@ FocusScope {
         }
 
         function onPositionsChanged() {
-            console.log("folderview: positions changed from plasmoid configuration");
-            console.log("old positions:", folderView.positions);
             folderView.positions = getPositions();
-            console.log("new positions:", folderView.positions);
         }
     }
 
@@ -279,22 +263,11 @@ FocusScope {
         }
 
         onPositionsChanged: {
-            console.log("folderview: positions changed from folderview");
-            console.log("old positions (folderviewchange):", plasmoid.configuration.positions);
             savePositions(folderView.positions);
-            console.log("new positions (folderviewchange):", plasmoid.configuration.positions);
         }
 
         onPerStripeChanged: {
-            console.log("folderview: resolution changed", resolution);
-            console.log("old positions:", folderView.positions);
-            //var gridView = folderView.view;
-            //var newPerStripe = Math.floor(((gridView.flow == GridView.FlowLeftToRight)
-                    //? gridView.width : gridView.height) / ((gridView.flow == GridView.FlowLeftToRight)
-                    //? gridView.cellWidth : gridView.cellHeight));
-            //folderView.perStripe = newPerStripe;
             folderView.positions = getPositions();
-            console.log("new positions:", folderView.positions);
         }
 
         Component.onCompleted: {
