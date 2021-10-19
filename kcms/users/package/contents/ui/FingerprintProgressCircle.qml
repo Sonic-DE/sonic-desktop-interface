@@ -63,6 +63,7 @@ Item {
     Kirigami.Icon {
         id: fingerprintEnrollFeedback
         source: "fingerprint"
+        isMask: true
         implicitHeight: Kirigami.Units.iconSizes.huge
         implicitWidth: implicitHeight
         anchors.centerIn: parent
