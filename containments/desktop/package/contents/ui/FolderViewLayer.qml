@@ -28,20 +28,23 @@ FocusScope {
     property alias model: folderView.model
     property alias overflowing: folderView.overflowing
     property alias flow: folderView.flow
+    property alias perStripe: folderView.perStripe
 
     property string resolution: Math.round(plasmoid.screenGeometry.width) + "x" + Math.round(plasmoid.screenGeometry.height)
 
-    onResolutionChanged: {
+    /*onResolutionChanged: {
         console.log("folderview: resolution changed", resolution);
         console.log("old positions:", folderView.positions);
         var gridView = folderView.view;
-        var newPerStripe = Math.floor(((gridView.flow == GridView.FlowLeftToRight)
-                ? gridView.width : gridView.height) / ((gridView.flow == GridView.FlowLeftToRight)
-                ? gridView.cellWidth : gridView.cellHeight));
-        folderView.perStripe = newPerStripe;
+        var newPerStripe = Math.floor(
+            ((gridView.flow == GridView.FlowLeftToRight) ? gridView.width : gridView.height)
+                /
+            ((gridView.flow == GridView.FlowLeftToRight) ? gridView.cellWidth : gridView.cellHeight)
+        );
+        //folderView.perStripe = newPerStripe;
         folderView.positions = getPositions();
         console.log("new positions:", folderView.positions);
-    }
+    }*/
 
     readonly property bool lockedByKiosk: !KAuthorized.authorize("editable_desktop_icons")
 
@@ -197,9 +200,13 @@ FocusScope {
             var allPositions = JSON.parse(plasmoid.configuration.positions);
         } catch (err) {
             var allPositions = {};
-            allPositions[resolution] = plasmoid.configuration.positions;
+            allPositions[perStripe] = plasmoid.configuration.positions;
         }
-        return allPositions[resolution] || "";
+        if (!allPositions.hasOwnProperty(perStripe) && allPositions.hasOwnProperty(resolution)) {
+            allPositions[perStripe] = allPositions[resolution];
+            delete allPositions[resolution];
+        }
+        return allPositions[perStripe] || "";
         plasmoid.configuration.positions = allPositions;
     }
 
@@ -209,7 +216,7 @@ FocusScope {
         } catch (err) {
             var allPositions = {};
         }
-        allPositions[resolution] = positions;
+        allPositions[perStripe] = positions;
         plasmoid.configuration.positions = JSON.stringify(allPositions, Object.keys(allPositions).sort());
     }
 
