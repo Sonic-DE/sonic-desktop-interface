@@ -65,6 +65,9 @@ MouseArea {
 
     onHighlightedChanged: {
         // ensure it doesn't get stuck with a window highlighted
+        if (!highlighted) {
+            //tasks.toolTipOpenedByClick = null;
+        }
         backend.cancelHighlightWindows();
     }
 
@@ -329,13 +332,16 @@ MouseArea {
             location: plasmoid.location
 
             enabled: plasmoid.configuration.showToolTips
-            active: !inPopup && !groupDialog.visible
+            active: !inPopup && !groupDialog.visible && (tasks.toolTipOpenedByClick === task || tasks.toolTipOpenedByClick === null)
             interactive: model.IsWindow === true || mainItem.hasPlayer
 
             mainItem: (model.IsWindow === true) ? openWindowToolTipDelegate : pinnedAppToolTipDelegate
 
             onContainsMouseChanged:  {
                 if (containsMouse) {
+                    if (tasks.toolTipOpenedByClick !== null && tasks.toolTipOpenedByClick !== task) {
+                        return;
+                    }
                     // Only assign different values to mainItem to avoid unnecessary reevaluation
                     if (mainItem.parentTask !== task) {
                         mainItem.parentTask = task;
