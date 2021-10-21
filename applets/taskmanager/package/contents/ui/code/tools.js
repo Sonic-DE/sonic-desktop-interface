@@ -148,6 +148,7 @@ function activateTask(index, model, modifiers, task) {
         else if (plasmoid.configuration.showToolTips
             && plasmoid.configuration.groupedTaskVisualization === 1
         ) {
+            tasks.toolTipOpenedByClick = task;
             task.showToolTip();
         }
 
