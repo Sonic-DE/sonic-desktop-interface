@@ -65,9 +65,6 @@ MouseArea {
 
     onHighlightedChanged: {
         // ensure it doesn't get stuck with a window highlighted
-        if (!highlighted) {
-            //tasks.toolTipOpenedByClick = null;
-        }
         backend.cancelHighlightWindows();
     }
 
@@ -335,7 +332,15 @@ MouseArea {
             active: !inPopup && !groupDialog.visible && (tasks.toolTipOpenedByClick === task || tasks.toolTipOpenedByClick === null)
             interactive: model.IsWindow === true || mainItem.hasPlayer
 
+            timeout: (tasks.toolTipOpenedByClick === task) ? 2000*20 : 4000
+
             mainItem: (model.IsWindow === true) ? openWindowToolTipDelegate : pinnedAppToolTipDelegate
+
+            onToolTipVisibleChanged: {
+                if (!toolTipVisible) {
+                    tasks.toolTipOpenedByClick = null;
+                }
+            }
 
             onContainsMouseChanged:  {
                 if (containsMouse) {
