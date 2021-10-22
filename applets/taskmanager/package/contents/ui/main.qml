@@ -28,10 +28,6 @@ MouseArea {
 
     property var toolTipOpenedByClick: null
 
-    onToolTipOpenedByClickChanged: {
-        console.log("opened with click changed!", toolTipOpenedByClick);
-    }
-
     property QtObject contextMenuComponent: Qt.createComponent("ContextMenu.qml")
     property QtObject pulseAudioComponent: Qt.createComponent("PulseAudio.qml")
 
@@ -404,9 +400,6 @@ MouseArea {
     ToolTipDelegate {
         id: openWindowToolTipDelegate
         visible: false
-        Component.onDestruction: {
-            console.log("Destroyed");
-        }
     }
 
     ToolTipDelegate {
