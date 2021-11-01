@@ -20,7 +20,7 @@ Item {
 
     signal reset
 
-    property bool isDash: (plasmoid.pluginName === "org.kde.plasma.kickerdash")
+    property bool isDash: plasmoid.pluginName === "org.kde.plasma.kickerdash"
 
     Plasmoid.switchWidth: isDash || !Plasmoid.fullRepresentationItem ? 0 : Plasmoid.fullRepresentationItem.Layout.minimumWidth
     Plasmoid.switchHeight: isDash || !Plasmoid.fullRepresentationItem ? 0 : Plasmoid.fullRepresentationItem.Layout.minimumHeight
@@ -145,18 +145,17 @@ Item {
         favoritesModel: globalFavorites
 
         runners: {
-            var runners = new Array("services", "krunner_systemsettings");
+            const r = ["services", "krunner_systemsettings"];
 
             if (kicker.isDash) {
-                runners = runners.concat(new Array("desktopsessions", "PowerDevil",
-                    "calculator", "unitconverter"));
+                r.push("desktopsessions", "PowerDevil", "calculator", "unitconverter");
             }
 
             if (plasmoid.configuration.useExtraRunners) {
-                runners = runners.concat(plasmoid.configuration.extraRunners);
+                r.push(...plasmoid.configuration.extraRunners);
             }
 
-            return runners;
+            return r;
         }
 
         deleteWhenEmpty: kicker.isDash
@@ -169,15 +168,15 @@ Item {
     }
 
     Kicker.ProcessRunner {
-        id: processRunner;
+        id: processRunner
     }
 
     Kicker.WindowSystem {
-        id: windowSystem;
+        id: windowSystem
     }
 
     PlasmaCore.FrameSvgItem {
-        id : highlightItemSvg
+        id: highlightItemSvg
 
         visible: false
 
@@ -186,7 +185,7 @@ Item {
     }
 
     PlasmaCore.FrameSvgItem {
-        id : listItemSvg
+        id: listItemSvg
 
         visible: false
 
