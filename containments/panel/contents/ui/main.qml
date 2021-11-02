@@ -130,6 +130,7 @@ function checkLastSpacer() {
             break
         }
     }
+    lastSpacer.visible= !flexibleFound;
     console.log('-----------------------')
     console.log('-----------------------')
     console.log('-----------------------')
@@ -144,7 +145,6 @@ function checkLastSpacer() {
     console.log('-----------------------')
     console.log('-----------------------')
     console.log(flexibleFound)
-    lastSpacer.visible= flexibleFound;
 }
 //END functions
 
@@ -429,15 +429,6 @@ function checkLastSpacer() {
             anchors.fill: parent
         }
         parent: currentLayout
-        visible: false
-        onVisibleChanged: {
-            console.log('************************')
-            console.log('************************')
-            console.log('************************')
-            console.log('************************')
-            console.log('************************')
-            console.log(lastSpacer.parent)
-        }
 
         Layout.fillWidth: true
         Layout.fillHeight: true
