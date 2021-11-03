@@ -1,0 +1,13 @@
+[Desktop Entry]
+Icon=preferences-desktop-tablet
+Type=Service
+
+X-KDE-Library=kcm_tablet
+X-KDE-ServiceTypes=KCModule
+X-KDE-ParentApp=kcontrol
+X-KDE-System-Settings-Parent-Category=input-devices
+
+Name=Drawing Tablet
+
+X-KDE-Keywords=drawing,tablet,wacom,pen
+Categories=Qt;KDE;X-KDE-settings-hardware;
