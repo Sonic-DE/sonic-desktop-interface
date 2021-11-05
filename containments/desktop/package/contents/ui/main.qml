@@ -300,6 +300,17 @@ FolderViewDropArea {
                     appletsLayout.hidePlaceHolder();
                 }
             }
+            component DropAnimation : NumberAnimation {
+                duration: PlasmaCore.Units.shortDuration
+                easing.type: Easing.InOutBack
+                easing.overshoot: 3
+            }
+            Behavior on x {
+                DropAnimation { }
+            }
+            Behavior on y {
+                DropAnimation { }
+            }
         }
 
         placeHolder: ContainmentLayoutManager.PlaceHolder {}
