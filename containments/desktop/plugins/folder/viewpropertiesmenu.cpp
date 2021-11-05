@@ -147,7 +147,7 @@ int ViewPropertiesMenu::arrangement() const
 void ViewPropertiesMenu::setArrangement(int arrangement)
 {
     if (!m_arrangement->checkedAction() || m_arrangement->checkedAction()->data().toInt() != arrangement) {
-        foreach (QAction *action, m_arrangement->actions()) {
+        for (QAction *action : m_arrangement->actions()) {
             if (action->data().toInt() == arrangement) {
                 action->setChecked(true);
                 break;
@@ -164,7 +164,7 @@ int ViewPropertiesMenu::alignment() const
 void ViewPropertiesMenu::setAlignment(int alignment)
 {
     if (!m_alignment->checkedAction() || m_alignment->checkedAction()->data().toInt() != alignment) {
-        foreach (QAction *action, m_alignment->actions()) {
+        for (QAction *action : m_alignment->actions()) {
             if (action->data().toInt() == alignment) {
                 action->setChecked(true);
                 break;
@@ -218,7 +218,7 @@ int ViewPropertiesMenu::sortMode() const
 void ViewPropertiesMenu::setSortMode(int sortMode)
 {
     if (!m_sortMode->checkedAction() || m_sortMode->checkedAction()->data().toInt() != sortMode) {
-        foreach (QAction *action, m_sortMode->actions()) {
+        for (QAction *action : m_sortMode->actions()) {
             if (action->data().toInt() == sortMode) {
                 action->setChecked(true);
                 break;

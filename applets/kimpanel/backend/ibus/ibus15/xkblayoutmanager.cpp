@@ -34,7 +34,7 @@ void XkbLayoutManager::getLayout()
     process.waitForFinished();
     QByteArray output = process.readAllStandardOutput();
     QList<QByteArray> lines = output.split('\n');
-    Q_FOREACH (const QByteArray &line, lines) {
+    for (const QByteArray &line : lines) {
         QByteArray element("layout:");
         if (line.startsWith(element)) {
             m_defaultLayout = QString::fromLatin1(line.mid(element.length(), line.length())).trimmed();

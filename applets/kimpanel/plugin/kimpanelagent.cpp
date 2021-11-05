@@ -140,7 +140,7 @@ static QList<TextAttribute> String2AttrList(const QString &str)
     if (str.isEmpty()) {
         return result;
     }
-    foreach (const QString &s, str.split(QLatin1Char(';'))) {
+    for (const QString &s : str.split(QLatin1Char(';'))) {
         TextAttribute attr;
         QStringList list = s.split(QLatin1Char(':'));
         if (list.size() < 4)
@@ -264,7 +264,7 @@ void PanelAgent::RegisterProperties(const QStringList &props)
     if (m_cachedProps != props) {
         m_cachedProps = props;
         QList<KimpanelProperty> list;
-        foreach (const QString &prop, props) {
+        for (const QString &prop : props) {
             list << String2Property(prop);
         }
 
@@ -280,7 +280,7 @@ void PanelAgent::ExecDialog(const QString &prop)
 void PanelAgent::ExecMenu(const QStringList &entries)
 {
     QList<KimpanelProperty> list;
-    foreach (const QString &entry, entries) {
+    for (const QString &entry : entries) {
         list << String2Property(entry);
     }
 

@@ -26,7 +26,7 @@ DirModel::DirModel(QObject *parent)
     QList<QMimeType> mimeList = db.allMimeTypes();
 
     m_mimeTypes << "inode/directory";
-    foreach (const QMimeType &mime, mimeList) {
+    for (const QMimeType &mime : mimeList) {
         if (mime.name().startsWith(QLatin1String("image/"))) {
             m_mimeTypes << mime.name();
         }

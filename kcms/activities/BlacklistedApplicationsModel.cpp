@@ -105,7 +105,7 @@ void BlacklistedApplicationsModel::load()
 
         beginInsertRows(QModelIndex(), 0, applications.length() - 1);
 
-        foreach (const auto &name, applications) {
+        for (const auto &name : applications) {
             const auto service = KService::serviceByDesktopName(name);
             const auto blocked = blockedApplications.contains(name);
 
