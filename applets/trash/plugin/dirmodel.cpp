@@ -55,11 +55,13 @@ DirModel::~DirModel()
 
 QHash<int, QByteArray> DirModel::roleNames() const
 {
-    return {{Qt::DisplayRole, "display"}, //
+    // clang-format off
+    return {{Qt::DisplayRole, "display"},
             {Qt::DecorationRole, "decoration"},
             {UrlRole, "url"},
             {MimeTypeRole, "mimeType"},
             {Thumbnail, "thumbnail"}};
+    // clang-format on
 }
 
 QString DirModel::url() const
