@@ -81,7 +81,7 @@ void Backend::setupUnity()
 
     KConfigGroup grp(KSharedConfig::openConfig(QStringLiteral("taskmanagerrulesrc")), QStringLiteral("Unity Launcher Mapping"));
 
-    foreach (const QString &key, grp.keyList()) {
+    for (const QString &key : grp.keyList()) {
         const QString &value = grp.readEntry(key, QString());
         if (value.isEmpty()) {
             continue;

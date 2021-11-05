@@ -195,7 +195,7 @@ QList<QUrl> KdePlatformDependent::getDefaultProviderFiles() const
     KConfigGroup group(m_config, "General");
     QStringList pathStrings = group.readPathEntry("providerFiles", QStringList(QStringLiteral("https://autoconfig.kde.org/ocs/providers.xml")));
     QList<QUrl> paths;
-    foreach (const QString &pathString, pathStrings) {
+    for (const QString &pathString : pathStrings) {
         paths.append(QUrl(pathString));
     }
     qCDebug(ATTICA_PLUGIN_LOG) << "Loaded paths from config:" << paths;
