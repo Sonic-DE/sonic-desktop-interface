@@ -17,6 +17,8 @@ Item {
 
     property Item containment
 
+    property bool floating: floatingPanelSvg.fromCurrentTheme
+
     property alias panelMask: privateSwapper.mask
 
     QtObject {
@@ -41,10 +43,21 @@ Item {
         prefix: 'thick'
         imagePath: "widgets/panel-background"
     }
+    PlasmaCore.FrameSvgItem {
+        id: floatingPanelSvg
+        visible: false
+        prefix: 'floating'
+        imagePath: "widgets/panel-background"
+    }
     readonly property int topPadding: Math.round(Math.min(thickPanelSvg.fixedMargins.top, spacingAtMinSize));
     readonly property int bottomPadding: Math.round(Math.min(thickPanelSvg.fixedMargins.bottom, spacingAtMinSize));
     readonly property int leftPadding: Math.round(Math.min(thickPanelSvg.fixedMargins.left, spacingAtMinSize));
     readonly property int rightPadding: Math.round(Math.min(thickPanelSvg.fixedMargins.right, spacingAtMinSize));
+
+    readonly property int topFloatingPadding: floatingPanelSvg.fixedMargins.top
+    readonly property int topFloatingPadding: floatingPanelSvg.fixedMargins.top
+    readonly property int topFloatingPadding: floatingPanelSvg.fixedMargins.top
+    readonly property int topFloatingPadding: floatingPanelSvg.fixedMargins.top
 
     TaskManager.VirtualDesktopInfo {
         id: virtualDesktopInfo
@@ -80,16 +93,26 @@ Item {
 
     PlasmaCore.FrameSvgItem {
         id: translucentItem
-        enabledBorders: panel.enabledBorders
-        anchors.fill: parent
+        //enabledBorders: panel.enabledBorders
+        anchors {
+            fill: parent
+            bottomMargin: 20
+            leftMargin: 200
+            rightMargin: 200
+        }
 
         imagePath: containment && containment.backgroundHints === PlasmaCore.Types.NoBackground ? "" : "widgets/panel-background"
     }
 
     PlasmaCore.FrameSvgItem {
         id: opaqueItem
-        enabledBorders: panel.enabledBorders
-        anchors.fill: parent
+        //enabledBorders: panel.enabledBorders
+        anchors {
+            fill: parent
+            bottomMargin: 20
+            leftMargin: 200
+            rightMargin: 200
+        }
 
         imagePath: containment && containment.backgroundHints === PlasmaCore.Types.NoBackground ? "" : "solid/widgets/panel-background"
     }
@@ -243,6 +266,11 @@ Item {
 
     Item {
         id: containmentParent
-        anchors.fill: parent
+        anchors {
+            fill: parent
+            bottomMargin: 20
+            leftMargin: 200
+            rightMargin: 200
+        }
     }
 }
