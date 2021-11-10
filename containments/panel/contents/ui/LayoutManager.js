@@ -7,7 +7,6 @@
 var layout;
 var root;
 var plasmoid;
-var lastSpacer;
 var marginHighlights;
 
 
@@ -132,13 +131,8 @@ function insertAfter(item1, item2) {
 }
 
 function insertAtIndex(item, position) {
-    if (position < 0 || position >= layout.children.length) {
+    if (position < 0 || position > layout.children.length) {
         return;
-    }
-
-    //never ever insert after lastSpacer
-    if (layout.children[position] === lastSpacer) {
-        --position;
     }
 
     var removedItems = new Array();

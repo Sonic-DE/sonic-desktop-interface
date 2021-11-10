@@ -32,6 +32,7 @@ DragDrop.DropArea {
     property bool isHorizontal: plasmoid.formFactor !== PlasmaCore.Types.Vertical
     property int fixedWidth: 0
     property int fixedHeight: 0
+    property bool hasSpacer
 
     // These are invisible and only used to read panel margins
     // Both will fallback to "standard" panel margins if the theme does not
@@ -89,26 +90,24 @@ function addApplet(applet, x, y) {
     } else if (x >= 0 && y >= 0) {
         var index = LayoutManager.insertAtCoordinates(container, x , y);
 
+    // Insert icons to the left of whatever is at the center (usually a Task Manager),
+    // if it exists.
+    // FIXME TODO: This is a real-world fix to produce a sensible initial position for
+    // launcher icons added by launcher menu applets. The basic approach has been used
+    // since Plasma 1. However, "add launcher to X" is a generic-enough concept and
+    // frequent-enough occurrence that we'd like to abstract it further in the future
+    // and get rid of the ugliness of parties external to the containment adding applets
+    // of a specific type, and the containment caring about the applet type. In a better
+    // system the containment would be informed of requested launchers, and determine by
+    // itself what it wants to do with that information.
+    } else if (applet.pluginName === "org.kde.plasma.icon" &&
+            (middle = currentLayout.childAt(root.width / 2, root.height / 2))) {
+        LayoutManager.insertBefore(middle, container);
     // Fall through to determining an appropriate insert position.
     } else {
-        var before = lastSpacer;
+        var before = currentLayout.children[currentLayout.children.length - 1];
 
-        // Insert icons to the left of whatever is at the center (usually a Task Manager),
-        // if it exists.
-        // FIXME TODO: This is a real-world fix to produce a sensible initial position for
-        // launcher icons added by launcher menu applets. The basic approach has been used
-        // since Plasma 1. However, "add launcher to X" is a generic-enough concept and
-        // frequent-enough occurrence that we'd like to abstract it further in the future
-        // and get rid of the ugliness of parties external to the containment adding applets
-        // of a specific type, and the containment caring about the applet type. In a better
-        // system the containment would be informed of requested launchers, and determine by
-        // itself what it wants to do with that information.
-        if (applet.pluginName === "org.kde.plasma.icon" &&
-            (middle = currentLayout.childAt(root.width / 2, root.height / 2))) {
-            before = middle;
-        }
-
-        LayoutManager.insertBefore(before, container);
+        LayoutManager.insertAtIndex(container, currentLayout.children.length);
     }
     LayoutManager.updateMargins();
 }
@@ -118,33 +117,16 @@ function checkLastSpacer() {
     var flexibleFound = false;
     for (var i = 0; i < currentLayout.children.length; ++i) {
         var applet = currentLayout.children[i].applet;
-        if (!applet) {
-            continue;
-        }
-        if (!applet.visible || !applet.Layout) {
+        if (!applet || !applet.visible || !applet.Layout) {
             continue;
         }
         if ((root.isHorizontal && applet.Layout.fillWidth) ||
             (!root.isHorizontal && applet.Layout.fillHeight)) {
-                flexibleFound = true;
-            break
+                hasSpacer = true;
+            return
         }
     }
-    lastSpacer.visible= !flexibleFound;
-    console.log('-----------------------')
-    console.log('-----------------------')
-    console.log('-----------------------')
-    console.log('-----------------------')
-    console.log('-----------------------')
-    console.log('-----------------------')
-    console.log('-----------------------')
-    console.log('-----------------------')
-    console.log('-----------------------')
-    console.log('-----------------------')
-    console.log('-----------------------')
-    console.log('-----------------------')
-    console.log('-----------------------')
-    console.log(flexibleFound)
+    hasSpacer = false;
 }
 //END functions
 
@@ -153,7 +135,6 @@ function checkLastSpacer() {
         LayoutManager.plasmoid = plasmoid;
         LayoutManager.root = root;
         LayoutManager.layout = currentLayout;
-        LayoutManager.lastSpacer = lastSpacer;
         LayoutManager.marginHighlights = [];
         LayoutManager.restore();
 
@@ -197,11 +178,13 @@ function checkLastSpacer() {
 
     Containment.onAppletAdded: {
         addApplet(applet, x, y);
+        checkLastSpacer();
         LayoutManager.save();
     }
 
     Containment.onAppletRemoved: {
         LayoutManager.removeApplet(applet);
+        checkLastSpacer();
         LayoutManager.save();
     }
 
@@ -423,18 +406,6 @@ function checkLastSpacer() {
     }
 
     Item {
-        id: lastSpacer
-        Rectangle{
-            color: "green"
-            anchors.fill: parent
-        }
-        parent: currentLayout
-
-        Layout.fillWidth: true
-        Layout.fillHeight: true
-    }
-
-    Item {
         id: dndSpacer
         Layout.preferredWidth: width
         Layout.preferredHeight: height
@@ -448,8 +419,8 @@ function checkLastSpacer() {
         rowSpacing: PlasmaCore.Units.smallSpacing
         columnSpacing: PlasmaCore.Units.smallSpacing
 
-        width: root.width
-        height: root.height
+        width: root.hasSpacer || !isLayoutHorizontal ? root.width : implicitWidth
+        height: root.hasSpacer || isLayoutHorizontal ? root.height: implicitHeight
 
         rows: isHorizontal ? 1 : currentLayout.children.length
         columns: isHorizontal ? currentLayout.children.length : 1
