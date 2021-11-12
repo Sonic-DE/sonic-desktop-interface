@@ -20,7 +20,7 @@ Item {
 
     property Item containment
 
-    property bool floating: floatingPanelSvg.fromCurrentTheme
+    property bool floating: floatingPanelSvg.usedPrefix == 'floating'
 
     property alias panelMask: privateSwapper.mask
 
@@ -49,7 +49,7 @@ Item {
     PlasmaCore.FrameSvgItem {
         id: floatingPanelSvg
         visible: false
-        prefix: 'floating'
+        prefix: ['floating', '']
         imagePath: "widgets/panel-background"
     }
     readonly property int topPadding: Math.round(Math.min(thickPanelSvg.fixedMargins.top, spacingAtMinSize));
@@ -57,10 +57,10 @@ Item {
     readonly property int leftPadding: Math.round(Math.min(thickPanelSvg.fixedMargins.left, spacingAtMinSize));
     readonly property int rightPadding: Math.round(Math.min(thickPanelSvg.fixedMargins.right, spacingAtMinSize));
 
-    readonly property int topFloatingPadding: floatingPanelSvg.fixedMargins.top
-    readonly property int topFloatingPadding: floatingPanelSvg.fixedMargins.top
-    readonly property int topFloatingPadding: floatingPanelSvg.fixedMargins.top
-    readonly property int topFloatingPadding: floatingPanelSvg.fixedMargins.top
+    readonly property int topFloatingPadding: floating ? floatingPanelSvg.fixedMargins.top : 0
+    readonly property int leftFloatingPadding: floating ? floatingPanelSvg.fixedMargins.left : 0
+    readonly property int rightFloatingPadding: floating ? floatingPanelSvg.fixedMargins.right : 0
+    readonly property int bottomFloatingPadding: floating ? floatingPanelSvg.fixedMargins.bottom : 0
 
     TaskManager.VirtualDesktopInfo {
         id: virtualDesktopInfo
@@ -96,12 +96,33 @@ Item {
 
     PlasmaCore.FrameSvgItem {
         id: translucentItem
-        //enabledBorders: panel.enabledBorders
+        enabledBorders: floating ? undefined : panel.enabledBorders
         anchors {
             fill: parent
-            bottomMargin: 20
-            leftMargin: 200
-            rightMargin: 200
+            bottomMargin: visibleWindowsModel.count > 0 ? 0 : bottomFloatingPadding
+            leftMargin: visibleWindowsModel.count > 0 ? 0 :  leftFloatingPadding
+            rightMargin: visibleWindowsModel.count > 0 ? 0 :  rightFloatingPadding
+            topMargin: visibleWindowsModel.count > 0 ? 0 :  topFloatingPadding
+        }
+        Behavior on anchors.bottomMargin {
+            NumberAnimation {
+                duration: 200
+            }
+        }
+        Behavior on anchors.topMargin {
+            NumberAnimation {
+                duration: 200
+            }
+        }
+        Behavior on anchors.leftMargin {
+            NumberAnimation {
+                duration: 200
+            }
+        }
+        Behavior on anchors.rightMargin {
+            NumberAnimation {
+                duration: 200
+            }
         }
 
         imagePath: containment && containment.backgroundHints === PlasmaCore.Types.NoBackground ? "" : "widgets/panel-background"
@@ -109,12 +130,33 @@ Item {
 
     PlasmaCore.FrameSvgItem {
         id: opaqueItem
-        //enabledBorders: panel.enabledBorders
+        enabledBorders: floating ? undefined : panel.enabledBorders
         anchors {
             fill: parent
-            bottomMargin: 20
-            leftMargin: 200
-            rightMargin: 200
+            bottomMargin: visibleWindowsModel.count > 0 ? 0 :  bottomFloatingPadding
+            leftMargin: visibleWindowsModel.count > 0 ? 0 :  leftFloatingPadding
+            rightMargin: visibleWindowsModel.count > 0 ? 0 :  rightFloatingPadding
+            topMargin: visibleWindowsModel.count > 0 ? 0 :  topFloatingPadding
+        }
+        Behavior on anchors.bottomMargin {
+            NumberAnimation {
+                duration: 50
+            }
+        }
+        Behavior on anchors.topMargin {
+            NumberAnimation {
+                duration: 50
+            }
+        }
+        Behavior on anchors.leftMargin {
+            NumberAnimation {
+                duration: 50
+            }
+        }
+        Behavior on anchors.rightMargin {
+            NumberAnimation {
+                duration: 50
+            }
         }
 
         imagePath: containment && containment.backgroundHints === PlasmaCore.Types.NoBackground ? "" : "solid/widgets/panel-background"
@@ -326,9 +368,10 @@ Item {
         id: containmentParent
         anchors {
             fill: parent
-            bottomMargin: 20
-            leftMargin: 200
-            rightMargin: 200
+            bottomMargin: bottomFloatingPadding
+            leftMargin: leftFloatingPadding
+            rightMargin: rightFloatingPadding
+            topMargin: topFloatingPadding
         }
     }
 }
