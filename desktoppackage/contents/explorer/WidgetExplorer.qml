@@ -22,7 +22,7 @@ import org.kde.plasma.private.shell 2.0
 PC3.Page {
     id: main
 
-    width: Math.max(heading.paintedWidth, PlasmaCore.Units.iconSizes.enormous * 3 + PlasmaCore.Units.smallSpacing * 4 + PlasmaCore.Units.gridUnit * 2)
+    width: contentItem.implicitWidth
     height: 800//Screen.height
 
     opacity: draggingWidget ? 0.3 : 1
@@ -200,15 +200,6 @@ PC3.Page {
                     Layout.fillWidth: true
                 }
                 PC3.ToolButton {
-                    id: getWidgetsButton
-                    icon.name: "get-hot-new-stuff"
-                    text: i18nd("plasma_shell_org.kde.plasma.desktop", "Get New Widgets…")
-                    onClicked: {
-                        getWidgetsDialog.model = widgetExplorer.widgetsMenuActions
-                        getWidgetsDialog.openRelative()
-                    }
-                }
-                PC3.ToolButton {
                     id: closeButton
                     icon.name: "window-close"
                     onClicked: main.closed()
@@ -233,16 +224,12 @@ PC3.Page {
                     Component.onCompleted: forceActiveFocus()
                 }
                 PC3.ToolButton {
-                    id: categoryButton
-                    text: i18nd("plasma_shell_org.kde.plasma.desktop", "All Widgets")
-                    icon.name: "view-filter"
+                    id: getWidgetsButton
+                    icon.name: "get-hot-new-stuff"
+                    text: i18nd("plasma_shell_org.kde.plasma.desktop", "Get New Widgets…")
                     onClicked: {
-                        categoriesDialog.model = widgetExplorer.filterModel
-                        categoriesDialog.open(0, categoryButton.height)
-                    }
-
-                    PC3.ToolTip {
-                        text: i18nd("plasma_shell_org.kde.plasma.desktop", "Categories")
+                        getWidgetsDialog.model = widgetExplorer.widgetsMenuActions
+                        getWidgetsDialog.openRelative()
                     }
                 }
             }
@@ -256,74 +243,90 @@ PC3.Page {
         onTriggered: list.model = widgetExplorer.widgetsModel
     }
 
-    PC3.ScrollView {
-        anchors.fill: parent
-        anchors.rightMargin: - main.sidePanel.margins.right
+    contentItem: RowLayout {
+        PC3.ScrollView {
+            Layout.fillHeight: true
+            implicitWidth: PlasmaCore.Units.gridUnit * 8
 
-        // HACK: workaround for https://bugreports.qt.io/browse/QTBUG-83890
-        PC3.ScrollBar.horizontal.policy: PC3.ScrollBar.AlwaysOff
+            PC3.ScrollBar.horizontal.policy: PC3.ScrollBar.AlwaysOff
 
-        // hide the flickering by fading in nicely
-        opacity: setModelTimer.running ? 0 : 1
-        Behavior on opacity {
-            OpacityAnimator {
-                duration: PlasmaCore.Units.longDuration
-                easing.type: Easing.InOutQuad
-            }
-        }
+            ListView {
+                model: widgetExplorer.filterModel
 
-        GridView {
-            id: list
-
-            // model set delayed by Timer above
-
-            activeFocusOnTab: true
-            keyNavigationWraps: true
-            cellWidth: Math.floor(width / 3)
-            cellHeight: cellWidth + PlasmaCore.Units.gridUnit * 4 + PlasmaCore.Units.smallSpacing * 2
-
-            delegate: AppletDelegate {}
-            highlight: PC2.Highlight {}
-            highlightMoveDuration: 0
-            //highlightResizeDuration: 0
-
-            //slide in to view from the left
-            add: Transition {
-                NumberAnimation {
-                    properties: "x"
-                    from: -list.width
-                    duration: PlasmaCore.Units.shortDuration
-                }
-            }
-
-            //slide out of view to the right
-            remove: Transition {
-                NumberAnimation {
-                    properties: "x"
-                    to: list.width
-                    duration: PlasmaCore.Units.shortDuration
-                }
-            }
-
-            //if we are adding other items into the view use the same animation as normal adding
-            //this makes everything slide in together
-            //if we make it move everything ends up weird
-            addDisplaced: list.add
-
-            //moved due to filtering
-            displaced: Transition {
-                NumberAnimation {
-                    properties: "x,y"
-                    duration: PlasmaCore.Units.shortDuration
+                delegate: PC2.ListItem {
+                    PC3.Label {
+                        text: model.display
+                    }
                 }
             }
         }
-    }
+        PC3.ScrollView {
+            Layout.fillHeight: true
+            implicitWidth: list.cellWidth * 3 + PlasmaCore.Units.gridUnit
 
-    PlasmaExtras.PlaceholderMessage {
-        anchors.centerIn: parent
-        width: parent.width - (PlasmaCore.Units.largeSpacing * 4)
-        text: searchInput.text.length > 0 ? i18n("No widgets matched the search terms") : i18n("No widgets available")
-        visible: list.count == 0
+            PC3.ScrollBar.horizontal.policy: PC3.ScrollBar.AlwaysOff
+
+            // hide the flickering by fading in nicely
+            opacity: setModelTimer.running ? 0 : 1
+            Behavior on opacity {
+                OpacityAnimator {
+                    duration: PlasmaCore.Units.longDuration
+                    easing.type: Easing.InOutQuad
+                }
+            }
+
+            GridView {
+                id: list
+
+                // model set delayed by Timer above
+
+                PlasmaExtras.PlaceholderMessage {
+                    anchors.centerIn: parent
+                    width: parent.width - (PlasmaCore.Units.largeSpacing * 4)
+                    text: searchInput.text.length > 0 ? i18n("No widgets matched the search terms") : i18n("No widgets available")
+                    visible: list.count == 0
+                }
+
+                activeFocusOnTab: true
+                cellWidth: PlasmaCore.Units.iconSizes.enormous + (PlasmaCore.Units.gridUnit*2)
+                cellHeight: cellWidth + PlasmaCore.Units.gridUnit * 4 + PlasmaCore.Units.smallSpacing * 2
+
+                delegate: AppletDelegate {}
+                highlight: PC2.Highlight {}
+                highlightMoveDuration: 0
+                //highlightResizeDuration: 0
+
+                //slide in to view from the left
+                add: Transition {
+                    NumberAnimation {
+                        properties: "x"
+                        from: -list.width
+                        duration: PlasmaCore.Units.shortDuration
+                    }
+                }
+
+                //slide out of view to the right
+                remove: Transition {
+                    NumberAnimation {
+                        properties: "x"
+                        to: list.width
+                        duration: PlasmaCore.Units.shortDuration
+                    }
+                }
+
+                //if we are adding other items into the view use the same animation as normal adding
+                //this makes everything slide in together
+                //if we make it move everything ends up weird
+                addDisplaced: list.add
+
+                //moved due to filtering
+                displaced: Transition {
+                    NumberAnimation {
+                        properties: "x,y"
+                        duration: PlasmaCore.Units.shortDuration
+                    }
+                }
+            }
+        }
     }
 }

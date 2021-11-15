@@ -60,7 +60,7 @@ Item {
             anchors {
                 left: parent.left
                 right: parent.right
-                //bottom: parent.bottom
+                bottom: parent.bottom
                 margins: PlasmaCore.Units.smallSpacing * 2
                 rightMargin: PlasmaCore.Units.smallSpacing * 2 // don't cram the text to the border too much
                 top: parent.top
@@ -216,6 +216,11 @@ Item {
                 elide: Text.ElideRight
                 maximumLineCount: heading.lineCount === 1 ? 3 : 2
                 horizontalAlignment: Text.AlignHCenter
+            }
+            Item { Layout.fillHeight: true }
+            PlasmaComponents.Button {
+                text: i18n("Add")
+                Layout.alignment: Qt.AlignRight
             }
         }
     }
