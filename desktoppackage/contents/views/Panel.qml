@@ -21,6 +21,7 @@ Item {
     property Item containment
 
     property bool floating: floatingPanelSvg.usedPrefix == 'floating'
+    property bool screenCovered: visibleWindowsModel.count > 0  && !kwindowsystem.showingDesktop
 
     property alias panelMask: privateSwapper.mask
 
@@ -62,6 +63,19 @@ Item {
     readonly property int rightFloatingPadding: floating ? floatingPanelSvg.fixedMargins.right : 0
     readonly property int bottomFloatingPadding: floating ? floatingPanelSvg.fixedMargins.bottom : 0
 
+    property int maskOffsetX: screenCovered ? 0 : leftFloatingPadding
+    property int maskOffsetY: screenCovered ? 0 : topFloatingPadding
+    Behavior on maskOffsetX {
+        NumberAnimation {
+            duration: PlasmaCore.Units.veryLongDuration
+        }
+    }
+    Behavior on maskOffsetY {
+        NumberAnimation {
+            duration: PlasmaCore.Units.veryLongDuration
+        }
+    }
+
     TaskManager.VirtualDesktopInfo {
         id: virtualDesktopInfo
     }
@@ -99,29 +113,21 @@ Item {
         enabledBorders: floating ? undefined : panel.enabledBorders
         anchors {
             fill: parent
-            bottomMargin: visibleWindowsModel.count > 0 ? 0 : bottomFloatingPadding
-            leftMargin: visibleWindowsModel.count > 0 ? 0 :  leftFloatingPadding
-            rightMargin: visibleWindowsModel.count > 0 ? 0 :  rightFloatingPadding
-            topMargin: visibleWindowsModel.count > 0 ? 0 :  topFloatingPadding
+            bottomMargin: bottomFloatingPadding; leftMargin: leftFloatingPadding
+            rightMargin: rightFloatingPadding; topMargin: topFloatingPadding
         }
-        Behavior on anchors.bottomMargin {
-            NumberAnimation {
-                duration: 200
+        states: State {
+            name: 'fill'; when: screenCovered
+            PropertyChanges {
+                target: translucentItem.anchors; bottomMargin: 0; leftMargin: 0;
+                rightMargin: 0; topMargin: 0;
             }
         }
-        Behavior on anchors.topMargin {
+        transitions: Transition {
+            from: ""; to: "fill"; reversible: true
             NumberAnimation {
-                duration: 200
-            }
-        }
-        Behavior on anchors.leftMargin {
-            NumberAnimation {
-                duration: 200
-            }
-        }
-        Behavior on anchors.rightMargin {
-            NumberAnimation {
-                duration: 200
+                properties: "bottomMargin,topMargin,leftMargin,rightMargin"
+                duration: PlasmaCore.Units.veryLongDuration; easing.type: Easing.InOutQuad
             }
         }
 
@@ -133,32 +139,23 @@ Item {
         enabledBorders: floating ? undefined : panel.enabledBorders
         anchors {
             fill: parent
-            bottomMargin: visibleWindowsModel.count > 0 ? 0 :  bottomFloatingPadding
-            leftMargin: visibleWindowsModel.count > 0 ? 0 :  leftFloatingPadding
-            rightMargin: visibleWindowsModel.count > 0 ? 0 :  rightFloatingPadding
-            topMargin: visibleWindowsModel.count > 0 ? 0 :  topFloatingPadding
+            bottomMargin:  bottomFloatingPadding; leftMargin: leftFloatingPadding
+            rightMargin: rightFloatingPadding; topMargin: topFloatingPadding
         }
-        Behavior on anchors.bottomMargin {
-            NumberAnimation {
-                duration: 50
+        states: State {
+            name: 'fill'; when: screenCovered
+            PropertyChanges {
+                target: opaqueItem.anchors; bottomMargin: 0; leftMargin: 0;
+                rightMargin: 0; topMargin: 0;
             }
         }
-        Behavior on anchors.topMargin {
+        transitions: Transition {
+            from: ""; to: "fill"; reversible: true
             NumberAnimation {
-                duration: 50
+                properties: "bottomMargin,topMargin,leftMargin,rightMargin"
+                duration: PlasmaCore.Units.veryLongDuration; easing.type: Easing.InOutQuad
             }
         }
-        Behavior on anchors.leftMargin {
-            NumberAnimation {
-                duration: 50
-            }
-        }
-        Behavior on anchors.rightMargin {
-            NumberAnimation {
-                duration: 50
-            }
-        }
-
         imagePath: containment && containment.backgroundHints === PlasmaCore.Types.NoBackground ? "" : "solid/widgets/panel-background"
     }
 
@@ -174,6 +171,7 @@ Item {
                 ScriptAction {
                     script: {
                         translucentItem.visible = true
+                        containment.containmentDisplayHints &= ~PlasmaCore.Types.DesktopFullyCovered;
                     }
                 }
                 NumberAnimation {
@@ -199,6 +197,7 @@ Item {
                 ScriptAction {
                     script: {
                         opaqueItem.visible = true
+                        containment.containmentDisplayHints |= PlasmaCore.Types.DesktopFullyCovered;
                     }
                 }
                 NumberAnimation {
@@ -233,8 +232,14 @@ Item {
     }
     state: ""
     states: [
-        State { name: "opaque" },
-        State { name: "transparent" }
+        State {
+            name: "opaque"
+            when: panel.opacityMode == 1 || (panel.opacityMode == 0 && screenCovered)
+        },
+        State {
+            when: panel.opacityMode == 2 || (panel.opacityMode == 0 && !screenCovered)
+            name: "transparent"
+        }
     ]
 
     function adjustPrefix() {
