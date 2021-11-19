@@ -17,13 +17,12 @@ import org.kde.plasma.private.showdesktop 0.1
 QtObject {
     id: root
 
-    // you can't have an applet with just a compact representation :(
-    Plasmoid.preferredRepresentation: Plasmoid.fullRepresentation
     Plasmoid.onActivated: showdesktop.showingDesktop = !showdesktop.showingDesktop
     Plasmoid.icon: plasmoid.configuration.icon
     Plasmoid.title: i18n("Show Desktop")
     Plasmoid.toolTipSubText: i18n("Show the desktop by moving windows aside")
     Plasmoid.backgroundHints: PlasmaCore.Types.NoBackground
+    Plasmoid.keyboardActivationEnabled: true
 
     // QtObject has no default property
     property QtObject showdesktop: ShowDesktop { }
@@ -36,7 +35,8 @@ QtObject {
         showdesktop.minimizeAll()
     }
 
-    Plasmoid.fullRepresentation: PlasmaCore.ToolTipArea {
+    Plasmoid.compactRepresentation: PlasmaCore.ToolTipArea {
+
         readonly property bool inPanel: (plasmoid.location === PlasmaCore.Types.TopEdge
             || plasmoid.location === PlasmaCore.Types.RightEdge
             || plasmoid.location === PlasmaCore.Types.BottomEdge
@@ -75,5 +75,6 @@ QtObject {
             }
         }
     }
+    Plasmoid.fullRepresentation: Plasmoid.compactRepresentation
 
 }
