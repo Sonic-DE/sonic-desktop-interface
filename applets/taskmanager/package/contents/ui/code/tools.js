@@ -191,6 +191,10 @@ function activateTask(index, model, modifiers, task) {
         } else {
             tasksModel.requestActivate(index);
         }
+        // On Wayland, groupDialog.visible must be explicitly set to false to hide the textual list (BUG 444328)
+        if (groupDialog.visible) {
+            groupDialog.visible = false;
+        }
     }
 }
 
