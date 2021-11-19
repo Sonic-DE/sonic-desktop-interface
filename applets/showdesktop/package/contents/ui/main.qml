@@ -9,6 +9,7 @@ import QtQuick 2.1
 import QtQuick.Layouts 1.1
 
 import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.plasma.extras 2.0 as PlasmaExtras
 
 import org.kde.plasma.plasmoid 2.0
 
@@ -37,6 +38,8 @@ QtObject {
     }
 
     Plasmoid.fullRepresentation: PlasmaCore.ToolTipArea {
+        PlasmaExtras.KeyboardFocusablePlasmoid {}
+
         readonly property bool inPanel: (plasmoid.location === PlasmaCore.Types.TopEdge
             || plasmoid.location === PlasmaCore.Types.RightEdge
             || plasmoid.location === PlasmaCore.Types.BottomEdge
