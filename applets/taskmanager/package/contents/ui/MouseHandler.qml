@@ -159,6 +159,9 @@ Item {
                     groupDialog.visible = true;
                 } else if (parent.hoveredItem.m.IsLauncher !== true) {
                     tasksModel.requestActivate(parent.hoveredItem.modelIndex());
+                    if (groupDialog.visible) {
+                        groupDialog.visible = false;
+                    }
                 }
             }
         }
