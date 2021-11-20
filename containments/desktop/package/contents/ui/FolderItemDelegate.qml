@@ -212,7 +212,6 @@ Item {
                 property string prefix: ""
 
                 sourceComponent: frameComponent
-                active: state !== ""
                 asynchronous: true
 
                 width: {
