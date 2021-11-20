@@ -1208,6 +1208,12 @@ FocusScope {
             previewPlugins: plasmoid.configuration.previewPlugins
             appletInterface: plasmoid
 
+            onSelectionChanged: {
+                if (usedByContainment) {
+                    currentIndex = positioner.firstSelectedItem();
+                }
+            }
+
             onListingCompleted: {
                 if (!gridView.model && plasmoid.expanded) {
                     gridView.model = positioner;
@@ -1235,6 +1241,7 @@ FocusScope {
                 var row = -1;
                 var from = -1;
                 var to = -1;
+                var noItemMoved = true;
 
                 for (var i = 0; i < urls.length; i++) {
                     from = positioner.indexForUrl(urls[i]);
@@ -1272,7 +1279,12 @@ FocusScope {
                     if (from !== to) {
                         moves.push(from);
                         moves.push(to);
+                        noItemMoved = false;
                     }
+                }
+
+                if (!noItemMoved) {
+                    dir.clearSelection();
                 }
 
                 if (moves.length) {
@@ -1281,7 +1293,6 @@ FocusScope {
                 }
 
                 previouslySelectedItemIndex = -1;
-                dir.clearSelection();
             }
         }
 

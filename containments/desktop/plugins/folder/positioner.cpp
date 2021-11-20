@@ -134,6 +134,23 @@ int Positioner::map(int row) const
     return row;
 }
 
+int Positioner::firstSelectedItem()
+{
+    int index = -1;
+    int min = std::numeric_limits<int>::max();
+
+    for (int i = 0; i < m_folderModel->rowCount(); i++) {
+        if (m_folderModel->data(m_folderModel->index(i, 0), FolderModel::SelectedRole).toBool()) {
+            if (m_sourceToProxy.value(i) < min) {
+                min = m_sourceToProxy.value(i);
+                index = min;
+            }
+        }
+    }
+
+    return index;
+}
+
 int Positioner::nearestItem(int currentIndex, Qt::ArrowType direction)
 {
     if (!m_enabled || currentIndex >= rowCount()) {
@@ -432,6 +449,13 @@ void Positioner::move(const QVariantList &moves)
         beginRemoveRows(QModelIndex(), newCount, oldCount - 1);
         endRemoveRows();
     }
+
+    QVariantList rowsToSelect;
+    for (const auto &row : sourceRows) {
+        rowsToSelect << row;
+    }
+
+    m_folderModel->updateSelection(rowsToSelect, true);
 
     m_updatePositionsTimer->start();
 }

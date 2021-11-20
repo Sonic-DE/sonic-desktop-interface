@@ -265,6 +265,7 @@ Q_SIGNALS:
     void requestRename() const;
     void move(int x, int y, QList<QUrl> urls);
     void popupMenuAboutToShow(KIO::DropJob *dropJob, QMimeData *mimeData, int x, int y);
+    void selectionChanged();
 
 protected:
     bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const override;
@@ -276,7 +277,7 @@ private Q_SLOTS:
     void dirListFailed(const QString &error);
     void statResult(KJob *job);
     void evictFromIsDirCache(const KFileItemList &items);
-    void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
+    void changeSelection(const QItemSelection &selected, const QItemSelection &deselected);
     void pasteTo();
     void moveSelectedToTrash();
     void emptyTrashBin();
