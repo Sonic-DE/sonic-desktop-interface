@@ -124,6 +124,4 @@ PlasmaCore.Dialog {
             plasmoid.status = _oldAppletStatus;
         }
     }
-
-    onVisualParentChanged: activeTask = null
 }
