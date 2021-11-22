@@ -56,17 +56,17 @@ static const QString highlightWindowName = QStringLiteral("org.kde.KWin.Highligh
 static const QString highlightWindowPath = QStringLiteral("/org/kde/KWin/HighlightWindow");
 static const QString &highlightWindowInterface = highlightWindowName;
 
-static const QString presentWindowsName = QStringLiteral("org.kde.KWin.PresentWindows");
-static const QString presentWindowsPath = QStringLiteral("/org/kde/KWin/PresentWindows");
-static const QString &presentWindowsInterface = presentWindowsName;
+static const QString appViewName = QStringLiteral("org.kde.KWin.AppView1");
+static const QString appViewPath = QStringLiteral("/org/kde/KWin/AppView1");
+static const QString &appViewInterface = appViewName;
 
 Backend::Backend(QObject *parent)
     : QObject(parent)
     , m_highlightWindows(false)
     , m_actionGroup(new QActionGroup(this))
 {
-    m_canPresentWindows = QDBusConnection::sessionBus().interface()->isServiceRegistered(presentWindowsName);
-    auto watcher = new QDBusServiceWatcher(presentWindowsName,
+    m_canPresentWindows = QDBusConnection::sessionBus().interface()->isServiceRegistered(appViewName);
+    auto watcher = new QDBusServiceWatcher(appViewName,
                                            QDBusConnection::sessionBus(),
                                            QDBusServiceWatcher::WatchForRegistration | QDBusServiceWatcher::WatchForUnregistration,
                                            this);
@@ -518,7 +518,7 @@ void Backend::presentWindows(const QVariant &_winIds)
         updateWindowHighlight();
     }
 
-    auto message = QDBusMessage::createMethodCall(presentWindowsName, presentWindowsPath, presentWindowsInterface, QStringLiteral("presentWindows"));
+    auto message = QDBusMessage::createMethodCall(appViewName, appViewPath, appViewInterface, QStringLiteral("activate"));
     message << _winIds.toStringList();
     QDBusConnection::sessionBus().asyncCall(message);
 }
