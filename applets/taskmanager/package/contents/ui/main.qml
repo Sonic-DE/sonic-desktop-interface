@@ -58,7 +58,7 @@ MouseArea {
 
     signal requestLayout
     signal windowsHovered(variant winIds, bool hovered)
-    signal presentWindows(variant winIds)
+    signal activateAppView(variant winIds)
 
     onWidthChanged: {
         taskList.width = LayoutManager.layoutWidth();
@@ -507,7 +507,7 @@ MouseArea {
         tasks.requestLayout.connect(layoutTimer.restart);
         tasks.requestLayout.connect(iconGeometryTimer.restart);
         tasks.windowsHovered.connect(backend.windowsHovered);
-        tasks.presentWindows.connect(backend.presentWindows);
+        tasks.activateAppView.connect(backend.activateAppView);
         dragHelper.dropped.connect(resetDragSource);
     }
 }
