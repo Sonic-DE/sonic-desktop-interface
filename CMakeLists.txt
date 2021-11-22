@@ -219,7 +219,7 @@ configure_file(config-runtime.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-runtime
 
 plasma_install_package(desktoppackage org.kde.plasma.desktop shells shell)
 
-add_definitions(-DQT_NO_URL_CAST_FROM_STRING)
+add_compile_definitions(QT_NO_URL_CAST_FROM_STRING QT_NO_FOREACH)
 
 add_subdirectory(layout-templates)
 
