@@ -3,7 +3,7 @@
 
     SPDX-License-Identifier: GPL-2.0-or-later
 */
-import QtQuick 2.0
+import QtQuick 2.15
 import QtQuick.Layouts 1.1
 import QtQuick.Window 2.0
 
@@ -22,6 +22,7 @@ PlasmaCore.ToolTipArea {
     active: !plasmoid.expanded
     textFormat: plasmoid.toolTipTextFormat
     mainItem: plasmoid.toolTipItem ? plasmoid.toolTipItem : null
+    // activeFocusOnTab: plasmoid.keyboardActivationEnabled
 
     property Item fullRepresentation
     property Item compactRepresentation
@@ -236,5 +237,66 @@ PlasmaCore.ToolTipArea {
             }
         }
 
+    }
+    // Keyboard navigation
+    Item {
+        activeFocusOnTab: plasmoid.keyboardActivationEnabled
+
+        anchors.fill: parent
+        Keys.onPressed: {
+            switch (event.key) {
+                case Qt.Key_Space:
+                case Qt.Key_Enter:
+                case Qt.Key_Return:
+                    plasmoid.onActivated()
+                    break;
+            }
+        }
+
+        property var appletContainer: {
+            let item = this
+            while (item.parent) {
+                item = item.parent
+
+                if (item.isAppletContainer) {
+                    return item
+                }
+            }
+            return undefined;
+        }
+
+        PlasmaCore.FrameSvgItem {
+            x: parent.appletContainer ? parent.x - parent.appletContainer.getMargins('left') : parent.x
+            y: parent.appletContainer ? parent.y - parent.appletContainer.getMargins('top') : parent.y
+            width: parent.appletContainer ? parent.width + parent.appletContainer.getMargins('left') + parent.appletContainer.getMargins('right') : parent.witdth
+            height: parent.appletContainer ? parent.height + parent.appletContainer.getMargins('top') + parent.appletContainer.getMargins('bottom') : parent.height
+
+            z: -1 // always draw behind icons
+            opacity: {
+                return parent.activeFocus ? 1 : 0
+            }
+
+            imagePath: "widgets/tabbar"
+            prefix: {
+                var prefix = ""
+                switch (plasmoid.location) {
+                    case PlasmaCore.Types.LeftEdge:
+                        prefix = "west-active-tab";
+                        break;
+                    case PlasmaCore.Types.TopEdge:
+                        prefix = "north-active-tab";
+                        break;
+                    case PlasmaCore.Types.RightEdge:
+                        prefix = "east-active-tab";
+                        break;
+                    default:
+                        prefix = "south-active-tab";
+                }
+                if (!hasElementPrefix(prefix)) {
+                    prefix = "active-tab";
+                }
+                return prefix;
+            }
+        }
     }
 }
