@@ -525,6 +525,7 @@ function checkLastSpacer() {
     Timer {
         id: containmentSizeSyncTimer
         interval: 150
+        triggeredOnStart: true
         onTriggered: {
             dndSpacer.parent = root;
             currentLayout.x = (isHorizontal && toolBox && Qt.application.layoutDirection === Qt.RightToLeft && plasmoid.editMode) ? toolBox.width : 0;
