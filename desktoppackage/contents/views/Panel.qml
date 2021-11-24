@@ -58,21 +58,21 @@ Item {
     readonly property int leftPadding: Math.round(Math.min(thickPanelSvg.fixedMargins.left, spacingAtMinSize));
     readonly property int rightPadding: Math.round(Math.min(thickPanelSvg.fixedMargins.right, spacingAtMinSize));
 
-    readonly property int topFloatingPadding: floating ? floatingPanelSvg.fixedMargins.top : 0
-    readonly property int leftFloatingPadding: floating ? floatingPanelSvg.fixedMargins.left : 0
-    readonly property int rightFloatingPadding: floating ? floatingPanelSvg.fixedMargins.right : 0
-    readonly property int bottomFloatingPadding: floating ? floatingPanelSvg.fixedMargins.bottom : 0
+    readonly property int topFloatingPadding: floating && containment.location != PlasmaCore.Types.BottomEdge ? floatingPanelSvg.fixedMargins.top : 0
+    readonly property int leftFloatingPadding: floating && containment.location != PlasmaCore.Types.RightEdge? floatingPanelSvg.fixedMargins.left : 0
+    readonly property int rightFloatingPadding: floating && containment.location != PlasmaCore.Types.LeftEdge? floatingPanelSvg.fixedMargins.right : 0
+    readonly property int bottomFloatingPadding: floating && containment.location != PlasmaCore.Types.TopEdge? floatingPanelSvg.fixedMargins.bottom : 0
 
     property int maskOffsetX: screenCovered ? 0 : leftFloatingPadding
     property int maskOffsetY: screenCovered ? 0 : topFloatingPadding
     Behavior on maskOffsetX {
         NumberAnimation {
-            duration: PlasmaCore.Units.veryLongDuration
+            duration: PlasmaCore.Units.longDuration
         }
     }
     Behavior on maskOffsetY {
         NumberAnimation {
-            duration: PlasmaCore.Units.veryLongDuration
+            duration: PlasmaCore.Units.longDuration
         }
     }
 
@@ -127,7 +127,7 @@ Item {
             from: ""; to: "fill"; reversible: true
             NumberAnimation {
                 properties: "bottomMargin,topMargin,leftMargin,rightMargin"
-                duration: PlasmaCore.Units.veryLongDuration; easing.type: Easing.InOutQuad
+                duration: PlasmaCore.Units.longDuration; easing.type: Easing.InOutQuad
             }
         }
 
@@ -153,7 +153,7 @@ Item {
             from: ""; to: "fill"; reversible: true
             NumberAnimation {
                 properties: "bottomMargin,topMargin,leftMargin,rightMargin"
-                duration: PlasmaCore.Units.veryLongDuration; easing.type: Easing.InOutQuad
+                duration: PlasmaCore.Units.longDuration; easing.type: Easing.InOutQuad
             }
         }
         imagePath: containment && containment.backgroundHints === PlasmaCore.Types.NoBackground ? "" : "solid/widgets/panel-background"
@@ -371,12 +371,8 @@ Item {
     }
     Item {
         id: containmentParent
-        anchors {
-            fill: parent
-            bottomMargin: bottomFloatingPadding
-            leftMargin: leftFloatingPadding
-            rightMargin: rightFloatingPadding
-            topMargin: topFloatingPadding
-        }
+        anchors.centerIn: translucentItem
+        width: root.width - leftFloatingPadding - rightFloatingPadding
+        height: root.height - topFloatingPadding - bottomFloatingPadding
     }
 }
