@@ -6,6 +6,7 @@
 */
 
 import QtQuick 2.15
+import QtQml 2.15
 import QtQml.Models 2.2
 import QtQuick.Window 2.2
 
@@ -68,7 +69,7 @@ PlasmaCore.Dialog {
                 id: groupListView
 
                 property int maxWidth: getMaxWidth()
-                property int maxHeight: count * (LayoutManager.verticalMargins() + Math.max(theme.mSize(theme.defaultFont).height, PlasmaCore.Units.iconSizes.medium))
+                property int maxHeight: groupFilter.count * (LayoutManager.verticalMargins() + Math.max(theme.mSize(theme.defaultFont).height, PlasmaCore.Units.iconSizes.medium))
 
                 function getMaxWidth() {
                     return groupFilter.maxTextWidth + LayoutManager.horizontalMargins() + PlasmaCore.Units.iconSizes.medium + 2 * (LayoutManager.labelMargin + LayoutManager.iconMargin);
@@ -81,7 +82,11 @@ PlasmaCore.Dialog {
                     property int maxTextWidth: 0
 
                     model: groupDialog.visualParent ? tasksModel : null
-                    rootIndex: groupDialog.visualParent ? tasksModel.makeModelIndex(groupDialog.visualParent.itemIndex) : null
+                    Binding on rootIndex { // Use Binding to reevaluate rootIndex only when visible is true
+                        value: tasksModel.makeModelIndex(groupDialog.visualParent.itemIndex)
+                        when: groupDialog.visualParent && groupDialog.visible
+                        restoreMode: Binding.RestoreNone // Store rootIndex to avoid sudden changes in height
+                    }
                     delegate: Task {
                         visible: true
                         inPopup: true
