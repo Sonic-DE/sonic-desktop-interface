@@ -35,6 +35,8 @@ ColumnLayout {
     readonly property bool canRaise: hasPlayer && playerData.CanRaise
     readonly property var currentMetadata: hasPlayer ? playerData.Metadata : ({})
 
+    readonly property string desktopFileName: launcherUrl.toString().split('/').pop().split('?')[0].replace(".desktop", "")
+
     readonly property string track: {
         const xesamTitle = currentMetadata["xesam:title"]
         if (xesamTitle) {
@@ -246,9 +248,11 @@ ColumnLayout {
 
         Image {
             id: albumArtImage
+
             // also Image.Loading to prevent loading thumbnails just because the album art takes a split second to load
-            // don't show album art if window title doesn't include media title (eg we're in a different browser tab)
-            readonly property bool available: (status === Image.Ready || status === Image.Loading) && generateTitle().includes(track)
+            // only show album art if there's only one window and it's not a browser -- else check if window title and track match
+            readonly property bool available: (status === Image.Ready || status === Image.Loading)
+                && (!(isGroup || backend.applicationCategories(launcherUrl).includes("WebBrowser")) || generateTitle().includes(track))
 
             anchors.fill: hoverHandler
             // Indent by one pixel to make sure we never cover up the entire highlight
