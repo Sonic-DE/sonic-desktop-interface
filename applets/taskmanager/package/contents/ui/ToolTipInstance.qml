@@ -246,9 +246,10 @@ ColumnLayout {
 
         Image {
             id: albumArtImage
-
             // also Image.Loading to prevent loading thumbnails just because the album art takes a split second to load
-            // only show album art if there's only one window and it's not a browser -- else check if window title and track match
+            // if this is a group tooltip, we check if window title and track match, to allow distinguishing the different windows
+            // if this app is a browser, we also check that, so album art is not shown when the user is on some other tab
+            // in all other cases we can safely show the album art without checking the title
             readonly property bool available: (status === Image.Ready || status === Image.Loading)
                 && (!(isGroup || backend.applicationCategories(launcherUrl).includes("WebBrowser")) || generateTitle().includes(track))
 
