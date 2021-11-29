@@ -394,6 +394,7 @@ PlasmaComponents.ContextMenu {
                     return;
                 }
 
+                const runningActivities = activityInfo.runningActivities();
                 var menuItem = menu.newMenuItem(activitiesDesktopsMenu);
                 menuItem.text = i18n("Add To Current Activity");
                 menuItem.enabled = Qt.binding(function() {
@@ -411,16 +412,11 @@ PlasmaComponents.ContextMenu {
                     return menu.visualParent && menu.get(atm.Activities).length === 0;
                 });
                 menuItem.toggled.connect(function(checked) {
-                    var newActivities = undefined; // will cast to an empty QStringList i.e all activities
-                    if (!checked) {
-                        newActivities = new Array(activityInfo.currentActivity);
-                    }
-                    tasksModel.requestActivities(menu.modelIndex, newActivities);
+                    tasksModel.requestActivities(menu.modelIndex, checked ? runningActivities : [activityInfo.currentActivity]);
                 });
 
                 menu.newSeparator(activitiesDesktopsMenu);
 
-                var runningActivities = activityInfo.runningActivities();
                 for (var i = 0; i < runningActivities.length; ++i) {
                     var activityId = runningActivities[i];
 
