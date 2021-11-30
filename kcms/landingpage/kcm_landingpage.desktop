@@ -1,13 +1,7 @@
 [Desktop Entry]
 Icon=preferences-desktop
 Type=Service
-X-KDE-ServiceTypes=KCModule
-X-KDE-Library=kcm_landingpage
-X-KDE-PluginKeyword=kcm_landingpage
-X-KDE-ParentApp=kcontrol
-X-KDE-System-Settings-Parent-Category=rootcategory
-X-KDE-Weight=40
-X-DocPath=kcontrol/landingpage/index.html
+
 Name=Quick Settings
 Name[ar]=إعدادات سريعة
 Name[az]=Cəld ayarları

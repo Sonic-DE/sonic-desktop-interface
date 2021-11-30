@@ -1,12 +1,6 @@
 [Desktop Entry]
 Type=Service
 Icon=preferences-desktop-keyboard
-X-KDE-ServiceTypes=KDEDModule
-X-KDE-Library=keyboard
-X-KDE-Kded-autoload=true
-X-KDE-Kded-load-on-demand=false
-X-KDE-Kded-phase=2
-OnlyShowIn=KDE;
 
 Name=Keyboard Daemon
 Name[ar]=عفريت لوحة المفاتيح
