@@ -225,6 +225,9 @@ MouseArea {
         onSourceAdded: {
             connectSource(source);
         }
+        onSourceRemoved: {
+            disconnectSource(source);
+        }
         function sourceNameForLauncherUrl(launcherUrl, pid) {
             if (!launcherUrl || launcherUrl === "") {
                 return "";
