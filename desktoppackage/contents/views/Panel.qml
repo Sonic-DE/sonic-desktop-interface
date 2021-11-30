@@ -20,8 +20,8 @@ Item {
 
     property Item containment
 
-    property bool floating: floatingPanelSvg.usedPrefix == 'floating'
-    property bool screenCovered: visibleWindowsModel.count > 0  && !kwindowsystem.showingDesktop
+    readonly property bool floating: floatingPanelSvg.usedPrefix === "floating"
+    readonly property bool screenCovered: visibleWindowsModel.count > 0 && !kwindowsystem.showingDesktop
 
     property alias panelMask: privateSwapper.mask
 
@@ -58,13 +58,13 @@ Item {
     readonly property int leftPadding: Math.round(Math.min(thickPanelSvg.fixedMargins.left, spacingAtMinSize));
     readonly property int rightPadding: Math.round(Math.min(thickPanelSvg.fixedMargins.right, spacingAtMinSize));
 
-    readonly property int topFloatingPadding: floating && containment.location != PlasmaCore.Types.BottomEdge ? floatingPanelSvg.fixedMargins.top : 0
-    readonly property int leftFloatingPadding: floating && containment.location != PlasmaCore.Types.RightEdge? floatingPanelSvg.fixedMargins.left : 0
-    readonly property int rightFloatingPadding: floating && containment.location != PlasmaCore.Types.LeftEdge? floatingPanelSvg.fixedMargins.right : 0
-    readonly property int bottomFloatingPadding: floating && containment.location != PlasmaCore.Types.TopEdge? floatingPanelSvg.fixedMargins.bottom : 0
+    readonly property int topFloatingPadding: floating && containment.location !== PlasmaCore.Types.BottomEdge ? floatingPanelSvg.fixedMargins.top : 0
+    readonly property int leftFloatingPadding: floating && containment.location !== PlasmaCore.Types.RightEdge ? floatingPanelSvg.fixedMargins.left : 0
+    readonly property int rightFloatingPadding: floating && containment.location !== PlasmaCore.Types.LeftEdge ? floatingPanelSvg.fixedMargins.right : 0
+    readonly property int bottomFloatingPadding: floating && containment.location !== PlasmaCore.Types.TopEdge ? floatingPanelSvg.fixedMargins.bottom : 0
 
-    property int maskOffsetX: screenCovered ? 0 : leftFloatingPadding
-    property int maskOffsetY: screenCovered ? 0 : topFloatingPadding
+    readonly property int maskOffsetX: screenCovered ? 0 : leftFloatingPadding
+    readonly property int maskOffsetY: screenCovered ? 0 : topFloatingPadding
     Behavior on maskOffsetX {
         NumberAnimation {
             duration: PlasmaCore.Units.longDuration
@@ -234,10 +234,10 @@ Item {
     states: [
         State {
             name: "opaque"
-            when: panel.opacityMode == 1 || (panel.opacityMode == 0 && screenCovered)
+            when: panel.opacityMode === 1 || (panel.opacityMode === 0 && screenCovered)
         },
         State {
-            when: panel.opacityMode == 2 || (panel.opacityMode == 0 && !screenCovered)
+            when: panel.opacityMode === 2 || (panel.opacityMode === 0 && !screenCovered)
             name: "transparent"
         }
     ]
