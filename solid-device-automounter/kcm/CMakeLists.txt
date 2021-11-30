@@ -32,6 +32,6 @@ target_link_libraries(kcm_device_automounter
                       KF5::I18n
                       KF5::Solid)
 
-install(TARGETS kcm_device_automounter DESTINATION ${KDE_INSTALL_PLUGINDIR})
+install(TARGETS kcm_device_automounter DESTINATION ${KDE_INSTALL_PLUGINDIR}/plasma/kcms/systemsettings_qwidgets)
 
 install(FILES device_automounter_kcm.desktop DESTINATION ${KDE_INSTALL_APPDIR})
