@@ -56,6 +56,6 @@ install(FILES landingpage_kdeglobalssettings.kcfg DESTINATION ${KDE_INSTALL_KCFG
 if (KUserFeedback_FOUND)
 install(FILES landingpage_feedbacksettings.kcfg DESTINATION ${KDE_INSTALL_KCFGDIR})
 endif()
-install(FILES kcm_landingpage.desktop DESTINATION ${KDE_INSTALL_KSERVICES5DIR})
+install(FILES kcm_landingpage.desktop DESTINATION ${KDE_INSTALL_APPDIR})
 
 kpackage_install_package(package kcm_landingpage kcms)
