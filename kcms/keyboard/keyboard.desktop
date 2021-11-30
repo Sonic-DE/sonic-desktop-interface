@@ -1,5 +1,7 @@
 [Desktop Entry]
-Type=Service
+Type=Application
+Exec=systemsettings
+NoDisplay=true
 Icon=preferences-desktop-keyboard
 
 Name=Keyboard Daemon
