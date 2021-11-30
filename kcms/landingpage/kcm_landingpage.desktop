@@ -1,6 +1,8 @@
 [Desktop Entry]
 Icon=preferences-desktop
-Type=Service
+Type=Application
+Exec=systemsettings kcm_landingpage
+NoDisplay=true
 
 Name=Quick Settings
 Name[ar]=إعدادات سريعة
