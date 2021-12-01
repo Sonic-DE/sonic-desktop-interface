@@ -1,0 +1,4 @@
+Version=5
+
+install(FILES kcm_rename.upd DESTINATION ${KDE_INSTALL_KCONFUPDATEDIR})
+install(PROGRAMS kcm_rename.sh DESTINATION ${KDE_INSTALL_KCONFUPDATEDIR} )
