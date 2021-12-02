@@ -469,15 +469,15 @@ function checkLastSpacer() {
 
     GridLayout {
         id: currentLayout
-        property bool isLayoutHorizontal: root.isHorizontal
+        readonly property bool isLayoutHorizontal: root.isHorizontal
         rowSpacing: PlasmaCore.Units.smallSpacing
         columnSpacing: PlasmaCore.Units.smallSpacing
 
         x: (isLayoutHorizontal && root.toolBox && Qt.application.layoutDirection === Qt.RightToLeft && plasmoid.editMode) ? root.toolBox.width : 0;
         y: 0
 
-        width: root.width - (root.isHorizontal && root.toolBox && plasmoid.editMode ? root.toolBox.width : 0)
-        height: root.height - (!root.isHorizontal && root.toolBox && plasmoid.editMode ? root.toolBox.height : 0)
+        width: root.width - (isLayoutHorizontal && root.toolBox && plasmoid.editMode ? root.toolBox.width : 0)
+        height: root.height - (!isLayoutHorizontal && root.toolBox && plasmoid.editMode ? root.toolBox.height : 0)
 
         Layout.preferredWidth: {
             var width = 0;
