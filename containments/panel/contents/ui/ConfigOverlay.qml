@@ -216,14 +216,12 @@ MouseArea {
     }
 
     onReleased: {
-        if (!root.dragOverlay.currentApplet) {
-            return;
-        }
-
-        if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
-            currentApplet.applet.configuration.length = handle.height;
-        } else {
-            currentApplet.applet.configuration.length = handle.width;
+        if (root.dragOverlay.currentApplet) {
+            if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
+                currentApplet.applet.configuration.length = handle.height;
+            } else {
+                currentApplet.applet.configuration.length = handle.width;
+            }
         }
 
         configurationArea.isResizingLeft = false;
@@ -240,7 +238,11 @@ MouseArea {
         root.layoutManager.save();
     }
 
-    Item {
+    onCanceled: {
+        // Release to avoid letting the panel in an unstable state
+        realeased();
+    }
+
         id: placeHolder
         property Item dragging
         visible: configurationArea.containsMouse
