@@ -4,86 +4,99 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 
-import QtQuick 2.0
-
+import QtQuick 2.15
 import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.plasma.components 3.0 as PC3
+import org.kde.plasma.private.volume 0.1
 
-MouseArea {
+Item {
     id: audioStreamIconBox
-    hoverEnabled: true
-    onClicked: toggleMuted()
-
-    // Using States rather than a simple Behavior we can apply different transitions,
-    // which allows us to delay showing the icon but hide it instantly still.
-    states: [
-        State {
-            name: "playing"
-            when: task.playingAudio && !task.muted
-            PropertyChanges {
-                target: audioStreamIconBox
-                opacity: 1
-            }
-            PropertyChanges {
-                target: audioStreamIcon
-                elementId: "audio-volume-high"
-            }
-        },
-        State {
-            name: "muted"
-            when: task.muted
-            PropertyChanges {
-                target: audioStreamIconBox
-                opacity: 1
-            }
-            PropertyChanges {
-                target: audioStreamIcon
-                elementId: "audio-volume-muted"
-            }
-        }
-    ]
-
-    transitions: [
-        Transition {
-             from: ""
-             to: "playing"
-             SequentialAnimation {
-                 // Delay showing the play indicator so we don't flash it for brief sounds.
-                 PauseAnimation {
-                     duration: !task.delayAudioStreamIndicator || inPopup ? 0 : 2000
-                 }
-                 NumberAnimation {
-                     property: "opacity"
-                     duration: PlasmaCore.Units.longDuration
-                 }
-             }
-        },
-        Transition {
-             from: ""
-             to: "muted"
-             SequentialAnimation {
-                 NumberAnimation {
-                     property: "opacity"
-                     duration: PlasmaCore.Units.longDuration
-                 }
-             }
-        },
-        Transition {
-             to: ""
-             NumberAnimation {
-                 property: "opacity"
-                 duration: PlasmaCore.Units.longDuration
-             }
-        }
-    ]
+    property int streamDuration: 0
 
     opacity: 0
     visible: opacity > 0
 
+    HoverHandler {
+        id: hoverHandler
+        onHoveredChanged: if (hovered) {
+            
+        } else {
+            
+        }
+    }
+    TapHandler {
+        id: tapHandler
+        onSingleTapped: toggleMuted()
+    }
+    WheelHandler {
+        id: wheelHandler
+    }
+    DragHandler {
+        id: dragHandler
+        target: null
+    }
+
+    PlasmaCore.Dialog {
+        property point taskPoint: task.mapToGlobal(task.x, task.y)
+        x: taskPoint.x - (false ? width + PlasmaCore.Units.smallSpacing * 2: -PlasmaCore.Units.smallSpacing * 2)
+        y: taskPoint.y - (true ? height + PlasmaCore.Units.smallSpacing * 2 : -PlasmaCore.Units.smallSpacing * 2)
+        visible: hoverHandler.hovered
+        location: PlasmaCore.Types.Floating
+        mainItem: Row {
+            spacing: PlasmaCore.Units.smallSpacing
+            PlasmaCore.IconItem {
+                implicitHeight: PlasmaCore.Units.iconSizes.small
+                implicitWidth: implicitHeight
+                source: "audio-volume-high-symbolic" //temp
+            }
+            PC3.Slider {
+                id: popupVolumeSlider
+                from: PulseAudio.MinimalVolume
+                to: PulseAudio.NormalVolume
+                stepSize: to / (to / PulseAudio.NormalVolume * 100.0)
+            }
+            PC3.Label {
+                text: `${popupVolumeSlider.value}${popupVolumeSlider.locale.percent}`
+            }
+            PC3.ToolButton {
+                icon.name: "open-menu-symbolic"
+                text: "More options"
+                display: PC3.AbstractButton.IconOnly
+            }
+        }
+//             flags: notificationItem.replying || focusListener.wantsFocus ? 0 : Qt.WindowDoesNotAcceptFocus
+    }
+
     PlasmaCore.FrameSvgItem {
+        z: -1
         anchors.fill: audioStreamIcon
-        visible: parent.containsMouse
-        imagePath: "widgets/viewitem"
-        prefix: "hover"
+        visible: opacity > 0
+        imagePath: "widgets/button"
+        prefix: ["toolbutton-hover", "normal"]
+        opacity: hoverHandler.hovered
+        Behavior on opacity {
+            enabled: hoverHandler.hovered
+            OpacityAnimator {
+                duration: PlasmaCore.Units.longDuration
+                easing.type: Easing.OutCubic
+            }
+        }
+    }
+
+    PlasmaCore.FrameSvgItem {
+        z: -1
+        anchors.fill: audioStreamIcon
+        visible: opacity > 0
+        imagePath: "widgets/button"
+        prefix: ["toolbutton-pressed", "pressed"]
+        opacity: tapHandler.pressed
+        Behavior on opacity {
+            enabled: tapHandler.pressed
+            OpacityAnimator {
+                duration: PlasmaCore.Units.longDuration
+                easing.type: Easing.OutCubic
+            }
+        }
     }
 
     PlasmaCore.Svg {
@@ -170,4 +183,71 @@ MouseArea {
             }
         ]
     }
+
+    // Using States rather than a simple Behavior we can apply different transitions,
+    // which allows us to delay showing the icon but hide it instantly still.
+    states: [
+        State {
+            name: "playing"
+            when: task.playingAudio && !task.muted
+            PropertyChanges {
+                target: audioStreamIconBox
+                opacity: 1
+            }
+            PropertyChanges {
+                target: audioStreamIcon
+                elementId: "audio-volume-high"
+            }
+        },
+        State {
+            name: "muted"
+            when: task.muted
+            PropertyChanges {
+                target: audioStreamIconBox
+                opacity: 1
+            }
+            PropertyChanges {
+                target: audioStreamIcon
+                elementId: "audio-volume-muted"
+            }
+        }
+    ]
+
+    transitions: [
+        Transition {
+            from: ""
+            to: "playing"
+            SequentialAnimation {
+                // Delay showing the play indicator so we don't flash it for brief sounds.
+                PauseAnimation {
+                    duration: !task.delayAudioStreamIndicator || inPopup ? 0 : 2000
+                }
+                NumberAnimation {
+                    property: "opacity"
+                    duration: PlasmaCore.Units.longDuration
+                }
+            }
+        },
+        Transition {
+            from: ""
+            to: "muted"
+            NumberAnimation {
+                property: "opacity"
+                duration: PlasmaCore.Units.longDuration
+            }
+        },
+        Transition {
+            to: ""
+            SequentialAnimation {
+                // Delay hiding the play indicator so we don't avoid showing the icon for looped brief sounds
+                PauseAnimation {
+                    duration: 50
+                }
+                NumberAnimation {
+                    property: "opacity"
+                    duration: PlasmaCore.Units.longDuration
+                }
+            }
+        }
+    ]
 }
