@@ -139,7 +139,20 @@ private:
             value();
         }
 
-        void set(T newVal);
+        void set(T newVal)
+        {
+            if (!m_value) {
+                value();
+            }
+
+            Q_ASSERT(isSupported());
+            if (m_value != newVal) {
+                m_value = newVal;
+                if (m_changedSignalFunction) {
+                    (m_device->*m_changedSignalFunction)();
+                }
+            }
+        }
         T defaultValue() const
         {
             return m_defaultValueFunction ? (m_device->m_iface.data()->*m_defaultValueFunction)() : T();

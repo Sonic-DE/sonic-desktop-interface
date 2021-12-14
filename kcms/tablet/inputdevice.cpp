@@ -30,22 +30,6 @@ bool InputDevice::Prop<T>::save()
 }
 
 template<typename T>
-void InputDevice::Prop<T>::set(T newVal)
-{
-    if (!m_value) {
-        value();
-    }
-
-    Q_ASSERT(isSupported());
-    if (m_value != newVal) {
-        m_value = newVal;
-        if (m_changedSignalFunction) {
-            (m_device->*m_changedSignalFunction)();
-        }
-    }
-}
-
-template<typename T>
 bool InputDevice::Prop<T>::changed() const
 {
     return m_value.has_value() && m_value.value() != m_configValue;
