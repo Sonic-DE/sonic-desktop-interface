@@ -63,19 +63,13 @@ public:
     {
         return m_orientation.value();
     }
-    void setOrientation(int ori)
-    {
-        m_orientation.set(ori);
-    }
+    void setOrientation(int ori);
 
     QString outputName() const
     {
         return m_outputName.value();
     }
-    void setOutputName(const QString &outputName)
-    {
-        m_outputName.set(outputName);
-    }
+    void setOutputName(const QString &outputName);
 
 Q_SIGNALS:
     void needsSaveChanged();
