@@ -1,5 +1,6 @@
 /*
     SPDX-FileCopyrightText: 2013 Marco Martin <mart@kde.org>
+    SPDX-FileCopyrightText: 2021 Niccolò Venerandi <niccolo@venerandi.com>
 
     SPDX-License-Identifier: GPL-2.0-or-later
 */
@@ -22,11 +23,11 @@ MouseArea {
     hoverEnabled: true
 
     property Item currentApplet
-
     property int lastX
     property int lastY
 
     readonly property int spacerHandleSize: PlasmaCore.Units.smallSpacing
+    property bool isHorizontal: plasmoid.formFactor === PlasmaCore.Types.Horizontal //TODO read this from main.qml
 
     onHeightChanged: tooltip.visible = false;
     onWidthChanged: tooltip.visible = false;
@@ -57,7 +58,6 @@ MouseArea {
             } else {
                 currentApplet.x += (mouse.x - lastX);
             }
-
             lastX = mouse.x;
             lastY = mouse.y;
 
@@ -67,13 +67,15 @@ MouseArea {
                 var posInItem = mapToItem(item, mouse.x, mouse.y);
                 let i = 0;
 
-                if ((plasmoid.formFactor === PlasmaCore.Types.Vertical && posInItem.y < item.height/2) ||
-                    (plasmoid.formFactor !== PlasmaCore.Types.Vertical && posInItem.x < item.width/2)) {
-                    i = root.layoutManager.insertBefore(item, placeHolder);
-                } else {
-                    i = root.layoutManager.insertAfter(item, placeHolder);
+                if ((!isHorizontal && posInItem.y < item.height/3) ||
+                    (isHorizontal && posInItem.x < item.width/3)) {
+                    root.layoutManager.move(placeHolder.parent.i, item.i);
+                    root.layoutManager.updateMargins();
+                } else if ((!isHorizontal && posInItem.y > 2*item.height/3) ||
+                          (isHorizontal && posInItem.x > 2*item.width/3)) {
+                    root.layoutManager.move(placeHolder.parent.i, item.i+1);
+                    root.layoutManager.updateMargins();
                 }
-                if (i!=undefined) {root.layoutManager.updateMargins()}
             }
 
         } else {
@@ -95,7 +97,6 @@ MouseArea {
     onEntered: hideTimer.stop();
 
     onCurrentAppletChanged: {
-        console.log(currentApplet.width)
         if (!currentApplet || !root.dragOverlay.currentApplet) {
             hideTimer.start();
             return;
@@ -107,26 +108,27 @@ MouseArea {
         // with with a touchscreen, because there are no entered events in that
         // case
         let item = currentLayout.childAt(mouse.x, mouse.y);
-        if (item) {
-            currentApplet = item;
-            root.dragOverlay.currentApplet = item;
-            tooltip.visible = true;
-            tooltip.raise();
-            hideTimer.stop();
-        }
-
-        if (!root.dragOverlay.currentApplet) {
-            return;
-        }
+        if (!item) {return}
+        tooltip.visible = true;
+        tooltip.raise();
+        hideTimer.stop();
 
         lastX = mouse.x;
         lastY = mouse.y;
         // We set the current applet being dragged as a property of placeHolder
         // to be able to read its properties from the LayoutManager
+        appletsModel.insert(item.i, {context_applet: placeHolder});
+        currentApplet = appletContainerComponent.createObject(root, {applet: item.applet})
+        item.applet.parent = currentApplet
+        item.applet.anchors.fill = currentApplet
+        root.dragOverlay.currentApplet = currentApplet
         placeHolder.dragging = currentApplet;
-        root.layoutManager.insertBefore(currentApplet, placeHolder);
-        placeHolder.width = currentApplet.width;
-        currentApplet.parent = root;
+        currentApplet.x = item.x
+        currentApplet.y = item.y
+        currentApplet.width = item.width
+        currentApplet.height = item.height
+        //root.layoutManager.insertBefore(currentApplet, placeHolder);
+        appletsModel.remove(item.i)
         currentApplet.z = 900;
     }
 
@@ -139,7 +141,9 @@ MouseArea {
             return;
         }
 
-        root.layoutManager.insertBefore(placeHolder, currentApplet);
+        appletsModel.insert(placeHolder.parent.i, {context_applet: currentApplet.applet})
+        appletsModel.remove(placeHolder.parent.i)
+        //root.layoutManager.insertBefore(placeHolder, currentApplet);
         placeHolder.parent = configurationArea;
         currentApplet.z = 1;
 
@@ -149,11 +153,9 @@ MouseArea {
     Item {
         id: placeHolder
         property Item dragging
-        onWidthChanged: {
-            console.log('yooooooooooooo', width, currentApplet, currentApplet.width)
-            console.trace()
-        }
-        height: currentApplet && currentApplet.height
+        property bool busy: false
+        implicitWidth: currentApplet && currentApplet.width
+        implicitHeight: currentApplet && currentApplet.height
         visible: configurationArea.containsMouse
         Layout.fillWidth: currentApplet ? currentApplet.Layout.fillWidth : false
         Layout.fillHeight: currentApplet ? currentApplet.Layout.fillHeight : false
