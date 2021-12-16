@@ -160,7 +160,7 @@ MouseArea {
                 }
                 TaskTools.activateTask(modelIndex(), model, mouse.modifiers, task);
             } else if (mouse.button === Qt.BackButton || mouse.button === Qt.ForwardButton) {
-                var sourceName = mpris2Source.sourceNameForLauncherUrl(model.LauncherUrlWithoutIcon, model.AppPid);
+                var sourceName = mpris2Source.sourceNameForLauncherUrl(model.LauncherUrlWithoutIcon, model.AppPid, false);
                 if (sourceName) {
                     if (mouse.button === Qt.BackButton) {
                         mpris2Source.goPrevious(sourceName);
