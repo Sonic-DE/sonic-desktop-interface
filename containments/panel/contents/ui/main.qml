@@ -1,5 +1,6 @@
 /*
     SPDX-FileCopyrightText: 2013 Marco Martin <mart@kde.org>
+    SPDX-FileCopyrightText: 2021 Niccolò Venerandi <niccolo@venerandi.com>
 
     SPDX-License-Identifier: GPL-2.0-or-later
 */
@@ -67,28 +68,15 @@ function addApplet(applet, x, y) {
     // happen that an applet erroneously thinks it's visible, or suddenly
     // starts thinking that way on teardown (virtual desktop pager)
     // leading to crashes
-    var visibleBinding = Qt.binding(function() {
-        return applet.status !== PlasmaCore.Types.HiddenStatus || (!plasmoid.immutable && plasmoid.userConfiguring);
-    })
+    var new_element = {context_applet: applet}
 
-    var container = appletContainerComponent.createObject(root, {
-        applet: applet,
-        visible: visibleBinding,
-        inThickArea: false
+    applet.visible = Qt.binding(function() {
+        return applet.status !== PlasmaCore.Types.HiddenStatus || (!plasmoid.immutable && plasmoid.userConfiguring);
     });
 
-    applet.parent = container;
-    applet.anchors.fill = container;
-    applet.visible = visibleBinding;
-
-    // Is there a DND placeholder? Replace it!
-    if (dndSpacer.parent === currentLayout) {
-        LayoutManager.insertBefore(dndSpacer, container);
-        dndSpacer.parent = root;
-
-    // If the provided position is valid, use it.
-    } else if (x >= 0 && y >= 0) {
-        var index = LayoutManager.insertAtCoordinates(container, x , y);
+    if (x >= 0 && y >= 0) {
+        appletsModel.insert(LayoutManager.indexAtCoordinates(x, y), new_element)
+        //var index = LayoutManager.insertAtCoordinates(container, x , y);
 
     // Insert icons to the left of whatever is at the center (usually a Task Manager),
     // if it exists.
@@ -102,12 +90,10 @@ function addApplet(applet, x, y) {
     // itself what it wants to do with that information.
     } else if (applet.pluginName === "org.kde.plasma.icon" &&
             (middle = currentLayout.childAt(root.width / 2, root.height / 2))) {
-        LayoutManager.insertBefore(middle, container);
+        appletsModel.insert(middle.i, new_element);
     // Fall through to determining an appropriate insert position.
     } else {
-        var before = currentLayout.children[currentLayout.children.length - 1];
-
-        LayoutManager.insertAtIndex(container, currentLayout.children.length);
+        appletsModel.append(new_element);
     }
     LayoutManager.updateMargins();
 }
@@ -137,6 +123,7 @@ function checkLastSpacer() {
         LayoutManager.layout = currentLayout;
         LayoutManager.marginHighlights = [];
         LayoutManager.restore();
+        LayoutManager.appletsModel = appletsModel;
 
         plasmoid.action("configure").visible = Qt.binding(function() {
             return !plasmoid.immutable;
@@ -152,29 +139,26 @@ function checkLastSpacer() {
             return;
         }
         //during drag operations we disable panel auto resize
-        if (root.isHorizontal) {
-            root.fixedWidth = root.Layout.preferredWidth
-        } else {
-            root.fixedHeight = root.Layout.preferredHeight
-        }
-        LayoutManager.insertAtCoordinates(dndSpacer, event.x, event.y)
+        root.fixedWidth = root.Layout.preferredWidth
+        root.fixedHeight = root.Layout.preferredHeight
+        appletsModel.insert(LayoutManager.indexAtCoordinates(event.x, event.y), {context_applet: dndSpacer})
     }
 
     onDragMove: {
-        LayoutManager.insertAtCoordinates(dndSpacer, event.x, event.y);
+        LayoutManager.move(dndSpacer.parent.i, LayoutManager.indexAtCoordinates(event.x, event.y));
     }
 
     onDragLeave: {
-        dndSpacer.parent = root;
+        appletsModel.remove(dndSpacer.parent.i);
         root.fixedWidth = root.fixedHeight = 0;
     }
 
     onDrop: {
+        appletsModel.remove(dndSpacer.parent.i);
         plasmoid.processMimeData(event.mimeData, event.x, event.y);
         event.accept(event.proposedAction);
         root.fixedWidth = root.fixedHeight = 0;
     }
-
 
     Containment.onAppletAdded: {
         addApplet(applet, x, y);
@@ -183,7 +167,7 @@ function checkLastSpacer() {
     }
 
     Containment.onAppletRemoved: {
-        LayoutManager.removeApplet(applet);
+        appletsModel.remove(applet.parent.i);
         checkLastSpacer();
         LayoutManager.save();
     }
@@ -225,9 +209,9 @@ function checkLastSpacer() {
         // loading the applet. The applet becomes a regular child item.
         Loader {
             id: container
-            visible: false
             property bool inThickArea: false
             property bool isAppletContainer: true
+            visible: applet.status !== PlasmaCore.Types.HiddenStatus || (!plasmoid.immutable && plasmoid.userConfiguring);
 
             //when the applet moves caused by its resize, don't animate.
             //this is completely heuristic, but looks way less "jumpy"
@@ -270,16 +254,19 @@ function checkLastSpacer() {
             Layout.maximumWidth: (currentLayout.isLayoutHorizontal ? (applet && applet.Layout.maximumWidth > 0 ? applet.Layout.maximumWidth : (Layout.fillWidth ? root.width : root.height)) : root.height) - Layout.leftMargin - Layout.rightMargin
             Layout.maximumHeight: (!currentLayout.isLayoutHorizontal ? (applet && applet.Layout.maximumHeight > 0 ? applet.Layout.maximumHeight : (Layout.fillHeight ? root.height : root.width)) : root.width) - Layout.bottomMargin - Layout.topMargin
 
-
-            property int oldX: x
-            property int oldY: y
-
             property Item applet
+            readonly property int i: index
 
-            onAppletChanged: {
+            /*onAppletChanged: {
                 if (!applet) {
-                    destroy();
+                    return destroy();
                 }
+            } TODO*/
+
+            Component.onCompleted: {
+                context_applet.parent = container
+                context_applet.anchors.fill = container
+                container.applet = context_applet
             }
 
             active: applet && applet.busy
@@ -289,7 +276,8 @@ function checkLastSpacer() {
             Layout.onMinimumHeightChanged: movingForResize = true;
             Layout.onMaximumWidthChanged: movingForResize = true;
             Layout.onMaximumHeightChanged: movingForResize = true;
-
+            property int oldX: x
+            property int oldY: y
             onXChanged: {
                 if (movingForResize) {
                     movingForResize = false;
@@ -407,10 +395,15 @@ function checkLastSpacer() {
 
     Item {
         id: dndSpacer
+        property bool busy: false
         Layout.preferredWidth: width
         Layout.preferredHeight: height
         width: isHorizontal ? PlasmaCore.Theme.mSize(PlasmaCore.Theme.defaultFont).width * 5 : currentLayout.width
         height: isHorizontal ? currentLayout.height : PlasmaCore.Theme.mSize(PlasmaCore.Theme.defaultFont).width * 5
+    }
+
+    ListModel {
+        id: appletsModel
     }
 
     GridLayout {

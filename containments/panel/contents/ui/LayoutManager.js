@@ -1,5 +1,6 @@
 /*
     SPDX-FileCopyrightText: 2013 Marco Martin <mart@kde.org>
+    SPDX-FileCopyrightText: 2021 Niccolò Venerandi <niccolo@venerandi.com>
 
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
@@ -8,6 +9,7 @@ var layout;
 var root;
 var plasmoid;
 var marginHighlights;
+var appletsModel;
 
 
 function restore() {
@@ -57,146 +59,29 @@ function save() {
     updateMargins();
 }
 
-function removeApplet (applet) {
-    for (var i = layout.children.length - 1; i >= 0; --i) {
-        var child = layout.children[i];
-        if (child.applet === applet) {
-            // This makes sure the child is not in the layout.children anymore
-            // even while it's being destroyed.
-            child.parent = root;
-            child.destroy();
-        }
-    }
-}
-
-//insert item2 before item1
-function insertBefore(item1, item2) {
-    if (item1 === item2) {
-        return;
-    }
-    var removed = new Array();
-
-    var child;
-
-    var i;
-    for (i = layout.children.length - 1; i >= 0; --i) {
-        child = layout.children[i];
-        removed.push(child);
-        child.parent = root;
-
-        if (child === item1) {
-            break;
-        }
-    }
-
-    item2.parent = layout;
-
-    for (var j = removed.length - 1; j >= 0; --j) {
-        removed[j].parent = layout;
-    }
-    return i;
-}
-
-//insert item2 after item1
-function insertAfter(item1, item2) {
-    if (item1 === item2) {
-        return;
-    }
-    var removed = new Array();
-
-    var child;
-
-    var i;
-    for (i = layout.children.length - 1; i >= 0; --i) {
-        child = layout.children[i];
-        //never ever insert after lastSpacer
-        if (child === item1) {
-            //Already in position, do nothing
-            if (layout.children[i+1] === item2) {
-                return;
-            }
-            break;
-        }
-
-        removed.push(child);
-        child.parent = root;
-    }
-
-    item2.parent = layout;
-
-    for (var j = removed.length - 1; j >= 0; --j) {
-        removed[j].parent = layout;
-    }
-    return i;
-}
-
-function insertAtIndex(item, position) {
-    if (position < 0 || position > layout.children.length) {
-        return;
-    }
-
-    var removedItems = new Array();
-
-    for (var i = position; i < layout.children.length; ++i) {
-        var child = layout.children[position];
-        child.parent = root;
-        removedItems.push(child);
-    }
-
-    item.parent = layout;
-    for (var i in removedItems) {
-        removedItems[i].parent = layout;
-    }
-}
-
-function insertAtCoordinates(item, x, y) {
+function indexAtCoordinates(x, y) {
     if (root.isHorizontal) {
         y = layout.height / 2;
     } else {
         x = layout.width / 2;
     }
-    var child = layout.childAt(x, y);
-
-    //if we got a place inside the space between 2 applets, we have to find it manually
-    if (!child) {
+    var child = undefined;
+    while (!child) {
         if (root.isHorizontal) {
-            for (var i = 0; i < layout.children.length; ++i) {
-                var candidate = layout.children[i];
-                // It must be at on the same or a higner x position as the candidate
-                if (x >= candidate.x) {
-                    // Taking the candidate with & rowSpacing into account, it must be smaller
-                    const totalXofCondidate= candidate.x + candidate.width + layout.rowSpacing * 2
-                    if (x <= totalXofCondidate) {
-                        child = candidate;
-                        break;
-                    }
-                }
-            }
+            // Only yields incorrect results for widgets smaller than the
+            // row/column spacing, which is luckly fairly unrealistic
+            x -= layout.rowSpacing
         } else {
-            for (var i = 0; i < layout.children.length; ++i) {
-                var candidate = layout.children[i];
-                if (y >= candidate.x && y < candidate.y + candidate.height + layout.columnSpacing) {
-                    child = candidate;
-                    break;
-                }
-            }
+            y -= layout.columnSpacing
         }
+        child = layout.childAt(x, y);
     }
-    //already in position
-    if (child === item) {
-        return;
-    }
-    if (!child) {
-        child = layout.children[0];
-    }
-    item.parent = root;
 
-    //PlasmaCore.Types.Vertical = 3
     if ((plasmoid.formFactor === 3 && y < child.y + child.height/2) ||
         (plasmoid.formFactor !== 3 && x < child.x + child.width/2)) {
-        return insertBefore(child, item);
+        return child.i;
     } else {
-        return insertAfter(child, item);
+        return child.i+1;
     }
 }
 
