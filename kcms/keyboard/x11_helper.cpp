@@ -258,8 +258,8 @@ bool X11Helper::getGroupNames(Display *display, XkbConfig *xkbConfig, FetchType 
 
     if (fetchType == ALL) {
         if (names.count() >= 5) {
-            QString options = (names[4] != nullptr ? names[4] : QLatin1String(""));
-            xkbConfig->options = options.split(OPTIONS_SEPARATOR);
+            QString options = (names[4] != nullptr ? names[4] : QLatin1String());
+            xkbConfig->options = options.split(OPTIONS_SEPARATOR, Qt::SkipEmptyParts);
             qCDebug(KCM_KEYBOARD) << "Fetched xkbOptions from X server:" << options;
         }
     }
