@@ -373,6 +373,8 @@ void XkbOptionsTreeModel::setXkbOptions(const QStringList &options)
 {
     beginResetModel();
     m_xkbOptions = options;
+    // Ignore empty (and null) options
+    m_xkbOptions.removeAll(QString());
     endResetModel();
 }
 
