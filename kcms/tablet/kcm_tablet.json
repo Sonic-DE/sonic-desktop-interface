@@ -8,10 +8,7 @@
         "Icon": "preferences-desktop-tablet",
         "Id": "kcm_tablet",
         "License": "GPL",
-        "Name": "Drawing Tablet",
-        "ServiceTypes": [
-            "KCModule"
-        ]
+        "Name": "Drawing Tablet"
     },
     "X-KDE-Keywords": "drawing,tablet,wacom,pen",
     "X-KDE-Keywords[ca]": "dibuix,dibuixar,tauleta,wacom,llapis",
