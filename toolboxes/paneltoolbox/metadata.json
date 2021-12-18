@@ -107,6 +107,5 @@
         "Version": "0.1",
         "Website": "https://www.kde.org/plasma-desktop"
     },
-    "X-KDE-ParentApp": "",
     "X-Plasma-MainScript": "ui/main.qml"
 }
