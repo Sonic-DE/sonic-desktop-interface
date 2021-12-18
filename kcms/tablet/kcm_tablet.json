@@ -12,10 +12,7 @@
         "Name[ca]": "Tauleta de dibuix",
         "Name[sv]": "Ritplatta",
         "Name[uk]": "Планшет для малювання",
-        "Name[x-test]": "xxDrawing Tabletxx",
-        "ServiceTypes": [
-            "KCModule"
-        ]
+        "Name[x-test]": "xxDrawing Tabletxx"
     },
     "X-KDE-Keywords": "drawing,tablet,wacom,pen",
     "X-KDE-Keywords[ca]": "dibuix,dibuixar,tauleta,wacom,llapis",
