@@ -164,6 +164,17 @@ Item {
         rowSpacing: PlasmaCore.Units.smallSpacing
         columnSpacing: PlasmaCore.Units.smallSpacing
 
+        PlasmaCore.IconItem {
+            implicitHeight: PlasmaCore.Units.iconSizes.large
+            implicitWidth: PlasmaCore.Units.iconSizes.large
+            Layout.fillWidth: dialogRoot.vertical
+            source: "transform-move"
+            opacity: 0.5
+        }
+        Item {
+            Layout.preferredWidth: dialogRoot.vertical ? 0 : PlasmaCore.Units.gridUnit * 16
+            Layout.preferredHeight: dialogRoot.vertical ? PlasmaCore.Units.gridUnit * 16 : 0
+        }
         PlasmaComponents3.Label {
             id: spinBoxLabel
             Layout.fillWidth: true
