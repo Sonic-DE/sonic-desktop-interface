@@ -30,9 +30,11 @@ void FolderModelTest::createTestFolder(const QString &path)
     dir.mkdir(QStringLiteral("firstDir"));
     QFile f;
     for (int i = 1; i < 10; i++) {
-        f.setFileName(QStringLiteral("%1/file%2.txt").arg(dir.path(), QString::number(i)));
+        const QString fileName = QStringLiteral("%1/file%2.txt").arg(dir.path(), QString::number(i));
+        f.setFileName(fileName);
         f.open(QFile::WriteOnly);
         f.close();
+        QVERIFY(QFileInfo(fileName).exists());
     }
 }
 
@@ -42,10 +44,12 @@ void FolderModelTest::init()
     createTestFolder(desktop);
     m_folderModel = new FolderModel(this);
     m_folderModel->classBegin();
-    m_folderModel->setUrl(m_folderDir->path() + QDir::separator() + desktop);
+    const QString folderPath = m_folderDir->path() + QDir::separator() + desktop;
+    m_folderModel->setUrl(folderPath);
     m_folderModel->componentComplete();
     QSignalSpy s(m_folderModel, &FolderModel::listingCompleted);
     s.wait(1000);
+    QCOMPARE(m_folderModel->resolvedUrl().toLocalFile(), folderPath);
 }
 
 void FolderModelTest::cleanup()
@@ -114,18 +118,25 @@ void FolderModelTest::tst_cd()
     const auto url = m_folderModel->resolvedUrl();
     m_folderModel->cd(0);
     QVERIFY(s.wait(500));
+    QCOMPARE(s.count(), 1);
     const auto url2 = m_folderModel->resolvedUrl();
     QVERIFY(url.isParentOf(url2));
 
     // go back to Desktop
     m_folderModel->up();
+    // The first signal comes from KCoreDirListerCache::emitItemsFromCache
     QVERIFY(s.wait(500));
+    QCOMPARE(s.count(), 2);
+    // The second signal comes from KCoreDirListerCache::slotUpdateResult
+    QVERIFY(s.wait(500));
+    QCOMPARE(s.count(), 3);
     QCOMPARE(m_folderModel->resolvedUrl(), url);
 
     // try to cd to an invalid entry (a file)
     m_folderModel->cd(1);
     // Signal is not emitted here as it's invalided
     QVERIFY(!s.wait(500));
+    QCOMPARE(s.count(), 3);
     QCOMPARE(m_folderModel->resolvedUrl(), url);
 }
 
