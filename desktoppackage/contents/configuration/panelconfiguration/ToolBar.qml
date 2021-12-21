@@ -168,7 +168,7 @@ Item {
             Layout.fillWidth: true
             wrapMode: Text.Wrap
             horizontalAlignment: Qt.AlignHCenter
-            text: i18nd("plasma_shell_org.kde.plasma.desktop", "Drag to move")
+            text: i18ndc("plasma_shell_org.kde.plasma.desktop", "Minimize the length of this string as much as possible", "Drag to move")
         }
         Item {
             Layout.preferredWidth: dialogRoot.vertical ? 0 : PlasmaCore.Units.gridUnit * 8
