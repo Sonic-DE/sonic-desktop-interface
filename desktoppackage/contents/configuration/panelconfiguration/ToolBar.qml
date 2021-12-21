@@ -164,16 +164,15 @@ Item {
         rowSpacing: PlasmaCore.Units.smallSpacing
         columnSpacing: PlasmaCore.Units.smallSpacing
 
-        PlasmaCore.IconItem {
-            implicitHeight: PlasmaCore.Units.iconSizes.large
-            implicitWidth: PlasmaCore.Units.iconSizes.large
-            Layout.fillWidth: dialogRoot.vertical
-            source: "transform-move"
-            opacity: 0.5
+        PlasmaComponents3.Label {
+            Layout.fillWidth: true
+            wrapMode: Text.Wrap
+            horizontalAlignment: Qt.AlignHCenter
+            text: i18nd("plasma_shell_org.kde.plasma.desktop", "Drag to move")
         }
         Item {
-            Layout.preferredWidth: dialogRoot.vertical ? 0 : PlasmaCore.Units.gridUnit * 16
-            Layout.preferredHeight: dialogRoot.vertical ? PlasmaCore.Units.gridUnit * 16 : 0
+            Layout.preferredWidth: dialogRoot.vertical ? 0 : PlasmaCore.Units.gridUnit * 8
+            Layout.preferredHeight: dialogRoot.vertical ? PlasmaCore.Units.gridUnit * 8 : 0
         }
         PlasmaComponents3.Label {
             id: spinBoxLabel
