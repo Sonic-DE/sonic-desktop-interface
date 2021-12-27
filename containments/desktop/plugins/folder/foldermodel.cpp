@@ -1350,6 +1350,15 @@ QVariant FolderModel::data(const QModelIndex &index, int role) const
     }
 
     switch (role) {
+    case Qt::DecorationRole: {
+        const QIcon icon = QSortFilterProxyModel::data(index, role).value<QIcon>();
+
+        if (icon.isNull()) {
+            return QIcon::fromTheme("unknown"); // Same as dolphin/src/kitemviews/kstandarditemlistwidget.cpp
+        }
+
+        return icon;
+    }
     case BlankRole:
         return m_dragIndexes.contains(index);
     case SelectedRole:
