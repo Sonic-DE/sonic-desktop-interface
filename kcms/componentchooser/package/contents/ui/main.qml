@@ -59,5 +59,13 @@ KCM.SimpleKCM {
                 highlight: !kcm.imageViewers.isDefaults
             }
         }
+        ComponentComboBox {
+            component: kcm.musicPlayers
+            label: i18n("Music player:")
+
+            KCM.SettingHighlighter {
+                highlight: !kcm.musicPlayers.isDefaults
+            }
+        }
     }
 }

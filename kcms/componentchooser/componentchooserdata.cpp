@@ -9,9 +9,10 @@
 #include "componentchooserbrowser.h"
 #include "componentchooseremail.h"
 #include "componentchooserfilemanager.h"
+#include "componentchooserimageviewer.h"
 #include "componentchooserterminal.h"
 #include "componentchoosertexteditor.h"
-#include "componentchooserimageviewer.h"
+#include "componentchoosermusicplayer.h"
 
 ComponentChooserData::ComponentChooserData(QObject *parent, const QVariantList &args)
     : KCModuleData(parent, args)
@@ -21,6 +22,7 @@ ComponentChooserData::ComponentChooserData(QObject *parent, const QVariantList &
     , m_emailClients(new ComponentChooserEmail(this))
     , m_textEditors(new ComponentChooserTextEditor(this))
     , m_imageViewers(new ComponentChooserImageViewer(this))
+    , m_musicPlayers(new ComponentChooserMusicPlayer(this))
 {
     load();
 }
@@ -33,6 +35,7 @@ void ComponentChooserData::load()
     m_emailClients->load();
     m_textEditors->load();
     m_imageViewers->load();
+    m_musicPlayers->load();
 }
 
 void ComponentChooserData::save()
@@ -43,6 +46,7 @@ void ComponentChooserData::save()
     m_emailClients->save();
     m_textEditors->save();
     m_imageViewers->save();
+    m_musicPlayers->save();
 }
 
 void ComponentChooserData::defaults()
@@ -53,18 +57,19 @@ void ComponentChooserData::defaults()
     m_emailClients->defaults();
     m_textEditors->defaults();
     m_imageViewers->defaults();
+    m_musicPlayers->defaults();
 }
 
 bool ComponentChooserData::isDefaults() const
 {
     return m_browsers->isDefaults() && m_fileManagers->isDefaults() && m_terminalEmulators->isDefaults() && m_emailClients->isDefaults()
-        && m_textEditors->isDefaults() && m_imageViewers->isDefaults();
+        && m_textEditors->isDefaults() && m_imageViewers->isDefaults() && m_musicPlayers->isDefaults();
 }
 
 bool ComponentChooserData::isSaveNeeded() const
 {
     return m_browsers->isSaveNeeded() || m_fileManagers->isSaveNeeded() || m_terminalEmulators->isSaveNeeded() || m_emailClients->isSaveNeeded()
-        || m_textEditors->isSaveNeeded() || m_imageViewers->isSaveNeeded();
+        || m_textEditors->isSaveNeeded() || m_imageViewers->isSaveNeeded() || m_musicPlayers->isSaveNeeded();
 }
 
 ComponentChooser *ComponentChooserData::browsers() const
@@ -95,4 +100,9 @@ ComponentChooser *ComponentChooserData::textEditors() const
 ComponentChooser *ComponentChooserData::imageViewers() const
 {
     return m_imageViewers;
+}
+
+ComponentChooser *ComponentChooserData::musicPlayers() const
+{
+    return m_musicPlayers;
 }
