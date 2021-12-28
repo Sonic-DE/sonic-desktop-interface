@@ -74,7 +74,11 @@ PlasmaCore.Dialog {
                 property int maxHeight: groupFilter.count * (LayoutManager.verticalMargins() + Math.max(theme.mSize(theme.defaultFont).height, PlasmaCore.Units.iconSizes.medium))
 
                 function getMaxWidth() {
-                    return groupFilter.maxTextWidth + LayoutManager.horizontalMargins() + PlasmaCore.Units.iconSizes.medium + 2 * (LayoutManager.labelMargin + LayoutManager.iconMargin);
+                    return groupFilter.maxTextWidth
+                           + LayoutManager.horizontalMargins()
+                           + PlasmaCore.Units.iconSizes.medium
+                           + 2 * (LayoutManager.labelMargin + LayoutManager.iconMargin)
+                           + scrollView.leftPadding + scrollView.rightPadding;
                 }
 
                 model: DelegateModel {
