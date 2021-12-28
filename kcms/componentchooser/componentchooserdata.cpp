@@ -10,6 +10,7 @@
 #include "componentchooseremail.h"
 #include "componentchooserfilemanager.h"
 #include "componentchooserterminal.h"
+#include "componentchoosertexteditor.h"
 
 ComponentChooserData::ComponentChooserData(QObject *parent, const QVariantList &args)
     : KCModuleData(parent, args)
@@ -17,6 +18,7 @@ ComponentChooserData::ComponentChooserData(QObject *parent, const QVariantList &
     , m_fileManagers(new ComponentChooserFileManager(this))
     , m_terminalEmulators(new ComponentChooserTerminal(this))
     , m_emailClients(new ComponentChooserEmail(this))
+    , m_textEditors(new ComponentChooserTextEditor(this))
 {
     load();
 }
@@ -27,6 +29,7 @@ void ComponentChooserData::load()
     m_fileManagers->load();
     m_terminalEmulators->load();
     m_emailClients->load();
+    m_textEditors->load();
 }
 
 void ComponentChooserData::save()
@@ -35,6 +38,7 @@ void ComponentChooserData::save()
     m_fileManagers->save();
     m_terminalEmulators->save();
     m_emailClients->save();
+    m_textEditors->save();
 }
 
 void ComponentChooserData::defaults()
@@ -43,16 +47,19 @@ void ComponentChooserData::defaults()
     m_fileManagers->defaults();
     m_terminalEmulators->defaults();
     m_emailClients->defaults();
+    m_textEditors->defaults();
 }
 
 bool ComponentChooserData::isDefaults() const
 {
-    return m_browsers->isDefaults() && m_fileManagers->isDefaults() && m_terminalEmulators->isDefaults() && m_emailClients->isDefaults();
+    return m_browsers->isDefaults() && m_fileManagers->isDefaults() && m_terminalEmulators->isDefaults() && m_emailClients->isDefaults()
+        && m_textEditors->isDefaults();
 }
 
 bool ComponentChooserData::isSaveNeeded() const
 {
-    return m_browsers->isSaveNeeded() || m_fileManagers->isSaveNeeded() || m_terminalEmulators->isSaveNeeded() || m_emailClients->isSaveNeeded();
+    return m_browsers->isSaveNeeded() || m_fileManagers->isSaveNeeded() || m_terminalEmulators->isSaveNeeded() || m_emailClients->isSaveNeeded()
+        || m_textEditors->isSaveNeeded();
 }
 
 ComponentChooser *ComponentChooserData::browsers() const
@@ -73,4 +80,9 @@ ComponentChooser *ComponentChooserData::terminalEmulators() const
 ComponentChooser *ComponentChooserData::emailClients() const
 {
     return m_emailClients;
+}
+
+ComponentChooser *ComponentChooserData::textEditors() const
+{
+    return m_textEditors;
 }

@@ -43,5 +43,13 @@ KCM.SimpleKCM {
                 highlight: !kcm.terminalEmulators.isDefaults
             }
         }
+        ComponentComboBox {
+            component: kcm.textEditors
+            label: i18n("Text editor:")
+
+            KCM.SettingHighlighter {
+                highlight: !kcm.textEditors.isDefaults
+            }
+        }
     }
 }
