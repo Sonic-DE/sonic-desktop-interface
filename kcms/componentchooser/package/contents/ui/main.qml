@@ -44,6 +44,14 @@ KCM.SimpleKCM {
             }
         }
         ComponentComboBox {
+            component: kcm.textEditors
+            label: i18n("Text editor:")
+
+            KCM.SettingHighlighter {
+                highlight: !kcm.textEditors.isDefaults
+            }
+        }
+        ComponentComboBox {
             component: kcm.geoUriHandlers
             label: i18n("Map:")
 
