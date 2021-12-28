@@ -33,6 +33,8 @@ public:
     ComponentChooser *textEditors() const;
     ComponentChooser *imageViewers() const;
     ComponentChooser *musicPlayers() const;
+    ComponentChooser *videoPlayers() const;
+    ComponentChooser *pdfViewers() const;
 
 private:
     ComponentChooser *m_browsers;
@@ -42,6 +44,8 @@ private:
     ComponentChooser *m_textEditors;
     ComponentChooser *m_imageViewers;
     ComponentChooser *m_musicPlayers;
+    ComponentChooser *m_videoPlayers;
+    ComponentChooser *m_pdfViewers;
 };
 
 #endif // COMPONENTCHOOSERDATA_H

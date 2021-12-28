@@ -67,5 +67,21 @@ KCM.SimpleKCM {
                 highlight: !kcm.musicPlayers.isDefaults
             }
         }
+        ComponentComboBox {
+            component: kcm.videoPlayers
+            label: i18n("Video player:")
+
+            KCM.SettingHighlighter {
+                highlight: !kcm.videoPlayers.isDefaults
+            }
+        }
+        ComponentComboBox {
+            component: kcm.pdfViewers
+            label: i18n("PDF viewer:")
+
+            KCM.SettingHighlighter {
+                highlight: !kcm.pdfViewers.isDefaults
+            }
+        }
     }
 }

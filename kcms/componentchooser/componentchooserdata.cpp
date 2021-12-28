@@ -10,9 +10,11 @@
 #include "componentchooseremail.h"
 #include "componentchooserfilemanager.h"
 #include "componentchooserimageviewer.h"
+#include "componentchoosermusicplayer.h"
+#include "componentchooserpdfviewer.h"
 #include "componentchooserterminal.h"
 #include "componentchoosertexteditor.h"
-#include "componentchoosermusicplayer.h"
+#include "componentchooservideoplayer.h"
 
 ComponentChooserData::ComponentChooserData(QObject *parent, const QVariantList &args)
     : KCModuleData(parent, args)
@@ -23,6 +25,8 @@ ComponentChooserData::ComponentChooserData(QObject *parent, const QVariantList &
     , m_textEditors(new ComponentChooserTextEditor(this))
     , m_imageViewers(new ComponentChooserImageViewer(this))
     , m_musicPlayers(new ComponentChooserMusicPlayer(this))
+    , m_videoPlayers(new ComponentChooserVideoPlayer(this))
+    , m_pdfViewers(new ComponentChooserPdfViewer(this))
 {
     load();
 }
@@ -36,6 +40,8 @@ void ComponentChooserData::load()
     m_textEditors->load();
     m_imageViewers->load();
     m_musicPlayers->load();
+    m_videoPlayers->load();
+    m_pdfViewers->load();
 }
 
 void ComponentChooserData::save()
@@ -47,6 +53,8 @@ void ComponentChooserData::save()
     m_textEditors->save();
     m_imageViewers->save();
     m_musicPlayers->save();
+    m_videoPlayers->save();
+    m_pdfViewers->save();
 }
 
 void ComponentChooserData::defaults()
@@ -58,18 +66,22 @@ void ComponentChooserData::defaults()
     m_textEditors->defaults();
     m_imageViewers->defaults();
     m_musicPlayers->defaults();
+    m_videoPlayers->defaults();
+    m_pdfViewers->defaults();
 }
 
 bool ComponentChooserData::isDefaults() const
 {
     return m_browsers->isDefaults() && m_fileManagers->isDefaults() && m_terminalEmulators->isDefaults() && m_emailClients->isDefaults()
-        && m_textEditors->isDefaults() && m_imageViewers->isDefaults() && m_musicPlayers->isDefaults();
+        && m_textEditors->isDefaults() && m_imageViewers->isDefaults() && m_musicPlayers->isDefaults() && m_videoPlayers->isDefaults()
+        && m_pdfViewers->isDefaults();
 }
 
 bool ComponentChooserData::isSaveNeeded() const
 {
     return m_browsers->isSaveNeeded() || m_fileManagers->isSaveNeeded() || m_terminalEmulators->isSaveNeeded() || m_emailClients->isSaveNeeded()
-        || m_textEditors->isSaveNeeded() || m_imageViewers->isSaveNeeded() || m_musicPlayers->isSaveNeeded();
+        || m_textEditors->isSaveNeeded() || m_imageViewers->isSaveNeeded() || m_musicPlayers->isSaveNeeded() || m_videoPlayers->isSaveNeeded()
+        || m_pdfViewers->isSaveNeeded();
 }
 
 ComponentChooser *ComponentChooserData::browsers() const
@@ -105,4 +117,13 @@ ComponentChooser *ComponentChooserData::imageViewers() const
 ComponentChooser *ComponentChooserData::musicPlayers() const
 {
     return m_musicPlayers;
+}
+
+ComponentChooser *ComponentChooserData::videoPlayers() const
+{
+    return m_videoPlayers;
+}
+ComponentChooser *ComponentChooserData::pdfViewers() const
+{
+    return m_pdfViewers;
 }
