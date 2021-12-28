@@ -51,5 +51,13 @@ KCM.SimpleKCM {
                 highlight: !kcm.textEditors.isDefaults
             }
         }
+        ComponentComboBox {
+            component: kcm.imageViewers
+            label: i18n("Image viewer:")
+
+            KCM.SettingHighlighter {
+                highlight: !kcm.imageViewers.isDefaults
+            }
+        }
     }
 }

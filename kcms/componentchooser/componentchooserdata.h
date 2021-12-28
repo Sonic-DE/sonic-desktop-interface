@@ -31,6 +31,7 @@ public:
     ComponentChooser *terminalEmulators() const;
     ComponentChooser *emailClients() const;
     ComponentChooser *textEditors() const;
+    ComponentChooser *imageViewers() const;
 
 private:
     ComponentChooser *m_browsers;
@@ -38,6 +39,7 @@ private:
     ComponentChooser *m_terminalEmulators;
     ComponentChooser *m_emailClients;
     ComponentChooser *m_textEditors;
+    ComponentChooser *m_imageViewers;
 };
 
 #endif // COMPONENTCHOOSERDATA_H

@@ -21,6 +21,7 @@ class KcmComponentChooser : public KQuickAddons::ManagedConfigModule
     Q_PROPERTY(ComponentChooser *terminalEmulators READ terminalEmulators CONSTANT)
     Q_PROPERTY(ComponentChooser *fileManagers READ fileManagers CONSTANT)
     Q_PROPERTY(ComponentChooser *textEditors READ textEditors CONSTANT)
+    Q_PROPERTY(ComponentChooser *imageViewers READ imageViewers CONSTANT)
 
 public:
     KcmComponentChooser(QObject *parent, const QVariantList &args);
@@ -30,6 +31,7 @@ public:
     ComponentChooser *terminalEmulators() const;
     ComponentChooser *fileManagers() const;
     ComponentChooser *textEditors() const;
+    ComponentChooser *imageViewers() const;
 
     void defaults() override;
     void load() override;
