@@ -1472,7 +1472,7 @@ void FolderModel::statResult(KJob *job)
 void FolderModel::evictFromIsDirCache(const KFileItemList &items)
 {
     for (const KFileItem &item : items) {
-        m_screenMapper->removeFromMap(item.url());
+        m_screenMapper->removeFromMap(item.url(), m_currentActivity);
         m_isDirCache.remove(item.url());
     }
 }

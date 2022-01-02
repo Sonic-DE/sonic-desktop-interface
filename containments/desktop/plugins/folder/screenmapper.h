@@ -50,7 +50,7 @@ public:
 
     int screenForItem(const QUrl &url, const QString &activity) const;
     void addMapping(const QUrl &url, int screen, const QString &activity, MappingSignalBehavior behavior = ImmediateSignal);
-    void removeFromMap(const QUrl &url);
+    void removeFromMap(const QUrl &url, const QString &activity);
     void setCorona(Plasma::Corona *corona, const QString &activity);
 
     void addScreen(int screenId, const QString &activity, const QUrl &screenUrl);
@@ -82,12 +82,13 @@ private:
      * - The number of items
      * - List of items
      */
+    QStringList disabledScreensMap() const;
     void saveDisabledScreensMap() const;
-    void readDisabledScreensMap();
+    void readDisabledScreensMap(const QStringList &serializedMap);
 
     ScreenMapper(QObject *parent = nullptr);
 
-    QHash<QUrl, std::pair<int /* screen */, QString /* activity ID */>> m_screenItemMap;
+    QHash<std::pair<QUrl, QString /* activity ID */>, int> m_screenItemMap;
     QHash<std::pair<int /* screen */, QString /* activity ID */>, QVector<QUrl>> m_itemsOnDisabledScreensMap;
     QHash<QUrl, QVector<std::pair<int /* screen */, QString /* activity ID */>>> m_screensPerPath; // screens per registered path
     QVector<std::pair<int /* screen */, QString /* activity ID */>> m_availableScreens;

@@ -63,16 +63,22 @@ void ScreenMapper::removeScreen(int screenId, const QString &activity, const QUr
     QVector<QUrl> urlsToRemoveFromMapping;
     while (it != m_screenItemMap.constEnd()) {
         const auto name = it.key();
-        if (it.value() == pair && name.url().startsWith(screenPathWithScheme)) {
+        if (it.value() == screenId && name.first.url().startsWith(screenPathWithScheme) && name.second == activity) {
             bool found = false;
             for (const auto &disabledUrls : qAsConst(m_itemsOnDisabledScreensMap)) {
-                found = disabledUrls.contains(name);
+                found = disabledUrls.contains(name.first);
                 if (found)
                     break;
             }
-            if (!found)
-                m_itemsOnDisabledScreensMap[pair].append(name);
-            urlsToRemoveFromMapping.append(name);
+            if (!found) {
+                auto urlVectorIt = m_itemsOnDisabledScreensMap.find(pair);
+                if (urlVectorIt == m_itemsOnDisabledScreensMap.end()) {
+                    m_itemsOnDisabledScreensMap[pair] = {name.first};
+                } else {
+                    urlVectorIt->append(name.first);
+                }
+            }
+            urlsToRemoveFromMapping.append(name.first);
         }
         ++it;
     }
@@ -80,7 +86,7 @@ void ScreenMapper::removeScreen(int screenId, const QString &activity, const QUr
     saveDisabledScreensMap();
 
     for (const auto &url : urlsToRemoveFromMapping)
-        removeFromMap(url);
+        removeFromMap(url, activity);
 
     m_availableScreens.removeAll(pair);
 
@@ -143,7 +149,8 @@ void ScreenMapper::addScreen(int screenId, const QString &activity, const QUrl &
 
 void ScreenMapper::addMapping(const QUrl &url, int screen, const QString &activity, MappingSignalBehavior behavior)
 {
-    m_screenItemMap[url] = std::make_pair(screen, activity);
+    m_screenItemMap[std::make_pair(url, activity)] = screen;
+
     if (behavior == DelayedSignal) {
         m_screenMappingChangedTimer->start();
     } else {
@@ -151,9 +158,10 @@ void ScreenMapper::addMapping(const QUrl &url, int screen, const QString &activi
     }
 }
 
-void ScreenMapper::removeFromMap(const QUrl &url)
+void ScreenMapper::removeFromMap(const QUrl &url, const QString &activity)
 {
-    m_screenItemMap.remove(url);
+    m_screenItemMap.remove(std::make_pair(url, activity));
+
     m_screenMappingChangedTimer->start();
 }
 
@@ -229,7 +237,9 @@ void ScreenMapper::setCorona(Plasma::Corona *corona, const QString &activity)
             const QStringList mapping = group.readEntry(QStringLiteral("screenActivityMapping"), QStringList{});
             setScreenMapping(mapping);
             m_sharedDesktops = group.readEntry(QStringLiteral("sharedDesktops"), false);
-            readDisabledScreensMap();
+
+            const QStringList serializedMap = group.readEntry(QStringLiteral("itemsOnActivitiesOnDisabledScreens"), QStringList{});
+            readDisabledScreensMap(serializedMap);
         }
     }
 }
@@ -240,9 +250,9 @@ QStringList ScreenMapper::screenMapping() const
     result.reserve(m_screenItemMap.count() * 3); // Match setScreenMapping()
     auto it = m_screenItemMap.constBegin();
     while (it != m_screenItemMap.constEnd()) {
-        result.append(it.key().toString());
-        result.append(QString::number(it.value().first)); // Screen ID
-        result.append(it.value().second); // Activity ID
+        result.append(it.key().first.toString());
+        result.append(QString::number(it.value())); // Screen ID
+        result.append(it.key().second); // Activity ID
         ++it;
     }
 
@@ -258,7 +268,8 @@ void ScreenMapper::setScreenMapping(const QStringList &mapping)
     for (int i = 0; i < count - (sizeOfParamGroup - 1); i += sizeOfParamGroup) {
         if (i + (sizeOfParamGroup - 1) < count) {
             const QUrl url = QUrl::fromUserInput(mapping[i], {}, QUrl::AssumeLocalFile);
-            newMap[url] = std::make_pair(mapping[i + 1].toInt(), mapping[i + 2]);
+            const QString activity = mapping[i + 2];
+            newMap[std::make_pair(url, activity)] = mapping[i + 1].toInt();
         }
     }
 
@@ -270,11 +281,12 @@ void ScreenMapper::setScreenMapping(const QStringList &mapping)
 
 int ScreenMapper::screenForItem(const QUrl &url, const QString &activity) const
 {
-    auto pair = m_screenItemMap.value(url, std::make_pair(-1, activity));
-    if (!m_availableScreens.contains(pair))
+    const int screen = m_screenItemMap.value(std::make_pair(url, activity), -1);
+
+    if (!m_availableScreens.contains(std::make_pair(screen, activity)))
         return -1;
 
-    return pair.first;
+    return screen;
 }
 
 QUrl ScreenMapper::stringToUrl(const QString &path)
@@ -282,14 +294,25 @@ QUrl ScreenMapper::stringToUrl(const QString &path)
     return QUrl::fromUserInput(path, {}, QUrl::AssumeLocalFile);
 }
 
-void ScreenMapper::readDisabledScreensMap()
+QStringList ScreenMapper::disabledScreensMap() const
 {
-    if (!m_corona)
-        return;
+    QStringList serializedMap;
+    auto it = m_itemsOnDisabledScreensMap.constBegin();
+    for (; it != m_itemsOnDisabledScreensMap.constEnd(); ++it) {
+        serializedMap.append(QString::number(it.key().first)); // Screen ID
+        serializedMap.append(it.key().second); // Activity ID
+        const auto urls = it.value();
+        serializedMap.append(QString::number(urls.size()));
+        for (const auto &url : urls) {
+            serializedMap.append(url.toString());
+        }
+    }
 
-    auto config = m_corona->config();
-    KConfigGroup group(config, QStringLiteral("ScreenMapping"));
-    const QStringList serializedMap = group.readEntry(QStringLiteral("itemsOnActivitiesOnDisabledScreens"), QStringList{});
+    return serializedMap;
+}
+
+void ScreenMapper::readDisabledScreensMap(const QStringList &serializedMap)
+{
     m_itemsOnDisabledScreensMap.clear();
     bool readingScreenId = true;
     bool readingActivityId = true;
@@ -308,7 +331,13 @@ void ScreenMapper::readDisabledScreensMap()
             vectorSize = entry.toInt();
         } else {
             const auto url = stringToUrl(entry);
-            m_itemsOnDisabledScreensMap[std::make_pair(screenId, activityId)].append(url);
+            const auto pair = std::make_pair(screenId, activityId);
+            auto urlVectorIt = m_itemsOnDisabledScreensMap.find(pair);
+            if (urlVectorIt == m_itemsOnDisabledScreensMap.end()) {
+                m_itemsOnDisabledScreensMap[pair] = {url};
+            } else {
+                urlVectorIt->append(url);
+            }
             vectorCounter++;
             if (vectorCounter == vectorSize) {
                 readingScreenId = true;
@@ -328,17 +357,7 @@ void ScreenMapper::saveDisabledScreensMap() const
 
     auto config = m_corona->config();
     KConfigGroup group(config, QStringLiteral("ScreenMapping"));
-    QStringList serializedMap;
-    auto it = m_itemsOnDisabledScreensMap.constBegin();
-    for (; it != m_itemsOnDisabledScreensMap.constEnd(); ++it) {
-        serializedMap.append(QString::number(it.key().first)); // Screen ID
-        serializedMap.append(it.key().second); // Activity ID
-        const auto urls = it.value();
-        serializedMap.append(QString::number(urls.size()));
-        for (const auto &url : urls) {
-            serializedMap.append(url.toString());
-        }
-    }
+    const auto serializedMap = disabledScreensMap();
 
     group.writeEntry(QStringLiteral("itemsOnActivitiesOnDisabledScreens"), serializedMap);
 }
