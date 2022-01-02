@@ -95,6 +95,8 @@ private:
     Plasma::Corona *m_corona = nullptr;
     QTimer *const m_screenMappingChangedTimer;
     bool m_sharedDesktops = false; // all screens share the same desktops, disabling the screen mapping
+
+    friend class ScreenMapperTest;
 };
 
 #endif // SCREENMAPPER_H
