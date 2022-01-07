@@ -117,3 +117,7 @@ function updateMargins() {
     });
     marginHighlights.push(marginRect);
 }
+
+function move(start, end) {
+    appletsModel.move(start, end - (start < end), 1)
+}
