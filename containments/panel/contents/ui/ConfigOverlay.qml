@@ -211,7 +211,7 @@ MouseArea {
         placeHolder.height = currentApplet.height;
         placeHolder.dragging = currentApplet;
         root.layoutManager.insertBefore(currentApplet, placeHolder);
-        currentApplet.parent = moveAppletLayer;
+        currentApplet.parent = root;
         currentApplet.z = 900;
     }
 

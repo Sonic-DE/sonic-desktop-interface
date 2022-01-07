@@ -21,13 +21,8 @@ DragDrop.DropArea {
     height: 48
 
 //BEGIN properties
-    Layout.minimumWidth: fixedWidth > 0 ? fixedWidth : (currentLayout.Layout.minimumWidth + (isHorizontal && toolBox ? toolBox.width : 0))
-    Layout.maximumWidth: fixedWidth > 0 ? fixedWidth : (currentLayout.Layout.maximumWidth + (isHorizontal && toolBox ? toolBox.width : 0))
-    Layout.preferredWidth: fixedWidth > 0 ? fixedWidth : (currentLayout.Layout.preferredWidth + (isHorizontal && toolBox ? toolBox.width : 0))
-
-    Layout.minimumHeight: fixedHeight > 0 ? fixedHeight : (currentLayout.Layout.minimumHeight + (!isHorizontal && toolBox ? toolBox.height : 0))
-    Layout.maximumHeight: fixedHeight > 0 ? fixedHeight : (currentLayout.Layout.maximumHeight + (!isHorizontal && toolBox ? toolBox.height : 0))
-    Layout.preferredHeight: fixedHeight > 0 ? fixedHeight : (currentLayout.Layout.preferredHeight + (!isHorizontal && toolBox? toolBox.height : 0))
+    Layout.preferredWidth: fixedWidth || currentLayout.implicitWidth
+    Layout.preferredHeight: fixedHeight || currentLayout.implicitHeight
 
     property Item toolBox
     property var layoutManager: LayoutManager
@@ -83,15 +78,12 @@ function addApplet(applet, x, y) {
 
     applet.parent = container;
     applet.anchors.fill = container;
-
     applet.visible = visibleBinding;
 
     // Is there a DND placeholder? Replace it!
     if (dndSpacer.parent === currentLayout) {
         LayoutManager.insertBefore(dndSpacer, container);
         dndSpacer.parent = root;
-        LayoutManager.updateMargins();
-        return;
 
     // If the provided position is valid, use it.
     } else if (x >= 0 && y >= 0) {
@@ -100,7 +92,6 @@ function addApplet(applet, x, y) {
     // Fall through to determining an appropriate insert position.
     } else {
         var before = lastSpacer;
-        container.animationsEnabled = false;
 
         // Insert icons to the left of whatever is at the center (usually a Task Manager),
         // if it exists.
@@ -112,21 +103,12 @@ function addApplet(applet, x, y) {
         // of a specific type, and the containment caring about the applet type. In a better
         // system the containment would be informed of requested launchers, and determine by
         // itself what it wants to do with that information.
-        if (!startupTimer.running && applet.pluginName === "org.kde.plasma.icon") {
-            var middle = currentLayout.childAt(root.width / 2, root.height / 2);
-
-            if (middle) {
-                before = middle;
-            }
-
-        // lastSpacer is here, enqueue before it.
+        if (applet.pluginName === "org.kde.plasma.icon" &&
+            (middle = currentLayout.childAt(root.width / 2, root.height / 2))) {
+            before = middle;
         }
 
-
         LayoutManager.insertBefore(before, container);
-
-        //event compress the enable of animations
-        startupTimer.restart();
     }
     LayoutManager.updateMargins();
 }
@@ -148,7 +130,21 @@ function checkLastSpacer() {
             break
         }
     }
-    lastSpacer.visible= !flexibleFound;
+    console.log('-----------------------')
+    console.log('-----------------------')
+    console.log('-----------------------')
+    console.log('-----------------------')
+    console.log('-----------------------')
+    console.log('-----------------------')
+    console.log('-----------------------')
+    console.log('-----------------------')
+    console.log('-----------------------')
+    console.log('-----------------------')
+    console.log('-----------------------')
+    console.log('-----------------------')
+    console.log('-----------------------')
+    console.log(flexibleFound)
+    lastSpacer.visible= flexibleFound;
 }
 //END functions
 
@@ -176,9 +172,9 @@ function checkLastSpacer() {
         }
         //during drag operations we disable panel auto resize
         if (root.isHorizontal) {
-            root.fixedWidth = root.width
+            root.fixedWidth = root.Layout.preferredWidth
         } else {
-            root.fixedHeight = root.height
+            root.fixedHeight = root.Layout.preferredHeight
         }
         LayoutManager.insertAtCoordinates(dndSpacer, event.x, event.y)
     }
@@ -189,15 +185,13 @@ function checkLastSpacer() {
 
     onDragLeave: {
         dndSpacer.parent = root;
-        root.fixedWidth = 0;
-        root.fixedHeight = 0;
+        root.fixedWidth = root.fixedHeight = 0;
     }
 
     onDrop: {
         plasmoid.processMimeData(event.mimeData, event.x, event.y);
         event.accept(event.proposedAction);
-        root.fixedWidth = 0;
-        root.fixedHeight = 0;
+        root.fixedWidth = root.fixedHeight = 0;
     }
 
 
@@ -239,12 +233,6 @@ function checkLastSpacer() {
             dragOverlay.destroy();
         }
     }
-
-    onToolBoxChanged: {
-        if (startupTimer.running) {
-            startupTimer.restart();
-        }
-    }
 //END connections
 
 //BEGIN components
@@ -257,7 +245,6 @@ function checkLastSpacer() {
             visible: false
             property bool inThickArea: false
             property bool isAppletContainer: true
-            property bool animationsEnabled: true
 
             //when the applet moves caused by its resize, don't animate.
             //this is completely heuristic, but looks way less "jumpy"
@@ -325,10 +312,6 @@ function checkLastSpacer() {
                     movingForResize = false;
                     return;
                 }
-                if (!animationsEnabled) {
-                    startupTimer.restart();
-                    return;
-                }
                 translation.x = oldX - x
                 translation.y = oldY - y
                 translAnim.running = true
@@ -338,10 +321,6 @@ function checkLastSpacer() {
             onYChanged: {
                 if (movingForResize) {
                     movingForResize = false;
-                    return;
-                }
-                if (!animationsEnabled) {
-                    startupTimer.restart();
                     return;
                 }
                 translation.x = oldX - x
@@ -445,7 +424,20 @@ function checkLastSpacer() {
 
     Item {
         id: lastSpacer
+        Rectangle{
+            color: "green"
+            anchors.fill: parent
+        }
         parent: currentLayout
+        visible: false
+        onVisibleChanged: {
+            console.log('************************')
+            console.log('************************')
+            console.log('************************')
+            console.log('************************')
+            console.log('************************')
+            console.log(lastSpacer.parent)
+        }
 
         Layout.fillWidth: true
         Layout.fillHeight: true
@@ -455,16 +447,8 @@ function checkLastSpacer() {
         id: dndSpacer
         Layout.preferredWidth: width
         Layout.preferredHeight: height
-        width: (plasmoid.formFactor === PlasmaCore.Types.Vertical) ? currentLayout.width : PlasmaCore.Theme.mSize(PlasmaCore.Theme.defaultFont).width * 10
-        height: (plasmoid.formFactor === PlasmaCore.Types.Vertical) ?  PlasmaCore.Theme.mSize(PlasmaCore.Theme.defaultFont).width * 10 : currentLayout.height
-    }
-
-    // while the user is moving the applet when configuring the panel, the applet is reparented
-    // here so it can be moved freely; previously it was reparented to "root" but this one does not
-    // take into account the toolbox (which is left-of) the layout in right-to-left languages
-    Item {
-        id: moveAppletLayer
-        anchors.fill: currentLayout
+        width: isHorizontal ? PlasmaCore.Theme.mSize(PlasmaCore.Theme.defaultFont).width * 5 : currentLayout.width
+        height: isHorizontal ? currentLayout.height : PlasmaCore.Theme.mSize(PlasmaCore.Theme.defaultFont).width * 5
     }
 
     GridLayout {
@@ -473,62 +457,13 @@ function checkLastSpacer() {
         rowSpacing: PlasmaCore.Units.smallSpacing
         columnSpacing: PlasmaCore.Units.smallSpacing
 
-        x: (isLayoutHorizontal && root.toolBox && Qt.application.layoutDirection === Qt.RightToLeft && plasmoid.editMode) ? root.toolBox.width : 0;
-        y: 0
+        width: root.width
+        height: root.height
 
-        width: root.width - (isLayoutHorizontal && root.toolBox && plasmoid.editMode ? root.toolBox.width : 0)
-        height: root.height - (!isLayoutHorizontal && root.toolBox && plasmoid.editMode ? root.toolBox.height : 0)
-
-        Layout.preferredWidth: {
-            var width = 0;
-            for (var i = 0, length = currentLayout.children.length; i < length; ++i) {
-                var item = currentLayout.children[i];
-                if (item.Layout) {
-                    width += Math.max(item.Layout.minimumWidth, item.Layout.preferredWidth);
-                }
-            }
-            return width;
-        }
-        Layout.preferredHeight: {
-            var height = 0;
-            for (var i = 0, length = currentLayout.children.length; i < length; ++i) {
-                var item = currentLayout.children[i];
-                if (item.Layout) {
-                    height += Math.max(item.Layout.minimumHeight, item.Layout.preferredHeight);
-                }
-            }
-            return height;
-        }
-        rows: 1
-        columns: 1
-        //when horizontal layout top-to-bottom, this way it will obey our limit of one row and actually lay out left to right
-        flow: isLayoutHorizontal ? GridLayout.TopToBottom : GridLayout.LeftToRight
+        rows: isHorizontal ? 1 : currentLayout.children.length
+        columns: isHorizontal ? currentLayout.children.length : 1
+        flow: isHorizontal ? GridLayout.LeftToRight : GridLayout.TopToBottom
         layoutDirection: Qt.application.layoutDirection
-    }
-
-    onWidthChanged: {
-        if (startupTimer.running) {
-            startupTimer.restart();
-        }
-    }
-    onHeightChanged: {
-        if (startupTimer.running) {
-            startupTimer.restart();
-        }
-    }
-
-    //FIXME: I don't see other ways at the moment a way to see when the UI is REALLY ready
-    Timer {
-        id: startupTimer
-        interval: 4000
-        onTriggered: {
-            for (var i = 0; i < currentLayout.children.length; ++i) {
-                var item = currentLayout.children[i];
-                if (item.hasOwnProperty("animationsEnabled")) {
-                    item.animationsEnabled = true;
-                }
-            }
-        }
     }
 //END UI elements
 }
