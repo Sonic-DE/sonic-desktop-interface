@@ -18,6 +18,8 @@ import org.kde.plasma.components 2.0 as PlasmaComponents
 import org.kde.plasma.components 3.0 as PlasmaComponents3
 import org.kde.plasma.extras 2.0 as PlasmaExtras
 
+import org.kde.plasma.private.volume 0.1
+
 ColumnLayout {
     property var submodelIndex
     property int flatIndex: isGroup && index != undefined ? index : 0
@@ -368,6 +370,88 @@ ColumnLayout {
                 enabled: canGoNext
                 icon.name: LayoutMirroring.enabled ? "media-skip-backward" : "media-skip-forward"
                 onClicked: mpris2Source.goNext(mprisSourceName)
+            }
+        }
+    }
+
+    Loader {
+        active: parentTask
+            && parentTask.audioIndicatorsEnabled
+//             && parentTask.highlighted
+            && parentTask.playingAudio
+            && flatIndex !== -1 // Avoid loading when the instance is going to be destroyed
+        asynchronous: true
+        visible: active
+        Layout.fillWidth: true
+        Layout.maximumWidth: header.Layout.maximumWidth
+        Layout.leftMargin: header.Layout.margins
+        Layout.rightMargin: header.Layout.margins
+        sourceComponent: RowLayout {
+            PlasmaComponents3.ToolButton {
+                id: muteButton
+                icon.name: if (checked) {
+                    "audio-volume-muted"
+                } else if (slider.displayValue <= 25) {
+                    "audio-volume-low"
+                } else if (slider.displayValue <= 75) {
+                    "audio-volume-medium"
+                } else {
+                    "audio-volume-high"
+                }
+                onClicked: parentTask.toggleMuted()
+                checked: parentTask.muted
+
+                PlasmaComponents3.ToolTip.visible: hovered || pressed
+                PlasmaComponents3.ToolTip.text: i18n("Mute %1", parentTask.appName)
+                PlasmaComponents3.ToolTip.delay: 700
+            }
+
+            PlasmaComponents3.Slider {
+                id: slider
+
+                readonly property int displayValue: Math.round(value / PulseAudio.NormalVolume * 100)
+                readonly property int loudestVolume: {
+                    let v = 0
+                    parentTask.audioStreams.forEach((stream) => {
+                        v = Math.max(v, stream.volume)
+                    })
+                    return v
+                }
+
+                Layout.fillWidth: true
+                from: PulseAudio.MinimalVolume
+                to: PulseAudio.NormalVolume
+                value: loudestVolume
+                stepSize: to / 100
+                opacity: parentTask.muted ? 0.5 : 1
+
+                Accessible.name: i18nc("Accessibility data on volume slider", "Adjust volume for %1", parentTask.appName)
+
+                onMoved: {
+                    parentTask.audioStreams.forEach((stream) => {
+                        let v = Math.max(from, value)
+                        if (v > 0 && loudestVolume > 0) { // prevent divide by 0
+                            v = Math.min(Math.round(stream.volume / loudestVolume * value), to)
+                        }
+                        stream.model.Volume = v
+                        stream.model.Muted = v === 0
+                        console.debug(stream.model.Volume)
+                    })
+                }
+                onLoudestVolumeChanged: {
+                    console.debug(value, loudestVolume)
+                }
+            }
+            PlasmaComponents3.Label {
+                id: percentText
+                Layout.alignment: Qt.AlignHCenter
+                Layout.minimumWidth: percentMetrics.advanceWidth
+                horizontalAlignment: Qt.AlignRight
+                text: i18nc("volume percentage", "%1%", slider.displayValue)
+                TextMetrics {
+                    id: percentMetrics
+                    text: i18nc("only used for sizing, should be widest possible string", "100%")
+                }
             }
         }
     }
