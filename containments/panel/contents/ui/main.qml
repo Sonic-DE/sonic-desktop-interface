@@ -408,6 +408,12 @@ function checkLastSpacer() {
 
     GridLayout {
         id: currentLayout
+
+        Repeater {
+            model: appletsModel
+            delegate: appletContainerComponent
+        }
+
         readonly property bool isLayoutHorizontal: root.isHorizontal
         rowSpacing: PlasmaCore.Units.smallSpacing
         columnSpacing: PlasmaCore.Units.smallSpacing
