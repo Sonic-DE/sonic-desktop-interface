@@ -154,8 +154,8 @@ MouseArea {
         id: placeHolder
         property Item dragging
         property bool busy: false
-        implicitWidth: currentApplet && currentApplet.width
-        implicitHeight: currentApplet && currentApplet.height
+        Layout.preferredWidth: currentApplet && currentApplet.width
+        Layout.preferredHeight: currentApplet && currentApplet.height
         visible: configurationArea.containsMouse
         Layout.fillWidth: currentApplet ? currentApplet.Layout.fillWidth : false
         Layout.fillHeight: currentApplet ? currentApplet.Layout.fillHeight : false
