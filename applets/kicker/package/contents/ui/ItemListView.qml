@@ -140,7 +140,7 @@ FocusScope {
                     }
                 }
 
-                highlight: PlasmaComponents.Highlight {
+                highlight: PlasmaExtras.Highlight {
                     visible: listView.currentItem && !listView.currentItem.isSeparator
                 }
 

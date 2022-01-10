@@ -236,7 +236,7 @@ FocusScope {
                 highlight: Item {
                     property bool isDropPlaceHolder: "dropPlaceholderIndex" in itemGrid.model && itemGrid.currentIndex === itemGrid.model.dropPlaceholderIndex
 
-                    PlasmaComponents.Highlight {
+                    PlasmaExtras.Highlight {
                         visible: gridView.currentItem && !isDropPlaceHolder
 
                         anchors.fill: parent
