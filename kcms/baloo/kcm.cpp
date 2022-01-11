@@ -100,6 +100,19 @@ void ServerConfigModule::save()
 
         QDBusConnection::sessionBus().asyncCall(message);
     }
+
+    // diable baloo runner if we disable baloo from the KCM
+    KConfig cfg(QStringLiteral("krunnerrc"));
+    KConfigGroup grp = cfg.group("Plugins");
+    auto balooRunnerKey = "baloosearchEnabled";
+    auto balooRunnerDisabedByKcmKey = "baloosearchDisabledByKcm";
+    if (balooSettings()->indexingEnabled() && grp.readEntry(balooRunnerDisabedByKcmKey, false)) { // only re-enable it, if it was disabled from the KCM
+        grp.writeEntry(balooRunnerKey, true);
+        grp.deleteEntry(balooRunnerDisabedByKcmKey);
+    } else if (grp.readEntry(balooRunnerKey, true)) { // We only want to set baloosearchDisabledByKcm if the runner was not already disabled
+        grp.writeEntry(balooRunnerKey, false);
+        grp.writeEntry(balooRunnerDisabedByKcmKey, true);
+    }
 }
 
 FilteredFolderModel *ServerConfigModule::filteredModel() const
