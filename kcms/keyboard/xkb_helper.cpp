@@ -158,7 +158,7 @@ bool XkbHelper::initializeKeyboardLayouts(KeyboardConfig &config)
     }
     if (!config.xkbOptions().isEmpty()) {
         setxkbmapCommandArguments.append(QStringLiteral("-option"));
-        setxkbmapCommandArguments.append(config.xkbOptions());
+        setxkbmapCommandArguments.append(config.xkbOptions().join(COMMAND_OPTIONS_SEPARATOR));
     }
 
     if (!setxkbmapCommandArguments.isEmpty()) {
