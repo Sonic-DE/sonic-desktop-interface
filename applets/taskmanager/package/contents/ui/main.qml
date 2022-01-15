@@ -544,7 +544,7 @@ PlasmoidItem {
             return;
         }
 
-        var task = taskRepeater.itemAt(index);
+        const task = taskRepeater.itemAt(index);
         if (task) {
             TaskTools.activateTask(task.modelIndex(), task.m, Qt.ShiftModifier, task);
         }
