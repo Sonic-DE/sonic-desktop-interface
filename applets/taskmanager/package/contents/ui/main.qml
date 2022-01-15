@@ -513,6 +513,18 @@ MouseArea {
         }
     }
 
+    // This is called by plasmashell in response to a Meta+Shift+number shortcut.
+    function activateTaskAtIndexNewWindow(index) {
+        if (typeof index !== "number") {
+            return;
+        }
+
+        var task = taskRepeater.itemAt(index);
+        if (task) {
+            TaskTools.activateTask(task.modelIndex(), task.m, Qt.ShiftModifier, task);
+        }
+    }
+
     function resetDragSource() {
         dragSource = null;
     }
