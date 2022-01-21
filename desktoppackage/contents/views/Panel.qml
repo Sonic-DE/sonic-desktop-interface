@@ -11,6 +11,9 @@ import QtQml 2.15
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.taskmanager 0.1 as TaskManager
 import org.kde.kwindowsystem 1.0
+import org.kde.kirigami 2.15 as Kirigami
+
+import org.kde.plasma.plasmoid 2.0
 
 Item {
     id: root
@@ -253,6 +256,58 @@ Item {
         }
     }
 
+    PlasmaCore.FrameSvgItem {
+        x: root.verticalPanel || !activePlasmoid
+            ? 0
+            : Math.max(activePlasmoid.Kirigami.ScenePosition.x, panel.activeFocusItem.Kirigami.ScenePosition.x)
+        y: root.verticalPanel && activePlasmoid
+            ? Math.max(activePlasmoid.Kirigami.ScenePosition.y, panel.activeFocusItem.Kirigami.ScenePosition.y)
+            : 0
+
+        width: activePlasmoid
+            ? (root.verticalPanel ? root.width : Math.min(activePlasmoid.width, panel.activeFocusItem.width))
+            : 0
+        height: activePlasmoid
+            ? (root.verticalPanel ?  Math.min(activePlasmoid.height, panel.activeFocusItem.height) : root.height)
+            : 0
+
+        property QtObject activePlasmoid: {
+            if (!panel.activeFocusItem) {
+                return null;
+            }
+            let candidate = panel.activeFocusItem;
+            while (candidate && candidate != root.containment) {
+                if (candidate instanceof Plasmoid) {
+                    return candidate;
+                }
+                candidate = candidate.parent;
+            }
+            return null;
+        }
+        visible: panel.active && panel.activeFocusItem
+
+        imagePath: "widgets/tabbar"
+        prefix: {
+            var prefix = ""
+            switch (root.containment.location) {
+                case PlasmaCore.Types.LeftEdge:
+                    prefix = "west-active-tab";
+                    break;
+                case PlasmaCore.Types.TopEdge:
+                    prefix = "north-active-tab";
+                    break;
+                case PlasmaCore.Types.RightEdge:
+                    prefix = "east-active-tab";
+                    break;
+                default:
+                    prefix = "south-active-tab";
+            }
+            if (!hasElementPrefix(prefix)) {
+                prefix = "active-tab";
+            }
+            return prefix;
+        }
+    }
     Item {
         id: containmentParent
         anchors.fill: parent

@@ -30,9 +30,10 @@ PlasmaCore.ToolTipArea {
 
     onCompactRepresentationChanged: {
         if (compactRepresentation) {
-            compactRepresentation.parent = root;
-            compactRepresentation.anchors.fill = root;
+            compactRepresentation.parent = compactRepresentationParent;
+            compactRepresentation.anchors.fill = compactRepresentationParent;
             compactRepresentation.visible = true;
+            compactRepresentation.activeFocusOnTab = true;
         }
         root.visible = true;
     }
@@ -82,6 +83,22 @@ PlasmaCore.ToolTipArea {
 
         fullRepresentation.parent = appletParent;
         fullRepresentation.anchors.fill = fullRepresentation.parent;
+    }
+
+    FocusScope {
+        id: compactRepresentationParent
+        anchors.fill: parent
+        activeFocusOnTab: root.compactRepresentation.activeFocusOnTab
+
+        Keys.onPressed: {
+            switch (event.key) {
+                case Qt.Key_Space:
+                case Qt.Key_Enter:
+                case Qt.Key_Return:
+                    plasmoid.nativeInterface.activated();
+                    break;
+            }
+        }
     }
 
     PlasmaCore.FrameSvgItem {
@@ -174,6 +191,7 @@ PlasmaCore.ToolTipArea {
         //It's a MouseEventListener to get all the events, so the eventfilter will be able to catch them
         mainItem: MouseEventListener {
             id: appletParent
+            anchors.fill: parent
 
             focus: true
 
@@ -239,64 +257,64 @@ PlasmaCore.ToolTipArea {
 
     }
     // Keyboard navigation
-    Item {
-        activeFocusOnTab: plasmoid.keyboardActivationEnabled
+    //Item {
+        //activeFocusOnTab: root.compactRepresentation.activeFocusOnTab
 
-        anchors.fill: parent
-        Keys.onPressed: {
-            switch (event.key) {
-                case Qt.Key_Space:
-                case Qt.Key_Enter:
-                case Qt.Key_Return:
-                    plasmoid.onActivated()
-                    break;
-            }
-        }
+        //anchors.fill: parent
+        //Keys.onPressed: {
+            //switch (event.key) {
+                //case Qt.Key_Space:
+                //case Qt.Key_Enter:
+                //case Qt.Key_Return:
+                    //plasmoid.nativeInterface.activated();
+                    //break;
+            //}
+        //}
 
-        property var appletContainer: {
-            let item = this
-            while (item.parent) {
-                item = item.parent
+        //property var appletContainer: {
+            //let item = this
+            //while (item.parent) {
+                //item = item.parent
 
-                if (item.isAppletContainer) {
-                    return item
-                }
-            }
-            return undefined;
-        }
+                //if (item.isAppletContainer) {
+                    //return item
+                //}
+            //}
+            //return undefined;
+        //}
 
-        PlasmaCore.FrameSvgItem {
-            x: parent.appletContainer ? parent.x - parent.appletContainer.getMargins('left') : parent.x
-            y: parent.appletContainer ? parent.y - parent.appletContainer.getMargins('top') : parent.y
-            width: parent.appletContainer ? parent.width + parent.appletContainer.getMargins('left') + parent.appletContainer.getMargins('right') : parent.witdth
-            height: parent.appletContainer ? parent.height + parent.appletContainer.getMargins('top') + parent.appletContainer.getMargins('bottom') : parent.height
+        //PlasmaCore.FrameSvgItem {
+            //x: parent.appletContainer ? parent.x - parent.appletContainer.getMargins('left') : parent.x
+            //y: parent.appletContainer ? parent.y - parent.appletContainer.getMargins('top') : parent.y
+            //width: parent.appletContainer ? parent.width + parent.appletContainer.getMargins('left') + parent.appletContainer.getMargins('right') : parent.witdth
+            //height: parent.appletContainer ? parent.height + parent.appletContainer.getMargins('top') + parent.appletContainer.getMargins('bottom') : parent.height
 
-            z: -1 // always draw behind icons
-            opacity: {
-                return parent.activeFocus ? 1 : 0
-            }
+            //z: -1 // always draw behind icons
+            //opacity: {
+                //return parent.activeFocus ? 1 : 0
+            //}
 
-            imagePath: "widgets/tabbar"
-            prefix: {
-                var prefix = ""
-                switch (plasmoid.location) {
-                    case PlasmaCore.Types.LeftEdge:
-                        prefix = "west-active-tab";
-                        break;
-                    case PlasmaCore.Types.TopEdge:
-                        prefix = "north-active-tab";
-                        break;
-                    case PlasmaCore.Types.RightEdge:
-                        prefix = "east-active-tab";
-                        break;
-                    default:
-                        prefix = "south-active-tab";
-                }
-                if (!hasElementPrefix(prefix)) {
-                    prefix = "active-tab";
-                }
-                return prefix;
-            }
-        }
-    }
+            //imagePath: "widgets/tabbar"
+            //prefix: {
+                //var prefix = ""
+                //switch (plasmoid.location) {
+                    //case PlasmaCore.Types.LeftEdge:
+                        //prefix = "west-active-tab";
+                        //break;
+                    //case PlasmaCore.Types.TopEdge:
+                        //prefix = "north-active-tab";
+                        //break;
+                    //case PlasmaCore.Types.RightEdge:
+                        //prefix = "east-active-tab";
+                        //break;
+                    //default:
+                        //prefix = "south-active-tab";
+                //}
+                //if (!hasElementPrefix(prefix)) {
+                    //prefix = "active-tab";
+                //}
+                //return prefix;
+            //}
+        //}
+    //}
 }
