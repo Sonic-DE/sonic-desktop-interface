@@ -4,7 +4,7 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 
-import QtQuick 2.0
+import QtQuick 2.15
 import QtQuick.Layouts 1.1
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.plasmoid 2.0
@@ -12,6 +12,7 @@ import org.kde.plasma.plasmoid 2.0
 PlasmaCore.IconItem {
     id: icon
 
+    activeFocusOnTab: true
     readonly property bool inPanel: (plasmoid.location === PlasmaCore.Types.TopEdge
         || plasmoid.location === PlasmaCore.Types.RightEdge
         || plasmoid.location === PlasmaCore.Types.BottomEdge
@@ -44,9 +45,6 @@ PlasmaCore.IconItem {
 
     source: plasmoid.icon ? plasmoid.icon : "plasma"
     active: mouseArea.containsMouse
-    Plasmoid.onActivated: {
-        plasmoid.expanded = !plasmoid.expanded
-    }
 
     MouseArea {
         id: mouseArea
