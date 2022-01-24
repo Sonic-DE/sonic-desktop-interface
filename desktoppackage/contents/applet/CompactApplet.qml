@@ -32,7 +32,6 @@ PlasmaCore.ToolTipArea {
             compactRepresentation.parent = compactRepresentationParent;
             compactRepresentation.anchors.fill = compactRepresentationParent;
             compactRepresentation.visible = true;
-            compactRepresentation.activeFocusOnTab = true;
         }
         root.visible = true;
     }
@@ -88,6 +87,10 @@ PlasmaCore.ToolTipArea {
         id: compactRepresentationParent
         anchors.fill: parent
         activeFocusOnTab: true
+
+        Accessible.name: root.mainText
+        Accessible.description: i18n("Open %1", root.subText)
+        Accessible.role: Accessible.Button
 
         Keys.onPressed: {
             switch (event.key) {
