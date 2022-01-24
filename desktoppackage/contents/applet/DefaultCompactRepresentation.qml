@@ -12,7 +12,6 @@ import org.kde.plasma.plasmoid 2.0
 PlasmaCore.IconItem {
     id: icon
 
-    activeFocusOnTab: true
     readonly property bool inPanel: (plasmoid.location === PlasmaCore.Types.TopEdge
         || plasmoid.location === PlasmaCore.Types.RightEdge
         || plasmoid.location === PlasmaCore.Types.BottomEdge
