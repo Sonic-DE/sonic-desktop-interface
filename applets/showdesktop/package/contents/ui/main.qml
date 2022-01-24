@@ -5,7 +5,7 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 
-import QtQuick 2.1
+import QtQuick 2.15
 import QtQuick.Layouts 1.1
 
 import org.kde.plasma.core 2.0 as PlasmaCore
@@ -37,7 +37,6 @@ QtObject {
     }
 
     Plasmoid.fullRepresentation: PlasmaCore.ToolTipArea {
-        activeFocusOnTab: true
         readonly property bool inPanel: (plasmoid.location === PlasmaCore.Types.TopEdge
             || plasmoid.location === PlasmaCore.Types.RightEdge
             || plasmoid.location === PlasmaCore.Types.BottomEdge
@@ -49,21 +48,24 @@ QtObject {
         Layout.maximumWidth: inPanel ? PlasmaCore.Units.iconSizeHints.panel : -1
         Layout.maximumHeight: inPanel ? PlasmaCore.Units.iconSizeHints.panel : -1
 
-        Keys.onPressed: {
-            switch (event.key) {
-                case Qt.Key_Space:
-                case Qt.Key_Enter:
-                case Qt.Key_Return:
-                    showdesktop.showingDesktop = !showdesktop.showingDesktop;
-                    break;
-            }
-        }
-
         mainText: plasmoid.title
         subText: plasmoid.toolTipSubText
 
         MouseArea {
             anchors.fill: parent
+            activeFocusOnTab: true
+            Keys.onPressed: {
+                switch (event.key) {
+                    case Qt.Key_Space:
+                    case Qt.Key_Enter:
+                    case Qt.Key_Return:
+                        showdesktop.showingDesktop = !showdesktop.showingDesktop;
+                        break;
+                }
+            }
+            Accessible.name: root.Plasmoid.title
+            Accessible.description: root.Plasmoid.toolTipSubText
+            Accessible.role: Accessible.Button
             onClicked: showdesktop.showingDesktop = !showdesktop.showingDesktop
         }
 
