@@ -4,7 +4,7 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 
-import QtQuick 2.0
+import QtQuick 2.15
 
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
@@ -17,6 +17,8 @@ import "code/tools.js" as TaskTools
 
 MouseArea {
     id: task
+
+    activeFocusOnTab: true
 
     width: groupDialog.contentWidth
     height: Math.max(theme.mSize(theme.defaultFont).height, PlasmaCore.Units.iconSizes.medium) + LayoutManager.verticalMargins()
@@ -62,6 +64,10 @@ MouseArea {
     readonly property bool highlighted: (inPopup && activeFocus) || (!inPopup && containsMouse)
         || (task.contextMenu && task.contextMenu.status === PlasmaComponents.DialogStatus.Open)
         || (groupDialog.visible && groupDialog.visualParent === task)
+
+    Accessible.name: task.labelText
+    Accessible.description: i18n("Activate %1", task.labelText)
+    Accessible.role: Accessible.Button
 
     onHighlightedChanged: {
         // ensure it doesn't get stuck with a window highlighted
