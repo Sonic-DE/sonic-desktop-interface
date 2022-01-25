@@ -87,6 +87,22 @@ PlasmaCore.ToolTipArea {
         id: compactRepresentationParent
         anchors.fill: parent
         activeFocusOnTab: true
+        onActiveFocusChanged: {
+            // When the scope gets the active focus, try to focus its first descendant,
+            // if there is on which has activeFocusOnTab
+            if (!activeFocus) {
+                return;
+            }
+            let nextItem = nextItemInFocusChain();
+            let candidate = nextItem;
+            while (candidate.parent) {
+                if (candidate === compactRepresentationParent) {
+                    nextItem.forceActiveFocus();
+                    return;
+                }
+                candidate = candidate.parent;
+            }
+        }
 
         Accessible.name: root.mainText
         Accessible.description: i18n("Open %1", root.subText)
@@ -97,6 +113,7 @@ PlasmaCore.ToolTipArea {
                 case Qt.Key_Space:
                 case Qt.Key_Enter:
                 case Qt.Key_Return:
+                case Qt.Key_Select:
                     plasmoid.nativeInterface.activated();
                     break;
             }
