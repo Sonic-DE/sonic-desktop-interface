@@ -402,11 +402,12 @@ MouseArea {
                     Accessible.role: Accessible.Button
                     Keys.onPressed: {
                         switch (event.key) {
-                            case Qt.Key_Space:
-                            case Qt.Key_Enter:
-                            case Qt.Key_Return:
-                                pagerModel.changePage(index);
-                                break;
+                        case Qt.Key_Space:
+                        case Qt.Key_Enter:
+                        case Qt.Key_Return:
+                        case Qt.Key_Select:
+                            pagerModel.changePage(index);
+                            break;
                         }
                     }
                 }
