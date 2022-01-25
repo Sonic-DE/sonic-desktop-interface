@@ -397,8 +397,8 @@ MouseArea {
                     hoverEnabled : true
                     activeFocusOnTab: true
                     onClicked: pagerModel.changePage(index);
-                    Accessible.name: plasmoid.configuration.displayedText ? model.display : i18n("Desktop %1", index + 1)
-                    Accessible.description: plasmoid.configuration.displayedText ? i18n("Activate %1", model.display) : i18n("Activate %1", index + 1)
+                    Accessible.name: plasmoid.configuration.displayedText ? model.display : i18n("Desktop %1", (index + 1))
+                    Accessible.description: plasmoid.configuration.displayedText ? i18n("Activate %1", model.display) : i18n("Activate %1", (index + 1))
                     Accessible.role: Accessible.Button
                     Keys.onPressed: {
                         switch (event.key) {
