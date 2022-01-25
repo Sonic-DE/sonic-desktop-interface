@@ -193,7 +193,6 @@ PlasmaCore.ToolTipArea {
         //It's a MouseEventListener to get all the events, so the eventfilter will be able to catch them
         mainItem: MouseEventListener {
             id: appletParent
-            anchors.fill: parent
 
             focus: true
 
