@@ -66,7 +66,7 @@ MouseArea {
         || (groupDialog.visible && groupDialog.visualParent === task)
 
     Accessible.name: task.labelText
-    Accessible.description: i18n("Activate %1", task.labelText)
+    Accessible.description: task.labelText ? i18n("Activate %1", task.labelText) : ""
     Accessible.role: Accessible.Button
 
     onHighlightedChanged: {
