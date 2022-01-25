@@ -56,11 +56,12 @@ QtObject {
             activeFocusOnTab: true
             Keys.onPressed: {
                 switch (event.key) {
-                    case Qt.Key_Space:
-                    case Qt.Key_Enter:
-                    case Qt.Key_Return:
-                        showdesktop.showingDesktop = !showdesktop.showingDesktop;
-                        break;
+                case Qt.Key_Space:
+                case Qt.Key_Enter:
+                case Qt.Key_Return:
+                case Qt.Key_Select:
+                    showdesktop.showingDesktop = !showdesktop.showingDesktop;
+                    break;
                 }
             }
             Accessible.name: root.Plasmoid.title
