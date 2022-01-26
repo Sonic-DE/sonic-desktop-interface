@@ -107,6 +107,7 @@ PlasmaCore.ToolTipArea {
         Accessible.name: root.mainText
         Accessible.description: i18n("Open %1", root.subText)
         Accessible.role: Accessible.Button
+        Accessible.onPressAction: plasmoid.nativeInterface.activated()
 
         Keys.onPressed: {
             switch (event.key) {
