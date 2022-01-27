@@ -32,7 +32,8 @@ Item {
     id: root
 
     readonly property bool hasTouchpad: typeof dataSource.data.touchpad !== "undefined" && dataSource.data.touchpad.workingTouchpadFound
-    readonly property bool touchpadEnabled: hasTouchpad ? dataSource.data.touchpad.enabled : false
+    readonly property bool touchpadEnabled: typeof dataSource.data.touchpad !== "undefined" && dataSource.data.touchpad.workingTouchpadFound
+        && dataSource.data.touchpad.enabled
 
     Plasmoid.preferredRepresentation: Plasmoid.compactRepresentation
     Plasmoid.icon: touchpadEnabled ? "input-touchpad-on" : "input-touchpad-off"
