@@ -260,33 +260,20 @@ Item {
     }
 
     PlasmaCore.FrameSvgItem {
-        x: root.verticalPanel || !activePlasmoid
+        x: root.verticalPanel || !panel.activeFocusItem
             ? 0
-            : Math.max(activePlasmoid.Kirigami.ScenePosition.x, panel.activeFocusItem.Kirigami.ScenePosition.x)
-        y: root.verticalPanel && activePlasmoid
-            ? Math.max(activePlasmoid.Kirigami.ScenePosition.y, panel.activeFocusItem.Kirigami.ScenePosition.y)
+            : Math.max(panel.activeFocusItem.Kirigami.ScenePosition.x, panel.activeFocusItem.Kirigami.ScenePosition.x)
+        y: root.verticalPanel && panel.activeFocusItem
+            ? Math.max(panel.activeFocusItem.Kirigami.ScenePosition.y, panel.activeFocusItem.Kirigami.ScenePosition.y)
             : 0
 
-        width: activePlasmoid
-            ? (root.verticalPanel ? root.width : Math.min(activePlasmoid.width, panel.activeFocusItem.width))
+        width: panel.activeFocusItem
+            ? (root.verticalPanel ? root.width : Math.min(panel.activeFocusItem.width, panel.activeFocusItem.width))
             : 0
-        height: activePlasmoid
-            ? (root.verticalPanel ?  Math.min(activePlasmoid.height, panel.activeFocusItem.height) : root.height)
+        height: panel.activeFocusItem
+            ? (root.verticalPanel ?  Math.min(panel.activeFocusItem.height, panel.activeFocusItem.height) : root.height)
             : 0
 
-        property QtObject activePlasmoid: {
-            if (!panel.activeFocusItem) {
-                return null;
-            }
-            let candidate = panel.activeFocusItem;
-            while (candidate && candidate != root.containment) {
-                if (candidate instanceof Plasmoid) {
-                    return candidate;
-                }
-                candidate = candidate.parent;
-            }
-            return null;
-        }
         visible: panel.active && panel.activeFocusItem
 
         imagePath: "widgets/tabbar"
