@@ -172,8 +172,12 @@ MouseArea {
         }
     }
 
-    onPressed: {
-        if (mouse.button == Qt.RightButton) {
+    TapHandler {
+        id: contextMenuTapHandler
+        acceptedButtons: Qt.RightButton
+        onTapped: trigger()
+
+        function trigger() {
             // When we're a launcher, there's no window controls, so we can show all
             // places without the menu getting super huge.
             if (model.IsLauncher === true) {
@@ -182,6 +186,11 @@ MouseArea {
                 showContextMenu();
             }
         }
+    }
+
+    TapHandler {
+        acceptedDevices: PointerDevice.TouchScreen | PointerDevice.Stylus
+        onLongPressed: contextMenuTapHandler.trigger()
     }
 
     onPositionChanged: {
