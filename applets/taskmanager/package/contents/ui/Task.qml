@@ -123,25 +123,21 @@ MouseArea {
         }
     }
 
-    onPressed: {
-        if (mouse.button == Qt.LeftButton || mouse.button == Qt.MidButton || mouse.button === Qt.BackButton || mouse.button === Qt.ForwardButton) {
-            pressed = true;
-            pressX = mouse.x;
-            pressY = mouse.y;
-        } else if (mouse.button == Qt.RightButton) {
-            // When we're a launcher, there's no window controls, so we can show all
-            // places without the menu getting super huge.
-            if (model.IsLauncher === true) {
-                showContextMenu({showAllPlaces: true})
+    TapHandler {
+        acceptedButtons: Qt.LeftButton | Qt.MidButton | Qt.BackButton | Qt.ForwardButton
+        onPressedChanged: {
+            if (pressed) {
+                task.pressed = true;
+                task.pressX = point.position.x;
+                task.pressY = point.position.y;
             } else {
-                showContextMenu();
+                task.pressed = false;
+                task.pressX = -1;
+                task.pressY = -1;
             }
         }
-    }
-
-    onReleased: {
-        if (pressed) {
-            if (mouse.button == Qt.MidButton) {
+        onTapped: {
+            if (eventPoint.event.button == Qt.MidButton) {
                 if (plasmoid.configuration.middleClickAction === TaskManagerApplet.Backend.NewInstance) {
                     tasksModel.requestNewInstance(modelIndex());
                 } else if (plasmoid.configuration.middleClickAction === TaskManagerApplet.Backend.Close) {
@@ -154,30 +150,38 @@ MouseArea {
                 } else if (plasmoid.configuration.middleClickAction === TaskManagerApplet.Backend.BringToCurrentDesktop) {
                     tasksModel.requestVirtualDesktops(modelIndex(), [virtualDesktopInfo.currentDesktop]);
                 }
-            } else if (mouse.button == Qt.LeftButton) {
+            } else if (eventPoint.event.button == Qt.LeftButton) {
                 if (plasmoid.configuration.showToolTips && toolTipArea.active) {
                     hideToolTipTemporarily();
                 }
-                TaskTools.activateTask(modelIndex(), model, mouse.modifiers, task);
-            } else if (mouse.button === Qt.BackButton || mouse.button === Qt.ForwardButton) {
+                TaskTools.activateTask(modelIndex(), model, point.modifiers, task);
+            } else if (eventPoint.event.button === Qt.BackButton || eventPoint.event.button === Qt.ForwardButton) {
                 var sourceName = mpris2Source.sourceNameForLauncherUrl(model.LauncherUrlWithoutIcon, model.AppPid);
                 if (sourceName) {
-                    if (mouse.button === Qt.BackButton) {
+                    if (eventPoint.event.button === Qt.BackButton) {
                         mpris2Source.goPrevious(sourceName);
                     } else {
                         mpris2Source.goNext(sourceName);
                     }
                 } else {
-                    mouse.accepted = false;
+                    eventPoint.event.accepted = false;
                 }
             }
 
             backend.cancelHighlightWindows();
         }
+    }
 
-        pressed = false;
-        pressX = -1;
-        pressY = -1;
+    onPressed: {
+        if (mouse.button == Qt.RightButton) {
+            // When we're a launcher, there's no window controls, so we can show all
+            // places without the menu getting super huge.
+            if (model.IsLauncher === true) {
+                showContextMenu({showAllPlaces: true})
+            } else {
+                showContextMenu();
+            }
+        }
     }
 
     onPositionChanged: {
