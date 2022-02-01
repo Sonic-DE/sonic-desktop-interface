@@ -14,7 +14,7 @@ import org.kde.newstuff 1.62 as NewStuff
 import org.kde.kirigami 2.5 as Kirigami
 import org.kde.kcm 1.4
 
-AbstractKCM {
+SimpleKCM {
     id: root
     signal settingValueChanged
 
@@ -39,7 +39,8 @@ AbstractKCM {
     }
 
     ColumnLayout {
-        anchors.fill: parent
+        id: columnLayout
+        width: root.width - root.leftPadding - root.rightPadding // Center FormLayouts
         spacing: 0 // unless it's 0 there will be an additional gap between two FormLayouts
 
         Component.onCompleted: {
@@ -152,7 +153,8 @@ AbstractKCM {
             id: main
 
             Layout.fillHeight: true;
-            Layout.fillWidth: true;
+            // HACK: Layout.fillWidth will leave an invalid padding when resizing the window
+            Layout.preferredWidth: parent.width
 
             visible: !switchContainmentWarning.visible
 
@@ -182,5 +184,25 @@ AbstractKCM {
                 }
             }
         }
+
+        states: [
+            State {
+                when: configDialog.currentWallpaper === "org.kde.image" || configDialog.currentWallpaper === "org.kde.slideshow"
+                PropertyChanges {
+                    target: columnLayout
+                    // The height of KCM.GridView depends on the height of the window.
+                    height: root.height - root.topPadding - root.bottomPadding
+                }
+            },
+            State {
+                when: !(configDialog.currentWallpaper === "org.kde.image" || configDialog.currentWallpaper === "org.kde.slideshow")
+                PropertyChanges {
+                    target: main
+                    // Need to explicitly set implicitHeight of StackView.
+                    // See https://doc.qt.io/qt-5/qml-qtquick-controls2-stackview.html#size
+                    implicitHeight: main.currentItem.implicitHeight
+                }
+            }
+        ]
     }
 }
