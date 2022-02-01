@@ -14,7 +14,7 @@ import org.kde.newstuff 1.62 as NewStuff
 import org.kde.kirigami 2.5 as Kirigami
 import org.kde.kcm 1.4
 
-AbstractKCM {
+SimpleKCM {
     id: root
     signal settingValueChanged
 
@@ -39,7 +39,8 @@ AbstractKCM {
     }
 
     ColumnLayout {
-        anchors.fill: parent
+        width: root.width - root.leftPadding - root.rightPadding // Center FormLayouts
+        height: Math.max(implicitHeight, root.height - root.topPadding - root.bottomPadding)
         spacing: 0 // unless it's 0 there will be an additional gap between two FormLayouts
 
         Component.onCompleted: {
@@ -152,7 +153,11 @@ AbstractKCM {
             id: main
 
             Layout.fillHeight: true;
-            Layout.fillWidth: true;
+            // HACK: Layout.fillWidth will leave an invalid padding when resizing the window
+            Layout.preferredWidth: parent.width
+            // Need to explicitly set implicitHeight of StackView.
+            // See https://doc.qt.io/qt-5/qml-qtquick-controls2-stackview.html#size
+            implicitHeight: currentItem.implicitHeight
 
             visible: !switchContainmentWarning.visible
 
