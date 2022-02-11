@@ -1,6 +1,6 @@
 /*
     SPDX-FileCopyrightText: 2013 Marco Martin <mart@kde.org>
-    SPDX-FileCopyrightText: 2021 Niccolò Venerandi <niccolo@venerandi.com>
+    SPDX-FileCopyrightText: 2022 Niccolò Venerandi <niccolo@venerandi.com>
 
     SPDX-License-Identifier: GPL-2.0-or-later
 */
@@ -68,7 +68,7 @@ function addApplet(applet, x, y) {
     // happen that an applet erroneously thinks it's visible, or suddenly
     // starts thinking that way on teardown (virtual desktop pager)
     // leading to crashes
-    var new_element = {context_applet: applet}
+    var new_element = {applet: applet}
 
     applet.visible = Qt.binding(function() {
         return applet.status !== PlasmaCore.Types.HiddenStatus || (!plasmoid.immutable && plasmoid.userConfiguring);
@@ -90,7 +90,7 @@ function addApplet(applet, x, y) {
     // itself what it wants to do with that information.
     } else if (applet.pluginName === "org.kde.plasma.icon" &&
             (middle = currentLayout.childAt(root.width / 2, root.height / 2))) {
-        appletsModel.insert(middle.i, new_element);
+        appletsModel.insert(middle.index, new_element);
     // Fall through to determining an appropriate insert position.
     } else {
         appletsModel.append(new_element);
@@ -141,20 +141,20 @@ function checkLastSpacer() {
         //during drag operations we disable panel auto resize
         root.fixedWidth = root.Layout.preferredWidth
         root.fixedHeight = root.Layout.preferredHeight
-        appletsModel.insert(LayoutManager.indexAtCoordinates(event.x, event.y), {context_applet: dndSpacer})
+        appletsModel.insert(LayoutManager.indexAtCoordinates(event.x, event.y), {applet: dndSpacer})
     }
 
     onDragMove: {
-        LayoutManager.move(dndSpacer.parent.i, LayoutManager.indexAtCoordinates(event.x, event.y));
+        LayoutManager.move(dndSpacer.parent.index, LayoutManager.indexAtCoordinates(event.x, event.y));
     }
 
     onDragLeave: {
-        appletsModel.remove(dndSpacer.parent.i);
+        appletsModel.remove(dndSpacer.parent.index);
         root.fixedWidth = root.fixedHeight = 0;
     }
 
     onDrop: {
-        appletsModel.remove(dndSpacer.parent.i);
+        appletsModel.remove(dndSpacer.parent.index);
         plasmoid.processMimeData(event.mimeData, event.x, event.y);
         event.accept(event.proposedAction);
         root.fixedWidth = root.fixedHeight = 0;
@@ -167,7 +167,7 @@ function checkLastSpacer() {
     }
 
     Containment.onAppletRemoved: {
-        appletsModel.remove(applet.parent.i);
+        appletsModel.remove(applet.parent.index);
         checkLastSpacer();
         LayoutManager.save();
     }
@@ -254,19 +254,13 @@ function checkLastSpacer() {
             Layout.maximumWidth: (currentLayout.isLayoutHorizontal ? (applet && applet.Layout.maximumWidth > 0 ? applet.Layout.maximumWidth : (Layout.fillWidth ? root.width : root.height)) : root.height) - Layout.leftMargin - Layout.rightMargin
             Layout.maximumHeight: (!currentLayout.isLayoutHorizontal ? (applet && applet.Layout.maximumHeight > 0 ? applet.Layout.maximumHeight : (Layout.fillHeight ? root.height : root.width)) : root.width) - Layout.bottomMargin - Layout.topMargin
 
-            property Item applet
-            readonly property int i: index
+            required property Item applet
+            required property int index
+            property Item dragging
 
-            /*onAppletChanged: {
-                if (!applet) {
-                    return destroy();
-                }
-            } TODO*/
-
-            Component.onCompleted: {
-                context_applet.parent = container
-                context_applet.anchors.fill = container
-                container.applet = context_applet
+            onAppletChanged: {
+                applet.parent = container
+                applet.anchors.fill = container
             }
 
             active: applet && applet.busy
@@ -278,26 +272,27 @@ function checkLastSpacer() {
             Layout.onMaximumHeightChanged: movingForResize = true;
             property int oldX: x
             property int oldY: y
+            function animateFrom(xa, ya) {
+                if (currentLayout.isLayoutHorizontal) translation.x = xa - x;
+                else translation.y = ya - y;
+                translAnim.running = true
+            }
             onXChanged: {
                 if (movingForResize) {
                     movingForResize = false;
                     return;
                 }
-                translation.x = oldX - x
-                translation.y = oldY - y
-                translAnim.running = true
+                if (!oldX) return;
+                animateFrom(oldX, y)
                 oldX = x
-                oldY = y
             }
             onYChanged: {
                 if (movingForResize) {
                     movingForResize = false;
                     return;
                 }
-                translation.x = oldX - x
-                translation.y = oldY - y
-                translAnim.running = true
-                oldX = x
+                if (!oldY) return;
+                animateFrom(x, oldY)
                 oldY = y
             }
             transform: Translate {
@@ -305,8 +300,8 @@ function checkLastSpacer() {
             }
             NumberAnimation {
                 id: translAnim
-                duration: PlasmaCore.Units.longDuration
-                easing.type: Easing.InOutQuad
+                duration: PlasmaCore.Units.shortDuration
+                easing.type: Easing.OutCubic
                 target: translation
                 properties: "x,y"
                 to: 0
@@ -319,6 +314,15 @@ function checkLastSpacer() {
             visible: plasmoid.editMode && marginAreasEnabled
             property Item startApplet
             property Item endApplet
+            property int updates: 0
+
+            property var startAppletGeo: startApplet && startApplet.mapToItem(root, startApplet.x, startApplet.y, startApplet.width, startApplet.height)
+            onStartAppletGeoChanged: {
+                console.log(startAppletGeo)
+            }
+
+            onUpdatesChanged: console.log('DEEP DOWN YOU WANT TO DELETE ALL OF THE CODE')
+
             property bool thickArea
 
             component HighlightPart: Item {
@@ -366,12 +370,12 @@ function checkLastSpacer() {
                 })
                 PlasmaCore.SvgItem {
                     svg: marginHighlightSvg
-                    elementId: positions[part].elementId
-                    x: positions[part][ctp.x]
-                    y: positions[part][ctp.y]
-                    width: positions[part][ctp.width]
-                    height: positions[part][ctp.height]
-                    visible: positions[part].elementId
+                    elementId: updates, positions[part].elementId
+                    x: updates, positions[part][ctp.x]
+                    y: updates, positions[part][ctp.y]
+                    width: updates, positions[part][ctp.width]
+                    height: updates, positions[part][ctp.height]
+                    visible: updates, elementId
                 }
             }
             HighlightPart{topSide: true; part: 'fill'}
