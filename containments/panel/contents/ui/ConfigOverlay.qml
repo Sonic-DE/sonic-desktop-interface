@@ -1,6 +1,6 @@
 /*
     SPDX-FileCopyrightText: 2013 Marco Martin <mart@kde.org>
-    SPDX-FileCopyrightText: 2021 Niccolò Venerandi <niccolo@venerandi.com>
+    SPDX-FileCopyrightText: 2022 Niccolò Venerandi <niccolo@venerandi.com>
 
     SPDX-License-Identifier: GPL-2.0-or-later
 */
@@ -52,30 +52,27 @@ MouseArea {
                     return;
                 }
             }
-
             if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
                 currentApplet.y += (mouse.y - lastY);
             } else {
                 currentApplet.x += (mouse.x - lastX);
             }
-            lastX = mouse.x;
-            lastY = mouse.y;
 
             var item = currentLayout.childAt(mouse.x, mouse.y);
 
-            if (item && item !== placeHolder) {
+            if (item && item.applet !== placeHolder) {
                 var posInItem = mapToItem(item, mouse.x, mouse.y);
-                let i = 0;
-
                 if ((!isHorizontal && posInItem.y < item.height/3) ||
                     (isHorizontal && posInItem.x < item.width/3)) {
-                    root.layoutManager.move(placeHolder.parent.i, item.i);
-                    root.layoutManager.updateMargins();
+                    root.layoutManager.move(placeHolder.parent.index, item.index)
                 } else if ((!isHorizontal && posInItem.y > 2*item.height/3) ||
                           (isHorizontal && posInItem.x > 2*item.width/3)) {
-                    root.layoutManager.move(placeHolder.parent.i, item.i+1);
-                    root.layoutManager.updateMargins();
+                    root.layoutManager.move(placeHolder.parent.index, item.index+1)
                 }
+            }
+            if ((currentApplet.applet.constraintHints & PlasmaCore.Types.MarginAreasSeparator) == PlasmaCore.Types.MarginAreasSeparator) {
+                // f___ me
+                //root.layoutManager.updateMargins()
             }
 
         } else {
@@ -92,6 +89,8 @@ MouseArea {
             tooltip.visible = true;
             tooltip.raise();
         }
+        lastX = mouse.x;
+        lastY = mouse.y;
     }
 
     onEntered: hideTimer.stop();
@@ -113,22 +112,13 @@ MouseArea {
         tooltip.raise();
         hideTimer.stop();
 
-        lastX = mouse.x;
-        lastY = mouse.y;
         // We set the current applet being dragged as a property of placeHolder
         // to be able to read its properties from the LayoutManager
-        appletsModel.insert(item.i, {context_applet: placeHolder});
-        currentApplet = appletContainerComponent.createObject(root, {applet: item.applet})
-        item.applet.parent = currentApplet
-        item.applet.anchors.fill = currentApplet
-        root.dragOverlay.currentApplet = currentApplet
-        placeHolder.dragging = currentApplet;
-        currentApplet.x = item.x
-        currentApplet.y = item.y
-        currentApplet.width = item.width
-        currentApplet.height = item.height
-        //root.layoutManager.insertBefore(currentApplet, placeHolder);
-        appletsModel.remove(item.i)
+        appletsModel.insert(item.index, {applet: placeHolder});
+        currentApplet = appletContainerComponent.createObject(root, {applet: item.applet, x: item.x, y: item.y,
+                                                                     width: item.width, height: item.height, index: 0})
+        root.dragOverlay.currentApplet = placeHolder.parent.dragging = currentApplet
+        appletsModel.remove(item.index)
         currentApplet.z = 900;
     }
 
@@ -140,10 +130,8 @@ MouseArea {
         if (!currentApplet) {
             return;
         }
-
-        appletsModel.insert(placeHolder.parent.i, {context_applet: currentApplet.applet})
-        appletsModel.remove(placeHolder.parent.i)
-        //root.layoutManager.insertBefore(placeHolder, currentApplet);
+        appletsModel.set(placeHolder.parent.index, {applet: currentApplet.applet})
+        currentApplet.applet.parent.animateFrom(currentApplet.x, currentApplet.y)
         placeHolder.parent = configurationArea;
         currentApplet.z = 1;
 
