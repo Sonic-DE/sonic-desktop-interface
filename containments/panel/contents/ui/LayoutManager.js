@@ -1,6 +1,6 @@
 /*
     SPDX-FileCopyrightText: 2013 Marco Martin <mart@kde.org>
-    SPDX-FileCopyrightText: 2021 Niccolò Venerandi <niccolo@venerandi.com>
+    SPDX-FileCopyrightText: 2022 Niccolò Venerandi <niccolo@venerandi.com>
 
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
@@ -70,6 +70,7 @@ function indexAtCoordinates(x, y) {
         if (root.isHorizontal) {
             // Only yields incorrect results for widgets smaller than the
             // row/column spacing, which is luckly fairly unrealistic
+            // TODO What if it's dropped at the left-most pixel? this breaks everything?
             x -= layout.rowSpacing
         } else {
             y -= layout.columnSpacing
@@ -79,13 +80,14 @@ function indexAtCoordinates(x, y) {
 
     if ((plasmoid.formFactor === 3 && y < child.y + child.height/2) ||
         (plasmoid.formFactor !== 3 && x < child.x + child.width/2)) {
-        return child.i;
+        return child.index;
     } else {
-        return child.i+1;
+        return child.index+1;
     }
 }
 
 function updateMargins() {
+    console.log('START')
     for (var i = 0; i < marginHighlights.length; ++i) {
         marginHighlights[i].destroy();
     }
@@ -98,9 +100,10 @@ function updateMargins() {
         if (child.applet) {
             child.inThickArea = inThickArea;
             if ((child.applet.constraintHints & PlasmaCore.Types.MarginAreasSeparator) == PlasmaCore.Types.MarginAreasSeparator) {
+                console.log(child.applet.mapToItem(root, child.applet.x, child.applet.y, child.applet.width, child.applet.height))
                 var marginRect = rectHighlightEl.createObject(root, {
-                    startApplet: startApplet,
-                    endApplet: child,
+                    startApplet: startApplet && startApplet.applet,
+                    endApplet: child.applet,
                     thickArea: inThickArea
                 });
                 marginHighlights.push(marginRect);
@@ -111,13 +114,17 @@ function updateMargins() {
     }
     if (marginHighlights.length == 0) return;
     var marginRect = rectHighlightEl.createObject(root, {
-        startApplet: startApplet,
+        startApplet: startApplet && startApplet.applet,
         endApplet: undefined,
         thickArea: inThickArea
     });
     marginHighlights.push(marginRect);
+    console.log('END')
 }
 
 function move(start, end) {
-    appletsModel.move(start, end - (start < end), 1)
+    var target = end - (start < end)
+    if (start == target) return;
+    appletsModel.move(start, target, 1)
+    root.layoutManager.updateMargins()
 }
