@@ -63,8 +63,13 @@ QVariant WindowModel::data(const QModelIndex &index, int role) const
 {
     if (role == AbstractTasksModel::Geometry) {
         QRect windowGeo = TaskFilterProxyModel::data(index, role).toRect();
-        QList<QScreen *> screens = QGuiApplication::screens();
-        const QRect desktopGeo = screens.at(0)->virtualGeometry();
+        const QScreen *const screen = QGuiApplication::screens().constFirst();
+        const QRect desktopGeo = screen->virtualGeometry();
+
+        // KWindowInfoPrivateX11::frameGeometry() returns the true geometry of a window, so devicePixelRatio is needed.
+        if (KWindowSystem::isPlatformX11()) {
+            windowGeo.setSize(windowGeo.size() / screen->devicePixelRatio());
+        }
 
         if (KWindowSystem::mapViewport()) {
             int x = windowGeo.center().x() % desktopGeo.width();
