@@ -28,30 +28,6 @@ EmptyPage {
     Layout.minimumWidth: implicitWidth
     Layout.minimumHeight: implicitHeight
 
-    Timer {
-        interval: 2500
-        repeat: false
-        running: false
-        onTriggered: unwrap(root)
-    }
-
-    function unwrap(obj) {
-        console.log(obj)
-        console.log(obj.x)
-        console.log(obj.y)
-        console.log(obj.width)
-        console.log(obj.height)
-        console.log('src', obj.source)
-        if (obj.source) {
-            console.log('c', PlasmaCore.Theme.imagePath('bookmarks'), 'd')
-        }
-        if (obj.data) {
-            for (var i = 0; i < obj.data.length; i++) {
-                unwrap(obj.data[i])
-            }
-        }
-    }
-
     /* NOTE: Important things to know about keyboard input handling:
      *
      * - Key events are passed up to parent items until the end is reached.
