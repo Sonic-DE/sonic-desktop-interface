@@ -34,6 +34,8 @@ DragDrop.DropArea {
     property int fixedWidth: 0
     property int fixedHeight: 0
     property bool hasSpacer
+    // True when a widget is being drag and dropped within the panel.
+    property bool dragAndDropping: false
 
     // These are invisible and only used to read panel margins
     // Both will fallback to "standard" panel margins if the theme does not
@@ -122,8 +124,8 @@ function checkLastSpacer() {
         LayoutManager.root = root;
         LayoutManager.layout = currentLayout;
         LayoutManager.marginHighlights = [];
-        LayoutManager.restore();
         LayoutManager.appletsModel = appletsModel;
+        LayoutManager.restore();
 
         plasmoid.action("configure").visible = Qt.binding(function() {
             return !plasmoid.immutable;
@@ -209,7 +211,6 @@ function checkLastSpacer() {
         // loading the applet. The applet becomes a regular child item.
         Loader {
             id: container
-            property bool inThickArea: false
             property bool isAppletContainer: true
             visible: applet.status !== PlasmaCore.Types.HiddenStatus || (!plasmoid.immutable && plasmoid.userConfiguring);
 
@@ -230,35 +231,111 @@ function checkLastSpacer() {
                 }
             }
 
-            function getMargins(side, returnAllMargins = false) {
+            function getMargins(side, returnAllMargins = false, ignoreFillArea = false, forceThickArea = false) {
                 //Margins are either the size of the margins in the SVG, unless that prevents the panel from being at least half a smallMedium icon + smallSpace) tall at which point we set the margin to whatever allows it to be that...or if it still won't fit, 1.
                 var layout = {
                     top: currentLayout.isLayoutHorizontal, bottom: currentLayout.isLayoutHorizontal,
                     right: !currentLayout.isLayoutHorizontal, left: !currentLayout.isLayoutHorizontal
                 };
                 var fillArea = applet && (applet.constraintHints & PlasmaCore.Types.CanFillArea);
-                return ((layout[side] || returnAllMargins) && !fillArea) ? Math.round(Math.min(spacingAtMinSize, (inThickArea ? thickPanelSvg.fixedMargins[side] : panelSvg.fixedMargins[side]))) : 0;
+                return ((layout[side] || returnAllMargins) && !fillArea || ignoreFillArea) ? Math.round(Math.min(spacingAtMinSize, ((inThickArea || forceThickArea) ? thickPanelSvg.fixedMargins[side] : panelSvg.fixedMargins[side]))) : 0;
+            }
+
+            function getLayout(layoutType) {
+                let suffixes = layoutType.endsWith('Width') ? ['height', 'width', 'fillWidth'] : ['width', 'height', 'fillHeight']
+                if (Layout[suffixes[2]]) {suffixes[0] = suffixes[1]};
+                if (currentLayout.isLayoutHorizontal == layoutType.endsWith('Width')) {
+                    return Math.round(applet && applet.Layout[layoutType] > 0 ? applet.Layout[layoutType] : root[suffixes[0]])
+                } else {
+                    return Math.round(root[suffixes[1]])
+                }
             }
 
             Layout.topMargin: getMargins('top')
             Layout.bottomMargin: getMargins('bottom')
             Layout.leftMargin: getMargins('left')
             Layout.rightMargin: getMargins('right')
+            Layout.minimumWidth: getLayout('minimumWidth') - Layout.leftMargin - Layout.rightMargin
+            Layout.minimumHeight: getLayout('minimumHeight') - Layout.bottomMargin - Layout.topMargin
+            Layout.preferredWidth: getLayout('preferredWidth') - Layout.leftMargin - Layout.rightMargin
+            Layout.preferredHeight: getLayout('preferredHeight') - Layout.bottomMargin - Layout.topMargin
+            Layout.maximumWidth: getLayout('maximumWidth') - Layout.leftMargin - Layout.rightMargin
+            Layout.maximumHeight: getLayout('maximumHeight') - Layout.bottomMargin - Layout.topMargin
 
-            Layout.minimumWidth: (currentLayout.isLayoutHorizontal ? (applet && applet.Layout.minimumWidth > 0 ? applet.Layout.minimumWidth : root.height) : root.width) - Layout.leftMargin - Layout.rightMargin
-            Layout.minimumHeight: (!currentLayout.isLayoutHorizontal ? (applet && applet.Layout.minimumHeight > 0 ? applet.Layout.minimumHeight : root.width) : root.height) - Layout.bottomMargin - Layout.topMargin
-
-            Layout.preferredWidth: (currentLayout.isLayoutHorizontal ? (applet && applet.Layout.preferredWidth > 0 ? applet.Layout.preferredWidth : root.height) : root.width) - Layout.leftMargin - Layout.rightMargin
-            Layout.preferredHeight: (!currentLayout.isLayoutHorizontal ? (applet && applet.Layout.preferredHeight > 0 ? applet.Layout.preferredHeight : root.width) : root.height) - Layout.bottomMargin - Layout.topMargin
-
-            Layout.maximumWidth: (currentLayout.isLayoutHorizontal ? (applet && applet.Layout.maximumWidth > 0 ? applet.Layout.maximumWidth : (Layout.fillWidth ? root.width : root.height)) : root.height) - Layout.leftMargin - Layout.rightMargin
-            Layout.maximumHeight: (!currentLayout.isLayoutHorizontal ? (applet && applet.Layout.maximumHeight > 0 ? applet.Layout.maximumHeight : (Layout.fillHeight ? root.height : root.width)) : root.width) - Layout.bottomMargin - Layout.topMargin
+            Item {
+                // index -1 is for floating applets, which do not need a margin highlight
+                opacity: plasmoid.editMode && marginAreasEnabled && !root.dragAndDropping && index != -1 ? 1 : 0
+                Behavior on opacity {
+                    NumberAnimation {
+                        duration: PlasmaCore.Units.longDuration
+                        easing.type: Easing.InOutQuad
+                    }
+                }
+                id: marginHighlightElements
+                anchors.fill: parent
+                PlasmaCore.SvgItem {
+                    svg: marginHighlightSvg
+                    elementId: 'fill'
+                    anchors {
+                        top: parent.top
+                        left: parent.left
+                        right: parent.right
+                        leftMargin: -currentLayout.rowSpacing/2
+                        rightMargin: -currentLayout.rowSpacing/2
+                        topMargin: -getMargins('top')
+                    }
+                    height: getMargins('top', false, true)
+                }
+                PlasmaCore.SvgItem {
+                    svg: marginHighlightSvg
+                    visible: ((applet.constraintHints & PlasmaCore.Types.MarginAreasSeparator) == PlasmaCore.Types.MarginAreasSeparator)
+                    elementId: 'topright'
+                    anchors {
+                        top: parent.top
+                        left: parent.left
+                        right: parent.right
+                        leftMargin: -currentLayout.rowSpacing/2
+                        rightMargin: -currentLayout.rowSpacing/2
+                        topMargin: getMargins('top', false, true)
+                    }
+                    height: getMargins('top', false, true, true) - anchors.topMargin
+                }
+                PlasmaCore.SvgItem {
+                    svg: marginHighlightSvg
+                    elementId: 'fill'
+                    anchors {
+                        bottom: parent.bottom
+                        left: parent.left
+                        right: parent.right
+                        leftMargin: -currentLayout.rowSpacing/2
+                        rightMargin: -currentLayout.rowSpacing/2
+                        bottomMargin: -getMargins('bottom')
+                    }
+                    height: getMargins('bottom', false, true)
+                }
+                PlasmaCore.SvgItem {
+                    svg: marginHighlightSvg
+                    visible: ((applet.constraintHints & PlasmaCore.Types.MarginAreasSeparator) == PlasmaCore.Types.MarginAreasSeparator)
+                    elementId: 'bottomright'
+                    anchors {
+                        bottom: parent.bottom
+                        left: parent.left
+                        right: parent.right
+                        leftMargin: -currentLayout.rowSpacing/2
+                        rightMargin: -currentLayout.rowSpacing/2
+                        bottomMargin: getMargins('bottom', false, true)
+                    }
+                    height: getMargins('bottom', false, true, true) - anchors.bottomMargin
+                }
+            }
 
             required property Item applet
             required property int index
+            property bool inThickArea: false
             property Item dragging
 
             onAppletChanged: {
+                console.log('B')
                 applet.parent = container
                 applet.anchors.fill = container
             }
@@ -306,84 +383,6 @@ function checkLastSpacer() {
                 properties: "x,y"
                 to: 0
             }
-        }
-    }
-    Component {
-        id: rectHighlightEl
-        Item {
-            visible: plasmoid.editMode && marginAreasEnabled
-            property Item startApplet
-            property Item endApplet
-            property int updates: 0
-
-            property var startAppletGeo: startApplet && startApplet.mapToItem(root, startApplet.x, startApplet.y, startApplet.width, startApplet.height)
-            onStartAppletGeoChanged: {
-                console.log(startAppletGeo)
-            }
-
-            onUpdatesChanged: console.log('DEEP DOWN YOU WANT TO DELETE ALL OF THE CODE')
-
-            property bool thickArea
-
-            component HighlightPart: Item {
-                property bool topSide
-                property string part
-                // I don't know if the panel is vertical or horizontal, so I'll use panel
-                // (w) width and (h) height as a (w, h) coordinate system, defining two helper
-                // functions to switch between it and cartesian (x, y).
-                property bool horizontal: plasmoid.formFactor === PlasmaCore.Types.Horizontal
-                property int mod: topSide ? 1 : -1
-                property string svgSide: horizontal ? (topSide ? 'top' : 'bottom') : (topSide ? 'left' : 'right')
-                // Panel To Cartesian
-                property var ptc: ({
-                    w: horizontal ? 'x' : 'y', width: horizontal ? 'width' : 'height',
-                    h: horizontal ? 'y' : 'x', height: horizontal ? 'height' : 'width'
-                })
-                // Cartesian to Panel
-                property var ctp: ({
-                    x: horizontal ? 'w' : 'h', width: horizontal ? 'width' : 'height',
-                    y: horizontal ? 'h' : 'w', height: horizontal ? 'height' : 'width'
-                })
-                property var positions: ({
-                    fill: {
-                        w: startApplet ? (startApplet[ptc.w] + startApplet[ptc.width]) : -panelSvg.margins[horizontal ? 'left' : 'top'],
-                        get width() {return positions.step.w - positions.fill.w},
-                        get h() {return topSide ? 0 : root[ptc.height]-this.height},
-                        height: Math.min(spacingAtMinSize, (thickArea ? thickPanelSvg : panelSvg).fixedMargins[svgSide]),
-                        elementId: 'fill', visible: true
-                    },
-                    step: {
-                        w: endApplet ? endApplet[ptc.w] : root[ptc.width] + panelSvg.margins[horizontal ? 'right' : 'bottom'],
-                        width: endApplet ? endApplet[ptc.width] : 0,
-                        get h() {return (topSide ? 0 : root[ptc.height]-this.height)+mod*panelSvg.fixedMargins[svgSide]},
-                        height: Math.min(spacingAtMinSize, thickPanelSvg.fixedMargins[svgSide]) - Math.min(spacingAtMinSize, panelSvg.fixedMargins[svgSide]),
-                        elementId: ((horizontal ? topSide : thickArea) ? 'top' : 'bottom') + ((horizontal ? thickArea : topSide) ? "left" : "right"),
-                        visible: endApplet
-                    },
-                    filledstep: {
-                        get w() {return positions.step.w},
-                        get width() {return positions.step.width},
-                        get h() {return topSide ? 0 : root[ptc.height]-this.height},
-                        height: Math.min(spacingAtMinSize, panelSvg.fixedMargins[svgSide]),
-                        elementId: 'fill', visible: endApplet
-                    }
-                })
-                PlasmaCore.SvgItem {
-                    svg: marginHighlightSvg
-                    elementId: updates, positions[part].elementId
-                    x: updates, positions[part][ctp.x]
-                    y: updates, positions[part][ctp.y]
-                    width: updates, positions[part][ctp.width]
-                    height: updates, positions[part][ctp.height]
-                    visible: updates, elementId
-                }
-            }
-            HighlightPart{topSide: true; part: 'fill'}
-            HighlightPart{topSide: true; part: 'step'}
-            HighlightPart{topSide: true; part: 'filledstep'}
-            HighlightPart{topSide: false; part: 'fill'}
-            HighlightPart{topSide: false; part: 'step'}
-            HighlightPart{topSide: false; part: 'filledstep'}
         }
     }
 //END components
