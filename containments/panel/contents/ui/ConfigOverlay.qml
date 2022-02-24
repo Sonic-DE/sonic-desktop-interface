@@ -29,8 +29,8 @@ MouseArea {
     readonly property int spacerHandleSize: PlasmaCore.Units.smallSpacing
     property bool isHorizontal: plasmoid.formFactor === PlasmaCore.Types.Horizontal //TODO read this from main.qml
 
-    onHeightChanged: tooltip.visible = false;
-    onWidthChanged: tooltip.visible = false;
+    //onHeightChanged: tooltip.visible = false;
+    //onWidthChanged: tooltip.visible = false; //TODO why?
 
     onPositionChanged: {
         if (pressed) {
@@ -70,23 +70,18 @@ MouseArea {
                     root.layoutManager.move(placeHolder.parent.index, item.index+1)
                 }
             }
-            if ((currentApplet.applet.constraintHints & PlasmaCore.Types.MarginAreasSeparator) == PlasmaCore.Types.MarginAreasSeparator) {
-                // f___ me
-                //root.layoutManager.updateMargins()
-            }
 
         } else {
             var item = currentLayout.childAt(mouse.x, mouse.y);
             if (root.dragOverlay && item) {
                 root.dragOverlay.currentApplet = item;
-            } else {
+            }/* else {
                 root.dragOverlay.currentApplet = null;
-            }
+            }*/
         }
 
         if (root.dragOverlay.currentApplet) {
             hideTimer.stop();
-            tooltip.visible = true;
             tooltip.raise();
         }
         lastX = mouse.x;
@@ -94,6 +89,8 @@ MouseArea {
     }
 
     onEntered: hideTimer.stop();
+
+    onExited: hideTimer.start()
 
     onCurrentAppletChanged: {
         if (!currentApplet || !root.dragOverlay.currentApplet) {
@@ -108,18 +105,18 @@ MouseArea {
         // case
         let item = currentLayout.childAt(mouse.x, mouse.y);
         if (!item) {return}
-        tooltip.visible = true;
         tooltip.raise();
         hideTimer.stop();
 
         // We set the current applet being dragged as a property of placeHolder
         // to be able to read its properties from the LayoutManager
         appletsModel.insert(item.index, {applet: placeHolder});
-        currentApplet = appletContainerComponent.createObject(root, {applet: item.applet, x: item.x, y: item.y,
-                                                                     width: item.width, height: item.height, index: 0})
-        root.dragOverlay.currentApplet = placeHolder.parent.dragging = currentApplet
+        placeHolder.parent.inThickArea = item.inThickArea
+        currentApplet = appletContainerComponent.createObject(root, {applet: item.applet, x: item.x, y: item.y, z: 900,
+                                                                     width: item.width, height: item.height, index: -1})
+        placeHolder.parent.dragging = currentApplet
         appletsModel.remove(item.index)
-        currentApplet.z = 900;
+        root.dragAndDropping = true
     }
 
     onReleased: finishDragOperation()
@@ -127,23 +124,29 @@ MouseArea {
     onCanceled: finishDragOperation()
 
     function finishDragOperation() {
+        root.dragAndDropping = false
         if (!currentApplet) {
             return;
         }
         appletsModel.set(placeHolder.parent.index, {applet: currentApplet.applet})
-        currentApplet.applet.parent.animateFrom(currentApplet.x, currentApplet.y)
+        let newCurrentApplet = currentApplet.applet.parent
+        newCurrentApplet.animateFrom(currentApplet.x, currentApplet.y)
+        newCurrentApplet.dragging = null
         placeHolder.parent = configurationArea;
-        currentApplet.z = 1;
-
-        root.layoutManager.save();
+        currentApplet.destroy()
+        root.layoutManager.save()
     }
 
     Item {
         id: placeHolder
         property Item dragging
         property bool busy: false
-        Layout.preferredWidth: currentApplet && currentApplet.width
-        Layout.preferredHeight: currentApplet && currentApplet.height
+        Layout.preferredWidth: currentApplet ? currentApplet.Layout.preferredWidth : 0
+        Layout.preferredHeight: currentApplet ? currentApplet.Layout.preferredHeight : 0
+        Layout.maximumWidth: currentApplet ? currentApplet.Layout.maximumWidth : 0
+        Layout.maximumHeight: currentApplet ? currentApplet.Layout.maximumHeight : 0
+        Layout.minimumWidth: currentApplet ? currentApplet.Layout.minimumWidth : 0
+        Layout.minimumHeight: currentApplet ? currentApplet.Layout.minimumHeight : 0
         visible: configurationArea.containsMouse
         Layout.fillWidth: currentApplet ? currentApplet.Layout.fillWidth : false
         Layout.fillHeight: currentApplet ? currentApplet.Layout.fillHeight : false
@@ -151,16 +154,16 @@ MouseArea {
 
     Timer {
         id: hideTimer
-        interval: PlasmaCore.Units.longDuration
-        onTriggered: tooltip.visible = false;
+        interval: PlasmaCore.Units.longDuration * 5
+        onTriggered: currentApplet = null
     }
 
     Rectangle {
         id: handle
-        x: currentApplet && currentApplet.x
-        y: currentApplet && currentApplet.y
-        width: currentApplet && currentApplet.width
-        height: currentApplet && currentApplet.height
+        x: currentApplet ? currentApplet.x : 0
+        y: currentApplet ? currentApplet.y : 0
+        width: currentApplet ? currentApplet.width : 0
+        height: currentApplet ? currentApplet.height : 0
         visible: configurationArea.containsMouse
         color: PlasmaCore.Theme.backgroundColor
         radius: 3
@@ -208,6 +211,7 @@ MouseArea {
     }
     PlasmaCore.Dialog {
         id: tooltip
+        visible: currentApplet && !root.dragAndDropping
         visualParent: currentApplet
 
         type: PlasmaCore.Dialog.Dock
@@ -224,7 +228,7 @@ MouseArea {
         }
 
         mainItem: MouseArea {
-            enabled: currentApplet
+            enabled: currentApplet && !root.dragAndDropping
             width: handleButtons.width
             height: handleButtons.height
             hoverEnabled: true
@@ -258,8 +262,8 @@ MouseArea {
                     iconSource: "delete"
                     text: i18n("Remove")
                     onClicked: {
-                        tooltip.visible = false;
                         currentApplet.applet.action("remove").trigger();
+                        currentApplet = null
                     }
                 }
                 PlasmaComponents.ToolButton {
@@ -268,8 +272,8 @@ MouseArea {
                     iconSource: "configure"
                     text: i18n("Configure…")
                     onClicked: {
-                        tooltip.visible = false;
                         currentApplet.applet.action("configure").trigger()
+                        currentApplet = null
                     }
                 }
                 PlasmaComponents.ToolButton {
@@ -278,8 +282,8 @@ MouseArea {
                     iconSource: "widget-alternatives"
                     text: i18n("Show Alternatives…")
                     onClicked: {
-                        tooltip.visible = false;
                         currentApplet.applet.action("alternatives").trigger()
+                        currentApplet = null
                     }
                 }
                 PlasmaComponents.ToolButton {
@@ -293,8 +297,8 @@ MouseArea {
                     iconSource: "delete"
                     text: i18n("Remove")
                     onClicked: {
-                        tooltip.visible = false;
-                        currentApplet.applet.action("remove").trigger();
+                        currentApplet.applet.action("remove").trigger()
+                        currentApplet = null
                     }
                 }
             }
