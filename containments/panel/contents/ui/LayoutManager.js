@@ -55,8 +55,8 @@ function save() {
             ids.push(child.applet.id);
         }
     }
-    plasmoid.configuration.AppletOrder = ids.join(';');
-    updateMargins();
+    plasmoid.configuration.AppletOrder = ids.join(';')
+    updateMargins()
 }
 
 function indexAtCoordinates(x, y) {
@@ -87,44 +87,20 @@ function indexAtCoordinates(x, y) {
 }
 
 function updateMargins() {
-    console.log('START')
-    for (var i = 0; i < marginHighlights.length; ++i) {
-        marginHighlights[i].destroy();
-    }
-    marginHighlights = [];
     var inThickArea = false;
-    var startApplet = undefined;
-    for (var i = 0; i < layout.children.length; ++i) {
-        var child = layout.children[i];
+    for (var i = 0; i < appletsModel.count; ++i) {
+        var child = appletsModel.get(i).applet.parent
         if (child.dragging) {child = child.dragging}
-        if (child.applet) {
-            child.inThickArea = inThickArea;
-            if ((child.applet.constraintHints & PlasmaCore.Types.MarginAreasSeparator) == PlasmaCore.Types.MarginAreasSeparator) {
-                console.log(child.applet.mapToItem(root, child.applet.x, child.applet.y, child.applet.width, child.applet.height))
-                var marginRect = rectHighlightEl.createObject(root, {
-                    startApplet: startApplet && startApplet.applet,
-                    endApplet: child.applet,
-                    thickArea: inThickArea
-                });
-                marginHighlights.push(marginRect);
-                var startApplet = child;
-                inThickArea = !inThickArea;
-            }
+        child.inThickArea = inThickArea
+        if ((child.applet.constraintHints & PlasmaCore.Types.MarginAreasSeparator) == PlasmaCore.Types.MarginAreasSeparator) {
+            inThickArea = !inThickArea
         }
     }
-    if (marginHighlights.length == 0) return;
-    var marginRect = rectHighlightEl.createObject(root, {
-        startApplet: startApplet && startApplet.applet,
-        endApplet: undefined,
-        thickArea: inThickArea
-    });
-    marginHighlights.push(marginRect);
-    console.log('END')
 }
 
 function move(start, end) {
     var target = end - (start < end)
     if (start == target) return;
     appletsModel.move(start, target, 1)
-    root.layoutManager.updateMargins()
+    root.layoutManager.save()
 }
