@@ -92,7 +92,7 @@ function updateMargins() {
         var child = appletsModel.get(i).applet.parent
         if (child.dragging) {child = child.dragging}
         child.inThickArea = inThickArea
-        if ((child.applet.constraintHints & PlasmaCore.Types.MarginAreasSeparator) == PlasmaCore.Types.MarginAreasSeparator) {
+        if (child.isMarginSeparator) {
             inThickArea = !inThickArea
         }
     }
