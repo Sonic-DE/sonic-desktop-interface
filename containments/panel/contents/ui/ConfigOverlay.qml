@@ -90,7 +90,7 @@ MouseArea {
 
     onEntered: hideTimer.stop();
 
-    onExited: hideTimer.start()
+    onExited: hideTimer.restart()
 
     onCurrentAppletChanged: {
         if (!currentApplet || !root.dragOverlay.currentApplet) {
@@ -160,15 +160,15 @@ MouseArea {
 
     Rectangle {
         id: handle
-        x: currentApplet ? currentApplet.x : 0
-        y: currentApplet ? currentApplet.y : 0
-        width: currentApplet ? currentApplet.width : 0
-        height: currentApplet ? currentApplet.height : 0
-        visible: configurationArea.containsMouse
+        x: currentApplet ? currentApplet.x : null
+        y: currentApplet ? currentApplet.y : null
+        width: currentApplet ? currentApplet.width : null
+        height: currentApplet ? currentApplet.height : null
         color: PlasmaCore.Theme.backgroundColor
         radius: 3
-        opacity: currentApplet ? 0.5 : 0
+        opacity: currentApplet && configurationArea.containsMouse ? 0.5 : 0
         PlasmaCore.IconItem {
+            visible: !root.dragAndDropping
             source: "transform-move"
             width: Math.min(parent.width, parent.height)
             height: width
@@ -228,7 +228,7 @@ MouseArea {
         }
 
         mainItem: MouseArea {
-            enabled: currentApplet && !root.dragAndDropping
+            enabled: tooltip.visible
             width: handleButtons.width
             height: handleButtons.height
             hoverEnabled: true
