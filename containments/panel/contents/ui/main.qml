@@ -212,6 +212,7 @@ function checkLastSpacer() {
         Loader {
             id: container
             property bool isAppletContainer: true
+            property bool isMarginSeparator: ((applet.constraintHints & PlasmaCore.Types.MarginAreasSeparator) == PlasmaCore.Types.MarginAreasSeparator)
             visible: applet.status !== PlasmaCore.Types.HiddenStatus || (!plasmoid.immutable && plasmoid.userConfiguring);
 
             //when the applet moves caused by its resize, don't animate.
@@ -231,14 +232,15 @@ function checkLastSpacer() {
                 }
             }
 
-            function getMargins(side, returnAllMargins = false, ignoreFillArea = false, forceThickArea = false) {
+            function getMargins(side, returnAllMargins = false, overrideFillArea = null, overrideThickArea = null) {
                 //Margins are either the size of the margins in the SVG, unless that prevents the panel from being at least half a smallMedium icon + smallSpace) tall at which point we set the margin to whatever allows it to be that...or if it still won't fit, 1.
+                let fillArea = overrideFillArea === null ? applet && (applet.constraintHints & PlasmaCore.Types.CanFillArea) : overrideFillArea
+                let inThickArea = overrideThickArea === null ? container.inThickArea : overrideThickArea
                 var layout = {
                     top: currentLayout.isLayoutHorizontal, bottom: currentLayout.isLayoutHorizontal,
                     right: !currentLayout.isLayoutHorizontal, left: !currentLayout.isLayoutHorizontal
                 };
-                var fillArea = applet && (applet.constraintHints & PlasmaCore.Types.CanFillArea);
-                return ((layout[side] || returnAllMargins) && !fillArea || ignoreFillArea) ? Math.round(Math.min(spacingAtMinSize, ((inThickArea || forceThickArea) ? thickPanelSvg.fixedMargins[side] : panelSvg.fixedMargins[side]))) : 0;
+                return ((layout[side] || returnAllMargins) && !fillArea) ? Math.round(Math.min(spacingAtMinSize, (inThickArea ? thickPanelSvg.fixedMargins[side] : panelSvg.fixedMargins[side]))) : 0;
             }
 
             function getLayout(layoutType) {
@@ -265,40 +267,46 @@ function checkLastSpacer() {
             Item {
                 // index -1 is for floating applets, which do not need a margin highlight
                 opacity: plasmoid.editMode && marginAreasEnabled && !root.dragAndDropping && index != -1 ? 1 : 0
+                id: marginHighlightElements
                 Behavior on opacity {
                     NumberAnimation {
                         duration: PlasmaCore.Units.longDuration
                         easing.type: Easing.InOutQuad
                     }
                 }
-                id: marginHighlightElements
                 anchors.fill: parent
                 PlasmaCore.SvgItem {
                     svg: marginHighlightSvg
                     elementId: 'fill'
                     anchors {
                         top: parent.top
-                        left: parent.left
+                        left: isHorizontal ? parent.left : undefined
                         right: parent.right
-                        leftMargin: -currentLayout.rowSpacing/2
-                        rightMargin: -currentLayout.rowSpacing/2
-                        topMargin: -getMargins('top')
+                        bottom: isHorizontal ? undefined : parent.bottom
+                        leftMargin: isHorizontal ? -currentLayout.rowSpacing/2 : undefined
+                        rightMargin: isHorizontal ? -currentLayout.rowSpacing/2 : -getMargins('right')
+                        topMargin: isHorizontal ? -getMargins('top') : -currentLayout.columnSpacing/2
+                        bottomMargin: isHorizontal ? undefined : -currentLayout.columnSpacing/2
                     }
-                    height: getMargins('top', false, true)
+                    height: isHorizontal ? getMargins('top', false, false, isMarginSeparator ? false : inThickArea) : undefined
+                    width: isHorizontal ? undefined : getMargins('right', false, false, isMarginSeparator ? false : inThickArea)
                 }
                 PlasmaCore.SvgItem {
                     svg: marginHighlightSvg
-                    visible: ((applet.constraintHints & PlasmaCore.Types.MarginAreasSeparator) == PlasmaCore.Types.MarginAreasSeparator)
-                    elementId: 'topright'
+                    visible: isMarginSeparator
+                    elementId: inThickArea ? (isHorizontal ? 'topleft' : 'topright') : (isHorizontal ? 'topright' : 'bottomright')
                     anchors {
                         top: parent.top
-                        left: parent.left
+                        left: isHorizontal ? parent.left : undefined
                         right: parent.right
-                        leftMargin: -currentLayout.rowSpacing/2
-                        rightMargin: -currentLayout.rowSpacing/2
-                        topMargin: getMargins('top', false, true)
+                        bottom: isHorizontal ? undefined : parent.bottom
+                        leftMargin: isHorizontal ? -currentLayout.rowSpacing/2 : undefined
+                        rightMargin: isHorizontal ? -currentLayout.rowSpacing/2 : getMargins('right', false, false, false)
+                        topMargin: isHorizontal ? getMargins('top', false, false, false) : -currentLayout.columnSpacing/2
+                        bottomMargin: isHorizontal ? undefined : -currentLayout.columnSpacing/2
                     }
-                    height: getMargins('top', false, true, true) - anchors.topMargin
+                    height: isHorizontal ? getMargins('top', false, false, true) - anchors.topMargin : undefined
+                    width: isHorizontal ? undefined : getMargins('right', false, false, true) - anchors.rightMargin
                 }
                 PlasmaCore.SvgItem {
                     svg: marginHighlightSvg
@@ -306,26 +314,32 @@ function checkLastSpacer() {
                     anchors {
                         bottom: parent.bottom
                         left: parent.left
-                        right: parent.right
-                        leftMargin: -currentLayout.rowSpacing/2
-                        rightMargin: -currentLayout.rowSpacing/2
-                        bottomMargin: -getMargins('bottom')
+                        right: isHorizontal ? parent.right : undefined
+                        top: isHorizontal ? undefined : parent.top
+                        leftMargin: isHorizontal ? -currentLayout.rowSpacing/2 : -getMargins('left')
+                        rightMargin: isHorizontal ? -currentLayout.rowSpacing/2 : undefined
+                        bottomMargin: isHorizontal ? -getMargins('bottom') : -currentLayout.columnSpacing/2
+                        topMargin: isHorizontal ? undefined : -currentLayout.columnSpacing/2
                     }
-                    height: getMargins('bottom', false, true)
+                    height: isHorizontal ? getMargins('bottom', false, false, isMarginSeparator ? false : inThickArea) : undefined
+                    width: isHorizontal ? undefined : getMargins('left', false, false, isMarginSeparator ? false : inThickArea)
                 }
                 PlasmaCore.SvgItem {
                     svg: marginHighlightSvg
-                    visible: ((applet.constraintHints & PlasmaCore.Types.MarginAreasSeparator) == PlasmaCore.Types.MarginAreasSeparator)
-                    elementId: 'bottomright'
+                    visible: isMarginSeparator
+                    elementId: inThickArea ? (isHorizontal ? 'bottomleft' : 'topleft') : (isHorizontal ? 'bottomright' : 'bottomleft')
                     anchors {
                         bottom: parent.bottom
                         left: parent.left
-                        right: parent.right
-                        leftMargin: -currentLayout.rowSpacing/2
-                        rightMargin: -currentLayout.rowSpacing/2
-                        bottomMargin: getMargins('bottom', false, true)
+                        right: isHorizontal ? parent.right : undefined
+                        top: isHorizontal ? undefined : parent.top
+                        leftMargin: isHorizontal ? -currentLayout.rowSpacing/2 : getMargins('left', false, false, false)
+                        rightMargin: isHorizontal ? -currentLayout.rowSpacing/2 : undefined
+                        bottomMargin: isHorizontal ? getMargins('bottom', false, false, false) : -currentLayout.columnSpacing/2
+                        topMargin: isHorizontal ? undefined : -currentLayout.columnSpacing/2
                     }
-                    height: getMargins('bottom', false, true, true) - anchors.bottomMargin
+                    height: isHorizontal ? getMargins('bottom', false, false, true) - anchors.bottomMargin : undefined
+                    width: isHorizontal ? undefined : getMargins('left', false, false, true) - anchors.leftMargin
                 }
             }
 
@@ -335,7 +349,6 @@ function checkLastSpacer() {
             property Item dragging
 
             onAppletChanged: {
-                console.log('B')
                 applet.parent = container
                 applet.anchors.fill = container
             }
@@ -423,6 +436,7 @@ function checkLastSpacer() {
 
         width: root.hasSpacer || !isLayoutHorizontal ? root.width : implicitWidth
         height: root.hasSpacer || isLayoutHorizontal ? root.height: implicitHeight
+        property int toolBoxWidth: 0 //root.hasSpacer || !isLayoutHorizontal || !toolBox ? 0 : toolBox.width ||||| (isLayoutHorizontal && root.toolBox && Qt.application.layoutDirection === Qt.RightToLeft && plasmoid.editMode)
 
         rows: isHorizontal ? 1 : currentLayout.children.length
         columns: isHorizontal ? currentLayout.children.length : 1
