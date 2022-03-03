@@ -52,6 +52,7 @@ target_link_libraries(kcm_keys
     KF5::KCMUtils
     KF5::KIOWidgets
     KF5::QuickAddons
+    stdc++fs
 )
 
 install(FILES kcm_keys.desktop DESTINATION ${KDE_INSTALL_APPDIR})
