@@ -84,9 +84,17 @@ SearchConfigModule::SearchConfigModule(QWidget *parent, const QVariantList &args
     m_freeFloating = new QRadioButton(i18n("Center"), this);
     connect(m_freeFloating, &QRadioButton::toggled, this, &SearchConfigModule::updateUnmanagedState);
 
+    // Options to enable typing on the Desktop to activate KRunner
+    m_activateWhenTypingOnDesktop = new QCheckBox(i18nc("@item:inlistbox", "Pressing any key on the desktop"), this);
+    connect(m_activateWhenTypingOnDesktop, &QCheckBox::toggled, this, &SearchConfigModule::updateUnmanagedState);
+
     QFormLayout *positionLayout = new QFormLayout;
     positionLayout->addRow(i18n("KRunner position:"), m_topPositioning);
     positionLayout->addRow(QString(), m_freeFloating);
+
+    positionLayout->addItem(new QSpacerItem(0, 0));
+    positionLayout->addRow(i18nc("@label:listbox part of a sentence", "Activate when:"), m_activateWhenTypingOnDesktop);
+
     m_enableHistory = new QCheckBox(i18n("Enable"), this);
     m_enableHistory->setObjectName("kcfg_historyEnabled");
     positionLayout->addItem(new QSpacerItem(0, 0));
@@ -157,6 +165,8 @@ void SearchConfigModule::load()
     m_topPositioning->setChecked(!m_settings->freeFloating());
     m_freeFloating->setChecked(m_settings->freeFloating());
 
+    m_activateWhenTypingOnDesktop->setChecked(m_settings->activateWhenTypingOnDesktop());
+
     m_clearHistoryButton->setEnabled(m_enableHistory->isChecked());
 
     // Set focus on the pluginselector to pass focus to search bar.
@@ -174,6 +184,7 @@ void SearchConfigModule::load()
 void SearchConfigModule::save()
 {
     m_settings->setFreeFloating(m_freeFloating->isChecked());
+    m_settings->setActivateWhenTypingOnDesktop(m_activateWhenTypingOnDesktop->isChecked());
     m_settings->save();
 
     KCModule::save();
@@ -207,6 +218,7 @@ void SearchConfigModule::defaults()
 
     m_topPositioning->setChecked(!m_settings->defaultFreeFloatingValue());
     m_freeFloating->setChecked(m_settings->defaultFreeFloatingValue());
+    m_activateWhenTypingOnDesktop->setChecked(m_settings->defaultActivateWhenTypingOnDesktopValue());
 
     m_pluginSelector->defaults();
 }
@@ -267,6 +279,7 @@ void SearchConfigModule::updateUnmanagedState()
     isNeedSave |= m_pluginSelector->isSaveNeeded();
     isNeedSave |= m_topPositioning->isChecked() == m_settings->freeFloating();
     isNeedSave |= m_freeFloating->isChecked() != m_settings->freeFloating();
+    isNeedSave |= m_activateWhenTypingOnDesktop->isChecked() != m_settings->activateWhenTypingOnDesktop();
 
     unmanagedWidgetChangeState(isNeedSave);
 
@@ -274,9 +287,13 @@ void SearchConfigModule::updateUnmanagedState()
     isDefault &= m_pluginSelector->isDefault();
     isDefault &= m_topPositioning->isChecked() != m_settings->defaultFreeFloatingValue();
     isDefault &= m_freeFloating->isChecked() == m_settings->defaultFreeFloatingValue();
+    isDefault &= m_activateWhenTypingOnDesktop->isChecked() == m_settings->defaultActivateWhenTypingOnDesktopValue();
 
     setDefaultIndicatorVisible(m_topPositioning, defaultsIndicatorsVisible() && m_topPositioning->isChecked() == m_settings->defaultFreeFloatingValue());
     setDefaultIndicatorVisible(m_freeFloating, defaultsIndicatorsVisible() && m_freeFloating->isChecked() != m_settings->defaultFreeFloatingValue());
+    setDefaultIndicatorVisible(m_activateWhenTypingOnDesktop,
+                               defaultsIndicatorsVisible()
+                                   && m_activateWhenTypingOnDesktop->isChecked() != m_settings->defaultActivateWhenTypingOnDesktopValue());
 
     unmanagedWidgetDefaultState(isDefault);
 }
