@@ -50,6 +50,7 @@ private:
     QString m_pluginID;
     QRadioButton *m_topPositioning;
     QRadioButton *m_freeFloating;
+    QCheckBox *m_activateWhenTypingOnDesktop;
     QCheckBox *m_retainPriorSearch;
     QCheckBox *m_activityAware;
     QToolButton *m_clearHistoryButton;
