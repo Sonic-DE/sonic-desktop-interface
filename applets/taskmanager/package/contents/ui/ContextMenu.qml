@@ -27,11 +27,11 @@ PlasmaComponents.ContextMenu {
     property bool showAllPlaces: false
 
     placement: {
-        if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
+        if (Plasmoid.location === PlasmaCore.Types.LeftEdge) {
             return PlasmaCore.Types.RightPosedTopAlignedPopup;
-        } else if (plasmoid.location === PlasmaCore.Types.TopEdge) {
+        } else if (Plasmoid.location === PlasmaCore.Types.TopEdge) {
             return PlasmaCore.Types.BottomPosedLeftAlignedPopup;
-        } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
+        } else if (Plasmoid.location === PlasmaCore.Types.RightEdge) {
             return PlasmaCore.Types.LeftPosedTopAlignedPopup;
         } else {
             return PlasmaCore.Types.TopPosedLeftAlignedPopup;
@@ -482,7 +482,7 @@ PlasmaComponents.ContextMenu {
         visible: visualParent
                      && get(atm.IsLauncher) !== true
                      && get(atm.IsStartup) !== true
-                     && plasmoid.immutability !== PlasmaCore.Types.SystemImmutable
+                     && Plasmoid.immutability !== PlasmaCore.Types.SystemImmutable
                      && (activityInfo.numberOfRunningActivities < 2)
                      && !doesBelongToCurrentActivity()
 
@@ -510,7 +510,7 @@ PlasmaComponents.ContextMenu {
 
         visible: visualParent
                      && get(atm.IsStartup) !== true
-                     && plasmoid.immutability !== PlasmaCore.Types.SystemImmutable
+                     && Plasmoid.immutability !== PlasmaCore.Types.SystemImmutable
                      && (activityInfo.numberOfRunningActivities >= 2)
 
         Connections {
@@ -583,7 +583,7 @@ PlasmaComponents.ContextMenu {
 
     PlasmaComponents.MenuItem {
         visible: (visualParent
-                && plasmoid.immutability !== PlasmaCore.Types.SystemImmutable
+                && Plasmoid.immutability !== PlasmaCore.Types.SystemImmutable
                 && !launcherToggleAction.visible
                 && activityInfo.numberOfRunningActivities < 2)
 
@@ -703,7 +703,7 @@ PlasmaComponents.ContextMenu {
             }
 
             PlasmaComponents.MenuItem {
-                visible: (plasmoid.configuration.groupingStrategy !== 0) && menu.get(atm.IsWindow) === true
+                visible: (Plasmoid.configuration.groupingStrategy !== 0) && menu.get(atm.IsWindow) === true
 
                 checkable: true
                 checked: menu.visualParent && menu.get(atm.IsGroupable) === true
@@ -729,7 +729,7 @@ PlasmaComponents.ContextMenu {
 
                 onClicked: configureAction.trigger()
 
-                Component.onCompleted: configureAction = plasmoid.action("configure")
+                Component.onCompleted: configureAction = Plasmoid.action("configure")
             }
 
             PlasmaComponents.MenuItem {
@@ -743,7 +743,7 @@ PlasmaComponents.ContextMenu {
 
                 onClicked: alternativesAction.trigger()
 
-                Component.onCompleted: alternativesAction = plasmoid.action("alternatives")
+                Component.onCompleted: alternativesAction = Plasmoid.action("alternatives")
             }
         }
     }

@@ -145,15 +145,15 @@ FocusScope {
         var dragIndex = gridView.indexAt(dragPos.x, dragPos.y);
 
         if (listener.dragX == -1 || dragIndex !== dropIndex) {
-            dir.drop(target, event, dropItemAt(dropPos), root.isContainment && !plasmoid.immutable);
+            dir.drop(target, event, dropItemAt(dropPos), root.isContainment && !Plasmoid.immutable);
         }
     }
 
     Connections {
         target: dir
         function onPopupMenuAboutToShow(dropJob, mimeData, x, y) {
-            if (root.isContainment && !plasmoid.immutable) {
-                plasmoid.processMimeData(mimeData, x, y, dropJob);
+            if (root.isContainment && !Plasmoid.immutable) {
+                Plasmoid.processMimeData(mimeData, x, y, dropJob);
             }
         }
     }
@@ -161,7 +161,7 @@ FocusScope {
     Connections {
         target: plasmoid
         function onExpandedChanged() {
-            if (plasmoid.expanded && dir.status === Folder.FolderModel.Ready && !gridView.model) {
+            if (Plasmoid.expanded && dir.status === Folder.FolderModel.Ready && !gridView.model) {
                 gridView.model = positioner;
             }
         }
@@ -256,7 +256,7 @@ FocusScope {
             scrollArea.focus = true;
 
             if (mouse.buttons & Qt.BackButton) {
-                if (root.isPopup && dir.resolvedUrl !== dir.resolve(plasmoid.configuration.url)) {
+                if (root.isPopup && dir.resolvedUrl !== dir.resolve(Plasmoid.configuration.url)) {
                     doBack();
                     mouse.accepted = true;
                 }
@@ -375,7 +375,7 @@ FocusScope {
 
             if (!hoveredItem || hoveredItem.blank || gridView.currentIndex == -1 || gridView.ctrlPressed || gridView.shiftPressed) {
                 // Bug 357367: Replay mouse event, so containment actions assigned to left mouse button work.
-                eventGenerator.sendMouseEvent(plasmoid, EventGenerator.MouseButtonPress, mouse.x, mouse.y, mouse.button, mouse.buttons, mouse.modifiers);
+                eventGenerator.sendMouseEvent(Plasmoid, EventGenerator.MouseButtonPress, mouse.x, mouse.y, mouse.button, mouse.buttons, mouse.modifiers);
                 return;
             }
 
@@ -412,7 +412,7 @@ FocusScope {
                     && previouslySelectedItemIndex == gridView.currentIndex
                     && gridView.currentIndex != -1
                     && !Qt.styleHints.singleClickActivation
-                    && plasmoid.configuration.renameInline
+                    && Plasmoid.configuration.renameInline
                     && !doubleClickInProgress
                 ) {
                     rename();
@@ -621,7 +621,7 @@ FocusScope {
 
                 if (root.useListViewMode) {
                     doCd(index);
-                } else if (plasmoid.configuration.popups) {
+                } else if (Plasmoid.configuration.popups) {
                     hoveredItem.openPopup();
                 }
             }
@@ -687,7 +687,7 @@ FocusScope {
                     } else {
                         var iconWidth = iconSize + (2 * PlasmaCore.Units.largeSpacing) + (2 * PlasmaCore.Units.smallSpacing);
                         if (root.isContainment && isRootView && scrollArea.viewportWidth > 0) {
-                            var minIconWidth = Math.max(iconWidth, PlasmaCore.Units.iconSizes.small * ((plasmoid.configuration.labelWidth * 2) + 4));
+                            var minIconWidth = Math.max(iconWidth, PlasmaCore.Units.iconSizes.small * ((Plasmoid.configuration.labelWidth * 2) + 4));
                             var extraWidth = calcExtraSpacing(minIconWidth, scrollArea.viewportWidth);
                             return minIconWidth + extraWidth;
                         } else {
@@ -702,7 +702,7 @@ FocusScope {
                             + Math.max(highlightItemSvg.margins.top + highlightItemSvg.margins.bottom,
                             listItemSvg.margins.top + listItemSvg.margins.bottom)) / 2) * 2;
                     } else {
-                        var iconHeight = iconSize + (PlasmaCore.Theme.mSize(PlasmaCore.Theme.defaultFont).height * plasmoid.configuration.textLines) + (4 * PlasmaCore.Units.smallSpacing);
+                        var iconHeight = iconSize + (PlasmaCore.Theme.mSize(PlasmaCore.Theme.defaultFont).height * Plasmoid.configuration.textLines) + (4 * PlasmaCore.Units.smallSpacing);
                         if (root.isContainment && isRootView && scrollArea.viewportHeight > 0) {
                             var extraHeight = calcExtraSpacing(iconHeight, scrollArea.viewportHeight);
                             return iconHeight + extraHeight;
@@ -866,7 +866,7 @@ FocusScope {
                         return PlasmaCore.Units.iconSizes.small;
                     }
 
-                    return FolderTools.iconSizeFromTheme(plasmoid.configuration.iconSize);
+                    return FolderTools.iconSizeFromTheme(Plasmoid.configuration.iconSize);
                 }
 
                 function updateSelection(modifier) {
@@ -1064,7 +1064,7 @@ FocusScope {
 
                 Keys.onLeftPressed: {
                     if (root.isPopup && root.useListViewMode) {
-                        if (dir.resolvedUrl !== dir.resolve(plasmoid.configuration.url)) {
+                        if (dir.resolvedUrl !== dir.resolve(Plasmoid.configuration.url)) {
                             doBack();
                         }
                     } else if (positioner.enabled) {
@@ -1159,7 +1159,7 @@ FocusScope {
                 }
 
                 Keys.onBackPressed: {
-                    if (root.isPopup && dir.resolvedUrl !== dir.resolve(plasmoid.configuration.url)) {
+                    if (root.isPopup && dir.resolvedUrl !== dir.resolve(Plasmoid.configuration.url)) {
                         doBack();
                     }
                 }
@@ -1195,22 +1195,22 @@ FocusScope {
             anchors.fill: parent
 
             enabled: root.isContainment && !gridView.overflowing
-            destination: plasmoid
+            destination: Plasmoid
         }
 
         Folder.FolderModel {
             id: dir
 
             usedByContainment: root.isContainment && main.isRootView
-            sortDesc: plasmoid.configuration.sortDesc
-            sortDirsFirst: plasmoid.configuration.sortDirsFirst
-            parseDesktopFiles: (plasmoid.configuration.url === "desktop:/")
-            previews: plasmoid.configuration.previews
-            previewPlugins: plasmoid.configuration.previewPlugins
-            appletInterface: plasmoid
+            sortDesc: Plasmoid.configuration.sortDesc
+            sortDirsFirst: Plasmoid.configuration.sortDirsFirst
+            parseDesktopFiles: (Plasmoid.configuration.url === "desktop:/")
+            previews: Plasmoid.configuration.previews
+            previewPlugins: Plasmoid.configuration.previewPlugins
+            appletInterface: Plasmoid
 
             onListingCompleted: {
-                if (!gridView.model && plasmoid.expanded) {
+                if (!gridView.model && Plasmoid.expanded) {
                     gridView.model = positioner;
                     gridView.currentIndex = isPopup ? 0 : -1;
                 } else if (goingBack) {
@@ -1429,7 +1429,7 @@ FocusScope {
                         _height = targetItem.labelArea.height + __style.padding.top + __style.padding.bottom;
                     } else {
                         var realHeight = contentHeight + __style.padding.top + __style.padding.bottom;
-                        var maxHeight = PlasmaCore.Theme.mSize(PlasmaCore.Theme.defaultFont).height * (plasmoid.configuration.textLines + 1) + __style.padding.top + __style.padding.bottom;
+                        var maxHeight = PlasmaCore.Theme.mSize(PlasmaCore.Theme.defaultFont).height * (Plasmoid.configuration.textLines + 1) + __style.padding.top + __style.padding.bottom;
                         _height = Math.min(realHeight, maxHeight);
                     }
                     return(_height + (addWidthHoriozontalScroller ? __horizontalScrollBar.parent.horizontalScrollbarOffset : 0));
