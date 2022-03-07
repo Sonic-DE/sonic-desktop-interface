@@ -9,6 +9,7 @@ import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 
 import org.kde.kirigami 2.19 as Kirigami
+import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 
 Kirigami.FormLayout {
@@ -16,7 +17,7 @@ Kirigami.FormLayout {
     anchors.right: parent.right
 
     readonly property bool plasmaPaAvailable: Qt.createComponent("PulseAudio.qml").status === Component.Ready
-    readonly property bool plasmoidVertical: plasmoid.formFactor === PlasmaCore.Types.Vertical
+    readonly property bool plasmoidVertical: Plasmoid.formFactor === PlasmaCore.Types.Vertical
 
     property alias cfg_showToolTips: showToolTips.checked
     property alias cfg_highlightWindows: highlightWindows.checked
