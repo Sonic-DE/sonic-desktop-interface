@@ -6,6 +6,7 @@
 
 import QtQuick 2.15
 
+import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
 import org.kde.draganddrop 2.0
@@ -52,7 +53,7 @@ MouseArea {
     property Item audioStreamOverlay
     property var audioStreams: []
     property bool delayAudioStreamIndicator: false
-    readonly property bool audioIndicatorsEnabled: plasmoid.configuration.indicateAudioStreams
+    readonly property bool audioIndicatorsEnabled: Plasmoid.configuration.indicateAudioStreams
     readonly property bool hasAudioStream: audioStreams.length > 0
     readonly property bool playingAudio: hasAudioStream && audioStreams.some(function (item) {
         return !item.corked
@@ -114,7 +115,7 @@ MouseArea {
         hideToolTipTemporarily();
 
         if (!inPopup && !tasks.vertical
-            && (LayoutManager.calculateStripes() > 1 || !plasmoid.configuration.separateLaunchers)) {
+            && (LayoutManager.calculateStripes() > 1 || !Plasmoid.configuration.separateLaunchers)) {
             tasks.requestLayout();
         }
     }
@@ -164,20 +165,20 @@ MouseArea {
     onReleased: {
         if (pressed) {
             if (mouse.button == Qt.MidButton) {
-                if (plasmoid.configuration.middleClickAction === TaskManagerApplet.Backend.NewInstance) {
+                if (Plasmoid.configuration.middleClickAction === TaskManagerApplet.Backend.NewInstance) {
                     tasksModel.requestNewInstance(modelIndex());
-                } else if (plasmoid.configuration.middleClickAction === TaskManagerApplet.Backend.Close) {
+                } else if (Plasmoid.configuration.middleClickAction === TaskManagerApplet.Backend.Close) {
                     tasks.taskClosedWithMouseMiddleButton = winIdList.slice()
                     tasksModel.requestClose(modelIndex());
-                } else if (plasmoid.configuration.middleClickAction === TaskManagerApplet.Backend.ToggleMinimized) {
+                } else if (Plasmoid.configuration.middleClickAction === TaskManagerApplet.Backend.ToggleMinimized) {
                     tasksModel.requestToggleMinimized(modelIndex());
-                } else if (plasmoid.configuration.middleClickAction === TaskManagerApplet.Backend.ToggleGrouping) {
+                } else if (Plasmoid.configuration.middleClickAction === TaskManagerApplet.Backend.ToggleGrouping) {
                     tasksModel.requestToggleGrouping(modelIndex());
-                } else if (plasmoid.configuration.middleClickAction === TaskManagerApplet.Backend.BringToCurrentDesktop) {
+                } else if (Plasmoid.configuration.middleClickAction === TaskManagerApplet.Backend.BringToCurrentDesktop) {
                     tasksModel.requestVirtualDesktops(modelIndex(), [virtualDesktopInfo.currentDesktop]);
                 }
             } else if (mouse.button == Qt.LeftButton) {
-                if (plasmoid.configuration.showToolTips && toolTipArea.active) {
+                if (Plasmoid.configuration.showToolTips && toolTipArea.active) {
                     hideToolTipTemporarily();
                 }
                 TaskTools.activateTask(modelIndex(), model, mouse.modifiers, task);
@@ -216,7 +217,7 @@ MouseArea {
     }
 
     onWheel: {
-        if (plasmoid.configuration.wheelEnabled && (!inPopup || !groupDialog.overflowing)) {
+        if (Plasmoid.configuration.wheelEnabled && (!inPopup || !groupDialog.overflowing)) {
             wheelDelta = TaskTools.wheelActivateNextPrevTask(task, wheelDelta, wheel.angleDelta.y);
         } else {
             wheel.accepted = false;
@@ -342,7 +343,7 @@ MouseArea {
         }
 
         imagePath: "widgets/tasks"
-        property bool isHovered: task.highlighted && plasmoid.configuration.taskHoverEffect
+        property bool isHovered: task.highlighted && Plasmoid.configuration.taskHoverEffect
         property string basePrefix: "normal"
         prefix: isHovered ? TaskTools.taskPrefixHovered(basePrefix) : TaskTools.taskPrefix(basePrefix)
 
@@ -350,9 +351,9 @@ MouseArea {
             id: toolTipArea
 
             anchors.fill: parent
-            location: plasmoid.location
+            location: Plasmoid.location
 
-            enabled: plasmoid.configuration.showToolTips && !inPopup && !groupDialog.visible && (tasks.toolTipOpenedByClick === task || tasks.toolTipOpenedByClick === null)
+            enabled: Plasmoid.configuration.showToolTips && !inPopup && !groupDialog.visible && (tasks.toolTipOpenedByClick === task || tasks.toolTipOpenedByClick === null)
             interactive: model.IsWindow === true || mainItem.hasPlayer
 
             // when the mouse leaves the tooltip area, a timer to hide is set for (timeout / 20) ms
@@ -532,7 +533,7 @@ MouseArea {
         elide: Text.ElideRight
         textFormat: Text.PlainText
         verticalAlignment: Text.AlignVCenter
-        maximumLineCount: plasmoid.configuration.maxTextLines || undefined
+        maximumLineCount: Plasmoid.configuration.maxTextLines || undefined
 
         // use State to avoid unnecessary re-evaluation when the label is invisible
         states: State {

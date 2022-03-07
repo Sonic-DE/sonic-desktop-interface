@@ -210,7 +210,7 @@ FocusScope {
                         tasksModel.requestActivate(tasksModel.makeModelIndex(index))
 
                         if (!windowPin.checked) {
-                            plasmoid.expanded = false;
+                            Plasmoid.expanded = false;
                         }
                     }
                 }
@@ -230,10 +230,10 @@ FocusScope {
 
         iconSource: "window-pin"
 
-        visible: plasmoid.compactRepresentationItem && plasmoid.compactRepresentationItem.visible
+        visible: Plasmoid.compactRepresentationItem && Plasmoid.compactRepresentationItem.visible
 
         checkable: true
-        onCheckedChanged: plasmoid.hideOnWindowDeactivate = !checked
+        onCheckedChanged: Plasmoid.hideOnWindowDeactivate = !checked
 
         Keys.onTabPressed: {
             if (windowListView.count) {
