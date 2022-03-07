@@ -10,6 +10,7 @@ import QtQml 2.15
 
 import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.plasma.plasmoid 2.0
 
 import org.kde.taskmanager 0.1 as TaskManager
 import org.kde.plasma.private.taskmanager 0.1 as TaskManagerApplet
@@ -23,8 +24,8 @@ MouseArea {
     anchors.fill: parent
     hoverEnabled: true
 
-    property bool vertical: plasmoid.formFactor === PlasmaCore.Types.Vertical
-    property bool iconsOnly: plasmoid.pluginName === "org.kde.plasma.icontasks"
+    property bool vertical: Plasmoid.formFactor === PlasmaCore.Types.Vertical
+    property bool iconsOnly: Plasmoid.pluginName === "org.kde.plasma.icontasks"
 
     property var toolTipOpenedByClick: null
 
@@ -39,7 +40,7 @@ MouseArea {
     Plasmoid.constraintHints: PlasmaCore.Types.CanFillArea
 
     Plasmoid.onUserConfiguringChanged: {
-        if (plasmoid.userConfiguring) {
+        if (Plasmoid.userConfiguring) {
             groupDialog.visible = false;
         }
     }
@@ -63,13 +64,13 @@ MouseArea {
     onWidthChanged: {
         taskList.width = LayoutManager.layoutWidth();
 
-        if (plasmoid.configuration.forceStripes) {
+        if (Plasmoid.configuration.forceStripes) {
             taskList.height = LayoutManager.layoutHeight();
         }
     }
 
     onHeightChanged: {
-        if (plasmoid.configuration.forceStripes) {
+        if (Plasmoid.configuration.forceStripes) {
             taskList.width = LayoutManager.layoutWidth();
         }
 
@@ -93,7 +94,7 @@ MouseArea {
         id: tasksModel
 
         readonly property int logicalLauncherCount: {
-            if (plasmoid.configuration.separateLaunchers) {
+            if (Plasmoid.configuration.separateLaunchers) {
                 return launcherCount;
             }
 
@@ -111,41 +112,41 @@ MouseArea {
         }
 
         virtualDesktop: virtualDesktopInfo.currentDesktop
-        screenGeometry: plasmoid.screenGeometry
+        screenGeometry: Plasmoid.screenGeometry
         activity: activityInfo.currentActivity
 
-        filterByVirtualDesktop: plasmoid.configuration.showOnlyCurrentDesktop
-        filterByScreen: plasmoid.configuration.showOnlyCurrentScreen
-        filterByActivity: plasmoid.configuration.showOnlyCurrentActivity
-        filterNotMinimized: plasmoid.configuration.showOnlyMinimized
+        filterByVirtualDesktop: Plasmoid.configuration.showOnlyCurrentDesktop
+        filterByScreen: Plasmoid.configuration.showOnlyCurrentScreen
+        filterByActivity: Plasmoid.configuration.showOnlyCurrentActivity
+        filterNotMinimized: Plasmoid.configuration.showOnlyMinimized
 
-        sortMode: sortModeEnumValue(plasmoid.configuration.sortingStrategy)
-        launchInPlace: iconsOnly && plasmoid.configuration.sortingStrategy === 1
+        sortMode: sortModeEnumValue(Plasmoid.configuration.sortingStrategy)
+        launchInPlace: iconsOnly && Plasmoid.configuration.sortingStrategy === 1
         separateLaunchers: {
-            if (!iconsOnly && !plasmoid.configuration.separateLaunchers
-                && plasmoid.configuration.sortingStrategy === 1) {
+            if (!iconsOnly && !Plasmoid.configuration.separateLaunchers
+                && Plasmoid.configuration.sortingStrategy === 1) {
                 return false;
             }
 
             return true;
         }
 
-        groupMode: groupModeEnumValue(plasmoid.configuration.groupingStrategy)
-        groupInline: !plasmoid.configuration.groupPopups
-        groupingWindowTasksThreshold: (plasmoid.configuration.onlyGroupWhenFull && !iconsOnly
+        groupMode: groupModeEnumValue(Plasmoid.configuration.groupingStrategy)
+        groupInline: !Plasmoid.configuration.groupPopups
+        groupingWindowTasksThreshold: (Plasmoid.configuration.onlyGroupWhenFull && !iconsOnly
             ? LayoutManager.optimumCapacity(width, height) + 1 : -1)
 
         onLauncherListChanged: {
             layoutTimer.restart();
-            plasmoid.configuration.launchers = launcherList;
+            Plasmoid.configuration.launchers = launcherList;
         }
 
         onGroupingAppIdBlacklistChanged: {
-            plasmoid.configuration.groupingAppIdBlacklist = groupingAppIdBlacklist;
+            Plasmoid.configuration.groupingAppIdBlacklist = groupingAppIdBlacklist;
         }
 
         onGroupingLauncherUrlBlacklistChanged: {
-            plasmoid.configuration.groupingLauncherUrlBlacklist = groupingLauncherUrlBlacklist;
+            Plasmoid.configuration.groupingLauncherUrlBlacklist = groupingLauncherUrlBlacklist;
         }
 
         function sortModeEnumValue(index) {
@@ -175,9 +176,9 @@ MouseArea {
         }
 
         Component.onCompleted: {
-            launcherList = plasmoid.configuration.launchers;
-            groupingAppIdBlacklist = plasmoid.configuration.groupingAppIdBlacklist;
-            groupingLauncherUrlBlacklist = plasmoid.configuration.groupingLauncherUrlBlacklist;
+            launcherList = Plasmoid.configuration.launchers;
+            groupingAppIdBlacklist = Plasmoid.configuration.groupingAppIdBlacklist;
+            groupingLauncherUrlBlacklist = Plasmoid.configuration.groupingLauncherUrlBlacklist;
 
             // Only hook up view only after the above churn is done.
             taskRepeater.model = tasksModel;
@@ -188,7 +189,7 @@ MouseArea {
         target: tasksModel
 
         function onActiveTaskChanged() {
-            if (!plasmoid.configuration.groupPopups) {
+            if (!Plasmoid.configuration.groupPopups) {
                 return;
             }
             if (tasksModel.activeTask.parent.valid) {
@@ -211,7 +212,7 @@ MouseArea {
 
         taskManagerItem: tasks
         groupDialog: groupDialog
-        highlightWindows: plasmoid.configuration.highlightWindows
+        highlightWindows: Plasmoid.configuration.highlightWindows
 
         onAddLauncher: {
             tasks.addLauncher(url);
@@ -330,7 +331,7 @@ MouseArea {
     Binding {
         target: plasmoid
         property: "status"
-        value: (tasksModel.anyTaskDemandsAttention && plasmoid.configuration.unhideOnAttention
+        value: (tasksModel.anyTaskDemandsAttention && Plasmoid.configuration.unhideOnAttention
             ? PlasmaCore.Types.NeedsAttentionStatus : PlasmaCore.Types.PassiveStatus)
         restoreMode: Binding.RestoreBinding
     }
@@ -350,13 +351,13 @@ MouseArea {
         target: plasmoid.configuration
 
         function onLaunchersChanged() {
-            tasksModel.launcherList = plasmoid.configuration.launchers
+            tasksModel.launcherList = Plasmoid.configuration.launchers
         }
         function onGroupingAppIdBlacklistChanged() {
-            tasksModel.groupingAppIdBlacklist = plasmoid.configuration.groupingAppIdBlacklist;
+            tasksModel.groupingAppIdBlacklist = Plasmoid.configuration.groupingAppIdBlacklist;
         }
         function onGroupingLauncherUrlBlacklistChanged() {
-            tasksModel.groupingLauncherUrlBlacklist = plasmoid.configuration.groupingLauncherUrlBlacklist;
+            tasksModel.groupingLauncherUrlBlacklist = Plasmoid.configuration.groupingLauncherUrlBlacklist;
         }
     }
 
@@ -437,9 +438,9 @@ MouseArea {
 
         flow: {
             if (tasks.vertical) {
-                return plasmoid.configuration.forceStripes ? Flow.LeftToRight : Flow.TopToBottom
+                return Plasmoid.configuration.forceStripes ? Flow.LeftToRight : Flow.TopToBottom
             }
-            return plasmoid.configuration.forceStripes ? Flow.TopToBottom : Flow.LeftToRight
+            return Plasmoid.configuration.forceStripes ? Flow.TopToBottom : Flow.LeftToRight
         }
 
         onAnimatingChanged: {
@@ -488,7 +489,7 @@ MouseArea {
     }
 
     function addLauncher(url) {
-        if (plasmoid.immutability !== PlasmaCore.Types.SystemImmutable) {
+        if (Plasmoid.immutability !== PlasmaCore.Types.SystemImmutable) {
             tasksModel.requestAddLauncher(url);
         }
     }
