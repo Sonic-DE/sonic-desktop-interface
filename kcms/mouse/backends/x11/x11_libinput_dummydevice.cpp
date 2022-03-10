@@ -151,7 +151,34 @@ X11LibinputDummyDevice::X11LibinputDummyDevice(QObject *parent, Display *dpy)
     m_supportsPointerAccelerationProfileFlat.val = true;
 
     m_defaultPointerAccelerationProfileAdaptive.val = true;
-    m_defaultPointerAccelerationProfileFlat.val = false;
+
+    bool flatProfile = true;
+    XIForallPointerDevices(m_dpy, [&](XDeviceInfo *info) {
+        Atom property = m_pointerAccelerationProfileFlat.atom;
+        Atom type_return;
+        int format_return;
+        unsigned long num_items_return;
+        unsigned long bytes_after_return;
+        unsigned char *_data = nullptr;
+
+        auto status =
+            XIGetProperty(m_dpy, info->id, property, 0, 1, False, XA_INTEGER, &type_return, &format_return, &num_items_return, &bytes_after_return, &_data);
+        if (status != Success) {
+            return;
+        }
+
+        QScopedArrayPointer<unsigned char, ScopedXDeleter> data(_data);
+        _data = nullptr;
+
+        if (type_return != XA_INTEGER || !data || format_return != 8 || num_items_return != 2) {
+            return;
+        }
+
+        if (data[1] == 1 && data[1] == 0) {
+            flatProfile = false;
+        }
+    });
+    m_defaultPointerAccelerationProfileFlat.val = flatProfile;
 
     m_supportsNaturalScroll.val = true;
     m_naturalScrollEnabledByDefault.val = false;
@@ -174,9 +201,10 @@ bool X11LibinputDummyDevice::getConfig()
 
     reset(m_middleEmulation, false);
     reset(m_naturalScroll, false);
-    reset(m_pointerAccelerationProfileFlat, false);
+    auto flatDefault = m_defaultPointerAccelerationProfileFlat.val;
+    reset(m_pointerAccelerationProfileFlat, flatDefault);
 
-    m_pointerAccelerationProfileAdaptive.reset(!m_settings->load(m_pointerAccelerationProfileFlat.cfgName, false));
+    m_pointerAccelerationProfileAdaptive.reset(!m_settings->load(m_pointerAccelerationProfileFlat.cfgName, flatDefault));
     m_pointerAcceleration.reset(m_settings->load(m_pointerAcceleration.cfgName, 0.));
 
     return true;
