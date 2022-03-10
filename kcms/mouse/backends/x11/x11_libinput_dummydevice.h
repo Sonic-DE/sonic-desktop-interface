@@ -67,6 +67,8 @@ public:
     bool applyConfig();
     bool isChangedConfig() const;
 
+    void readDefaultsFromX();
+
     //
     // general
     QString name() const
@@ -277,6 +279,7 @@ private:
     Prop<qreal> m_pointerAcceleration = Prop<qreal>("pointerAcceleration", "XLbInptPointerAcceleration");
 
     Prop<bool> m_supportsPointerAccelerationProfileFlat = Prop<bool>("supportsPointerAccelerationProfileFlat");
+    Prop<bool> m_x11DefaultPointerAccelerationProfileFlat = Prop<bool>("x11DefaultPointerAccelerationProfileFlat");
     Prop<bool> m_defaultPointerAccelerationProfileFlat = Prop<bool>("defaultPointerAccelerationProfileFlat");
     Prop<bool> m_pointerAccelerationProfileFlat = Prop<bool>("pointerAccelerationProfileFlat", "XLbInptAccelProfileFlat");
 
