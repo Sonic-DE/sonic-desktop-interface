@@ -67,6 +67,8 @@ public:
     bool applyConfig();
     bool isChangedConfig() const;
 
+    void readDefaultsFromX();
+
     //
     // general
     QString name() const
