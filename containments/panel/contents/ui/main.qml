@@ -277,28 +277,6 @@ function checkLastSpacer() {
                 }
                 anchors.fill: parent
 
-                component SideMargin: PlasmaCore.SvgItem {
-                    property string side; property bool fill: true
-                    property int inset; property int padding
-                    property var west: ({'left': 'top', 'top': 'left', 'right': 'up', 'bottom': 'left'})
-                    property var mirror: ({'left': 'right', 'top': 'bottom', 'right': 'left', 'bottom': 'up'})
-                    // side + (inThickArea ? left : right)
-                    // (inThickArea ? left : right) + side
-                    elementId: fill ? 'fill' : (isHorizontal ? side + (inThickArea ? 'left' : 'right') : (inThickArea ? 'top' : 'bottom') + side)
-                    svg: {
-                        let left = west[side]; let right = mirror[left]; let up = mirror[side]
-                        anchors[up] = undefined
-                        this[isHorizontal ? 'height' : 'width'] = padding
-                        anchors[left+'Margin'] = - currentLayout.rowSpacing/2 - (index == 0 ? panelSvg.margins[left] + currentLayout.x : 0)
-                        anchors[right+'Margin'] = - currentLayout.rowSpacing/2 - (index == appletsModel.count-1 ? panelSvg.margins[right] + currentLayout.toolBoxHeight : 0)
-                        anchors[side+'Margin'] = - inset
-                        return marginHighlightSvg
-                    }
-                    anchors {top: parent.top; left: parent.left; right: parent.right; bottom: parent.bottom}
-                }
-                //SideMargin{side: 'top'; inset: getMargins('top'); padding: getMargins('top', false, false, isMarginSeparator ? false : inThickArea)}
-                //SideMargin{side: 'top'; inset: -getMargins('top', false, false, false); padding: getMargins('top', false, false, true) + inset; visible: isMarginSeparator; fill: false}
-
                 PlasmaCore.SvgItem {
                     id: ref
                     svg: marginHighlightSvg
