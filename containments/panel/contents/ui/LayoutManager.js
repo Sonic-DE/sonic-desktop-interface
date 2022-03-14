@@ -92,9 +92,7 @@ function updateMargins() {
         var child = appletsModel.get(i).applet.parent
         if (child.dragging) {child = child.dragging}
         child.inThickArea = inThickArea
-        if (child.isMarginSeparator) {
-            inThickArea = !inThickArea
-        }
+        if (child.isMarginSeparator) {inThickArea = !inThickArea}
     }
 }
 
