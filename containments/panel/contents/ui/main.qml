@@ -21,7 +21,6 @@ DragDrop.DropArea {
     width: 640
     height: 48
 
-//BEGIN properties
     Layout.preferredWidth: fixedWidth || (currentLayout.implicitWidth + currentLayout.toolBoxWidth)
     Layout.preferredHeight: fixedHeight || (currentLayout.implicitHeight + currentLayout.toolBoxHeight)
 
@@ -58,72 +57,67 @@ DragDrop.DropArea {
     //the size a margin should be to force a panel to be the required size above
     readonly property real spacingAtMinSize: Math.round(Math.max(1, (currentLayout.isLayoutHorizontal ? root.height : root.width) - units.iconSizes.smallMedium)/2)
 
-//END properties
+    function addApplet(applet, x, y) {
+        // don't show applet if it chooses to be hidden but still make it
+        // accessible in the panelcontroller
+        // Due to the nature of how "visible" propagates in QML, we need to
+        // explicitly set it on the container (so the Layout ignores it)
+        // as well as the applet (so it reliably knows about), otherwise it can
+        // happen that an applet erroneously thinks it's visible, or suddenly
+        // starts thinking that way on teardown (virtual desktop pager)
+        // leading to crashes
+        var new_element = {applet: applet}
 
-//BEGIN functions
-function addApplet(applet, x, y) {
-    // don't show applet if it chooses to be hidden but still make it
-    // accessible in the panelcontroller
-    // Due to the nature of how "visible" propagates in QML, we need to
-    // explicitly set it on the container (so the Layout ignores it)
-    // as well as the applet (so it reliably knows about), otherwise it can
-    // happen that an applet erroneously thinks it's visible, or suddenly
-    // starts thinking that way on teardown (virtual desktop pager)
-    // leading to crashes
-    var new_element = {applet: applet}
+        applet.visible = Qt.binding(function() {
+            return applet.status !== PlasmaCore.Types.HiddenStatus || (!plasmoid.immutable && plasmoid.userConfiguring);
+        });
 
-    applet.visible = Qt.binding(function() {
-        return applet.status !== PlasmaCore.Types.HiddenStatus || (!plasmoid.immutable && plasmoid.userConfiguring);
-    });
+        if (x >= 0 && y >= 0) {
+            appletsModel.insert(LayoutManager.indexAtCoordinates(x, y), new_element)
+            //var index = LayoutManager.insertAtCoordinates(container, x , y);
 
-    if (x >= 0 && y >= 0) {
-        appletsModel.insert(LayoutManager.indexAtCoordinates(x, y), new_element)
-        //var index = LayoutManager.insertAtCoordinates(container, x , y);
-
-    // Insert icons to the left of whatever is at the center (usually a Task Manager),
-    // if it exists.
-    // FIXME TODO: This is a real-world fix to produce a sensible initial position for
-    // launcher icons added by launcher menu applets. The basic approach has been used
-    // since Plasma 1. However, "add launcher to X" is a generic-enough concept and
-    // frequent-enough occurrence that we'd like to abstract it further in the future
-    // and get rid of the ugliness of parties external to the containment adding applets
-    // of a specific type, and the containment caring about the applet type. In a better
-    // system the containment would be informed of requested launchers, and determine by
-    // itself what it wants to do with that information.
-    } else if (applet.pluginName === "org.kde.plasma.icon" &&
-            (middle = currentLayout.childAt(root.width / 2, root.height / 2))) {
-        appletsModel.insert(middle.index, new_element);
-    // Fall through to determining an appropriate insert position.
-    } else {
-        appletsModel.append(new_element);
-    }
-    LayoutManager.updateMargins();
-}
-
-
-function checkLastSpacer() {
-    var flexibleFound = false;
-    for (var i = 0; i < currentLayout.children.length; ++i) {
-        var applet = currentLayout.children[i].applet;
-        if (!applet || !applet.visible || !applet.Layout) {
-            continue;
+        // Insert icons to the left of whatever is at the center (usually a Task Manager),
+        // if it exists.
+        // FIXME TODO: This is a real-world fix to produce a sensible initial position for
+        // launcher icons added by launcher menu applets. The basic approach has been used
+        // since Plasma 1. However, "add launcher to X" is a generic-enough concept and
+        // frequent-enough occurrence that we'd like to abstract it further in the future
+        // and get rid of the ugliness of parties external to the containment adding applets
+        // of a specific type, and the containment caring about the applet type. In a better
+        // system the containment would be informed of requested launchers, and determine by
+        // itself what it wants to do with that information.
+        } else if (applet.pluginName === "org.kde.plasma.icon" &&
+                (middle = currentLayout.childAt(root.width / 2, root.height / 2))) {
+            appletsModel.insert(middle.index, new_element);
+        // Fall through to determining an appropriate insert position.
+        } else {
+            appletsModel.append(new_element);
         }
-        if ((root.isHorizontal && applet.Layout.fillWidth) ||
-            (!root.isHorizontal && applet.Layout.fillHeight)) {
-                hasSpacer = true;
-            return
-        }
+        LayoutManager.updateMargins();
     }
-    hasSpacer = false;
-}
-//END functions
 
-//BEGIN connections
+    // If there's any widget that fills width, then we know that the panel content element
+    // should also fill width.
+    function checkLastSpacer() {
+        var flexibleFound = false;
+        for (var i = 0; i < currentLayout.children.length; ++i) {
+            var applet = currentLayout.children[i].applet;
+            if (!applet || !applet.visible || !applet.Layout) {
+                continue;
+            }
+            if ((root.isHorizontal && applet.Layout.fillWidth) ||
+                (!root.isHorizontal && applet.Layout.fillHeight)) {
+                    hasSpacer = true;
+                return
+            }
+        }
+        hasSpacer = false;
+    }
+
     Component.onCompleted: {
         LayoutManager.plasmoid = plasmoid;
         LayoutManager.root = root;
         LayoutManager.layout = currentLayout;
-        LayoutManager.marginHighlights = [];
         LayoutManager.appletsModel = appletsModel;
         LayoutManager.restore();
 
@@ -202,9 +196,6 @@ function checkLastSpacer() {
             dragOverlay.destroy();
         }
     }
-//END connections
-
-//BEGIN components
 
     Component {
         id: appletContainerComponent
@@ -213,25 +204,14 @@ function checkLastSpacer() {
         Loader {
             id: container
             property bool isAppletContainer: true
+            property bool movingForResize: false
             property bool isMarginSeparator: ((applet.constraintHints & PlasmaCore.Types.MarginAreasSeparator) == PlasmaCore.Types.MarginAreasSeparator)
             visible: applet.status !== PlasmaCore.Types.HiddenStatus || (!plasmoid.immutable && plasmoid.userConfiguring);
 
-            //when the applet moves caused by its resize, don't animate.
-            //this is completely heuristic, but looks way less "jumpy"
-            property bool movingForResize: false
-
             Layout.fillWidth: applet && applet.Layout.fillWidth
-            Layout.onFillWidthChanged: {
-                if (plasmoid.formFactor !== PlasmaCore.Types.Vertical) {
-                    checkLastSpacer();
-                }
-            }
+            Layout.onFillWidthChanged: checkLastSpacer();
             Layout.fillHeight: applet && applet.Layout.fillHeight
-            Layout.onFillHeightChanged: {
-                if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
-                    checkLastSpacer();
-                }
-            }
+            Layout.onFillHeightChanged: checkLastSpacer();
 
             function getMargins(side, returnAllMargins = false, overrideFillArea = null, overrideThickArea = null) {
                 //Margins are either the size of the margins in the SVG, unless that prevents the panel from being at least half a smallMedium icon + smallSpace) tall at which point we set the margin to whatever allows it to be that...or if it still won't fit, 1.
@@ -304,8 +284,8 @@ function checkLastSpacer() {
                         right: parent.right
                         bottom: isHorizontal ? undefined : parent.bottom
                         leftMargin: isHorizontal ? ref.anchors.leftMargin : undefined
-                        rightMargin: isHorizontal ? ref.anchors.rightMargin : getMargins('right', false, false, false)
-                        topMargin: isHorizontal ? getMargins('top', false, false, false) : ref.anchors.topMargin
+                        rightMargin: isHorizontal ? ref.anchors.rightMargin : ref.width
+                        topMargin: isHorizontal ? ref.height : ref.anchors.topMargin
                         bottomMargin: isHorizontal ? undefined : ref.anchors.bottomMargin
                     }
                     height: isHorizontal ? getMargins('top', false, false, true) - anchors.topMargin : undefined
@@ -336,9 +316,9 @@ function checkLastSpacer() {
                         left: parent.left
                         right: isHorizontal ? parent.right : undefined
                         top: isHorizontal ? undefined : parent.top
-                        leftMargin: isHorizontal ? ref.anchors.leftMargin : getMargins('left', false, false, false)
+                        leftMargin: isHorizontal ? ref.anchors.leftMargin : ref.weidth
                         rightMargin: isHorizontal ? ref.anchors.rightMargin : undefined
-                        bottomMargin: isHorizontal ? getMargins('bottom', false, false, false) : ref.anchors.bottomMargin
+                        bottomMargin: isHorizontal ? ref.height : ref.anchors.bottomMargin
                         topMargin: isHorizontal ? undefined : ref.anchors.topMargin
                     }
                     height: isHorizontal ? getMargins('bottom', false, false, true) - anchors.bottomMargin : undefined
@@ -401,9 +381,6 @@ function checkLastSpacer() {
             }
         }
     }
-//END components
-
-//BEGIN UI elements
 
     anchors {
         leftMargin: currentLayout.isLayoutHorizontal ? Math.min(spacingAtMinSize, panelSvg.fixedMargins.left) : 0
@@ -448,5 +425,4 @@ function checkLastSpacer() {
         flow: isHorizontal ? GridLayout.LeftToRight : GridLayout.TopToBottom
         layoutDirection: Qt.application.layoutDirection
     }
-//END UI elements
 }
