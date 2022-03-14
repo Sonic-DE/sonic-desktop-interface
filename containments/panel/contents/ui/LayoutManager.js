@@ -8,8 +8,46 @@
 var layout;
 var root;
 var plasmoid;
+var marginHighlights;
 var appletsModel;
 
+function addApplet(applet, x, y) {
+    // don't show applet if it chooses to be hidden but still make it
+    // accessible in the panelcontroller
+    // Due to the nature of how "visible" propagates in QML, we need to
+    // explicitly set it on the container (so the Layout ignores it)
+    // as well as the applet (so it reliably knows about), otherwise it can
+    // happen that an applet erroneously thinks it's visible, or suddenly
+    // starts thinking that way on teardown (virtual desktop pager)
+    // leading to crashes
+    var new_element = {applet: applet}
+
+    applet.visible = Qt.binding(function() {
+        return applet.status !== PlasmaCore.Types.HiddenStatus || (!plasmoid.immutable && plasmoid.userConfiguring);
+    });
+
+    if (x >= 0 && y >= 0) {
+        appletsModel.insert(indexAtCoordinates(x, y), new_element)
+
+    // Insert icons to the left of whatever is at the center (usually a Task Manager),
+    // if it exists.
+    // FIXME TODO: This is a real-world fix to produce a sensible initial position for
+    // launcher icons added by launcher menu applets. The basic approach has been used
+    // since Plasma 1. However, "add launcher to X" is a generic-enough concept and
+    // frequent-enough occurrence that we'd like to abstract it further in the future
+    // and get rid of the ugliness of parties external to the containment adding applets
+    // of a specific type, and the containment caring about the applet type. In a better
+    // system the containment would be informed of requested launchers, and determine by
+    // itself what it wants to do with that information.
+    } else if (applet.pluginName === "org.kde.plasma.icon" &&
+            (middle = currentLayout.childAt(root.width / 2, root.height / 2))) {
+        appletsModel.insert(middle.index, new_element);
+    // Fall through to determining an appropriate insert position.
+    } else {
+        appletsModel.append(new_element);
+    }
+    updateMargins();
+}
 
 function restore() {
     var configString = String(plasmoid.configuration.AppletOrder)
@@ -39,7 +77,7 @@ function restore() {
 
     //finally, restore the applets in the correct order
     for (var i in appletsOrder) {
-        root.addApplet(appletsOrder[i], -1, -1)
+        addApplet(appletsOrder[i], -1, -1)
     }
     //rewrite, so if in the orders there were now invalid ids or if some were missing creates a correct list instead
     save();
@@ -69,11 +107,11 @@ function indexAtCoordinates(x, y) {
         if (root.isHorizontal) {
             // Only yields incorrect results for widgets smaller than the
             // row/column spacing, which is luckly fairly unrealistic
+            // TODO What if it's dropped at the left-most pixel? this breaks everything?
             x -= layout.rowSpacing
         } else {
             y -= layout.columnSpacing
         }
-        if (x < 0 || y < 0) return 0;
         child = layout.childAt(x, y);
     }
 
@@ -91,7 +129,9 @@ function updateMargins() {
         var child = appletsModel.get(i).applet.parent
         if (child.dragging) {child = child.dragging}
         child.inThickArea = inThickArea
-        if (child.isMarginSeparator) {inThickArea = !inThickArea}
+        if (child.isMarginSeparator) {
+            inThickArea = !inThickArea
+        }
     }
 }
 
@@ -99,5 +139,5 @@ function move(start, end) {
     var target = end - (start < end)
     if (start == target) return;
     appletsModel.move(start, target, 1)
-    root.layoutManager.save()
+    save()
 }
