@@ -21,13 +21,14 @@ DragDrop.DropArea {
     width: 640
     height: 48
 
-    Layout.preferredWidth: fixedWidth || (currentLayout.implicitWidth + currentLayout.toolBoxWidth)
-    Layout.preferredHeight: fixedHeight || (currentLayout.implicitHeight + currentLayout.toolBoxHeight)
+//BEGIN properties
+    Layout.preferredWidth: fixedWidth || currentLayout.implicitWidth
+    Layout.preferredHeight: fixedHeight || currentLayout.implicitHeight
 
     property Item toolBox
     property var layoutManager: LayoutManager
 
-    property Item dragOverlay
+    property Item configOverlay
 
     property bool isHorizontal: plasmoid.formFactor !== PlasmaCore.Types.Vertical
     property int fixedWidth: 0
@@ -55,69 +56,34 @@ DragDrop.DropArea {
     property var marginHighlightSvg: PlasmaCore.Svg{imagePath: "widgets/margins-highlight"}
     //Margins are either the size of the margins in the SVG, unless that prevents the panel from being at least half a smallMedium icon) tall at which point we set the margin to whatever allows it to be that...or if it still won't fit, 1.
     //the size a margin should be to force a panel to be the required size above
-    readonly property real spacingAtMinSize: Math.round(Math.max(1, (currentLayout.isLayoutHorizontal ? root.height : root.width) - units.iconSizes.smallMedium)/2)
+    readonly property real spacingAtMinSize: Math.round(Math.max(1, (isHorizontal ? root.height : root.width) - units.iconSizes.smallMedium)/2)
 
-    function addApplet(applet, x, y) {
-        // don't show applet if it chooses to be hidden but still make it
-        // accessible in the panelcontroller
-        // Due to the nature of how "visible" propagates in QML, we need to
-        // explicitly set it on the container (so the Layout ignores it)
-        // as well as the applet (so it reliably knows about), otherwise it can
-        // happen that an applet erroneously thinks it's visible, or suddenly
-        // starts thinking that way on teardown (virtual desktop pager)
-        // leading to crashes
-        var new_element = {applet: applet}
+//END properties
 
-        applet.visible = Qt.binding(function() {
-            return applet.status !== PlasmaCore.Types.HiddenStatus || (!plasmoid.immutable && plasmoid.userConfiguring);
-        });
-
-        if (x >= 0 && y >= 0) {
-            appletsModel.insert(LayoutManager.indexAtCoordinates(x, y), new_element)
-            //var index = LayoutManager.insertAtCoordinates(container, x , y);
-
-        // Insert icons to the left of whatever is at the center (usually a Task Manager),
-        // if it exists.
-        // FIXME TODO: This is a real-world fix to produce a sensible initial position for
-        // launcher icons added by launcher menu applets. The basic approach has been used
-        // since Plasma 1. However, "add launcher to X" is a generic-enough concept and
-        // frequent-enough occurrence that we'd like to abstract it further in the future
-        // and get rid of the ugliness of parties external to the containment adding applets
-        // of a specific type, and the containment caring about the applet type. In a better
-        // system the containment would be informed of requested launchers, and determine by
-        // itself what it wants to do with that information.
-        } else if (applet.pluginName === "org.kde.plasma.icon" &&
-                (middle = currentLayout.childAt(root.width / 2, root.height / 2))) {
-            appletsModel.insert(middle.index, new_element);
-        // Fall through to determining an appropriate insert position.
-        } else {
-            appletsModel.append(new_element);
+//BEGIN functions
+function checkLastSpacer() {
+    var flexibleFound = false;
+    for (var i = 0; i < currentLayout.children.length; ++i) {
+        var applet = currentLayout.children[i].applet;
+        if (!applet || !applet.visible || !applet.Layout) {
+            continue;
         }
-        LayoutManager.updateMargins();
-    }
-
-    // If there's any widget that fills width, then we know that the panel content element
-    // should also fill width.
-    function checkLastSpacer() {
-        var flexibleFound = false;
-        for (var i = 0; i < currentLayout.children.length; ++i) {
-            var applet = currentLayout.children[i].applet;
-            if (!applet || !applet.visible || !applet.Layout) {
-                continue;
-            }
-            if ((root.isHorizontal && applet.Layout.fillWidth) ||
-                (!root.isHorizontal && applet.Layout.fillHeight)) {
-                    hasSpacer = true;
-                return
-            }
+        if ((root.isHorizontal && applet.Layout.fillWidth) ||
+            (!root.isHorizontal && applet.Layout.fillHeight)) {
+                hasSpacer = true;
+            return
         }
-        hasSpacer = false;
     }
+    hasSpacer = false;
+}
+//END functions
 
+//BEGIN connections
     Component.onCompleted: {
         LayoutManager.plasmoid = plasmoid;
         LayoutManager.root = root;
         LayoutManager.layout = currentLayout;
+        LayoutManager.marginHighlights = [];
         LayoutManager.appletsModel = appletsModel;
         LayoutManager.restore();
 
@@ -157,7 +123,7 @@ DragDrop.DropArea {
     }
 
     Containment.onAppletAdded: {
-        addApplet(applet, x, y);
+        LayoutManager.addApplet(applet, x, y);
         checkLastSpacer();
         LayoutManager.save();
     }
@@ -170,8 +136,8 @@ DragDrop.DropArea {
 
     Plasmoid.onUserConfiguringChanged: {
         if (plasmoid.immutable) {
-            if (dragOverlay) {
-                dragOverlay.destroy();
+            if (configOverlay) {
+                configOverlay.destroy();
             }
             return;
         }
@@ -181,45 +147,63 @@ DragDrop.DropArea {
                 plasmoid.applets[i].expanded = false;
             }
 
-            if (!dragOverlay) {
+            if (!configOverlay) {
                 var component = Qt.createComponent("ConfigOverlay.qml");
                 if (component.status === Component.Ready) {
-                    dragOverlay = component.createObject(root);
+                    configOverlay = component.createObject(root);
                 } else {
                     console.log("Could not create ConfigOverlay:", component.errorString());
                 }
                 component.destroy();
             } else {
-                dragOverlay.visible = true;
+                configOverlay.visible = true;
             }
         } else {
-            dragOverlay.destroy();
+            configOverlay.destroy();
         }
     }
+//END connections
 
+//BEGIN components
     Component {
         id: appletContainerComponent
         // This loader conditionally manages the BusyIndicator, it's not
         // loading the applet. The applet becomes a regular child item.
         Loader {
             id: container
+            required property Item applet
+            required property int index
+            property Item dragging
             property bool isAppletContainer: true
-            property bool movingForResize: false
             property bool isMarginSeparator: ((applet.constraintHints & PlasmaCore.Types.MarginAreasSeparator) == PlasmaCore.Types.MarginAreasSeparator)
+            property int appletIndex: index // To make sure it's always readable even inside other models
+            property bool inThickArea: false
             visible: applet.status !== PlasmaCore.Types.HiddenStatus || (!plasmoid.immutable && plasmoid.userConfiguring);
 
+            //when the applet moves caused by its resize, don't animate.
+            //this is completely heuristic, but looks way less "jumpy"
+            property bool movingForResize: false
+
             Layout.fillWidth: applet && applet.Layout.fillWidth
-            Layout.onFillWidthChanged: checkLastSpacer();
+            Layout.onFillWidthChanged: {
+                if (plasmoid.formFactor !== PlasmaCore.Types.Vertical) {
+                    checkLastSpacer();
+                }
+            }
             Layout.fillHeight: applet && applet.Layout.fillHeight
-            Layout.onFillHeightChanged: checkLastSpacer();
+            Layout.onFillHeightChanged: {
+                if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
+                    checkLastSpacer();
+                }
+            }
 
             function getMargins(side, returnAllMargins = false, overrideFillArea = null, overrideThickArea = null) {
                 //Margins are either the size of the margins in the SVG, unless that prevents the panel from being at least half a smallMedium icon + smallSpace) tall at which point we set the margin to whatever allows it to be that...or if it still won't fit, 1.
-                let fillArea = overrideFillArea ?? (applet && (applet.constraintHints & PlasmaCore.Types.CanFillArea))
-                let inThickArea = overrideThickArea ?? container.inThickArea
+                let fillArea = overrideFillArea === null ? applet && (applet.constraintHints & PlasmaCore.Types.CanFillArea) : overrideFillArea
+                let inThickArea = overrideThickArea === null ? container.inThickArea : overrideThickArea
                 var layout = {
-                    top: currentLayout.isLayoutHorizontal, bottom: currentLayout.isLayoutHorizontal,
-                    right: !currentLayout.isLayoutHorizontal, left: !currentLayout.isLayoutHorizontal
+                    top: isHorizontal, bottom: isHorizontal,
+                    right: !isHorizontal, left: !isHorizontal
                 };
                 return ((layout[side] || returnAllMargins) && !fillArea) ? Math.round(Math.min(spacingAtMinSize, (inThickArea ? thickPanelSvg.fixedMargins[side] : panelSvg.fixedMargins[side]))) : 0;
             }
@@ -227,7 +211,7 @@ DragDrop.DropArea {
             function getLayout(layoutType) {
                 let suffixes = layoutType.endsWith('Width') ? ['height', 'width', 'fillWidth'] : ['width', 'height', 'fillHeight']
                 if (Layout[suffixes[2]]) {suffixes[0] = suffixes[1]};
-                if (currentLayout.isLayoutHorizontal == layoutType.endsWith('Width')) {
+                if (isHorizontal == layoutType.endsWith('Width')) {
                     return Math.round(applet && applet.Layout[layoutType] > 0 ? applet.Layout[layoutType] : root[suffixes[0]])
                 } else {
                     return Math.round(root[suffixes[1]])
@@ -247,89 +231,53 @@ DragDrop.DropArea {
 
             Item {
                 // index -1 is for floating applets, which do not need a margin highlight
-                opacity: plasmoid.editMode && marginAreasEnabled && !root.dragAndDropping && index != -1 ? 1 : 1
                 id: marginHighlightElements
+                anchors.fill: parent
+                opacity: plasmoid.editMode && marginAreasEnabled && !root.dragAndDropping && index != -1 ? 1 : 0
                 Behavior on opacity {
                     NumberAnimation {
                         duration: PlasmaCore.Units.longDuration
                         easing.type: Easing.InOutQuad
                     }
                 }
-                anchors.fill: parent
 
-                PlasmaCore.SvgItem {
-                    id: ref
-                    svg: marginHighlightSvg
-                    elementId: 'fill'
-                    anchors {
-                        top: parent.top
-                        left: isHorizontal ? parent.left : undefined
-                        right: parent.right
-                        bottom: isHorizontal ? undefined : parent.bottom
-                        leftMargin: isHorizontal ? -currentLayout.rowSpacing/2 - (index == 0 ? panelSvg.margins.left + currentLayout.x : 0) : undefined
-                        rightMargin: isHorizontal ? -currentLayout.rowSpacing/2 - (index == appletsModel.count-1 ? panelSvg.margins.right + currentLayout.toolBoxWidth : 0) : -getMargins('right')
-                        topMargin: isHorizontal ? -getMargins('top') : -currentLayout.columnSpacing/2 - (index == 0 ? panelSvg.margins.top : 0)
-                        bottomMargin: isHorizontal ? undefined : -currentLayout.columnSpacing/2 - (index == appletsModel.count-1 ? panelSvg.margins.bottom + currentLayout.toolBoxHeight : 0)
+                component SideMargin: PlasmaCore.SvgItem {
+                    property string side; property bool fill: true
+                    property int inset; property int padding
+                    property var west: ({'left': 'top', 'top': 'left', 'right': 'top', 'bottom': 'left'})
+                    property var mirror: ({'left': 'right', 'top': 'bottom', 'right': 'left', 'bottom': 'top'})
+                    property var onComponentCompleted: {
+                        let left = west[side]; let right = mirror[left]; let up = mirror[side]
+                        anchors[up] = undefined
+                        this[isHorizontal ? 'height' : 'width'] = padding
+                        anchors[left+'Margin'] = - currentLayout.rowSpacing/2 - (appletIndex == 0 ? panelSvg.margins[left] + currentLayout.x : 0)
+                        anchors[right+'Margin'] = - currentLayout.rowSpacing/2 - (appletIndex == appletsModel.count-1 ? panelSvg.margins[right] + currentLayout.toolBoxWidth : 0)
+                        anchors[side+'Margin'] = - inset
                     }
-                    height: isHorizontal ? getMargins('top', false, false, isMarginSeparator ? false : inThickArea) : undefined
-                    width: isHorizontal ? undefined : getMargins('right', false, false, isMarginSeparator ? false : inThickArea)
+                    elementId: fill ? 'fill' : (isHorizontal ? side + (inThickArea ? 'left' : 'right') : (inThickArea ? 'top' : 'bottom') + side)
+                    svg: marginHighlightSvg
+                    anchors {top: parent.top; left: parent.left; right: parent.right; bottom: parent.bottom}
                 }
-                PlasmaCore.SvgItem {
-                    svg: marginHighlightSvg
-                    visible: isMarginSeparator
-                    elementId: inThickArea ? (isHorizontal ? 'topleft' : 'topright') : (isHorizontal ? 'topright' : 'bottomright')
-                    anchors {
-                        top: parent.top
-                        left: isHorizontal ? parent.left : undefined
-                        right: parent.right
-                        bottom: isHorizontal ? undefined : parent.bottom
-                        leftMargin: isHorizontal ? ref.anchors.leftMargin : undefined
-                        rightMargin: isHorizontal ? ref.anchors.rightMargin : ref.width
-                        topMargin: isHorizontal ? ref.height : ref.anchors.topMargin
-                        bottomMargin: isHorizontal ? undefined : ref.anchors.bottomMargin
+                Repeater {
+                    model: ['top', 'bottom', 'right', 'left']
+                    SideMargin{
+                        side: modelData;
+                        inset: getMargins(side);
+                        visible: (modelData == 'top' || modelData == 'bottom') == isHorizontal
+                        padding: getMargins(side, false, false, isMarginSeparator ? false : inThickArea)
                     }
-                    height: isHorizontal ? getMargins('top', false, false, true) - anchors.topMargin : undefined
-                    width: isHorizontal ? undefined : getMargins('right', false, false, true) - anchors.rightMargin
                 }
-                PlasmaCore.SvgItem {
-                    svg: marginHighlightSvg
-                    elementId: 'fill'
-                    anchors {
-                        bottom: parent.bottom
-                        left: parent.left
-                        right: isHorizontal ? parent.right : undefined
-                        top: isHorizontal ? undefined : parent.top
-                        leftMargin: isHorizontal ? ref.anchors.leftMargin : -getMargins('left')
-                        rightMargin: isHorizontal ? ref.anchors.rightMargin : undefined
-                        bottomMargin: isHorizontal ? -getMargins('bottom') : ref.anchors.bottomMargin
-                        topMargin: isHorizontal ? undefined : ref.anchors.topMargin
+                Repeater {
+                    model: ['top', 'bottom', 'right', 'left']
+                    SideMargin{
+                        side: modelData;
+                        inset: -getMargins(side, false, false, false);
+                        padding: getMargins(side, false, false, true) + inset;
+                        visible: isMarginSeparator && (modelData == 'top' || modelData == 'bottom') == isHorizontal;
+                        fill: false
                     }
-                    height: isHorizontal ? getMargins('bottom', false, false, isMarginSeparator ? false : inThickArea) : undefined
-                    width: isHorizontal ? undefined : getMargins('left', false, false, isMarginSeparator ? false : inThickArea)
-                }
-                PlasmaCore.SvgItem {
-                    svg: marginHighlightSvg
-                    visible: isMarginSeparator
-                    elementId: inThickArea ? (isHorizontal ? 'bottomleft' : 'topleft') : (isHorizontal ? 'bottomright' : 'bottomleft')
-                    anchors {
-                        bottom: parent.bottom
-                        left: parent.left
-                        right: isHorizontal ? parent.right : undefined
-                        top: isHorizontal ? undefined : parent.top
-                        leftMargin: isHorizontal ? ref.anchors.leftMargin : ref.weidth
-                        rightMargin: isHorizontal ? ref.anchors.rightMargin : undefined
-                        bottomMargin: isHorizontal ? ref.height : ref.anchors.bottomMargin
-                        topMargin: isHorizontal ? undefined : ref.anchors.topMargin
-                    }
-                    height: isHorizontal ? getMargins('bottom', false, false, true) - anchors.bottomMargin : undefined
-                    width: isHorizontal ? undefined : getMargins('left', false, false, true) - anchors.leftMargin
                 }
             }
-
-            required property Item applet
-            required property int index
-            property bool inThickArea: false
-            property Item dragging
 
             onAppletChanged: {
                 applet.parent = container
@@ -346,7 +294,7 @@ DragDrop.DropArea {
             property int oldX: x
             property int oldY: y
             function animateFrom(xa, ya) {
-                if (currentLayout.isLayoutHorizontal) translation.x = xa - x;
+                if (isHorizontal) translation.x = xa - x;
                 else translation.y = ya - y;
                 translAnim.running = true
             }
@@ -381,12 +329,15 @@ DragDrop.DropArea {
             }
         }
     }
+//END components
+
+//BEGIN UI elements
 
     anchors {
-        leftMargin: currentLayout.isLayoutHorizontal ? Math.min(spacingAtMinSize, panelSvg.fixedMargins.left) : 0
-        rightMargin: currentLayout.isLayoutHorizontal ? Math.min(spacingAtMinSize, panelSvg.fixedMargins.right) : 0
-        topMargin: currentLayout.isLayoutHorizontal ? 0 : Math.min(spacingAtMinSize, panelSvg.fixedMargins.top)
-        bottomMargin: currentLayout.isLayoutHorizontal ? 0 : Math.min(spacingAtMinSize, panelSvg.fixedMargins.bottom)
+        leftMargin: isHorizontal ? Math.min(spacingAtMinSize, panelSvg.fixedMargins.left) : 0
+        rightMargin: isHorizontal ? Math.min(spacingAtMinSize, panelSvg.fixedMargins.right) : 0
+        topMargin: isHorizontal ? 0 : Math.min(spacingAtMinSize, panelSvg.fixedMargins.top)
+        bottomMargin: isHorizontal ? 0 : Math.min(spacingAtMinSize, panelSvg.fixedMargins.bottom)
     }
 
     Item {
@@ -410,19 +361,18 @@ DragDrop.DropArea {
             delegate: appletContainerComponent
         }
 
-        readonly property bool isLayoutHorizontal: root.isHorizontal
         rowSpacing: PlasmaCore.Units.smallSpacing
-        columnSpacing: rowSpacing
+        columnSpacing: PlasmaCore.Units.smallSpacing
 
-        x: (isLayoutHorizontal && toolBox && Qt.application.layoutDirection === Qt.RightToLeft && plasmoid.editMode) ? toolBox.width : 0
-        width: (root.hasSpacer || !isLayoutHorizontal ? root.width : implicitWidth) - toolBoxWidth
-        height: (root.hasSpacer || isLayoutHorizontal ? root.height: implicitHeight) - toolBoxHeight
-        property int toolBoxWidth: !isLayoutHorizontal || !toolBox || !plasmoid.editMode ? 0 : toolBox.width
-        property int toolBoxHeight: isLayoutHorizontal || !toolBox || !plasmoid.editMode ? 0 : toolBox.height
+        x: Qt.application.layoutDirection === Qt.RightToLeft ? toolBoxWidth : 0;
+        width: (root.hasSpacer || !isHorizontal ? root.width : implicitWidth) - toolBoxWidth
+        height: (root.hasSpacer || isHorizontal ? root.height: implicitHeight) - toolBoxWidth
+        property int toolBoxWidth: !isHorizontal || !toolBox || !plasmoid.editMode || Qt.application.layoutDirection === Qt.RightToLeft ? 0 : toolBox.width
 
         rows: isHorizontal ? 1 : currentLayout.children.length
         columns: isHorizontal ? currentLayout.children.length : 1
         flow: isHorizontal ? GridLayout.LeftToRight : GridLayout.TopToBottom
         layoutDirection: Qt.application.layoutDirection
     }
+//END UI elements
 }
