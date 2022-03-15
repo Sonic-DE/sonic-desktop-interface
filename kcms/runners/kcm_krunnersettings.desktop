@@ -1,0 +1,7 @@
+[Desktop Entry]
+Icon=krunner
+Type=Application
+NoDisplay=true
+Exec=kcmshell5 kcm_krunnersettings
+
+Name=KRunner Settings
