@@ -1,0 +1,9 @@
+ {
+    "KPlugin": {
+        "Description": "Configure KRunner settings",
+        "Icon": "krunner",
+        "Name": "KRunner Settings"
+    },
+    "X-KDE-Keywords": "krunner,position,history,desktop search"
+}
+
