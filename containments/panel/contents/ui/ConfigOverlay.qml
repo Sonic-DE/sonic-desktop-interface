@@ -18,7 +18,7 @@ MouseArea {
 
     z: 1000
 
-    anchors.fill: currentLayout
+    anchors.fill: parent
 
     hoverEnabled: true
 
@@ -27,10 +27,6 @@ MouseArea {
     property int lastY
 
     readonly property int spacerHandleSize: PlasmaCore.Units.smallSpacing
-    property bool isHorizontal: plasmoid.formFactor === PlasmaCore.Types.Horizontal //TODO read this from main.qml
-
-    //onHeightChanged: tooltip.visible = false;
-    //onWidthChanged: tooltip.visible = false; //TODO why?
 
     onPositionChanged: {
         if (pressed) {
@@ -62,25 +58,23 @@ MouseArea {
 
             if (item && item.applet !== placeHolder) {
                 var posInItem = mapToItem(item, mouse.x, mouse.y);
-                if ((!isHorizontal && posInItem.y < item.height/3) ||
-                    (isHorizontal && posInItem.x < item.width/3)) {
+                if ((!root.isHorizontal && posInItem.y < item.height/3) ||
+                    (root.isHorizontal && posInItem.x < item.width/3)) {
                     root.layoutManager.move(placeHolder.parent.index, item.index)
-                } else if ((!isHorizontal && posInItem.y > 2*item.height/3) ||
-                          (isHorizontal && posInItem.x > 2*item.width/3)) {
+                } else if ((!root.isHorizontal && posInItem.y > 2*item.height/3) ||
+                          (root.isHorizontal && posInItem.x > 2*item.width/3)) {
                     root.layoutManager.move(placeHolder.parent.index, item.index+1)
                 }
             }
 
         } else {
             var item = currentLayout.childAt(mouse.x, mouse.y);
-            if (root.dragOverlay && item) {
-                root.dragOverlay.currentApplet = item;
-            }/* else {
-                root.dragOverlay.currentApplet = null;
-            }*/
+            if (configurationArea && item) {
+                configurationArea.currentApplet = item;
+            }
         }
 
-        if (root.dragOverlay.currentApplet) {
+        if (configurationArea.currentApplet) {
             hideTimer.stop();
             tooltip.raise();
         }
@@ -93,7 +87,7 @@ MouseArea {
     onExited: hideTimer.restart()
 
     onCurrentAppletChanged: {
-        if (!currentApplet || !root.dragOverlay.currentApplet) {
+        if (!currentApplet || !configurationArea.currentApplet) {
             hideTimer.start();
             return;
         }
@@ -141,13 +135,13 @@ MouseArea {
         id: placeHolder
         property Item dragging
         property bool busy: false
+        visible: configurationArea.containsMouse
         Layout.preferredWidth: currentApplet ? currentApplet.Layout.preferredWidth : 0
         Layout.preferredHeight: currentApplet ? currentApplet.Layout.preferredHeight : 0
         Layout.maximumWidth: currentApplet ? currentApplet.Layout.maximumWidth : 0
         Layout.maximumHeight: currentApplet ? currentApplet.Layout.maximumHeight : 0
         Layout.minimumWidth: currentApplet ? currentApplet.Layout.minimumWidth : 0
         Layout.minimumHeight: currentApplet ? currentApplet.Layout.minimumHeight : 0
-        visible: configurationArea.containsMouse
         Layout.fillWidth: currentApplet ? currentApplet.Layout.fillWidth : false
         Layout.fillHeight: currentApplet ? currentApplet.Layout.fillHeight : false
     }
@@ -160,10 +154,10 @@ MouseArea {
 
     Rectangle {
         id: handle
-        x: currentApplet ? currentApplet.x : null
-        y: currentApplet ? currentApplet.y : null
-        width: currentApplet ? currentApplet.width : null
-        height: currentApplet ? currentApplet.height : null
+        x: currentApplet ? currentApplet.x : NaN
+        y: currentApplet ? currentApplet.y : NaN
+        width: currentApplet ? currentApplet.width : NaN
+        height: currentApplet ? currentApplet.height : NaN
         color: PlasmaCore.Theme.backgroundColor
         radius: 3
         opacity: currentApplet && configurationArea.containsMouse ? 0.5 : 0

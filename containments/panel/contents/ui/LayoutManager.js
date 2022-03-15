@@ -107,11 +107,11 @@ function indexAtCoordinates(x, y) {
         if (root.isHorizontal) {
             // Only yields incorrect results for widgets smaller than the
             // row/column spacing, which is luckly fairly unrealistic
-            // TODO What if it's dropped at the left-most pixel? this breaks everything?
             x -= layout.rowSpacing
         } else {
             y -= layout.columnSpacing
         }
+        if (x < 0 || y < 0) return 0;
         child = layout.childAt(x, y);
     }
 
