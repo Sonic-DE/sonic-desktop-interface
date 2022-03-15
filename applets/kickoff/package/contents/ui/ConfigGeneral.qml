@@ -84,8 +84,9 @@ ColumnLayout {
         }
 
         Button {
+            enabled: KQuickAddons.KCMShell.authorize("kcm_plasmasearch.desktop").length > 0
             icon.name: "settings-configure"
-            text: i18n("Configure enabled search plugins")
+            text: i18nc("@action:button", "Configure Enabled Search Plugins…")
             onClicked: KQuickAddons.KCMShell.openSystemSettings("kcm_plasmasearch")
         }
 
