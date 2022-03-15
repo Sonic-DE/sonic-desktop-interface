@@ -134,34 +134,18 @@ function checkLastSpacer() {
         LayoutManager.save();
     }
 
-    Plasmoid.onUserConfiguringChanged: {
-        if (plasmoid.immutable) {
-            if (configOverlay) {
-                configOverlay.destroy();
-            }
-            return;
-        }
-
-        if (plasmoid.userConfiguring) {
-            for (var i = 0; i < plasmoid.applets.length; ++i) {
-                plasmoid.applets[i].expanded = false;
-            }
-
-            if (!configOverlay) {
-                var component = Qt.createComponent("ConfigOverlay.qml");
-                if (component.status === Component.Ready) {
-                    configOverlay = component.createObject(root);
-                } else {
-                    console.log("Could not create ConfigOverlay:", component.errorString());
+    ConfigOverlay {
+        id: configOverlay
+        visible: plasmoid.userConfiguring
+        onVisibleChanged: {
+            if (visible) {
+                for (var i = 0; i < plasmoid.applets.length; ++i) {
+                    plasmoid.applets[i].expanded = false;
                 }
-                component.destroy();
-            } else {
-                configOverlay.visible = true;
             }
-        } else {
-            configOverlay.destroy();
         }
     }
+
 //END connections
 
 //BEGIN components
@@ -230,9 +214,9 @@ function checkLastSpacer() {
             Layout.maximumHeight: getLayout('maximumHeight') - Layout.bottomMargin - Layout.topMargin
 
             Item {
-                // index -1 is for floating applets, which do not need a margin highlight
                 id: marginHighlightElements
                 anchors.fill: parent
+                // index -1 is for floating applets, which do not need a margin highlight
                 opacity: plasmoid.editMode && marginAreasEnabled && !root.dragAndDropping && index != -1 ? 1 : 0
                 Behavior on opacity {
                     NumberAnimation {
