@@ -80,14 +80,10 @@ SearchConfigModule::SearchConfigModule(QWidget *parent, const QVariantList &args
     m_krunnerSettingsButton = new QPushButton(QIcon::fromTheme(QStringLiteral("krunner")), QStringLiteral("Configure KRunner…"), this);
     connect(m_krunnerSettingsButton, &QPushButton::clicked, this, [this] {
         if (!m_krunnerSettingsDialog) {
-            const KPluginMetaData krunnerModule(QPluginLoader("plasma/kcms/desktop/kcm_krunnersettings"));
+            const KPluginMetaData krunnerModule(QStringLiteral("plasma/kcms/desktop/kcm_krunnersettings"));
 
-            if (krunnerModule.isValid()) {
-                m_krunnerSettingsDialog = new KCMultiDialog(this);
-                m_krunnerSettingsDialog->addModule(krunnerModule, {QLatin1String("openedFromPluginSettings")});
-            } else {
-                return;
-            }
+            m_krunnerSettingsDialog = new KCMultiDialog(this);
+            m_krunnerSettingsDialog->addModule(krunnerModule, {QStringLiteral("openedFromPluginSettings")});
         }
 
         m_krunnerSettingsDialog->show();
