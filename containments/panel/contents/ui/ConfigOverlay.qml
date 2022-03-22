@@ -17,16 +17,12 @@ MouseArea {
     id: configurationArea
 
     z: 1000
-
     anchors.fill: parent
-
     hoverEnabled: true
 
     property Item currentApplet
     property int lastX
     property int lastY
-
-    readonly property int spacerHandleSize: PlasmaCore.Units.smallSpacing
 
     onPositionChanged: {
         if (pressed) {
