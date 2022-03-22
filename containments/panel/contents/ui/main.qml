@@ -231,7 +231,9 @@ function checkLastSpacer() {
                     property var west: ({'left': 'top', 'top': 'left', 'right': 'top', 'bottom': 'left'})
                     property var mirror: ({'left': 'right', 'top': 'bottom', 'right': 'left', 'bottom': 'top'})
                     property var onComponentCompleted: {
-                        let left = west[side]; let right = mirror[left]; let up = mirror[side]
+                        let left = west[side]
+                        let right = mirror[left]
+                        let up = mirror[side]
                         anchors[up] = undefined
                         this[isHorizontal ? 'height' : 'width'] = padding
                         anchors[left+'Margin'] = - currentLayout.rowSpacing/2 - (appletIndex == 0 ? panelSvg.margins[left] + currentLayout.x : 0)
