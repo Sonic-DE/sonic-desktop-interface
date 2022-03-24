@@ -107,7 +107,7 @@ function checkLastSpacer() {
     }
 
     onDragMove: {
-        LayoutManager.move(dndSpacer.parent.index, LayoutManager.indexAtCoordinates(event.x, event.y));
+        LayoutManager.move(dndSpacer.parent, LayoutManager.indexAtCoordinates(event.x, event.y));
     }
 
     onDragLeave: {
@@ -273,37 +273,16 @@ function checkLastSpacer() {
             active: applet && applet.busy
             sourceComponent: PlasmaComponents.BusyIndicator {}
 
-            Layout.onMinimumWidthChanged: movingForResize = true;
-            Layout.onMinimumHeightChanged: movingForResize = true;
-            Layout.onMaximumWidthChanged: movingForResize = true;
-            Layout.onMaximumHeightChanged: movingForResize = true;
-            property int oldX: x
-            property int oldY: y
+            property int oldX: 0
+            property int oldY: 0
+            onXChanged: if (oldX) animateFrom(oldX, y)
+            onYChanged: if (oldY) animateFrom(x, oldY)
+            transform: Translate{id: translation}
             function animateFrom(xa, ya) {
-                if (isHorizontal) translation.x = xa - x;
-                else translation.y = ya - y;
+                if (isHorizontal) translation.x = xa - x
+                else translation.y = ya - y
+                oldX = oldY = 0
                 translAnim.running = true
-            }
-            onXChanged: {
-                if (movingForResize) {
-                    movingForResize = false;
-                    return;
-                }
-                if (!oldX) return;
-                animateFrom(oldX, y)
-                oldX = x
-            }
-            onYChanged: {
-                if (movingForResize) {
-                    movingForResize = false;
-                    return;
-                }
-                if (!oldY) return;
-                animateFrom(x, oldY)
-                oldY = y
-            }
-            transform: Translate {
-                id: translation
             }
             NumberAnimation {
                 id: translAnim
