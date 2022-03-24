@@ -10,6 +10,7 @@ import QtQuick.Layouts 1.0
 
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
+import org.kde.plasma.components 3.0 as PlasmaComponents3
 import org.kde.plasma.extras 2.0 as PlasmaExtras
 import org.kde.kquickcontrolsaddons 2.0
 
@@ -56,10 +57,10 @@ MouseArea {
                 var posInItem = mapToItem(item, mouse.x, mouse.y);
                 if ((!root.isHorizontal && posInItem.y < item.height/3) ||
                     (root.isHorizontal && posInItem.x < item.width/3)) {
-                    root.layoutManager.move(placeHolder.parent.index, item.index)
+                    root.layoutManager.move(item, placeHolder.parent.index+1)
                 } else if ((!root.isHorizontal && posInItem.y > 2*item.height/3) ||
                           (root.isHorizontal && posInItem.x > 2*item.width/3)) {
-                    root.layoutManager.move(placeHolder.parent.index, item.index+1)
+                    root.layoutManager.move(item, placeHolder.parent.index)
                 }
             }
 
@@ -289,6 +290,29 @@ MouseArea {
                     onClicked: {
                         currentApplet.applet.action("remove").trigger()
                         currentApplet = null
+                    }
+                }
+
+                PlasmaExtras.Heading {
+                    Layout.fillWidth: true
+                    visible: panelSpacerWidth.visible
+                    text: i18n("Spacer width")
+                    level: 3
+                    horizontalAlignment: Text.AlignHCenter
+                }
+
+                PlasmaComponents3.SpinBox {
+                    id: panelSpacerWidth
+                    editable: true
+                    Layout.fillWidth: true
+                    focus: !Kirigami.InputMethod.willShowOnActive
+                    visible: currentApplet && currentApplet.applet.pluginName === "org.kde.plasma.panelspacer" && !currentApplet.applet.configuration.expanding
+                    from: 0
+                    stepSize: 10
+                    to: root.width
+                    value: currentApplet && currentApplet.applet.configuration.length ? currentApplet.applet.configuration.length : 0
+                    onValueModified: {
+                        currentApplet.applet.configuration.length = value
                     }
                 }
             }
