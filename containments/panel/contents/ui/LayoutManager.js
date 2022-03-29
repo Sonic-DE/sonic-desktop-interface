@@ -114,7 +114,6 @@ function indexAtCoordinates(x, y) {
         if (x < 0 || y < 0) return 0;
         child = layout.childAt(x, y);
     }
-    console.log(child.index)
     if ((plasmoid.formFactor === 3 && y < child.y + child.height/2) ||
         (plasmoid.formFactor !== 3 && x < child.x + child.width/2)) {
         return child.index;
