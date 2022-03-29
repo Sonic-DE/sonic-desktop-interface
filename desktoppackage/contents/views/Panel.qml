@@ -20,7 +20,8 @@ Item {
 
     property Item containment
 
-    readonly property bool floating: floatingPanelSvg.usedPrefix === "floating"
+    readonly property bool floating: floatingPanelSvg.usedPrefix === "floating" && panel.floating
+    onFloatingChanged: root.panelMaskChanged()
     readonly property bool screenCovered: visibleWindowsModel.count > 0 && !kwindowsystem.showingDesktop
 
     property alias panelMask: privateSwapper.mask
@@ -30,6 +31,9 @@ Item {
         property string completedState: ""
         // Work around the fact that we can't use a ternary if in an alias
         readonly property var mask: {
+            if (floating) {
+                return floatingTranslucentItem.mask
+            }
             if (completedState == "opaque") {
                 return opaqueItem.mask
             } else {
@@ -63,9 +67,9 @@ Item {
     readonly property int rightFloatingPadding: floating && containment.location !== PlasmaCore.Types.LeftEdge ? floatingPanelSvg.fixedMargins.right : 0
     readonly property int bottomFloatingPadding: floating && containment.location !== PlasmaCore.Types.TopEdge ? floatingPanelSvg.fixedMargins.bottom : 0
 
-    readonly property int maskOffsetX: screenCovered ? 0 : leftFloatingPadding
-    readonly property int maskOffsetY: screenCovered ? 0 : topFloatingPadding
-    Behavior on maskOffsetX {
+    property int maskOffsetX: screenCovered ? 0 : leftFloatingPadding
+    property int maskOffsetY: screenCovered ? 0 : topFloatingPadding
+    /*Behavior on maskOffsetX {
         NumberAnimation {
             duration: PlasmaCore.Units.longDuration
         }
@@ -74,7 +78,7 @@ Item {
         NumberAnimation {
             duration: PlasmaCore.Units.longDuration
         }
-    }
+    }*/
 
     TaskManager.VirtualDesktopInfo {
         id: virtualDesktopInfo
@@ -110,7 +114,16 @@ Item {
 
     PlasmaCore.FrameSvgItem {
         id: translucentItem
-        enabledBorders: floating ? undefined : panel.enabledBorders
+        enabledBorders: panel.enabledBorders
+        anchors {
+            fill: parent
+        }
+        imagePath: containment && containment.backgroundHints === PlasmaCore.Types.NoBackground ? "" : "widgets/panel-background"
+    }
+
+
+    PlasmaCore.FrameSvgItem {
+        id: floatingTranslucentItem
         anchors {
             fill: parent
             bottomMargin: bottomFloatingPadding; leftMargin: leftFloatingPadding
@@ -119,7 +132,7 @@ Item {
         states: State {
             name: 'fill'; when: screenCovered
             PropertyChanges {
-                target: translucentItem.anchors; bottomMargin: 0; leftMargin: 0;
+                target: floatingTranslucentItem.anchors; bottomMargin: 0; leftMargin: 0;
                 rightMargin: 0; topMargin: 0;
             }
         }
@@ -136,25 +149,9 @@ Item {
 
     PlasmaCore.FrameSvgItem {
         id: opaqueItem
-        enabledBorders: floating ? undefined : panel.enabledBorders
+        enabledBorders: panel.enabledBorders
         anchors {
             fill: parent
-            bottomMargin:  bottomFloatingPadding; leftMargin: leftFloatingPadding
-            rightMargin: rightFloatingPadding; topMargin: topFloatingPadding
-        }
-        states: State {
-            name: 'fill'; when: screenCovered
-            PropertyChanges {
-                target: opaqueItem.anchors; bottomMargin: 0; leftMargin: 0;
-                rightMargin: 0; topMargin: 0;
-            }
-        }
-        transitions: Transition {
-            from: ""; to: "fill"; reversible: true
-            NumberAnimation {
-                properties: "bottomMargin,topMargin,leftMargin,rightMargin"
-                duration: PlasmaCore.Units.longDuration; easing.type: Easing.InOutQuad
-            }
         }
         imagePath: containment && containment.backgroundHints === PlasmaCore.Types.NoBackground ? "" : "solid/widgets/panel-background"
     }
@@ -170,7 +167,12 @@ Item {
             SequentialAnimation {
                 ScriptAction {
                     script: {
-                        translucentItem.visible = true
+                        privateSwapper.completedState = "transparent"
+                        if (floating) {
+                            floatingTranslucentItem.visible = true
+                        } else {
+                            translucentItem.visible = true
+                        }
                         containment.containmentDisplayHints &= ~PlasmaCore.Types.DesktopFullyCovered;
                     }
                 }
@@ -178,13 +180,12 @@ Item {
                     target: opaqueItem
                     properties: "opacity"
                     to: 0
-                    duration: PlasmaCore.Units.veryLongDuration
+                    duration: floating ? 2 : PlasmaCore.Units.veryLongDuration
                     easing.type: Easing.InOutQuad
                 }
                 ScriptAction {
                     script: {
                         opaqueItem.visible = false
-                        privateSwapper.completedState = "transparent"
                         root.panelMaskChanged()
                     }
                 }
@@ -209,8 +210,8 @@ Item {
                 }
                 ScriptAction {
                     script: {
-                        translucentItem.visible = false
                         privateSwapper.completedState = "opaque"
+                        translucentItem.visible = floatingTranslucentItem.visible = false
                         root.panelMaskChanged()
                     }
                 }
@@ -264,7 +265,7 @@ Item {
             pre = "";
             break;
         }
-        translucentItem.prefix = opaqueItem.prefix = [pre, ""];
+        translucentItem.prefix = opaqueItem.prefix = floatingTranslucentItem.prefix = [pre, ""];
     }
 
     onContainmentChanged: {
@@ -371,7 +372,7 @@ Item {
     }
     Item {
         id: containmentParent
-        anchors.centerIn: translucentItem
+        anchors.centerIn: floatingTranslucentItem
         width: root.width - leftFloatingPadding - rightFloatingPadding
         height: root.height - topFloatingPadding - bottomFloatingPadding
     }
