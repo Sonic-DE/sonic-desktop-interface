@@ -237,7 +237,7 @@ function checkLastSpacer() {
                         anchors[up] = undefined
                         this[isHorizontal ? 'height' : 'width'] = padding
                         anchors[left+'Margin'] = - currentLayout.rowSpacing/2 - (appletIndex == 0 ? panelSvg.margins[left] + currentLayout.x : 0)
-                        anchors[right+'Margin'] = - currentLayout.rowSpacing/2 - (appletIndex == appletsModel.count-1 ? panelSvg.margins[right] + currentLayout.toolBoxWidth : 0)
+                        anchors[right+'Margin'] = - currentLayout.rowSpacing/2 - (appletIndex == appletsModel.count-1 ? panelSvg.margins[right] + currentLayout.toolBoxSize : 0)
                         anchors[side+'Margin'] = - inset
                     }
                     elementId: fill ? 'fill' : (isHorizontal ? side + (inThickArea ? 'left' : 'right') : (inThickArea ? 'top' : 'bottom') + side)
@@ -329,10 +329,10 @@ function checkLastSpacer() {
         rowSpacing: PlasmaCore.Units.smallSpacing
         columnSpacing: PlasmaCore.Units.smallSpacing
 
-        x: Qt.application.layoutDirection === Qt.RightToLeft ? toolBoxWidth : 0;
-        width: (root.hasSpacer || !isHorizontal ? root.width : implicitWidth) - toolBoxWidth
-        height: (root.hasSpacer || isHorizontal ? root.height: implicitHeight) - toolBoxWidth
-        property int toolBoxWidth: !isHorizontal || !toolBox || !plasmoid.editMode || Qt.application.layoutDirection === Qt.RightToLeft ? 0 : toolBox.width
+        x: Qt.application.layoutDirection === Qt.RightToLeft && isHorizontal ? toolBoxSize : 0;
+        width: (root.hasSpacer || !isHorizontal ? root.width : implicitWidth) - (isHorizontal ? toolBoxSize : 0)
+        height: (root.hasSpacer || isHorizontal ? root.height: implicitHeight) - (!isHorizontal ? toolBoxSize : 0)
+        property int toolBoxSize:  !toolBox || !plasmoid.editMode || Qt.application.layoutDirection === Qt.RightToLeft ? 0 : (isHorizontal ? toolBox.width : toolBox.height)
 
         rows: isHorizontal ? 1 : currentLayout.children.length
         columns: isHorizontal ? currentLayout.children.length : 1
