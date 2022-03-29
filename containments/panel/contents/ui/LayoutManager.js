@@ -97,8 +97,6 @@ function save() {
 }
 
 function indexAtCoordinates(x, y) {
-    console.log()
-    console.log('A')
     if (root.isHorizontal) {
         y = layout.height / 2;
     } else {
