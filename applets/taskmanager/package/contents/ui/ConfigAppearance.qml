@@ -81,7 +81,7 @@ Kirigami.FormLayout {
         Layout.fillWidth: true
         enabled: !Kirigami.Settings.tabletMode
         from: 0
-        to: 2
+        to: 3
         stepSize: 1
         snapMode: Slider.SnapAlways
 
@@ -101,19 +101,30 @@ Kirigami.FormLayout {
         }
 
         Label {
-            anchors.horizontalCenter: parent.horizontalCenter
+            anchors {
+                horizontalCenter: parent.horizontalCenter
+                horizontalCenterOffset: -Math.round(parent.width / 6)
+            }
             text: i18n("Normal")
         }
 
         Label {
-            anchors.right: parent.right
+            anchors {
+                horizontalCenter: parent.horizontalCenter
+                horizontalCenterOffset: Math.round(parent.width / 6)
+            }
             text: i18n("Large")
+        }
+
+        Label {
+            anchors.right: parent.right
+            text: i18n("Huge")
         }
     }
 
     Label {
         visible: Kirigami.Settings.tabletMode
-        text: i18nc("@info:usagetip under a set of radio buttons when tablet mode is on", "Automatically set to Large when in tablet mode")
+        text: i18nc("@info:usagetip under a set of radio buttons when tablet mode is on", "Automatically set to Huge when in tablet mode")
         font: Kirigami.Theme.smallFont
     }
 }
