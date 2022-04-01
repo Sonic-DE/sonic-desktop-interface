@@ -25,7 +25,7 @@ Kirigami.FormLayout {
     property bool cfg_indicateAudioStreams
     property alias cfg_maxStripes: maxStripes.value
     property alias cfg_forceStripes: forceStripes.checked
-    property alias cfg_iconSpacing: iconSpacingRadioButtons.iconSpacing
+    property int cfg_iconSpacing: 0
 
     CheckBox {
         id: showToolTips
@@ -72,39 +72,48 @@ Kirigami.FormLayout {
         Kirigami.FormData.isSection: true
     }
 
-    ColumnLayout {
-        id: iconSpacingRadioButtons
+    Slider {
+        id: iconSpacingSlider
 
-        property int iconSpacing: 0
         visible: iconOnly
         Kirigami.FormData.label: i18n("Spacing between icons:")
-        Kirigami.FormData.buddyFor: small
 
-        RadioButton {
-            id: small
-            enabled: !Kirigami.Settings.tabletMode
-            text: i18n("Small")
-            checked: iconSpacingRadioButtons.iconSpacing === 0 && !Kirigami.Settings.tabletMode
-            onToggled: parent.iconSpacing = 0
-        }
+        Layout.preferredWidth: Kirigami.Units.gridUnit * 15
+        enabled: !Kirigami.Settings.tabletMode
+        from: 0
+        to: 2
+        stepSize: 1
+        snapMode: Slider.SnapAlways
 
-        RadioButton {
-            enabled: !Kirigami.Settings.tabletMode
-            text: i18n("Normal")
-            checked: iconSpacingRadioButtons.iconSpacing === 1 && !Kirigami.Settings.tabletMode
-            onToggled: parent.iconSpacing = 1
-        }
+        value: enabled ? cfg_iconSpacing : to
+        onMoved: cfg_iconSpacing = value
+    }
 
-        RadioButton {
-            enabled: !Kirigami.Settings.tabletMode
-            text: i18n("Large")
-            checked: iconSpacingRadioButtons.iconSpacing === 3 || Kirigami.Settings.tabletMode
-            onToggled: parent.iconSpacing = 3
-        }
+    Item {
+        id: sliderLabelRow
+        Layout.preferredWidth: iconSpacingSlider.Layout.preferredWidth
+        Layout.preferredHeight: childrenRect.height
+        opacity: iconSpacingSlider.enabled ? 1 : 0.5
+
         Label {
-            visible: Kirigami.Settings.tabletMode
-            text: i18nc("@info:usagetip under a set of radio buttons when tablet mode is on", "Automatically set to Large when in tablet mode")
-            font: Kirigami.Theme.smallFont
+            anchors.left: parent.left
+            text: i18n("Small")
         }
+
+        Label {
+            anchors.horizontalCenter: parent.horizontalCenter
+            text: i18n("Normal")
+        }
+
+        Label {
+            anchors.right: parent.right
+            text: i18n("Large")
+        }
+    }
+
+    Label {
+        visible: Kirigami.Settings.tabletMode
+        text: i18nc("@info:usagetip under a set of radio buttons when tablet mode is on", "Automatically set to Large when in tablet mode")
+        font: Kirigami.Theme.smallFont
     }
 }
