@@ -256,7 +256,7 @@ ColumnLayout {
             // if this app is a browser, we also check the title, so album art is not shown when the user is on some other tab
             // in all other cases we can safely show the album art without checking the title
             readonly property bool available: (status === Image.Ready || status === Image.Loading)
-                && (!(isGroup || backend.applicationCategories(launcherUrl).includes("WebBrowser")) || generateTitle().includes(track))
+                && (!(isGroup || backend.applicationCategories(launcherUrl).includes("WebBrowser")) || winTitle.title.includes(track))
 
             anchors.fill: hoverHandler
             // Indent by one pixel to make sure we never cover up the entire highlight
