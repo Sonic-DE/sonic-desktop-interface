@@ -20,27 +20,11 @@ Item {
 
     property Item containment
 
-    readonly property bool floating: floatingPanelSvg.usedPrefix === "floating" && panel.floating
-    onFloatingChanged: root.panelMaskChanged()
+    property bool floating: floatingPanelSvg.usedPrefix === "floating" && panel.floating
     readonly property bool screenCovered: visibleWindowsModel.count > 0 && !kwindowsystem.showingDesktop
 
-    property alias panelMask: privateSwapper.mask
-
-    QtObject {
-        id: privateSwapper
-        property string completedState: ""
-        // Work around the fact that we can't use a ternary if in an alias
-        readonly property var mask: {
-            if (floating) {
-                return floatingTranslucentItem.mask
-            }
-            if (completedState == "opaque") {
-                return opaqueItem.mask
-            } else {
-                return translucentItem.mask
-            }
-        }
-    }
+    property var panelMask: translucentItem.mask
+    property var floatingPanelMask: floatingTranslucentItem.mask
 
     readonly property bool verticalPanel: containment && containment.formFactor === PlasmaCore.Types.Vertical
 
@@ -68,8 +52,17 @@ Item {
     readonly property int bottomFloatingPadding: floating && containment.location !== PlasmaCore.Types.TopEdge ? floatingPanelSvg.fixedMargins.bottom : 0
 
     property int maskOffsetX: screenCovered ? 0 : leftFloatingPadding
+    onMaskOffsetXChanged: {
+        console.log('r/place save meeeeeeeeeeeeeeee')
+        console.log('r/place save meeeeeeeeeeeeeeee')
+        console.log('r/place save meeeeeeeeeeeeeeee')
+        console.log('r/place save meeeeeeeeeeeeeeee')
+        console.log('r/place save meeeeeeeeeeeeeeee')
+        console.log('r/place save meeeeeeeeeeeeeeee')
+        console.log(maskOffsetX)
+    }
     property int maskOffsetY: screenCovered ? 0 : topFloatingPadding
-    /*Behavior on maskOffsetX {
+    Behavior on maskOffsetX {
         NumberAnimation {
             duration: PlasmaCore.Units.longDuration
         }
@@ -78,7 +71,7 @@ Item {
         NumberAnimation {
             duration: PlasmaCore.Units.longDuration
         }
-    }*/
+    }
 
     TaskManager.VirtualDesktopInfo {
         id: virtualDesktopInfo
@@ -167,13 +160,13 @@ Item {
             SequentialAnimation {
                 ScriptAction {
                     script: {
-                        privateSwapper.completedState = "transparent"
                         if (floating) {
                             floatingTranslucentItem.visible = true
                         } else {
                             translucentItem.visible = true
                         }
                         containment.containmentDisplayHints &= ~PlasmaCore.Types.DesktopFullyCovered;
+                        root.panelMask = translucentItem.mask
                     }
                 }
                 NumberAnimation {
@@ -186,7 +179,6 @@ Item {
                 ScriptAction {
                     script: {
                         opaqueItem.visible = false
-                        root.panelMaskChanged()
                     }
                 }
             }
@@ -210,9 +202,8 @@ Item {
                 }
                 ScriptAction {
                     script: {
-                        privateSwapper.completedState = "opaque"
                         translucentItem.visible = floatingTranslucentItem.visible = false
-                        root.panelMaskChanged()
+                        root.panelMask = opaqueItem.mask
                     }
                 }
             }
