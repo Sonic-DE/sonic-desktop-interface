@@ -471,7 +471,8 @@ MouseArea {
         }
     }
 
-    GroupDialog { id: groupDialog }
+    readonly property Component groupDialogComponent: Qt.createComponent("GroupDialog.qml")
+    property GroupDialog groupDialog: null
 
     function hasLauncher(url) {
         return tasksModel.launcherPosition(url) != -1;
