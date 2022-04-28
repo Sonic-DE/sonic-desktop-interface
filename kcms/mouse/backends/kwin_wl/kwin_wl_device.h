@@ -7,6 +7,8 @@
 #ifndef KWINWAYLANDDEVICE_H
 #define KWINWAYLANDDEVICE_H
 
+#include <QKeySequence>
+#include <QMap>
 #include <QObject>
 #include <QString>
 
@@ -25,6 +27,7 @@ class KWinWaylandDevice : public QObject
     //
     // advanced
     Q_PROPERTY(Qt::MouseButtons supportedButtons READ supportedButtons CONSTANT)
+    Q_PROPERTY(QMap<Qt::MouseButton, QKeySequence> buttonMapping READ buttonMapping WRITE setButtonMapping NOTIFY buttonMappingChanged)
 
     Q_PROPERTY(bool supportsLeftHanded READ supportsLeftHanded CONSTANT)
     Q_PROPERTY(bool leftHandedEnabledByDefault READ leftHandedEnabledByDefault CONSTANT)
@@ -91,6 +94,22 @@ public:
     Qt::MouseButtons supportedButtons() const
     {
         return m_supportedButtons.val;
+    }
+    QMap<Qt::MouseButton, QKeySequence> buttonMapping() const
+    {
+        return m_buttonMapping.val;
+    }
+    void setButtonMapping(const QMap<Qt::MouseButton, QKeySequence> &mapping)
+    {
+        m_buttonMapping.set(mapping);
+    }
+    Q_INVOKABLE QKeySequence getKeys(Qt::MouseButton button)
+    {
+        return m_buttonMapping.val.value(button);
+    }
+    Q_INVOKABLE void setKeys(Qt::MouseButton button, const QKeySequence &keys)
+    {
+        m_buttonMapping.val.insert(button, keys);
     }
 
     //
@@ -214,6 +233,7 @@ Q_SIGNALS:
     void middleEmulationChanged();
     void naturalScrollChanged();
     void scrollFactorChanged();
+    void buttonMappingChanged();
 
 private:
     template<typename T>
@@ -263,6 +283,7 @@ private:
     //
     // advanced
     Prop<Qt::MouseButtons> m_supportedButtons = Prop<Qt::MouseButtons>("supportedButtons");
+    Prop<QMap<Qt::MouseButton, QKeySequence>> m_buttonMapping = Prop<QMap<Qt::MouseButton, QKeySequence>>("buttonMapping");
 
     Prop<bool> m_supportsLeftHanded = Prop<bool>("supportsLeftHanded");
     Prop<bool> m_leftHandedEnabledByDefault = Prop<bool>("leftHandedEnabledByDefault");

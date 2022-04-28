@@ -9,10 +9,41 @@
 #include <QDBusConnection>
 #include <QDBusError>
 #include <QDBusMessage>
+#include <QDBusMetaType>
 #include <QDBusReply>
 #include <QVector>
 
 #include "logging.h"
+
+Q_DECLARE_METATYPE(Qt::MouseButton)
+
+QDBusArgument &operator<<(QDBusArgument &argument, const QMap<Qt::MouseButton, QKeySequence> &mapping)
+{
+    argument.beginMap(qMetaTypeId<std::underlying_type_t<Qt::MouseButton>>(), qMetaTypeId<int>());
+    std::for_each(mapping.keyValueBegin(), mapping.keyValueEnd(), [&argument](const std::pair<Qt::MouseButton, QKeySequence> &entry) {
+        argument.beginMapEntry();
+        argument << entry.first << entry.second[0];
+        argument.endMapEntry();
+    });
+    argument.endMap();
+    return argument;
+}
+
+const QDBusArgument &operator>>(const QDBusArgument &argument, QMap<Qt::MouseButton, QKeySequence> &mapping)
+{
+    mapping.clear();
+    argument.beginMap();
+    while (!argument.atEnd()) {
+        int key;
+        int value;
+        argument.beginMapEntry();
+        argument >> key >> value;
+        argument.endMapEntry();
+        mapping.insert(static_cast<Qt::MouseButton>(key), value);
+    };
+    argument.endMap();
+    return argument;
+}
 
 namespace
 {
@@ -27,11 +58,18 @@ Qt::MouseButtons valueLoaderPart(QVariant const &reply)
 {
     return static_cast<Qt::MouseButtons>(reply.toInt());
 }
+
+template<>
+QMap<Qt::MouseButton, QKeySequence> valueLoaderPart(QVariant const &reply)
+{
+    return qdbus_cast<QMap<Qt::MouseButton, QKeySequence>>(reply);
+}
 }
 
 KWinWaylandDevice::KWinWaylandDevice(QString dbusName)
     : m_dbusName(dbusName)
 {
+    qDBusRegisterMetaType<QMap<Qt::MouseButton, QKeySequence>>();
 }
 
 KWinWaylandDevice::~KWinWaylandDevice()
@@ -72,6 +110,7 @@ bool KWinWaylandDevice::init()
     success &= valueLoader(m_enabled);
     // advanced
     success &= valueLoader(m_supportedButtons);
+    success &= valueLoader(m_buttonMapping);
     success &= valueLoader(m_supportsLeftHanded);
     success &= valueLoader(m_leftHandedEnabledByDefault);
     success &= valueLoader(m_leftHanded);
@@ -120,7 +159,8 @@ bool KWinWaylandDevice::applyConfig()
     QVector<QString> msgs;
 
     msgs << valueWriter(m_enabled) << valueWriter(m_leftHanded) << valueWriter(m_pointerAcceleration) << valueWriter(m_pointerAccelerationProfileFlat)
-         << valueWriter(m_pointerAccelerationProfileAdaptive) << valueWriter(m_middleEmulation) << valueWriter(m_naturalScroll) << valueWriter(m_scrollFactor);
+         << valueWriter(m_pointerAccelerationProfileAdaptive) << valueWriter(m_middleEmulation) << valueWriter(m_naturalScroll) << valueWriter(m_scrollFactor)
+         << valueWriter(m_buttonMapping);
 
     bool success = true;
     QString error_msg;
@@ -145,7 +185,8 @@ bool KWinWaylandDevice::applyConfig()
 bool KWinWaylandDevice::isChangedConfig() const
 {
     return m_enabled.changed() || m_leftHanded.changed() || m_pointerAcceleration.changed() || m_pointerAccelerationProfileFlat.changed()
-        || m_pointerAccelerationProfileAdaptive.changed() || m_middleEmulation.changed() || m_scrollFactor.changed() || m_naturalScroll.changed();
+        || m_pointerAccelerationProfileAdaptive.changed() || m_middleEmulation.changed() || m_scrollFactor.changed() || m_naturalScroll.changed()
+        || m_buttonMapping.changed();
 }
 
 template<typename T>
@@ -158,7 +199,7 @@ QString KWinWaylandDevice::valueWriter(const Prop<T> &prop)
                                                   QStringLiteral("/org/kde/KWin/InputDevice/") + m_dbusName,
                                                   QStringLiteral("org.freedesktop.DBus.Properties"),
                                                   QStringLiteral("Set"));
-    message << QStringLiteral("org.kde.KWin.InputDevice") << prop.dbus << QVariant::fromValue(QDBusVariant(prop.val));
+    message << QStringLiteral("org.kde.KWin.InputDevice") << prop.dbus << QVariant::fromValue(QDBusVariant(QVariant::fromValue(prop.val)));
     QDBusReply<void> reply = QDBusConnection::sessionBus().call(message);
     if (reply.error().isValid()) {
         qCCritical(KCM_MOUSE) << reply.error().message();
