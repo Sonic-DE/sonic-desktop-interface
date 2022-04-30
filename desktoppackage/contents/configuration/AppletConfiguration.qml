@@ -8,8 +8,8 @@
 
 import QtQuick 2.15
 import QtQuick.Dialogs 1.1
-import QtQuick.Controls 2.3 as QQC2
-import QtQuick.Layouts 1.1
+import QtQuick.Controls 2.15 as QQC2
+import QtQuick.Layouts 1.15
 
 import org.kde.kirigami 2.14 as Kirigami
 import org.kde.kitemmodels 1.0 as KItemModels
@@ -54,41 +54,22 @@ Rectangle {
         applyButton.enabled = true;
     }
 
-    function pushReplace(item, config) {
-        let page;
-        if (app.pageStack.depth === 0) {
-            page = app.pageStack.push(item, config);
-        } else {
-            page = app.pageStack.replace(item, config);
-        }
-        app.currentConfigPage = page;
-    }
-    Component {
-        id: configurationKcmPageComponent
-        ConfigurationKcmPage {
-        }
-    }
-
     function open(item) {
-        app.isAboutPage = false;
+        appLoader.isAboutPage = false;
         if (item.source) {
-            app.isAboutPage = item.source === "AboutPlugin.qml";
-            if (item.source === "ConfigurationContainmentAppearance.qml") {
-                pushReplace(Qt.resolvedUrl(item.source), {title: item.name});
-            } else {
-                pushReplace(Qt.resolvedUrl("ConfigurationAppletPage.qml"), {configItem: item, title: item.name});
-            }
+            appLoader.isAboutPage = item.source === "AboutPlugin.qml";
+            appLoader.setSource(Qt.resolvedUrl("ConfigurationAppletPage.qml"), {configItem: item});
         } else if (item.kcm) {
-            pushReplace(configurationKcmPageComponent, {kcm: item.kcm, internalPage: item.kcm.mainUi});
+            appLoader.setSource(Qt.resolvedUrl("ConfigurationKcmPage.qml"), {kcm: item.kcm, internalPage: item.kcm.mainUi});
         } else {
-            app.pageStack.pop();
+            appLoader.source = "";
         }
 
         applyButton.enabled = false
     }
 
     Connections {
-        target: app.currentConfigPage
+        target: appLoader.item
 
         function onSettingValueChanged() {
             applyButton.enabled = true;
@@ -191,13 +172,13 @@ Rectangle {
                     id: delegate
                     onActivated: categories.openCategory(model);
                     highlighted: {
-                        if ( app.pageStack.currentItem ){
-                            if (model.kcm && app.pageStack.currentItem.kcm) {
-                                return model.kcm == app.pageStack.currentItem.kcm
-                            } else if (app.pageStack.currentItem.configItem) {
-                                return model.source == app.pageStack.currentItem.configItem.source
+                        if ( appLoader.item ){
+                            if (model.kcm && appLoader.item.kcm) {
+                                return model.kcm == appLoader.item.kcm
+                            } else if (appLoader.item.configItem) {
+                                return model.source == appLoader.item.configItem.source
                             } else {
-                                return app.pageStack.currentItem.source == Qt.resolvedUrl(model.source)
+                                return appLoader.item.source == Qt.resolvedUrl(model.source)
                             }
                         }
                         return false
@@ -252,8 +233,8 @@ Rectangle {
         z: 1
     }
 
-    Kirigami.ApplicationItem {
-        id: app
+    QQC2.Page {
+        id: page
         anchors {
             left: categoriesScroll.right
             top: parent.top
@@ -261,13 +242,40 @@ Rectangle {
             bottom: parent.bottom
         }
 
-        pageStack.globalToolBar.style: Kirigami.ApplicationHeaderStyle.Breadcrumb
-        wideScreen: true
-        pageStack.globalToolBar.separatorVisible: bottomSeparator.visible
-        pageStack.globalToolBar.colorSet: Kirigami.Theme.Window
+        header: QQC2.Pane {
+            padding: Kirigami.Units.largeSpacing
+            contentItem: Kirigami.Heading {
+                id: heading
+                level: 1
+                maximumLineCount: 1
+                elide: Text.ElideRight
+                text: page.title
+                textFormat: Text.PlainText
+            }
+            background: Item {
+                Kirigami.Separator {
+                    id: topSeparator
+                    visible: appLoader.item
+                        && appLoader.item.flickable
+                        && !(appLoader.item.flickable.atYBeginning
+                        && appLoader.item.flickable.atYEnd)
+                    anchors {
+                        left: parent.left
+                        right: parent.right
+                        top: parent.bottom
+                    }
+                }
+            }
+        }
 
-        property var currentConfigPage: null
-        property bool isAboutPage: false
+        title: appLoader.item ? appLoader.item.title : ""
+
+        Loader {
+            id: appLoader
+            anchors.fill: parent
+
+            property bool isAboutPage: false
+        }
 
         MessageDialog {
             id: messageDialog
@@ -308,23 +316,23 @@ Rectangle {
                     enabled: false
                     icon.name: "dialog-ok-apply"
                     text: i18nd("plasma_shell_org.kde.plasma.desktop", "Apply")
-                    visible: !app.isAboutPage && app.pageStack.currentItem && (!app.pageStack.currentItem.kcm || app.pageStack.currentItem.kcm.buttons & 4) // 4 = Apply button
+                    visible: !appLoader.isAboutPage && appLoader.item && (!appLoader.item.kcm || appLoader.item.kcm.buttons & 4) // 4 = Apply button
                     onClicked: applyAction.trigger()
                 }
                 QQC2.Button {
                     icon.name: "dialog-cancel"
                     text: i18nd("plasma_shell_org.kde.plasma.desktop", "Cancel")
                     onClicked: cancelAction.trigger()
-                    visible: !app.isAboutPage
+                    visible: !appLoader.isAboutPage
                 }
             }
             background: Item {
                 Kirigami.Separator {
                     id: bottomSeparator
-                    visible: app.pageStack.currentItem
-                        && app.pageStack.currentItem.flickable
-                        && !(app.pageStack.currentItem.flickable.atYBeginning
-                        && app.pageStack.currentItem.flickable.atYEnd)
+                    visible: appLoader.item
+                        && appLoader.item.flickable
+                        && !(appLoader.item.flickable.atYBeginning
+                        && appLoader.item.flickable.atYEnd)
                     anchors {
                         left: parent.left
                         right: parent.right
@@ -346,7 +354,7 @@ Rectangle {
         QQC2.Action {
             id: applyAction
             onTriggered: {
-                app.pageStack.get(0).saveConfig()
+                appLoader.item.saveConfig()
 
                 applyButton.enabled = false;
             }
