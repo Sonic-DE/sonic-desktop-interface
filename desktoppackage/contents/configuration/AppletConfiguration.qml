@@ -257,8 +257,7 @@ Rectangle {
                     id: topSeparator
                     visible: appLoader.item
                         && appLoader.item.flickable
-                        && !(appLoader.item.flickable.atYBeginning
-                        && appLoader.item.flickable.atYEnd)
+                        && !appLoader.item.flickable.atYBeginning
                     anchors {
                         left: parent.left
                         right: parent.right
@@ -331,8 +330,7 @@ Rectangle {
                     id: bottomSeparator
                     visible: appLoader.item
                         && appLoader.item.flickable
-                        && !(appLoader.item.flickable.atYBeginning
-                        && appLoader.item.flickable.atYEnd)
+                        && !appLoader.item.flickable.atYEnd
                     anchors {
                         left: parent.left
                         right: parent.right
