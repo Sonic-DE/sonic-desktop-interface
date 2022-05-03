@@ -20,11 +20,14 @@ Item {
 
     property Item containment
 
-    property bool floating: floatingPanelSvg.usedPrefix === "floating" && panel.floating
+    property bool floatingPrefix: floatingPanelSvg.usedPrefix === "floating"
+    property bool floating: panel.floating
     readonly property bool screenCovered: visibleWindowsModel.count > 0 && !kwindowsystem.showingDesktop
 
-    property var panelMask: translucentItem.mask
-    property var floatingPanelMask: floatingTranslucentItem.mask
+    property var panelMask: opaqueItem.mask
+    onPanelMaskChanged: {
+        console.log('---------------------------------------------------------------------->', panelMask)
+    }
 
     readonly property bool verticalPanel: containment && containment.formFactor === PlasmaCore.Types.Vertical
 
@@ -46,21 +49,12 @@ Item {
     readonly property int leftPadding: Math.round(Math.min(thickPanelSvg.fixedMargins.left, spacingAtMinSize));
     readonly property int rightPadding: Math.round(Math.min(thickPanelSvg.fixedMargins.right, spacingAtMinSize));
 
-    readonly property int topFloatingPadding: floating && containment.location !== PlasmaCore.Types.BottomEdge ? floatingPanelSvg.fixedMargins.top : 0
-    readonly property int leftFloatingPadding: floating && containment.location !== PlasmaCore.Types.RightEdge ? floatingPanelSvg.fixedMargins.left : 0
-    readonly property int rightFloatingPadding: floating && containment.location !== PlasmaCore.Types.LeftEdge ? floatingPanelSvg.fixedMargins.right : 0
-    readonly property int bottomFloatingPadding: floating && containment.location !== PlasmaCore.Types.TopEdge ? floatingPanelSvg.fixedMargins.bottom : 0
+    readonly property int bottomFloatingPadding: floating && containment && containment.location !== PlasmaCore.Types.TopEdge ? (floatingPrefix ? floatingPanelSvg.fixedMargins.bottom : 8) : 0
+    readonly property int leftFloatingPadding: floating && containment && containment.location !== PlasmaCore.Types.RightEdge ? (floatingPrefix ? floatingPanelSvg.fixedMargins.left   : 8) : 0
+    readonly property int rightFloatingPadding: floating && containment && containment.location !== PlasmaCore.Types.LeftEdge ? (floatingPrefix ? floatingPanelSvg.fixedMargins.right  : 8) : 0
+    readonly property int topFloatingPadding: floating && containment && containment.location !== PlasmaCore.Types.BottomEdge ? (floatingPrefix ? floatingPanelSvg.fixedMargins.top    : 8) : 0
 
     property int maskOffsetX: screenCovered ? 0 : leftFloatingPadding
-    onMaskOffsetXChanged: {
-        console.log('r/place save meeeeeeeeeeeeeeee')
-        console.log('r/place save meeeeeeeeeeeeeeee')
-        console.log('r/place save meeeeeeeeeeeeeeee')
-        console.log('r/place save meeeeeeeeeeeeeeee')
-        console.log('r/place save meeeeeeeeeeeeeeee')
-        console.log('r/place save meeeeeeeeeeeeeeee')
-        console.log(maskOffsetX)
-    }
     property int maskOffsetY: screenCovered ? 0 : topFloatingPadding
     Behavior on maskOffsetX {
         NumberAnimation {
@@ -107,22 +101,26 @@ Item {
 
     PlasmaCore.FrameSvgItem {
         id: translucentItem
+        visible: false
         enabledBorders: panel.enabledBorders
-        anchors {
-            fill: parent
-        }
+        anchors.fill: parent
         imagePath: containment && containment.backgroundHints === PlasmaCore.Types.NoBackground ? "" : "widgets/panel-background"
     }
 
 
     PlasmaCore.FrameSvgItem {
         id: floatingTranslucentItem
+        // Number between 0 (not floating) - 1 (floating)
+        property double floatingness: 0
+        visible: false
         anchors {
             fill: parent
-            bottomMargin: bottomFloatingPadding; leftMargin: leftFloatingPadding
-            rightMargin: rightFloatingPadding; topMargin: topFloatingPadding
+            bottomMargin: bottomFloatingPadding * floatingness
+            leftMargin: leftFloatingPadding * floatingness
+            rightMargin: rightFloatingPadding * floatingness
+            topMargin: topFloatingPadding * floatingness
         }
-        states: State {
+        /*states: State {
             name: 'fill'; when: screenCovered
             PropertyChanges {
                 target: floatingTranslucentItem.anchors; bottomMargin: 0; leftMargin: 0;
@@ -135,17 +133,46 @@ Item {
                 properties: "bottomMargin,topMargin,leftMargin,rightMargin"
                 duration: PlasmaCore.Units.longDuration; easing.type: Easing.InOutQuad
             }
-        }
+        }*/
 
         imagePath: containment && containment.backgroundHints === PlasmaCore.Types.NoBackground ? "" : "widgets/panel-background"
     }
 
+
     PlasmaCore.FrameSvgItem {
-        id: opaqueItem
-        enabledBorders: panel.enabledBorders
+        id: floatingOpaqueItem
+        visible: false
+        property double floatingness: 0
         anchors {
             fill: parent
+            bottomMargin: bottomFloatingPadding * floatingness
+            leftMargin: leftFloatingPadding * floatingness
+            rightMargin: rightFloatingPadding * floatingness
+            topMargin: topFloatingPadding * floatingness
         }
+        /*states: State {
+            name: 'fill'; when: screenCovered
+            PropertyChanges {
+                target: floatingTranslucentItem.anchors; bottomMargin: 0; leftMargin: 0;
+                rightMargin: 0; topMargin: 0;
+            }
+        }
+        transitions: Transition {
+            from: ""; to: "fill"; reversible: true
+            NumberAnimation {
+                properties: "bottomMargin,topMargin,leftMargin,rightMargin"
+                duration: PlasmaCore.Units.longDuration; easing.type: Easing.InOutQuad
+            }
+        }*/
+
+        imagePath: containment && containment.backgroundHints === PlasmaCore.Types.NoBackground ? "" : "solid/widgets/panel-background"
+    }
+
+    PlasmaCore.FrameSvgItem {
+        id: opaqueItem
+        visible: false
+        enabledBorders: panel.enabledBorders
+        anchors.fill: parent
         imagePath: containment && containment.backgroundHints === PlasmaCore.Types.NoBackground ? "" : "solid/widgets/panel-background"
     }
 
@@ -153,24 +180,23 @@ Item {
         root.parent.focus = false
     }
 
-    transitions: [
+    /*transitions: [
         Transition {
             from: "*"
             to: "transparent"
             SequentialAnimation {
                 ScriptAction {
                     script: {
-                        if (floating) {
+                        if (currentlyFloating) {
                             floatingTranslucentItem.visible = true
                         } else {
                             translucentItem.visible = true
                         }
-                        containment.containmentDisplayHints &= ~PlasmaCore.Types.DesktopFullyCovered;
                         root.panelMask = translucentItem.mask
                     }
                 }
                 NumberAnimation {
-                    target: opaqueItem
+                    target: floating ? floatingOpaqueItem : opaqueItem
                     properties: "opacity"
                     to: 0
                     duration: floating ? 2 : PlasmaCore.Units.veryLongDuration
@@ -178,7 +204,7 @@ Item {
                 }
                 ScriptAction {
                     script: {
-                        opaqueItem.visible = false
+                        floatingOpaqueItem.visible = opaqueItem.visible = false
                     }
                 }
             }
@@ -189,12 +215,15 @@ Item {
             SequentialAnimation {
                 ScriptAction {
                     script: {
-                        opaqueItem.visible = true
-                        containment.containmentDisplayHints |= PlasmaCore.Types.DesktopFullyCovered;
+                        if (currentlyFloating) {
+                            floatingOpaqueItem.visible = true
+                        } else {
+                            opaqueItem.visible = true
+                        }
                     }
                 }
                 NumberAnimation {
-                    target: opaqueItem
+                    target: floating ? floatingOpaqueItem : opaqueItem
                     properties: "opacity"
                     to: 1
                     duration: PlasmaCore.Units.veryLongDuration
@@ -208,31 +237,278 @@ Item {
                 }
             }
         }
-    ]
+    ]*/
 
-    Component.onCompleted: state = Qt.binding(() => panel.opacityMode === 0 ? (visibleWindowsModel.count > 0 && !kwindowsystem.showingDesktop ? "opaque" : "transparent")
-                                                                            : (panel.opacityMode === 1 ? "opaque" : "transparent"))
-    onStateChanged: {
-        if (containment) {
-            if (state === 'opaque') {
-                containment.containmentDisplayHints |= PlasmaCore.Types.DesktopFullyCovered;
-
-            } else {
-                containment.containmentDisplayHints &= ~PlasmaCore.Types.DesktopFullyCovered;
+    transitions: [
+        Transition {
+            from: "opaque"
+            to: "transparent"
+            SequentialAnimation {
+                ScriptAction {
+                    script: {
+                        translucentItem.visible = true
+                    }
+                }
+                NumberAnimation {
+                    target: opaqueItem
+                    properties: "opacity"
+                    to: 0
+                    duration: PlasmaCore.Units.veryLongDuration
+                    easing.type: Easing.InOutQuad
+                }
+                ScriptAction {
+                    script: {
+                        opaqueItem.visible = false
+                        root.panelMask = translucentItem.mask
+                    }
+                }
+            }
+        },
+        Transition {
+            from: "transparent"
+            to: "opaque"
+            SequentialAnimation {
+                ScriptAction {
+                    script: {
+                        opaqueItem.visible = translucentItem.visible = true
+                    }
+                }
+                NumberAnimation {
+                    target: opaqueItem
+                    properties: "opacity"
+                    to: 1
+                    duration: PlasmaCore.Units.veryLongDuration
+                    easing.type: Easing.InOutQuad
+                }
+                ScriptAction {
+                    script: {
+                        translucentItem.visible = false
+                        root.panelMask = opaqueItem.mask
+                    }
+                }
+            }
+        },
+        Transition {
+            from: "transparent"
+            to: "floatingtransparent"
+            SequentialAnimation {
+                ScriptAction {
+                    script: {
+                        translucentItem.visible = false
+                        floatingTranslucentItem.visible = true
+                        root.panelMask = floatingTranslucentItem.mask
+                    }
+                }
+                NumberAnimation {
+                    target: floatingTranslucentItem
+                    properties: "floatingness"
+                    to: 1
+                    duration: PlasmaCore.Units.veryLongDuration
+                    easing.type: Easing.InOutQuad
+                }
+            }
+        },
+        Transition {
+            from: "floatingtransparent"
+            to: "transparent"
+            SequentialAnimation {
+                NumberAnimation {
+                    target: floatingTranslucentItem
+                    properties: "floatingness"
+                    to: 0
+                    duration: PlasmaCore.Units.veryLongDuration
+                    easing.type: Easing.InOutQuad
+                }
+                ScriptAction {
+                    script: {
+                        translucentItem.visible = true
+                        floatingTranslucentItem.visible = false
+                        root.panelMask = translucentItem.mask
+                    }
+                }
+            }
+        },
+        Transition {
+            from: "opaque"
+            to: "floatingopaque"
+            SequentialAnimation {
+                ScriptAction {
+                    script: {
+                        opaqueItem.visible = false
+                        floatingOpaqueItem.visible = true
+                        root.panelMask = floatingOpaqueItem.mask
+                    }
+                }
+                NumberAnimation {
+                    target: floatingOpaqueItem
+                    properties: "floatingness"
+                    to: 1
+                    duration: PlasmaCore.Units.veryLongDuration
+                    easing.type: Easing.InOutQuad
+                }
+            }
+        },
+        Transition {
+            from: "floatingopaque"
+            to: "opaque"
+            SequentialAnimation {
+                NumberAnimation {
+                    target: floatingOpaqueItem
+                    properties: "floatingness"
+                    to: 0
+                    duration: PlasmaCore.Units.veryLongDuration
+                    easing.type: Easing.InOutQuad
+                }
+                ScriptAction {
+                    script: {
+                        opaqueItem.visible = true
+                        floatingOpaqueItem.visible = false
+                        root.panelMask = opaqueItem.mask
+                    }
+                }
+            }
+        },
+        Transition {
+            from: "opaque"
+            to: "floatingtransparent"
+            SequentialAnimation {
+                ScriptAction {
+                    script: {
+                        opaqueItem.visible = false
+                        floatingTranslucentItem.visible = floatingOpaqueItem.visible = true
+                        floatingTranslucentItem.floatingness = floatingOpaqueItem.floatingness = 0
+                        root.panelMask = floatingTranslucentItem.mask
+                    }
+                }
+                ParallelAnimation {
+                    NumberAnimation {
+                        target: floatingTranslucentItem
+                        properties: "floatingness"
+                        to: 1
+                        duration: PlasmaCore.Units.veryLongDuration
+                        easing.type: Easing.InOutQuad
+                    }
+                    NumberAnimation {
+                        target: floatingOpaqueItem
+                        properties: "floatingness"
+                        to: 1
+                        duration: PlasmaCore.Units.veryLongDuration
+                        easing.type: Easing.InOutQuad
+                    }
+                    NumberAnimation {
+                        target: floatingOpaqueItem
+                        properties: "opacity"
+                        to: 0
+                        duration: PlasmaCore.Units.veryLongDuration
+                        easing.type: Easing.InOutQuad
+                    }
+                }
+                ScriptAction {
+                    script: {
+                        floatingOpaqueItem.visible = false
+                    }
+                }
+            }
+        },
+        Transition {
+            from: "floatingtransparent"
+            to: "opaque"
+            SequentialAnimation {
+                ScriptAction {
+                    script: {
+                        floatingTranslucentItem.visible = floatingOpaqueItem.visible = true
+                        floatingOpaqueItem.opacity = 1 - floatingTranslucentItem.opacity
+                        floatingOpaqueItem.floatingness = floatingTranslucentItem.floatingness
+                        root.panelMask = opaqueItem.mask
+                    }
+                }
+                ParallelAnimation {
+                    NumberAnimation {
+                        target: floatingTranslucentItem
+                        properties: "floatingness"
+                        to: 0
+                        duration: PlasmaCore.Units.veryLongDuration
+                        easing.type: Easing.InOutQuad
+                    }
+                    NumberAnimation {
+                        target: floatingOpaqueItem
+                        properties: "floatingness"
+                        to: 0
+                        duration: PlasmaCore.Units.veryLongDuration
+                        easing.type: Easing.InOutQuad
+                    }
+                    NumberAnimation {
+                        target: floatingOpaqueItem
+                        properties: "opacity"
+                        to: 1
+                        duration: PlasmaCore.Units.veryLongDuration
+                        easing.type: Easing.InOutQuad
+                    }
+                }
+                ScriptAction {
+                    script: {
+                        opaqueItem.visible = true
+                        floatingTranslucentItem.visible = floatingOpaqueItem.visible = false
+                        floatingTranslucentItem.opacity = floatingOpaqueItem.opacity = 1
+                    }
+                }
+            }
+        },
+        Transition {
+            from: "floatingopaque"
+            to: "floatingtransparent"
+            ScriptAction {
+                script: {
+                    floatingOpaqueItem.visible = false
+                    floatingTranslucentItem.visible = true
+                    floatingTranslucentItem.floatingness = 1
+                    floatingTranslucentItem.opacity = 1
+                    root.panelMask = floatingTranslucentItem.mask
+                }
+            }
+        },
+        Transition {
+            from: "floatingtransparent"
+            to: "floatingopaque"
+            ScriptAction {
+                script: {
+                    floatingOpaqueItem.visible = true
+                    floatingTranslucentItem.visible = false
+                    floatingOpaqueItem.floatingness = 1
+                    floatingOpaqueItem.opacity = 1
+                    root.panelMask = floatingOpaqueItem.mask
+                }
             }
         }
-    }
-    state: ""
-    states: [
-        State {
-            name: "opaque"
-            when: panel.opacityMode === 1 || (panel.opacityMode === 0 && screenCovered)
-        },
-        State {
-            when: panel.opacityMode === 2 || (panel.opacityMode === 0 && !screenCovered)
-            name: "transparent"
-        }
     ]
+
+    property bool isOpaque: panel.opacityMode === 1
+    property bool isTransparent: panel.opacityMode === 2
+    property bool isAdaptive: panel.opacityMode === 0
+    property var stateTriggers: [floating, screenCovered, isOpaque, isAdaptive, isTransparent]
+    states: [
+        State {name: "opaque"},
+        State {name: "transparent"},
+        State {name: "floatingtransparent"},
+        State {name: "floatingopaque"}
+    ]
+    onStateTriggersChanged: {
+        if ((!floating || screenCovered) && (isOpaque || (screenCovered && isAdaptive))) {
+            root.state = "opaque"
+        } else if ((!floating || screenCovered) && (isTransparent || (!screenCovered && isAdaptive))) {
+            root.state = "transparent"
+        } else if ((floating && !screenCovered) && (isTransparent || isAdaptive)) {
+            root.state = "floatingtransparent"
+        } else if (floating && !screenCovered && isOpaque) {
+            root.state = "floatingopaque"
+        }
+        if ((root.state == "opaque" || root.state == "floatingopaque") && containment) {
+            containment.containmentDisplayHints |= PlasmaCore.Types.DesktopFullyCovered
+        } else {
+            containment.containmentDisplayHints &= ~PlasmaCore.Types.DesktopFullyCovered
+        }
+        console.log(root.state)
+    }
 
     function adjustPrefix() {
         if (!containment) {
@@ -256,7 +532,7 @@ Item {
             pre = "";
             break;
         }
-        translucentItem.prefix = opaqueItem.prefix = floatingTranslucentItem.prefix = [pre, ""];
+        translucentItem.prefix = opaqueItem.prefix = floatingTranslucentItem.prefix = floatingOpaqueItem.prefix = [pre, ""];
     }
 
     onContainmentChanged: {
@@ -363,7 +639,7 @@ Item {
     }
     Item {
         id: containmentParent
-        anchors.centerIn: floatingTranslucentItem
+        anchors.centerIn: isOpaque ? floatingOpaqueItem : floatingTranslucentItem
         width: root.width - leftFloatingPadding - rightFloatingPadding
         height: root.height - topFloatingPadding - bottomFloatingPadding
     }
