@@ -25,9 +25,6 @@ Item {
     readonly property bool screenCovered: visibleWindowsModel.count > 0 && !kwindowsystem.showingDesktop
 
     property var panelMask: opaqueItem.mask
-    onPanelMaskChanged: {
-        console.log('---------------------------------------------------------------------->', panelMask)
-    }
 
     readonly property bool verticalPanel: containment && containment.formFactor === PlasmaCore.Types.Vertical
 
@@ -54,18 +51,8 @@ Item {
     readonly property int rightFloatingPadding: floating && containment && containment.location !== PlasmaCore.Types.LeftEdge ? (floatingPrefix ? floatingPanelSvg.fixedMargins.right  : 8) : 0
     readonly property int topFloatingPadding: floating && containment && containment.location !== PlasmaCore.Types.BottomEdge ? (floatingPrefix ? floatingPanelSvg.fixedMargins.top    : 8) : 0
 
-    property int maskOffsetX: screenCovered ? 0 : leftFloatingPadding
-    property int maskOffsetY: screenCovered ? 0 : topFloatingPadding
-    Behavior on maskOffsetX {
-        NumberAnimation {
-            duration: PlasmaCore.Units.longDuration
-        }
-    }
-    Behavior on maskOffsetY {
-        NumberAnimation {
-            duration: PlasmaCore.Units.longDuration
-        }
-    }
+    property int maskOffsetX: leftFloatingPadding * floatingTranslucentItem.floatingness
+    property int maskOffsetY: topFloatingPadding * floatingTranslucentItem.floatingness
 
     TaskManager.VirtualDesktopInfo {
         id: virtualDesktopInfo
@@ -120,21 +107,6 @@ Item {
             rightMargin: rightFloatingPadding * floatingness
             topMargin: topFloatingPadding * floatingness
         }
-        /*states: State {
-            name: 'fill'; when: screenCovered
-            PropertyChanges {
-                target: floatingTranslucentItem.anchors; bottomMargin: 0; leftMargin: 0;
-                rightMargin: 0; topMargin: 0;
-            }
-        }
-        transitions: Transition {
-            from: ""; to: "fill"; reversible: true
-            NumberAnimation {
-                properties: "bottomMargin,topMargin,leftMargin,rightMargin"
-                duration: PlasmaCore.Units.longDuration; easing.type: Easing.InOutQuad
-            }
-        }*/
-
         imagePath: containment && containment.backgroundHints === PlasmaCore.Types.NoBackground ? "" : "widgets/panel-background"
     }
 
@@ -142,7 +114,7 @@ Item {
     PlasmaCore.FrameSvgItem {
         id: floatingOpaqueItem
         visible: false
-        property double floatingness: 0
+        property double floatingness: floatingTranslucentItem.floatingness
         anchors {
             fill: parent
             bottomMargin: bottomFloatingPadding * floatingness
@@ -150,21 +122,6 @@ Item {
             rightMargin: rightFloatingPadding * floatingness
             topMargin: topFloatingPadding * floatingness
         }
-        /*states: State {
-            name: 'fill'; when: screenCovered
-            PropertyChanges {
-                target: floatingTranslucentItem.anchors; bottomMargin: 0; leftMargin: 0;
-                rightMargin: 0; topMargin: 0;
-            }
-        }
-        transitions: Transition {
-            from: ""; to: "fill"; reversible: true
-            NumberAnimation {
-                properties: "bottomMargin,topMargin,leftMargin,rightMargin"
-                duration: PlasmaCore.Units.longDuration; easing.type: Easing.InOutQuad
-            }
-        }*/
-
         imagePath: containment && containment.backgroundHints === PlasmaCore.Types.NoBackground ? "" : "solid/widgets/panel-background"
     }
 
@@ -179,65 +136,6 @@ Item {
     Keys.onEscapePressed: {
         root.parent.focus = false
     }
-
-    /*transitions: [
-        Transition {
-            from: "*"
-            to: "transparent"
-            SequentialAnimation {
-                ScriptAction {
-                    script: {
-                        if (currentlyFloating) {
-                            floatingTranslucentItem.visible = true
-                        } else {
-                            translucentItem.visible = true
-                        }
-                        root.panelMask = translucentItem.mask
-                    }
-                }
-                NumberAnimation {
-                    target: floating ? floatingOpaqueItem : opaqueItem
-                    properties: "opacity"
-                    to: 0
-                    duration: floating ? 2 : PlasmaCore.Units.veryLongDuration
-                    easing.type: Easing.InOutQuad
-                }
-                ScriptAction {
-                    script: {
-                        floatingOpaqueItem.visible = opaqueItem.visible = false
-                    }
-                }
-            }
-        },
-        Transition {
-            from: "*"
-            to: "opaque"
-            SequentialAnimation {
-                ScriptAction {
-                    script: {
-                        if (currentlyFloating) {
-                            floatingOpaqueItem.visible = true
-                        } else {
-                            opaqueItem.visible = true
-                        }
-                    }
-                }
-                NumberAnimation {
-                    target: floating ? floatingOpaqueItem : opaqueItem
-                    properties: "opacity"
-                    to: 1
-                    duration: PlasmaCore.Units.veryLongDuration
-                    easing.type: Easing.InOutQuad
-                }
-                ScriptAction {
-                    script: {
-                        translucentItem.visible = floatingTranslucentItem.visible = false
-                        root.panelMask = opaqueItem.mask
-                    }
-                }
-            }
-        }
-    ]*/
 
     transitions: [
         Transition {
@@ -259,7 +157,7 @@ Item {
                 ScriptAction {
                     script: {
                         opaqueItem.visible = false
-                        root.panelMask = translucentItem.mask
+                        root.panelMask = Qt.binding(function(){return translucentItem.mask})
                     }
                 }
             }
@@ -270,7 +168,7 @@ Item {
             SequentialAnimation {
                 ScriptAction {
                     script: {
-                        opaqueItem.visible = translucentItem.visible = true
+                        opaqueItem.visible = true
                     }
                 }
                 NumberAnimation {
@@ -283,7 +181,7 @@ Item {
                 ScriptAction {
                     script: {
                         translucentItem.visible = false
-                        root.panelMask = opaqueItem.mask
+                        root.panelMask = Qt.binding(function(){return opaqueItem.mask})
                     }
                 }
             }
@@ -296,7 +194,7 @@ Item {
                     script: {
                         translucentItem.visible = false
                         floatingTranslucentItem.visible = true
-                        root.panelMask = floatingTranslucentItem.mask
+                        root.panelMask = Qt.binding(function(){return floatingTranslucentItem.mask})
                     }
                 }
                 NumberAnimation {
@@ -323,7 +221,7 @@ Item {
                     script: {
                         translucentItem.visible = true
                         floatingTranslucentItem.visible = false
-                        root.panelMask = translucentItem.mask
+                        root.panelMask = Qt.binding(function(){return translucentItem.mask})
                     }
                 }
             }
@@ -336,11 +234,11 @@ Item {
                     script: {
                         opaqueItem.visible = false
                         floatingOpaqueItem.visible = true
-                        root.panelMask = floatingOpaqueItem.mask
+                        root.panelMask = Qt.binding(function(){return floatingOpaqueItem.mask})
                     }
                 }
                 NumberAnimation {
-                    target: floatingOpaqueItem
+                    target: floatingTranslucentItem
                     properties: "floatingness"
                     to: 1
                     duration: PlasmaCore.Units.veryLongDuration
@@ -353,7 +251,7 @@ Item {
             to: "opaque"
             SequentialAnimation {
                 NumberAnimation {
-                    target: floatingOpaqueItem
+                    target: floatingTranslucentItem
                     properties: "floatingness"
                     to: 0
                     duration: PlasmaCore.Units.veryLongDuration
@@ -363,7 +261,7 @@ Item {
                     script: {
                         opaqueItem.visible = true
                         floatingOpaqueItem.visible = false
-                        root.panelMask = opaqueItem.mask
+                        root.panelMask = Qt.binding(function(){return opaqueItem.mask})
                     }
                 }
             }
@@ -376,20 +274,12 @@ Item {
                     script: {
                         opaqueItem.visible = false
                         floatingTranslucentItem.visible = floatingOpaqueItem.visible = true
-                        floatingTranslucentItem.floatingness = floatingOpaqueItem.floatingness = 0
-                        root.panelMask = floatingTranslucentItem.mask
+                        root.panelMask = Qt.binding(function(){return floatingTranslucentItem.mask})
                     }
                 }
                 ParallelAnimation {
                     NumberAnimation {
                         target: floatingTranslucentItem
-                        properties: "floatingness"
-                        to: 1
-                        duration: PlasmaCore.Units.veryLongDuration
-                        easing.type: Easing.InOutQuad
-                    }
-                    NumberAnimation {
-                        target: floatingOpaqueItem
                         properties: "floatingness"
                         to: 1
                         duration: PlasmaCore.Units.veryLongDuration
@@ -417,21 +307,12 @@ Item {
                 ScriptAction {
                     script: {
                         floatingTranslucentItem.visible = floatingOpaqueItem.visible = true
-                        floatingOpaqueItem.opacity = 1 - floatingTranslucentItem.opacity
-                        floatingOpaqueItem.floatingness = floatingTranslucentItem.floatingness
-                        root.panelMask = opaqueItem.mask
+                        floatingOpaqueItem.opacity = 1 - floatingTranslucentItem.floatingness
                     }
                 }
                 ParallelAnimation {
                     NumberAnimation {
                         target: floatingTranslucentItem
-                        properties: "floatingness"
-                        to: 0
-                        duration: PlasmaCore.Units.veryLongDuration
-                        easing.type: Easing.InOutQuad
-                    }
-                    NumberAnimation {
-                        target: floatingOpaqueItem
                         properties: "floatingness"
                         to: 0
                         duration: PlasmaCore.Units.veryLongDuration
@@ -450,6 +331,7 @@ Item {
                         opaqueItem.visible = true
                         floatingTranslucentItem.visible = floatingOpaqueItem.visible = false
                         floatingTranslucentItem.opacity = floatingOpaqueItem.opacity = 1
+                        root.panelMask = Qt.binding(function(){return opaqueItem.mask})
                     }
                 }
             }
@@ -463,7 +345,7 @@ Item {
                     floatingTranslucentItem.visible = true
                     floatingTranslucentItem.floatingness = 1
                     floatingTranslucentItem.opacity = 1
-                    root.panelMask = floatingTranslucentItem.mask
+                    root.panelMask = Qt.binding(function(){return floatingTranslucentItem.mask})
                 }
             }
         },
@@ -474,9 +356,9 @@ Item {
                 script: {
                     floatingOpaqueItem.visible = true
                     floatingTranslucentItem.visible = false
-                    floatingOpaqueItem.floatingness = 1
+                    floatingTranslucentItem.floatingness = 1
                     floatingOpaqueItem.opacity = 1
-                    root.panelMask = floatingOpaqueItem.mask
+                    root.panelMask = Qt.binding(function(){return floatingOpaqueItem.mask})
                 }
             }
         }
@@ -507,7 +389,7 @@ Item {
         } else {
             containment.containmentDisplayHints &= ~PlasmaCore.Types.DesktopFullyCovered
         }
-        console.log(root.state)
+        console.log(state)
     }
 
     function adjustPrefix() {
