@@ -41,10 +41,10 @@ Item {
     readonly property int leftPadding: Math.round(Math.min(thickPanelSvg.fixedMargins.left, spacingAtMinSize));
     readonly property int rightPadding: Math.round(Math.min(thickPanelSvg.fixedMargins.right, spacingAtMinSize));
 
-    readonly property int bottomFloatingPadding: floating && containment && containment.location !== PlasmaCore.Types.TopEdge ? (floatingPrefix ? floatingPanelSvg.fixedMargins.bottom : 8) : 0
-    readonly property int leftFloatingPadding: floating && containment && containment.location !== PlasmaCore.Types.RightEdge ? (floatingPrefix ? floatingPanelSvg.fixedMargins.left   : 8) : 0
-    readonly property int rightFloatingPadding: floating && containment && containment.location !== PlasmaCore.Types.LeftEdge ? (floatingPrefix ? floatingPanelSvg.fixedMargins.right  : 8) : 0
-    readonly property int topFloatingPadding: floating && containment && containment.location !== PlasmaCore.Types.BottomEdge ? (floatingPrefix ? floatingPanelSvg.fixedMargins.top    : 8) : 0
+    readonly property int bottomFloatingPadding: floating  ? (floatingPrefix ? floatingPanelSvg.fixedMargins.bottom : 8) : 0
+    readonly property int leftFloatingPadding: floating    ? (floatingPrefix ? floatingPanelSvg.fixedMargins.left   : 8) : 0
+    readonly property int rightFloatingPadding: floating   ? (floatingPrefix ? floatingPanelSvg.fixedMargins.right  : 8) : 0
+    readonly property int topFloatingPadding: floating     ? (floatingPrefix ? floatingPanelSvg.fixedMargins.top    : 8) : 0
 
     TaskManager.VirtualDesktopInfo {
         id: virtualDesktopInfo
@@ -94,8 +94,8 @@ Item {
     }
 
     // This value is read from panelview.cpp and disables shadow for floating panels, as they'd be detached from the panel
-    property bool hasShadows: floatingness == 0
-    property var panelMask: floatingness == 0 ? (panelOpacity == 1 ? opaqueItem.mask : translucentItem.mask) : (panelOpacity == 1 ? floatingOpaqueItem.mask : floatingTranslucentItem.mask)
+    property bool hasShadows: floatingness === 0
+    property var panelMask: floatingness === 0 ? (panelOpacity === 1 ? opaqueItem.mask : translucentItem.mask) : (panelOpacity === 1 ? floatingOpaqueItem.mask : floatingTranslucentItem.mask)
 
     // These two values are read from panelview.cpp and are used as an offset for the mask
     property int maskOffsetX: leftFloatingPadding * floatingness
@@ -103,14 +103,14 @@ Item {
 
     PlasmaCore.FrameSvgItem {
         id: translucentItem
-        visible: floatingness == 0 && panelOpacity != 1
+        visible: floatingness === 0 && panelOpacity !== 1
         enabledBorders: panel.enabledBorders
         anchors.fill: parent
         imagePath: containment && containment.backgroundHints === PlasmaCore.Types.NoBackground ? "" : "widgets/panel-background"
     }
     PlasmaCore.FrameSvgItem {
         id: floatingTranslucentItem
-        visible: floatingness != 0 && panelOpacity != 1
+        visible: floatingness !== 0 && panelOpacity !== 1
         anchors {
             fill: parent
             bottomMargin: bottomFloatingPadding * floatingness
@@ -122,7 +122,7 @@ Item {
     }
     PlasmaCore.FrameSvgItem {
         id: floatingOpaqueItem
-        visible: floatingness != 0 && panelOpacity != 0
+        visible: floatingness !== 0 && panelOpacity !== 0
         opacity: panelOpacity
         anchors {
             fill: parent
@@ -135,7 +135,7 @@ Item {
     }
     PlasmaCore.FrameSvgItem {
         id: opaqueItem
-        visible: panelOpacity != 0 && floatingness == 0
+        visible: panelOpacity !== 0 && floatingness === 0
         opacity: panelOpacity
         enabledBorders: panel.enabledBorders
         anchors.fill: parent
@@ -167,7 +167,7 @@ Item {
             panelOpacity = 1
             floatingness = 1
         }
-        if ((root.state == "opaque" || root.state == "floatingopaque") && containment) {
+        if ((panelOpacity == 1) && containment) {
             containment.containmentDisplayHints |= PlasmaCore.Types.DesktopFullyCovered
         } else {
             containment.containmentDisplayHints &= ~PlasmaCore.Types.DesktopFullyCovered
