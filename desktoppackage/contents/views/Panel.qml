@@ -21,11 +21,6 @@ Item {
     property Item containment
 
     property bool floatingPrefix: floatingPanelSvg.usedPrefix === "floating"
-    property bool floating: panel.floating
-    readonly property bool screenCovered: visibleWindowsModel.count > 0 && !kwindowsystem.showingDesktop
-
-    property var panelMask: opaqueItem.mask
-
     readonly property bool verticalPanel: containment && containment.formFactor === PlasmaCore.Types.Vertical
 
     readonly property real spacingAtMinSize: Math.round(Math.max(1, (verticalPanel ? root.width : root.height) - units.iconSizes.smallMedium)/2)
@@ -50,9 +45,6 @@ Item {
     readonly property int leftFloatingPadding: floating && containment && containment.location !== PlasmaCore.Types.RightEdge ? (floatingPrefix ? floatingPanelSvg.fixedMargins.left   : 8) : 0
     readonly property int rightFloatingPadding: floating && containment && containment.location !== PlasmaCore.Types.LeftEdge ? (floatingPrefix ? floatingPanelSvg.fixedMargins.right  : 8) : 0
     readonly property int topFloatingPadding: floating && containment && containment.location !== PlasmaCore.Types.BottomEdge ? (floatingPrefix ? floatingPanelSvg.fixedMargins.top    : 8) : 0
-
-    property int maskOffsetX: leftFloatingPadding * floatingTranslucentItem.floatingness
-    property int maskOffsetY: topFloatingPadding * floatingTranslucentItem.floatingness
 
     TaskManager.VirtualDesktopInfo {
         id: virtualDesktopInfo
@@ -86,20 +78,39 @@ Item {
         id: kwindowsystem
     }
 
+    // Floatingness is a value in [0, 1] that's multiplied to the floating margin; 0: not floating, 1: floating, between 0 and 1: animation between the two states
+    property double floatingness
+    // PanelOpacity is a value in [0, 1] that's used as the opacity of the opaque elements over the transparent ones; values between 0 and 1 are used for animations
+    property double panelOpacity
+    Behavior on floatingness {
+        NumberAnimation {
+            duration: PlasmaCore.Units.longDuration
+        }
+    }
+    Behavior on panelOpacity {
+        NumberAnimation {
+            duration: PlasmaCore.Units.longDuration
+        }
+    }
+
+    // This value is read from panelview.cpp and disables shadow for floating panels, as they'd be detached from the panel
+    property bool hasShadows: floatingness == 0
+    property var panelMask: floatingness == 0 ? (panelOpacity == 1 ? opaqueItem.mask : translucentItem.mask) : (panelOpacity == 1 ? floatingOpaqueItem.mask : floatingTranslucentItem.mask)
+
+    // These two values are read from panelview.cpp and are used as an offset for the mask
+    property int maskOffsetX: leftFloatingPadding * floatingness
+    property int maskOffsetY: topFloatingPadding * floatingness
+
     PlasmaCore.FrameSvgItem {
         id: translucentItem
-        visible: false
+        visible: floatingness == 0 && panelOpacity != 1
         enabledBorders: panel.enabledBorders
         anchors.fill: parent
         imagePath: containment && containment.backgroundHints === PlasmaCore.Types.NoBackground ? "" : "widgets/panel-background"
     }
-
-
     PlasmaCore.FrameSvgItem {
         id: floatingTranslucentItem
-        // Number between 0 (not floating) - 1 (floating)
-        property double floatingness: 0
-        visible: false
+        visible: floatingness != 0 && panelOpacity != 1
         anchors {
             fill: parent
             bottomMargin: bottomFloatingPadding * floatingness
@@ -109,12 +120,10 @@ Item {
         }
         imagePath: containment && containment.backgroundHints === PlasmaCore.Types.NoBackground ? "" : "widgets/panel-background"
     }
-
-
     PlasmaCore.FrameSvgItem {
         id: floatingOpaqueItem
-        visible: false
-        property double floatingness: floatingTranslucentItem.floatingness
+        visible: floatingness != 0 && panelOpacity != 0
+        opacity: panelOpacity
         anchors {
             fill: parent
             bottomMargin: bottomFloatingPadding * floatingness
@@ -124,10 +133,10 @@ Item {
         }
         imagePath: containment && containment.backgroundHints === PlasmaCore.Types.NoBackground ? "" : "solid/widgets/panel-background"
     }
-
     PlasmaCore.FrameSvgItem {
         id: opaqueItem
-        visible: false
+        visible: panelOpacity != 0 && floatingness == 0
+        opacity: panelOpacity
         enabledBorders: panel.enabledBorders
         anchors.fill: parent
         imagePath: containment && containment.backgroundHints === PlasmaCore.Types.NoBackground ? "" : "solid/widgets/panel-background"
@@ -137,259 +146,32 @@ Item {
         root.parent.focus = false
     }
 
-    transitions: [
-        Transition {
-            from: "opaque"
-            to: "transparent"
-            SequentialAnimation {
-                ScriptAction {
-                    script: {
-                        translucentItem.visible = true
-                    }
-                }
-                NumberAnimation {
-                    target: opaqueItem
-                    properties: "opacity"
-                    to: 0
-                    duration: PlasmaCore.Units.veryLongDuration
-                    easing.type: Easing.InOutQuad
-                }
-                ScriptAction {
-                    script: {
-                        opaqueItem.visible = false
-                        root.panelMask = Qt.binding(function(){return translucentItem.mask})
-                    }
-                }
-            }
-        },
-        Transition {
-            from: "transparent"
-            to: "opaque"
-            SequentialAnimation {
-                ScriptAction {
-                    script: {
-                        opaqueItem.visible = true
-                    }
-                }
-                NumberAnimation {
-                    target: opaqueItem
-                    properties: "opacity"
-                    to: 1
-                    duration: PlasmaCore.Units.veryLongDuration
-                    easing.type: Easing.InOutQuad
-                }
-                ScriptAction {
-                    script: {
-                        translucentItem.visible = false
-                        root.panelMask = Qt.binding(function(){return opaqueItem.mask})
-                    }
-                }
-            }
-        },
-        Transition {
-            from: "transparent"
-            to: "floatingtransparent"
-            SequentialAnimation {
-                ScriptAction {
-                    script: {
-                        translucentItem.visible = false
-                        floatingTranslucentItem.visible = true
-                        root.panelMask = Qt.binding(function(){return floatingTranslucentItem.mask})
-                    }
-                }
-                NumberAnimation {
-                    target: floatingTranslucentItem
-                    properties: "floatingness"
-                    to: 1
-                    duration: PlasmaCore.Units.veryLongDuration
-                    easing.type: Easing.InOutQuad
-                }
-            }
-        },
-        Transition {
-            from: "floatingtransparent"
-            to: "transparent"
-            SequentialAnimation {
-                NumberAnimation {
-                    target: floatingTranslucentItem
-                    properties: "floatingness"
-                    to: 0
-                    duration: PlasmaCore.Units.veryLongDuration
-                    easing.type: Easing.InOutQuad
-                }
-                ScriptAction {
-                    script: {
-                        translucentItem.visible = true
-                        floatingTranslucentItem.visible = false
-                        root.panelMask = Qt.binding(function(){return translucentItem.mask})
-                    }
-                }
-            }
-        },
-        Transition {
-            from: "opaque"
-            to: "floatingopaque"
-            SequentialAnimation {
-                ScriptAction {
-                    script: {
-                        opaqueItem.visible = false
-                        floatingOpaqueItem.visible = true
-                        root.panelMask = Qt.binding(function(){return floatingOpaqueItem.mask})
-                    }
-                }
-                NumberAnimation {
-                    target: floatingTranslucentItem
-                    properties: "floatingness"
-                    to: 1
-                    duration: PlasmaCore.Units.veryLongDuration
-                    easing.type: Easing.InOutQuad
-                }
-            }
-        },
-        Transition {
-            from: "floatingopaque"
-            to: "opaque"
-            SequentialAnimation {
-                NumberAnimation {
-                    target: floatingTranslucentItem
-                    properties: "floatingness"
-                    to: 0
-                    duration: PlasmaCore.Units.veryLongDuration
-                    easing.type: Easing.InOutQuad
-                }
-                ScriptAction {
-                    script: {
-                        opaqueItem.visible = true
-                        floatingOpaqueItem.visible = false
-                        root.panelMask = Qt.binding(function(){return opaqueItem.mask})
-                    }
-                }
-            }
-        },
-        Transition {
-            from: "opaque"
-            to: "floatingtransparent"
-            SequentialAnimation {
-                ScriptAction {
-                    script: {
-                        opaqueItem.visible = false
-                        floatingTranslucentItem.visible = floatingOpaqueItem.visible = true
-                        root.panelMask = Qt.binding(function(){return floatingTranslucentItem.mask})
-                    }
-                }
-                ParallelAnimation {
-                    NumberAnimation {
-                        target: floatingTranslucentItem
-                        properties: "floatingness"
-                        to: 1
-                        duration: PlasmaCore.Units.veryLongDuration
-                        easing.type: Easing.InOutQuad
-                    }
-                    NumberAnimation {
-                        target: floatingOpaqueItem
-                        properties: "opacity"
-                        to: 0
-                        duration: PlasmaCore.Units.veryLongDuration
-                        easing.type: Easing.InOutQuad
-                    }
-                }
-                ScriptAction {
-                    script: {
-                        floatingOpaqueItem.visible = false
-                    }
-                }
-            }
-        },
-        Transition {
-            from: "floatingtransparent"
-            to: "opaque"
-            SequentialAnimation {
-                ScriptAction {
-                    script: {
-                        floatingTranslucentItem.visible = floatingOpaqueItem.visible = true
-                        floatingOpaqueItem.opacity = 1 - floatingTranslucentItem.floatingness
-                    }
-                }
-                ParallelAnimation {
-                    NumberAnimation {
-                        target: floatingTranslucentItem
-                        properties: "floatingness"
-                        to: 0
-                        duration: PlasmaCore.Units.veryLongDuration
-                        easing.type: Easing.InOutQuad
-                    }
-                    NumberAnimation {
-                        target: floatingOpaqueItem
-                        properties: "opacity"
-                        to: 1
-                        duration: PlasmaCore.Units.veryLongDuration
-                        easing.type: Easing.InOutQuad
-                    }
-                }
-                ScriptAction {
-                    script: {
-                        opaqueItem.visible = true
-                        floatingTranslucentItem.visible = floatingOpaqueItem.visible = false
-                        floatingTranslucentItem.opacity = floatingOpaqueItem.opacity = 1
-                        root.panelMask = Qt.binding(function(){return opaqueItem.mask})
-                    }
-                }
-            }
-        },
-        Transition {
-            from: "floatingopaque"
-            to: "floatingtransparent"
-            ScriptAction {
-                script: {
-                    floatingOpaqueItem.visible = false
-                    floatingTranslucentItem.visible = true
-                    floatingTranslucentItem.floatingness = 1
-                    floatingTranslucentItem.opacity = 1
-                    root.panelMask = Qt.binding(function(){return floatingTranslucentItem.mask})
-                }
-            }
-        },
-        Transition {
-            from: "floatingtransparent"
-            to: "floatingopaque"
-            ScriptAction {
-                script: {
-                    floatingOpaqueItem.visible = true
-                    floatingTranslucentItem.visible = false
-                    floatingTranslucentItem.floatingness = 1
-                    floatingOpaqueItem.opacity = 1
-                    root.panelMask = Qt.binding(function(){return floatingOpaqueItem.mask})
-                }
-            }
-        }
-    ]
-
     property bool isOpaque: panel.opacityMode === 1
     property bool isTransparent: panel.opacityMode === 2
     property bool isAdaptive: panel.opacityMode === 0
+    property bool floating: panel.floating
+    readonly property bool screenCovered: visibleWindowsModel.count > 0 && !kwindowsystem.showingDesktop
     property var stateTriggers: [floating, screenCovered, isOpaque, isAdaptive, isTransparent]
-    states: [
-        State {name: "opaque"},
-        State {name: "transparent"},
-        State {name: "floatingtransparent"},
-        State {name: "floatingopaque"}
-    ]
     onStateTriggersChanged: {
+        let oldState = root.state
         if ((!floating || screenCovered) && (isOpaque || (screenCovered && isAdaptive))) {
-            root.state = "opaque"
+            panelOpacity = 1
+            floatingness = 0
         } else if ((!floating || screenCovered) && (isTransparent || (!screenCovered && isAdaptive))) {
-            root.state = "transparent"
+            panelOpacity = 0
+            floatingness = 0
         } else if ((floating && !screenCovered) && (isTransparent || isAdaptive)) {
-            root.state = "floatingtransparent"
+            panelOpacity = 0
+            floatingness = 1
         } else if (floating && !screenCovered && isOpaque) {
-            root.state = "floatingopaque"
+            panelOpacity = 1
+            floatingness = 1
         }
         if ((root.state == "opaque" || root.state == "floatingopaque") && containment) {
             containment.containmentDisplayHints |= PlasmaCore.Types.DesktopFullyCovered
         } else {
             containment.containmentDisplayHints &= ~PlasmaCore.Types.DesktopFullyCovered
         }
-        console.log(state)
     }
 
     function adjustPrefix() {
