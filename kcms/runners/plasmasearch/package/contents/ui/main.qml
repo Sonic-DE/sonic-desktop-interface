@@ -21,12 +21,14 @@ KCM.ScrollViewKCM {
     implicitHeight: Kirigami.Units.gridUnit * 18
 
     header: ColumnLayout {
+        focus: true
         QQC2.Label {
             text: i18n("Enable or disable plugins (used in KRunner, Application Launcher, and the Overview effect)")
         }
         Kirigami.SearchField {
             Layout.fillWidth: true
             id: searchField
+            focus: !Kirigami.InputMethod.willShowOnActive 
             wrapMode: Text.WordWrap
         }
     }
