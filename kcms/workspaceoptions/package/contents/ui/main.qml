@@ -205,8 +205,8 @@ KCM.SimpleKCM {
 
         QQC2.RadioButton {
             id: tabletModeAuto
-            Kirigami.FormData.label: i18n("Optimize workspace for tablet usage:")
-            text: kcm.isWayland ? i18n("Automatically switch to tablet mode") : i18n("Off")
+            Kirigami.FormData.label: i18n("Tablet mode:")
+            text: kcm.isWayland ? i18n("Automatically enable as needed") : i18n("Never optimize for touch usage")
             checked: kcm.kwinSettings.tabletMode === "auto"
             onToggled: if (checked) kcm.kwinSettings.tabletMode = "auto"
             QQC2.ButtonGroup.group: tabletModeBehaviorGroup
@@ -216,9 +216,10 @@ KCM.SimpleKCM {
                 settingName: "TabletMode"
             }
         }
+
         QQC2.RadioButton {
             id: tabletModeOn
-            text: kcm.isWayland ? i18n("Always use tablet mode") : i18n("On")
+            text: i18n("Always optimize for touch usage")
             checked: kcm.kwinSettings.tabletMode === "on"
             onToggled: if (checked) kcm.kwinSettings.tabletMode = "on"
             QQC2.ButtonGroup.group: tabletModeBehaviorGroup
@@ -231,7 +232,7 @@ KCM.SimpleKCM {
         QQC2.RadioButton {
             id: tabletModeOff
             visible: kcm.isWayland
-            text: i18n("Never use tablet mode")
+            text: i18n("Never optimize for touch usage")
             checked: kcm.kwinSettings.tabletMode === "off"
             onToggled: if (checked) kcm.kwinSettings.tabletMode = "off"
             QQC2.ButtonGroup.group: tabletModeBehaviorGroup
@@ -240,6 +241,14 @@ KCM.SimpleKCM {
                 configObject: kcm.kwinSettings
                 settingName: "TabletMode"
             }
+        }
+        QQC2.Label {
+            Layout.fillWidth: true
+            Layout.preferredWidth: Kirigami.Units.gridUnit * 20
+            text: i18n("In Tablet mode, many elements of the user interface will become larger to more easily accommodate touch interaction.")
+            elide: Text.ElideRight
+            font: Kirigami.Theme.smallFont
+            wrapMode: Text.WordWrap
         }
 
         // There is no label for what middle-clicking does when using the
