@@ -10,6 +10,7 @@
 #include <KAboutData>
 #include <KLocalizedString>
 #include <KPluginFactory>
+#include <KWindowSystem>
 
 #include <QDBusConnection>
 #include <QDBusMessage>
@@ -54,6 +55,11 @@ WorkspaceOptionsPlasmaSettings *KCMWorkspaceOptions::plasmaSettings() const
 WorkspaceOptionsKwinSettings *KCMWorkspaceOptions::kwinSettings() const
 {
     return m_data->workspaceOptionsKwinSettings();
+}
+
+bool KCMWorkspaceOptions::isWayland() const
+{
+    return KWindowSystem::isPlatformWayland();
 }
 
 void KCMWorkspaceOptions::save()
