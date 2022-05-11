@@ -197,6 +197,50 @@ KCM.SimpleKCM {
             }
         }
 
+        Item {
+            Kirigami.FormData.isSection: true
+        }
+
+        QQC2.ButtonGroup { id: tabletModeBehaviorGroup }
+
+        QQC2.RadioButton {
+            id: tabletModeAuto
+            Kirigami.FormData.label: i18n("Optimize workspace for tablet usage:")
+            text: i18n("Automatically switch to tablet mode")
+            checked: kcm.kwinSettings.tabletMode === "auto"
+            onToggled: if (checked) kcm.kwinSettings.tabletMode = "auto"
+            QQC2.ButtonGroup.group: tabletModeBehaviorGroup
+
+            KCM.SettingStateBinding {
+                configObject: kcm.kwinSettings
+                settingName: "TabletMode"
+            }
+        }
+        QQC2.RadioButton {
+            id: tabletModeOn
+            text: i18n("Always use tablet mode")
+            checked: kcm.kwinSettings.tabletMode === "on"
+            onToggled: if (checked) kcm.kwinSettings.tabletMode = "on"
+            QQC2.ButtonGroup.group: tabletModeBehaviorGroup
+
+            KCM.SettingStateBinding {
+                configObject: kcm.kwinSettings
+                settingName: "TabletMode"
+            }
+        }
+        QQC2.RadioButton {
+            id: tabletModeOff
+            text: i18n("Never use tablet mode")
+            checked: kcm.kwinSettings.tabletMode === "off"
+            onToggled: if (checked) kcm.kwinSettings.tabletMode = "off"
+            QQC2.ButtonGroup.group: tabletModeBehaviorGroup
+
+            KCM.SettingStateBinding {
+                configObject: kcm.kwinSettings
+                settingName: "TabletMode"
+            }
+        }
+
         // There is no label for what middle-clicking does when using the
         // "click to zoom the handle" behavior because Qt doesn't invert the
         // middle-click functionality when using this; see
