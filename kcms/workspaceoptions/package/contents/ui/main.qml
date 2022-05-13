@@ -218,7 +218,7 @@ KCM.SimpleKCM {
             }
             KCM.ContextualHelpButton {
                 visible: kcm.isWayland
-                toolTipText: i18n("Tablet mode will be automatically activated on transformable laptops that can have the keyboard flipped behind or completely removed")
+                toolTipText: i18n("Tablet mode will be automatically activated whenever the system detects a touchscreen but no mouse or touchpad. For example: when a transformable laptop's keyboard is flipped around or detached.")
             }
         }
 
