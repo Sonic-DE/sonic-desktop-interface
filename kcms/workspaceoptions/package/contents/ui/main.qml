@@ -8,7 +8,7 @@ import QtQuick 2.7
 import QtQuick.Controls 2.5 as QQC2
 import QtQuick.Layouts 1.3
 import org.kde.kirigami 2.5 as Kirigami
-import org.kde.kcm 1.3 as KCM
+import org.kde.kcm 1.6 as KCM
 
 KCM.SimpleKCM {
     id: root
@@ -203,16 +203,22 @@ KCM.SimpleKCM {
 
         QQC2.ButtonGroup { id: tabletModeBehaviorGroup }
 
-        QQC2.RadioButton {
-            Kirigami.FormData.label: i18n("Tablet mode:")
-            text: kcm.isWayland ? i18n("Automatically enable as needed") : i18n("Never optimize for touch usage")
-            checked: kcm.kwinSettings.tabletMode === "auto"
-            onToggled: if (checked) kcm.kwinSettings.tabletMode = "auto"
-            QQC2.ButtonGroup.group: tabletModeBehaviorGroup
+        RowLayout {
+            QQC2.RadioButton {
+                Kirigami.FormData.label: i18n("Tablet mode:")
+                text: kcm.isWayland ? i18n("Automatically enable as needed") : i18n("Never optimize for touch usage")
+                checked: kcm.kwinSettings.tabletMode === "auto"
+                onToggled: if (checked) kcm.kwinSettings.tabletMode = "auto"
+                QQC2.ButtonGroup.group: tabletModeBehaviorGroup
 
-            KCM.SettingStateBinding {
-                configObject: kcm.kwinSettings
-                settingName: "tabletMode"
+                KCM.SettingStateBinding {
+                    configObject: kcm.kwinSettings
+                    settingName: "tabletMode"
+                }
+            }
+            KCM.ContextualHelpButton {
+                visible: kcm.isWayland
+                toolTipText: i18n("Tablet mode will be automatically activated on transformable laptops that can have the keyboard flipped behind or completely removed")
             }
         }
 
