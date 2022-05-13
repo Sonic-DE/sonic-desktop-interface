@@ -204,8 +204,8 @@ KCM.SimpleKCM {
         QQC2.ButtonGroup { id: tabletModeBehaviorGroup }
 
         RowLayout {
+            Kirigami.FormData.label: i18n("Tablet mode:")
             QQC2.RadioButton {
-                Kirigami.FormData.label: i18n("Tablet mode:")
                 text: kcm.isWayland ? i18n("Automatically enable as needed") : i18n("Never optimize for touch usage")
                 checked: kcm.kwinSettings.tabletMode === "auto"
                 onToggled: if (checked) kcm.kwinSettings.tabletMode = "auto"
