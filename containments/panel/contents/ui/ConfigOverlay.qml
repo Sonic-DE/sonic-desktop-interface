@@ -22,8 +22,6 @@ MouseArea {
     hoverEnabled: true
 
     property Item currentApplet
-    property int lastX
-    property int lastY
 
     onPositionChanged: {
         if (pressed) {
@@ -47,9 +45,9 @@ MouseArea {
                 }
             }
             if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
-                currentApplet.y += (mouse.y - lastY);
+                currentApplet.y = mouse.y;
             } else {
-                currentApplet.x += (mouse.x - lastX);
+                currentApplet.x = mouse.x;
             }
 
             var item = currentLayout.childAt(mouse.x, mouse.y);
