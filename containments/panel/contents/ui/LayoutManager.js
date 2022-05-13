@@ -111,7 +111,7 @@ function indexAtCoordinates(x, y) {
         } else {
             y -= layout.columnSpacing
         }
-        if (x < 0 || y < 0) return 0;
+        if (x < 0 || y < 0) return appletsModel.count;
         child = layout.childAt(x, y);
     }
     if ((plasmoid.formFactor === 3 && y < child.y + child.height/2) ||
