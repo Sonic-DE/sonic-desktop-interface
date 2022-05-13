@@ -103,6 +103,7 @@ function checkLastSpacer() {
         //during drag operations we disable panel auto resize
         root.fixedWidth = root.Layout.preferredWidth
         root.fixedHeight = root.Layout.preferredHeight
+        dndSpacer.busy = true;
         appletsModel.insert(LayoutManager.indexAtCoordinates(event.x, event.y), {applet: dndSpacer})
     }
 
@@ -111,8 +112,15 @@ function checkLastSpacer() {
     }
 
     onDragLeave: {
-        appletsModel.remove(dndSpacer.parent.index);
-        root.fixedWidth = root.fixedHeight = 0;
+        /*
+         * When reordering task items, dragLeave signal will be emitted directly
+         * without dragEnter, so also check busy property when removing dndSpacer
+         * from appletsModel.
+         */
+        if (dndSpacer.busy) {
+            appletsModel.remove(dndSpacer.parent.index);
+            root.fixedWidth = root.fixedHeight = 0;
+        }
     }
 
     onDrop: {
