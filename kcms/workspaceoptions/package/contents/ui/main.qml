@@ -204,7 +204,6 @@ KCM.SimpleKCM {
         QQC2.ButtonGroup { id: tabletModeBehaviorGroup }
 
         QQC2.RadioButton {
-            id: tabletModeAuto
             Kirigami.FormData.label: i18n("Tablet mode:")
             text: kcm.isWayland ? i18n("Automatically enable as needed") : i18n("Never optimize for touch usage")
             checked: kcm.kwinSettings.tabletMode === "auto"
@@ -213,12 +212,11 @@ KCM.SimpleKCM {
 
             KCM.SettingStateBinding {
                 configObject: kcm.kwinSettings
-                settingName: "TabletMode"
+                settingName: "tabletMode"
             }
         }
 
         QQC2.RadioButton {
-            id: tabletModeOn
             text: i18n("Always optimize for touch usage")
             checked: kcm.kwinSettings.tabletMode === "on"
             onToggled: if (checked) kcm.kwinSettings.tabletMode = "on"
@@ -226,11 +224,10 @@ KCM.SimpleKCM {
 
             KCM.SettingStateBinding {
                 configObject: kcm.kwinSettings
-                settingName: "TabletMode"
+                settingName: "tabletMode"
             }
         }
         QQC2.RadioButton {
-            id: tabletModeOff
             visible: kcm.isWayland
             text: i18n("Never optimize for touch usage")
             checked: kcm.kwinSettings.tabletMode === "off"
@@ -239,7 +236,7 @@ KCM.SimpleKCM {
 
             KCM.SettingStateBinding {
                 configObject: kcm.kwinSettings
-                settingName: "TabletMode"
+                settingName: "tabletMode"
             }
         }
         QQC2.Label {
