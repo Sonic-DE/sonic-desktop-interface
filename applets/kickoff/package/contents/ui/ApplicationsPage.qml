@@ -62,7 +62,7 @@ BasePage {
                 objectName: "applicationsListView"
                 mainContentView: true
                 model: stackView.appsModel
-                section.property: model && model.description == "KICKER_ALL_MODEL" ? "display" : ""
+                section.property: model && model.description == "KICKER_ALL_MODEL" ? "group" : ""
                 section.criteria: ViewSection.FirstCharacter
             }
         }
