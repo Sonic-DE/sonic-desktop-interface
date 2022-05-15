@@ -4,6 +4,7 @@
  */
 
 import QtQuick 2.15
+import QtQuick.Controls 2.15 as QQC2
 import QtQuick.Layouts 1.15
 import QtQuick.Templates 2.15 as T
 import QtQml 2.15
@@ -57,13 +58,55 @@ BasePage {
 
         Component {
             id: applicationsListViewComponent
-            KickoffListView {
-                id: applicationsListView
-                objectName: "applicationsListView"
-                mainContentView: true
-                model: stackView.appsModel
-                section.property: model && model.description == "KICKER_ALL_MODEL" ? "display" : ""
-                section.criteria: ViewSection.FirstCharacter
+
+            QQC2.StackView {
+                id: applicationsStackView
+
+                initialItem: KickoffListView {
+                    id: applicationsListView
+                    objectName: "applicationsListView"
+                    mainContentView: true
+                    model: stackView.appsModel
+                    section.property: model && model.description == "KICKER_ALL_MODEL" ? "display" : ""
+                    section.criteria: ViewSection.FirstCharacter
+
+                    onToggleSectionViewRequested: applicationsStackView.push(sectionView, {"opacity": 0})
+                }
+
+                pushEnter: Transition {
+                    OpacityAnimator {
+                        from: 0
+                        to: 1
+                        duration: PlasmaCore.Units.longDuration
+                        easing.type: Easing.OutQuad
+                    }
+                }
+
+                pushExit: Transition {
+                    OpacityAnimator {
+                        from: 1
+                        to: 0
+                        duration: PlasmaCore.Units.longDuration
+                        easing.type: Easing.InQuad
+                    }
+                }
+
+                popEnter: pushEnter
+                popExit: pushExit
+
+                Component {
+                    id: sectionView
+
+                    SectionView {
+                        model: applicationsListView.model.sections
+
+                        onHideSectionViewRequested: {
+                            applicationsListView.view.positionViewAtIndex(index, ListView.Beginning);
+                            applicationsListView.view.currentIndex = index;
+                            applicationsStackView.pop();
+                        }
+                    }
+                }
             }
         }
 
