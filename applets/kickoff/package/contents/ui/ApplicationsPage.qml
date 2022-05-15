@@ -57,6 +57,7 @@ BasePage {
 
         Component {
             id: applicationsListViewComponent
+
             KickoffListView {
                 id: applicationsListView
                 objectName: "applicationsListView"
@@ -64,6 +65,23 @@ BasePage {
                 model: stackView.appsModel
                 section.property: model && model.description == "KICKER_ALL_MODEL" ? "display" : ""
                 section.criteria: ViewSection.FirstCharacter
+
+                onShowSectionViewRequested: stackView.push(applicationsSectionViewComponent)
+            }
+        }
+
+        Component {
+            id: applicationsSectionViewComponent
+
+            SectionView {
+                id: sectionView
+                model: stackView.appsModel.sections
+
+                onHideSectionViewRequested: {
+                    stackView.pop();
+                    stackView.currentItem.view.positionViewAtIndex(index, ListView.Beginning);
+                    stackView.currentItem.currentIndex = index;
+                }
             }
         }
 
