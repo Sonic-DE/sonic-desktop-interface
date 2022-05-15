@@ -32,6 +32,7 @@ Item {
     // Used to prevent the width from changing frequently when the scrollbar appears or disappears
     property bool mayHaveGridWithScrollBar: plasmoid.configuration.applicationsDisplay === 0
         || (plasmoid.configuration.favoritesDisplay === 0 && plasmoid.rootItem.rootModel.favoritesModel.count > 16)
+        || plasmoid.rootItem.rootModel.modelForRow(1 /*All Applications*/).count > 16
 
     //BEGIN Models
     property Kicker.RootModel rootModel: Kicker.RootModel {
