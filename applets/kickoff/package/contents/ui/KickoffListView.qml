@@ -138,10 +138,7 @@ EmptyPage {
             property: "group"
             criteria: ViewSection.FullString
             delegate: PC3.AbstractButton {
-                width: section.length === 1
-                    ? KickoffSingleton.listDelegateContentHeight + leftPadding + rightPadding
-                    // Accessing implicitWidth fixes the width being 0 when loaded.
-                    : Math.min(Math.ceil(implicitWidth), view.availableWidth)
+                width: view.availableWidth
                 height: KickoffSingleton.listDelegateHeight
                 leftPadding: view.effectiveLayoutDirection === Qt.LeftToRight
                     ? KickoffSingleton.listItemMetrics.margins.left : 0
@@ -149,8 +146,8 @@ EmptyPage {
                     ? KickoffSingleton.listItemMetrics.margins.right : 0
 
                 contentItem: PC3.Label {
-                    anchors.fill: parent
-                    horizontalAlignment: section.length === 1 ? Text.AlignHCenter : Text.AlignLeft
+                    anchors.leftMargin: section.length === 1 ? PlasmaCore.Units.smallSpacing * 2 : 0
+                    horizontalAlignment: Text.AlignLeft
                     verticalAlignment: Text.AlignVCenter
                     maximumLineCount: 1
                     elide: Text.ElideRight
