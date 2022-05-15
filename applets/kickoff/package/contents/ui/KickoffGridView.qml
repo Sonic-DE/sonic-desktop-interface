@@ -23,6 +23,10 @@ EmptyPage {
     property alias delegate: view.delegate
     property alias view: view
 
+    property alias viewImplicitWidth: view.implicitWidth
+    property alias cellWidth: view.cellWidth
+    property alias cellHeight: view.cellHeight
+
     clip: view.height < view.contentHeight
 
     header: MouseArea {
