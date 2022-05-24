@@ -28,21 +28,6 @@ function addApplet(applet, x, y) {
 
     if (x >= 0 && y >= 0) {
         appletsModel.insert(indexAtCoordinates(x, y), new_element)
-
-    // Insert icons to the left of whatever is at the center (usually a Task Manager),
-    // if it exists.
-    // FIXME TODO: This is a real-world fix to produce a sensible initial position for
-    // launcher icons added by launcher menu applets. The basic approach has been used
-    // since Plasma 1. However, "add launcher to X" is a generic-enough concept and
-    // frequent-enough occurrence that we'd like to abstract it further in the future
-    // and get rid of the ugliness of parties external to the containment adding applets
-    // of a specific type, and the containment caring about the applet type. In a better
-    // system the containment would be informed of requested launchers, and determine by
-    // itself what it wants to do with that information.
-    } else if (applet.pluginName === "org.kde.plasma.icon" &&
-            (middle = currentLayout.childAt(root.width / 2, root.height / 2))) {
-        appletsModel.insert(middle.index, new_element);
-    // Fall through to determining an appropriate insert position.
     } else {
         appletsModel.append(new_element);
     }
