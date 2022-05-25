@@ -333,7 +333,7 @@ function checkLastSpacer() {
         columnSpacing: PlasmaCore.Units.smallSpacing
 
         x: Qt.application.layoutDirection === Qt.RightToLeft && isHorizontal ? toolBoxSize : 0;
-        property int toolBoxSize:  !toolBox || !plasmoid.editMode || Qt.application.layoutDirection === Qt.RightToLeft ? 0 : (isHorizontal ? toolBox.width : toolBox.height)
+        readonly property int toolBoxSize:  !toolBox || !plasmoid.editMode || Qt.application.layoutDirection === Qt.RightToLeft ? 0 : (isHorizontal ? toolBox.width : toolBox.height)
 
 // BEGIN BUG 454095: use lastSpacer to left align applets, as implicitWidth is updated too late
         width: root.width - (isHorizontal ? toolBoxSize : 0)
