@@ -20,7 +20,7 @@ function addApplet(applet, x, y) {
     // happen that an applet erroneously thinks it's visible, or suddenly
     // starts thinking that way on teardown (virtual desktop pager)
     // leading to crashes
-    var new_element = {applet: applet}
+    var middle, new_element = {applet: applet}
 
     applet.visible = Qt.binding(function() {
         return applet.status !== PlasmaCore.Types.HiddenStatus || (!plasmoid.immutable && plasmoid.userConfiguring);
