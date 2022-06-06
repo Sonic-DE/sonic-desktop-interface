@@ -276,6 +276,36 @@ Item {
     Binding {
         target: desktop
         property: "accentColor"
-        value: wallpaperColors.highlight
+        value: {
+            if (isCandidateColor(wallpaperColors.dominant)) {
+                return wallpaperColors.dominant;
+            }
+
+            // If the color is too light or too dark, use highlight instead
+            if (isCandidateColor(wallpaperColors.highlight)) {
+                return wallpaperColors.highlight
+            }
+
+            // Neither is suitable, fall back to average color
+            return wallpaperColors.average;
+        }
+
+        /**
+         * Converts RGB color to HSL, and only return the lightness value (0-1)
+         */
+        function lightness(color) {
+            const r = color.r, g = color.g, b = color.b;
+            const l = Math.max(r, g, b);
+            const s = l - Math.min(r, g, b);
+            return (2 * l - s) / 2;
+        }
+
+        /**
+         * Checks the color is suitable as an accent color
+         */
+        function isCandidateColor(color) {
+            const l = lightness(color);
+            return l > 0.2 && l < 0.8;
+        }
     }
 }
