@@ -276,6 +276,6 @@ Item {
     Binding {
         target: desktop
         property: "accentColor"
-        value: wallpaperColors.highlight
+        value: wallpaperColors.dominant
     }
 }
