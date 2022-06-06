@@ -276,6 +276,26 @@ Item {
     Binding {
         target: desktop
         property: "accentColor"
-        value: wallpaperColors.highlight
+        value: {
+            const dominant = wallpaperColors.dominant;
+            const l = lightness(dominant);
+
+            // If the color is too light or too dark, use highlight instead
+            if (l > 0.8 || l < 0.2) {
+                return wallpaperColors.highlight;
+            }
+
+            return dominant;
+        }
+
+        /**
+         * Convert RGB color to HSL, and only return the lightness value (0-1)
+         */
+        function lightness(color) {
+            const r = color.r, g = color.g, b = color.b;
+            const l = Math.max(r, g, b);
+            const s = l - Math.min(r, g, b);
+            return (2 * l - s) / 2;
+        }
     }
 }
