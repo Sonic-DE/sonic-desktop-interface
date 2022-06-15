@@ -50,3 +50,5 @@ Dependencies:
     'plasma/plasma-workspace': '@same'
     'plasma/powerdevil': '@same'
     'plasma/systemsettings': '@same'
+Options:
+  require-passing-tests-on: [ 'Linux', 'FreeBSD']
