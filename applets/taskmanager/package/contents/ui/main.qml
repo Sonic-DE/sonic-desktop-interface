@@ -356,7 +356,7 @@ MouseArea {
             tasksModel.groupingLauncherUrlBlacklist = plasmoid.configuration.groupingLauncherUrlBlacklist;
         }
         function onIconSpacingChanged() {
-            taskList.layout();
+            layoutTimer.restart();
         }
     }
 
@@ -446,34 +446,30 @@ MouseArea {
                 TaskTools.publishIconGeometries(children);
             }
         }
-        onWidthChanged: layoutTimer.restart()
-        onHeightChanged: layoutTimer.restart()
-
-        function layout() {
-            LayoutManager.layout(taskRepeater);
-        }
+        onWidthChanged: if (!animating) layoutTimer.restart()
+        onHeightChanged: if (!animating) layoutTimer.restart()
 
         Timer {
             id: layoutTimer
 
-            interval: 0
+            interval: PlasmaCore.Units.longDuration // Same as animation
             repeat: false
 
-            onTriggered: taskList.layout()
+            onTriggered: LayoutManager.layout(taskRepeater)
         }
 
         Repeater {
             id: taskRepeater
 
             delegate: Task {}
-            onItemAdded: taskList.layout()
+            onItemAdded: layoutTimer.restart()
             onItemRemoved: {
                 if (tasks.containsMouse && index != taskRepeater.count &&
                     item.winIdList && item.winIdList.length > 0 &&
                     taskClosedWithMouseMiddleButton.indexOf(item.winIdList[0]) > -1) {
                     needLayoutRefresh = true;
                 } else {
-                    taskList.layout();
+                    layoutTimer.restart();
                 }
                 taskClosedWithMouseMiddleButton = [];
             }
