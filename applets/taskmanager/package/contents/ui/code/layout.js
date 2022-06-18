@@ -168,7 +168,8 @@ function taskWidth() {
         if (full() && Math.max(1, logicalTaskCount()) > tasksPerStripe()) {
             return Math.floor(taskList.width / Math.ceil(logicalTaskCount() / maxStripes()));
         } else {
-            return Math.min(preferredMaxWidth(), Math.floor(taskList.width / Math.min(logicalTaskCount(), tasksPerStripe())));
+            // HACK: -PlasmaCore.Units.smallSpacing / 2 is to prevent unnecessary task relayout animation
+            return Math.min(preferredMaxWidth(), Math.floor((taskList.width - PlasmaCore.Units.smallSpacing / 2) / Math.min(logicalTaskCount(), tasksPerStripe())));
         }
     }
 }
