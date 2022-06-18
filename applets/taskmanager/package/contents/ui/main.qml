@@ -147,7 +147,7 @@ MouseArea {
             ? LayoutManager.optimumCapacity(width, height) + 1 : -1)
 
         onLauncherListChanged: {
-            layoutTimer.restart();
+            layoutTimer.start();
             plasmoid.configuration.launchers = launcherList;
         }
 
@@ -356,7 +356,7 @@ MouseArea {
             tasksModel.groupingLauncherUrlBlacklist = plasmoid.configuration.groupingLauncherUrlBlacklist;
         }
         function onIconSpacingChanged() {
-            taskList.layout();
+            layoutTimer.start();
         }
     }
 
@@ -446,34 +446,30 @@ MouseArea {
                 TaskTools.publishIconGeometries(children);
             }
         }
-        onWidthChanged: layoutTimer.restart()
-        onHeightChanged: layoutTimer.restart()
-
-        function layout() {
-            LayoutManager.layout(taskRepeater);
-        }
+        onWidthChanged: if (!animating) layoutTimer.start()
+        onHeightChanged: if (!animating) layoutTimer.start()
 
         Timer {
             id: layoutTimer
 
-            interval: 0
+            interval: PlasmaCore.Units.longDuration // Same as animation
             repeat: false
 
-            onTriggered: taskList.layout()
+            onTriggered: LayoutManager.layout(taskRepeater)
         }
 
         Repeater {
             id: taskRepeater
 
             delegate: Task {}
-            onItemAdded: taskList.layout()
+            onItemAdded: layoutTimer.start()
             onItemRemoved: {
                 if (tasks.containsMouse && index != taskRepeater.count &&
                     item.winIdList && item.winIdList.length > 0 &&
                     taskClosedWithMouseMiddleButton.indexOf(item.winIdList[0]) > -1) {
                     needLayoutRefresh = true;
                 } else {
-                    taskList.layout();
+                    layoutTimer.start();
                 }
                 taskClosedWithMouseMiddleButton = [];
             }
@@ -535,5 +531,49 @@ MouseArea {
         tasks.windowsHovered.connect(backend.windowsHovered);
         tasks.activateWindowView.connect(backend.activateWindowView);
         dragHelper.dropped.connect(resetDragSource);
+    }
+
+    Behavior on Layout.preferredWidth {
+        SequentialAnimation {
+            PropertyAction {
+                target: taskList
+                property: "animating"
+                value: true
+            }
+            NumberAnimation {
+                easing.type: Easing.OutQuad
+                duration: PlasmaCore.Units.longDuration
+            }
+            PropertyAction {
+                target: taskList
+                property: "animating"
+                value: false
+            }
+            ScriptAction {
+                script: layoutTimer.start()
+            }
+        }
+    }
+
+    Behavior on Layout.preferredHeight {
+        SequentialAnimation {
+            PropertyAction {
+                target: taskList
+                property: "animating"
+                value: true
+            }
+            NumberAnimation {
+                easing.type: Easing.OutQuad
+                duration: PlasmaCore.Units.longDuration
+            }
+            PropertyAction {
+                target: taskList
+                property: "animating"
+                value: false
+            }
+            ScriptAction {
+                script: layoutTimer.start()
+            }
+        }
     }
 }
