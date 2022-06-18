@@ -536,4 +536,18 @@ MouseArea {
         tasks.activateWindowView.connect(backend.activateWindowView);
         dragHelper.dropped.connect(resetDragSource);
     }
+
+    Behavior on Layout.preferredWidth {
+        NumberAnimation {
+            easing.type: Easing.OutQuad
+            duration: PlasmaCore.Units.longDuration
+        }
+    }
+
+    Behavior on Layout.preferredHeight {
+        NumberAnimation {
+            easing.type: Easing.OutQuad
+            duration: PlasmaCore.Units.longDuration
+        }
+    }
 }
