@@ -46,12 +46,39 @@ MouseArea {
 
     Layout.fillWidth: true
     Layout.fillHeight: true
-    Layout.minimumWidth: tasks.vertical ? 0 : LayoutManager.preferredMinWidth()
-    Layout.minimumHeight: !tasks.vertical ? 0 : LayoutManager.preferredMinHeight()
+    readonly property bool shouldShirnkToZero: !LayoutManager.logicalTaskCount()
+    Layout.minimumWidth: {
+        if (shouldShirnkToZero) {
+            return PlasmaCore.Units.gridUnit; // For edit mode
+        }
+        return tasks.vertical ? 0 : LayoutManager.preferredMinWidth();
+    }
+    Layout.minimumHeight: {
+        if (shouldShirnkToZero) {
+            return PlasmaCore.Units.gridUnit; // For edit mode
+        }
+        return !tasks.vertical ? 0 : LayoutManager.preferredMinHeight();
+    }
 
 //BEGIN TODO: this is not precise enough: launchers are smaller than full tasks
-    Layout.preferredWidth: tasks.vertical ? PlasmaCore.Units.gridUnit * 10 : ((LayoutManager.logicalTaskCount() * LayoutManager.preferredMaxWidth()) / LayoutManager.calculateStripes())
-    Layout.preferredHeight: tasks.vertical ? ((LayoutManager.logicalTaskCount() * LayoutManager.preferredMaxHeight()) / LayoutManager.calculateStripes()) : PlasmaCore.Units.gridUnit * 2
+    Layout.preferredWidth: {
+        if (shouldShirnkToZero) {
+            return 0;
+        }
+        if (tasks.vertical) {
+            return PlasmaCore.Units.gridUnit * 10;
+        }
+        return (LayoutManager.logicalTaskCount() * LayoutManager.preferredMaxWidth()) / LayoutManager.calculateStripes();
+    }
+    Layout.preferredHeight: {
+        if (shouldShirnkToZero) {
+            return 0;
+        }
+        if (tasks.vertical) {
+            return (LayoutManager.logicalTaskCount() * LayoutManager.preferredMaxHeight()) / LayoutManager.calculateStripes();
+        }
+        return PlasmaCore.Units.gridUnit * 2;
+    }
 //END TODO
 
     property Item dragSource: null
@@ -404,8 +431,8 @@ MouseArea {
             left: parent.left
             top: parent.top
         }
-        width: LayoutManager.layoutWidth()
-        height: LayoutManager.layoutHeight()
+        width: tasks.shouldShirnkToZero ? 0 : LayoutManager.layoutWidth()
+        height: tasks.shouldShirnkToZero ? 0 : LayoutManager.layoutHeight()
 
         flow: {
             if (tasks.vertical) {
