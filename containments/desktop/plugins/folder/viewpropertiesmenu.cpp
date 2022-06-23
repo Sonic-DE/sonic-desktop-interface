@@ -63,14 +63,16 @@ ViewPropertiesMenu::ViewPropertiesMenu(QObject *parent)
         m_iconSize->addAction(action);
     }
 
-    m_arrangementMenu = m_menu->addMenu(QIcon::fromTheme(QStringLiteral("object-rows")), i18n("Arrange In"));
+    m_arrangementMenu = m_menu->addMenu(QIcon::fromTheme(QStringLiteral("object-rows")), i18n("Arrange"));
     m_arrangement = new QActionGroup(this);
     connect(m_arrangement, &QActionGroup::triggered, this, &ViewPropertiesMenu::arrangementChanged);
-    action = m_arrangementMenu->addAction(i18nc("@item:inmenu arrangement of icons", "Rows"));
+    // TODO: Make the arrangement behaviour sensical in RtL, and then add an alternate string for behaviour
+    // See bug 455822.
+    action = m_arrangementMenu->addAction(i18nc("@item:inmenu arrangement of icons", "Left To Right"));
     action->setCheckable(true);
     action->setData(0);
     m_arrangement->addAction(action);
-    action = m_arrangementMenu->addAction(i18nc("@item:inmenu arrangement of icons", "Columns"));
+    action = m_arrangementMenu->addAction(i18nc("@item:inmenu arrangement of icons", "Top To Bottom"));
     action->setData(1);
     action->setCheckable(true);
     m_arrangement->addAction(action);
