@@ -47,27 +47,27 @@ T.ItemDelegate {
     property bool isSearchResult: false
     readonly property bool menuClosed: ActionMenu.menu.status == 3 // corresponds to DialogStatus.Closed
 
-    property bool dragEnabled: enabled && !root.isCategory
+    property bool dragEnabled: enabled && !isCategory
         && plasmoid.immutability !== PlasmaCore.Types.SystemImmutable
 
     function openActionMenu(x = undefined, y = undefined) {
-        if (!root.hasActionList) { return }
+        if (!hasActionList) { return }
         // fill actionList only when needed to prevent slowness when changing app categories rapidly.
-        if (root.actionList === null) {
+        if (actionList === null) {
             let allActions = model.actionList
             const favoriteActions = Tools.createFavoriteActions(
                 i18n, //i18n() function callback
                 view.model.favoritesModel,
-                model.favoriteId)
+                model.favoriteId,
+            )
             if (favoriteActions) {
                 if (allActions && allActions.length > 0) {
-                    allActions.push({ "type": "separator" });
-                    allActions.push.apply(allActions, favoriteActions);
+                    allActions.push({ "type": "separator" }, ...favoriteActions)
                 } else {
-                    allActions = favoriteActions;
+                    allActions = favoriteActions
                 }
             }
-            root.actionList = allActions
+            actionList = allActions
         }
         if (actionList && actionList.length > 0) {
             ActionMenu.plasmoid = plasmoid
@@ -121,7 +121,7 @@ T.ItemDelegate {
             }
             view.currentIndex = index
             // if successfully triggered, close popup
-            if(view.model.trigger && view.model.trigger(index, "", null)) {
+            if (view.model.trigger && view.model.trigger(index, "", null)) {
                 if (plasmoid.hideOnWindowDeactivate) {
                     plasmoid.expanded = false;
                 }
@@ -205,7 +205,7 @@ T.ItemDelegate {
         // Using this Item fixes drag and drop causing delegates
         // to reset to a 0 X position and overlapping each other.
         Item { id: dragItem }
-        // Using onPositionChanged adds subtle freeze when 
+        // Using onPositionChanged adds subtle freeze when
         // changing category. To address scrolling problem
         // we'll rely on check if view was scrolled with wheel.
         onEntered: {
@@ -213,7 +213,7 @@ T.ItemDelegate {
                 root.view.movedWithWheel = false
                 return
             }
-            
+
             // forceActiveFocus() touches multiple items, so check for
             // activeFocus first to be more efficient.
             if (!root.activeFocus) {
@@ -231,8 +231,8 @@ T.ItemDelegate {
             if (mouse.button === Qt.RightButton) {
                 root.openActionMenu(mouseX, mouseY)
             } else if (mouse.button === Qt.LeftButton && root.dragEnabled && root.Drag.imageSource == "") {
-                iconItem.grabToImage((result) => {
-                    return root.Drag.imageSource = result.url
+                iconItem.grabToImage(result => {
+                    root.Drag.imageSource = result.url
                 })
             }
         }
