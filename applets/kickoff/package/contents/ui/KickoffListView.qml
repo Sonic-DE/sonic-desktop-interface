@@ -129,7 +129,7 @@ EmptyPage {
             imagePath: "widgets/viewitem"
             prefix: "hover"
             visible: plasmoid.rootItem.contentArea !== root
-                || ActionMenu.menu.status !== 1
+                || ActionMenu.menu.status !== PC2.DialogStatus.Open
         }
 
         delegate: KickoffItemDelegate {
@@ -201,7 +201,7 @@ EmptyPage {
             // because Plasma doesn't support Qt scaling.
             horizontalStepSize: 20 * Qt.styleHints.wheelScrollLines * PlasmaCore.Units.devicePixelRatio
             verticalStepSize: 20 * Qt.styleHints.wheelScrollLines * PlasmaCore.Units.devicePixelRatio
-            
+
             onWheel: {
                 view.movedWithWheel = true
             }
@@ -222,7 +222,7 @@ EmptyPage {
             interval: 200
             onTriggered: view.movedWithKeyboard = false
         }
-        
+
         Timer {
             id: movedWithWheelTimer
             interval: 200

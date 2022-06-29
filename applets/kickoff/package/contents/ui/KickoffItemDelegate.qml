@@ -46,7 +46,6 @@ T.ItemDelegate {
     readonly property bool hasActionList: model && (model.favoriteId !== null || ("hasActionList" in model && model.hasActionList === true))
     property var actionList: null
     property bool isSearchResult: false
-    readonly property bool menuClosed: ActionMenu.menu.status === PC2.DialogStatus.Closed
 
     property bool dragEnabled: enabled && !isCategory
         && plasmoid.immutability !== PlasmaCore.Types.SystemImmutable
