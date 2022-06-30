@@ -101,9 +101,9 @@ public:
 Tablet::Tablet(QObject *parent, const QVariantList &list)
     : ManagedConfigModule(parent, list)
 {
-    qmlRegisterSingletonType<DevicesModel>("org.kde.plasma.tablet.kcm", 1, 0, "DevicesModel", [](QQmlEngine *engine, QJSEngine * /*scriptEngine*/) {
-        engine->setObjectOwnership(DevicesModel::self(), QQmlEngine::CppOwnership);
-        return DevicesModel::self();
+    qmlRegisterSingletonType<DevicesModel>("org.kde.plasma.tablet.kcm", 1, 0, "DevicesModel", [this](QQmlEngine *engine, QJSEngine * /*scriptEngine*/) {
+        engine->setObjectOwnership(&m_devicesModel, QQmlEngine::CppOwnership);
+        return &m_devicesModel;
     });
     qmlRegisterType<OutputsModel>("org.kde.plasma.tablet.kcm", 1, 0, "OutputsModel");
     qmlRegisterType<OrientationsModel>("org.kde.plasma.tablet.kcm", 1, 0, "OrientationsModel");
@@ -111,7 +111,7 @@ Tablet::Tablet(QObject *parent, const QVariantList &list)
 
     setAboutData(new KAboutData(QStringLiteral("kcm_tablet"), i18n("Tablet"), QStringLiteral("1.0"), i18n("Configure drawing tablets"), KAboutLicense::LGPL));
 
-    connect(DevicesModel::self(), &DevicesModel::needsSaveChanged, this, &Tablet::refreshNeedsSave);
+    connect(&m_devicesModel, &DevicesModel::needsSaveChanged, this, &Tablet::refreshNeedsSave);
 }
 
 Tablet::~Tablet() = default;
@@ -123,25 +123,25 @@ void Tablet::refreshNeedsSave()
 
 bool Tablet::isSaveNeeded() const
 {
-    return DevicesModel::self()->isSaveNeeded();
+    return m_devicesModel.isSaveNeeded();
 }
 
 bool Tablet::isDefaults() const
 {
-    return DevicesModel::self()->isDefaults();
+    return m_devicesModel.isDefaults();
 }
 
 void Tablet::load()
 {
-    DevicesModel::self()->load();
+    m_devicesModel.load();
 }
 void Tablet::save()
 {
-    DevicesModel::self()->save();
+    m_devicesModel.save();
 }
 void Tablet::defaults()
 {
-    DevicesModel::self()->defaults();
+    m_devicesModel.defaults();
 }
 
 #include "kcmtablet.moc"

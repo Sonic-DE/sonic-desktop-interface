@@ -10,6 +10,8 @@
 
 #include <KSharedConfig>
 
+#include "devicesmodel.h"
+
 class TabletSettings;
 class TabletData;
 
@@ -27,5 +29,8 @@ public:
     bool isSaveNeeded() const override;
     bool isDefaults() const override;
 
+private:
     void refreshNeedsSave();
+
+    DevicesModel m_devicesModel;
 };
