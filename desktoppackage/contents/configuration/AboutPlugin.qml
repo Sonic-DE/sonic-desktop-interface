@@ -40,9 +40,12 @@ Kirigami.ScrollablePage {
                     visible: modelData.emailAddress
                     width: height
                     icon.name: "mail-sent"
+
+                    Accessible.name: i18nd("plasma_shell_org.kde.plasma.desktop", "Send an email to %1", modelData.emailAddress)
                     QQC2.ToolTip.delay: Kirigami.Units.toolTipDelay
                     QQC2.ToolTip.visible: hovered
-                    QQC2.ToolTip.text: i18nd("plasma_shell_org.kde.plasma.desktop", "Send an email to %1", modelData.emailAddress)
+                    QQC2.ToolTip.text: Accessible.name
+
                     onClicked: Qt.openUrlExternally("mailto:%1".arg(modelData.emailAddress))
                 }
                 QQC2.ToolButton {
