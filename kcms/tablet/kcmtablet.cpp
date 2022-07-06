@@ -64,20 +64,24 @@ class OutputsModel : public QStandardItemModel
 public:
     OutputsModel()
     {
-        appendRow(new QStandardItem(i18n("Follow the active screen")));
-
         auto screens = qGuiApp->screens();
+        auto it = new QStandardItem(i18n("Follow the active screen"));
+        it->setData(screens[0]->physicalSize(), Qt::UserRole + 1); // we use the first display to give an idea
+        appendRow(it);
+
         for (auto screen : screens) {
             auto geo = screen->geometry();
             auto it =
                 new QStandardItem(i18nc("model - (x,y widthxheight)", "%1 - (%2,%3 %4x%5)", screen->model(), geo.x(), geo.y(), geo.width(), geo.height()));
             it->setData(screen->name(), Qt::UserRole);
+            it->setData(screen->physicalSize(), Qt::UserRole + 1);
             appendRow(it);
         }
 
         setItemRoleNames({
             {Qt::DisplayRole, "display"},
             {Qt::UserRole, "name"},
+            {Qt::UserRole + 1, "size"},
         });
     }
 

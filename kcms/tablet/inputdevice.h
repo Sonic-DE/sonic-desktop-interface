@@ -17,6 +17,7 @@ class InputDevice : public QObject
 {
     Q_OBJECT
 
+    Q_PROPERTY(QSizeF size READ size CONSTANT)
     Q_PROPERTY(bool supportsLeftHanded READ supportsLeftHanded CONSTANT)
     Q_PROPERTY(bool leftHanded READ isLeftHanded WRITE setLeftHanded NOTIFY leftHandedChanged)
 
@@ -67,6 +68,10 @@ public:
         return m_outputName.value();
     }
     void setOutputName(const QString &outputName);
+    QSizeF size() const
+    {
+        return m_size.value();
+    }
 
 Q_SIGNALS:
     void needsSaveChanged();
@@ -166,6 +171,7 @@ private:
     //
     // general
     Prop<QString> m_name = Prop<QString>(this, "name");
+    Prop<QSizeF> m_size = Prop<QSizeF>(this, "size");
     Prop<QString> m_sysName = Prop<QString>(this, "sysName");
 
     Prop<bool> m_leftHanded = Prop<bool>(this,
