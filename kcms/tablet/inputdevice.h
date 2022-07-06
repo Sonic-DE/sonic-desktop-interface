@@ -17,12 +17,14 @@ class InputDevice : public QObject
 {
     Q_OBJECT
 
+    Q_PROPERTY(QSizeF size READ size CONSTANT)
     Q_PROPERTY(bool supportsLeftHanded READ supportsLeftHanded CONSTANT)
     Q_PROPERTY(bool leftHanded READ isLeftHanded WRITE setLeftHanded NOTIFY leftHandedChanged)
 
     Q_PROPERTY(bool supportsOrientation READ supportsOrientation CONSTANT)
     Q_PROPERTY(int orientation READ orientation WRITE setOrientation NOTIFY orientationChanged)
     Q_PROPERTY(QString outputName READ outputName WRITE setOutputName NOTIFY outputNameChanged)
+    Q_PROPERTY(QRectF fitting READ fitting WRITE setFitting NOTIFY fittingChanged)
 
 public:
     InputDevice(QString dbusName);
@@ -67,6 +69,16 @@ public:
         return m_outputName.value();
     }
     void setOutputName(const QString &outputName);
+    QSizeF size() const
+    {
+        return m_size.value();
+    }
+
+    QRectF fitting() const
+    {
+        return m_fitting.value();
+    }
+    void setFitting(const QRectF &fitting);
 
 Q_SIGNALS:
     void needsSaveChanged();
@@ -74,6 +86,7 @@ Q_SIGNALS:
     void leftHandedChanged();
     void orientationChanged();
     void outputNameChanged();
+    void fittingChanged();
 
 private:
     template<typename T>
@@ -166,6 +179,7 @@ private:
     //
     // general
     Prop<QString> m_name = Prop<QString>(this, "name");
+    Prop<QSizeF> m_size = Prop<QSizeF>(this, "size");
     Prop<QString> m_sysName = Prop<QString>(this, "sysName");
 
     Prop<bool> m_leftHanded = Prop<bool>(this,
@@ -176,6 +190,7 @@ private:
     Prop<int> m_orientation =
         Prop<int>(this, "orientationDBus", nullptr, &OrgKdeKWinInputDeviceInterface::supportsCalibrationMatrix, &InputDevice::orientationChanged);
     Prop<QString> m_outputName = Prop<QString>(this, "outputName", nullptr, nullptr, &InputDevice::outputNameChanged);
+    Prop<QRectF> m_fitting = Prop<QRectF>(this, "fitting", 0, 0, &InputDevice::fittingChanged);
 
     std::unique_ptr<OrgKdeKWinInputDeviceInterface> m_iface;
 };

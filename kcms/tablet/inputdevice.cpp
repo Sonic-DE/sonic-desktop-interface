@@ -108,3 +108,8 @@ void InputDevice::setLeftHanded(bool set)
 {
     m_leftHanded.set(set);
 }
+
+void InputDevice::setFitting(const QRectF &fitting)
+{
+    m_fitting.set(fitting);
+}
