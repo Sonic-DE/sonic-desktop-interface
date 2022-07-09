@@ -25,45 +25,43 @@ Kirigami.FormLayout {
     property alias cfg_showOnlyCurrentScreen: showOnlyCurrentScreen.checked
     property alias cfg_wrapPage: wrapPage.checked
 
-    onCfg_displayedTextChanged: {
-        switch (cfg_displayedText) {
-        case 0:
-            displayedTextGroup.checkedButton = desktopNumberRadio;
-            break;
-        case 1:
-            displayedTextGroup.checkedButton = desktopNameRadio;
-            break;
-        default:
-        case 2:
-            displayedTextGroup.checkedButton = noTextRadio;
-            break;
-        }
-    }
-
-    onCfg_currentDesktopSelectedChanged: {
-        switch (cfg_currentDesktopSelected) {
-        case 0:
-            currentDesktopSelectedGroup.checkedButton = doesNothingRadio;
-            break;
-        case 1:
-            currentDesktopSelectedGroup.checkedButton = showsDesktopRadio;
-            break;
-        default:
-            break;
-        }
-    }
-
-    Component.onCompleted: {
-        cfg_currentDesktopSelectedChanged();
-        cfg_displayedTextChanged();
-    }
-
     QQC2.ButtonGroup {
         id: displayedTextGroup
+
+        readonly property var buttonToChoice: ({
+            [desktopNumberRadio]: 0,
+            [noTextRadio]: 2,
+            [desktopNameRadio]: 1,
+        })
+        readonly property var choiceToButton: ({
+            [0]: desktopNumberRadio,
+            [2]: noTextRadio,
+            [1]: desktopNameRadio,
+        })
+
+        checkedButton: choiceToButton[cfg_displayedText] || noTextRadio
+
+        onCheckedButtonChanged: {
+            cfg_displayedText = buttonToChoice[checkedButton];
+        }
     }
 
     QQC2.ButtonGroup {
         id: currentDesktopSelectedGroup
+
+        readonly property var buttonToChoice: ({
+            [doesNothingRadio]: 0,
+            [showsDesktopRadio]: 1,
+        })
+        readonly property var choiceToButton: ({
+            [0]: doesNothingRadio,
+            [1]: showsDesktopRadio,
+        })
+        checkedButton: choiceToButton[cfg_currentDesktopSelected] || doesNothingRadio
+
+        onCheckedButtonChanged: {
+            cfg_currentDesktopSelected = buttonToChoice[checkedButton];
+        }
     }
 
 
@@ -114,21 +112,18 @@ Kirigami.FormLayout {
 
         QQC2.ButtonGroup.group: displayedTextGroup
         text: i18n("No text")
-        onCheckedChanged: if (checked) cfg_displayedText = 2;
     }
 
     QQC2.RadioButton {
         id: desktopNumberRadio
         QQC2.ButtonGroup.group: displayedTextGroup
         text: isActivityPager ? i18n("Activity number") : i18n("Desktop number")
-        onCheckedChanged: if (checked) cfg_displayedText = 0;
     }
 
     QQC2.RadioButton {
         id: desktopNameRadio
         QQC2.ButtonGroup.group: displayedTextGroup
         text: isActivityPager ? i18n("Activity name") : i18n("Desktop name")
-        onCheckedChanged: if (checked) cfg_displayedText = 1;
     }
 
 
@@ -144,13 +139,11 @@ Kirigami.FormLayout {
 
         QQC2.ButtonGroup.group: currentDesktopSelectedGroup
         text: i18n("Does nothing")
-        onCheckedChanged: if (checked) cfg_currentDesktopSelected = 0;
     }
 
     QQC2.RadioButton {
         id: showsDesktopRadio
         QQC2.ButtonGroup.group: currentDesktopSelectedGroup
         text: i18n("Shows the desktop")
-        onCheckedChanged: if (checked) cfg_currentDesktopSelected = 1;
     }
 }
