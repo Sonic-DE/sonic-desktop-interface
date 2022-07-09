@@ -16,7 +16,7 @@ Kirigami.FormLayout {
     anchors.left: parent.left
     anchors.right: parent.right
 
-    property bool isActivityPager: (Plasmoid.pluginName === "org.kde.plasma.activitypager")
+    readonly property bool isActivityPager: Plasmoid.pluginName === "org.kde.plasma.activitypager"
 
     property int cfg_displayedText
     property alias cfg_showWindowIcons: showWindowIcons.checked
@@ -45,6 +45,7 @@ Kirigami.FormLayout {
             cfg_displayedText = buttonToChoice[checkedButton];
         }
     }
+
     QQC2.ButtonGroup {
         id: currentDesktopSelectedGroup
 
@@ -112,11 +113,13 @@ Kirigami.FormLayout {
         QQC2.ButtonGroup.group: displayedTextGroup
         text: i18n("No text")
     }
+
     QQC2.RadioButton {
         id: desktopNumberRadio
         QQC2.ButtonGroup.group: displayedTextGroup
         text: isActivityPager ? i18n("Activity number") : i18n("Desktop number")
     }
+
     QQC2.RadioButton {
         id: desktopNameRadio
         QQC2.ButtonGroup.group: displayedTextGroup
@@ -137,6 +140,7 @@ Kirigami.FormLayout {
         QQC2.ButtonGroup.group: currentDesktopSelectedGroup
         text: i18n("Does nothing")
     }
+
     QQC2.RadioButton {
         id: showsDesktopRadio
         QQC2.ButtonGroup.group: currentDesktopSelectedGroup
