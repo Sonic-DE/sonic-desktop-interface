@@ -62,7 +62,7 @@ Item {
                 plasmoid.configuration.favoritesPortedToKAstats = true;
             }
 
-            refresh();
+            refreshTimer.start();
         }
     }
 
@@ -218,6 +218,12 @@ Item {
 
     Kicker.ProcessRunner {
         id: processRunner;
+    }
+
+    Timer {
+        id: refreshTimer
+        interval: 1000
+        onTriggered: rootModel.refresh()
     }
 
     function action_menuedit() {
