@@ -105,7 +105,7 @@ Item {
                 plasmoid.configuration.favoritesPortedToKAstats = true;
             }
 
-            rootModel.refresh();
+            refreshTimer.start();
         }
     }
 
@@ -237,6 +237,12 @@ Item {
                 kicker.reset();
             }
         }
+    }
+
+    Timer {
+        id: refreshTimer
+        interval: 1000
+        onTriggered: rootModel.refresh()
     }
 
     function resetDragSource() {
