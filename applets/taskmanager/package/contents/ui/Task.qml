@@ -83,12 +83,12 @@ MouseArea {
             }
             case 2: {
                 if (backend.windowViewAvailable) {
-                    return i18nc("@info:usagetip %1 task name", "Open Window View for %1", task.labelText);
+                    return i18nc("@info:usagetip %1 task name", "Show windows side by side for %1", task.labelText);
                 }
                 // fallthrough
             }
             default:
-                return i18nc("@info:usagetip %1 task name", "Open group dialog for %1", task.labelText);
+                return i18nc("@info:usagetip %1 task name", "Open textual list of windows for %1", task.labelText);
             }
         }
 
