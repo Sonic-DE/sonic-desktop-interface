@@ -77,7 +77,7 @@ MouseArea {
                 break; // Use the default description
             case 1: {
                 if (plasmoid.configuration.showToolTips) {
-                    return i18nc("@info:usagetip %1 task name", "Show task tooltip for %1", task.labelText);
+                    return i18nc("@info:usagetip %1 task name", "Show Task tooltip for %1", task.labelText);
                 }
                 // fallthrough
             }
