@@ -64,6 +64,9 @@ DragDrop.DropArea {
             break;
         }
     }
+    Accessible.name: Plasmoid.title
+    Accessible.description: Plasmoid.toolTipSubText
+    Accessible.role: Accessible.Button
 
     onDragEnter: containsAcceptableDrag = TrashPrivate.Trash.trashableUrls(event.mimeData.urls).length > 0
     onDragLeave: containsAcceptableDrag = false
