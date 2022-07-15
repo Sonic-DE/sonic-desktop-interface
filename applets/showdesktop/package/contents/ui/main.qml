@@ -37,14 +37,14 @@ MouseArea {
     Plasmoid.toolTipSubText: {
         if (isMinimizeAll) {
             if (minimizeAllComponent.item.active) {
-                return i18nc("@info:tooltip", "Restore the previous minimized windows");
+                return i18nc("@info:tooltip", "Restores the previous minimized windows");
             }
 
-            return i18n("Show the Desktop by minimizing all windows");
+            return i18n("Shows the Desktop by minimizing all windows");
         }
 
         if (showdesktop.showingDesktop) {
-            return i18nc("@info:tooltip", "Move windows back to their original positions");
+            return i18nc("@info:tooltip", "Moves windows back to their original positions");
         }
 
         return i18n("Temporarily reveals the Desktop by moving open windows into screen corners");
