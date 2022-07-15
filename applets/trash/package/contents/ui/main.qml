@@ -45,6 +45,8 @@ DragDrop.DropArea {
     readonly property int formFactor: plasmoid.formFactor
     readonly property bool constrained: formFactor === PlasmaCore.Types.Vertical || formFactor === PlasmaCore.Types.Horizontal
 
+    Plasmoid.title: i18n("Trash")
+    Plasmoid.toolTipSubText: (dirModel.count === 0) ? i18n("Empty") : i18np("One item", "%1 items", dirModel.count)
     Plasmoid.preferredRepresentation: Plasmoid.fullRepresentation
     Plasmoid.backgroundHints: PlasmaCore.Types.NoBackground
     Plasmoid.icon: (dirModel.count > 0) ? "user-trash-full": "user-trash"
@@ -100,6 +102,9 @@ DragDrop.DropArea {
     MouseArea {
         id: mouseArea
         anchors.fill: parent
+
+        hoverEnabled: true
+
         onClicked: Qt.openUrlExternally("trash:/");
     }
 
@@ -112,7 +117,7 @@ DragDrop.DropArea {
             top: parent.top
             bottom: constrained ? parent.bottom: text.top
         }
-        active: toolTip.containsMouse || root.containsAcceptableDrag
+        active: mouseArea.containsMouse || root.containsAcceptableDrag
     }
 
     DropShadow {
@@ -145,12 +150,5 @@ DragDrop.DropArea {
         color: "white"
         horizontalAlignment: Text.AlignHCenter
         visible: false // rendered by DropShadow
-    }
-
-    PlasmaCore.ToolTipArea {
-        id: toolTip
-        anchors.fill: parent
-        mainText: i18n("Trash")
-        subText: (dirModel.count === 0) ? i18n("Empty") : i18np("One item", "%1 items", dirModel.count)
     }
 }
