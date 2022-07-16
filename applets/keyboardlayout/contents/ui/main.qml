@@ -32,6 +32,7 @@ KeyboardLayoutSwitcher {
             break;
         }
     }
+    Accessible.name: Plasmoid.title
 
     function iconURL(name) {
         return StandardPaths.locate(StandardPaths.GenericDataLocation,
