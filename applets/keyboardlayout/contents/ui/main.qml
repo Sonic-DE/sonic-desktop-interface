@@ -18,8 +18,20 @@ KeyboardLayoutSwitcher {
     activeFocusOnTab: true
     hoverEnabled: true
 
+    Plasmoid.onActivated: keyboardLayout.switchToNextLayout();
     Plasmoid.preferredRepresentation: Plasmoid.fullRepresentation
     Plasmoid.status: hasMultipleKeyboardLayouts ? PlasmaCore.Types.ActiveStatus : PlasmaCore.Types.HiddenStatus
+
+    Keys.onPressed: {
+        switch (event.key) {
+        case Qt.Key_Space:
+        case Qt.Key_Enter:
+        case Qt.Key_Return:
+        case Qt.Key_Select:
+            Plasmoid.activated();
+            break;
+        }
+    }
 
     function iconURL(name) {
         return StandardPaths.locate(StandardPaths.GenericDataLocation,
