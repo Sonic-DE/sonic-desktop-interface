@@ -24,6 +24,12 @@ class KComboBox;
 struct ca_context;
 struct ca_proplist;
 
+class BellSettings;
+class KeyboardSettings;
+class KeyboardFiltersSettings;
+class MouseSettings;
+class ScreenReaderSettings;
+
 class KAccessApp : public QObject, public QAbstractNativeEventFilter
 {
     Q_OBJECT
@@ -62,16 +68,15 @@ private:
     void initMasks();
     void setScreenReaderEnabled(bool enabled);
 
+    BellSettings *m_bellSettings;
+    KeyboardSettings *m_keyboardSettings;
+    KeyboardFiltersSettings *m_keyboardFiltersSettings;
+    MouseSettings *m_mouseSettings;
+    ScreenReaderSettings *m_screenReaderSettings;
+
     int xkb_opcode;
     unsigned int features;
     unsigned int requestedFeatures;
-
-    bool _systemBell, _artsBell, _visibleBell, _visibleBellInvert;
-    QColor _visibleBellColor;
-    int _visibleBellPause;
-
-    bool _gestures, _gestureConfirmation;
-    bool _kNotifyModifiers, _kNotifyAccessX;
 
     QWidget *overlay;
 
