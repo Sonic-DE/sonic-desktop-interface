@@ -7,10 +7,18 @@ set(kaccess_SRCS kaccess.cpp main.cpp )
 
 add_executable(kaccess ${kaccess_SRCS})
 
+get_target_property(MYMATH_INC_DIR kaccess_settings INCLUDE_DIRECTORIES)
+get_target_property(MYMATH_INC_DIR_INTERFACE kaccess_settings INTERFACE_INCLUDE_DIRECTORIES)
+
+file(GENERATE
+  OUTPUT bar_include_directories.txt
+  CONTENT "include directories: $<TARGET_PROPERTY:kaccess_settings,INCLUDE_DIRECTORIES>\n"
+)
+
 target_link_libraries(kaccess
+    kaccess_settings
     Qt::Widgets
     KF5::CoreAddons
-    KF5::ConfigCore
     KF5::Completion
     KF5::GlobalAccel
     KF5::I18n
