@@ -15,7 +15,7 @@
     </entry>
     <entry name="RepetitionInterval" key="MKInterval" type="Int">
       <label>Repetition interval for the mouse movement</label>
-      <default>1</default>
+      <default>5</default>
     </entry>
     <entry name="MK_TimeToMax" key="MK_TimeToMax" type="Int">
       <label>Time to hit maximum velocity</label>

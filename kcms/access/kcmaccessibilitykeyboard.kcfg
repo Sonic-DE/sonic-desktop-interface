@@ -29,13 +29,13 @@
       <label>Notify when a keyboard modifier is pressed</label>
       <default>false</default>
     </entry>
-    <entry name="AccessXTimeout" key="AccessXTimeout" type="Int">
+    <entry name="AccessXTimeout" key="AccessXTimeout" type="Bool">
       <label>Use a timeout delay</label>
-      <default>30</default>
+      <default>false</default>
     </entry>
     <entry name="AccessXTimeoutDelay" key="AccessXTimeoutDelay" type="Bool">
-      <label>Invert the system colors on the bell</label>
-      <default>false</default>
+      <label>Delay for timeout</label>
+      <default>30</default>
     </entry>
     <entry name="AccessXBeep" key="AccessBeep" type="Bool">
       <label>Use a beep for access</label>
