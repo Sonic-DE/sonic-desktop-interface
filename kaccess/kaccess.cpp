@@ -324,7 +324,7 @@ void KAccessApp::readSettings()
     overlay = nullptr;
 
     KConfigGroup screenReaderGroup(_config, "ScreenReader");
-    setScreenReaderEnabled(screenReaderGroup.readEntry("Enabled", false));
+    setScreenReaderEnabled(screenReaderGroup.readEntry("Enabled", true));
 
     QString shortcut = screenReaderGroup.readEntry("Shortcut", QStringLiteral("Meta+Alt+S"));
 
