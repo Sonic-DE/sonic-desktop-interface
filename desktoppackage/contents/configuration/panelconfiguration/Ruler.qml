@@ -49,6 +49,12 @@ PlasmaCore.FrameSvgItem {
         leftMaximumLengthHandle.value = panel.maximumLength
     }
 
+    function defaultPosition(value: int): int {
+        var panelSize = dialogRoot.vertical ? panel.height : panel.width;
+        var dialogSize = dialogRoot.vertical ? dialogRoot.height : dialogRoot.width;
+        return (value === panelSize) ? dialogSize : panelSize;
+    }
+
     PlasmaCore.Svg {
         id: containmentControlsSvg
         imagePath: "widgets/containment-controls"
@@ -100,6 +106,9 @@ PlasmaCore.FrameSvgItem {
                 return dialogRootSize - panel.maximumLength / 2 - size / 2
             }
         }
+        function defaultPosition(): int {
+            return 0;
+        }
     }
 
     /* The maximumPosition value for the right handles and the minimumPosition value for the left handles are
@@ -128,6 +137,9 @@ PlasmaCore.FrameSvgItem {
             var size = dialogRoot.vertical ? height : width
             panel.alignment === Qt.AlignCenter ? Math.min(dialogRootSize - size/2, dialogRootSize + offset * 2 - size/2) : dialogRootSize - size/2
         }
+        function defaultPosition(): int {
+            return root.defaultPosition(value);
+        }
     }
 
     SliderHandle {
@@ -144,6 +156,9 @@ PlasmaCore.FrameSvgItem {
             var size = dialogRoot.vertical ? height : width
             panel.alignment === Qt.AlignCenter ? Math.min(dialogRootSize - size/2, dialogRootSize + offset * 2 - size/2) : dialogRootSize - size/2
         }
+        function defaultPosition(): int {
+            return root.defaultPosition(value);
+        }
     }
 
     SliderHandle {
@@ -159,6 +174,9 @@ PlasmaCore.FrameSvgItem {
             var size = dialogRoot.vertical ? height : width
             panel.alignment === Qt.AlignCenter ? Math.max(-size/2, offset*2 - size/2) : -size/2
         }
+        function defaultPosition(): int {
+            return root.defaultPosition(value);
+        }
     }
 
     SliderHandle {
@@ -173,6 +191,9 @@ PlasmaCore.FrameSvgItem {
         minimumPosition: {
             var size = dialogRoot.vertical ? height : width
             panel.alignment === Qt.AlignCenter ? Math.max(-size/2, offset*2 - size/2) : -size/2
+        }
+        function defaultPosition(): int {
+            return root.defaultPosition(value);
         }
     }
 
