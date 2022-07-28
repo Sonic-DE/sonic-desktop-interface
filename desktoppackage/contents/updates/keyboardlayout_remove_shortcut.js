@@ -6,6 +6,12 @@ function forEachWidgetInContainmentList(containmentList, callback) {
         for (var widgetIndex = 0; widgetIndex < widgets.length; widgetIndex++) {
             var widget = widgets[widgetIndex];
             callback(widget, containment);
+            if (widget.type === "org.kde.plasma.systemtray") {
+                systemtrayId = widget.readConfig("SystrayContainmentId");
+                if (systemtrayId) {
+                    forEachWidgetInContainmentList([desktopById(systemtrayId)], callback)
+                }
+            }
         }
     }
 }
