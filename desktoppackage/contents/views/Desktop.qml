@@ -73,11 +73,19 @@ Item {
             source: root.containment.wallpaper
 
             property Binding colorBinding: Binding {
+                readonly property real backgroundLuminance: luminanace(PlasmaCore.ColorScope.backgroundColor)
+
                 target: desktop
                 property: "accentColor"
                 value: {
                     if (isCandidateColor(imageColors.dominant)) {
                         return imageColors.dominant;
+                    }
+
+                    // Don't easily give up dominant color
+                    const adjustedDominant = adjustLightness(imageColors.dominant);
+                    if (isCandidateColor(adjustedDominant)) {
+                        return adjustedDominant;
                     }
 
                     // If the color is too light or too dark, use highlight instead
@@ -91,29 +99,50 @@ Item {
                     }
 
                     // Adjust the lightness of the average color
-                    if (lightness(imageColors.average) >= 0.8) {
-                        return Qt.darker(imageColors.average, 1.25);
-                    } else {
-                        return Qt.lighter(imageColors.average, 1.25);
-                    }
+                    return adjustLightness(imageColors.average);
                 }
 
                 /**
-                * Converts RGB color to HSL, and only returns the lightness value (0-1)
+                * Calculates luminanace (Photometric/digital ITU BT.709)
                 */
-                function lightness(color) {
-                    const r = color.r, g = color.g, b = color.b;
-                    const l = Math.max(r, g, b);
-                    const s = l - Math.min(r, g, b);
-                    return (2 * l - s) / 2;
+                function luminanace(color) {
+                    const a = [color.r, color.g, color.b].map(v => v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4));
+                    return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
                 }
 
                 /**
-                * Checks the color is suitable as an accent color
+                * Checks the contrast ratio is at least 4.5
+                *
+                * @see WCAG 2.1 - Success Criterion 1.4.3 Contrast (Minimum)
                 */
                 function isCandidateColor(color) {
-                    const l = lightness(color);
-                    return l > 0.2 && l < 0.8;
+                    const lum = luminanace(color);
+                    const brightest = Math.max(lum, backgroundLuminance);
+                    const darkest = Math.min(lum, backgroundLuminance);
+
+                    return (brightest + 0.05) / (darkest + 0.05) > 4.5 && lum < 0.9 && lum > 0.1;
+                }
+
+                function adjustLightness(color) {
+                    let adjustedColor = color;
+                    let count = 0;
+                    while (!isCandidateColor(adjustedColor) && count < 5) {
+                        if (backgroundLuminance > 0.5) {
+                            adjustedColor = Qt.darker(adjustedColor, 1.25);
+                        } else {
+                            adjustedColor = Qt.lighter(adjustedColor, 1.25);
+                        }
+                        count += 1;
+                    }
+
+                    // Case: pure white/black wallpaper
+                    if (luminanace(adjustedColor) > 0.9) {
+                        adjustedColor = Qt.darker(adjustedColor, 1.25);
+                    } else if (luminanace(adjustedColor) < 0.1) {
+                        adjustedColor = Qt.lighter(adjustedColor, 1.25);
+                    }
+
+                    return adjustedColor;
                 }
             }
 
