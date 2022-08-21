@@ -11,8 +11,9 @@ import QtQuick.Controls 2.15 as QQC2
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 3.0 as PC3
 import org.kde.plasma.extras 2.0 as PlasmaExtras
+import org.kde.plasma.plasmoid 2.0
 
-ColumnLayout {
+GridLayout {
     id: root
 
     property var reason
@@ -21,26 +22,33 @@ ColumnLayout {
     readonly property real minimumPreferredWidth: PlasmaCore.Units.gridUnit * 12
     readonly property real minimumPreferredHeight: PlasmaCore.Units.gridUnit * 12
 
-    Layout.minimumWidth: Math.max(buttonLayout.implicitWidth, headerIcon.implicitWidth + PlasmaCore.Units.gridUnit * 2)
+    // To properly show the error message in panel
+    readonly property bool isVertical: Plasmoid.formFactor === PlasmaCore.Types.Vertical
+    readonly property bool inPanel: Math.min(root.width, root.height) < minimumPreferredWidth && [PlasmaCore.Types.TopEdge, PlasmaCore.Types.RightEdge, PlasmaCore.Types.BottomEdge, PlasmaCore.Types.LeftEdge].includes(Plasmoid.location)
+    readonly property bool doesUseCompactView: inPanel && (isVertical ? root.width : root.height) < (PlasmaCore.Units.iconSizes.huge + 2 * PlasmaCore.Units.gridUnit)
+
+    Layout.minimumWidth: (inPanel && !isVertical ? headingLayout.implicitWidth : headerIcon.implicitWidth) + Math.max(buttonLayout.implicitWidth, PlasmaCore.Units.gridUnit * 2)
     Layout.minimumHeight: headingLayout.implicitHeight + spacing + buttonLayout.implicitHeight + PlasmaCore.Units.gridUnit * 2
     // Same as systray popups
     Layout.preferredWidth: PlasmaCore.Units.gridUnit * 24
     Layout.preferredHeight: PlasmaCore.Units.gridUnit * 24
 
-    spacing: textArea.topPadding
+    rowSpacing: textArea.topPadding
+    columnSpacing: rowSpacing
+    flow: inPanel ? (isVertical ? GridLayout.TopToBottom : GridLayout.LeftToRight) : GridLayout.TopToBottom
 
     RowLayout {
         id: headingLayout
         spacing: 0
-        Layout.margins: PlasmaCore.Units.gridUnit
+        Layout.margins: doesUseCompactView ? 0 : PlasmaCore.Units.gridUnit
         Layout.minimumWidth: headerIcon.implicitWidth
         Layout.minimumHeight: headerIcon.implicitHeight
         Layout.maximumHeight: headerIcon.implicitHeight
         Layout.fillWidth: true
         PlasmaCore.IconItem {
             id: headerIcon
-            implicitWidth: PlasmaCore.Units.iconSizes.huge
-            implicitHeight: PlasmaCore.Units.iconSizes.huge
+            implicitWidth: Math.min(PlasmaCore.Units.iconSizes.huge, root.isVertical ? root.width : root.height)
+            implicitHeight: implicitWidth
             source: "dialog-error"
         }
         PlasmaExtras.Heading {
@@ -67,12 +75,16 @@ ColumnLayout {
         }
     }
 
-    RowLayout {
+    GridLayout {
         id: buttonLayout
-        spacing: parent.spacing
         Layout.alignment: Qt.AlignCenter
+        rowSpacing: parent.rowSpacing
+        columnSpacing: parent.columnSpacing
+        flow: inPanel ? parent.flow : GridLayout.LeftToRight
+
         PC3.Button {
             id: copyButton
+            display: root.doesUseCompactView ? PC3.AbstractButton.IconOnly : PC3.AbstractButton.TextBesideIcon
             text: i18nd("plasma_shell_org.kde.plasma.desktop", "Copy to Clipboard")
             icon.name: "edit-copy"
             onClicked: {
@@ -87,10 +99,12 @@ ColumnLayout {
                 || root.height < root.minimumPreferredHeight
             visible: active
             sourceComponent: PC3.Button {
+                display: copyButton.display
                 icon.name: "window-new"
                 text: i18nd("plasma_shell_org.kde.plasma.desktop", "View Error Details…")
                 checked: dialog.visible
                 onClicked: dialog.visible = !dialog.visible
+
                 QQC2.ApplicationWindow {
                     id: dialog
                     flags: Qt.Dialog | Qt.WindowStaysOnTopHint | Qt.WindowMinMaxButtonsHint | Qt.WindowCloseButtonHint
@@ -134,7 +148,7 @@ ColumnLayout {
         id: fullContentView
         // Not handled by a Loader because we need
         // TextEdit::copy() to copy to clipboard.
-        visible: !compactContentLoader.visible
+        visible: !compactContentLoader.active
         Layout.fillHeight: true
         Layout.fillWidth: true
         PC3.ScrollBar.horizontal.policy: PC3.ScrollBar.AlwaysOff
