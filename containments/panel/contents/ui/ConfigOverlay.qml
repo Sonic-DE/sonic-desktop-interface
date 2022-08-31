@@ -32,24 +32,27 @@ MouseArea {
             // a different containment there, we remove it from the panel
             // containment and add it to the new one.
             var padding = PlasmaCore.Units.gridUnit * 5;
-            if (currentApplet && (mouse.x < -padding || mouse.y < -padding ||
-                mouse.x > width + padding || mouse.y > height + padding)) {
-                var newCont = plasmoid.containmentAt(mouse.x, mouse.y);
+            if (currentApplet) {
+                if (mouse.x < -padding || mouse.y < -padding ||
+                    mouse.x > width + padding || mouse.y > height + padding)
+                {
+                    var newCont = plasmoid.containmentAt(mouse.x, mouse.y);
 
-                if (newCont && newCont !== plasmoid) {
-                    var newPos = newCont.mapFromApplet(plasmoid, mouse.x, mouse.y);
-                    var applet = currentApplet.applet;
-                    appletsModel.remove(placeHolder.parent.index);
-                    currentApplet.destroy();
-                    applet.anchors.fill = undefined
-                    newCont.addApplet(applet, newPos.x, newPos.y);
-                    return;
+                    if (newCont && newCont !== plasmoid) {
+                        var newPos = newCont.mapFromApplet(plasmoid, mouse.x, mouse.y);
+                        var applet = currentApplet.applet;
+                        appletsModel.remove(placeHolder.parent.index);
+                        currentApplet.destroy();
+                        applet.anchors.fill = undefined
+                        newCont.addApplet(applet, newPos.x, newPos.y);
+                        return;
+                    }
                 }
-            }
-            if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
-                currentApplet.y = mouse.y - configurationArea.startDragOffset;
-            } else {
-                currentApplet.x = mouse.x - configurationArea.startDragOffset;
+                if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
+                    currentApplet.y = mouse.y - configurationArea.startDragOffset;
+                } else {
+                    currentApplet.x = mouse.x - configurationArea.startDragOffset;
+                }
             }
 
             var item = currentLayout.childAt(mouse.x, mouse.y);
