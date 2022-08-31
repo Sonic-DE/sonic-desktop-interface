@@ -8,6 +8,7 @@
 #include "devicesmodel.h"
 #include "inputdevice.h"
 #include "tabletevents.h"
+
 #include <KConfigGroup>
 #include <KLocalizedString>
 #include <KPluginFactory>

@@ -47,9 +47,6 @@ void InputDevice::Prop<T>::set(T newVal)
 template<typename T>
 bool InputDevice::Prop<T>::changed() const
 {
-    bool r = m_value.has_value() && m_value != m_configValue;
-    if (r)
-        qDebug() << "aaaaaaa" << m_prop.name() << m_value.has_value() << m_value.value() << m_configValue.value();
     return m_value.has_value() && m_value.value() != m_configValue;
 }
 
@@ -60,7 +57,6 @@ InputDevice::InputDevice(const QString &dbusName, QObject *parent)
                                                      QStringLiteral("/org/kde/KWin/InputDevice/") + dbusName,
                                                      QDBusConnection::sessionBus(),
                                                      this));
-    qDebug() << "new device!" << dbusName;
     connect(this, &InputDevice::leftHandedChanged, this, &InputDevice::needsSaveChanged);
     connect(this, &InputDevice::orientationChanged, this, &InputDevice::needsSaveChanged);
     connect(this, &InputDevice::outputNameChanged, this, &InputDevice::needsSaveChanged);
