@@ -72,10 +72,16 @@ Item {
             id: imageColors
             source: root.containment.wallpaper
 
+            property color colorFromPlugin: Qt.transparent
+
             property Binding colorBinding: Binding {
                 target: desktop
                 property: "accentColor"
                 value: {
+                    if (!Qt.colorEqual(imageColors.colorFromPlugin, "transparent")) {
+                        return imageColors.colorFromPlugin;
+                    }
+
                     // First try the highlight color
                     if (isCandidateColor(imageColors.highlight)) {
                         return imageColors.highlight
@@ -131,8 +137,12 @@ Item {
 
             property Connections repaintConnection: Connections {
                 target: root.containment.wallpaper
-                function onRepaintNeeded() {
-                    imageColors.update();
+                function onRepaintNeeded(color) {
+                    imageColors.colorFromPlugin = color;
+
+                    if (Qt.colorEqual(color, "transparent")) {
+                        imageColors.update();
+                    }
                 }
             }
         }
