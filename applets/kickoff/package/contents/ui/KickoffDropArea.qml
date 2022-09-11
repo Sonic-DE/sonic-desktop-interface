@@ -28,6 +28,48 @@ DropArea {
             }
         }
     }
+
+    function moveRow(targetIndex) {
+        if (targetIndex < 0 || targetIndex >= count) {
+            return;
+        }
+
+        model.moveRow(currentIndex, targetIndex);
+        currentIndex = targetIndex;
+    }
+
+    Shortcut {
+        sequence: "Ctrl+Shift+Up"
+        onActivated: if (view instanceof GridView && currentIndex >= view.columns) {
+            moveRow(currentIndex - view.columns);
+        } else if (view instanceof ListView && currentIndex > 0) {
+            moveRow(currentIndex - 1);
+        }
+    }
+
+    Shortcut {
+        sequence: "Ctrl+Shift+Down"
+        onActivated: if (view instanceof GridView && currentIndex < count - view.columns) {
+            moveRow(currentIndex + view.columns);
+        } else if (view instanceof ListView && currentIndex + 1 < count) {
+            moveRow(currentIndex + 1);
+        }
+    }
+
+    Shortcut {
+        sequence: "Ctrl+Shift+Left"
+        onActivated: if (view instanceof GridView && currentIndex % view.columns > 0) {
+            moveRow(currentIndex - 1);
+        }
+    }
+
+    Shortcut {
+        sequence: "Ctrl+Shift+Right"
+        onActivated: if (view instanceof GridView && currentIndex % view.columns !== view.columns - 1) {
+            moveRow(currentIndex + 1);
+        }
+    }
+
     SmoothedAnimation {
         target: root.targetView
         property: "contentY"
