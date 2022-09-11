@@ -9,6 +9,36 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 
 KickoffGridView {
     id: root
+
+    function moveRow(targetIndex) {
+        if (targetIndex < 0 || targetIndex >= count) {
+            return;
+        }
+
+        model.moveRow(currentIndex, targetIndex);
+        currentIndex = targetIndex;
+    }
+
+    Shortcut {
+        sequence: "Alt+Shift+Up"
+        onActivated: if (currentIndex >= view.columns) moveRow(currentIndex - view.columns)
+    }
+
+    Shortcut {
+        sequence: "Alt+Shift+Down"
+        onActivated: if (currentIndex < count - view.columns) moveRow(currentIndex + view.columns)
+    }
+
+    Shortcut {
+        sequence: "Alt+Shift+Left"
+        onActivated: if (currentIndex % view.columns > 0) moveRow(currentIndex - 1)
+    }
+
+    Shortcut {
+        sequence: "Alt+Shift+Right"
+        onActivated: if (currentIndex % view.columns !== view.columns - 1) moveRow(currentIndex + 1)
+    }
+
     KickoffDropArea {
         z: -1
         parent: root
