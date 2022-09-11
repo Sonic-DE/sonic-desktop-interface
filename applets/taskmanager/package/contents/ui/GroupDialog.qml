@@ -6,6 +6,7 @@
 */
 
 import QtQuick 2.15
+import QtQuick.Controls 2.15 as QQC2
 // Deliberately imported after QtQuick to avoid missing restoreMode property in Binding. Fix in Qt 6.
 import QtQml 2.15
 import QtQml.Models 2.15
@@ -46,7 +47,6 @@ PlasmaCore.Dialog {
         }
     }
 
-
     mainItem: MouseHandler {
         id: mouseHandler
         width: Math.min(groupDialog.preferredWidth, Math.max(groupListView.maxWidth, groupDialog.visualParent.width))
@@ -57,6 +57,22 @@ PlasmaCore.Dialog {
         isGroupDialog: true
 
         Keys.onEscapePressed: groupDialog.visible = false
+
+        function moveRow(insertAt) {
+            tasksModel.move(groupListView.currentIndex, insertAt,
+                tasksModel.makeModelIndex(groupDialog.visualParent.itemIndex));
+            groupListView.currentIndex = insertAt;
+        }
+
+        QQC2.Action {
+            shortcut: "Alt+Shift+Up"
+            onTriggered: mouseHandler.moveRow(groupListView.currentIndex - 1);
+        }
+
+        QQC2.Action {
+            shortcut: "Alt+Shift+Down"
+            onTriggered: mouseHandler.moveRow(groupListView.currentIndex + 1);
+        }
 
         PlasmaComponents3.ScrollView {
             id: scrollView
