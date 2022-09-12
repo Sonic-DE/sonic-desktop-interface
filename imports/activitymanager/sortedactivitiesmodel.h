@@ -8,7 +8,7 @@
 #define SORTED_ACTIVITIES_MODEL_H
 
 // Qt
-#include <QSortFilterProxyModel>
+#include <QIdentityProxyModel>
 #include <QWidgetList> //For WId
 
 // KDE
@@ -20,7 +20,7 @@
 
 #include <netwm.h>
 
-class SortedActivitiesModel : public QSortFilterProxyModel
+class SortedActivitiesModel : public QIdentityProxyModel
 {
     Q_OBJECT
 
@@ -38,7 +38,6 @@ public:
 
 protected:
     uint lastUsedTime(const QString &activity) const;
-    bool lessThan(const QModelIndex &source_left, const QModelIndex &source_right) const override;
 
     enum AdditionalRoles {
         LastTimeUsed = KActivities::ActivitiesModel::UserRole,
