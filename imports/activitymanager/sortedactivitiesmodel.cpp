@@ -201,14 +201,12 @@ static BackgroundCache &backgrounds()
 }
 
 SortedActivitiesModel::SortedActivitiesModel(const QVector<KActivities::Info::State> &states, QObject *parent)
-    : QSortFilterProxyModel(parent)
+    : QIdentityProxyModel(parent)
     , m_activitiesModel(new KActivities::ActivitiesModel(states, this))
     , m_activities(new KActivities::Consumer(this))
 {
     setSourceModel(m_activitiesModel);
 
-    setDynamicSortFilter(true);
-    setSortRole(LastTimeUsed);
     sort(0, Qt::DescendingOrder);
 
     backgrounds().subscribe(this);
@@ -251,7 +249,7 @@ void SortedActivitiesModel::setInhibitUpdates(bool inhibitUpdates)
         m_inhibitUpdates = inhibitUpdates;
         Q_EMIT inhibitUpdatesChanged(m_inhibitUpdates);
 
-        setDynamicSortFilter(!inhibitUpdates);
+        // setDynamicSortFilter(!inhibitUpdates);
     }
 }
 
@@ -266,17 +264,6 @@ uint SortedActivitiesModel::lastUsedTime(const QString &activity) const
 
         return times.readEntry(activity, (uint)0);
     }
-}
-
-bool SortedActivitiesModel::lessThan(const QModelIndex &sourceLeft, const QModelIndex &sourceRight) const
-{
-    const auto activityLeft = sourceModel()->data(sourceLeft, KActivities::ActivitiesModel::ActivityId).toString();
-    const auto activityRight = sourceModel()->data(sourceRight, KActivities::ActivitiesModel::ActivityId).toString();
-
-    const auto timeLeft = lastUsedTime(activityLeft);
-    const auto timeRight = lastUsedTime(activityRight);
-
-    return (timeLeft < timeRight) || (timeLeft == timeRight && activityLeft < activityRight);
 }
 
 QHash<int, QByteArray> SortedActivitiesModel::roleNames() const
@@ -347,7 +334,7 @@ QVariant SortedActivitiesModel::data(const QModelIndex &index, int role) const
         }
 
     } else {
-        return QSortFilterProxyModel::data(index, role);
+        return QIdentityProxyModel::data(index, role);
     }
 }
 
