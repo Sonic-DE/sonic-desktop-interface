@@ -5,11 +5,9 @@
 */
 
 import QtQuick 2.15
-
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 3.0 as PlasmaComponents3
 import org.kde.plasma.configuration 2.0
-
 
 PlasmaCore.SvgItem {
     id: root
@@ -130,6 +128,13 @@ PlasmaCore.SvgItem {
             if (!drag.active) {
                 return;
             }
+            changePosition();
+        }
+        onDoubleClicked: {
+            root.value = root.defaultPosition();
+        }
+
+        function changePosition() {
             if (dialogRoot.vertical) {
                 if (root.alignment === Qt.AlignRight) {
                     root.value = root.parent.height - (root.y + offset + root.height/2)
