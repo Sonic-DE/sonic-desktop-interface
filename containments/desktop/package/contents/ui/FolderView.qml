@@ -673,6 +673,7 @@ FocusScope {
 
                 keyNavigationWraps: false
                 boundsBehavior: Flickable.StopAtBounds
+                focus:true
 
                 function calcExtraSpacing(cellSize, containerSize) {
                     var availableColumns = Math.floor(containerSize / cellSize);
