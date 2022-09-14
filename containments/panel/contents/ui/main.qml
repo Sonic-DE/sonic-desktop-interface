@@ -161,7 +161,6 @@ function checkLastSpacer() {
             "anchors.fill": root,
         });
     }
-
 //END connections
 
 //BEGIN components
