@@ -45,6 +45,9 @@ QAction *KeyboardLayoutActionCollection::createLayoutShortcutActon(const LayoutU
     QString longLayoutName = Flags::getLongText(layoutUnit, rules);
     QString actionName = QStringLiteral("Switch keyboard layout to ");
     actionName += longLayoutName;
+    // workaround for non working shortcuts problem when an action with the same name is already exists
+    // TODO: operate on existing action's data directly instead, see the corresponding MR
+    removeAction(findChild<QAction *>(actionName));
     QAction *action = addAction(actionName);
     action->setText(i18n("Switch keyboard layout to %1", longLayoutName));
     KGlobalAccel::GlobalShortcutLoading loading = autoload ? KGlobalAccel::Autoloading : KGlobalAccel::NoAutoloading;
