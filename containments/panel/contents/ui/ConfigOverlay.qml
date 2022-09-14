@@ -24,6 +24,8 @@ MouseArea {
     property Item currentApplet
     property real startDragOffset: 0.0
 
+    readonly property alias count: appletsModel.count
+
     onPositionChanged: {
         if (pressed) {
 
@@ -133,6 +135,23 @@ MouseArea {
         placeHolder.parent = configurationArea;
         currentApplet.destroy()
         root.layoutManager.save()
+    }
+
+    /**
+     * Used in Panel Configuration
+     */
+    function setCurrentApplet(index) {
+        if (index < 0 || index >= configurationArea.count) {
+            return;
+        }
+        root.currentApplet = currentLayout.children[index];
+    }
+
+    function moveTo(index) {
+        if (index < 0 || index >= configurationArea.count) {
+            return;
+        }
+        root.layoutManager.move(currentApplet, index);
     }
 
     Item {
