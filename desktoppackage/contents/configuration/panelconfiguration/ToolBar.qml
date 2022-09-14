@@ -417,6 +417,35 @@ Item {
         }
 
     }
+
+// BEGIN Panel Keyboard Navigation Helper Item
+    FocusScope {
+        width: 1
+        height: 1
+        z: -2
+
+        Keys.onLeftPressed: if (panel.configOverlay.currentApplet.parent.index > 0) {
+            if ((event.modifiers & Qt.ControlModifier) && (event.modifiers & Qt.ShiftModifier)) {
+                panel.configOverlay.moveTo(panel.configOverlay.currentApplet.parent.index - 1);
+            } else {
+                panel.configOverlay.setCurrentApplet(panel.configOverlay.currentApplet.parent.index - 1);
+            }
+            // Always accept the event
+        }
+        Keys.onRightPressed: if (panel.configOverlay.currentApplet.parent.index + 1 < panel.configOverlay.count) {
+            if ((event.modifiers & Qt.ControlModifier) && (event.modifiers & Qt.ShiftModifier)) {
+                panel.configOverlay.moveTo(panel.configOverlay.currentApplet.parent.index + 1);
+            } else {
+                panel.configOverlay.setCurrentApplet(panel.configOverlay.currentApplet.parent.index + 1);
+            }
+        }
+
+        onActiveFocusChanged: if (activeFocus) {
+            panel.configOverlay.setCurrentApplet(0);
+        }
+    }
+// END Panel Keyboard Navigation Helper Item
+
 //BEGIN States
     states: [
         State {
