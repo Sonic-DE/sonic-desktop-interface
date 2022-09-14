@@ -417,6 +417,44 @@ Item {
         }
 
     }
+
+// BEGIN Panel Keyboard Navigation Helper Item
+    Item {
+        width: 1
+        height: 1
+        z: -2
+
+        activeFocusOnTab: true
+
+        Keys.onLeftPressed: if (panel.configOverlay.currentAppletIndex() > 0) {
+            if ((event.modifiers & Qt.ControlModifier) && (event.modifiers & Qt.ShiftModifier)) {
+                panel.configOverlay.moveTo(panel.configOverlay.currentAppletIndex() - 1);
+            } else {
+                panel.configOverlay.setCurrentApplet(panel.configOverlay.currentAppletIndex() - 1);
+            }
+            // Always accept the event
+        }
+        Keys.onRightPressed: {
+            console.log("panel right", panel.configOverlay.currentAppletIndex())
+            if (panel.configOverlay.currentAppletIndex() + 1 < panel.configOverlay.count) {
+                if ((event.modifiers & Qt.ControlModifier) && (event.modifiers & Qt.ShiftModifier)) {
+                    panel.configOverlay.moveTo(panel.configOverlay.currentAppletIndex() + 1);
+                } else {
+                    panel.configOverlay.setCurrentApplet(panel.configOverlay.currentAppletIndex() + 1);
+                }
+            }
+        }
+
+        onActiveFocusChanged: if (activeFocus) {
+            panel.configOverlay.setCurrentApplet(0);
+        } else {
+            panel.configOverlay.setCurrentApplet(-1);
+        }
+
+        Component.onDestruction: panel.configOverlay.setCurrentApplet(-1)
+    }
+// END Panel Keyboard Navigation Helper Item
+
 //BEGIN States
     states: [
         State {

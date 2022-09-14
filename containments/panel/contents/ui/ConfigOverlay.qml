@@ -18,11 +18,13 @@ MouseArea {
     id: configurationArea
 
     z: 1000
-    anchors.fill: parent
     hoverEnabled: true
 
     property Item currentApplet
     property real startDragOffset: 0.0
+    property bool keyboardNavigating: false
+
+    readonly property int count: appletsModel.count
 
     onPositionChanged: {
         if (pressed) {
@@ -52,7 +54,6 @@ MouseArea {
             }
 
             var item = currentLayout.childAt(mouse.x, mouse.y);
-
             if (item && item.applet !== placeHolder) {
                 var posInItem = mapToItem(item, mouse.x, mouse.y);
                 if ((!root.isHorizontal && posInItem.y < item.height/3) ||
@@ -66,6 +67,7 @@ MouseArea {
 
         } else {
             var item = currentLayout.childAt(mouse.x, mouse.y);
+
             if (configurationArea && item && item !== lastSpacer) {
                 configurationArea.currentApplet = item;
             }
@@ -135,6 +137,32 @@ MouseArea {
         root.layoutManager.save()
     }
 
+    /**
+     * Used in Panel Configuration
+     */
+    function setCurrentApplet(index) {
+        if (index < 0 || index >= configurationArea.count) {
+            configurationArea.keyboardNavigating = false;
+            configurationArea.currentApplet = null;
+            return;
+        }
+        configurationArea.keyboardNavigating = true;
+        configurationArea.currentApplet = currentLayout.children[index];
+        tooltip.raise();
+    }
+
+    function currentAppletIndex() {
+        return configurationArea.currentApplet.index;
+    }
+
+    function moveTo(index) {
+        if (index < 0 || index >= configurationArea.count) {
+            return;
+        }
+        root.layoutManager.move(currentApplet, index);
+        tooltip.raise();
+    }
+
     Item {
         id: placeHolder
         property Item dragging
@@ -164,7 +192,7 @@ MouseArea {
         height: currentApplet ? currentApplet.height : NaN
         color: PlasmaCore.Theme.backgroundColor
         radius: 3
-        opacity: currentApplet && configurationArea.containsMouse ? 0.5 : 0
+        opacity: currentApplet && (configurationArea.containsMouse || configurationArea.keyboardNavigating) ? 0.5 : 0
         PlasmaCore.IconItem {
             visible: !root.dragAndDropping
             source: "transform-move"
