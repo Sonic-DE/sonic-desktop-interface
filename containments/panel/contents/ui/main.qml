@@ -142,18 +142,23 @@ function checkLastSpacer() {
         LayoutManager.save();
     }
 
-    ConfigOverlay {
-        id: configOverlay
-        visible: plasmoid.userConfiguring
-        onVisibleChanged: {
-            if (visible) {
-                for (var i = 0; i < plasmoid.applets.length; ++i) {
-                    plasmoid.applets[i].expanded = false;
-                }
+    Connections {
+        target: Plasmoid.self
+
+        function onUserConfiguringChanged() {
+            if (!Plasmoid.userConfiguring) {
+                root.configOverlay.destroy();
+                root.configOverlay = null;
+                return;
+            }
+
+            const component = Qt.createComponent("ConfigOverlay.qml");
+            root.configOverlay = component.createObject(root, {"anchors.fill": root});
+            for (var i = 0; i < plasmoid.applets.length; ++i) {
+                plasmoid.applets[i].expanded = false;
             }
         }
     }
-
 //END connections
 
 //BEGIN components
