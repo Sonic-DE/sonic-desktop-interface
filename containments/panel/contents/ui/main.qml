@@ -145,6 +145,9 @@ function checkLastSpacer() {
     ConfigOverlay {
         id: configOverlay
         visible: plasmoid.userConfiguring
+
+        objectName: "configOverlay"
+
         onVisibleChanged: {
             if (visible) {
                 for (var i = 0; i < plasmoid.applets.length; ++i) {
