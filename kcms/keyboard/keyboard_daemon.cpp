@@ -198,6 +198,19 @@ bool KeyboardDaemon::setLayout(uint index)
         layouts.append(keyboardConfig->layouts.at(index));
         XkbHelper::initializeKeyboardLayouts(layouts);
         index = layouts.size() - 1;
+
+        /* Re-calculate indexes for layout switching Actions */
+        // extra layouts list overlaps with the main layouts loop initially by 1 position
+        auto extraLayouts = keyboardConfig->layouts.mid(keyboardConfig->layoutLoopCount() - 1);
+        // spare layout currently placed in the loop is removed from the extra layouts
+        // as it was already "moved" to the last loop position
+        extraLayouts.removeOne(layouts.last());
+        layouts.append(extraLayouts);
+
+        qDebug() << actionCollection->actions();
+        actionCollection->clear();
+        actionCollection->loadLayoutShortcuts(layouts, rules);
+        qDebug() << actionCollection->actions();
     }
     return X11Helper::setGroup(index);
 }
