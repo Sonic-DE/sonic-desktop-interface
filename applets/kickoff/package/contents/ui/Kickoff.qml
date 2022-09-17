@@ -170,7 +170,7 @@ Item {
             if (kickoff.vertical) {
                 return -1;
             } else {
-                return Tools.dynamicSetWidgetWidth(plasmoid.icon, buttonIcon.width, kickoff.menuLabel, labelTextField.width, PlasmaCore.Units.smallSpacing * 2);
+                return Tools.dynamicSetWidgetWidth(plasmoid.icon, buttonIcon.width, kickoff.menuLabel, labelTextField.width, 0);
             }
         }
 
@@ -194,7 +194,7 @@ Item {
             if (kickoff.vertical) {
                 return PlasmaCore.Units.iconSizeHints.panel;
             } else {
-                return Tools.dynamicSetWidgetWidth(plasmoid.icon, buttonIcon.width, kickoff.menuLabel, labelTextField.width, PlasmaCore.Units.smallSpacing * 2);
+                return Tools.dynamicSetWidgetWidth(plasmoid.icon, buttonIcon.width, kickoff.menuLabel, labelTextField.width, 0);
             }
         }
 
