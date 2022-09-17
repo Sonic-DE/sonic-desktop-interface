@@ -164,13 +164,13 @@ Item {
 
         Layout.minimumWidth: {
             if (!kickoff.inPanel) {
-                return Tools.dynamicSetWidgetWidth(plasmoid.icon, buttonIcon.width, kickoff.menuLabel, labelTextField.width, PlasmaCore.Units.smallSpacing * 2);
+                return Tools.dynamicSetWidgetWidth(plasmoid.icon, buttonIcon.width, kickoff.menuLabel, labelTextField.contentWidth, PlasmaCore.Units.smallSpacing * 2);
             }
 
             if (kickoff.vertical) {
                 return -1;
             } else {
-                return Tools.dynamicSetWidgetWidth(plasmoid.icon, buttonIcon.width, kickoff.menuLabel, labelTextField.width, 0);
+                return Tools.dynamicSetWidgetWidth(plasmoid.icon, buttonIcon.width, kickoff.menuLabel, labelTextField.contentWidth, 0);
             }
         }
 
