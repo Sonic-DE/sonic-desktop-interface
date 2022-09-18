@@ -30,7 +30,7 @@ DropArea {
     }
 
     function moveRow(targetIndex) {
-        if (targetIndex < 0 || targetIndex >= targetView.count) {
+        if (!root.enabled || targetIndex < 0 || targetIndex >= targetView.count) {
             return;
         }
 
