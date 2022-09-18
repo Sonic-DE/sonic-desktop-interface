@@ -1,0 +1,44 @@
+#!/bin/sh
+
+if [ ! -d dictbuilder ]; then
+  echo "Please run update.sh under its own directory."
+  exit 1
+fi
+
+pushd .
+rm -rf emojidict
+mkdir emojidict
+cd emojidict
+
+EMOJI_VERSION=14.0
+wget http://www.unicode.org/Public/emoji/$EMOJI_VERSION/emoji-test.txt
+
+echo '// Generated from emoji-test.txt' > ../../emojicategory.cpp
+echo '#include "emojicategory.h"' >> ../../emojicategory.cpp
+echo 'const QStringList &getCategoryNames() {' >> ../../emojicategory.cpp
+echo '    static const QStringList names = {' >> ../../emojicategory.cpp
+grep "# group" emoji-test.txt  | sed 's|# group: \(.*\)|        I18N_NOOP2("Emoji Category", "\1"),|' >> ../../emojicategory.cpp
+echo '    };' >> ../../emojicategory.cpp
+echo '    return names;' >> ../../emojicategory.cpp
+echo '}' >> ../../emojicategory.cpp
+
+CLDR_VERSION=40.0
+CLDR_FILE=cldr-common-$CLDR_VERSION.zip
+wget https://unicode.org/Public/cldr/${CLDR_VERSION%.*}/$CLDR_FILE
+unzip $CLDR_FILE
+
+mkdir builder
+cd builder
+cmake ../../dictbuilder
+cmake --build .
+for f in ../common/annotations/*.xml; do
+  ANNOTATION_FILE=`basename $f`
+  if [ -f ../common/annotationsDerived/$ANNOTATION_FILE ]; then
+    ./dictbuilder ../emoji-test.txt $f ../common/annotationsDerived/$ANNOTATION_FILE ../../${ANNOTATION_FILE/xml/dict}
+  fi
+done
+
+popd
+rm -rf emojidict
+
+echo "Please remember to update the emoji category string in qml if there is new category name."
