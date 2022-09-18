@@ -34,7 +34,6 @@ Item {
     Item {
         anchors.fill: parent
 
-        Drag.active: dragHandler.active
         Drag.dragType: Drag.Automatic
         Drag.supportedActions: Qt.MoveAction | Qt.LinkAction
         Drag.mimeData: {
@@ -51,6 +50,15 @@ Item {
         DragHandler {
             id: dragHandler
             enabled: !delegate.pendingUninstall
+
+            onActiveChanged: if (active) {
+                iconContainer.grabToImage(function(result) {
+                    parent.Drag.imageSource = result.url;
+                    parent.Drag.active = true;
+                });
+            } else {
+                parent.Drag.active = false;
+            }
         }
     }
 
