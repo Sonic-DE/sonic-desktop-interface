@@ -80,6 +80,13 @@ PC3.Page {
         }
     }
 
+    Behavior on opacity {
+        SmoothedAnimation {
+            duration: PlasmaCore.Units.longDuration
+            velocity: 0.01
+        }
+    }
+
     // The view can take a bit of time to initialize itself, during which time,
     // count is 0, which would cause the placeholder message to appear for a
     // moment and then disappear. To prevent this, let's suppress it appearing
