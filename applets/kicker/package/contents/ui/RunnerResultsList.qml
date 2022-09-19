@@ -19,6 +19,7 @@ FocusScope {
     property alias currentIndex: runnerMatches.currentIndex
     property alias count: runnerMatches.count
     property alias containsMouse: runnerMatches.containsMouse
+    visible: count > 0
 
     Accessible.name: header.text
     Accessible.role: Accessible.MenuItem
@@ -67,8 +68,12 @@ FocusScope {
         anchors.leftMargin: (index > 0) ? PlasmaCore.Units.smallSpacing : 0
 
         height: {
-            var listHeight = (((index == 0)
-                ? rootList.height : runnerColumns.height) - header.height);
+            let isFirstElement = (index == 0 && count > 0);
+            if (!isFirstElement && index > 0) {
+                const modelForPreviousRow = runnerModel.modelForRow(index - 1);
+                isFirstElement = modelForPreviousRow.count === 0;
+            }
+            const listHeight = (isFirstElement ? rootList.height : runnerColumns.height) - header.height;
 
             if (model && model.count) {
                 return Math.min(favoriteSystemActions.height + favoriteApps.height - header.height, model.count * itemHeight);
