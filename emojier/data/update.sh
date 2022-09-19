@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 # A naive check to ensure it is run under the correct working directory.
 if [ ! -d dictbuilder ]; then
