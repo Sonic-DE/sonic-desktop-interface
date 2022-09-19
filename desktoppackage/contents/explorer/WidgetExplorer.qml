@@ -81,9 +81,9 @@ PC3.Page {
     }
 
     Behavior on opacity {
-        SmoothedAnimation {
+        NumberAnimation {
             duration: PlasmaCore.Units.longDuration
-            velocity: 0.01
+            easing.type: main.draggingWidget ? Easing.OutCubic : Easing.InCubic
         }
     }
 
