@@ -201,4 +201,11 @@ PlasmaExtras.PlasmoidHeading {
             }
         }
     }
+
+    Shortcut {
+        sequences: ["Ctrl+Tab", "Ctrl+Shift+Tab"]
+        onActivated: {
+            tabBar.currentIndex = (tabBar.currentIndex === 0) ? 1 : 0;
+        }
+    }
 }
