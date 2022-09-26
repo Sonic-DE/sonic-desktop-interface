@@ -39,9 +39,7 @@ SimpleKCM {
                 currentIndex = 0;
             }
 
-            onCurrentIndexChanged: {
-                parent.device = kcm.toolsModel.deviceAt(combo.currentIndex)
-
+            function reloadOutputView() {
                 const initialOutputArea = form.device.outputArea;
                 if (initialOutputArea === Qt.rect(0, 0, 1, 1)) {
                     outputAreaCombo.currentIndex = 0;
@@ -52,6 +50,19 @@ SimpleKCM {
                 }
                 keepAspectRatio.checked = tabletItem.aspectRatio === (form.device.outputArea.width / form.device.outputArea.height)
                 outputAreaView.resetOutputArea(outputAreaCombo.currentIndex, initialOutputArea)
+            }
+
+            onCurrentIndexChanged: {
+                parent.device = kcm.toolsModel.deviceAt(combo.currentIndex)
+                reloadOutputView()
+            }
+
+            Connections {
+                target: form.device
+                function onOutputAreaChanged() {
+                    outputAreaView.changed = false
+                    combo.reloadOutputView()
+                }
             }
         }
 
