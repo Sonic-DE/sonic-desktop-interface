@@ -178,6 +178,7 @@ function checkLastSpacer() {
             property bool isMarginSeparator: ((applet.constraintHints & PlasmaCore.Types.MarginAreasSeparator) == PlasmaCore.Types.MarginAreasSeparator)
             property int appletIndex: index // To make sure it's always readable even inside other models
             property bool inThickArea: false
+
             visible: applet.status !== PlasmaCore.Types.HiddenStatus || (!plasmoid.immutable && plasmoid.userConfiguring);
 
             //when the applet moves caused by its resize, don't animate.
