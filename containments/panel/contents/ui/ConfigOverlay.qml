@@ -22,6 +22,8 @@ MouseArea {
 
     property Item currentApplet
     property real startDragOffset: 0.0
+    property real tempDragX: 0.0
+    property real tempDragY: 0.0
 
     onPositionChanged: {
         if (pressed) {
@@ -50,18 +52,30 @@ MouseArea {
                 currentApplet.x = mouse.x - configurationArea.startDragOffset;
             }
 
-            var item = currentLayout.childAt(mouse.x, mouse.y);
-
-            if (item && item.applet !== placeHolder) {
-                var posInItem = mapToItem(item, mouse.x, mouse.y);
-                if ((!root.isHorizontal && posInItem.y < item.height/3) ||
-                    (root.isHorizontal && posInItem.x < item.width/3)) {
-                    root.layoutManager.move(item, placeHolder.parent.index+1)
-                } else if ((!root.isHorizontal && posInItem.y > 2*item.height/3) ||
-                          (root.isHorizontal && posInItem.x > 2*item.width/3)) {
-                    root.layoutManager.move(item, placeHolder.parent.index)
+            // MouseArea doesn't send all mouse movement event
+            if (root.isHorizontal) {
+                if (mouse.x > tempDragX) {
+                    for (let i = tempDragX; i <= mouse.x; ++i) {
+                        processMouseMoveEvent(i, mouse.y);
+                    }
+                } else {
+                    for (let i = tempDragX; i >= mouse.x; --i) {
+                        processMouseMoveEvent(i, mouse.y);
+                    }
+                }
+            } else {
+                if (mouse.y > tempDragY) {
+                    for (let i = tempDragY; i <= mouse.y; ++i) {
+                        processMouseMoveEvent(mouse.x, i);
+                    }
+                } else {
+                    for (let i = tempDragY; i >= mouse.y; --i) {
+                        processMouseMoveEvent(mouse.x, i);
+                    }
                 }
             }
+            tempDragX = mouse.x;
+            tempDragY = mouse.y;
 
         } else {
             var item = currentLayout.childAt(mouse.x, mouse.y);
@@ -114,11 +128,27 @@ MouseArea {
         } else {
             configurationArea.startDragOffset = mouse.x - currentApplet.x;
         }
+        tempDragX = mouse.x;
+        tempDragY = mouse.y;
     }
 
     onReleased: finishDragOperation()
 
     onCanceled: finishDragOperation()
+
+    function processMouseMoveEvent(xPos, yPos) {
+        const item = currentLayout.childAt(xPos, yPos);
+        if (item && item.applet !== placeHolder) {
+            const posInItem = mapToItem(item, xPos, yPos);
+            if ((!root.isHorizontal && posInItem.y < item.height/3) ||
+                (root.isHorizontal && posInItem.x < item.width/3)) {
+                root.layoutManager.move(item, placeHolder.parent.index+1)
+            } else if ((!root.isHorizontal && posInItem.y > 2*item.height/3) ||
+                        (root.isHorizontal && posInItem.x > 2*item.width/3)) {
+                root.layoutManager.move(item, placeHolder.parent.index)
+            }
+        }
+    }
 
     function finishDragOperation() {
         root.dragAndDropping = false
@@ -164,6 +194,7 @@ MouseArea {
         color: PlasmaCore.Theme.backgroundColor
         radius: 3
         opacity: currentApplet && configurationArea.containsMouse ? 0.5 : 0
+
         PlasmaCore.IconItem {
             visible: !root.dragAndDropping
             source: "transform-move"
