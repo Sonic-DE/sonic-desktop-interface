@@ -143,7 +143,7 @@ function updateMargins() {
 function move(applet, end) {
     var start = applet.index
     var target = end - (start < end)
-    if (start == target) return;
+    if (Math.abs(start - target) !== 1) return;
     applet.oldX = applet.x
     applet.oldY = applet.y
     appletsModel.move(start, target, 1)
