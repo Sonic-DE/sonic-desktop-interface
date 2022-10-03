@@ -629,7 +629,7 @@ FocusScope {
             }
         }
 
-        PC3.ScrollView {
+        Item {
             id: scrollArea
 
             anchors.fill: parent
@@ -640,7 +640,7 @@ FocusScope {
             readonly property int viewportWidth: scrollArea.ready && viewport ? Math.ceil(viewport.width) : 0
             readonly property int viewportHeight: scrollArea.ready && viewport ? Math.ceil(viewport.height) : 0
             readonly property Flickable viewport: gridView
-            PC3.ScrollBar.horizontal.policy: PC3.ScrollBar.AlwaysOff
+           // PC3.ScrollBar.horizontal.policy: PC3.ScrollBar.AlwaysOff
 
             Component.onCompleted: {
                 scrollArea.ready = true;
@@ -648,6 +648,7 @@ FocusScope {
 
             GridView {
                 id: gridView
+                anchors.fill: parent
 
                 property bool isRootView: false
 
@@ -680,6 +681,8 @@ FocusScope {
                 keyNavigationWraps: false
                 boundsBehavior: Flickable.StopAtBounds
                 focus:true
+
+                PC3.ScrollBar.vertical: PC3.ScrollBar {}
 
                 function calcExtraSpacing(cellSize, containerSize) {
                     var availableColumns = Math.floor(containerSize / cellSize);
