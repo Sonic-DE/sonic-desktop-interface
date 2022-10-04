@@ -12,7 +12,6 @@ import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
 import org.kde.plasma.components 3.0 as PC3
-import org.kde.plasma.extras 2.0 as PlasmaExtras
 import org.kde.kquickcontrolsaddons 2.0
 
 import org.kde.private.desktopcontainment.folder 0.1 as Folder
@@ -640,7 +639,6 @@ FocusScope {
             readonly property int viewportWidth: scrollArea.ready && viewport ? Math.ceil(viewport.width) : 0
             readonly property int viewportHeight: scrollArea.ready && viewport ? Math.ceil(viewport.height) : 0
             readonly property Flickable viewport: gridView
-           // PC3.ScrollBar.horizontal.policy: PC3.ScrollBar.AlwaysOff
 
             Component.onCompleted: {
                 scrollArea.ready = true;
