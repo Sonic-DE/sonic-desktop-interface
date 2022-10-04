@@ -680,7 +680,7 @@ FocusScope {
 
                 keyNavigationWraps: false
                 boundsBehavior: Flickable.StopAtBounds
-                focus:true
+                focus: true
 
                 PC3.ScrollBar.vertical: PC3.ScrollBar {}
 
