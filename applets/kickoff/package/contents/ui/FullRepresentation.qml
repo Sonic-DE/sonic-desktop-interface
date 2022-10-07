@@ -15,6 +15,7 @@ import QtQuick.Layouts 1.15
 import QtQml 2.15
 import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.plasma.extras 2.0 as PlasmaExtras
 import org.kde.plasma.private.kicker 0.1 as Kicker
 
 EmptyPage {
@@ -98,6 +99,20 @@ EmptyPage {
                 T.StackView.onActivated: {
                     plasmoid.rootItem.sideBar = null
                     plasmoid.rootItem.contentArea = searchView
+                }
+
+                Loader {
+                    anchors.centerIn: parent
+                    width: parent.width - (PlasmaCore.Units.largeSpacing * 4)
+
+                    active: parent.model.count === 0
+                    visible: active
+                    asynchronous: true
+
+                    sourceComponent: PlasmaExtras.PlaceholderMessage {
+                        iconName: "edit-none"
+                        text: i18nc("@info:status", "No matches")
+                    }
                 }
             }
         }
