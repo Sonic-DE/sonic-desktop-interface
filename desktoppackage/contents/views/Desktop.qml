@@ -62,6 +62,17 @@ Item {
         id: kwindowsystem
     }
 
+    Connections {
+        target: desktop
+        function colorRequested() {
+            if (wallpaperColors.active) {
+                return;
+            }
+
+
+        }
+    }
+
     Loader {
         id: wallpaperColors
 
