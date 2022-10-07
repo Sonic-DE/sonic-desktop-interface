@@ -127,17 +127,3 @@ msgstr "Tablet:"
 #, kde-format
 msgid "Button %1:"
 msgstr "Düğme %1:"
-
-#~ msgctxt "NAME OF TRANSLATORS"
-#~ msgid "Your names"
-#~ msgstr "Emir SARI"
-
-#~ msgctxt "EMAIL OF TRANSLATORS"
-#~ msgid "Your emails"
-#~ msgstr "emir_sari@icloud.com"
-
-#~ msgid "Tablet"
-#~ msgstr "Tablet"
-
-#~ msgid "Configure drawing tablets"
-#~ msgstr "Çizim tabletlerini yapılandır"
