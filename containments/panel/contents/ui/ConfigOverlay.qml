@@ -50,16 +50,16 @@ MouseArea {
                 currentApplet.x = mouse.x - configurationArea.startDragOffset;
             }
 
-            var item = currentLayout.childAt(mouse.x, mouse.y);
+            var item = root.layoutManager.childAtCoordinates(mouse.x, mouse.y);
 
             if (item && item.applet !== placeHolder) {
                 var posInItem = mapToItem(item, mouse.x, mouse.y);
                 if ((!root.isHorizontal && posInItem.y < item.height/3) ||
                     (root.isHorizontal && posInItem.x < item.width/3)) {
-                    root.layoutManager.move(item, placeHolder.parent.index+1)
+                    root.layoutManager.move(placeHolder.parent, item.index)
                 } else if ((!root.isHorizontal && posInItem.y > 2*item.height/3) ||
                           (root.isHorizontal && posInItem.x > 2*item.width/3)) {
-                    root.layoutManager.move(item, placeHolder.parent.index)
+                    root.layoutManager.move(placeHolder.parent, item.index+1)
                 }
             }
 
