@@ -11,6 +11,7 @@ import QtQuick.Controls 2.3 as QQC2
 QQC2.Button {
     id: mouseInputButton
     property string defaultText: i18nd("plasma_shell_org.kde.plasma.desktop", "Add Action")
+
     text: defaultText
     checkable: true
     property string eventString
