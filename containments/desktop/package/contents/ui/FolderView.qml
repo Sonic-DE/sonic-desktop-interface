@@ -646,6 +646,7 @@ FocusScope {
 
             GridView {
                 id: gridView
+                clip: true
                 anchors.fill: parent
 
                 property bool isRootView: false
@@ -681,6 +682,7 @@ FocusScope {
                 focus: true
 
                 PC3.ScrollBar.vertical: PC3.ScrollBar {}
+                PC3.ScrollBar.horizontal: PC3.ScrollBar {}
 
                 function calcExtraSpacing(cellSize, containerSize) {
                     var availableColumns = Math.floor(containerSize / cellSize);
