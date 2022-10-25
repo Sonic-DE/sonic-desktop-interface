@@ -81,8 +81,8 @@ Item {
         id: visibleWindowsModel
         filterRole: 'IsMinimized'
         filterRegExp: 'false'
-        onDataChanged: updateWindows()
-        onCountChanged: updateWindows()
+        onDataChanged: root.updateWindows()
+        onCountChanged: root.updateWindows()
         sourceModel: TaskManager.TasksModel {
             filterByVirtualDesktop: true
             filterByActivity: true
