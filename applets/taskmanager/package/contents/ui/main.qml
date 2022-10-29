@@ -362,8 +362,6 @@ MouseArea {
 
     TaskManagerApplet.DragHelper {
         id: dragHelper
-
-        dragIconSize: PlasmaCore.Units.iconSizes.medium
     }
 
     PlasmaCore.FrameSvgItem {

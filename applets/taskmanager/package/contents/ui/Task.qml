@@ -40,8 +40,6 @@ MouseArea {
     property int previousChildCount: 0
     property alias labelText: label.text
     property bool pressed: false
-    property int pressX: -1
-    property int pressY: -1
     property QtObject contextMenu: null
     property int wheelDelta: 0
     readonly property bool smartLauncherEnabled: !inPopup && model.IsStartup !== true
@@ -104,6 +102,9 @@ MouseArea {
     }
     Accessible.role: Accessible.Button
 
+    Drag.dragType: Drag.Automatic
+    Drag.supportedActions: Qt.CopyAction | Qt.MoveAction
+
     onHighlightedChanged: {
         // ensure it doesn't get stuck with a window highlighted
         backend.cancelHighlightWindows();
@@ -157,8 +158,6 @@ MouseArea {
     onPressed: {
         if (mouse.button == Qt.LeftButton || mouse.button == Qt.MidButton || mouse.button === Qt.BackButton || mouse.button === Qt.ForwardButton) {
             pressed = true;
-            pressX = mouse.x;
-            pressY = mouse.y;
         } else if (mouse.button == Qt.RightButton) {
             // When we're a launcher, there's no window controls, so we can show all
             // places without the menu getting super huge.
@@ -223,19 +222,6 @@ MouseArea {
         }
 
         pressed = false;
-        pressX = -1;
-        pressY = -1;
-    }
-
-    onPositionChanged: {
-        // mouse.button is always 0 here, hence checking with mouse.buttons
-        if (pressX != -1 && mouse.buttons == Qt.LeftButton && dragHelper.isDrag(pressX, pressY, mouse.x, mouse.y)) {
-            tasks.dragSource = task;
-            dragHelper.startDrag(task, model.MimeType, model.MimeData,
-                model.LauncherUrlWithoutIcon, model.decoration);
-            pressX = -1;
-            pressY = -1;
-        }
     }
 
     onWheel: {
@@ -369,6 +355,22 @@ MouseArea {
             }
 
             Component.onCompleted: timer.start()
+        }
+    }
+
+    DragHandler {
+        id: dragHandler
+
+        onActiveChanged: if (active) {
+            icon.grabToImage((result) => {
+                tasks.dragSource = task;
+                task.Drag.imageSource = result.url;
+                task.Drag.mimeData = dragHelper.generateMimeData(model.MimeType, model.MimeData, model.LauncherUrlWithoutIcon);
+                task.Drag.active = dragHandler.active;
+            });
+        } else {
+            task.Drag.active = false;
+            task.Drag.imageSource = "";
         }
     }
 
