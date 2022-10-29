@@ -362,8 +362,15 @@ MouseArea {
 
     TaskManagerApplet.DragHelper {
         id: dragHelper
+    }
 
-        dragIconSize: PlasmaCore.Units.iconSizes.medium
+    // Save drag data
+    Item {
+        id: dragHelperItem
+
+        Drag.dragType: Drag.Automatic
+        Drag.supportedActions: Qt.CopyAction | Qt.MoveAction | Qt.LinkAction
+        Drag.onDragFinished: tasks.dragSource = null;
     }
 
     PlasmaCore.FrameSvgItem {
