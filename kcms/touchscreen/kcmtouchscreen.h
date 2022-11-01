@@ -1,0 +1,37 @@
+/*
+    SPDX-FileCopyrightText: 2021 Aleix Pol Gonzalez <aleixpol@kde.org>
+
+    SPDX-License-Identifier: LGPL-2.0-or-later
+*/
+
+#pragma once
+
+#include <KQuickAddons/ManagedConfigModule>
+
+#include <KSharedConfig>
+#include <QKeySequence>
+
+#include "devicesmodel.h"
+
+class Touchscreen : public KQuickAddons::ManagedConfigModule
+{
+    Q_OBJECT
+    Q_PROPERTY(DevicesModel *touchscreensModel READ touchscreensModel CONSTANT)
+
+public:
+    explicit Touchscreen(QObject *parent, const KPluginMetaData &metaData, const QVariantList &list);
+    ~Touchscreen() override;
+
+    void load() override;
+    void save() override;
+    void defaults() override;
+    bool isSaveNeeded() const override;
+    bool isDefaults() const override;
+
+    DevicesModel *touchscreensModel() const;
+
+private:
+    void refreshNeedsSave();
+
+    DevicesModel *const m_touchscreensModel;
+};
