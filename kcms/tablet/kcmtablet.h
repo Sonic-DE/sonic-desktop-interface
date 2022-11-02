@@ -36,7 +36,9 @@ public:
     DevicesModel *padsModel() const;
 
     Q_SCRIPTABLE void assignPadButtonMapping(const QString &deviceName, uint button, const QKeySequence &keySequence);
+    Q_SCRIPTABLE void assignToolButtonMapping(const QString &deviceName, uint button, const QKeySequence &keySequence);
     Q_SCRIPTABLE QKeySequence padButtonMapping(const QString &deviceName, uint button) const;
+    Q_SCRIPTABLE QKeySequence toolButtonMapping(const QString &deviceName, uint button) const;
 
 Q_SIGNALS:
     void buttonMappingChanged();

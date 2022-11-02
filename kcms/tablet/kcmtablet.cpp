@@ -155,8 +155,10 @@ bool Tablet::isDefaults() const
         return false;
 
     const auto cfg = KSharedConfig::openConfig("kcminputrc");
-    const auto group = cfg->group("ButtonRebinds").group("Tablet");
-    if (group.isValid()) {
+    if (cfg->group("ButtonRebinds").group("Tablet").isValid()) {
+        return false;
+    }
+    if (cfg->group("ButtonRebinds").group("TabletTool").isValid()) {
         return false;
     }
     return m_toolsModel->isDefaults() && m_padsModel->isDefaults();
@@ -222,6 +224,12 @@ void Tablet::assignPadButtonMapping(const QString &deviceName, uint button, cons
     Q_EMIT buttonMappingChanged();
 }
 
+void Tablet::assignToolButtonMapping(const QString &deviceName, uint button, const QKeySequence &keySequence)
+{
+    m_unsavedMappings[deviceName][button] = keySequence;
+    Q_EMIT buttonMappingChanged();
+}
+
 QKeySequence Tablet::padButtonMapping(const QString &deviceName, uint button) const
 {
     if (deviceName.isEmpty()) {
@@ -234,6 +242,25 @@ QKeySequence Tablet::padButtonMapping(const QString &deviceName, uint button) co
 
     const auto cfg = KSharedConfig::openConfig("kcminputrc");
     const auto group = cfg->group("ButtonRebinds").group("Tablet").group(deviceName);
+    const auto sequence = group.readEntry(QString::number(button), QStringList());
+    if (sequence.size() != 2) {
+        return {};
+    }
+    return QKeySequence(sequence.constLast());
+}
+
+QKeySequence Tablet::toolButtonMapping(const QString &deviceName, uint button) const
+{
+    if (deviceName.isEmpty()) {
+        return {};
+    }
+
+    if (const auto &device = m_unsavedMappings[deviceName]; device.contains(button)) {
+        return device.value(button);
+    }
+
+    const auto cfg = KSharedConfig::openConfig("kcminputrc");
+    const auto group = cfg->group("ButtonRebinds").group("TabletTool").group(deviceName);
     const auto sequence = group.readEntry(QString::number(button), QStringList());
     if (sequence.size() != 2) {
         return {};
