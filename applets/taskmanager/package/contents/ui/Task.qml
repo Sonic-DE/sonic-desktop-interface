@@ -394,6 +394,14 @@ PlasmaCore.ToolTipArea {
         property string basePrefix: "normal"
         prefix: isHovered ? TaskTools.taskPrefixHovered(basePrefix, plasmoid.location) : TaskTools.taskPrefix(basePrefix, plasmoid.location)
 
+        onToolTipVisibleChanged: {
+            if (!toolTipVisible) {
+                tasks.toolTipOpenedByClick = null;
+            } else {
+                tasks.toolTipAreaItem = toolTipArea
+            }
+        }
+
         // Avoid repositioning delegate item after dragFinished
         DragHandler {
             id: dragHandler
