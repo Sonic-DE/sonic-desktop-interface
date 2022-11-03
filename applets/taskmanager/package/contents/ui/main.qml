@@ -12,6 +12,8 @@ import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.components 3.0 as PlasmaComponents3
 import org.kde.plasma.core 2.0 as PlasmaCore
 
+import org.kde.plasma.workspace.trianglemousefilter 1.0
+
 import org.kde.taskmanager 0.1 as TaskManager
 import org.kde.plasma.private.taskmanager 0.1 as TaskManagerApplet
 
@@ -37,6 +39,8 @@ MouseArea {
 
     property QtObject contextMenuComponent: Qt.createComponent("ContextMenu.qml")
     property QtObject pulseAudioComponent: Qt.createComponent("PulseAudio.qml")
+
+    property var toolTipAreaItem: null
 
     property bool needLayoutRefresh: false;
     property variant taskClosedWithMouseMiddleButton: []
@@ -470,22 +474,55 @@ MouseArea {
         visible: false
     }
 
-    TaskList {
-        id: taskList
+    TriangleMouseFilter {
+        id: tmf
+        edge: Qt.TopEdge
+        filterTimeOut: 300
+        active: true
+        blockFirstEnter: false
+        edgeLine: {
+            if (tasks.toolTipAreaItem && tasks.toolTipAreaItem.visible) {
+                const x = tasks.toolTipAreaItem.mainItem.x;
+                const y = tasks.toolTipAreaItem.mainItem.y;
+                const height = tasks.toolTipAreaItem.mainItem.height;
+                const width = tasks.toolTipAreaItem.mainItem.width;
+                console.log(height, width);
+                let line = [];
+                if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
+                    line = [Qt.point(x, y + height), Qt.point(x + width, y + height)];
+                } else if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
+                    line = [Qt.point(x, y), Qt.point(x, y + height)];
+                } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
+                    line = [Qt.point(x + width, y), Qt.point(x + width, y + height)];
+                } else if (plasmoid.location === PlasmaCore.Types.TopEdge) {
+                    line = [Qt.point(x + width, y), Qt.point(x + width, y + height)];
+                }
+                let ret = line.map(function(pt) {
+                    return tasks.toolTipAreaItem.mainItem.mapToItem(tmf, pt);
+                });
+                console.warn(ret)
+                return ret
+            }
+            return []
+        }
 
         anchors {
             left: parent.left
             top: parent.top
         }
-        width: tasks.shouldShirnkToZero ? 0 : LayoutManager.layoutWidth()
-        height: tasks.shouldShirnkToZero ? 0 : LayoutManager.layoutHeight()
 
-        flow: {
-            if (tasks.vertical) {
-                return plasmoid.configuration.forceStripes ? Flow.LeftToRight : Flow.TopToBottom
+        height: taskList.implicitHeight
+        width: taskList.implicitWidth
+
+        TaskList {
+            id: taskList
+
+            anchors {
+                left: parent.left
+                top: parent.top
             }
-            return plasmoid.configuration.forceStripes ? Flow.TopToBottom : Flow.LeftToRight
-        }
+            width: tasks.shouldShirnkToZero ? 0 : LayoutManager.layoutWidth()
+            height: tasks.shouldShirnkToZero ? 0 : LayoutManager.layoutHeight()
 
         onAnimatingChanged: {
             if (!animating) {
@@ -521,7 +558,6 @@ MouseArea {
                 } else {
                     taskList.layout();
                 }
-                taskClosedWithMouseMiddleButton = [];
             }
         }
     }
