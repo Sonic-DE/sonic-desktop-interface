@@ -415,6 +415,8 @@ MouseArea {
             onToolTipVisibleChanged: {
                 if (!toolTipVisible) {
                     tasks.toolTipOpenedByClick = null;
+                } else {
+                    tasks.toolTipAreaItem = toolTipArea
                 }
             }
 
