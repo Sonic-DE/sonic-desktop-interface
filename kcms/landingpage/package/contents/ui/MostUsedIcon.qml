@@ -33,7 +33,7 @@ QQC2.ToolButton {
     bottomPadding: Kirigami.Units.smallSpacing
     spacing: Kirigami.Units.smallSpacing
 
-    Accessible.name: kcmName
+    Accessible.name: label.text
 
     contentItem: RowLayout {
         spacing: parent.spacing
