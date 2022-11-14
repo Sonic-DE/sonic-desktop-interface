@@ -39,7 +39,7 @@ ColumnLayout {
             implicitWidth: previewFrame.width + PlasmaCore.Units.smallSpacing * 2
             implicitHeight: previewFrame.height + PlasmaCore.Units.smallSpacing * 2
 
-            Accessible.name: i18nc("@action:button", "Icon")
+            Accessible.name: i18nc("@action:button", "Change Application Launcher's icon")
             Accessible.description: i18nc("@info:whatsthis", "Current icon is %1. Click to open menu to change the current icon or reset to the default icon.", cfg_icon)
             Accessible.role: Accessible.ButtonMenu
 
