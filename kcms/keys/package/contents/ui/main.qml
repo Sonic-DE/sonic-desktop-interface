@@ -303,6 +303,12 @@ KCM.AbstractKCM {
 
         title: i18n("Add Command")
 
+        onSheetOpenChanged: {
+            if (sheetOpen) {
+                cmdField.forceActiveFocus();
+            }
+        }
+
         ColumnLayout {
             anchors.centerIn: parent
             QQC2.Label {
