@@ -317,6 +317,7 @@ KCM.AbstractKCM {
             RowLayout {
                 QQC2.TextField {
                     id: cmdField
+                    font.family: "monospace"
                     onAccepted: cmdAddButton.clicked()
                 }
                 QQC2.Button {
