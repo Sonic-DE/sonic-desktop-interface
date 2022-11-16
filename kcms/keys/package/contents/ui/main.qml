@@ -319,8 +319,10 @@ KCM.AbstractKCM {
             RowLayout {
                 QQC2.TextField {
                     id: cmdField
+                    onAccepted: cmdAddButton.clicked()
                 }
                 QQC2.Button {
+                    id: cmdAddButton
                     text: i18n("Add")
                     onClicked: {
                         kcm.addCommand(cmdField.text)
