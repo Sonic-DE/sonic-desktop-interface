@@ -295,7 +295,6 @@ Item {
                 prefix: 'normal'
                 imagePath: "widgets/panel-background"
             }
-            //from: 20
             from: Math.max(20, panel.minThickness) // below this size, the panel is mostly unusable
             to: panel.location === PlasmaCore.Types.LeftEdge || panel.location === PlasmaCore.Types.RightEdge ? panel.screenToFollow.geometry.width / 2 : panel.screenToFollow.geometry.height / 2
 
