@@ -227,17 +227,29 @@ KCM.AbstractKCM {
                     }
                 }
             }
-            QQC2.Button {
-                enabled: !exportActive
+            ColumnLayout {
                 Layout.alignment: Qt.AlignRight
-                icon.name: "list-add"
-                text: i18n("Add Application…")
-                onClicked: {
-                    kcm.addApplication(this)
+                QQC2.Button {
+                    enabled: !exportActive
+                    Layout.alignment: Qt.AlignRight
+                    icon.name: "list-add"
+                    text: i18n("Add Application…")
+                    onClicked: {
+                        kcm.addApplication(this)
+                    }
+                }
+                QQC2.Button {
+                    enabled: !exportActive
+                    Layout.alignment: Qt.AlignRight
+                    icon.name: "list-add"
+                    text: i18n("Add Command…")
+                    onClicked: {
+                        addCommandSheet.open()
+                    }
                 }
             }
             RowLayout {
-                Layout.alignment: Qt.AlignRight
+                Layout.alignment: Qt.AlignRight | Qt.AlignTop
                 QQC2.Button {
                     enabled: !exportActive
                     icon.name: "document-import"
@@ -287,6 +299,32 @@ KCM.AbstractKCM {
             onRejected: fileDialogLoader.active = false
         }
     }
+
+    Kirigami.OverlaySheet {
+        id: addCommandSheet
+
+        title: i18n("Add Command")
+
+        ColumnLayout {
+            anchors.centerIn: parent
+            QQC2.Label {
+                text: i18n("Type in a command:")
+            }
+            RowLayout {
+                QQC2.TextField {
+                    id: cmdField
+                }
+                QQC2.Button {
+                    text: i18n("Add")
+                    onClicked: {
+                        kcm.addCommand(cmdField.text)
+                        addCommandSheet.close()
+                    }
+                }
+            }
+        }
+    }
+
     Kirigami.OverlaySheet {
         id: importSheet
 
