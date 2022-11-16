@@ -14,7 +14,9 @@
 
 #include <KConfig>
 #include <KConfigGroup>
+#include <KDesktopFile>
 #include <KGlobalShortcutInfo>
+#include <KIO/DesktopExecParser>
 #include <KLocalizedString>
 #include <KMessageBox>
 #include <KOpenWithDialog>
@@ -159,7 +161,7 @@ QVariantList KCMKeys::defaultSchemes() const
 
 void KCMKeys::addApplication(QQuickItem *ctx)
 {
-    auto dialog = new KOpenWithDialog;
+    KOpenWithDialog *dialog = new KOpenWithDialog();
     if (ctx && ctx->window()) {
         dialog->winId(); // so it creates windowHandle
         dialog->windowHandle()->setTransientParent(QQuickRenderControl::renderWindowFor(ctx->window()));
@@ -180,6 +182,39 @@ void KCMKeys::addApplication(QQuickItem *ctx)
         }
         dialog->deleteLater();
     });
+}
+
+void KCMKeys::addCommand(const QString &exec)
+{
+    QString serviceName = KIO::DesktopExecParser::executableName(exec);
+    if (serviceName.isEmpty()) {
+        return;
+    }
+    QString menuId;
+    QString newPath = KService::newServicePath(false /* ignored argument */, serviceName, &menuId);
+
+    KDesktopFile desktopFile(newPath);
+    KConfigGroup cg = desktopFile.desktopGroup();
+    cg.writeEntry("Type", "Application");
+
+    // For the user visible name, use the executable name with any
+    // arguments appended, but with desktop-file specific expansion
+    // arguments removed. This is done to more clearly communicate the
+    // actual command used to the user and makes it easier to
+    // distinguish things like "qdbus".
+    QString name = KIO::DesktopExecParser::executableName(exec);
+    auto view = QStringView{exec}.trimmed();
+    int index = view.indexOf(QLatin1Char(' '));
+    if (index > 0) {
+        name.append(view.mid(index));
+    }
+    cg.writeEntry("Name", exec);
+    cg.writeEntry("Exec", exec);
+    cg.writeEntry("NoDisplay", true);
+    cg.writeEntry("StartupNotify", false);
+    cg.sync();
+
+    m_globalAccelModel->addApplication(menuId, name);
 }
 
 QString KCMKeys::keySequenceToString(const QKeySequence &keySequence) const
