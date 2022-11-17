@@ -82,7 +82,8 @@ KCM.AbstractKCM {
             QQC2.ScrollView {
                 Component.onCompleted: background.visible = true
                 Layout.preferredWidth: Kirigami.Units.gridUnit * 15
-                Layout.fillHeight:true
+                Layout.maximumWidth: addButtonsLayout.width
+                Layout.fillHeight: true
                 Layout.minimumWidth: addButtonsLayout.width
                 ListView {
                     id: components
@@ -230,7 +231,7 @@ KCM.AbstractKCM {
             }
             RowLayout {
                 id: addButtonsLayout
-                Layout.fillWidth: true
+                Layout.alignment: Qt.AlignLeft
                 QQC2.Button {
                     enabled: !exportActive
                     icon.name: "list-add"
