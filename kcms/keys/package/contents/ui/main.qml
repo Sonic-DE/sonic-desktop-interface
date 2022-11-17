@@ -80,7 +80,6 @@ KCM.AbstractKCM {
             enabled: !errorOccured
             columns: 2
             QQC2.ScrollView {
-                id: componentsScrollView
                 Component.onCompleted: background.visible = true
                 Layout.preferredWidth: Kirigami.Units.gridUnit * 15
                 Layout.fillHeight:true
@@ -231,7 +230,7 @@ KCM.AbstractKCM {
             }
             RowLayout {
                 id: addButtonsLayout
-                Layout.alignment: Qt.AlignRight
+                Layout.fillWidth: true
                 QQC2.Button {
                     enabled: !exportActive
                     Layout.alignment: Qt.AlignRight
