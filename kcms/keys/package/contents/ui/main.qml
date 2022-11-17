@@ -231,8 +231,6 @@ KCM.AbstractKCM {
                 Layout.fillWidth: true
                 QQC2.Button {
                     enabled: !exportActive
-                    Layout.fillWidth: true
-                    Layout.alignment: Qt.AlignRight
                     icon.name: "list-add"
                     text: i18n("Add Application…")
                     onClicked: {
@@ -241,8 +239,6 @@ KCM.AbstractKCM {
                 }
                 QQC2.Button {
                     enabled: !exportActive
-                    Layout.fillWidth: true
-                    Layout.alignment: Qt.AlignRight
                     icon.name: "list-add"
                     text: i18n("Add Command…")
                     onClicked: {
@@ -320,6 +316,7 @@ KCM.AbstractKCM {
                 text: i18n("Enter a command or the full path to a script file:")
             }
             RowLayout {
+                Layout.fillWidth: true
                 QQC2.TextField {
                     id: cmdField
                     font.family: "monospace"
