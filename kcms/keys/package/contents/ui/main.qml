@@ -231,6 +231,7 @@ KCM.AbstractKCM {
                 Layout.fillWidth: true
                 QQC2.Button {
                     enabled: !exportActive
+                    Layout.fillWidth: true
                     Layout.alignment: Qt.AlignRight
                     icon.name: "list-add"
                     text: i18n("Add Application…")
@@ -240,6 +241,7 @@ KCM.AbstractKCM {
                 }
                 QQC2.Button {
                     enabled: !exportActive
+                    Layout.fillWidth: true
                     Layout.alignment: Qt.AlignRight
                     icon.name: "list-add"
                     text: i18n("Add Command…")
