@@ -307,6 +307,7 @@ KCM.AbstractKCM {
 
         onSheetOpenChanged: {
             if (sheetOpen) {
+                cmdField.clear();
                 cmdField.forceActiveFocus();
             }
         }
@@ -325,6 +326,7 @@ KCM.AbstractKCM {
                 QQC2.Button {
                     id: cmdAddButton
                     text: i18n("Add")
+                    icon.name: "list-add"
                     onClicked: {
                         kcm.addCommand(cmdField.text)
                         addCommandSheet.close()
