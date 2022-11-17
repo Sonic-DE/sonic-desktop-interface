@@ -317,7 +317,7 @@ KCM.AbstractKCM {
         ColumnLayout {
             anchors.centerIn: parent
             QQC2.Label {
-                text: i18n("Type in a command:")
+                text: i18n("Enter a command or the full path to a script file:")
             }
             RowLayout {
                 QQC2.TextField {
