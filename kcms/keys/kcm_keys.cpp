@@ -214,7 +214,7 @@ void KCMKeys::addCommand(const QString &exec)
     cg.writeEntry("StartupNotify", false);
     cg.sync();
 
-    m_globalAccelModel->addApplication(menuId, name);
+    m_globalAccelModel->addApplication(newPath, name);
 }
 
 QString KCMKeys::keySequenceToString(const QKeySequence &keySequence) const
