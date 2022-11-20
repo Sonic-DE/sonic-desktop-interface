@@ -518,6 +518,14 @@ MouseArea {
         }
     }
 
+    // This is called by plasmashell in response to a Meta+Shift+number shortcut.
+    function activateTaskAtIndexNewWindow(index) {
+        if (typeof index !== "number") {
+            return;
+        }
+        tasksModel.requestNewInstance(index);
+    }
+
     function resetDragSource() {
         dragSource = null;
     }
