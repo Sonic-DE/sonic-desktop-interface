@@ -240,7 +240,7 @@ KCM.AbstractKCM {
                     Layout.alignment: Qt.AlignRight
                     enabled: !exportActive
                     icon.name: "list-add"
-                    text: i18n("Add another Application…")
+                    text: i18nc("@action:button Keep translated text as short as possible", "Add Application…")
                     onClicked: {
                         kcm.addApplication(this)
                     }
@@ -250,7 +250,7 @@ KCM.AbstractKCM {
                     Layout.alignment: Qt.AlignRight
                     enabled: !exportActive
                     icon.name: "list-add"
-                    text: i18n("Add another Command…")
+                    text: i18nc("@action:button Keep translated text as short as possible", "Add Command…")
                     onClicked: {
                         addCommandSheet.open()
                     }
