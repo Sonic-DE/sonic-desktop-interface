@@ -230,12 +230,12 @@ KCM.AbstractKCM {
                 }
             }
             GridLayout {
+                id: addButtonsLayout
+                // if the left-hand-side components view (which is bound to the width of this) is getting too wide, switch to vertical stack
+                readonly property bool useStackedLayout: addAppButton.implicitWidth + addCommandButton.implicitWidth >= root.width/2
                 rows: 2
                 columns: 2
-                // if the left-hand-side components view (which is bound to the width of this) is getting too wide, switch to vertical stack
-                readonly property bool switchFlow: addAppButton.implicitWidth + addCommandButton.implicitWidth >= root.width/2
-                flow: switchFlow ? GridLayout.TopToBottom : GridLayout.LeftToRight
-                id: addButtonsLayout
+                flow: useStackedLayout ? GridLayout.TopToBottom : GridLayout.LeftToRight
                 Layout.alignment: Qt.AlignRight
                 QQC2.Button {
                     id: addAppButton
