@@ -11,7 +11,7 @@ import QtQuick.Controls 2.3 as QQC2
 import QtQml 2.15
 import QtQml.Models 2.3
 
-import org.kde.kirigami 2.12 as Kirigami
+import org.kde.kirigami 2.20 as Kirigami
 import org.kde.kcm 1.4 as KCM
 import org.kde.private.kcms.keys 2.0 as Private
 
@@ -254,7 +254,7 @@ KCM.AbstractKCM {
                     icon.name: "list-add"
                     text: i18nc("@action:button Keep translated text as short as possible", "Add Command…")
                     onClicked: {
-                        addCommandSheet.open()
+                        addCommandDialog.open()
                     }
                 }
             }
@@ -310,39 +310,41 @@ KCM.AbstractKCM {
         }
     }
 
-    Kirigami.OverlaySheet {
-        id: addCommandSheet
+    Kirigami.PromptDialog {
+        id: addCommandDialog
 
         title: i18n("Add Command")
 
-        onSheetOpenChanged: {
-            if (sheetOpen) {
+        onVisibleChanged: {
+            if (visible) {
                 cmdField.clear();
                 cmdField.forceActiveFocus();
             }
         }
+
+        property Kirigami.Action addCommandAction: Kirigami.Action {
+            text: i18n("Add")
+            icon.name: "list-add"
+            onTriggered: {
+                kcm.addCommand(cmdField.text)
+                addCommandDialog.close()
+            }
+        }
+
+        standardButtons: Kirigami.Dialog.NoButton
+
+        customFooterActions: [addCommandAction]
 
         ColumnLayout {
             anchors.centerIn: parent
             QQC2.Label {
                 text: i18n("Enter a command or the full path to a script file:")
             }
-            RowLayout {
+            QQC2.TextField {
+                id: cmdField
                 Layout.fillWidth: true
-                QQC2.TextField {
-                    id: cmdField
-                    font.family: "monospace"
-                    onAccepted: cmdAddButton.clicked()
-                }
-                QQC2.Button {
-                    id: cmdAddButton
-                    text: i18n("Add")
-                    icon.name: "list-add"
-                    onClicked: {
-                        kcm.addCommand(cmdField.text)
-                        addCommandSheet.close()
-                    }
-                }
+                font.family: "monospace"
+                onAccepted: addCommandDialog.addCommandAction.triggered()
             }
         }
     }
