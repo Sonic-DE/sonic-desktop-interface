@@ -200,14 +200,6 @@ MouseArea {
         pressed = false;
     }
 
-    onWheel: {
-        if (plasmoid.configuration.wheelEnabled && (!inPopup || !groupDialog.overflowing)) {
-            wheelDelta = TaskTools.wheelActivateNextPrevTask(task, wheelDelta, wheel.angleDelta.y);
-        } else {
-            wheel.accepted = false;
-        }
-    }
-
     onSmartLauncherEnabledChanged: {
         if (smartLauncherEnabled && !smartLauncherItem) {
             const smartLauncher = Qt.createQmlObject(`
