@@ -34,6 +34,7 @@ MouseArea {
 
     property bool needLayoutRefresh: false;
     property variant taskClosedWithMouseMiddleButton: []
+    property alias taskList: taskList
 
     Plasmoid.preferredRepresentation: Plasmoid.fullRepresentation
 
@@ -100,7 +101,7 @@ MouseArea {
         }
     }
 
-    TaskManager.TasksModel {
+    property TaskManager.TasksModel tasksModel: TaskManager.TasksModel {
         id: tasksModel
 
         readonly property int logicalLauncherCount: {
@@ -213,6 +214,8 @@ MouseArea {
         onAddLauncher: {
             tasks.addLauncher(url);
         }
+
+        Component.onCompleted: TaskTools.backend = this;
     }
 
     PlasmaCore.DataSource {
@@ -320,7 +323,7 @@ MouseArea {
         repeat: false
 
         onTriggered: {
-            TaskTools.publishIconGeometries(taskList.children);
+            TaskTools.publishIconGeometries(taskList.children, tasks);
         }
     }
 
@@ -446,7 +449,7 @@ MouseArea {
 
         onAnimatingChanged: {
             if (!animating) {
-                TaskTools.publishIconGeometries(children);
+                TaskTools.publishIconGeometries(children, tasks);
             }
         }
         onWidthChanged: layoutTimer.restart()
@@ -514,12 +517,8 @@ MouseArea {
                 task.toolTipAreaItem.updateMainItemBindings();
             }
 
-            TaskTools.activateTask(task.modelIndex(), task.m, null, task);
+            TaskTools.activateTask(task.modelIndex(), task.m, null, task, plasmoid, tasks);
         }
-    }
-
-    function resetDragSource() {
-        dragSource = null;
     }
 
     function createContextMenu(rootTask, modelIndex, args = {}) {
@@ -537,6 +536,5 @@ MouseArea {
         tasks.requestLayout.connect(iconGeometryTimer.restart);
         tasks.windowsHovered.connect(backend.windowsHovered);
         tasks.activateWindowView.connect(backend.activateWindowView);
-        dragHelper.dropped.connect(resetDragSource);
     }
 }
