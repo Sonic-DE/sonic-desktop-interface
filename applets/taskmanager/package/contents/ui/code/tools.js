@@ -151,11 +151,11 @@ function activateTask(index, model, modifiers, task) {
             && plasmoid.configuration.groupedTaskVisualization === 1
         ) {
             if (tasks.toolTipOpenedByClick) {
-                task.toolTipAreaItem.hideImmediately();
+                task.hideImmediately();
             } else {
                 tasks.toolTipOpenedByClick = task;
                 task.showToolTip();
-                task.toolTipAreaItem.onContainsMouseChanged();
+                task.containsMouseChanged();
             }
         }
 
@@ -167,7 +167,7 @@ function activateTask(index, model, modifiers, task) {
             && (plasmoid.configuration.groupedTaskVisualization === 2
             || plasmoid.configuration.groupedTaskVisualization === 1)
         ) {
-            task.hideToolTipTemporarily();
+            task.hideToolTip();
             tasks.activateWindowView(model.WinIdList);
         }
 
@@ -177,7 +177,7 @@ function activateTask(index, model, modifiers, task) {
         // are chosen but not actually available
         else {
             if (!!groupDialog) {
-                task.hideToolTipTemporarily();
+                task.hideToolTip();
                 groupDialog.visible = false;
             } else {
                 createGroupDialog(task);
