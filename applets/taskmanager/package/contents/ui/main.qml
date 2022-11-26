@@ -525,7 +525,7 @@ MouseArea {
              */
             if (plasmoid.configuration.showToolTips
                 && plasmoid.configuration.groupedTaskVisualization === 1) {
-                task.toolTipAreaItem.updateMainItemBindings();
+                task.updateMainItemBindings();
             }
 
             TaskTools.activateTask(task.modelIndex(), task.m, null, task, plasmoid, tasks);
