@@ -106,29 +106,29 @@ PlasmaCore.Dialog {
                 width: Math.max(implicitWidth, parent.width)
                 text: i18nd("plasma_shell_org.kde.plasma.desktop", "Always Visible")
                 checkable: true
-                checked: configDialog.visibilityMode === Panel.Global.NormalPanel
-                onClicked: configDialog.visibilityMode = Panel.Global.NormalPanel
+                checked: configDialog.visibilityMode === Panel.VisibilityMode.NormalPanel
+                onClicked: configDialog.visibilityMode = Panel.VisibilityMode.NormalPanel
             }
             PC3.RadioButton {
                 width: Math.max(implicitWidth, parent.width)
                 text: i18nd("plasma_shell_org.kde.plasma.desktop", "Auto Hide")
                 checkable: true
-                checked: configDialog.visibilityMode === Panel.Global.AutoHide
-                onClicked: configDialog.visibilityMode = Panel.Global.AutoHide
+                checked: configDialog.visibilityMode === Panel.VisibilityMode.AutoHide
+                onClicked: configDialog.visibilityMode = Panel.VisibilityMode.AutoHide
             }
             PC3.RadioButton {
                 width: Math.max(implicitWidth, parent.width)
                 text: i18nd("plasma_shell_org.kde.plasma.desktop", "Windows Can Cover")
                 checkable: true
-                checked: configDialog.visibilityMode === Panel.Global.LetWindowsCover
-                onClicked: configDialog.visibilityMode = Panel.Global.LetWindowsCover
+                checked: configDialog.visibilityMode === Panel.VisibilityMode.LetWindowsCover
+                onClicked: configDialog.visibilityMode = Panel.VisibilityMode.LetWindowsCover
             }
             PC3.RadioButton {
                 width: Math.max(implicitWidth, parent.width)
                 text: i18nd("plasma_shell_org.kde.plasma.desktop", "Windows Go Below")
                 checkable: true
-                checked: configDialog.visibilityMode === Panel.Global.WindowsGoBelow
-                onClicked: configDialog.visibilityMode = Panel.Global.WindowsGoBelow
+                checked: configDialog.visibilityMode === Panel.VisibilityMode.WindowsGoBelow
+                onClicked: configDialog.visibilityMode = Panel.VisibilityMode.WindowsGoBelow
             }
         }
         PlasmaExtras.Heading {
@@ -153,22 +153,22 @@ PlasmaCore.Dialog {
                 width: Math.max(implicitWidth, parent.width)
                 text: i18nd("plasma_shell_org.kde.plasma.desktop", "Adaptive")
                 checkable: true
-                checked: configDialog.opacityMode === Panel.Global.Adaptive
-                onClicked: configDialog.opacityMode = Panel.Global.Adaptive
+                checked: configDialog.opacityMode === Panel.OpacityMode.Adaptive
+                onClicked: configDialog.opacityMode = Panel.OpacityMode.Adaptive
             }
             PC3.RadioButton {
                 width: Math.max(implicitWidth, parent.width)
                 text: i18nd("plasma_shell_org.kde.plasma.desktop", "Opaque")
                 checkable: true
-                checked: configDialog.opacityMode === Panel.Global.Opaque
-                onClicked: configDialog.opacityMode = Panel.Global.Opaque
+                checked: configDialog.opacityMode === Panel.OpacityMode.Opaque
+                onClicked: configDialog.opacityMode = Panel.OpacityMode.Opaque
             }
             PC3.RadioButton {
                 width: Math.max(implicitWidth, parent.width)
                 text: i18nd("plasma_shell_org.kde.plasma.desktop", "Translucent")
                 checkable: true
-                checked: configDialog.opacityMode === Panel.Global.Translucent
-                onClicked: configDialog.opacityMode = Panel.Global.Translucent
+                checked: configDialog.opacityMode === Panel.OpacityMode.Translucent
+                onClicked: configDialog.opacityMode = Panel.OpacityMode.Translucent
             }
         }
         PC3.ToolButton {
