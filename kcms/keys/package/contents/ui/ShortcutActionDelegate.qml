@@ -129,6 +129,7 @@ Kirigami.AbstractListItem {
                             KeySequenceItem {
                                 keySequence: modelData
                                 showClearButton: false
+                                modifierOnlyAllowed: true
                                 multiKeyShortcutsAllowed: supportsMultipleKeys
                                 checkForConflictsAgainst: ShortcutType.None
                                 onCaptureFinished: {
@@ -171,6 +172,7 @@ Kirigami.AbstractListItem {
                             signal finished
                             KeySequenceItem {
                                 showClearButton: false
+                                modifierOnlyAllowed: true
                                 multiKeyShortcutsAllowed: model.supportsMultipleKeys
                                 checkForConflictsAgainst: ShortcutType.None
                                 onCaptureFinished: {
