@@ -49,8 +49,10 @@ target_link_libraries(kcm_tablet
 
     Qt::DBus
     Qt::WaylandClient
-    Qt::GuiPrivate
     Wayland::Client
 )
+if (Qt${QT_MAJOR_VERSION}_VERSION VERSION_LESS "6.5.0")
+    target_link_libraries(kcm_tablet Qt::GuiPrivate)
+endif()
 
 kpackage_install_package(package kcm_tablet kcms)
