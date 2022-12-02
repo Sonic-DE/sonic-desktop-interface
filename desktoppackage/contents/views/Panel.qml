@@ -6,13 +6,14 @@
 
 import QtQuick 2.15
 import QtQuick.Layouts 1.1
+import QtQuick.Window 2.15
 import QtQml 2.15
 
 import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.taskmanager 0.1 as TaskManager
 import org.kde.kwindowsystem 1.0
 import org.kde.kirigami 2.15 as Kirigami
 import org.kde.plasma.shell.panel 0.1 as Panel
+import org.kde.plasma.private.shell 2.0 as ShellPrivate
 
 import org.kde.plasma.plasmoid 2.0
 
@@ -50,55 +51,15 @@ Item {
     readonly property int minPanelHeight: translucentItem.minimumDrawingHeight
     readonly property int minPanelWidth: translucentItem.minimumDrawingWidth
 
-    TaskManager.VirtualDesktopInfo {
-        id: virtualDesktopInfo
-    }
+    readonly property real screenDevicePixelRatio: Screen.devicePixelRatio
 
-    TaskManager.ActivityInfo {
-        id: activityInfo
-    }
-
-    property bool touchingWindow: false
-
-    function rectOverlap(a, b) {
-        return (Math.max(a.left, b.left) - 1 <= Math.min(a.right, b.right) &&
-                Math.max(a.top, b.top) - 1 <= Math.min(a.bottom, b.bottom))
-    }
-
-    function updateWindows() {
-        if (visibleWindowsModel.count === 0) {
-            root.touchingWindow = false
-            return
-        }
-        let panelGeo = panel.geometryByDistance(0)
-        for( var i = 0; i < visibleWindowsModel.rowCount(); i++ ) {
-            if (rectOverlap(panelGeo, visibleWindowsModel.get(i).Geometry)) {
-                root.touchingWindow = true
-                return
-            }
-        }
-        root.touchingWindow = false
-    }
-
-    PlasmaCore.SortFilterModel {
+    ShellPrivate.CurrentWorkspaceTasksModel {
         id: visibleWindowsModel
-        filterRole: 'IsMinimized'
-        filterRegExp: 'false'
-        onDataChanged: root.updateWindows()
-        onCountChanged: root.updateWindows()
-        sourceModel: TaskManager.TasksModel {
-            filterByVirtualDesktop: true
-            filterByActivity: true
-            filterByScreen: true
-            filterHidden: true
-
-            screenGeometry: panel.screenGeometry
-            virtualDesktop: virtualDesktopInfo.currentDesktop
-            activity: activityInfo.currentActivity
-
-            id: tasksModel
-            groupMode: TaskManager.TasksModel.GroupDisabled
-        }
+        countOverlap: true
+        // To trigger binding updates
+        overlapRect: containment.formFactor, panel.alignment, panel.screenGeometry, panel.thickness, panel.offset, panel.geometryByDistance(0)
+        screenGeometry: panel.screenGeometry
+        screenDevicePixelRatio: root.screenDevicePixelRatio
     }
 
     KWindowSystem {
@@ -179,7 +140,7 @@ Item {
     property bool isTransparent: panel.opacityMode === Panel.Global.Translucent
     property bool isAdaptive: panel.opacityMode === Panel.Global.Adaptive
     property bool floating: panel.floating
-    readonly property bool screenCovered: touchingWindow && !kwindowsystem.showingDesktop && panel.visibilityMode == Panel.Global.NormalPanel
+    readonly property bool screenCovered: visibleWindowsModel.count > 0 && !kwindowsystem.showingDesktop && panel.visibilityMode == Panel.Global.NormalPanel
     property var stateTriggers: [floating, screenCovered, isOpaque, isAdaptive, isTransparent, kwindowsystem.compositingActive]
     onStateTriggersChanged: {
         let opaqueApplets = false
