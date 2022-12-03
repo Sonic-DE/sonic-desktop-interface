@@ -11,6 +11,7 @@
 .import org.kde.plasma.core 2.0 as PlasmaCore // Needed by TaskManager
 
 var windowViewAvailable = false;
+var taskManagerInstanceCount = 0;
 
 function wheelActivateNextPrevTask(anchor, wheelDelta, eventDelta, wheelSkipMinimized, tasks) {
     // magic number 120 for common "one click"
@@ -94,11 +95,25 @@ function activateNextPrevTask(anchor, next, wheelSkipMinimized, tasks) {
     tasks.tasksModel.requestActivate(target);
 }
 
+function requestPublishDelegateGeometry(task, tasksModel, globalRect) {
+    if (!task.isWindow) {
+        return;
+    }
+
+    tasksModel.requestPublishDelegateGeometry(task.modelIndex(), globalRect, task);
+}
+
 function activateTask(index, model, modifiers, task, plasmoid, tasks) {
     if (modifiers & Qt.ShiftModifier) {
         tasks.tasksModel.requestNewInstance(index);
-    } else if (model.IsGroupParent === true) {
+        return;
+    }
+    // Publish delegate geometry again if there are more than one task manager instances
+    if (taskManagerInstanceCount >= 2) {
+        requestPublishDelegateGeometry(task, tasks.tasksModel, tasks.backend.globalRect(task));
+    }
 
+    if (model.IsGroupParent === true) {
         // Option 1 (default): Cycle through this group's tasks
         // ====================================================
         // If the grouped task does not include the currently active task, bring
