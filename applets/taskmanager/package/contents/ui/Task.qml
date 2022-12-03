@@ -134,7 +134,7 @@ PlasmaCore.ToolTipArea {
     }
 
     onChildCountChanged: {
-        if (childCount > previousChildCount) {
+        if (TaskTools.taskManagerInstanceCount < 2 && childCount > previousChildCount) {
             tasksModel.requestPublishDelegateGeometry(modelIndex(), backend.globalRect(task), task);
         }
 
