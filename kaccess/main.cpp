@@ -8,6 +8,7 @@
 #include "kaccess.h"
 
 #include <KAboutData>
+#include <KDBusService>
 #include <KLocalizedString>
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 #include <Kdelibs4ConfigMigrator>
@@ -74,5 +75,8 @@ int main(int argc, char *argv[])
     app.setQuitOnLastWindowClosed(false);
 
     acc.setXkbOpcode(xkb_opcode);
+
+    KDBusService service(KDBusService::Unique | KDBusService::Replace);
+
     return app.exec();
 }

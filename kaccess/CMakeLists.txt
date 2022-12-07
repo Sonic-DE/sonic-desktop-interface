@@ -12,6 +12,7 @@ target_link_libraries(kaccess
     KF5::CoreAddons
     KF5::ConfigCore
     KF5::Completion
+    KF5::DBusAddons
     KF5::GlobalAccel
     KF5::I18n
     KF5::Notifications
