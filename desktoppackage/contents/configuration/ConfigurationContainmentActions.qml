@@ -164,7 +164,7 @@ Item {
                         }
                         aboutComponent.incubateObject(root, {
                             "metaData": metaData,
-                            "title": i18nc("@label", "About"),
+                            "title": i18nc("@title", "About"),
                         }, Qt.Asynchronous);
                     }
                 }
