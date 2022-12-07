@@ -14,7 +14,7 @@ import org.kde.plasma.workspace.components 2.0
 Item {
     id: root
 
-    signal layoutSelected(int layout)
+    signal layoutSelected(int layoutIndex)
 
     Plasmoid.preferredRepresentation: Plasmoid.compactRepresentation
 
@@ -33,9 +33,9 @@ Item {
                 root.Plasmoid.clearActions()
 
                 switcher.keyboardLayout.layoutsList.forEach(
-                            function(layout, index) {
+                            function(layout, layoutIndex) {
                                 root.Plasmoid.setAction(
-                                            index,
+                                            layoutIndex.toString(),
                                             layout.longName,
                                             iconURL(layout.shortName).toString().substring(7) // remove file:// scheme
                                             )
@@ -51,8 +51,8 @@ Item {
         Connections {
             target: root
 
-            function onLayoutSelected(layout) {
-               switcher.keyboardLayout.layout = layout
+            function onLayoutSelected(layoutIndex) {
+               switcher.keyboardLayout.layout = layoutIndex
             }
         }
 
@@ -95,7 +95,10 @@ Item {
                         "kf5/locale/countries/" + name + "/flag.png")
     }
 
-    function actionTriggered(selectedLayout) {
-        layoutSelected(selectedLayout)
+    function actionTriggered(actionName) {
+        const layoutIndex = parseInt(actionName);
+        if (!isNaN(layoutIndex)) {
+            layoutSelected(layoutIndex);
+        }
     }
 }
