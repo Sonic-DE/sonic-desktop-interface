@@ -30,21 +30,18 @@ Item {
             target: switcher.keyboardLayout
 
             function onLayoutsListChanged() {
-                root.Plasmoid.clearActions()
+                root.Plasmoid.clearActions();
 
-                switcher.keyboardLayout.layoutsList.forEach(
-                            function(layout, layoutIndex) {
-                                root.Plasmoid.setAction(
-                                            layoutIndex.toString(),
-                                            layout.longName,
-                                            iconURL(layout.shortName).toString().substring(7) // remove file:// scheme
-                                            )
-                            }
-                            )
+                switcher.keyboardLayout.layoutsList.forEach((layout, layoutIndex) => {
+                    const actionName = layoutIndex.toString();
+                    const actionText = layout.longName;
+                    const icon = iconURL(layout.shortName).toString().substring("file://".length);
+                    root.Plasmoid.setAction(actionName, actionText, icon);
+                });
             }
 
             function onLayoutChanged() {
-                root.Plasmoid.activated()
+                root.Plasmoid.activated();
             }
         }
 
@@ -52,7 +49,7 @@ Item {
             target: root
 
             function onLayoutSelected(layoutIndex) {
-               switcher.keyboardLayout.layout = layoutIndex
+               switcher.keyboardLayout.layout = layoutIndex;
             }
         }
 
@@ -76,7 +73,6 @@ Item {
             }
         }
 
-
         PlasmaComponents3.Label {
             id: countryCode
             anchors.fill: parent
@@ -91,8 +87,8 @@ Item {
     }
 
     function iconURL(name) {
-        return StandardPaths.locate(StandardPaths.GenericDataLocation,
-                        "kf5/locale/countries/" + name + "/flag.png")
+        const path = "kf5/locale/countries/" + name + "/flag.png";
+        return StandardPaths.locate(StandardPaths.GenericDataLocation, path);
     }
 
     function actionTriggered(actionName) {
