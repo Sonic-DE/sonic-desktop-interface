@@ -1,5 +1,6 @@
 /*
     SPDX-FileCopyrightText: 2020 Andrey Butirsky <butirsky@gmail.com>
+    SPDX-FileCopyrightText: 2022 ivan tkachenko <me@ratijas.tk>
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 
@@ -18,18 +19,20 @@ Item {
     Plasmoid.preferredRepresentation: Plasmoid.compactRepresentation
 
     Plasmoid.compactRepresentation: KeyboardLayoutSwitcher {
+        id: switcher
+
         hoverEnabled: true
 
         Plasmoid.toolTipSubText: layoutNames.longName
         Plasmoid.status: hasMultipleKeyboardLayouts ? PlasmaCore.Types.ActiveStatus : PlasmaCore.Types.HiddenStatus
 
         Connections {
-            target: keyboardLayout
+            target: switcher.keyboardLayout
 
             function onLayoutsListChanged() {
                 plasmoid.clearActions()
 
-                keyboardLayout.layoutsList.forEach(
+                switcher.keyboardLayout.layoutsList.forEach(
                             function(layout, index) {
                                 plasmoid.setAction(
                                             index,
@@ -49,7 +52,7 @@ Item {
             target: root
 
             function onLayoutSelected(layout) {
-               keyboardLayout.layout = layout
+               switcher.keyboardLayout.layout = layout
             }
         }
 
