@@ -14,8 +14,6 @@
 #include <QPaintEvent>
 #include <QWidget>
 
-#include <phonon/MediaObject>
-
 #include <X11/Xlib.h>
 #define explicit int_explicit // avoid compiler name clash in XKBlib.h
 #include <X11/XKBlib.h>
@@ -25,12 +23,16 @@
 
 class QLabel;
 class KComboBox;
+struct ca_context;
+struct ca_proplist;
 
 class KAccessApp : public QObject, public QAbstractNativeEventFilter
 {
     Q_OBJECT
 public:
     explicit KAccessApp();
+    ~KAccessApp();
+
     void newInstance();
     void setXkbOpcode(int opcode);
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
@@ -79,8 +81,8 @@ private:
 
     QWidget *overlay;
 
-    Phonon::MediaObject *_player;
-    QString _currentPlayerSource;
+    ca_context *m_caContext = nullptr;
+    QUrl m_currentPlayerSource;
 
     WId _activeWindow;
 
