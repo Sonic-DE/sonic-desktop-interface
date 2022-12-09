@@ -39,15 +39,28 @@ Item {
         prefix: ['floating', '']
         imagePath: "widgets/panel-background"
     }
+
+    property var loc: containment.location
+
+    readonly property bool topEdge: containment?.plasmoid?.location === PlasmaCore.Types.TopEdge
+    readonly property bool leftEdge: containment?.plasmoid?.location === PlasmaCore.Types.LeftEdge
+    readonly property bool rightEdge: containment?.plasmoid?.location === PlasmaCore.Types.RightEdge
+    readonly property bool bottomEdge: containment?.plasmoid?.location === PlasmaCore.Types.BottomEdge
+
     readonly property int topPadding: Math.round(Math.min(thickPanelSvg.fixedMargins.top, spacingAtMinSize));
     readonly property int bottomPadding: Math.round(Math.min(thickPanelSvg.fixedMargins.bottom, spacingAtMinSize));
     readonly property int leftPadding: Math.round(Math.min(thickPanelSvg.fixedMargins.left, spacingAtMinSize));
     readonly property int rightPadding: Math.round(Math.min(thickPanelSvg.fixedMargins.right, spacingAtMinSize));
 
-    readonly property int bottomFloatingPadding: floating && containment?.plasmoid?.location !== PlasmaCore.Types.TopEdge ? (floatingPrefix ? floatingPanelSvg.fixedMargins.bottom : 8) : 0
-    readonly property int leftFloatingPadding: floating && containment?.plasmoid?.location !== PlasmaCore.Types.RightEdge ? (floatingPrefix ? floatingPanelSvg.fixedMargins.left   : 8) : 0
-    readonly property int rightFloatingPadding: floating && containment?.plasmoid?.location !== PlasmaCore.Types.LeftEdge ? (floatingPrefix ? floatingPanelSvg.fixedMargins.right  : 8) : 0
-    readonly property int topFloatingPadding: floating && containment?.plasmoid?.location !== PlasmaCore.Types.BottomEdge ? (floatingPrefix ? floatingPanelSvg.fixedMargins.top    : 8) : 0
+    readonly property int fixedBottomFloatingPadding: floating && (floatingPrefix ? floatingPanelSvg.fixedMargins.bottom : 8)
+    readonly property int fixedLeftFloatingPadding: floating && (floatingPrefix ? floatingPanelSvg.fixedMargins.left   : 8)
+    readonly property int fixedRightFloatingPadding: floating && (floatingPrefix ? floatingPanelSvg.fixedMargins.right  : 8)
+    readonly property int fixedTopFloatingPadding: floating && (floatingPrefix ? floatingPanelSvg.fixedMargins.top    : 8)
+
+    readonly property int bottomFloatingPadding: Math.round(fixedBottomFloatingPadding * floatingness)
+    readonly property int leftFloatingPadding: Math.round(fixedLeftFloatingPadding * floatingness)
+    readonly property int rightFloatingPadding: Math.round(fixedRightFloatingPadding * floatingness)
+    readonly property int topFloatingPadding: Math.round(fixedTopFloatingPadding * floatingness)
 
     readonly property int minPanelHeight: translucentItem.minimumDrawingHeight
     readonly property int minPanelWidth: translucentItem.minimumDrawingWidth
@@ -61,6 +74,29 @@ Item {
     }
 
     property bool touchingWindow: visibleWindowsModel.count > 0
+
+    function rectOverlap(a, b, dpr) {
+        return (Math.max(leftEdge ? a.left + panel.thickness + 1 : a.left, b.left / dpr) - 1 <=
+                Math.min(rightEdge ? a.right - panel.thickness - 1 : a.right, b.right / dpr) &&
+                Math.max(bottomEdge? a.bottom - panel.thickness - 1 : a.top, b.top / dpr) - 1 <=
+                Math.min(topEdge? a.top + panel.thickness + 1 : a.bottom, b.bottom / dpr))
+    }
+
+    function updateWindows() {
+        if (visibleWindowsModel.count === 0) {
+            root.touchingWindow = false
+            return
+        }
+        let panelGeo = panel.geometryByDistance(0)
+        const screenDevicePixelRatio = KWindowSystem.isPlatformX11 ? Screen.devicePixelRatio : 1
+        for( var i = 0; i < visibleWindowsModel.rowCount(); i++ ) {
+            if (rectOverlap(panelGeo, visibleWindowsModel.get(i).Geometry, screenDevicePixelRatio)) {
+                root.touchingWindow = true
+                return
+            }
+        }
+        root.touchingWindow = false
+    }
 
     TaskManager.TasksModel {
         id: visibleWindowsModel
@@ -118,8 +154,8 @@ Item {
     property var panelMask: floatingness === 0 ? (panelOpacity === 1 ? opaqueItem.mask : translucentItem.mask) : (panelOpacity === 1 ? floatingOpaqueItem.mask : floatingTranslucentItem.mask)
 
     // These two values are read from panelview.cpp and are used as an offset for the mask
-    property int maskOffsetX: Math.round(leftFloatingPadding * floatingness)
-    property int maskOffsetY: Math.round(topFloatingPadding * floatingness)
+    property int maskOffsetX: floatingTranslucentItem.x
+    property int maskOffsetY: floatingTranslucentItem.y
 
     KSvg.FrameSvgItem {
         id: translucentItem
@@ -131,26 +167,18 @@ Item {
     KSvg.FrameSvgItem {
         id: floatingTranslucentItem
         visible: floatingness !== 0 && panelOpacity !== 1
-        anchors {
-            fill: parent
-            bottomMargin: Math.round(bottomFloatingPadding * floatingness)
-            leftMargin: Math.round(leftFloatingPadding * floatingness)
-            rightMargin: Math.round(rightFloatingPadding * floatingness)
-            topMargin: Math.round(topFloatingPadding * floatingness)
-        }
+        x: root.leftEdge ? fixedLeftFloatingPadding + fixedRightFloatingPadding * (1 - floatingness) : leftFloatingPadding
+        y: root.topEdge ? fixedTopFloatingPadding + fixedBottomFloatingPadding * (1 - floatingness) : topFloatingPadding
+        width: verticalPanel ? panel.thickness : parent.width - leftFloatingPadding - rightFloatingPadding
+        height: verticalPanel ? parent.height - topFloatingPadding - bottomFloatingPadding : panel.thickness
+
         imagePath: containment?.plasmoid?.backgroundHints === PlasmaCore.Types.NoBackground ? "" : "widgets/panel-background"
     }
     KSvg.FrameSvgItem {
         id: floatingOpaqueItem
         visible: floatingness !== 0 && panelOpacity !== 0
         opacity: panelOpacity
-        anchors {
-            fill: parent
-            bottomMargin: Math.round(bottomFloatingPadding * floatingness)
-            leftMargin: Math.round(leftFloatingPadding * floatingness)
-            rightMargin: Math.round(rightFloatingPadding * floatingness)
-            topMargin: Math.round(topFloatingPadding * floatingness)
-        }
+        anchors.fill: floatingTranslucentItem
         imagePath: containment?.plasmoid?.backgroundHints === PlasmaCore.Types.NoBackground ? "" : "solid/widgets/panel-background"
     }
     KSvg.FrameSvgItem {
@@ -160,6 +188,20 @@ Item {
         enabledBorders: panel.enabledBorders
         anchors.fill: parent
         imagePath: containment?.plasmoid?.backgroundHints === PlasmaCore.Types.NoBackground ? "" : "solid/widgets/panel-background"
+    }
+    KSvg.FrameSvgItem {
+        id: floatingShadow
+        visible: floatingness !== 0
+        z: -100
+        imagePath: containment?.plasmoid?.backgroundHints === PlasmaCore.Types.NoBackground ? "" : "solid/widgets/panel-background"
+        prefix: "shadow"
+        anchors {
+            fill: floatingTranslucentItem
+            topMargin: -floatingShadow.margins.top
+            leftMargin: -floatingShadow.margins.left
+            rightMargin: -floatingShadow.margins.right
+            bottomMargin: -floatingShadow.margins.bottom
+        }
     }
 
     Keys.onEscapePressed: {
@@ -317,7 +359,7 @@ Item {
     Item {
         id: containmentParent
         anchors.centerIn: isOpaque ? floatingOpaqueItem : floatingTranslucentItem
-        width: root.width - leftFloatingPadding - rightFloatingPadding
-        height: root.height - topFloatingPadding - bottomFloatingPadding
+        width: root.verticalPanel ? panel.thickness : root.width - fixedLeftFloatingPadding - fixedRightFloatingPadding
+        height: root.verticalPanel ? root.height - fixedBottomFloatingPadding - fixedTopFloatingPadding : panel.thickness
     }
 }
