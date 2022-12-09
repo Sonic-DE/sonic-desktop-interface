@@ -42,10 +42,10 @@ Item {
     readonly property int leftPadding: Math.round(Math.min(thickPanelSvg.fixedMargins.left, spacingAtMinSize));
     readonly property int rightPadding: Math.round(Math.min(thickPanelSvg.fixedMargins.right, spacingAtMinSize));
 
-    readonly property int bottomFloatingPadding: floating && containment.location !== PlasmaCore.Types.TopEdge ? (floatingPrefix ? floatingPanelSvg.fixedMargins.bottom : 8) : 0
-    readonly property int leftFloatingPadding: floating && containment.location !== PlasmaCore.Types.RightEdge ? (floatingPrefix ? floatingPanelSvg.fixedMargins.left   : 8) : 0
-    readonly property int rightFloatingPadding: floating && containment.location !== PlasmaCore.Types.LeftEdge ? (floatingPrefix ? floatingPanelSvg.fixedMargins.right  : 8) : 0
-    readonly property int topFloatingPadding: floating && containment.location !== PlasmaCore.Types.BottomEdge ? (floatingPrefix ? floatingPanelSvg.fixedMargins.top    : 8) : 0
+    readonly property int bottomFloatingPadding: floating && containment.location !== PlasmaCore.Types.TopEdge ? Math.round((floatingPrefix ? floatingPanelSvg.fixedMargins.bottom : 8) * floatingness) : 0
+    readonly property int leftFloatingPadding: floating && containment.location !== PlasmaCore.Types.RightEdge ? Math.round((floatingPrefix ? floatingPanelSvg.fixedMargins.left   : 8) * floatingness) : 0
+    readonly property int rightFloatingPadding: floating && containment.location !== PlasmaCore.Types.LeftEdge ? Math.round((floatingPrefix ? floatingPanelSvg.fixedMargins.right  : 8) * floatingness) : 0
+    readonly property int topFloatingPadding: floating && containment.location !== PlasmaCore.Types.BottomEdge ? Math.round((floatingPrefix ? floatingPanelSvg.fixedMargins.top    : 8) * floatingness) : 0
 
     readonly property int minPanelHeight: translucentItem.minimumDrawingHeight
     readonly property int minPanelWidth: translucentItem.minimumDrawingWidth
@@ -127,8 +127,8 @@ Item {
     property var panelMask: floatingness === 0 ? (panelOpacity === 1 ? opaqueItem.mask : translucentItem.mask) : (panelOpacity === 1 ? floatingOpaqueItem.mask : floatingTranslucentItem.mask)
 
     // These two values are read from panelview.cpp and are used as an offset for the mask
-    property int maskOffsetX: Math.round(leftFloatingPadding * floatingness)
-    property int maskOffsetY: Math.round(topFloatingPadding * floatingness)
+    property int maskOffsetX: leftFloatingPadding
+    property int maskOffsetY: topFloatingPadding
 
     PlasmaCore.FrameSvgItem {
         id: translucentItem
@@ -142,10 +142,10 @@ Item {
         visible: floatingness !== 0 && panelOpacity !== 1
         anchors {
             fill: parent
-            bottomMargin: Math.round(bottomFloatingPadding * floatingness)
-            leftMargin: Math.round(leftFloatingPadding * floatingness)
-            rightMargin: Math.round(rightFloatingPadding * floatingness)
-            topMargin: Math.round(topFloatingPadding * floatingness)
+            bottomMargin: bottomFloatingPadding
+            leftMargin: leftFloatingPadding
+            rightMargin: rightFloatingPadding
+            topMargin: topFloatingPadding
         }
         imagePath: containment && containment.backgroundHints === PlasmaCore.Types.NoBackground ? "" : "widgets/panel-background"
     }
@@ -155,10 +155,10 @@ Item {
         opacity: panelOpacity
         anchors {
             fill: parent
-            bottomMargin: Math.round(bottomFloatingPadding * floatingness)
-            leftMargin: Math.round(leftFloatingPadding * floatingness)
-            rightMargin: Math.round(rightFloatingPadding * floatingness)
-            topMargin: Math.round(topFloatingPadding * floatingness)
+            bottomMargin: bottomFloatingPadding
+            leftMargin: leftFloatingPadding
+            rightMargin: rightFloatingPadding
+            topMargin: topFloatingPadding
         }
         imagePath: containment && containment.backgroundHints === PlasmaCore.Types.NoBackground ? "" : "solid/widgets/panel-background"
     }
@@ -169,6 +169,20 @@ Item {
         enabledBorders: panel.enabledBorders
         anchors.fill: parent
         imagePath: containment && containment.backgroundHints === PlasmaCore.Types.NoBackground ? "" : "solid/widgets/panel-background"
+    }
+    PlasmaCore.FrameSvgItem {
+        id: floatingShadow
+        visible: floatingness !== 0
+        z: -100
+        imagePath: containment && containment.backgroundHints === PlasmaCore.Types.NoBackground ? "" : "solid/widgets/panel-background"
+        prefix: "shadow"
+        anchors {
+            fill: floatingTranslucentItem
+            topMargin: -floatingShadow.margins.top
+            leftMargin: -floatingShadow.margins.left
+            rightMargin: -floatingShadow.margins.right
+            bottomMargin: -floatingShadow.margins.bottom
+        }
     }
 
     Keys.onEscapePressed: {
@@ -326,7 +340,7 @@ Item {
     Item {
         id: containmentParent
         anchors.centerIn: isOpaque ? floatingOpaqueItem : floatingTranslucentItem
-        width: root.width - leftFloatingPadding - rightFloatingPadding
-        height: root.height - topFloatingPadding - bottomFloatingPadding
+        width: root.verticalPanel ? panel.thickness : root.width - leftFloatingPadding - rightFloatingPadding
+        height: root.verticalPanel ? root.height - topFloatingPadding - bottomFloatingPadding : panel.thickness
     }
 }
