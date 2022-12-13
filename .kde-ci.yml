@@ -49,8 +49,12 @@ Dependencies:
     'plasma/plasma-workspace': '@same'
     'plasma/powerdevil': '@same'
     'plasma/systemsettings': '@same'
+    'plasma/kactivitymanagerd': '@same'
 - 'on': ['Linux/Qt5', 'FreeBSD/Qt5']
   'require':
     'frameworks/kdelibs4support': '@latest'
+- 'on': ['Linux']
+  'require':
+    'sdk/selenium-webdriver-at-spi': '@latest'
 Options:
   require-passing-tests-on: [ 'Linux/Qt5', 'FreeBSD/Qt5']
