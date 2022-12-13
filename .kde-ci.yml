@@ -52,5 +52,8 @@ Dependencies:
 - 'on': ['Linux/Qt5', 'FreeBSD/Qt5']
   'require':
     'frameworks/kdelibs4support': '@latest'
+- 'on': ['Linux']
+  'require':
+    'sdk/selenium-webdriver-at-spi': '@latest'
 Options:
   require-passing-tests-on: [ 'Linux/Qt5', 'FreeBSD/Qt5']
