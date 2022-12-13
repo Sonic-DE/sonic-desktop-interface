@@ -245,6 +245,7 @@ plasma_install_package(desktoppackage org.kde.plasma.desktop shells shell)
 
 add_subdirectory(layout-templates)
 
+add_subdirectory(appiumtests)
 add_subdirectory(doc)
 add_subdirectory(runners)
 add_subdirectory(containments)
