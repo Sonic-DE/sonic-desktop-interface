@@ -48,6 +48,10 @@ WorkspaceOptionsKwinSettings *KCMWorkspaceOptions::kwinSettings() const
 
 void KCMWorkspaceOptions::save()
 {
+    if (m_data->workspaceOptionsKwinSettings()->findItem(QStringLiteral("primarySelection"))->isSaveNeeded()) {
+        Q_EMIT showInfoMessage(i18n("You have to restart Plasma session for primary selection changes to take effect."));
+    }
+
     ManagedConfigModule::save();
 
     {

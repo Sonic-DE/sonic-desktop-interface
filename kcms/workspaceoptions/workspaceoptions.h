@@ -35,6 +35,9 @@ public:
 public Q_SLOTS:
     void save() override;
 
+Q_SIGNALS:
+    void showInfoMessage(const QString &message);
+
 private:
     WorkspaceOptionsData *m_data;
 };

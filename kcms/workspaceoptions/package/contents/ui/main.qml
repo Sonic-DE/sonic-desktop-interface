@@ -18,6 +18,22 @@ KCM.SimpleKCM {
         id: kwindowsystem
     }
 
+    header: Kirigami.InlineMessage {
+        id: infoLabel
+        Layout.fillWidth: true
+
+        showCloseButton: true
+
+        Connections {
+            target: kcm
+            function onShowInfoMessage(message) {
+                infoLabel.type = Kirigami.MessageType.Information;
+                infoLabel.text = message;
+                infoLabel.visible = true;
+            }
+        }
+    }
+
     Kirigami.FormLayout {
 
         // Visual behavior settings
