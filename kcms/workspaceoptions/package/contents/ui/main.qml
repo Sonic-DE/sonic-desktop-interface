@@ -18,6 +18,28 @@ KCM.SimpleKCM {
         id: kwindowsystem
     }
 
+    header: Kirigami.InlineMessage {
+        id: primarySelectionRebootMessage
+        Layout.fillWidth: true
+        type: Kirigami.MessageType.Positive
+        text: i18n("The system must be restarted before changes to the middle-click paste setting can take effect.")
+        visible: false
+        showCloseButton: true
+        actions: [
+            Kirigami.Action {
+                icon.name: "system-reboot"
+                text: i18n("Restart")
+                onTriggered: kcm.requestReboot();
+            }
+        ]
+        Connections {
+            target: kcm
+            function onPrimarySelectionOptionSaved() {
+                primarySelectionRebootMessage.visible = true;
+            }
+        }
+    }
+
     Kirigami.FormLayout {
 
         // Visual behavior settings
