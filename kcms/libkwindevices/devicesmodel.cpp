@@ -2,14 +2,18 @@
     SPDX-FileCopyrightText: 2018 Roman Gilg <subdiff@gmail.com>
     SPDX-FileCopyrightText: 2021 Aleix Pol Gonzalez <aleixpol@kde.org>
 
+    Work sponsored by Technische Universität Dresden:
+    SPDX-FileCopyrightText: 2022 Klarälvdalens Datakonsult AB a KDAB Group company <info@kdab.com>
+
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 
 #include "devicesmodel.h"
-#include "inputdevice.h"
-#include <QDBusInterface>
 
-#include "logging.h"
+#include <QDBusInterface>
+#include <QDebug>
+
+#include "inputdevice.h"
 
 DevicesModel::DevicesModel(const QByteArray &kind, QObject *parent)
     : QAbstractListModel(parent)
@@ -45,10 +49,9 @@ void DevicesModel::resetModel()
     QStringList devicesSysNames;
     const QVariant reply = m_deviceManager->property("devicesSysNames");
     if (reply.isValid()) {
-        qCDebug(KCM_TABLET) << "Devices list received successfully from KWin.";
         devicesSysNames = reply.toStringList();
     } else {
-        qCCritical(KCM_TABLET) << "Error on receiving device list from KWin.";
+        qWarning() << "Error on receiving device list from KWin.";
         return;
     }
 
@@ -60,8 +63,9 @@ void DevicesModel::resetModel()
 
 QVariant DevicesModel::data(const QModelIndex &index, int role) const
 {
-    if (!checkIndex(index, CheckIndexOption::IndexIsValid) || index.column() != 0)
+    if (!checkIndex(index, CheckIndexOption::IndexIsValid) || index.column() != 0) {
         return {};
+    }
 
     switch (role) {
     case Qt::DisplayRole:
@@ -103,7 +107,7 @@ void DevicesModel::addDevice(const QString &sysName, bool tellModel)
         if (tellModel) {
             beginInsertRows({}, m_devices.size(), m_devices.size());
         }
-        qCDebug(KCM_TABLET).nospace() << "Device connected: " << dev->name() << " (" << dev->sysName() << ")";
+        qDebug().nospace() << "Device connected: " << dev->name() << " (" << dev->sysName() << ")";
         m_devices.push_back(std::move(dev));
         if (tellModel) {
             endInsertRows();
@@ -120,13 +124,13 @@ void DevicesModel::onDeviceRemoved(const QString &sysName)
         return;
     }
 
-    InputDevice *dev = static_cast<InputDevice *>(it->get());
-    qCDebug(KCM_TABLET).nospace() << "Device disconnected: " << dev->name() << " (" << dev->sysName() << ")";
+    auto dev = static_cast<InputDevice *>(it->get());
+    qDebug().nospace() << "Device disconnected: " << dev->name() << " (" << dev->sysName() << ")";
 
     int index = std::distance(m_devices.cbegin(), it);
 
     beginRemoveRows({}, index, index);
-    m_devices.erase(m_devices.cbegin() + index);
+    m_devices.erase(it);
     endRemoveRows();
 }
 
