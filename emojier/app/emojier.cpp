@@ -10,6 +10,7 @@
 #include <KLocalizedString>
 #include <KSharedConfig>
 #include <KWindowConfig>
+#include <KWindowSystem>
 #include <QAbstractListModel>
 #include <QApplication>
 #include <QCommandLineParser>
@@ -26,14 +27,8 @@
 #include <QQuickWindow>
 #include <QSessionManager>
 #include <QVector>
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-#include <QX11Info>
-#else
-#include <QtGui/private/qtx11extras_p.h>
-#endif
 
 #include "config-workspace.h"
-#include <kstartupinfo.h>
 
 class EngineWatcher : public QObject
 {
@@ -129,8 +124,8 @@ int main(int argc, char **argv)
             if (!w)
                 continue;
 
-            if (w && QX11Info::isPlatformX11())
-                KStartupInfo::setNewStartupId(w, QX11Info::nextStartupId());
+            KWindowSystem::updateStartupId(w);
+            KWindowSystem::activateWindow(w);
 
             w->setVisible(true);
             w->raise();
