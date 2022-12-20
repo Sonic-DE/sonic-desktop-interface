@@ -52,9 +52,23 @@ MouseArea {
 
     activeFocusOnTab: true
     hoverEnabled: true
+    acceptedButtons: Qt.LeftButton | Qt.MiddleButton
 
     Plasmoid.onActivated: activeController.toggle();
-    onClicked: Plasmoid.activated();
+
+    onClicked: (mouse) => {
+        switch(mouse.button) {
+            case Qt.LeftButton:
+                Plasmoid.activated();
+                break;
+            case Qt.MiddleButton:
+                if(!activeController.active) {
+                    minimizeAllController.toggleInactiveWindows();
+                }
+                break;
+        }
+    }
+
 
     Keys.onPressed: {
         switch (event.key) {

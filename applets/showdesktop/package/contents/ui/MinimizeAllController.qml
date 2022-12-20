@@ -82,6 +82,52 @@ Controller {
         minimizedClients = [];
     }
 
+    function noMaximizedInactiveWindowExists() {
+        for(let i = 0; i < tasksModel.count; i++) {
+            const idx = tasksModel.makeModelIndex(i);
+            if (tasksModel.data(idx, TaskManager.AbstractTasksModel.IsHidden) || (tasksModel.activeTask === idx)) { // if hidden or active
+                continue;
+            } else { // inactive maximized
+                return false;
+            }
+        }
+        return true;
+    }
+
+    function minimizeInactiveWindows() {
+        const clients = [];
+        for (let i = 0; i < tasksModel.count; i++) {
+            const idx = tasksModel.makeModelIndex(i);
+            if (!tasksModel.data(idx, TaskManager.AbstractTasksModel.IsHidden) && !(tasksModel.activeTask === idx)) {
+                tasksModel.requestToggleMinimized(idx);
+                clients.push(tasksModel.makePersistentModelIndex(i));
+            }
+        }
+        minimizedClients = clients;
+    }
+
+    function maximizeInactiveWindows() {
+        const clients = [];
+
+        for (let i = 0; i < tasksModel.count; i++) {
+            const idx = tasksModel.makeModelIndex(i);
+            if (tasksModel.data(idx, TaskManager.AbstractTasksModel.IsHidden)) {
+                tasksModel.requestToggleMinimized(idx);
+                clients.push(tasksModel.makePersistentModelIndex(i));
+            }
+        }
+        tasksModel.requestActivate(tasksModel.activeTask) // keep the active task above
+        minimizedClients = clients;
+    }
+
+    function toggleInactiveWindows() {
+        if(noMaximizedInactiveWindowExists()) {
+            maximizeInactiveWindows();
+        } else {
+            minimizeInactiveWindows();
+        }
+    }
+
     // override
     function toggle() {
         if (active) {
