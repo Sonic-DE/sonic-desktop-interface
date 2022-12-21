@@ -82,6 +82,7 @@ endif()
 find_package(AccountsQt${QT_MAJOR_VERSION} ${ACCOUNTSQT_DEP_VERSION} CONFIG)
 
 find_package(KUserFeedback)
+find_package(PolkitQt${QT_MAJOR_VERSION}-1)
 
 set_package_properties(AccountsQt${QT_MAJOR_VERSION} PROPERTIES
     DESCRIPTION "Accounts management library for Qt applications"
@@ -191,6 +192,8 @@ add_feature_info("libxft" X11_Xft_FOUND "X FreeType interface library required f
 pkg_check_modules(XORGLIBINPUT xorg-libinput IMPORTED_TARGET)
 pkg_check_modules(EVDEV xorg-evdev>=2.8.99.1 IMPORTED_TARGET)
 pkg_check_modules(XORGSERVER xorg-server IMPORTED_TARGET)
+pkg_check_modules(LIBINPUT libinput REQUIRED)
+pkg_check_modules(UDEV libudev REQUIRED)
 
 ecm_find_qmlmodule(org.kde.pipewire 0.1)
 

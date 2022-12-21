@@ -1,5 +1,7 @@
 add_definitions(-DTRANSLATION_DOMAIN=\"kcm_tablet\")
 
+add_subdirectory(stylushelper)
+
 include(ECMQtDeclareLoggingCategory)
 ecm_qt_declare_logging_category(common_SRCS
     HEADER
