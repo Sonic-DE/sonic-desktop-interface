@@ -20,8 +20,8 @@ target_link_libraries(plasma-stylus-helper
     Qt::DBus
     PolkitQt${QT_MAJOR_VERSION}-1::Core
     KF5::I18n
-    libudev
-    libinput
+    udev
+    input
 )
 ecm_install_configured_files(INPUT org.kde.stylushelper.service.in DESTINATION ${KDE_INSTALL_DBUSSYSTEMSERVICEDIR} @ONLY)
 install(TARGETS plasma-stylus-helper ${KF_INSTALL_TARGETS_DEFAULT_ARGS})
