@@ -154,3 +154,5 @@ int main(int argc, char *argv[])
     StylusHelper helper;
     return app.exec();
 }
+
+#include "stylushelper.moc"
