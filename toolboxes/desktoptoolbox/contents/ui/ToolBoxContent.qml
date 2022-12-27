@@ -301,10 +301,7 @@ MouseArea {
                         return;
                     }
                     const component = Qt.createComponent("MoreActionsMenu.qml");
-                    const incubator = component.incubateObject(menuButton, {
-                        "visualParent": menuButton,
-                        "location": toolBoxContent.state.startsWith("top") ? PlasmaCore.Types.TopEdge : PlasmaCore.Types.BottomEdge,
-                    });
+                    const incubator = component.incubateObject(toolBoxContent);
                     component.destroy();
                 }
             }
