@@ -34,13 +34,7 @@ PlasmaCore.Dialog {
 
             readonly property TextMetrics textMetrics: TextMetrics {}
 
-            model: {
-                const actionList = Plasmoid.contextualActions;
-                if (actionList && actionList.length > 0) { // Only available in KF5.102
-                    return actionList.filter(action => action.visible);
-                }
-                return Plasmoid.actions.filter(action => action.visible);
-            }
+            model: Plasmoid.contextualActions.filter(action => action.visible)
             reuseItems: true
 
             delegate: PlasmaComponents3.ToolButton {
