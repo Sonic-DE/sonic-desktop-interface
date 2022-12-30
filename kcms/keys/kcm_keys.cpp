@@ -218,6 +218,15 @@ void KCMKeys::addCommand(const QString &exec)
     m_globalAccelModel->addApplication(newPath, name);
 }
 
+void KCMKeys::editCommand(const QString &componentName, const QString &newExec)
+{
+    KDesktopFile desktopFile(componentName);
+    KConfigGroup cg = desktopFile.desktopGroup();
+    cg.writeEntry("Name", newExec);
+    cg.writeEntry("Exec", newExec);
+    cg.sync();
+}
+
 QString KCMKeys::keySequenceToString(const QKeySequence &keySequence) const
 {
     return keySequence.toString(QKeySequence::NativeText);
