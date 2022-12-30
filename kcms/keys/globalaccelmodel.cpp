@@ -11,6 +11,7 @@
 
 #include <KApplicationTrader>
 #include <KConfigGroup>
+#include <KDesktopFile>
 #include <KGlobalAccel>
 #include <KGlobalShortcutInfo>
 #include <KLocalizedString>
@@ -113,7 +114,8 @@ Component GlobalAccelModel::loadComponent(const QList<KGlobalShortcutInfo> &info
         const KService::List services = KApplicationTrader::query(filter);
         service = services.value(0, KService::Ptr());
     }
-    const QString type = service && service->isApplication() ? i18n("Applications") : i18n("System Services");
+    bool isCommandShortcut = service && service->property(QStringLiteral("X-KDE-GlobalAccel-CommandShortcut"), QVariant::Bool).toBool();
+    const QString type = service && service->isApplication() ? (isCommandShortcut ? i18n("Commands") : i18n("Applications")) : i18n("System Services");
     QString icon;
 
     static const QHash<QString, QString> hardCodedIcons = {
