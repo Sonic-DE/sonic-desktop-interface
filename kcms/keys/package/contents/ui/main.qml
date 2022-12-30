@@ -123,6 +123,31 @@ KCM.AbstractKCM {
                                 onToggled: model.checked = checked
                             }
                             QQC2.Button {
+                                id: editButton
+
+                                implicitHeight: Kirigami.Units.iconSizes.small + 2 * Kirigami.Units.smallSpacing
+                                implicitWidth: implicitHeight
+
+                                visible: model.section == i18n("Commands") // FIXME: don't compare translated strings
+                                && !exportActive
+                                && !model.pendingDeletion
+                                && (componentDelegate.containsMouse || componentDelegate.ListView.isCurrentItem)
+                                icon.name: "edit-rename"
+                                onClicked: {
+                                    kcm.editCommand(model.component, "lol");
+                                    console.warn(model.component);
+                                    console.warn("EDIT");
+                                    addCommandDialog.editing = true;
+                                    addCommandDialog.componentName = model.component;
+                                    // for commands, Name == Exec
+                                    addCommandDialog.oldExec = model.display;
+                                    addCommandDialog.open();
+                                }
+                                QQC2.ToolTip {
+                                    text: i18n("Edit command for %1", model.display)
+                                }
+                            }
+                            QQC2.Button {
                                 id: deleteButton
 
                                 implicitHeight: Kirigami.Units.iconSizes.small + 2 * Kirigami.Units.smallSpacing
@@ -312,22 +337,33 @@ KCM.AbstractKCM {
 
     Kirigami.PromptDialog {
         id: addCommandDialog
+        property bool editing: false
+        property string componentName: ""
+        property string oldExec: ""
 
-        title: i18n("Add Command")
+        title: editing ? i18n("Edit Command") : i18n("Add Command")
 
         onVisibleChanged: {
             if (visible) {
                 cmdField.clear();
                 cmdField.forceActiveFocus();
+                if (editing) {
+                    cmdField.text = oldExec;
+                }
             }
         }
 
         property Kirigami.Action addCommandAction: Kirigami.Action {
-            text: i18n("Add")
-            icon.name: "list-add"
+            text: addCommandDialog.editing ? i18n("Save") : i18n("Add")
+            icon.name: addCommandDialog.editing ? "dialog-ok" : "list-add"
             onTriggered: {
-                kcm.addCommand(cmdField.text)
-                addCommandDialog.close()
+                if (addCommandDialog.editing) {
+                    kcm.editCommand(addCommandDialog.componentName, cmdField.text)
+                } else {
+                    kcm.addCommand(cmdField.text);
+                }
+                addCommandDialog.editing = false;
+                addCommandDialog.close();
             }
         }
 
