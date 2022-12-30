@@ -212,6 +212,7 @@ void KCMKeys::addCommand(const QString &exec)
     cg.writeEntry("Exec", exec);
     cg.writeEntry("NoDisplay", true);
     cg.writeEntry("StartupNotify", false);
+    cg.writeEntry("X-KDE-GlobalAccel-CommandShortcut", true);
     cg.sync();
 
     m_globalAccelModel->addApplication(newPath, name);
