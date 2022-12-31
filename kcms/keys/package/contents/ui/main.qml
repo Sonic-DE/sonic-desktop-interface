@@ -134,13 +134,11 @@ KCM.AbstractKCM {
                                 && (componentDelegate.containsMouse || componentDelegate.ListView.isCurrentItem)
                                 icon.name: "edit-rename"
                                 onClicked: {
-                                    kcm.editCommand(model.component, "lol");
-                                    console.warn(model.component);
-                                    console.warn("EDIT");
                                     addCommandDialog.editing = true;
                                     addCommandDialog.componentName = model.component;
                                     // for commands, Name == Exec
                                     addCommandDialog.oldExec = model.display;
+                                    addCommandDialog.commandListItemDelegate = componentDelegate;
                                     addCommandDialog.open();
                                 }
                                 QQC2.ToolTip {
@@ -340,6 +338,7 @@ KCM.AbstractKCM {
         property bool editing: false
         property string componentName: ""
         property string oldExec: ""
+        property Item commandListItemDelegate: null
 
         title: editing ? i18n("Edit Command") : i18n("Add Command")
 
@@ -358,7 +357,10 @@ KCM.AbstractKCM {
             icon.name: addCommandDialog.editing ? "dialog-ok" : "list-add"
             onTriggered: {
                 if (addCommandDialog.editing) {
-                    kcm.editCommand(addCommandDialog.componentName, cmdField.text)
+                    kcm.editCommand(addCommandDialog.componentName, cmdField.text);
+                    if (addCommandDialog.commandListItemDelegate) {
+                        addCommandDialog.commandListItemDelegate.label = cmdField.text;
+                    }
                 } else {
                     kcm.addCommand(cmdField.text);
                 }
