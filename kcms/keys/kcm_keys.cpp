@@ -38,6 +38,7 @@ KCMKeys::KCMKeys(QObject *parent, const KPluginMetaData &metaData, const QVarian
 {
     constexpr char uri[] = "org.kde.private.kcms.keys";
     qmlRegisterUncreatableType<BaseModel>(uri, 2, 0, "BaseModel", "Can't create BaseModel");
+    qmlRegisterUncreatableMetaObject(ComponentNS::staticMetaObject, uri, 2, 0, "ComponentType", "Can't create Component namespace");
     qmlRegisterAnonymousType<ShortcutsModel>(uri, 2);
     qmlRegisterAnonymousType<FilteredShortcutsModel>(uri, 2);
     qmlProtectModule(uri, 2);
@@ -266,7 +267,7 @@ void KCMKeys::requestKeySequence(QQuickItem *context, const QModelIndex &index, 
     }
 
     qCDebug(KCMKEYS) << "Found conflict for" << newSequence << conflict;
-    const bool isStandardAction = conflict.parent().data(BaseModel::SectionRole).toString() == i18n("Common Actions");
+    const bool isStandardAction = conflict.parent().data(BaseModel::SectionRole) == ComponentType::CommonAction;
     const QString actionName = conflict.data().toString();
     const QString componentName = conflict.parent().data().toString();
     const QString keysString = newSequence.toString(QKeySequence::NativeText);

@@ -19,6 +19,7 @@
 #include <kglobalaccel_component_interface.h>
 #include <kglobalaccel_interface.h>
 
+#include "basemodel.h"
 #include "kcmkeys_debug.h"
 
 static QStringList buildActionId(const QString &componentUnique, const QString &componentFriendly, const QString &actionUnique, const QString &actionFriendly)
@@ -114,8 +115,9 @@ Component GlobalAccelModel::loadComponent(const QList<KGlobalShortcutInfo> &info
         const KService::List services = KApplicationTrader::query(filter);
         service = services.value(0, KService::Ptr());
     }
-    bool isCommandShortcut = service && service->property(QStringLiteral("X-KDE-GlobalAccel-CommandShortcut"), QVariant::Bool).toBool();
-    const QString type = service && service->isApplication() ? (isCommandShortcut ? i18n("Commands") : i18n("Applications")) : i18n("System Services");
+    bool isCommandShortcut = service && service->property(QStringLiteral("X-KDE-GlobalAccel-CommandShortcut"), QMetaType::Bool).toBool();
+    const ComponentType type =
+        service && service->isApplication() ? (isCommandShortcut ? ComponentType::Command : ComponentType::Application) : ComponentType::SystemService;
     QString icon;
 
     static const QHash<QString, QString> hardCodedIcons = {
@@ -276,7 +278,7 @@ void GlobalAccelModel::addApplication(const QString &desktopFileName, const QStr
     collator.setCaseSensitivity(Qt::CaseInsensitive);
     collator.setNumericMode(true);
     auto pos = std::lower_bound(m_components.begin(), m_components.end(), displayName, [&](const Component &c, const QString &name) {
-        return c.type != i18n("System Services") && collator.compare(c.displayName, name) < 0;
+        return c.type != ComponentType::SystemService && collator.compare(c.displayName, name) < 0;
     });
     auto watcher = new QDBusPendingCallWatcher(m_globalAccelInterface->getComponent(desktopName));
     connect(watcher, &QDBusPendingCallWatcher::finished, this, [=] {
