@@ -131,6 +131,8 @@ Component GlobalAccelModel::loadComponent(const QList<KGlobalShortcutInfo> &info
         icon = service->icon();
     } else if (hardCodedIcons.contains(componentUnique)) {
         icon = hardCodedIcons[componentUnique];
+    } else if (type == ComponentType::Command) {
+        icon = QStringLiteral("system-run");
     } else {
         icon = componentUnique;
     }
