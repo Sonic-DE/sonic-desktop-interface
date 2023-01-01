@@ -19,6 +19,10 @@ KCM.AbstractKCM {
     id: root
     implicitWidth: Kirigami.Units.gridUnit * 44
     implicitHeight: Kirigami.Units.gridUnit * 33
+
+    // order must be in sync with ComponentType enum in basemodel.h
+    readonly property var sectionNames: [i18n("Applications"), i18n("Commands"), i18n("System Settings"), i18n("Common Actions")]
+
     property alias exportActive: exportInfo.visible
     readonly property bool errorOccured: kcm.lastError != ""
     Connections {
@@ -128,7 +132,7 @@ KCM.AbstractKCM {
                                 implicitHeight: Kirigami.Units.iconSizes.small + 2 * Kirigami.Units.smallSpacing
                                 implicitWidth: implicitHeight
 
-                                visible: model.section == i18n("Commands") // FIXME: don't compare translated strings
+                                visible: model.section == Private.ComponentType.Command
                                          && !exportActive
                                          && !model.pendingDeletion
                                          && (componentDelegate.containsMouse || componentDelegate.ListView.isCurrentItem)
@@ -151,7 +155,7 @@ KCM.AbstractKCM {
                                 implicitHeight: Kirigami.Units.iconSizes.small + 2 * Kirigami.Units.smallSpacing
                                 implicitWidth: implicitHeight
 
-                                visible: model.section != i18n("Common Actions") // FIXME: don't compare translated strings
+                                visible: model.section != Private.ComponentType.CommonAction
                                          && !exportActive
                                          && !model.pendingDeletion
                                          && (componentDelegate.containsMouse || componentDelegate.ListView.isCurrentItem)
@@ -185,7 +189,7 @@ KCM.AbstractKCM {
                     }
                     section.property: "section"
                     section.delegate: Kirigami.ListSectionHeader {
-                        label: section
+                        label: root.sectionNames[section]
                         QQC2.CheckBox {
                             id: sectionCheckbox
                             Layout.alignment: Qt.AlignRight
