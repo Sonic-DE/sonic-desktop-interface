@@ -129,9 +129,9 @@ KCM.AbstractKCM {
                                 implicitWidth: implicitHeight
 
                                 visible: model.section == i18n("Commands") // FIXME: don't compare translated strings
-                                && !exportActive
-                                && !model.pendingDeletion
-                                && (componentDelegate.containsMouse || componentDelegate.ListView.isCurrentItem)
+                                         && !exportActive
+                                         && !model.pendingDeletion
+                                         && (componentDelegate.containsMouse || componentDelegate.ListView.isCurrentItem)
                                 icon.name: "edit-rename"
                                 onClicked: {
                                     addCommandDialog.editing = true;
