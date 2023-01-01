@@ -16,6 +16,7 @@
 #include <KGlobalShortcutInfo>
 #include <KLocalizedString>
 #include <KService>
+#include <kdesktopfile.h>
 #include <kglobalaccel_component_interface.h>
 #include <kglobalaccel_interface.h>
 
@@ -270,6 +271,10 @@ void GlobalAccelModel::addApplication(const QString &desktopFileName, const QStr
         desktopName = info.fileName();
     }
 
+    KDesktopFile desktopFile(desktopName);
+    KConfigGroup cg = desktopFile.desktopGroup();
+    ComponentType type = cg.readEntry<bool>(QStringLiteral("X-KDE-GlobalAccel-CommandShortcut"), false) ? ComponentType::Command : ComponentType::Application;
+
     // Register a dummy action to trigger kglobalaccel to parse the desktop file
     QStringList actionId = buildActionId(desktopName, displayName, QString(), QString());
     m_globalAccelInterface->doRegister(actionId);
@@ -278,7 +283,7 @@ void GlobalAccelModel::addApplication(const QString &desktopFileName, const QStr
     collator.setCaseSensitivity(Qt::CaseInsensitive);
     collator.setNumericMode(true);
     auto pos = std::lower_bound(m_components.begin(), m_components.end(), displayName, [&](const Component &c, const QString &name) {
-        return c.type != ComponentType::SystemService && collator.compare(c.displayName, name) < 0;
+        return c.type != ComponentType::SystemService && (c.type != type ? c.type < type : collator.compare(c.displayName, name) < 0);
     });
     auto watcher = new QDBusPendingCallWatcher(m_globalAccelInterface->getComponent(desktopName));
     connect(watcher, &QDBusPendingCallWatcher::finished, this, [=] {
