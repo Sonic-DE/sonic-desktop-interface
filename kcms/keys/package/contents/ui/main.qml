@@ -142,7 +142,7 @@ KCM.AbstractKCM {
                                     addCommandDialog.open();
                                 }
                                 QQC2.ToolTip {
-                                    text: i18n("Edit command for %1", model.display)
+                                    text: i18nc("@tooltip:button %1 is the text of a custom command", "Edit command for %1", model.display)
                                 }
                             }
                             QQC2.Button {
