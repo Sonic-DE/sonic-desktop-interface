@@ -17,7 +17,12 @@ class KConfigBase;
 namespace ComponentNS
 {
 Q_NAMESPACE
-enum ComponentType { Application, Command, SystemService, CommonAction };
+enum ComponentType {
+    Application,
+    Command,
+    SystemService,
+    CommonAction,
+};
 Q_ENUM_NS(ComponentType)
 };
 
