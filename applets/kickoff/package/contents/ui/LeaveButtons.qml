@@ -14,6 +14,15 @@ import org.kde.kirigami 2.16 as Kirigami
 
 RowLayout {
     id: root
+    // Can't use implicitWidth - spacer.width because buttons will still be invisible when switching from "Power and Session" to other options
+    readonly property real buttonImplicitWidth: {
+        let accumulatedWidth = 0;
+        for (let i = 0; i < buttonRepeater.count; ++i) {
+            const item = buttonRepeater.itemAt(i);
+            accumulatedWidth += item.visible ? item.implicitWidth + spacing : 0;
+        }
+        return accumulatedWidth + spacing;
+    }
     property alias leave: leaveButton
     property bool shouldCollapseButtons: false
     spacing: plasmoid.rootItem.backgroundMetrics.spacing
@@ -24,6 +33,7 @@ RowLayout {
     }
 
     Item {
+        id: leftSpacer
         Layout.fillWidth: !plasmoid.configuration.showActionButtonCaptions && plasmoid.configuration.primaryActions === 3
     }
 
@@ -61,6 +71,7 @@ RowLayout {
     }
 
     Item {
+        id: rightSpacer
         Layout.fillWidth: !plasmoid.configuration.showActionButtonCaptions || plasmoid.configuration.primaryActions !== 3
     }
 
