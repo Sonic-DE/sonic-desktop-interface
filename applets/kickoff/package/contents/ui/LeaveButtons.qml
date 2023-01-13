@@ -14,6 +14,7 @@ import org.kde.kirigami 2.16 as Kirigami
 
 RowLayout {
     id: root
+    readonly property real buttonImplicitWidth: implicitWidth - leftSpacer.width - rightSpacer.width - (plasmoid.configuration.primaryActions === 3 && leaveButton.visible ? leaveButton.implicitWidth : 0)
     property alias leave: leaveButton
     property bool shouldCollapseButtons: false
     spacing: plasmoid.rootItem.backgroundMetrics.spacing
@@ -24,6 +25,7 @@ RowLayout {
     }
 
     Item {
+        id: leftSpacer
         Layout.fillWidth: !plasmoid.configuration.showActionButtonCaptions && plasmoid.configuration.primaryActions === 3
     }
 
@@ -61,6 +63,7 @@ RowLayout {
     }
 
     Item {
+        id: rightSpacer
         Layout.fillWidth: !plasmoid.configuration.showActionButtonCaptions || plasmoid.configuration.primaryActions !== 3
     }
 
