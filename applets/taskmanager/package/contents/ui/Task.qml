@@ -305,10 +305,11 @@ PlasmaCore.ToolTipArea {
         onLongPressed: task.showContextMenu();
     }
 
-    TapHandler {
+    // QTBUG-110262: TapHandler will "hang" if a menu is opened on press.
+    MouseArea {
+        anchors.fill: parent
         acceptedButtons: Qt.RightButton
-        acceptedDevices: PointerDevice.Mouse
-        onTapped: task.showContextMenu();
+        onPressed: task.showContextMenu();
     }
 
     TapHandler {
