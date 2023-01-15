@@ -305,10 +305,10 @@ PlasmaCore.ToolTipArea {
         onLongPressed: task.showContextMenu();
     }
 
-    TapHandler {
+    MouseArea {
+        anchors.fill: parent
         acceptedButtons: Qt.RightButton
-        acceptedDevices: PointerDevice.Mouse
-        onTapped: task.showContextMenu();
+        onPressed: task.showContextMenu();
     }
 
     TapHandler {
