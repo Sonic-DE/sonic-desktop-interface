@@ -16,7 +16,7 @@ import org.kde.taskmanager 0.1 as TaskManager
 
 import "code/layout.js" as LayoutManager
 
-PlasmaComponents.ContextMenu {
+PlasmaComponents.Menu {
     id: menu
 
     property QtObject backend
@@ -50,7 +50,7 @@ PlasmaComponents.ContextMenu {
     }
 
     Component.onCompleted: {
-        // Cannot have "Connections" as child of PlasmaCoponents.ContextMenu.
+        // Cannot have "Connections" as child of PlasmaComponents.Menu.
         backend.showAllPlaces.connect(showContextMenuWithAllPlaces);
     }
 
@@ -307,7 +307,7 @@ PlasmaComponents.ContextMenu {
             function onDesktopNamesChanged() {Qt.callLater(virtualDesktopsMenu.refresh)}
         }
 
-        PlasmaComponents.ContextMenu {
+        PlasmaComponents.Menu {
             id: virtualDesktopsMenu
 
             visualParent: virtualDesktopsMenuItem.action
@@ -388,7 +388,7 @@ PlasmaComponents.ContextMenu {
             }
         }
 
-        PlasmaComponents.ContextMenu {
+        PlasmaComponents.Menu {
             id: activitiesDesktopsMenu
 
             visualParent: activitiesDesktopsMenuItem.action
@@ -527,7 +527,7 @@ PlasmaComponents.ContextMenu {
             }
         }
 
-        PlasmaComponents.ContextMenu {
+        PlasmaComponents.Menu {
             id: activitiesLaunchersMenu
             visualParent: showLauncherInActivitiesItem.action
 
@@ -612,7 +612,7 @@ PlasmaComponents.ContextMenu {
         text: i18n("More")
         icon: "view-more-symbolic"
 
-        PlasmaComponents.ContextMenu {
+        PlasmaComponents.Menu {
             visualParent: moreActionsMenuItem.action
 
             PlasmaComponents.MenuItem {
