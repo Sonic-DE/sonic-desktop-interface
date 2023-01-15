@@ -18,7 +18,15 @@ MouseArea {
     hoverEnabled: true
     enabled: winId !== 0
 
-    onClicked: {
+    onPressed: mouse => {
+        switch (mouse.button) {
+        case Qt.RightButton:
+            tasks.createContextMenu(rootTask, modelIndex).show();
+            break;
+        }
+    }
+
+    onClicked: mouse => {
         switch (mouse.button) {
         case Qt.LeftButton:
             tasksModel.requestActivate(modelIndex);
@@ -28,9 +36,6 @@ MouseArea {
         case Qt.MiddleButton:
             backend.cancelHighlightWindows();
             tasksModel.requestClose(modelIndex);
-            break;
-        case Qt.RightButton:
-            tasks.createContextMenu(rootTask, modelIndex).show();
             break;
         }
     }
