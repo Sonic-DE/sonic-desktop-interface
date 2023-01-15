@@ -208,7 +208,12 @@ PlasmaCore.ToolTipArea {
             : tasksModel.makeModelIndex(index));
     }
 
-    function showContextMenu(args) {
+    function showContextMenu(showAllPlaces /*bool?*/ = undefined) {
+        const args = {
+            // When we're a launcher, there's no window controls, so we can show all
+            // places without the menu getting super huge.
+            showAllPlaces: (showAllPlaces !== undefined ? showAllPlaces : Boolean(model.IsLauncher))
+        };
         task.hideImmediately();
         contextMenu = tasks.createContextMenu(task, modelIndex(), args);
         contextMenu.show();
@@ -297,21 +302,13 @@ PlasmaCore.ToolTipArea {
         id: menuTapHandler
         acceptedButtons: Qt.LeftButton
         acceptedDevices: PointerDevice.TouchScreen | PointerDevice.Stylus
-        onLongPressed: {
-            // When we're a launcher, there's no window controls, so we can show all
-            // places without the menu getting super huge.
-            if (model.IsLauncher === true) {
-                showContextMenu({showAllPlaces: true})
-            } else {
-                showContextMenu();
-            }
-        }
+        onLongPressed: task.showContextMenu();
     }
 
     TapHandler {
         acceptedButtons: Qt.RightButton
         acceptedDevices: PointerDevice.Mouse
-        onTapped: menuTapHandler.longPressed();
+        onTapped: task.showContextMenu();
     }
 
     TapHandler {
