@@ -375,10 +375,6 @@ void ScreenMapper::readDisabledScreensMap(const QStringList &serializedMap)
         }
     }
 
-    if (!m_corona) {
-        return;
-    }
-
     // Find out what is the max screen number that was found in the saved screenMapping config key
     int maxKnownScreen = -1;
     for (auto it = m_screenItemMap.constBegin(); it != m_screenItemMap.constEnd(); it++) {
