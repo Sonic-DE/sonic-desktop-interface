@@ -43,6 +43,8 @@ Loader {
     property bool smartLauncherCountVisible
     property int smartLauncherCount
 
+    property bool blockingUpdates: false
+
     readonly property bool isVerticalPanel: plasmoid.formFactor === PlasmaCore.Types.Vertical
     // This number controls the overall size of the window tooltips
     readonly property int tooltipInstanceMaximumWidth: PlasmaCore.Units.gridUnit * 16
@@ -70,7 +72,7 @@ Loader {
     active: rootIndex !== undefined && ((parentTask && parentTask.containsMouse) || Window.visibility !== Window.Hidden)
     asynchronous: true
 
-    sourceComponent: isGroup ? groupToolTip : singleTooltip
+    sourceComponent: blockingUpdates ? undefined : (isGroup ? groupToolTip : singleTooltip)
 
     Component {
         id: singleTooltip
