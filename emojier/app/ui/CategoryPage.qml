@@ -91,6 +91,32 @@ Kirigami.ScrollablePage
         }
     }
 
+    Component {
+        id: menuComponent
+
+        QQC2.Menu {
+            required property QQC2.Label label
+
+            onClosed: destroy()
+            QQC2.MenuItem {
+                icon.name: "edit-copy"
+                text: i18nc("@item:inmenu", "Copy Character")
+                onClicked: {
+                    CopyHelper.copyTextToClipboard(label.text);
+                    window.showPassiveNotification(i18n("%1 copied to the clipboard", label.text));
+                }
+            }
+            QQC2.MenuItem {
+                icon.name: "edit-copy"
+                text: i18nc("@item:inmenu", "Copy Description")
+                onClicked: {
+                    CopyHelper.copyTextToClipboard(label.QQC2.ToolTip.text);
+                    window.showPassiveNotification(i18n("%1 copied to the clipboard", label.QQC2.ToolTip.text));
+                }
+            }
+        }
+    }
+
     GridView {
         id: emojiView
 
@@ -130,6 +156,7 @@ Kirigami.ScrollablePage
             opacity: hoverHandler.hovered ? 0.7 : 1
             scale: tapHandler.pressed ? 0.6 : 1
 
+            Keys.onMenuPressed: contextMenuHandler.tapped(null)
             Keys.onReturnPressed: tapHandler.tapped(null)
 
             HoverHandler {
@@ -139,6 +166,23 @@ Kirigami.ScrollablePage
             TapHandler {
                 id: tapHandler
                 onTapped: window.report(model.display, model.toolTip)
+            }
+
+            TapHandler {
+                acceptedButtons: Qt.LeftButton
+                acceptedDevices: PointerDevice.TouchScreen | PointerDevice.Stylus
+                onLongPressed: event => contextMenuHandler.tapped(event)
+            }
+
+            TapHandler {
+                id: contextMenuHandler
+                acceptedButtons: Qt.RightButton
+                onTapped: {
+                    const menu = menuComponent.createObject(emojiLabel, {
+                        "label": emojiLabel,
+                    });
+                    menu.popup();
+                }
             }
 
             Behavior on opacity {
