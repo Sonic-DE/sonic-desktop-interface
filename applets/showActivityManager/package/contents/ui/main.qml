@@ -35,7 +35,7 @@ DND.DropArea {
         || plasmoid.location === PlasmaCore.Types.RightEdge
         || plasmoid.location === PlasmaCore.Types.BottomEdge
         || plasmoid.location === PlasmaCore.Types.LeftEdge)
-    readonly property bool inVertical: plasmoid.location === PlasmaCore.Types.LeftEdge || plasmoid.location === PlasmaCore.Types.RightEdge
+    readonly property bool inVertical: Plasmoid.formFactor === PlasmaCore.Types.Vertical
     property string activeSource: "Status"
     property bool showActivityName: plasmoid.configuration.showActivityName
     property bool showActivityIcon: plasmoid.configuration.showActivityIcon
