@@ -1,3 +1,12 @@
+/*
+    SPDX-FileCopyrightText: 2021-2022 Andrey Butirsky <butirsky@gmail.com>
+    SPDX-FileCopyrightText: 2021 Yuriy Saurov <dr@i-glu4it.ru>
+    SPDX-FileCopyrightText: 2021 Eugene Popov <popov895@ukr.net>
+    SPDX-FileCopyrightText: 2022 Nate Graham <nate@kde.org>
+    SPDX-FileCopyrightText: 2022 ivan tkachenko <me@ratijas.tk>
+    SPDX-License-Identifier: GPL-2.0-or-later
+*/
+
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15

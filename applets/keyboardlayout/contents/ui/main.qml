@@ -1,5 +1,7 @@
 /*
     SPDX-FileCopyrightText: 2020 Andrey Butirsky <butirsky@gmail.com>
+    SPDX-FileCopyrightText: 2021 Yuriy Saurov <dr@i-glu4it.ru>
+    SPDX-FileCopyrightText: 2022 Nate Graham <nate@kde.org>
     SPDX-FileCopyrightText: 2022 ivan tkachenko <me@ratijas.tk>
     SPDX-License-Identifier: GPL-2.0-or-later
 */
