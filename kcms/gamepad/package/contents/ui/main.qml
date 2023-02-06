@@ -22,6 +22,7 @@ KCM.SimpleKCM {
     }
 
     property var joystickCount: deviceSelector.count
+    property int selectedDevice: deviceSelector.currentIndex
 
     Kirigami.PlaceholderMessage {
         text: i18n("No gamepad found")
@@ -62,42 +63,38 @@ KCM.SimpleKCM {
                 required property var device
 
                 ColumnLayout {
-					QQC2.Label {
-						text: name + " has " + device.numButtons + " buttons"
-					}
+                    QQC2.Label {
+                        text: i18n("Brand: ") + device.brandName(device.brand)
+                    }
 
-					QQC2.Label {
-						text: name + " has " + device.numAxes + " axes"
-					}
+                    QQC2.Label {
+                        text: i18n("Rumble: ") + (device.hasRumble ? i18n("Yes") : i18n("No"))
+                    }
 
-					QQC2.Label {
-						text: device.hasRumble ? "Does have rumble" : "Does not have rumble"
-					}
+                    QQC2.Label {
+                        text: i18n("Buttons: ") + device.numButtons
+                    }
 
-					Repeater {
-						model: device.buttonState
+                    Repeater {
+                        model: device.buttonState
 
-						QQC2.Label {
-							RowLayout {
-								QQC2.Label {
-									text: "Button " + (index + 1) + ": " + modelData
-								}
-							}
-						}
-					}
+                        QQC2.Label {
+                            text: "Button " + (index + 1) + ": " + modelData
+                        }
+                    }
 
-					Repeater {
-						model: device.axisState
+                    QQC2.Label {
+                        text: i18n("Axes: ") + device.numAxes
+                    }
 
-						QQC2.Label {
-							RowLayout {
-								QQC2.Label {
-									text: "Axis " + (index + 1) + ": " + modelData
-								}
-							}
-						}
-					}
-				}
+                    Repeater {
+                        model: device.axisState
+
+                        QQC2.Label {
+                            text: "Axis " + (index + 1) + ": " + modelData
+                        }
+                    }
+                }
             }
         }
     }
