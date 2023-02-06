@@ -16,6 +16,8 @@
 
 JoyDevice::JoyDevice(const Solid::Device &device, QObject *parent)
     : QObject(parent)
+    , m_brand(UnknownBrand)
+    , m_model(i18n("Unknown Model"))
 {
     auto inputDevice = device.as<Solid::Block>();
 
@@ -59,6 +61,12 @@ JoyDevice::JoyDevice(const Solid::Device &device, QObject *parent)
 
     auto notifier = new QSocketNotifier(fd, QSocketNotifier::Read, this);
     connect(notifier, &QSocketNotifier::activated, this, &JoyDevice::poll);
+}
+
+JoyDevice::JoyDevice()
+    : m_brand(UnknownBrand)
+    , m_model(i18n("Unknown Model"))
+{
 }
 
 void JoyDevice::poll()
