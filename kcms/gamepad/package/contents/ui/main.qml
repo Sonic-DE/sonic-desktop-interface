@@ -22,6 +22,8 @@ KCM.SimpleKCM {
     }
 
     property var joystickCount: deviceSelector.count
+    property int selectedDevice: deviceSelector.currentIndex
+    property var currentDevice: deviceModel.device(selectedDevice)
 
     Kirigami.PlaceholderMessage {
         text: i18n("No gamepad found")
@@ -54,50 +56,37 @@ KCM.SimpleKCM {
             textRole: "name"
         }
 
-        ListView {
-            model: deviceModel
+        ColumnLayout {
+            QQC2.Label {
+                text: i18n("Vendor: ") + currentDevice.vendor
+            }
 
-            delegate: QQC2.ItemDelegate {
-                required property var name
-                required property var device
+            QQC2.Label {
+                text: i18n("Rumble: ") + (currentDevice.hasRumble ? i18n("Yes") : i18n("No"))
+            }
 
-                ColumnLayout {
-					QQC2.Label {
-						text: name + " has " + device.numButtons + " buttons"
-					}
+            QQC2.Label {
+                text: i18n("Buttons: ") + currentDevice.numButtons
+            }
 
-					QQC2.Label {
-						text: name + " has " + device.numAxes + " axes"
-					}
+            Repeater {
+                model: currentDevice.buttonState
 
-					QQC2.Label {
-						text: device.hasRumble ? "Does have rumble" : "Does not have rumble"
-					}
+                QQC2.Label {
+                    text: "Button " + currentDevice.buttonNames[index] + ": " + modelData
+                }
+            }
 
-					Repeater {
-						model: device.buttonState
+            QQC2.Label {
+                text: i18n("Axes: ") + currentDevice.numAxes
+            }
 
-						QQC2.Label {
-							RowLayout {
-								QQC2.Label {
-									text: "Button " + (index + 1) + ": " + modelData
-								}
-							}
-						}
-					}
+            Repeater {
+                model: currentDevice.axisState
 
-					Repeater {
-						model: device.axisState
-
-						QQC2.Label {
-							RowLayout {
-								QQC2.Label {
-									text: "Axis " + (index + 1) + ": " + modelData
-								}
-							}
-						}
-					}
-				}
+                QQC2.Label {
+                            text: "Axis " + (index + 1) + ": " + modelData
+                }
             }
         }
     }
