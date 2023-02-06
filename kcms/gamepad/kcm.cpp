@@ -12,6 +12,7 @@
 #include <QStandardPaths>
 
 #include "devicemodel.h"
+#include "joydevice.h"
 
 K_PLUGIN_FACTORY_WITH_JSON(KCMJoystickFactory, "kcm_gamepad.json", registerPlugin<KCMGamePad>();)
 
@@ -21,6 +22,7 @@ KCMGamePad::KCMGamePad(QObject *parent, const KPluginMetaData &metaData, const Q
     : KQuickAddons::ManagedConfigModule(parent, metaData, args)
 {
     qmlRegisterType<DeviceModel>("org.kde.plasma.gamepad.kcm", 1, 0, "DeviceModel");
+    qmlRegisterType<JoyDevice>("org.kde.plasma.gamepad.kcm", 1, 0, "JoyDevice");
 }
 
 #include "kcm.moc"
