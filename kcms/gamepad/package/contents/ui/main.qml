@@ -22,6 +22,7 @@ KCM.SimpleKCM {
     }
 
     property var joystickCount: deviceSelector.count
+    property int selectedDevice: deviceSelector.currentIndex
 
     Kirigami.PlaceholderMessage {
         text: i18n("No gamepad found")
@@ -54,12 +55,10 @@ KCM.SimpleKCM {
             textRole: "name"
         }
 
-        ListView {
-            model: deviceModel
+        ColumnLayout {
+            id: deviceProperties
+            visible: root.selectedDevice > -1
 
-            delegate: QQC2.ItemDelegate {
-                required property var name
-                required property var device
 
                 ColumnLayout {
 					QQC2.Label {
@@ -73,6 +72,14 @@ KCM.SimpleKCM {
 					QQC2.Label {
 						text: device.hasRumble ? "Does have rumble" : "Does not have rumble"
 					}
+
+                    QQC2.Label {
+                        text: i18n("Brand: ") + device.brand
+                    }
+
+                    QQC2.Label {
+                        text: i18n("Brand: ") + device.brandName(device.brand)
+                    }
 
 					Repeater {
 						model: device.buttonState
@@ -98,7 +105,6 @@ KCM.SimpleKCM {
 						}
 					}
 				}
-            }
         }
     }
 }

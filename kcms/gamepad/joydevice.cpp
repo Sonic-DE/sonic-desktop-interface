@@ -6,6 +6,7 @@
 
 #include "joydevice.h"
 
+#include <KLocalizedString>
 #include <QDebug>
 #include <QFile>
 #include <QSocketNotifier>
@@ -16,6 +17,8 @@
 
 JoyDevice::JoyDevice(const Solid::Device &device, QObject *parent)
     : QObject(parent)
+    , m_brand(UnknownBrand)
+    , m_model(i18n("Unknown Model"))
 {
     auto inputDevice = device.as<Solid::Block>();
 
@@ -104,4 +107,6 @@ void JoyDevice::processEvent(struct input_event &ev)
 
         emit axisStateChanged();
     }
+
+    // TODO: Calculate numSticks by checking how many axes the device has
 }
