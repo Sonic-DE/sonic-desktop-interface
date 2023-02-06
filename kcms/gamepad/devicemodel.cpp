@@ -61,6 +61,14 @@ DeviceModel::DeviceModel()
     udev_unref(udev);
 }
 
+JoyDevice *DeviceModel::device(int index) const
+{
+    if (index < 0 || index > m_devices.count())
+        return nullptr;
+
+    return m_devices.at(index);
+}
+
 int DeviceModel::rowCount(const QModelIndex &parent) const
 {
     return m_devices.count();

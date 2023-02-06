@@ -6,12 +6,14 @@
 
 #include "joydevice.h"
 
+#include <KLocalizedString>
 #include <QDebug>
 #include <fcntl.h>
 
 JoyDevice::JoyDevice(udev_device *device, QObject *parent)
-    : m_device(device)
-    , QObject(parent)
+    : QObject(parent)
+    , m_device(device)
+    , m_brand(i18n("Unknown Brand"))
 {
     m_name = udev_device_get_sysattr_value(m_device, "name");
 
@@ -49,4 +51,8 @@ JoyDevice::JoyDevice(udev_device *device, QObject *parent)
         if (libevdev_has_event_code(dev, EV_KEY, code))
             m_numButtons++;
     }
+}
+
+JoyDevice::JoyDevice()
+{
 }

@@ -13,10 +13,13 @@ class JoyDevice;
 
 class DeviceModel : public QAbstractListModel
 {
+    Q_OBJECT
 public:
     enum CustomRoles { NameRole = Qt::UserRole + 1, DeviceRole };
 
     DeviceModel();
+
+    Q_INVOKABLE JoyDevice *device(int index) const;
 
     int rowCount(const QModelIndex &parent) const override;
     QVariant data(const QModelIndex &index, int role) const override;
