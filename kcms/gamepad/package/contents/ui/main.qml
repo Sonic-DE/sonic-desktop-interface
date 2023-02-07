@@ -59,7 +59,7 @@ KCM.SimpleKCM {
             }
 
             QQC2.Label {
-                text: i18n("Brand: ") + deviceProperties.currentDevice.brand
+                text: i18n("Brand: ") + deviceProperties.currentDevice.brandName(deviceProperties.currentDevice.brand)
             }
         }
     }
