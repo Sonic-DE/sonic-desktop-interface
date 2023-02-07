@@ -476,34 +476,34 @@ MouseArea {
 
     TriangleMouseFilter {
         id: tmf
-        edge: Qt.TopEdge
         filterTimeOut: 300
         active: true
         blockFirstEnter: false
-        edgeLine: {
-            if (tasks.toolTipAreaItem && tasks.toolTipAreaItem.visible) {
-                const x = tasks.toolTipAreaItem.mainItem.x;
-                const y = tasks.toolTipAreaItem.mainItem.y;
-                const height = tasks.toolTipAreaItem.mainItem.height;
-                const width = tasks.toolTipAreaItem.mainItem.width;
-                console.log(height, width);
-                let line = [];
-                if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
-                    line = [Qt.point(x, y + height), Qt.point(x + width, y + height)];
-                } else if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
-                    line = [Qt.point(x, y), Qt.point(x, y + height)];
-                } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
-                    line = [Qt.point(x + width, y), Qt.point(x + width, y + height)];
-                } else if (plasmoid.location === PlasmaCore.Types.TopEdge) {
-                    line = [Qt.point(x + width, y), Qt.point(x + width, y + height)];
-                }
-                let ret = line.map(function(pt) {
-                    return tasks.toolTipAreaItem.mainItem.mapToItem(tmf, pt);
-                });
-                console.warn(ret)
-                return ret
+
+        edge: {
+            switch (plasmoid.location) {
+                case PlasmaCore.Types.BottomEdge:
+                    return Qt.TopEdge;
+                case PlasmaCore.Types.TopEdge:
+                    return Qt.BottomEdge;
+                case PlasmaCore.Types.LeftEdge:
+                    return Qt.RightEdge;
+                case PlasmaCore.Types.RightEdge:
+                    return Qt.LeftEdge;
+                default:
+                    return Qt.TopEdge;
             }
-            return []
+        }
+
+        secondaryPoint: {
+            if (tasks.toolTipAreaItem === null) {
+                return Qt.point(0, 0);
+            }
+            const x = tasks.toolTipAreaItem.x;
+            const y = tasks.toolTipAreaItem.y;
+            const height = tasks.toolTipAreaItem.height;
+            const width = tasks.toolTipAreaItem.width;
+            return Qt.point(x+width/2, height);
         }
 
         anchors {
@@ -524,39 +524,40 @@ MouseArea {
             width: tasks.shouldShirnkToZero ? 0 : LayoutManager.layoutWidth()
             height: tasks.shouldShirnkToZero ? 0 : LayoutManager.layoutHeight()
 
-        onAnimatingChanged: {
-            if (!animating) {
-                tasks.publishIconGeometries(children, tasks);
+            onAnimatingChanged: {
+                if (!animating) {
+                    tasks.publishIconGeometries(children, tasks);
+                }
             }
-        }
-        onWidthChanged: layoutTimer.restart()
-        onHeightChanged: layoutTimer.restart()
+            onWidthChanged: layoutTimer.restart()
+            onHeightChanged: layoutTimer.restart()
 
-        function layout() {
-            LayoutManager.layout(taskRepeater);
-        }
+            function layout() {
+                LayoutManager.layout(taskRepeater);
+            }
 
-        Timer {
-            id: layoutTimer
+            Timer {
+                id: layoutTimer
 
-            interval: 0
-            repeat: false
+                interval: 0
+                repeat: false
 
-            onTriggered: taskList.layout()
-        }
+                onTriggered: taskList.layout()
+            }
 
-        Repeater {
-            id: taskRepeater
+            Repeater {
+                id: taskRepeater
 
-            delegate: Task {}
-            onItemAdded: taskList.layout()
-            onItemRemoved: {
-                if (tasks.containsMouse && index != taskRepeater.count &&
-                    item.winIdList && item.winIdList.length > 0 &&
-                    taskClosedWithMouseMiddleButton.indexOf(item.winIdList[0]) > -1) {
-                    needLayoutRefresh = true;
-                } else {
-                    taskList.layout();
+                delegate: Task {}
+                onItemAdded: taskList.layout()
+                onItemRemoved: {
+                    if (tasks.containsMouse && index != taskRepeater.count &&
+                        item.winIdList && item.winIdList.length > 0 &&
+                        taskClosedWithMouseMiddleButton.indexOf(item.winIdList[0]) > -1) {
+                        needLayoutRefresh = true;
+                    } else {
+                        taskList.layout();
+                    }
                 }
             }
         }
