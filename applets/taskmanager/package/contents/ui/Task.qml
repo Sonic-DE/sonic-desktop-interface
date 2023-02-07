@@ -115,12 +115,15 @@ PlasmaCore.ToolTipArea {
     onToolTipVisibleChanged: {
         if (!toolTipVisible) {
             tasks.toolTipOpenedByClick = null;
+        } else {
+            tasks.toolTipAreaItem = task;
         }
     }
 
     onContainsMouseChanged: if (containsMouse) {
         task.forceActiveFocus(Qt.MouseFocusReason);
         task.updateMainItemBindings();
+        tasks.toolTipAreaItem = task;
     } else {
         tasks.toolTipOpenedByClick = null;
     }
@@ -393,14 +396,6 @@ PlasmaCore.ToolTipArea {
         property bool isHovered: task.highlighted && plasmoid.configuration.taskHoverEffect
         property string basePrefix: "normal"
         prefix: isHovered ? TaskTools.taskPrefixHovered(basePrefix, plasmoid.location) : TaskTools.taskPrefix(basePrefix, plasmoid.location)
-
-        onToolTipVisibleChanged: {
-            if (!toolTipVisible) {
-                tasks.toolTipOpenedByClick = null;
-            } else {
-                tasks.toolTipAreaItem = toolTipArea
-            }
-        }
 
         // Avoid repositioning delegate item after dragFinished
         DragHandler {
