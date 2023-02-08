@@ -524,6 +524,13 @@ MouseArea {
             width: tasks.shouldShirnkToZero ? 0 : LayoutManager.layoutWidth()
             height: tasks.shouldShirnkToZero ? 0 : LayoutManager.layoutHeight()
 
+            flow: {
+                if (tasks.vertical) {
+                    return plasmoid.configuration.forceStripes ? Flow.LeftToRight : Flow.TopToBottom
+                }
+                return plasmoid.configuration.forceStripes ? Flow.TopToBottom : Flow.LeftToRight
+            }
+
             onAnimatingChanged: {
                 if (!animating) {
                     tasks.publishIconGeometries(children, tasks);
@@ -558,6 +565,7 @@ MouseArea {
                     } else {
                         taskList.layout();
                     }
+                    taskClosedWithMouseMiddleButton = [];
                 }
             }
         }
