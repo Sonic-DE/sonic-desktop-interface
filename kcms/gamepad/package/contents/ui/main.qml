@@ -30,6 +30,13 @@ KCM.SimpleKCM {
         width: parent.width - (Kirigami.Units.largeSpacing * 4)
     }
 
+    actions.main: Kirigami.Action {
+            id: addAction
+            icon.name: "list-add"
+            text: i18nc("@action:button", "Add bluetooth device...")
+            onTriggered: { Qt.openUrlExternally("systemsettings://kcm_bluetooth"); }
+        }
+
     Kirigami.FormLayout {
         id: formLayout
 
