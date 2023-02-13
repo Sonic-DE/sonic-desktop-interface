@@ -38,11 +38,13 @@ JoyDevice::JoyDevice(const Solid::Device &device, QObject *parent)
             m_numButtons++;
     }
 
-    if (libevdev_has_event_code(m_device, EV_ABS, ABS_X)) {
+    if (libevdev_has_event_code(m_device, EV_ABS, ABS_X) || libevdev_has_event_code(m_device, EV_ABS, ABS_Y)
+        || libevdev_has_event_code(m_device, EV_ABS, ABS_Z)) {
         m_numAxes++;
     }
 
-    if (libevdev_has_event_code(m_device, EV_ABS, ABS_RX)) {
+    if (libevdev_has_event_code(m_device, EV_ABS, ABS_RX) || libevdev_has_event_code(m_device, EV_ABS, ABS_RY)
+        || libevdev_has_event_code(m_device, EV_ABS, ABS_RZ)) {
         m_numAxes++;
     }
 
@@ -94,7 +96,7 @@ void JoyDevice::processEvent(struct input_event &ev)
             emit buttonStateChanged();
         }
     } else if (ev.type == EV_ABS) {
-        int axisIndex = ev.code != ABS_X && ev.code != ABS_Y;
+        int axisIndex = ev.code != ABS_X && ev.code != ABS_Y && ev.code != ABS_Z;
 
         if (ev.code == ABS_Y || ev.code == ABS_RY) {
             m_axisState[axisIndex].setY(normalize(ev.code, ev.value));
