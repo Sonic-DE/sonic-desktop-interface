@@ -19,7 +19,7 @@ JoyDevice::JoyDevice(const Solid::Device &device, QObject *parent)
 {
     auto inputDevice = device.as<Solid::Block>();
 
-    m_name = device.vendor() + " " + device.product();
+    m_name = QStringLiteral("%1 %2").arg(device.vendor()).arg(device.product());
 
     auto fd = open(QFile::encodeName(inputDevice->device()), O_RDONLY | O_NONBLOCK);
     if (fd < 0) {
@@ -31,6 +31,10 @@ JoyDevice::JoyDevice(const Solid::Device &device, QObject *parent)
     if (rc < 0) {
         qDebug() << "Failed to open evdev stream!";
         return;
+    }
+
+    if (m_name == " ") {
+        m_name = libevdev_get_name(m_device);
     }
 
     for (int code = BTN_A; code < BTN_A + 18; code++) {
