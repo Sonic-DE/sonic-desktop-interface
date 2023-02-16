@@ -533,7 +533,7 @@ PlasmaCore.ToolTipArea {
 
             PropertyChanges {
                 target: label
-                text: model.display || ""
+                text: model.display
             }
         }
     }
