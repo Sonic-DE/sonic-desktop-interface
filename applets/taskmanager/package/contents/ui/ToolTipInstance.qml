@@ -32,10 +32,10 @@ ColumnLayout {
 
         let text;
         if (isGroup) {
-            if (model.display === undefined) {
+            if (model.display.length === 0) {
                 return "";
             }
-            text = model.display.toString();
+            text = model.display;
         } else {
             text = displayParent;
         }
@@ -147,7 +147,7 @@ ColumnLayout {
         clip: true
         visible: toolTipDelegate.isWin
 
-        readonly property bool isMinimized: isGroup ? IsMinimized == true : isMinimizedParent
+        readonly property bool isMinimized: isGroup ? IsMinimized : isMinimizedParent
         // TODO: this causes XCB error message when being visible the first time
         readonly property var winId: toolTipDelegate.isWin && toolTipDelegate.windows[flatIndex] !== undefined ? toolTipDelegate.windows[flatIndex] : 0
 
