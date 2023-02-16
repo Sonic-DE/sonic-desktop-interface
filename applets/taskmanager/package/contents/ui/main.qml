@@ -559,7 +559,7 @@ MouseArea {
                 onItemAdded: taskList.layout()
                 onItemRemoved: {
                     if (tasks.containsMouse && index != taskRepeater.count &&
-                        item.winIdList && item.winIdList.length > 0 &&
+                        item.m.WinIdList.length > 0 &&
                         taskClosedWithMouseMiddleButton.indexOf(item.winIdList[0]) > -1) {
                         needLayoutRefresh = true;
                     } else {
