@@ -47,6 +47,14 @@ JoyDevice::JoyDevice(const Solid::Device &device, QObject *parent)
         }
     }
 
+    // Check dpad buttons
+    for (int code = BTN_DPAD_UP; code <= BTN_DPAD_RIGHT; code++) {
+        if (libevdev_has_event_code(m_device, EV_KEY, code)) {
+            m_buttonCodes.append(code);
+            m_numButtons++;
+        }
+    }
+
     if (libevdev_has_event_code(m_device, EV_ABS, ABS_X) || libevdev_has_event_code(m_device, EV_ABS, ABS_Y)
         || libevdev_has_event_code(m_device, EV_ABS, ABS_Z)) {
         m_axisCodes.append(ABS_X);
@@ -189,6 +197,18 @@ QString JoyDevice::buttonName(int code)
     case BTN_THUMBR:
         name = i18nc("Right thumb stick button", "Right Thumb");
         break;
+    case BTN_DPAD_UP:
+        name = i18nc("Up button", "Up");
+        break;
+    case BTN_DPAD_DOWN:
+        name = i18nc("Down button", "Down");
+        break;
+    case BTN_DPAD_LEFT:
+        name = i18nc("Left button", "Left");
+        break;
+    case BTN_DPAD_RIGHT:
+        name = i18nc("Right button", "Right");
+        break;
     }
     return name;
 }
@@ -206,10 +226,9 @@ float JoyDevice::normalize(int code, __s32 value)
 void JoyDevice::processEvent(struct input_event &ev)
 {
     if (ev.type == EV_KEY) {
-        const int index = ev.code - BTN_SOUTH;
-        if (index >= 0 && index < m_buttonState.size()) {
-            m_buttonState[ev.code - BTN_SOUTH] = ev.value;
-
+        if (m_buttonCodes.contains(ev.code)) {
+            const int index = m_buttonCodes.indexOf(ev.code);
+            m_buttonState[index] = ev.value;
             emit buttonStateChanged();
         }
     } else if (ev.type == EV_ABS) {
