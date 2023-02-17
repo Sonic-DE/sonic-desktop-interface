@@ -18,6 +18,46 @@ JoyDevice::JoyDevice(const Solid::Device &device, QObject *parent)
     : QObject(parent)
     , m_model(i18n("Unknown Model"))
 {
+    // The various buttons we expect gamepads to possibly give us
+    const QVector<int> buttonsToCheck = {
+        // First normal dpad
+        BTN_DPAD_UP,
+        BTN_DPAD_DOWN,
+        BTN_DPAD_LEFT,
+        BTN_DPAD_RIGHT,
+
+        // Then normal buttons
+        BTN_SOUTH,
+        BTN_EAST,
+        BTN_C,
+        BTN_NORTH,
+        BTN_WEST,
+        BTN_Z,
+        BTN_TL,
+        BTN_TR,
+        BTN_TL2,
+        BTN_TR2,
+        BTN_SELECT,
+        BTN_START,
+        BTN_MODE,
+        BTN_THUMBL,
+        BTN_THUMBR,
+
+        // Then weird buttons
+        BTN_TRIGGER,
+        BTN_THUMB,
+        BTN_THUMB2,
+        BTN_TOP,
+        BTN_TOP2,
+        BTN_PINKIE,
+        BTN_BASE,
+        BTN_BASE2,
+        BTN_BASE3,
+        BTN_BASE4,
+        BTN_BASE5,
+        BTN_BASE6,
+    };
+
     auto inputDevice = device.as<Solid::Block>();
 
     m_name = QStringLiteral("%1 %2").arg(device.vendor()).arg(device.product());
@@ -40,15 +80,7 @@ JoyDevice::JoyDevice(const Solid::Device &device, QObject *parent)
         m_name = libevdev_get_name(m_device);
     }
 
-    for (int code = BTN_A; code < BTN_A + 18; code++) {
-        if (libevdev_has_event_code(m_device, EV_KEY, code)) {
-            m_buttonCodes.append(code);
-            m_numButtons++;
-        }
-    }
-
-    // Check dpad buttons
-    for (int code = BTN_DPAD_UP; code <= BTN_DPAD_RIGHT; code++) {
+    for (int code : buttonsToCheck) {
         if (libevdev_has_event_code(m_device, EV_KEY, code)) {
             m_buttonCodes.append(code);
             m_numButtons++;
@@ -208,6 +240,42 @@ QString JoyDevice::buttonName(int code)
         break;
     case BTN_DPAD_RIGHT:
         name = i18nc("Right button", "Right");
+        break;
+    case BTN_TRIGGER:
+        name = i18nc("Trigger button", "Trigger");
+        break;
+    case BTN_THUMB:
+        name = i18nc("Thumb button", "Thumb");
+        break;
+    case BTN_THUMB2:
+        name = i18nc("Second thumb button", "Thumb 2");
+        break;
+    case BTN_TOP:
+        name = i18nc("Top button", "Top");
+        break;
+    case BTN_TOP2:
+        name = i18nc("Second top button", "Top 2");
+        break;
+    case BTN_PINKIE:
+        name = i18nc("Pinkie (smallest finger) button", "Pinkie");
+        break;
+    case BTN_BASE:
+        name = i18nc("First base button", "Base 1");
+        break;
+    case BTN_BASE2:
+        name = i18nc("Second base button", "Base 2");
+        break;
+    case BTN_BASE3:
+        name = i18nc("Third base button", "Base 3");
+        break;
+    case BTN_BASE4:
+        name = i18nc("Fourth base button", "Base 4");
+        break;
+    case BTN_BASE5:
+        name = i18nc("Fifth base button", "Base 5");
+        break;
+    case BTN_BASE6:
+        name = i18nc("Sixfth base button", "Base 6");
         break;
     }
     return name;
