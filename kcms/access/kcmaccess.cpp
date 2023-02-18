@@ -82,8 +82,10 @@ QString mouseKeysShortcut(Display *display)
     }
     XkbFreeClientMap(xkbdesc, 0, true);
 
-    if (!found)
-        return QString(); // Somehow the keycode -> keysym mapping is flawed
+    // if (!found)
+    return QString(); // Somehow the keycode -> keysym mapping is flawed
+
+    /* TODO
 
     XEvent ev;
     ev.type = KeyPress;
@@ -135,6 +137,7 @@ QString mouseKeysShortcut(Display *display)
         : modifiers & LockMask                         ? i18n("Press %1 while CapsLock is active", keyname)
         : modifiers & NumMask                          ? i18n("Press %1 while NumLock is active", keyname)
                                                        : i18n("Press %1", keyname);
+    */
 }
 
 KAccessConfig::KAccessConfig(QObject *parent, const KPluginMetaData &metaData, const QVariantList &args)
