@@ -112,8 +112,7 @@ void ComponentChooser::saveMimeTypeAssociations(const QString &storageId, const 
         const auto db = QMimeDatabase();
 
         for (const QString &mimeType : mimeTypes) {
-            if (!forceUnsupportedMimeType && appService && !appService->serviceTypes().contains(mimeType)
-                && !db.mimeTypeForName(mimeType).inherits(m_mimeType)) {
+            if (!forceUnsupportedMimeType && appService && !db.mimeTypeForName(mimeType).inherits(m_mimeType)) {
                 // skip mimetype association if the app does not support it at all
                 continue;
             }
@@ -144,10 +143,9 @@ QStringList ComponentChooser::unsupportedMimeTypes() const
     QStringList unsupportedMimeTypes;
 
     const auto appService = KService::serviceByStorageId(preferredApp);
-    const auto supportedMimeTypes = appService->serviceTypes();
     const auto componentMimeTypes = mimeTypes();
     for (const QString &mimeType : componentMimeTypes) {
-        if (!supportedMimeTypes.contains(mimeType) && !db.mimeTypeForName(mimeType).inherits(m_mimeType)) {
+        if (!db.mimeTypeForName(mimeType).inherits(m_mimeType)) {
             const auto preferredService = KApplicationTrader::preferredService(mimeType);
             if (!preferredService || (preferredService->storageId() != appService->storageId())) {
                 unsupportedMimeTypes << mimeType;
@@ -186,7 +184,7 @@ QList<PairQml> ComponentChooser::mimeTypesNotAssociated() const
 
         if (service && service->storageId() != storageId &&
             // only explicitly supported mimetype
-            (appService->serviceTypes().contains(mimeType) || db.mimeTypeForName(mimeType).inherits(m_mimeType))) {
+            db.mimeTypeForName(mimeType).inherits(m_mimeType)) {
             ret.append(PairQml(service->name(), mimeType));
         }
     }
