@@ -7,7 +7,7 @@
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import org.kde.plasma.private.kicker 0.1 as Kicker
-import org.kde.plasma.components 2.0 as PC2 // for Menu + MenuItem
+import org.kde.plasma.components 3.0 as PC2 // for Menu + MenuItem
 import org.kde.plasma.components 3.0 as PC3
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.kirigami 2.16 as Kirigami
