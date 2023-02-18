@@ -618,8 +618,10 @@ QString mouseKeysShortcut(Display *display)
     }
     XkbFreeClientMap(xkbdesc, 0, true);
 
-    if (!found)
-        return QString(); // Somehow the keycode -> keysym mapping is flawed
+    // if (!found)
+    return QString(); // Somehow the keycode -> keysym mapping is flawed
+
+    /* TODO
 
     XEvent ev;
     ev.type = KeyPress;
@@ -666,6 +668,7 @@ QString mouseKeysShortcut(Display *display)
         keyname = QKeySequence(Qt::SHIFT).toString() + QLatin1Char('+') + keyname;
 
     return keyname;
+    */
 }
 
 void KAccessApp::createDialogContents()
