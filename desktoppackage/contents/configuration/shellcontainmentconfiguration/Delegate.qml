@@ -189,9 +189,9 @@ QQC2.Control {
                             }
                             QQC2.MenuItem {
                                 id: removeItem
-                                text: contRect.state !== "floating"
-                                    ? i18nd("plasma_shell_org.kde.plasma.desktop", "Remove Panel")
-                                    : i18nd("plasma_shell_org.kde.plasma.desktop", "Remove Desktop")
+                                text: contRect.state === "floating"
+                                    ? i18nd("plasma_shell_org.kde.plasma.desktop", "Remove Desktop")
+                                    : i18nd("plasma_shell_org.kde.plasma.desktop", "Remove Panel")
                                 icon.name: "edit-delete"
                                 onTriggered: {
                                     if (contRect.state === "floating") {
