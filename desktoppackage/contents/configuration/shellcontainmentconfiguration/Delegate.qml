@@ -63,7 +63,6 @@ QQC2.Control {
                     border.color: Kirigami.Theme.textColor
                     color: Kirigami.Theme.backgroundColor
                     state: model.edge
-                    visible: !model.isDestroyed
                     z: state === "floating" ? 0 : 1
 
                     HoverHandler {
