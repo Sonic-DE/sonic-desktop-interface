@@ -6,7 +6,7 @@
 */
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
-import org.kde.plasma.private.kicker 0.1 as Kicker
+import org.kde.plasma.private.kicker 0.2 as Kicker
 import org.kde.plasma.components 2.0 as PC2 // for Menu + MenuItem
 import org.kde.plasma.components 3.0 as PC3
 import org.kde.plasma.core 2.0 as PlasmaCore
@@ -32,9 +32,10 @@ RowLayout {
             var favoriteId = sourceModel.data(sourceModel.index(sourceRow, 0, sourceParent), FavoriteIdRole);
             return String(plasmoid.configuration.systemFavorites).includes(favoriteId);
         }
-        function trigger(index) {
+        function trigger(index, args = undefined) {
             var sourceIndex = mapToSource(this.index(index, 0));
-            systemModel.trigger(sourceIndex.row, "", null);
+            print("QML trigger", index, args);
+            systemModel.trigger(sourceIndex.row, "", args);
         }
         Component.onCompleted: {
             plasmoid.configuration.valueChanged.connect((key, value) => {
@@ -79,6 +80,7 @@ RowLayout {
                 icon.name: model.decoration
                 onClicked: filteredButtonsModel.trigger(index);
                 display: plasmoid.configuration.showActionButtonCaptions ? PC3.AbstractButton.TextBesideIcon : PC3.AbstractButton.IconOnly;
+                down: pressed || mouseArea.pressed
                 Layout.rightMargin: model.favoriteId === "switch-user" && plasmoid.configuration.primaryActions === 3 ? PlasmaCore.Units.gridUnit : undefined
 
                 PC3.ToolTip.text: text
@@ -94,6 +96,19 @@ RowLayout {
                     nextItemInFocusChain(false).forceActiveFocus(Qt.BacktabFocusReason)
                 } else if (index < buttonRepeater.count - 1 || leaveButton.shouldBeVisible) {
                     nextItemInFocusChain().forceActiveFocus(Qt.TabFocusReason)
+                }
+
+                // Feature: Ctrl+Alt+Shift+LeftClick to execute action immediately without confirmation.
+                // Controls don't expose keyboard modifiers held down during clicks, so we need a mouse area.
+                MouseArea {
+                    id: mouseArea
+                    anchors.fill: parent
+                    onClicked: mouse => {
+                        const ctrlAltShift = Qt.ControlModifier | Qt.AltModifier | Qt.ShiftModifier;
+                        const skip = ((mouse.modifiers & ctrlAltShift) === ctrlAltShift);
+                        const args = (skip ? { confirmationMode: Kicker.SessionManagement.Skip } : undefined);
+                        filteredButtonsModel.trigger(index, args);
+                    }
                 }
             }
         }
