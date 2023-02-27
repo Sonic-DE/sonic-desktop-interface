@@ -16,6 +16,8 @@
 
 #include <KLocalizedString>
 
+#include "joybutton.h"
+
 class JoyDevice : public QObject
 {
     Q_OBJECT
@@ -26,8 +28,7 @@ class JoyDevice : public QObject
     Q_PROPERTY(int numAxes MEMBER m_numAxes CONSTANT)
     Q_PROPERTY(bool hasRumble MEMBER m_hasRumble CONSTANT)
     Q_PROPERTY(bool hasTouchPad READ hasTouchPad CONSTANT)
-    Q_PROPERTY(QStringList buttonNames READ getButtonNames CONSTANT)
-    Q_PROPERTY(QStringList buttonState READ getButtonState NOTIFY buttonStateChanged)
+    Q_PROPERTY(QVariantList buttons READ getButtons CONSTANT)
     Q_PROPERTY(QStringList axisNames READ getAxisNames CONSTANT)
     Q_PROPERTY(QStringList axisState READ getAxisState NOTIFY axisStateChanged)
     Q_PROPERTY(ConnectionType connectionType READ getConnectionType NOTIFY connectionTypeChanged)
@@ -68,22 +69,12 @@ public:
         return m_connectionType;
     }
 
-    QStringList getButtonState()
+    QVariantList getButtons() const
     {
-        QStringList data;
-        for (auto button : m_buttonState) {
-            data.push_back(button ? "1" : "0");
+        QVariantList data;
+        for (auto button : m_buttons.values()) {
+            data.push_back(QVariant::fromValue(button));
         }
-        return data;
-    }
-
-    QStringList getButtonNames()
-    {
-        QStringList data;
-        for (auto code : m_buttonCodes) {
-            data.push_back(buttonName(code));
-        }
-
         return data;
     }
 
@@ -109,20 +100,19 @@ public:
     void poll();
 
 signals:
-    void buttonStateChanged();
     void axisStateChanged();
 
     // Possible when going from USB to Bluetooth, or vice versa
     void connectionTypeChanged();
 
 private:
-    // Give a button name for given ev code
-    QString buttonName(int code);
     QString axisName(int code);
     void processEvent(struct input_event &ev);
     float normalize(int code, __s32 value);
 
     libevdev *m_device = nullptr;
+
+    QMap<int, JoyButton *> m_buttons;
 
     QString m_name;
     QString m_vendor;
@@ -131,9 +121,7 @@ private:
     int m_numAxes = 0;
     bool m_hasRumble = false;
 
-    QVector<bool> m_buttonState;
     // List of the same buttons codes from evdev
-    QVector<int> m_buttonCodes;
     QVector<QVector2D> m_axisState;
     // List of axis starting points for naming
     QVector<int> m_axisCodes;
