@@ -66,26 +66,31 @@ KCM.SimpleKCM {
             }
 
             QQC2.Label {
-                text: i18n("Buttons: ") + currentDevice.numButtons
-            }
-
-            Repeater {
-                model: currentDevice.buttonState
-
-                QQC2.Label {
-                    text: "Button " + currentDevice.buttonNames[index] + ": " + modelData
-                }
-            }
-
-            QQC2.Label {
                 text: i18n("Axes: ") + currentDevice.numAxes
             }
 
-            Repeater {
-                model: currentDevice.axisState
+//            Repeater {
+//                model: currentDevice.axisState
 
-                QQC2.Label {
-                            text: currentDevice.axisNames[index] + ": " + modelData
+//                QQC2.Label {
+//                            text: currentDevice.axisNames[index] + ": " + modelData
+//                }
+//            }
+
+            QQC2.Label {
+                text: i18n("Buttons: ") + currentDevice.numButtons
+            }
+
+            Rectangle {
+                Layout.preferredHeight: 200
+
+                Repeater {
+                    model: currentDevice.buttons
+
+                    GamepadButton {
+                        device: currentDevice
+                        ix: index
+                    }
                 }
             }
         }
