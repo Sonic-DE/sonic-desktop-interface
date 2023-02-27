@@ -5,6 +5,7 @@ set(kcm_gamepad_SRCS
   kcm.cpp
   devicemodel.cpp
   joydevice.cpp
+  joybutton.cpp
 )
 
 kcoreaddons_add_plugin(kcm_gamepad SOURCES ${kcm_gamepad_SRCS} INSTALL_NAMESPACE "plasma/kcms/systemsettings")
