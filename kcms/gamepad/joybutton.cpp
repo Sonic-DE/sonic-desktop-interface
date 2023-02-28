@@ -44,6 +44,12 @@ const int kTopY = 10;
 const int kMidY = kTopY + kSpaceBetweenButtons;
 const int kBottomY = kMidY + kSpaceBetweenButtons;
 
+// TODO: confirm actual usb ids
+const uint16_t USB_ID_SONY = 0x0a51;
+const uint16_t USB_ID_SONY2 = 0x054c;
+const uint16_t USB_ID_MICROSOFT = 0x045e;
+const uint16_t USB_ID_NINTENDO = 0x057e;
+
 JoyButton::JoyButton(uint16_t vendor, const int code, QObject *parent)
     : QObject(parent)
     , m_vendor(vendor)
@@ -72,6 +78,20 @@ bool JoyButton::getState() const
 
 QPoint JoyButton::position(int code)
 {
+    bool isNintendo = (m_vendor == USB_ID_NINTENDO);
+    if (isNintendo) {
+        // Nintendo puts X at north, Y at west, B at south and A at east
+        // So switch them here
+        if (code == SDL_CONTROLLER_BUTTON_X)
+            code = SDL_CONTROLLER_BUTTON_Y;
+        else if (code == SDL_CONTROLLER_BUTTON_Y)
+            code = SDL_CONTROLLER_BUTTON_X;
+        else if (code == SDL_CONTROLLER_BUTTON_A)
+            code = SDL_CONTROLLER_BUTTON_B;
+        else if (code == SDL_CONTROLLER_BUTTON_B)
+            code = SDL_CONTROLLER_BUTTON_A;
+    }
+
     QPoint point = QPoint(0, 0);
     switch (code) {
     case SDL_CONTROLLER_BUTTON_X:
@@ -241,12 +261,6 @@ QString JoyButton::image(int code)
     QString filename = QStringLiteral("images/%1_%2.png");
     QString prefix = "unknown";
 
-    // TODO: confirm actual usb ids
-    const uint16_t USB_ID_SONY = 0x0a51;
-    const uint16_t USB_ID_SONY2 = 0x054c;
-    const uint16_t USB_ID_NINTENDO = 0x057e;
-    const uint16_t USB_ID_MICROSOFT = 0x045e;
-
     if (m_vendor == USB_ID_SONY || m_vendor == USB_ID_SONY2) {
         prefix = "sony";
     } else if (m_vendor == USB_ID_NINTENDO) {
@@ -257,6 +271,21 @@ QString JoyButton::image(int code)
         // Default to microsoft since xbox style is common for pc
         // gamepads
         prefix = "microsoft";
+    }
+
+    bool isNintendo = (m_vendor == USB_ID_NINTENDO);
+
+    if (isNintendo) {
+        // Nintendo puts X at north, Y at west, B at south and A at east
+        // So switch them here
+        if (code == SDL_CONTROLLER_BUTTON_X)
+            code = SDL_CONTROLLER_BUTTON_Y;
+        else if (code == SDL_CONTROLLER_BUTTON_Y)
+            code = SDL_CONTROLLER_BUTTON_X;
+        else if (code == SDL_CONTROLLER_BUTTON_A)
+            code = SDL_CONTROLLER_BUTTON_B;
+        else if (code == SDL_CONTROLLER_BUTTON_B)
+            code = SDL_CONTROLLER_BUTTON_A;
     }
 
     switch (code) {
