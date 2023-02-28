@@ -29,6 +29,8 @@ JoyDevice::JoyDevice(SDL_Joystick *joystick, SDL_GameController *controller, QOb
 
     m_vendor = SDL_JoystickGetVendor(m_joystick);
 
+    qDebug() << "joydevice vendor: " << m_vendor;
+
     m_numButtons = SDL_JoystickNumButtons(joystick);
     m_numAxes = SDL_JoystickNumAxes(joystick);
     m_hasRumble = SDL_JoystickHasRumble(joystick);
