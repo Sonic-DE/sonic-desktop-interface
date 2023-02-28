@@ -8,7 +8,8 @@
 import QtQuick 2.15
 import QtQuick.Layouts 1.1
 
-import org.kde.plasma.components 2.0 as PlasmaComponents
+// import org.kde.plasma.components 2.0 as PC3
+import org.kde.plasma.components .0 as PC3
 import org.kde.plasma.extras 2.0 as PlasmaExtras
 import org.kde.plasma.core 2.0 as PlasmaCore
 
@@ -128,7 +129,7 @@ Item {
                 visible: running && delegate.GridView.isCurrentItem
                 onVisibleChanged: maskShaderSource.scheduleUpdate()
 
-                PlasmaComponents.Label {
+                PC3.Label {
                     id: countLabel
                     anchors.fill: parent
                     horizontalAlignment: Text.AlignHCenter
@@ -164,16 +165,16 @@ Item {
                 "
             }
 
-            PlasmaComponents.ToolButton {
+            PC3.ToolButton {
                 id: uninstallButton
                 anchors {
                     top: parent.top
                     right: parent.right
                 }
-                iconSource: delegate.pendingUninstall ? "edit-undo" : "edit-delete"
+                // iconSource: delegate.pendingUninstall ? "edit-undo" : "edit-delete"
                 // we don't really "undo" anything but we'll pretend to the user that we do
-                tooltip: delegate.pendingUninstall ? i18nd("plasma_shell_org.kde.plasma.desktop", "Undo uninstall")
-                                                    : i18nd("plasma_shell_org.kde.plasma.desktop", "Uninstall widget")
+                // tooltip: delegate.pendingUninstall ? i18nd("plasma_shell_org.kde.plasma.desktop", "Undo uninstall")
+                                                    // : i18nd("plasma_shell_org.kde.plasma.desktop", "Uninstall widget")
                 flat: false
                 visible: model.local && delegate.GridView.isCurrentItem
 
@@ -215,7 +216,7 @@ Item {
             lineHeight: 0.95
             horizontalAlignment: Text.AlignHCenter
         }
-        PlasmaComponents.Label {
+        PC3.Label {
             Layout.fillWidth: true
             // otherwise causes binding loop due to the way the Plasma sets the height
             height: implicitHeight

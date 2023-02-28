@@ -7,4 +7,4 @@
 
 #include <KPluginFactory>
 
-K_PLUGIN_FACTORY_DECLARATION(MousePluginFactory)
+// K_PLUGIN_FACTORY_DECLARATION(MousePluginFactory)

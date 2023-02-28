@@ -75,7 +75,7 @@ FolderViewDropArea {
     Plasmoid.toolTipSubText: ""
     Plasmoid.icon: (!plasmoid.configuration.useCustomIcon && folderViewLayer.ready) ? folderViewLayer.view.model.iconName : plasmoid.configuration.icon
     Plasmoid.compactRepresentation: (isFolder && !isContainment) ? compactRepresentation : null
-    Plasmoid.associatedApplicationUrls: folderViewLayer.ready ? folderViewLayer.model.resolvedUrl : null
+    // Plasmoid.associatedApplicationUrls: folderViewLayer.ready ? folderViewLayer.model.resolvedUrl : null
 
     onIconHeightChanged: updateGridSize()
 
