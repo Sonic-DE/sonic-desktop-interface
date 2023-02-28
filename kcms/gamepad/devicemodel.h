@@ -27,7 +27,7 @@ public:
     QHash<int, QByteArray> roleNames() const override;
 
 private:
-    void addDevice(const Solid::Device &device);
+    void addDevice(const int deviceIndex);
 
     QList<JoyDevice *> m_devices;
 };
