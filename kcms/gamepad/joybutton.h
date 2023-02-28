@@ -24,7 +24,7 @@ class JoyButton : public QObject
     Q_PROPERTY(QPoint position READ getPosition CONSTANT)
     Q_PROPERTY(bool state READ getState NOTIFY stateChanged)
 public:
-    explicit JoyButton(const QString &vendor, const int code, QObject *parent = nullptr);
+    explicit JoyButton(uint16_t vendor, const int code, QObject *parent = nullptr);
     // For QML usage of buttons
     JoyButton();
 
@@ -51,6 +51,7 @@ public:
     {
         return position(m_code);
     }
+    int m_code;
 
 signals:
     void stateChanged();
@@ -63,8 +64,7 @@ private:
     QString image(int code);
     QPoint position(int code);
 
-    QString m_vendor;
-    int m_code;
+    uint16_t m_vendor;
     QString m_name;
 
     bool m_state;
