@@ -51,7 +51,8 @@ public:
     {
         return position(m_code);
     }
-    int m_code;
+
+    friend class JoyDevice;
 
 signals:
     void stateChanged();
@@ -65,6 +66,7 @@ private:
     QPoint position(int code);
 
     uint16_t m_vendor;
+    int m_code;
     QString m_name;
 
     bool m_state;
