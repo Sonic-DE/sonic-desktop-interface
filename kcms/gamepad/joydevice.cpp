@@ -36,7 +36,9 @@ JoyDevice::JoyDevice(SDL_Joystick *joystick, SDL_GameController *controller, QOb
     m_hasRumble = SDL_JoystickHasRumble(joystick);
 
     for (int i = 0; i < SDL_CONTROLLER_BUTTON_MAX; i++) {
-        m_buttons.push_back(new JoyButton(m_vendor, i, this));
+        if (SDL_GameControllerHasButton(m_gameController, (SDL_GameControllerButton)i)) {
+            m_buttons.push_back(new JoyButton(m_vendor, i, this));
+        }
     }
 
     // TODO: temporary event loop
