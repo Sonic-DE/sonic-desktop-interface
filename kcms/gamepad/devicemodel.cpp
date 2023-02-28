@@ -6,20 +6,16 @@
 
 #include "devicemodel.h"
 
-#include <QDebug>
-#include <Solid/Block>
-#include <Solid/DeviceNotifier>
-#include <Solid/GenericInterface>
-#include <Solid/Predicate>
-#include <libudev.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_joystick.h>
 
 #include "joydevice.h"
 
 DeviceModel::DeviceModel()
 {
-    const auto solidDevices = Solid::Device::listFromType(Solid::DeviceInterface::Block);
-    for (const Solid::Device &device : solidDevices) {
-        addDevice(device);
+    SDL_Init(SDL_INIT_JOYSTICK);
+    for (int i = 0; i < SDL_NumJoysticks(); i++) {
+        addDevice(i);
     }
 }
 
@@ -57,18 +53,7 @@ QHash<int, QByteArray> DeviceModel::roleNames() const
     return {{CustomRoles::NameRole, "name"}, {CustomRoles::DeviceRole, "device"}};
 }
 
-void DeviceModel::addDevice(const Solid::Device &device)
+void DeviceModel::addDevice(const int deviceIndex)
 {
-    auto generic = device.as<Solid::GenericInterface>();
-    if (generic && !generic->property("ID_INPUT_JOYSTICK").toBool()) {
-        return;
-    }
-
-    if (device.udi().contains("js")) {
-        return;
-    }
-
-    qDebug() << "Adding" << device.udi();
-
-    m_devices.push_back(new JoyDevice(device, this));
+    m_devices.push_back(new JoyDevice(SDL_JoystickOpen(deviceIndex), SDL_GameControllerOpen(deviceIndex), this));
 }

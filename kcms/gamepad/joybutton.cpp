@@ -9,6 +9,7 @@
 #include <QDebug>
 #include <QFile>
 #include <QSocketNotifier>
+#include <SDL2/SDL_gamecontroller.h>
 #include <Solid/Block>
 #include <Solid/GenericInterface>
 #include <csignal>
@@ -43,7 +44,7 @@ const int kTopY = 10;
 const int kMidY = kTopY + kSpaceBetweenButtons;
 const int kBottomY = kMidY + kSpaceBetweenButtons;
 
-JoyButton::JoyButton(const QString &vendor, const int code, QObject *parent)
+JoyButton::JoyButton(uint16_t vendor, const int code, QObject *parent)
     : QObject(parent)
     , m_vendor(vendor)
     , m_code(code)
@@ -73,61 +74,61 @@ QPoint JoyButton::position(int code)
 {
     QPoint point = QPoint(0, 0);
     switch (code) {
-    case BTN_WEST:
+    case SDL_CONTROLLER_BUTTON_X:
         point.setX(kButtonsX);
         break;
-    case BTN_EAST:
+    case SDL_CONTROLLER_BUTTON_B:
         point.setX(kButtonsRightX);
         break;
-    case BTN_NORTH:
-    case BTN_SOUTH:
+    case SDL_CONTROLLER_BUTTON_Y:
+    case SDL_CONTROLLER_BUTTON_A:
         point.setX(kButtonsMidX);
         break;
-    case BTN_SELECT:
+    case SDL_CONTROLLER_BUTTON_BACK:
         point.setX(kSelectX);
         break;
-    case BTN_MODE:
+    case SDL_CONTROLLER_BUTTON_GUIDE:
         point.setX(kModeX);
         break;
-    case BTN_START:
+    case SDL_CONTROLLER_BUTTON_START:
         point.setX(kStartX);
         break;
-    case BTN_DPAD_LEFT:
+    case SDL_CONTROLLER_BUTTON_DPAD_LEFT:
         point.setX(kLeftX);
         break;
-    case BTN_DPAD_UP:
-    case BTN_DPAD_DOWN:
+    case SDL_CONTROLLER_BUTTON_DPAD_UP:
+    case SDL_CONTROLLER_BUTTON_DPAD_DOWN:
         point.setX(kMidX);
         break;
-    case BTN_DPAD_RIGHT:
+    case SDL_CONTROLLER_BUTTON_DPAD_RIGHT:
         point.setX(kRightX);
         break;
     }
 
     switch (code) {
-    case BTN_WEST:
-    case BTN_EAST:
+    case SDL_CONTROLLER_BUTTON_X:
+    case SDL_CONTROLLER_BUTTON_B:
         point.setY(kMidY);
         break;
-    case BTN_NORTH:
+    case SDL_CONTROLLER_BUTTON_Y:
         point.setY(kTopY);
         break;
-    case BTN_SOUTH:
+    case SDL_CONTROLLER_BUTTON_A:
         point.setY(kBottomY);
         break;
-    case BTN_SELECT:
-    case BTN_MODE:
-    case BTN_START:
+    case SDL_CONTROLLER_BUTTON_BACK:
+    case SDL_CONTROLLER_BUTTON_GUIDE:
+    case SDL_CONTROLLER_BUTTON_START:
         point.setY(kMidY);
         break;
-    case BTN_DPAD_UP:
+    case SDL_CONTROLLER_BUTTON_DPAD_UP:
         point.setY(kDPadTopY);
         break;
-    case BTN_DPAD_LEFT:
-    case BTN_DPAD_RIGHT:
+    case SDL_CONTROLLER_BUTTON_DPAD_LEFT:
+    case SDL_CONTROLLER_BUTTON_DPAD_RIGHT:
         point.setY(kDPadMidY);
         break;
-    case BTN_DPAD_DOWN:
+    case SDL_CONTROLLER_BUTTON_DPAD_DOWN:
         point.setY(kDPadBottomY);
         break;
     }
@@ -138,22 +139,22 @@ QString JoyButton::name(int code)
 {
     QString name = i18n("Unknown button %1", code);
     switch (code) {
-    case BTN_WEST:
+    case SDL_CONTROLLER_BUTTON_X:
         name = i18nc("Western direction button", "West");
         break;
-    case BTN_NORTH:
+    case SDL_CONTROLLER_BUTTON_Y:
         name = i18nc("Northern direction button", "North");
         break;
-    case BTN_EAST:
+    case SDL_CONTROLLER_BUTTON_B:
         name = i18nc("Eastern direction button", "East");
         break;
-    case BTN_SOUTH:
+    case SDL_CONTROLLER_BUTTON_A:
         name = i18nc("Southern direction button", "South");
         break;
-    case BTN_START:
+    case SDL_CONTROLLER_BUTTON_BACK:
         name = i18nc("Start button", "Start");
         break;
-    case BTN_SELECT:
+    case SDL_CONTROLLER_BUTTON_START:
         name = i18nc("Select button", "Select");
         break;
     case BTN_C:
@@ -240,34 +241,41 @@ QString JoyButton::image(int code)
     QString filename = QStringLiteral("images/%1_%2.png");
     QString prefix = "unknown";
 
-    if (m_vendor == "Sony") {
+    // TODO: confirm actual usb ids
+    const uint16_t USB_ID_SONY = 0x0a51;
+    const uint16_t USB_ID_NINTENDO = 0x057e;
+    const uint16_t USB_ID_MICROSOFT = 0x045e;
+
+    if (m_vendor == USB_ID_SONY) {
         prefix = "sony";
-    } else if (m_vendor == "Nintendo") {
+    } else if (m_vendor == USB_ID_NINTENDO) {
         prefix = "nintendo";
+    } else if (m_vendor == USB_ID_MICROSOFT) {
+        prefix = "microsoft";
     } else {
         prefix = "sony";
     }
 
     switch (code) {
-    case BTN_WEST:
+    case SDL_CONTROLLER_BUTTON_X:
         filename = filename.arg(prefix).arg("west");
         break;
-    case BTN_NORTH:
+    case SDL_CONTROLLER_BUTTON_Y:
         filename = filename.arg(prefix).arg("north");
         break;
-    case BTN_EAST:
+    case SDL_CONTROLLER_BUTTON_B:
         filename = filename.arg(prefix).arg("east");
         break;
-    case BTN_SOUTH:
+    case SDL_CONTROLLER_BUTTON_A:
         filename = filename.arg(prefix).arg("south");
         break;
-    case BTN_START:
+    case SDL_CONTROLLER_BUTTON_START:
         filename = filename.arg(prefix).arg("start");
         break;
-    case BTN_MODE:
+    case SDL_CONTROLLER_BUTTON_GUIDE:
         filename = filename.arg(prefix).arg("mode");
         break;
-    case BTN_SELECT:
+    case SDL_CONTROLLER_BUTTON_BACK:
         filename = filename.arg(prefix).arg("select");
         break;
         /* case BTN_C:
@@ -294,16 +302,16 @@ QString JoyButton::image(int code)
             case BTN_THUMBR:
                 name = i18nc("Right thumb stick button", "Right Thumb");
                 break; */
-    case BTN_DPAD_UP:
+    case SDL_CONTROLLER_BUTTON_DPAD_UP:
         filename = filename.arg(prefix).arg("up");
         break;
-    case BTN_DPAD_DOWN:
+    case SDL_CONTROLLER_BUTTON_DPAD_DOWN:
         filename = filename.arg(prefix).arg("down");
         break;
-    case BTN_DPAD_LEFT:
+    case SDL_CONTROLLER_BUTTON_DPAD_LEFT:
         filename = filename.arg(prefix).arg("left");
         break;
-    case BTN_DPAD_RIGHT:
+    case SDL_CONTROLLER_BUTTON_DPAD_RIGHT:
         filename = filename.arg(prefix).arg("right");
         break;
         /*    case BTN_TRIGGER:
