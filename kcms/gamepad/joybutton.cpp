@@ -67,6 +67,7 @@ JoyButton::JoyButton()
 
 void JoyButton::setState(bool state)
 {
+    qDebug() << "button with name: " << name(m_code) << " state changed: " << state;
     m_state = state;
     emit stateChanged();
 }
@@ -160,97 +161,67 @@ QString JoyButton::name(int code)
     QString name = i18n("Unknown button %1", code);
     switch (code) {
     case SDL_CONTROLLER_BUTTON_X:
-        name = i18nc("Western direction button", "West");
+        name = i18nc("X button name", "X");
         break;
     case SDL_CONTROLLER_BUTTON_Y:
-        name = i18nc("Northern direction button", "North");
+        name = i18nc("Y button name", "Y");
         break;
     case SDL_CONTROLLER_BUTTON_B:
-        name = i18nc("Eastern direction button", "East");
+        name = i18nc("B button name", "B");
         break;
     case SDL_CONTROLLER_BUTTON_A:
-        name = i18nc("Southern direction button", "South");
+        name = i18nc("A button name", "A");
         break;
     case SDL_CONTROLLER_BUTTON_BACK:
-        name = i18nc("Start button", "Start");
+        name = i18nc("Back button name", "Back");
+        break;
+    case SDL_CONTROLLER_BUTTON_GUIDE:
+        name = i18nc("Guide button name", "Guide");
         break;
     case SDL_CONTROLLER_BUTTON_START:
-        name = i18nc("Select button", "Select");
+        name = i18nc("Start button name", "Start");
         break;
-    case BTN_C:
-        name = i18nc("C button", "C");
+    case SDL_CONTROLLER_BUTTON_LEFTSTICK:
+        name = i18nc("Left stick button name", "Left stick");
         break;
-    case BTN_Z:
-        name = i18nc("Z button", "Z");
+    case SDL_CONTROLLER_BUTTON_RIGHTSTICK:
+        name = i18nc("Right stick button name", "Right stick");
         break;
-    case BTN_TR:
-        name = i18nc("R1 button", "R1");
+    case SDL_CONTROLLER_BUTTON_LEFTSHOULDER:
+        name = i18nc("Left shoulder button name", "Left shoulder");
         break;
-    case BTN_TR2:
-        name = i18nc("R2 button", "R2");
+    case SDL_CONTROLLER_BUTTON_RIGHTSHOULDER:
+        name = i18nc("Right shoulder button name", "Right shoulder");
         break;
-    case BTN_TL:
-        name = i18nc("L1 button", "L1");
+    case SDL_CONTROLLER_BUTTON_DPAD_UP:
+        name = i18nc("Up button name", "Up");
         break;
-    case BTN_TL2:
-        name = i18nc("L2 button", "L2");
+    case SDL_CONTROLLER_BUTTON_DPAD_DOWN:
+        name = i18nc("Down button name", "Down");
         break;
-    case BTN_MODE:
-        name = i18nc("Mode button", "Mode");
+    case SDL_CONTROLLER_BUTTON_DPAD_LEFT:
+        name = i18nc("Left button name", "Left");
         break;
-    case BTN_THUMBL:
-        name = i18nc("Left thumb stick button", "Left Thumb");
+    case SDL_CONTROLLER_BUTTON_DPAD_RIGHT:
+        name = i18nc("Right button name", "Right");
         break;
-    case BTN_THUMBR:
-        name = i18nc("Right thumb stick button", "Right Thumb");
+    case SDL_CONTROLLER_BUTTON_MISC1: /* Xbox Series X share button, PS5 microphone button, Nintendo Switch Pro capture button, Amazon Luna microphone button */
+        name = i18nc("Miscellaneous button name", "Misc");
         break;
-    case BTN_DPAD_UP:
-        name = i18nc("Up button", "Up");
+    case SDL_CONTROLLER_BUTTON_PADDLE1: /* Xbox Elite paddle P1 */
+        name = i18nc("Paddle 1 button name", "Paddle 1");
         break;
-    case BTN_DPAD_DOWN:
-        name = i18nc("Down button", "Down");
+    case SDL_CONTROLLER_BUTTON_PADDLE2: /* Xbox Elite paddle P3 */
+        name = i18nc("Paddle 2 button name", "Paddle 2");
         break;
-    case BTN_DPAD_LEFT:
-        name = i18nc("Left button", "Left");
+    case SDL_CONTROLLER_BUTTON_PADDLE3: /* Xbox Elite paddle P2 */
+        name = i18nc("Paddle 3 button name", "Paddle 3");
         break;
-    case BTN_DPAD_RIGHT:
-        name = i18nc("Right button", "Right");
+    case SDL_CONTROLLER_BUTTON_PADDLE4: /* Xbox Elite paddle P4 */
+        name = i18nc("Paddle 4 button name", "Paddle 4");
         break;
-    case BTN_TRIGGER:
-        name = i18nc("Trigger button", "Trigger");
-        break;
-    case BTN_THUMB:
-        name = i18nc("Thumb button", "Thumb");
-        break;
-    case BTN_THUMB2:
-        name = i18nc("Second thumb button", "Thumb 2");
-        break;
-    case BTN_TOP:
-        name = i18nc("Top button", "Top");
-        break;
-    case BTN_TOP2:
-        name = i18nc("Second top button", "Top 2");
-        break;
-    case BTN_PINKIE:
-        name = i18nc("Pinkie (smallest finger) button", "Pinkie");
-        break;
-    case BTN_BASE:
-        name = i18nc("First base button", "Base 1");
-        break;
-    case BTN_BASE2:
-        name = i18nc("Second base button", "Base 2");
-        break;
-    case BTN_BASE3:
-        name = i18nc("Third base button", "Base 3");
-        break;
-    case BTN_BASE4:
-        name = i18nc("Fourth base button", "Base 4");
-        break;
-    case BTN_BASE5:
-        name = i18nc("Fifth base button", "Base 5");
-        break;
-    case BTN_BASE6:
-        name = i18nc("Sixfth base button", "Base 6");
+    case SDL_CONTROLLER_BUTTON_TOUCHPAD: /* PS4/PS5 touchpad button */
+        name = i18nc("Touchpad button name", "Touchpad");
         break;
     }
     return name;
