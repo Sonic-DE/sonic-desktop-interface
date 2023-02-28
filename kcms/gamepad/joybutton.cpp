@@ -258,7 +258,8 @@ QString JoyButton::name(int code)
 
 QString JoyButton::image(int code)
 {
-    QString filename = QStringLiteral("images/%1_%2.png");
+    QString filename;
+    QString pattern = QStringLiteral("images/%1_%2.png");
     QString prefix = "unknown";
 
     if (m_vendor == USB_ID_SONY || m_vendor == USB_ID_SONY2) {
@@ -290,25 +291,25 @@ QString JoyButton::image(int code)
 
     switch (code) {
     case SDL_CONTROLLER_BUTTON_X:
-        filename = filename.arg(prefix).arg("west");
+        filename = pattern.arg(prefix).arg("west");
         break;
     case SDL_CONTROLLER_BUTTON_Y:
-        filename = filename.arg(prefix).arg("north");
+        filename = pattern.arg(prefix).arg("north");
         break;
     case SDL_CONTROLLER_BUTTON_B:
-        filename = filename.arg(prefix).arg("east");
+        filename = pattern.arg(prefix).arg("east");
         break;
     case SDL_CONTROLLER_BUTTON_A:
-        filename = filename.arg(prefix).arg("south");
+        filename = pattern.arg(prefix).arg("south");
         break;
     case SDL_CONTROLLER_BUTTON_START:
-        filename = filename.arg(prefix).arg("start");
+        filename = pattern.arg(prefix).arg("start");
         break;
     case SDL_CONTROLLER_BUTTON_GUIDE:
-        filename = filename.arg(prefix).arg("mode");
+        filename = pattern.arg(prefix).arg("mode");
         break;
     case SDL_CONTROLLER_BUTTON_BACK:
-        filename = filename.arg(prefix).arg("select");
+        filename = pattern.arg(prefix).arg("select");
         break;
         /* case BTN_C:
                 name = i18nc("C button", "C");
@@ -335,16 +336,16 @@ QString JoyButton::image(int code)
                 name = i18nc("Right thumb stick button", "Right Thumb");
                 break; */
     case SDL_CONTROLLER_BUTTON_DPAD_UP:
-        filename = filename.arg(prefix).arg("up");
+        filename = pattern.arg(prefix).arg("up");
         break;
     case SDL_CONTROLLER_BUTTON_DPAD_DOWN:
-        filename = filename.arg(prefix).arg("down");
+        filename = pattern.arg(prefix).arg("down");
         break;
     case SDL_CONTROLLER_BUTTON_DPAD_LEFT:
-        filename = filename.arg(prefix).arg("left");
+        filename = pattern.arg(prefix).arg("left");
         break;
     case SDL_CONTROLLER_BUTTON_DPAD_RIGHT:
-        filename = filename.arg(prefix).arg("right");
+        filename = pattern.arg(prefix).arg("right");
         break;
         /*    case BTN_TRIGGER:
                 name = i18nc("Trigger button", "Trigger");
