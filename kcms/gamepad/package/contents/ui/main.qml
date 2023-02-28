@@ -58,10 +58,6 @@ KCM.SimpleKCM {
 
         ColumnLayout {
             QQC2.Label {
-                text: i18n("Vendor: ") + currentDevice.vendor
-            }
-
-            QQC2.Label {
                 text: i18n("Rumble: ") + (currentDevice.hasRumble ? i18n("Yes") : i18n("No"))
             }
 
