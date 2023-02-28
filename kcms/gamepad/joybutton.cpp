@@ -243,17 +243,20 @@ QString JoyButton::image(int code)
 
     // TODO: confirm actual usb ids
     const uint16_t USB_ID_SONY = 0x0a51;
+    const uint16_t USB_ID_SONY2 = 0x054c;
     const uint16_t USB_ID_NINTENDO = 0x057e;
     const uint16_t USB_ID_MICROSOFT = 0x045e;
 
-    if (m_vendor == USB_ID_SONY) {
+    if (m_vendor == USB_ID_SONY || m_vendor == USB_ID_SONY2) {
         prefix = "sony";
     } else if (m_vendor == USB_ID_NINTENDO) {
         prefix = "nintendo";
     } else if (m_vendor == USB_ID_MICROSOFT) {
         prefix = "microsoft";
     } else {
-        prefix = "sony";
+        // Default to microsoft since xbox style is common for pc
+        // gamepads
+        prefix = "microsoft";
     }
 
     switch (code) {
