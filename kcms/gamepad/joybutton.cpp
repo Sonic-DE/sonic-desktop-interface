@@ -31,7 +31,8 @@ const int kDPadBottomY = kDPadMidY + kDPadSpacing;
 
 // Center button positions
 const int kSelectX = kRightX + (kSpaceBetweenButtons * 2);
-const int kModeX = kSelectX + kSpaceBetweenButtons;
+const int kMiscX = kSelectX + kSpaceBetweenButtons;
+const int kModeX = kMiscX + kSpaceBetweenButtons;
 const int kStartX = kModeX + kSpaceBetweenButtons;
 
 // right quad positions
@@ -108,6 +109,9 @@ QPoint JoyButton::position(int code)
     case SDL_CONTROLLER_BUTTON_BACK:
         point.setX(kSelectX);
         break;
+    case SDL_CONTROLLER_BUTTON_MISC1:
+        point.setX(kMiscX);
+        break;
     case SDL_CONTROLLER_BUTTON_GUIDE:
         point.setX(kModeX);
         break;
@@ -138,6 +142,7 @@ QPoint JoyButton::position(int code)
         point.setY(kBottomY);
         break;
     case SDL_CONTROLLER_BUTTON_BACK:
+    case SDL_CONTROLLER_BUTTON_MISC1:
     case SDL_CONTROLLER_BUTTON_GUIDE:
     case SDL_CONTROLLER_BUTTON_START:
         point.setY(kMidY);
@@ -281,6 +286,9 @@ QString JoyButton::image(int code)
         break;
     case SDL_CONTROLLER_BUTTON_BACK:
         filename = pattern.arg(prefix).arg("select");
+        break;
+    case SDL_CONTROLLER_BUTTON_MISC1:
+        filename = pattern.arg(prefix).arg("misc");
         break;
         /* case BTN_C:
                 name = i18nc("C button", "C");
