@@ -11,10 +11,12 @@
 
 #include <QDebug>
 #include <QVector2D>
+#include <SDL2/SDL_joystick.h>
 #include <Solid/Device>
 #include <libevdev-1.0/libevdev/libevdev.h>
 
 #include <KLocalizedString>
+#include <SDL2/SDL_gamecontroller.h>
 
 #include "joybutton.h"
 
@@ -22,7 +24,6 @@ class JoyDevice : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QString name MEMBER m_name CONSTANT)
-    Q_PROPERTY(QString vendor READ getVendor CONSTANT)
     Q_PROPERTY(QString model READ getModel CONSTANT)
     Q_PROPERTY(int numButtons MEMBER m_numButtons CONSTANT)
     Q_PROPERTY(int numAxes MEMBER m_numAxes CONSTANT)
@@ -33,7 +34,7 @@ class JoyDevice : public QObject
     Q_PROPERTY(QStringList axisState READ getAxisState NOTIFY axisStateChanged)
     Q_PROPERTY(ConnectionType connectionType READ getConnectionType NOTIFY connectionTypeChanged)
 public:
-    explicit JoyDevice(const Solid::Device &device, QObject *parent = nullptr);
+    explicit JoyDevice(SDL_Joystick *joystick, SDL_GameController *controller, QObject *parent = nullptr);
     // For QML usage of devices
     JoyDevice();
 
@@ -47,11 +48,6 @@ public:
     QString getName() const
     {
         return m_name;
-    }
-
-    QString getVendor() const
-    {
-        return m_vendor;
     }
 
     QString getModel() const
@@ -72,7 +68,7 @@ public:
     QVariantList getButtons() const
     {
         QVariantList data;
-        for (auto button : m_buttons.values()) {
+        for (auto button : m_buttons) {
             data.push_back(QVariant::fromValue(button));
         }
         return data;
@@ -90,9 +86,7 @@ public:
     QStringList getAxisNames()
     {
         QStringList data;
-        for (auto code : m_axisCodes) {
-            data.push_back(axisName(code));
-        }
+        for (auto code : m_axisCodes) { }
 
         return data;
     }
@@ -106,16 +100,13 @@ signals:
     void connectionTypeChanged();
 
 private:
-    QString axisName(int code);
-    void processEvent(struct input_event &ev);
-    float normalize(int code, __s32 value);
+    SDL_Joystick *m_joystick = nullptr;
+    SDL_GameController *m_gameController = nullptr;
 
-    libevdev *m_device = nullptr;
-
-    QMap<int, JoyButton *> m_buttons;
+    QVector<JoyButton *> m_buttons;
 
     QString m_name;
-    QString m_vendor;
+    uint16_t m_vendor;
     QString m_model;
     int m_numButtons = 0;
     int m_numAxes = 0;
