@@ -18,6 +18,7 @@
 #include <KLocalizedString>
 #include <SDL2/SDL_gamecontroller.h>
 
+#include "joyaxis.h"
 #include "joybutton.h"
 
 class JoyDevice : public QObject
@@ -30,8 +31,7 @@ class JoyDevice : public QObject
     Q_PROPERTY(bool hasRumble MEMBER m_hasRumble CONSTANT)
     Q_PROPERTY(bool hasTouchPad READ hasTouchPad CONSTANT)
     Q_PROPERTY(QVariantList buttons READ getButtons CONSTANT)
-    Q_PROPERTY(QStringList axisNames READ getAxisNames CONSTANT)
-    Q_PROPERTY(QStringList axisState READ getAxisState NOTIFY axisStateChanged)
+    Q_PROPERTY(QVariantList axes READ getAxes CONSTANT)
     Q_PROPERTY(ConnectionType connectionType READ getConnectionType NOTIFY connectionTypeChanged)
 public:
     explicit JoyDevice(SDL_Joystick *joystick, SDL_GameController *controller, QObject *parent = nullptr);
@@ -74,20 +74,12 @@ public:
         return data;
     }
 
-    QStringList getAxisState()
+    QVariantList getAxes() const
     {
-        QStringList data;
-        for (auto axis : m_axisState) {
-            data.push_back("(" + QString::number(axis.x()) + ", " + QString::number(axis.y()) + ")");
+        QVariantList data;
+        for (auto axis : m_axes.values()) {
+            data.push_back(QVariant::fromValue(axis));
         }
-        return data;
-    }
-
-    QStringList getAxisNames()
-    {
-        QStringList data;
-        for (auto code : m_axisCodes) { }
-
         return data;
     }
 
@@ -104,6 +96,7 @@ private:
     SDL_GameController *m_gameController = nullptr;
 
     QVector<JoyButton *> m_buttons;
+    QMap<int, JoyAxis *> m_axes;
 
     QString m_name;
     uint16_t m_vendor;
@@ -112,10 +105,6 @@ private:
     int m_numAxes = 0;
     bool m_hasRumble = false;
 
-    // List of the same buttons codes from evdev
-    QVector<QVector2D> m_axisState;
-    // List of axis starting points for naming
-    QVector<int> m_axisCodes;
     bool m_hasTouchPad = false;
     ConnectionType m_connectionType = UnknownType;
 };
