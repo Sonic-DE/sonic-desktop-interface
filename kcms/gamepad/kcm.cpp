@@ -25,6 +25,7 @@ KCMGamePad::KCMGamePad(QObject *parent, const KPluginMetaData &metaData, const Q
     qmlRegisterType<DeviceModel>("org.kde.plasma.gamepad.kcm", 1, 0, "DeviceModel");
     qmlRegisterType<JoyDevice>("org.kde.plasma.gamepad.kcm", 1, 0, "JoyDevice");
     qmlRegisterType<JoyButton>("org.kde.plasma.gamepad.kcm", 1, 0, "JoyButton");
+    qmlRegisterType<JoyAxis>("org.kde.plasma.gamepad.kcm", 1, 0, "JoyAxis");
 }
 
 #include "kcm.moc"
