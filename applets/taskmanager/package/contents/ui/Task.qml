@@ -330,18 +330,17 @@ PlasmaCore.ToolTipArea {
 
     TapHandler {
         acceptedButtons: Qt.LeftButton
-        onTapped: {
+        onTapped: (eventPoint) => {
             if (plasmoid.configuration.showToolTips && task.active) {
                 hideToolTip();
             }
-            TaskTools.activateTask(modelIndex(), model, eventPoint.event.modifiers, task, plasmoid, tasks);
+            TaskTools.activateTask(modelIndex(), model, eventPoint.modifiers, task, plasmoid, tasks);
         }
     }
 
     TapHandler {
         acceptedButtons: Qt.MidButton | Qt.BackButton | Qt.ForwardButton
-        onTapped: {
-            const button = eventPoint.event.button;
+        onTapped: (eventPoint, button) => {
             if (button == Qt.MidButton) {
                 if (plasmoid.configuration.middleClickAction === TaskManagerApplet.Backend.NewInstance) {
                     tasksModel.requestNewInstance(modelIndex());
