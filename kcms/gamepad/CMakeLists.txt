@@ -5,6 +5,7 @@ set(kcm_gamepad_SRCS
   kcm.cpp
   devicemodel.cpp
   joydevice.cpp
+  joyaxis.cpp
   joybutton.cpp
 )
 
@@ -16,18 +17,18 @@ target_link_libraries(kcm_gamepad
   KF5::ConfigWidgets
   KF5::KCMUtils
   KF5::QuickAddons
-        KF5::I18n
-        KF5::Plasma
-        KF5::PlasmaQuick
-        KF5::Solid
+  KF5::I18n
+  KF5::Plasma
+  KF5::PlasmaQuick
+  KF5::Solid
 
-        Qt::Widgets
-        Qt::QuickWidgets
+  Qt::Widgets
+  Qt::QuickWidgets
 
-        udev
-        evdev
+  udev
+  evdev
 
-        SDL2 # TODO: find_package
-        )
+  SDL2 # TODO: find_package
+)
 
 kpackage_install_package(package kcm_gamepad kcms)
