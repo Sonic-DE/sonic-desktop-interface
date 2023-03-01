@@ -25,7 +25,7 @@ const int kLeftX = 10;
 const int kMidX = kLeftX + kDPadSpacing;
 const int kRightX = kMidX + kDPadSpacing;
 
-const int kDPadTopY = 24;
+const int kDPadTopY = 71;
 const int kDPadMidY = kDPadTopY + kDPadSpacing;
 const int kDPadBottomY = kDPadMidY + kDPadSpacing;
 
@@ -41,7 +41,9 @@ const int kButtonsMidX = kButtonsX + kSpaceBetweenButtons;
 const int kButtonsRightX = kButtonsMidX + kSpaceBetweenButtons;
 
 // y positions
-const int kTopY = 10;
+const int kShoulderY = 2;
+const int kTriggerY = kShoulderY + 12;
+const int kTopY = kTriggerY + kSpaceBetweenButtons;
 const int kMidY = kTopY + kSpaceBetweenButtons;
 const int kBottomY = kMidY + kSpaceBetweenButtons;
 
@@ -128,6 +130,12 @@ QPoint JoyButton::position(int code)
     case SDL_CONTROLLER_BUTTON_DPAD_RIGHT:
         point.setX(kRightX);
         break;
+    case SDL_CONTROLLER_BUTTON_LEFTSHOULDER:
+        point.setX(kMidX);
+        break;
+    case SDL_CONTROLLER_BUTTON_RIGHTSHOULDER:
+        point.setX(kButtonsMidX);
+        break;
     }
 
     switch (code) {
@@ -156,6 +164,10 @@ QPoint JoyButton::position(int code)
         break;
     case SDL_CONTROLLER_BUTTON_DPAD_DOWN:
         point.setY(kDPadBottomY);
+        break;
+    case SDL_CONTROLLER_BUTTON_LEFTSHOULDER:
+    case SDL_CONTROLLER_BUTTON_RIGHTSHOULDER:
+        point.setY(kShoulderY);
         break;
     }
     return point;
@@ -290,23 +302,17 @@ QString JoyButton::image(int code)
     case SDL_CONTROLLER_BUTTON_MISC1:
         filename = pattern.arg(prefix).arg("misc");
         break;
+    case SDL_CONTROLLER_BUTTON_LEFTSHOULDER:
+        filename = pattern.arg(prefix).arg("l1");
+        break;
+    case SDL_CONTROLLER_BUTTON_RIGHTSHOULDER:
+        filename = pattern.arg(prefix).arg("r1");
+        break;
         /* case BTN_C:
                 name = i18nc("C button", "C");
                 break;
             case BTN_Z:
                 name = i18nc("Z button", "Z");
-                break;
-            case BTN_TR:
-                name = i18nc("R1 button", "R1");
-                break;
-            case BTN_TR2:
-                name = i18nc("R2 button", "R2");
-                break;
-            case BTN_TL:
-                name = i18nc("L1 button", "L1");
-                break;
-            case BTN_TL2:
-                name = i18nc("L2 button", "L2");
                 break;
             case BTN_THUMBL:
                 name = i18nc("Left thumb stick button", "Left Thumb");
