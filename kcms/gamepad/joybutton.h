@@ -21,7 +21,6 @@ class JoyButton : public QObject
     Q_OBJECT
     Q_PROPERTY(QString name MEMBER m_name CONSTANT)
     Q_PROPERTY(QString image READ getImage CONSTANT)
-    Q_PROPERTY(QPoint position READ getPosition CONSTANT)
     Q_PROPERTY(bool state READ getState NOTIFY stateChanged)
 public:
     explicit JoyButton(uint16_t vendor, const int code, QObject *parent = nullptr);
@@ -47,11 +46,6 @@ public:
         return image(m_code);
     }
 
-    QPoint getPosition()
-    {
-        return position(m_code);
-    }
-
     friend class JoyDevice;
 
 signals:
@@ -63,7 +57,6 @@ private:
 
     // Give path to an image to show in the gui for the given button.
     QString image(int code);
-    QPoint position(int code);
 
     uint16_t m_vendor;
     int m_code;
