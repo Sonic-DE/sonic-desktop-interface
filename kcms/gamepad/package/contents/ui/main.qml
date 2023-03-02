@@ -12,6 +12,9 @@ import org.kde.kcm 1.4 as KCM
 import QtQuick.Controls 2.0 as QQC2
 import QtQuick.Layouts 1.3 as Layouts
 import org.kde.plasma.gamepad.kcm 1.0
+import QtQuick.Shapes 1.15
+
+import "./layouts" as Layouts
 
 KCM.SimpleKCM {
     id: root
@@ -80,15 +83,12 @@ KCM.SimpleKCM {
             Rectangle {
                 Layout.preferredHeight: 200
 
-                Repeater {
-                    model: currentDevice.buttons
 
-                    GamepadButton {
-                        device: currentDevice
-                        ix: index
-                    }
-                }
             }
         }
+    }
+
+    Layouts.GenericLayout {
+        device: currentDevice
     }
 }
