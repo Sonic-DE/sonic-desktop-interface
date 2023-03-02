@@ -15,38 +15,6 @@
 #include <csignal>
 #include <fcntl.h>
 
-// Distance in pixels between buttons near each other both X and Y
-const int kSpaceBetweenButtons = 35;
-const int kDPadSpacing = 20;
-
-// Positions of buttons
-// DPad positions
-const int kLeftX = 10;
-const int kMidX = kLeftX + kDPadSpacing;
-const int kRightX = kMidX + kDPadSpacing;
-
-const int kDPadTopY = 71;
-const int kDPadMidY = kDPadTopY + kDPadSpacing;
-const int kDPadBottomY = kDPadMidY + kDPadSpacing;
-
-// Center button positions
-const int kSelectX = kRightX + (kSpaceBetweenButtons * 2);
-const int kMiscX = kSelectX + kSpaceBetweenButtons;
-const int kModeX = kMiscX + kSpaceBetweenButtons;
-const int kStartX = kModeX + kSpaceBetweenButtons;
-
-// right quad positions
-const int kButtonsX = kStartX + (kSpaceBetweenButtons * 2);
-const int kButtonsMidX = kButtonsX + kSpaceBetweenButtons;
-const int kButtonsRightX = kButtonsMidX + kSpaceBetweenButtons;
-
-// y positions
-const int kShoulderY = 2;
-const int kTriggerY = kShoulderY + 12;
-const int kTopY = kTriggerY + kSpaceBetweenButtons;
-const int kMidY = kTopY + kSpaceBetweenButtons;
-const int kBottomY = kMidY + kSpaceBetweenButtons;
-
 // TODO: confirm actual usb ids
 const uint16_t USB_ID_SONY = 0x0a51;
 const uint16_t USB_ID_SONY2 = 0x054c;
@@ -78,99 +46,6 @@ void JoyButton::setState(bool state)
 bool JoyButton::getState() const
 {
     return m_state;
-}
-
-QPoint JoyButton::position(int code)
-{
-    bool isNintendo = (m_vendor == USB_ID_NINTENDO);
-    if (isNintendo) {
-        // Nintendo puts X at north, Y at west, B at south and A at east
-        // So switch them here
-        if (code == SDL_CONTROLLER_BUTTON_X)
-            code = SDL_CONTROLLER_BUTTON_Y;
-        else if (code == SDL_CONTROLLER_BUTTON_Y)
-            code = SDL_CONTROLLER_BUTTON_X;
-        else if (code == SDL_CONTROLLER_BUTTON_A)
-            code = SDL_CONTROLLER_BUTTON_B;
-        else if (code == SDL_CONTROLLER_BUTTON_B)
-            code = SDL_CONTROLLER_BUTTON_A;
-    }
-
-    QPoint point = QPoint(0, 0);
-    switch (code) {
-    case SDL_CONTROLLER_BUTTON_X:
-        point.setX(kButtonsX);
-        break;
-    case SDL_CONTROLLER_BUTTON_B:
-        point.setX(kButtonsRightX);
-        break;
-    case SDL_CONTROLLER_BUTTON_Y:
-    case SDL_CONTROLLER_BUTTON_A:
-        point.setX(kButtonsMidX);
-        break;
-    case SDL_CONTROLLER_BUTTON_BACK:
-        point.setX(kSelectX);
-        break;
-    case SDL_CONTROLLER_BUTTON_MISC1:
-        point.setX(kMiscX);
-        break;
-    case SDL_CONTROLLER_BUTTON_GUIDE:
-        point.setX(kModeX);
-        break;
-    case SDL_CONTROLLER_BUTTON_START:
-        point.setX(kStartX);
-        break;
-    case SDL_CONTROLLER_BUTTON_DPAD_LEFT:
-        point.setX(kLeftX);
-        break;
-    case SDL_CONTROLLER_BUTTON_DPAD_UP:
-    case SDL_CONTROLLER_BUTTON_DPAD_DOWN:
-        point.setX(kMidX);
-        break;
-    case SDL_CONTROLLER_BUTTON_DPAD_RIGHT:
-        point.setX(kRightX);
-        break;
-    case SDL_CONTROLLER_BUTTON_LEFTSHOULDER:
-        point.setX(kMidX);
-        break;
-    case SDL_CONTROLLER_BUTTON_RIGHTSHOULDER:
-        point.setX(kButtonsMidX);
-        break;
-    }
-
-    switch (code) {
-    case SDL_CONTROLLER_BUTTON_X:
-    case SDL_CONTROLLER_BUTTON_B:
-        point.setY(kMidY);
-        break;
-    case SDL_CONTROLLER_BUTTON_Y:
-        point.setY(kTopY);
-        break;
-    case SDL_CONTROLLER_BUTTON_A:
-        point.setY(kBottomY);
-        break;
-    case SDL_CONTROLLER_BUTTON_BACK:
-    case SDL_CONTROLLER_BUTTON_MISC1:
-    case SDL_CONTROLLER_BUTTON_GUIDE:
-    case SDL_CONTROLLER_BUTTON_START:
-        point.setY(kMidY);
-        break;
-    case SDL_CONTROLLER_BUTTON_DPAD_UP:
-        point.setY(kDPadTopY);
-        break;
-    case SDL_CONTROLLER_BUTTON_DPAD_LEFT:
-    case SDL_CONTROLLER_BUTTON_DPAD_RIGHT:
-        point.setY(kDPadMidY);
-        break;
-    case SDL_CONTROLLER_BUTTON_DPAD_DOWN:
-        point.setY(kDPadBottomY);
-        break;
-    case SDL_CONTROLLER_BUTTON_LEFTSHOULDER:
-    case SDL_CONTROLLER_BUTTON_RIGHTSHOULDER:
-        point.setY(kShoulderY);
-        break;
-    }
-    return point;
 }
 
 QString JoyButton::name(int code)
