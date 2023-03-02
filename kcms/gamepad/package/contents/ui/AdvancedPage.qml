@@ -14,22 +14,64 @@ KCM.SimpleKCM {
 
     property var device
 
-    Kirigami.FormLayout {
-        id: formLayout
-
+    ColumnLayout {
         anchors.fill: parent
 
-        ColumnLayout {
-            QQC2.Label {
-                text: i18n("Rumble: ") + (root.device.hasRumble ? i18n("Yes") : i18n("No"))
+        QQC2.Label {
+            text: i18n("Rumble: ") + (root.device.hasRumble ? i18n("Yes") : i18n("No"))
+        }
+
+        QQC2.Label {
+            text: i18n("Axes: ") + root.device.numAxes
+        }
+
+        QQC2.Label {
+            text: i18n("Buttons: ") + root.device.numButtons
+        }
+
+        TableView {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            columnSpacing: 1
+            rowSpacing: 1
+            clip: true
+
+            model: ButtonModel {
+                device: root.device
             }
 
-            QQC2.Label {
-                text: i18n("Axes: ") + root.device.numAxes
+            delegate: Rectangle {
+                color: "transparent"
+                implicitWidth: label.implicitWidth + 8
+                implicitHeight: label.implicitHeight + 4
+
+                QQC2.Label {
+                    id: label
+                    text: display
+                }
+            }
+        }
+
+        TableView {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            columnSpacing: 1
+            rowSpacing: 1
+            clip: true
+
+            model: AxesModel {
+                device: root.device
             }
 
-            QQC2.Label {
-                text: i18n("Buttons: ") + root.device.numButtons
+            delegate: Rectangle {
+                color: "transparent"
+                implicitWidth: label.implicitWidth + 8
+                implicitHeight: label.implicitHeight + 4
+
+                QQC2.Label {
+                    id: label
+                    text: display
+                }
             }
         }
     }
