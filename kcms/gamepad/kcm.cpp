@@ -11,6 +11,8 @@
 #include <QProcess>
 #include <QStandardPaths>
 
+#include "axesmodel.h"
+#include "buttonmodel.h"
 #include "devicemodel.h"
 #include "joybutton.h"
 #include "joydevice.h"
@@ -26,6 +28,8 @@ KCMGamePad::KCMGamePad(QObject *parent, const KPluginMetaData &metaData, const Q
     qmlRegisterType<JoyDevice>("org.kde.plasma.gamepad.kcm", 1, 0, "JoyDevice");
     qmlRegisterType<JoyButton>("org.kde.plasma.gamepad.kcm", 1, 0, "JoyButton");
     qmlRegisterType<JoyAxis>("org.kde.plasma.gamepad.kcm", 1, 0, "JoyAxis");
+    qmlRegisterType<AxesModel>("org.kde.plasma.gamepad.kcm", 1, 0, "AxesModel");
+    qmlRegisterType<ButtonModel>("org.kde.plasma.gamepad.kcm", 1, 0, "ButtonModel");
 }
 
 #include "kcm.moc"
