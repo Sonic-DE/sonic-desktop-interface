@@ -2,12 +2,14 @@
 add_definitions(-DTRANSLATION_DOMAIN=\"kcm_gamepad\")
 
 set(kcm_gamepad_SRCS
-  kcm.cpp
-  devicemodel.cpp
-  joydevice.cpp
-  joyaxis.cpp
-  joybutton.cpp
-)
+        kcm.cpp
+        devicemodel.cpp
+        joydevice.cpp
+        joyaxis.cpp
+        joybutton.cpp
+        axesmodel.cpp
+        buttonmodel.cpp
+        )
 
 kcoreaddons_add_plugin(kcm_gamepad SOURCES ${kcm_gamepad_SRCS} INSTALL_NAMESPACE "plasma/kcms/systemsettings")
 kcmutils_generate_desktop_file(kcm_gamepad)
