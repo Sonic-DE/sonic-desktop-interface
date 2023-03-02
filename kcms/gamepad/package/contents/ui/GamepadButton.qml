@@ -4,38 +4,39 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 
-/* This is for a single gamepad button 
+import QtQuick 2.15
+import QtGraphicalEffects 1.0
+import org.kde.plasma.gamepad.kcm 1.0
+
+/* This is for a single gamepad button
    In order to make it relatively simpler to show
    a gamepad for showing button state and arrangement.
    This widget shows a single button of a given vendor
    using images from images/ folder.
 */
-
-import QtQuick 2.15
-import QtGraphicalEffects 1.0
-import org.kde.plasma.gamepad.kcm 1.0
-
 Item {
-    id: button
-    // Which button this is
-    property var idx
-    property var device
-    property var joybutton: device.buttons[idx]
-    property bool pressed: joybutton.state
+    id: root
 
-    property var posX
-    property var posY
-    property var controllerImage
+    // Which button this is
+    required property var idx
+    required property var device
+
+    readonly property var joybutton: root.device.buttons[idx]
+    readonly property bool pressed: root.joybutton.state
+
+    required property var posX
+    required property var posY
+    required property var controllerImage
 
     Image {
         id: icon
-        x: (posX * controllerImage.paintedWidth)
-        y: (posY * controllerImage.paintedHeight)
-        source: joybutton.image
+        x: (root.posX * root.controllerImage.paintedWidth)
+        y: (root.posY * root.controllerImage.paintedHeight)
+        source: root.joybutton.image
     }
 
     ColorOverlay {
-        visible: joybutton.state
+        visible: root.joybutton.state
         anchors.fill: icon
         source: icon
         color: "#777777"
