@@ -75,6 +75,8 @@ void JoyDevice::poll()
         } else {
             m_buttons[i]->setState(false);
         }
+
+        Q_EMIT buttonStateChanged(i);
     }
 
     for (int i : m_axes.keys()) {
@@ -92,5 +94,7 @@ void JoyDevice::poll()
             float floatValue = (float)value / 32767;
             m_axes.value(i)->setValue(floatValue);
         }
+
+        Q_EMIT axisStateChanged(i);
     }
 }
