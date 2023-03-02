@@ -36,11 +36,20 @@ KCM.SimpleKCM {
     }
 
     actions.main: Kirigami.Action {
-            id: addAction
-            icon.name: "list-add"
-            text: i18nc("@action:button", "Add bluetooth device...")
-            onTriggered: { Qt.openUrlExternally("systemsettings://kcm_bluetooth"); }
+        id: addAction
+        icon.name: "list-add"
+        text: i18nc("@action:button", "Add bluetooth device...")
+        onTriggered: { Qt.openUrlExternally("systemsettings://kcm_bluetooth"); }
+    }
+
+    actions.contextualActions: [
+        Kirigami.Action {
+            icon.name: "configure"
+            text: i18nd("kcm_pulseaudio", "Advanced View…")
+            onTriggered: kcm.push("AdvancedPage.qml", { "device": currentDevice })
+            enabled: currentDevice !== null
         }
+    ]
 
     Kirigami.FormLayout {
         id: formLayout
@@ -49,7 +58,6 @@ KCM.SimpleKCM {
 
         visible: joystickCount > 0
 
-        // Device
         QQC2.ComboBox {
             Kirigami.FormData.label: i18nd("kcm_joystick", "Device:")
             id: deviceSelector
@@ -57,34 +65,6 @@ KCM.SimpleKCM {
             Layouts.Layout.fillWidth: true
             model: deviceModel
             textRole: "name"
-        }
-
-        ColumnLayout {
-            QQC2.Label {
-                text: i18n("Rumble: ") + (currentDevice.hasRumble ? i18n("Yes") : i18n("No"))
-            }
-
-            QQC2.Label {
-                text: i18n("Axes: ") + currentDevice.numAxes
-            }
-
-//            Repeater {
-//                model: currentDevice.axisState
-
-//                QQC2.Label {
-//                            text: currentDevice.axisNames[index] + ": " + modelData
-//                }
-//            }
-
-            QQC2.Label {
-                text: i18n("Buttons: ") + currentDevice.numButtons
-            }
-
-            Rectangle {
-                Layout.preferredHeight: 200
-
-
-            }
         }
     }
 
