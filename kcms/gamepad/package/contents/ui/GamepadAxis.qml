@@ -6,6 +6,7 @@
 
 import QtQuick 2.15
 import QtGraphicalEffects 1.0
+import QtQuick.Controls 2.0 as QQC2
 import org.kde.plasma.gamepad.kcm 1.0
 
 /* This is for showing a gamepad axis */
@@ -29,5 +30,13 @@ Item {
         x: (root.posX * root.controllerImage.paintedWidth) + (root.axis.gridValue.x * 50)
         y: (root.posY * root.controllerImage.paintedHeight) + (root.axis.gridValue.y * 50)
         radius: 0.5 * width
+
+        QQC2.ToolTip.visible: hoverHandler.hovered
+        QQC2.ToolTip.text: axis.name
+
+        HoverHandler {
+            id: hoverHandler
+            acceptedDevices: PointerDevice.Mouse
+        }
     }
 }
