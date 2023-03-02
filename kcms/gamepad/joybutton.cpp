@@ -183,18 +183,6 @@ QString JoyButton::image(int code)
     case SDL_CONTROLLER_BUTTON_RIGHTSHOULDER:
         filename = pattern.arg(prefix).arg("r1");
         break;
-        /* case BTN_C:
-                name = i18nc("C button", "C");
-                break;
-            case BTN_Z:
-                name = i18nc("Z button", "Z");
-                break;
-            case BTN_THUMBL:
-                name = i18nc("Left thumb stick button", "Left Thumb");
-                break;
-            case BTN_THUMBR:
-                name = i18nc("Right thumb stick button", "Right Thumb");
-                break; */
     case SDL_CONTROLLER_BUTTON_DPAD_UP:
         filename = pattern.arg(prefix).arg("up");
         break;
@@ -207,42 +195,6 @@ QString JoyButton::image(int code)
     case SDL_CONTROLLER_BUTTON_DPAD_RIGHT:
         filename = pattern.arg(prefix).arg("right");
         break;
-        /*    case BTN_TRIGGER:
-                name = i18nc("Trigger button", "Trigger");
-                break;
-            case BTN_THUMB:
-                name = i18nc("Thumb button", "Thumb");
-                break;
-            case BTN_THUMB2:
-                name = i18nc("Second thumb button", "Thumb 2");
-                break;
-            case BTN_TOP:
-                name = i18nc("Top button", "Top");
-                break;
-            case BTN_TOP2:
-                name = i18nc("Second top button", "Top 2");
-                break;
-            case BTN_PINKIE:
-                name = i18nc("Pinkie (smallest finger) button", "Pinkie");
-                break;
-            case BTN_BASE:
-                name = i18nc("First base button", "Base 1");
-                break;
-            case BTN_BASE2:
-                name = i18nc("Second base button", "Base 2");
-                break;
-            case BTN_BASE3:
-                name = i18nc("Third base button", "Base 3");
-                break;
-            case BTN_BASE4:
-                name = i18nc("Fourth base button", "Base 4");
-                break;
-            case BTN_BASE5:
-                name = i18nc("Fifth base button", "Base 5");
-                break;
-            case BTN_BASE6:
-                name = i18nc("Sixfth base button", "Base 6");
-                break;*/
     }
     return filename;
 }
