@@ -90,5 +90,6 @@ KCM.SimpleKCM {
 
     Layouts.GenericLayout {
         device: currentDevice
+        visible: currentDevice !== null
     }
 }
