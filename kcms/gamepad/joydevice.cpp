@@ -56,7 +56,7 @@ JoyDevice::JoyDevice(SDL_Joystick *joystick, SDL_GameController *controller, QOb
     // TODO: temporary event loop
     auto timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &JoyDevice::poll);
-    timer->start(100);
+    timer->start(1);
 }
 
 JoyDevice::JoyDevice()
