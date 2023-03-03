@@ -103,7 +103,7 @@ Image {
     }
 
     // left stick
-    GamepadAxis {
+    GamepadStick {
         idx: 0
         device: root.device
         controllerImage: root
@@ -113,7 +113,7 @@ Image {
     }
 
     // right stick
-    GamepadAxis {
+    GamepadStick {
         idx: 1
         device: root.device
         controllerImage: root

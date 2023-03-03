@@ -24,8 +24,19 @@ Item {
     required property var controllerImage
 
     Rectangle {
+        id: outerRing
+        border.color: "black"
+        color: "transparent"
+        width: root.controllerImage.paintedWidth * 0.05
+        height: width
+        x: (root.posX * root.controllerImage.paintedWidth) - (root.controllerImage.paintedWidth * 0.005)
+        y: (root.posY * root.controllerImage.paintedHeight) - (root.controllerImage.paintedWidth * 0.005)
+        radius: 0.5 * width
+    }
+
+    Rectangle {
         id: icon
-        width: root.controllerImage.paintedWidth * 0.03
+        width: root.controllerImage.paintedWidth * 0.04
         height: width
         x: (root.posX * root.controllerImage.paintedWidth) + (root.axis.gridValue.x * 50)
         y: (root.posY * root.controllerImage.paintedHeight) + (root.axis.gridValue.y * 50)
