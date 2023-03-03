@@ -68,7 +68,7 @@ Image {
         device: root.device
         controllerImage: root
 
-        posX: 0.23
+        posX: 0.28
         posY: 0.3
     }
 
@@ -78,7 +78,7 @@ Image {
         device: root.device
         controllerImage: root
 
-        posX: 0.34
+        posX: 0.32
         posY: 0.3
     }
 
@@ -89,7 +89,7 @@ Image {
         controllerImage: root
 
         posX: 0.3
-        posY: 0.2
+        posY: 0.26
     }
 
     // bottom d-pad
@@ -99,7 +99,7 @@ Image {
         controllerImage: root
 
         posX: 0.3
-        posY: 0.42
+        posY: 0.34
     }
 
     // left stick
