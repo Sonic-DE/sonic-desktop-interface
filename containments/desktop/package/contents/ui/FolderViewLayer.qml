@@ -9,7 +9,7 @@ import QtQml 2.15
 
 import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.plasma.components 2.0 as PlasmaComponents
+import org.kde.plasma.components 3.0 as PlasmaComponents3
 import org.kde.kconfig 1.0 // for KAuthorized
 
 import org.kde.private.desktopcontainment.folder 0.1 as Folder
@@ -144,7 +144,7 @@ FocusScope {
         }
     }
 
-    PlasmaComponents.Label {
+    PlasmaComponents3.Label {
         anchors.fill: parent
 
         text: folderView.errorString
@@ -324,7 +324,7 @@ FocusScope {
                 }
             }
 
-            PlasmaComponents.Label {
+            PlasmaComponents3.Label {
                 id: text
 
                 anchors {
@@ -364,7 +364,7 @@ FocusScope {
             Component {
                 id: windowPinComponent
 
-                PlasmaComponents.ToolButton {
+                PlasmaComponents3.ToolButton {
                     id: windowPin
 
                     anchors.right: parent.right
@@ -382,7 +382,7 @@ FocusScope {
             Component {
                 id: homeButtonComponent
 
-                PlasmaComponents.ToolButton {
+                PlasmaComponents3.ToolButton {
                     id: homeButton
 
                     anchors.left: parent.left
