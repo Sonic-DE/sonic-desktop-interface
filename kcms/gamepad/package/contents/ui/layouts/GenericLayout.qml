@@ -105,6 +105,7 @@ Image {
     // left stick
     GamepadStick {
         idx: 0
+        buttonidx: 7
         device: root.device
         controllerImage: root
 
@@ -115,6 +116,7 @@ Image {
     // right stick
     GamepadStick {
         idx: 1
+        buttonidx: 8
         device: root.device
         controllerImage: root
 
