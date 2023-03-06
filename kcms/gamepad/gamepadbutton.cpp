@@ -4,7 +4,7 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 
-#include "joybutton.h"
+#include "gamepadbutton.h"
 
 #include <QDebug>
 #include <QFile>
@@ -21,7 +21,7 @@ const uint16_t USB_ID_SONY2 = 0x054c;
 const uint16_t USB_ID_MICROSOFT = 0x045e;
 const uint16_t USB_ID_NINTENDO = 0x057e;
 
-JoyButton::JoyButton(uint16_t vendor, const int code, QObject *parent)
+GamepadButton::GamepadButton(uint16_t vendor, const int code, QObject *parent)
     : QObject(parent)
     , m_vendor(vendor)
     , m_code(code)
@@ -30,25 +30,25 @@ JoyButton::JoyButton(uint16_t vendor, const int code, QObject *parent)
     m_name = name(m_code);
 }
 
-JoyButton::JoyButton()
+GamepadButton::GamepadButton()
     : m_code(0)
     , m_state(false)
 {
 }
 
-void JoyButton::setState(bool state)
+void GamepadButton::setState(bool state)
 {
     qDebug() << "button with name: " << name(m_code) << " state changed: " << state;
     m_state = state;
     emit stateChanged();
 }
 
-bool JoyButton::getState() const
+bool GamepadButton::getState() const
 {
     return m_state;
 }
 
-QString JoyButton::name(int code)
+QString GamepadButton::name(int code)
 {
     QString name = i18n("Unknown button %1", code);
     switch (code) {
@@ -119,7 +119,7 @@ QString JoyButton::name(int code)
     return name;
 }
 
-QString JoyButton::image(int code)
+QString GamepadButton::image(int code)
 {
     QString filename;
     QString pattern = QStringLiteral("images/%1_%2.png");
