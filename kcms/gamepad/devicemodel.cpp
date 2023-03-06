@@ -9,7 +9,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_joystick.h>
 
-#include "joydevice.h"
+#include "gamepad.h"
 
 DeviceModel::DeviceModel()
 {
@@ -19,7 +19,7 @@ DeviceModel::DeviceModel()
     }
 }
 
-JoyDevice *DeviceModel::device(int index) const
+Gamepad *DeviceModel::device(int index) const
 {
     if (index < 0 || index > m_devices.count())
         return nullptr;
@@ -55,5 +55,5 @@ QHash<int, QByteArray> DeviceModel::roleNames() const
 
 void DeviceModel::addDevice(const int deviceIndex)
 {
-    m_devices.push_back(new JoyDevice(SDL_JoystickOpen(deviceIndex), SDL_GameControllerOpen(deviceIndex), this));
+    m_devices.push_back(new Gamepad(SDL_JoystickOpen(deviceIndex), SDL_GameControllerOpen(deviceIndex), this));
 }
