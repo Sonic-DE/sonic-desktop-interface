@@ -23,7 +23,6 @@ Item {
     required property var device
 
     readonly property var button: root.device.buttons[idx]
-    readonly property bool pressed: root.button.state
 
     required property var posX
     required property var posY
