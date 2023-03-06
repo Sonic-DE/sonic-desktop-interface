@@ -14,8 +14,8 @@
 #include "axesmodel.h"
 #include "buttonmodel.h"
 #include "devicemodel.h"
-#include "joybutton.h"
-#include "joydevice.h"
+#include "gamepad.h"
+#include "gamepadbutton.h"
 
 K_PLUGIN_FACTORY_WITH_JSON(KCMJoystickFactory, "kcm_gamepad.json", registerPlugin<KCMGamePad>();)
 
@@ -25,9 +25,9 @@ KCMGamePad::KCMGamePad(QObject *parent, const KPluginMetaData &metaData, const Q
     : KQuickAddons::ManagedConfigModule(parent, metaData, args)
 {
     qmlRegisterType<DeviceModel>("org.kde.plasma.gamepad.kcm", 1, 0, "DeviceModel");
-    qmlRegisterType<JoyDevice>("org.kde.plasma.gamepad.kcm", 1, 0, "JoyDevice");
-    qmlRegisterType<JoyButton>("org.kde.plasma.gamepad.kcm", 1, 0, "JoyButton");
-    qmlRegisterType<JoyAxis>("org.kde.plasma.gamepad.kcm", 1, 0, "JoyAxis");
+    qmlRegisterType<Gamepad>("org.kde.plasma.gamepad.kcm", 1, 0, "Gamepad");
+    qmlRegisterType<GamepadButton>("org.kde.plasma.gamepad.kcm", 1, 0, "GamepadButton");
+    qmlRegisterType<GamepadStick>("org.kde.plasma.gamepad.kcm", 1, 0, "GamepadStick");
     qmlRegisterType<AxesModel>("org.kde.plasma.gamepad.kcm", 1, 0, "AxesModel");
     qmlRegisterType<ButtonModel>("org.kde.plasma.gamepad.kcm", 1, 0, "ButtonModel");
 }
