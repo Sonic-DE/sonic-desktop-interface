@@ -15,9 +15,11 @@ Item {
 
     // Which axis this is
     required property var idx
+    required property var buttonidx
     required property var device
 
     readonly property var axis: root.device.axes[idx]
+    readonly property var button: root.device.buttons[buttonidx]
 
     required property var posX
     required property var posY
@@ -49,5 +51,12 @@ Item {
             id: hoverHandler
             acceptedDevices: PointerDevice.Mouse
         }
+    }
+
+    ColorOverlay {
+        visible: root.button.state
+        anchors.fill: icon
+        source: icon
+        color: "#777777"
     }
 }
