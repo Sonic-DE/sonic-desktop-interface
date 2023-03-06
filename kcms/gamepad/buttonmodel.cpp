@@ -6,7 +6,7 @@
 
 #include "buttonmodel.h"
 
-#include "joydevice.h"
+#include "gamepad.h"
 #include <SDL2/SDL_joystick.h>
 
 ButtonModel::ButtonModel(QObject *parent)
@@ -14,7 +14,7 @@ ButtonModel::ButtonModel(QObject *parent)
 {
     // TODO: what is this?
     connect(this, &ButtonModel::deviceChanged, this, [this] {
-        connect(m_device, &JoyDevice::buttonStateChanged, this, [this](int index) {
+        connect(m_device, &Gamepad::buttonStateChanged, this, [this](int index) {
             const QModelIndex changedIndex = this->index(index, 1);
             Q_EMIT dataChanged(changedIndex, changedIndex, {Qt::DisplayRole});
         });
