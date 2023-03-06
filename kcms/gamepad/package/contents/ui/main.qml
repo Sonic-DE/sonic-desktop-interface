@@ -14,7 +14,7 @@ import QtQuick.Layouts 1.3 as Layouts
 import org.kde.plasma.gamepad.kcm 1.0
 import QtQuick.Shapes 1.15
 
-import "./layouts" as Layouts
+import "./gamepadtypes" as GamepadTypes
 
 KCM.SimpleKCM {
     id: root
@@ -68,7 +68,7 @@ KCM.SimpleKCM {
         }
     }
 
-    Layouts.GenericLayout {
+    GamepadTypes.GenericGamepad {
         device: currentDevice
         visible: currentDevice !== null
     }
