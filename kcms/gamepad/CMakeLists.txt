@@ -4,9 +4,10 @@ add_definitions(-DTRANSLATION_DOMAIN=\"kcm_gamepad\")
 set(kcm_gamepad_SRCS
         kcm.cpp
         devicemodel.cpp
-        joydevice.cpp
-        joyaxis.cpp
-        joybutton.cpp
+        gamepad.cpp
+        gamepadbutton.cpp
+        gamepadstick.cpp
+	gamepadtrigger.cpp
         axesmodel.cpp
         buttonmodel.cpp
         )

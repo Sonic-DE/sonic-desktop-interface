@@ -8,12 +8,12 @@
 
 #include <QAbstractTableModel>
 
-class JoyDevice;
+class Gamepad;
 
 class AxesModel : public QAbstractTableModel
 {
     Q_OBJECT
-    Q_PROPERTY(JoyDevice *device MEMBER m_device NOTIFY deviceChanged REQUIRED)
+    Q_PROPERTY(Gamepad *device MEMBER m_device NOTIFY deviceChanged REQUIRED)
 
 public:
     AxesModel(QObject *parent = nullptr);
@@ -30,5 +30,5 @@ signals:
     void deviceChanged();
 
 private:
-    JoyDevice *m_device = nullptr;
+    Gamepad *m_device = nullptr;
 };
