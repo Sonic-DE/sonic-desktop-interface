@@ -10,7 +10,7 @@
 #include <QStandardItemModel>
 #include <Solid/Device>
 
-class JoyDevice;
+class Gamepad;
 
 class DeviceModel : public QAbstractListModel
 {
@@ -20,7 +20,7 @@ public:
 
     DeviceModel();
 
-    Q_INVOKABLE JoyDevice *device(int index) const;
+    Q_INVOKABLE Gamepad *device(int index) const;
 
     int rowCount(const QModelIndex &parent) const override;
     QVariant data(const QModelIndex &index, int role) const override;
@@ -29,5 +29,5 @@ public:
 private:
     void addDevice(const int deviceIndex);
 
-    QList<JoyDevice *> m_devices;
+    QList<Gamepad *> m_devices;
 };

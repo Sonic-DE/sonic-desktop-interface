@@ -6,7 +6,7 @@
 
 #include "axesmodel.h"
 
-#include "joydevice.h"
+#include "gamepad.h"
 #include <SDL2/SDL_joystick.h>
 
 AxesModel::AxesModel(QObject *parent)
@@ -14,7 +14,7 @@ AxesModel::AxesModel(QObject *parent)
 {
     // TODO: no seriously, what is this
     connect(this, &AxesModel::deviceChanged, this, [this] {
-        connect(m_device, &JoyDevice::axisStateChanged, this, [this](int index) {
+        connect(m_device, &Gamepad::axisStateChanged, this, [this](int index) {
             const QModelIndex changedIndex = this->index(index, 1);
             Q_EMIT dataChanged(changedIndex, changedIndex, {Qt::DisplayRole});
         });
