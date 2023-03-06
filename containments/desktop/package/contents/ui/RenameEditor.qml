@@ -116,6 +116,9 @@ PlasmaComponents.ScrollView {
         }
 
         function getXY() {
+            if (!targetItem) {
+                return;
+            }
             var pos = main.mapFromItem(targetItem, targetItem.labelArea.x, targetItem.labelArea.y);
             var _x, _y;
             if (root.useListViewMode) {
@@ -187,13 +190,6 @@ PlasmaComponents.ScrollView {
             var xy = getXY();
             root.x = xy[0];
             root.y = xy[1];
-        }
-
-        function commit() {
-            if (targetItem) {
-                dir.rename(positioner.map(targetItem.index), text);
-                targetItem = null;
-            }
         }
     }
 }
