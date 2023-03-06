@@ -117,7 +117,7 @@ PlasmaComponents.ScrollView {
 
         function getXY() {
             if (!targetItem) {
-                return;
+                return [0,0];
             }
             var pos = main.mapFromItem(targetItem, targetItem.labelArea.x, targetItem.labelArea.y);
             var _x, _y;
