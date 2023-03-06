@@ -1322,7 +1322,7 @@ FocusScope {
 
                 visible: false
 
-                function commit() {
+                onCommit: {
                     if (targetItem) {
                         dir.rename(positioner.map(targetItem.index), text);
                         targetItem = null;

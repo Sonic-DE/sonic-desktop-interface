@@ -22,6 +22,7 @@ PlasmaComponents.ScrollView {
 
     property alias text: editor.text
     property alias targetItem: editor.targetItem
+    signal commit
 
     onFocusChanged: {
         if (focus) {
@@ -81,7 +82,7 @@ PlasmaComponents.ScrollView {
             switch(event.key) {
             case Qt.Key_Return:
             case Qt.Key_Enter:
-                commit();
+                root.commit();
                 break;
             case Qt.Key_Escape:
                 if (targetItem) {
