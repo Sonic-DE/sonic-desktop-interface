@@ -15,7 +15,7 @@ Image {
 
     required property var device
 
-    source: "../images/controller.svg"
+    source: "../images/genericgamepad.svg"
 
     //anchors.top: formLayout.bottom
     y: 300
@@ -42,9 +42,9 @@ Image {
         y: (controllerImage.paintedHeight / 2) + currentDevice.axes[1].gridValue.y * 50
     }*/
 
-    // left trigger
+    // left shoulder
     GamepadButton {
-        idx: 9
+        idx: GamepadButton.SDL_CONTROLLER_BUTTON_LEFTSHOULDER
         device: root.device
         controllerImage: root
 
@@ -52,9 +52,9 @@ Image {
         posY: 0.08
     }
 
-    // right trigger
+    // right shoulder
     GamepadButton {
-        idx: 10
+        idx: GamepadButton.SDL_CONTROLLER_BUTTON_RIGHTSHOULDER
         device: root.device
         controllerImage: root
 
@@ -64,7 +64,7 @@ Image {
 
     // left d-pad
     GamepadButton {
-        idx: 13
+        idx: GamepadButton.SDL_CONTROLLER_BUTTON_DPAD_LEFT
         device: root.device
         controllerImage: root
 
@@ -74,7 +74,7 @@ Image {
 
     // right d-pad
     GamepadButton {
-        idx: 14
+        idx: GamepadButton.SDL_CONTROLLER_BUTTON_DPAD_RIGHT
         device: root.device
         controllerImage: root
 
@@ -84,7 +84,7 @@ Image {
 
     // top d-pad
     GamepadButton {
-        idx: 11
+        idx: GamepadButton.SDL_CONTROLLER_BUTTON_DPAD_UP
         device: root.device
         controllerImage: root
 
@@ -94,7 +94,7 @@ Image {
 
     // bottom d-pad
     GamepadButton {
-        idx: 12
+        idx: GamepadButton.SDL_CONTROLLER_BUTTON_DPAD_DOWN
         device: root.device
         controllerImage: root
 
@@ -105,7 +105,7 @@ Image {
     // left stick
     GamepadStick {
         idx: 0
-        buttonidx: 7
+        buttonidx: GamepadButton.SDL_CONTROLLER_BUTTON_LEFTSTICK
         device: root.device
         controllerImage: root
 
@@ -116,7 +116,7 @@ Image {
     // right stick
     GamepadStick {
         idx: 1
-        buttonidx: 8
+        buttonidx: GamepadButton.SDL_CONTROLLER_BUTTON_RIGHTSTICK
         device: root.device
         controllerImage: root
 
@@ -126,7 +126,7 @@ Image {
 
     // west button
     GamepadButton {
-        idx: 2
+        idx: GamepadButton.SDL_CONTROLLER_BUTTON_X
         device: root.device
         controllerImage: root
 
@@ -136,7 +136,7 @@ Image {
 
     // east button
     GamepadButton {
-        idx: 1
+        idx: GamepadButton.SDL_CONTROLLER_BUTTON_B
         device: root.device
         controllerImage: root
 
@@ -146,7 +146,7 @@ Image {
 
     // north button
     GamepadButton {
-        idx: 3
+        idx: GamepadButton.SDL_CONTROLLER_BUTTON_Y
         device: root.device
         controllerImage: root
 
@@ -156,7 +156,7 @@ Image {
 
     // south button
     GamepadButton {
-        idx: 0
+        idx: GamepadButton.SDL_CONTROLLER_BUTTON_A
         device: root.device
         controllerImage: root
 
@@ -166,7 +166,7 @@ Image {
 
     // guide
     GamepadButton {
-        idx: 5
+        idx: GamepadButton.SDL_CONTROLLER_BUTTON_GUIDE
         device: root.device
         controllerImage: root
 
@@ -176,7 +176,7 @@ Image {
 
     // select
     GamepadButton {
-        idx: 4
+        idx: GamepadButton.SDL_CONTROLLER_BUTTON_BACK
         device: root.device
         controllerImage: root
 
@@ -186,7 +186,7 @@ Image {
 
     // start
     GamepadButton {
-        idx: 6
+        idx: GamepadButton.SDL_CONTROLLER_BUTTON_START
         device: root.device
         controllerImage: root
 
@@ -196,7 +196,7 @@ Image {
 
     // misc1
     GamepadButton {
-        idx: 15
+        idx: GamepadButton.SDL_CONTROLLER_BUTTON_MISC1
         device: root.device
         controllerImage: root
 

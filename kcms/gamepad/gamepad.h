@@ -18,10 +18,11 @@
 #include <KLocalizedString>
 #include <SDL2/SDL_gamecontroller.h>
 
-#include "joyaxis.h"
-#include "joybutton.h"
+#include "gamepadbutton.h"
+#include "gamepadstick.h"
+#include "gamepadtrigger.h"
 
-class JoyDevice : public QObject
+class Gamepad : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QString name MEMBER m_name CONSTANT)
@@ -34,9 +35,9 @@ class JoyDevice : public QObject
     Q_PROPERTY(QVariantList axes READ getAxes NOTIFY axisStateChanged)
     Q_PROPERTY(ConnectionType connectionType READ getConnectionType NOTIFY connectionTypeChanged)
 public:
-    explicit JoyDevice(SDL_Joystick *joystick, SDL_GameController *controller, QObject *parent = nullptr);
+    explicit Gamepad(SDL_Joystick *joystick, SDL_GameController *controller, QObject *parent = nullptr);
     // For QML usage of devices
-    JoyDevice();
+    Gamepad();
 
     enum ConnectionType {
         UnknownType,
@@ -101,8 +102,9 @@ private:
     SDL_Joystick *m_joystick = nullptr;
     SDL_GameController *m_gameController = nullptr;
 
-    QVector<JoyButton *> m_buttons;
-    QMap<int, JoyAxis *> m_axes;
+    QVector<GamepadButton *> m_buttons;
+    QMap<int, GamepadStick *> m_axes;
+    QMap<int, GamepadTrigger *> m_triggers;
 
     QString m_name;
     uint16_t m_vendor;
