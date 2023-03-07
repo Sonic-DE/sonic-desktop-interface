@@ -13,7 +13,7 @@
 
 DeviceModel::DeviceModel()
 {
-    SDL_Init(SDL_INIT_JOYSTICK);
+    SDL_Init(SDL_INIT_GAMECONTROLLER);
     for (int i = 0; i < SDL_NumJoysticks(); i++) {
         addDevice(i);
     }
