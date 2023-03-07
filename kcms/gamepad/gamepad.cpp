@@ -19,9 +19,9 @@
 
 Gamepad::Gamepad(SDL_Joystick *joystick, SDL_GameController *controller, QObject *parent)
     : QObject(parent)
-    , m_model(i18n("Unknown Model"))
     , m_joystick(joystick)
     , m_gameController(controller)
+    , m_model(i18n("Unknown Model"))
 {
     m_name = SDL_JoystickName(m_joystick);
 
