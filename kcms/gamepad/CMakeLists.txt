@@ -4,6 +4,7 @@ add_definitions(-DTRANSLATION_DOMAIN=\"kcm_gamepad\")
 set(kcm_gamepad_SRCS
         kcm.cpp
         devicemodel.cpp
+	devicetypemodel.cpp
         gamepad.cpp
         gamepadbutton.cpp
         gamepadstick.cpp
