@@ -14,6 +14,7 @@
 #include "axesmodel.h"
 #include "buttonmodel.h"
 #include "devicemodel.h"
+#include "devicetypemodel.h"
 #include "gamepad.h"
 #include "gamepadbutton.h"
 
@@ -25,6 +26,7 @@ KCMGamePad::KCMGamePad(QObject *parent, const KPluginMetaData &metaData, const Q
     : KQuickAddons::ManagedConfigModule(parent, metaData, args)
 {
     qmlRegisterType<DeviceModel>("org.kde.plasma.gamepad.kcm", 1, 0, "DeviceModel");
+    qmlRegisterType<DeviceTypeModel>("org.kde.plasma.gamepad.kcm", 1, 0, "DeviceTypeModel");
     qmlRegisterType<Gamepad>("org.kde.plasma.gamepad.kcm", 1, 0, "Gamepad");
     qmlRegisterType<GamepadButton>("org.kde.plasma.gamepad.kcm", 1, 0, "GamepadButton");
     qmlRegisterType<GamepadStick>("org.kde.plasma.gamepad.kcm", 1, 0, "GamepadStick");
