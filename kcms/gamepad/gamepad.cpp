@@ -73,16 +73,25 @@ Gamepad::Gamepad()
 void Gamepad::poll()
 {
     SDL_Event event = {};
-    while (SDL_PollEvent(&event)) { }
+    while (SDL_PollEvent(&event)) {
+        switch (event.type) {
+        case SDL_CONTROLLERDEVICEADDED:
+            //            AddController( event.cdevice );
+            break;
 
-    for (int i = 0; i < m_buttons.size(); i++) {
-        if (SDL_GameControllerGetButton(m_gameController, (SDL_GameControllerButton)m_buttons[i]->m_code) == 1) {
-            m_buttons[i]->setState(true);
-        } else {
-            m_buttons[i]->setState(false);
+        case SDL_CONTROLLERDEVICEREMOVED:
+            //            RemoveController( event.cdevice );
+            break;
+
+        case SDL_CONTROLLERBUTTONDOWN:
+        case SDL_CONTROLLERBUTTONUP:
+            onButtonEvent(event.cbutton);
+            break;
+
+        case SDL_CONTROLLERAXISMOTION:
+            onAxisEvent(event.caxis);
+            break;
         }
-
-        Q_EMIT buttonStateChanged(i);
     }
 
     for (int i : m_axes.keys()) {
@@ -103,4 +112,20 @@ void Gamepad::poll()
         float floatValue = (float)value / 32767;
         m_triggers.value(i)->setValue(floatValue);
     }
+}
+
+void Gamepad::onButtonEvent(const SDL_ControllerButtonEvent sdlEvent)
+{
+    for (int i = 0; i < m_buttons.size(); ++i) {
+        if (m_buttons[i]->m_code == sdlEvent.button) {
+            m_buttons[i]->setState(sdlEvent.type == SDL_CONTROLLERBUTTONDOWN);
+            Q_EMIT buttonStateChanged(i);
+            // Once we found the right button skip the rest
+            return;
+        }
+    }
+}
+
+void Gamepad::onAxisEvent(const SDL_ControllerAxisEvent sdlEvent)
+{
 }

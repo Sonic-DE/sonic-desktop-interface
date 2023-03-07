@@ -11,6 +11,7 @@
 
 #include <QDebug>
 #include <QVector2D>
+#include <SDL2/SDL_events.h>
 #include <SDL2/SDL_joystick.h>
 #include <Solid/Device>
 #include <libevdev-1.0/libevdev/libevdev.h>
@@ -99,6 +100,9 @@ signals:
     void connectionTypeChanged();
 
 private:
+    void onButtonEvent(const SDL_ControllerButtonEvent sdlEvent);
+    void onAxisEvent(const SDL_ControllerAxisEvent sdlEvent);
+
     SDL_Joystick *m_joystick = nullptr;
     SDL_GameController *m_gameController = nullptr;
 
