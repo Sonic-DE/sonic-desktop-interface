@@ -20,6 +20,8 @@ public:
     // For QML usage of axis objects
     GamepadStick();
 
+    void setX(float x);
+    void setY(float y);
     void setGridValue(QVector2D gridValue);
     QVector2D getGridValue();
 
