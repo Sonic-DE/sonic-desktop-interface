@@ -31,7 +31,8 @@ Gamepad *DeviceModel::device(int index) const
     if (index < 0 || index > m_devices.count())
         return nullptr;
 
-    return m_devices.at(index);
+    int sdlIndex = m_devices.keys().at(index);
+    return m_devices.value(sdlIndex);
 }
 
 int DeviceModel::rowCount(const QModelIndex &parent) const
@@ -46,11 +47,12 @@ QVariant DeviceModel::data(const QModelIndex &index, int role) const
         return {};
     }
 
+    int sdlIndex = m_devices.keys().at(index.row());
     switch (role) {
     case CustomRoles::NameRole:
-        return m_devices[index.row()]->getName();
+        return m_devices.value(sdlIndex)->getName();
     case CustomRoles::DeviceRole:
-        return QVariant::fromValue(m_devices[index.row()]);
+        return QVariant::fromValue(m_devices.value(sdlIndex));
     default:
         return {};
     }
@@ -71,41 +73,55 @@ void DeviceModel::poll()
             break;
 
         case SDL_CONTROLLERDEVICEREMOVED:
-            //            RemoveController( event.cdevice );
+            removeDevice(event.cdevice.which);
             break;
 
         case SDL_CONTROLLERBUTTONDOWN:
-        case SDL_CONTROLLERBUTTONUP:
+        case SDL_CONTROLLERBUTTONUP: {
             // Tell that controller to process it's event
             qDebug() << "Got button event for device: " << event.cbutton.which;
-            m_devices.at(event.cbutton.which)->onButtonEvent(event.cbutton);
-            break;
+            m_devices.value(event.cbutton.which)->onButtonEvent(event.cbutton);
+        } break;
 
-        case SDL_CONTROLLERAXISMOTION:
+        case SDL_CONTROLLERAXISMOTION: {
             // Tell that gamepad to process it's event
             qDebug() << "Got axis event for device: " << event.caxis.which;
-            m_devices.at(event.caxis.which)->onAxisEvent(event.caxis);
-            break;
+            m_devices.value(event.caxis.which)->onAxisEvent(event.caxis);
+        } break;
         }
     }
-
-    //    for (int i : m_triggers.keys()) {
-    // Get trigger data
-    //        int16_t value = SDL_GameControllerGetAxis(m_gameController, (SDL_GameControllerAxis)i);
-    //        float floatValue = (float)value / 32767;
-    //        m_triggers.value(i)->setValue(floatValue);
-    //    }
 }
 
 void DeviceModel::addDevice(const int deviceIndex)
 {
-    if (deviceIndex < m_devices.count()) {
+    if (m_devices.contains(deviceIndex)) {
         qDebug() << "Got a duplicate add event, ignoring";
         return;
     }
 
-    qDebug() << "adding device: " << deviceIndex;
-    beginInsertRows(QModelIndex(), deviceIndex, deviceIndex);
-    m_devices.push_back(new Gamepad(SDL_JoystickOpen(deviceIndex), SDL_GameControllerOpen(deviceIndex), this));
+    const auto joystick = SDL_JoystickOpen(deviceIndex);
+    const auto id = SDL_JoystickInstanceID(joystick);
+
+    int nextIndex = m_devices.count();
+    qDebug() << "adding device: " << deviceIndex << " at row: " << nextIndex << " with instance id: " << id;
+
+    beginInsertRows(QModelIndex(), nextIndex, nextIndex);
+    m_devices.insert(id, new Gamepad(joystick, SDL_GameControllerOpen(deviceIndex), this));
     endInsertRows();
+}
+
+void DeviceModel::removeDevice(const int deviceIndex)
+{
+    if (!m_devices.contains(deviceIndex)) {
+        qWarning() << "Invalid device index from removal event, ignoring";
+        return;
+    }
+
+    int ourIndex = m_devices.keys().indexOf(deviceIndex);
+    qDebug() << "removing device: " << deviceIndex << " from row " << ourIndex;
+
+    beginRemoveRows(QModelIndex(), ourIndex, ourIndex);
+    m_devices.value(deviceIndex)->deleteLater();
+    m_devices.remove(deviceIndex);
+    endRemoveRows();
 }
