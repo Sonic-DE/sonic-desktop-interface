@@ -90,7 +90,7 @@ public:
         return m_joystick;
     }
 
-    void poll();
+    friend class DeviceModel;
 
 signals:
     void buttonStateChanged(int index);
