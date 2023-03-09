@@ -16,9 +16,8 @@
 DeviceModel::DeviceModel()
 {
     SDL_Init(SDL_INIT_GAMECONTROLLER);
-    for (int i = 0; i < SDL_NumJoysticks(); i++) {
-        addDevice(i);
-    }
+
+    poll();
 
     // TODO: temporary event loop
     auto timer = new QTimer(this);
@@ -78,11 +77,13 @@ void DeviceModel::poll()
         case SDL_CONTROLLERBUTTONDOWN:
         case SDL_CONTROLLERBUTTONUP:
             // Tell that controller to process it's event
+            qDebug() << "Got button event for device: " << event.cbutton.which;
             m_devices.at(event.cbutton.which)->onButtonEvent(event.cbutton);
             break;
 
         case SDL_CONTROLLERAXISMOTION:
             // Tell that gamepad to process it's event
+            qDebug() << "Got axis event for device: " << event.caxis.which;
             m_devices.at(event.caxis.which)->onAxisEvent(event.caxis);
             break;
         }
@@ -98,6 +99,11 @@ void DeviceModel::poll()
 
 void DeviceModel::addDevice(const int deviceIndex)
 {
+    if (deviceIndex < m_devices.count()) {
+        qDebug() << "Got a duplicate add event, ignoring";
+        return;
+    }
+
     qDebug() << "adding device: " << deviceIndex;
     beginInsertRows(QModelIndex(), deviceIndex, deviceIndex);
     m_devices.push_back(new Gamepad(SDL_JoystickOpen(deviceIndex), SDL_GameControllerOpen(deviceIndex), this));
