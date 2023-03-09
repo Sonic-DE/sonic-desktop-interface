@@ -59,59 +59,11 @@ Gamepad::Gamepad(SDL_Joystick *joystick, SDL_GameController *controller, QObject
             m_triggers.insert(i, new GamepadTrigger(name, i, this));
         }
     }
-    // TODO: temporary event loop
-    auto timer = new QTimer(this);
-    connect(timer, &QTimer::timeout, this, &Gamepad::poll);
-    timer->start(1);
 }
 
 Gamepad::Gamepad()
     : m_model(i18n("Unknown Model"))
 {
-}
-
-void Gamepad::poll()
-{
-    SDL_Event event = {};
-    while (SDL_PollEvent(&event)) {
-        switch (event.type) {
-        case SDL_CONTROLLERDEVICEADDED:
-            //            AddController( event.cdevice );
-            break;
-
-        case SDL_CONTROLLERDEVICEREMOVED:
-            //            RemoveController( event.cdevice );
-            break;
-
-        case SDL_CONTROLLERBUTTONDOWN:
-        case SDL_CONTROLLERBUTTONUP:
-            onButtonEvent(event.cbutton);
-            break;
-
-        case SDL_CONTROLLERAXISMOTION:
-            onAxisEvent(event.caxis);
-            break;
-        }
-    }
-
-    for (int i : m_axes.keys()) {
-        // Get grid data
-        int16_t x = SDL_GameControllerGetAxis(m_gameController, (SDL_GameControllerAxis)i);
-        int16_t y = SDL_GameControllerGetAxis(m_gameController, (SDL_GameControllerAxis)(i + 1));
-        float xFloat = (float)x / (float)32767;
-        float yFloat = (float)y / (float)32767;
-        QVector2D gridValue(xFloat, yFloat);
-        m_axes.value(i)->setGridValue(gridValue);
-
-        Q_EMIT axisStateChanged(i);
-    }
-
-    for (int i : m_triggers.keys()) {
-        // Get trigger data
-        int16_t value = SDL_GameControllerGetAxis(m_gameController, (SDL_GameControllerAxis)i);
-        float floatValue = (float)value / 32767;
-        m_triggers.value(i)->setValue(floatValue);
-    }
 }
 
 void Gamepad::onButtonEvent(const SDL_ControllerButtonEvent sdlEvent)
@@ -128,4 +80,31 @@ void Gamepad::onButtonEvent(const SDL_ControllerButtonEvent sdlEvent)
 
 void Gamepad::onAxisEvent(const SDL_ControllerAxisEvent sdlEvent)
 {
+    switch (sdlEvent.axis) {
+    case SDL_CONTROLLER_AXIS_LEFTX:
+        if (m_axes.contains(SDL_CONTROLLER_AXIS_LEFTX)) {
+            m_axes.value(SDL_CONTROLLER_AXIS_LEFTX)->setX((float)sdlEvent.value / (float)32767);
+            Q_EMIT axisStateChanged(SDL_CONTROLLER_AXIS_LEFTX);
+        }
+        break;
+    case SDL_CONTROLLER_AXIS_LEFTY:
+        if (m_axes.contains(SDL_CONTROLLER_AXIS_LEFTX)) {
+            m_axes.value(SDL_CONTROLLER_AXIS_LEFTX)->setY((float)sdlEvent.value / (float)32767);
+            Q_EMIT axisStateChanged(SDL_CONTROLLER_AXIS_LEFTY);
+        }
+        break;
+    case SDL_CONTROLLER_AXIS_RIGHTX:
+        if (m_axes.contains(SDL_CONTROLLER_AXIS_RIGHTX)) {
+            m_axes.value(SDL_CONTROLLER_AXIS_RIGHTX)->setX((float)sdlEvent.value / (float)32767);
+            Q_EMIT axisStateChanged(SDL_CONTROLLER_AXIS_RIGHTX);
+        }
+        break;
+    case SDL_CONTROLLER_AXIS_RIGHTY:
+        if (m_axes.contains(SDL_CONTROLLER_AXIS_RIGHTX)) {
+            m_axes.value(SDL_CONTROLLER_AXIS_RIGHTX)->setY((float)sdlEvent.value / (float)32767);
+            Q_EMIT axisStateChanged(SDL_CONTROLLER_AXIS_RIGHTY);
+        }
+        break;
+    }
 }
+

@@ -27,7 +27,7 @@ int GamepadTrigger::getValue()
 
 void GamepadTrigger::setValue(int value)
 {
-    qDebug() << "trigger " << m_name << " value: " << value;
+    //    qDebug() << "trigger " << m_name << " value: " << value;
     m_value = value;
     emit valueChanged();
 }
