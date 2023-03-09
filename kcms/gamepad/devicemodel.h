@@ -31,7 +31,8 @@ private slots:
 
 private:
     void addDevice(const int deviceIndex);
+    void removeDevice(const int deviceIndex);
 
-    // Map of devices by their sdl index
-    QList<Gamepad *> m_devices;
+    // Map of sdl indexes to Gamepad devices
+    QMap<int, Gamepad *> m_devices;
 };
