@@ -37,6 +37,7 @@ Gamepad *DeviceModel::device(int index) const
 
 int DeviceModel::rowCount(const QModelIndex &parent) const
 {
+    Q_UNUSED(parent)
     return m_devices.count();
 }
 
@@ -87,15 +88,18 @@ void DeviceModel::poll()
         }
     }
 
-//    for (int i : m_triggers.keys()) {
-        // Get trigger data
-//        int16_t value = SDL_GameControllerGetAxis(m_gameController, (SDL_GameControllerAxis)i);
-//        float floatValue = (float)value / 32767;
-//        m_triggers.value(i)->setValue(floatValue);
-//    }
+    //    for (int i : m_triggers.keys()) {
+    // Get trigger data
+    //        int16_t value = SDL_GameControllerGetAxis(m_gameController, (SDL_GameControllerAxis)i);
+    //        float floatValue = (float)value / 32767;
+    //        m_triggers.value(i)->setValue(floatValue);
+    //    }
 }
 
 void DeviceModel::addDevice(const int deviceIndex)
 {
+    qDebug() << "adding device: " << deviceIndex;
+    beginInsertRows(QModelIndex(), deviceIndex, deviceIndex);
     m_devices.push_back(new Gamepad(SDL_JoystickOpen(deviceIndex), SDL_GameControllerOpen(deviceIndex), this));
+    endInsertRows();
 }
