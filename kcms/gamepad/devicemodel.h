@@ -26,8 +26,12 @@ public:
     QVariant data(const QModelIndex &index, int role) const override;
     QHash<int, QByteArray> roleNames() const override;
 
+private slots:
+    void poll();
+
 private:
     void addDevice(const int deviceIndex);
 
+    // Map of devices by their sdl index
     QList<Gamepad *> m_devices;
 };
