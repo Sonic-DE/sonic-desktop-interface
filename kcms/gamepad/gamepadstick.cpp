@@ -20,6 +20,18 @@ GamepadStick::GamepadStick()
 {
 }
 
+void GamepadStick::setX(float x)
+{
+    m_gridValue.setX(x);
+    emit gridValueChanged();
+}
+
+void GamepadStick::setY(float y)
+{
+    m_gridValue.setY(y);
+    emit gridValueChanged();
+}
+
 QVector2D GamepadStick::getGridValue()
 {
     return m_gridValue;
@@ -27,7 +39,7 @@ QVector2D GamepadStick::getGridValue()
 
 void GamepadStick::setGridValue(QVector2D gridValue)
 {
-    qDebug() << "stick " << m_name << " value: " << gridValue;
+    //    qDebug() << "stick " << m_name << " value: " << gridValue;
     m_gridValue = gridValue;
     emit gridValueChanged();
 }
