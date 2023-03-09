@@ -107,4 +107,3 @@ void Gamepad::onAxisEvent(const SDL_ControllerAxisEvent sdlEvent)
         break;
     }
 }
-
