@@ -8,7 +8,7 @@
 
 #include <QAbstractTableModel>
 
-class Gamepad;
+#include "gamepad.h"
 
 class AxesModel : public QAbstractTableModel
 {
