@@ -4,11 +4,11 @@ add_definitions(-DTRANSLATION_DOMAIN=\"kcm_gamepad\")
 set(kcm_gamepad_SRCS
         kcm.cpp
         devicemodel.cpp
-	devicetypemodel.cpp
+        devicetypemodel.cpp
         gamepad.cpp
         gamepadbutton.cpp
         gamepadstick.cpp
-	gamepadtrigger.cpp
+        gamepadtrigger.cpp
         axesmodel.cpp
         buttonmodel.cpp
         )
@@ -17,14 +17,14 @@ kcoreaddons_add_plugin(kcm_gamepad SOURCES ${kcm_gamepad_SRCS} INSTALL_NAMESPACE
 kcmutils_generate_desktop_file(kcm_gamepad)
 
 target_link_libraries(kcm_gamepad
-  KF5::CoreAddons
-  KF5::ConfigWidgets
-  KF5::KCMUtils
-  KF5::QuickAddons
-  KF5::I18n
-  KF5::Plasma
-  KF5::PlasmaQuick
-  KF5::Solid
+  KF6::CoreAddons
+  KF6::ConfigWidgets
+  KF6::KCMUtils
+  KF6::QuickAddons
+  KF6::I18n
+  KF6::Plasma
+  KF6::PlasmaQuick
+  KF6::Solid
 
   Qt::Widgets
   Qt::QuickWidgets
