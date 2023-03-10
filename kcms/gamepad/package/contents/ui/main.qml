@@ -67,6 +67,11 @@ KCM.SimpleKCM {
             Layouts.Layout.fillWidth: true
             model: deviceModel
             textRole: "name"
+
+            Connections {
+                target: deviceModel
+                onRowsRemoved: deviceSelector.currentIndex = Math.min(deviceSelector.currentIndex, deviceModel.rowCount() - 1)
+            }
         }
 
         QQC2.ComboBox {
