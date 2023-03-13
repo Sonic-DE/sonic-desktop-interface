@@ -37,14 +37,14 @@ KCM.SimpleKCM {
         width: parent.width - (Kirigami.Units.largeSpacing * 4)
     }
 
-    actions.main: Kirigami.Action {
-        id: addAction
-        icon.name: "list-add"
-        text: i18nc("@action:button", "Add bluetooth device...")
-        onTriggered: { Qt.openUrlExternally("systemsettings://kcm_bluetooth"); }
-    }
+    actions: [
+        Kirigami.Action {
+            id: addAction
+            icon.name: "list-add"
+            text: i18nc("@action:button", "Add bluetooth device...")
+            onTriggered: { Qt.openUrlExternally("systemsettings://kcm_bluetooth"); }
+        },
 
-    actions.contextualActions: [
         Kirigami.Action {
             icon.name: "configure"
             text: i18nd("kcm_pulseaudio", "Advanced View…")
@@ -70,7 +70,9 @@ KCM.SimpleKCM {
 
             Connections {
                 target: deviceModel
-                onRowsRemoved: deviceSelector.currentIndex = Math.min(deviceSelector.currentIndex, deviceModel.rowCount() - 1)
+                function onRowsRemoved() {
+                    deviceSelector.currentIndex = Math.min(deviceSelector.currentIndex, deviceModel.rowCount() - 1)
+                }
             }
         }
 
