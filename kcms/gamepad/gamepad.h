@@ -34,6 +34,7 @@ class Gamepad : public QObject
     Q_PROPERTY(bool hasTouchPad READ hasTouchPad CONSTANT)
     Q_PROPERTY(QVariantList buttons READ getButtons NOTIFY buttonStateChanged)
     Q_PROPERTY(QVariantList axes READ getAxes NOTIFY axisStateChanged)
+    Q_PROPERTY(QVariantList triggers READ getTriggers NOTIFY triggerStateChanged)
     Q_PROPERTY(ConnectionType connectionType READ getConnectionType NOTIFY connectionTypeChanged)
 public:
     explicit Gamepad(SDL_Joystick *joystick, SDL_GameController *controller, QObject *parent = nullptr);
@@ -85,6 +86,15 @@ public:
         return data;
     }
 
+    QVariantList getTriggers() const
+    {
+        QVariantList data;
+        for (auto trigger : m_triggers.values()) {
+            data.push_back(QVariant::fromValue(trigger));
+        }
+        return data;
+    }
+
     SDL_Joystick *getJoystick() const
     {
         return m_joystick;
@@ -95,6 +105,7 @@ public:
 signals:
     void buttonStateChanged(int index);
     void axisStateChanged(int index);
+    void triggerStateChanged(int index);
 
     // Possible when going from USB to Bluetooth, or vice versa
     void connectionTypeChanged();
