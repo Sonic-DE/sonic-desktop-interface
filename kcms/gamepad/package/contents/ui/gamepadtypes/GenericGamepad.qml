@@ -58,6 +58,14 @@ Image {
         posY: 0.08
     }
 
+    GamepadTrigger {
+        idx: 0
+        device: root.device
+        controllerImage: root
+        posX: 0.27
+        posY: 0.10
+    }
+
     // right shoulder
     GamepadButton {
         idx: GamepadButton.SDL_CONTROLLER_BUTTON_RIGHTSHOULDER
@@ -66,6 +74,14 @@ Image {
 
         posX: 0.8
         posY: 0.08
+    }
+
+    GamepadTrigger {
+        idx: 1
+        device: root.device
+        controllerImage: root
+        posX: 0.8
+        posY: 0.10
     }
 
     // left d-pad
