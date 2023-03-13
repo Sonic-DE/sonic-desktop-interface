@@ -56,7 +56,7 @@ Gamepad::Gamepad(SDL_Joystick *joystick, SDL_GameController *controller, QObject
     for (int i : triggersToCheck.keys()) {
         if (SDL_GameControllerHasAxis(m_gameController, (SDL_GameControllerAxis)i)) {
             QString name = triggersToCheck.value(i);
-            m_triggers.insert(i, new GamepadTrigger(name, i, this));
+            m_triggers.insert(i, new GamepadTrigger(m_vendor, name, i, this));
         }
     }
 }
@@ -103,6 +103,13 @@ void Gamepad::onAxisEvent(const SDL_ControllerAxisEvent sdlEvent)
         if (m_axes.contains(SDL_CONTROLLER_AXIS_RIGHTX)) {
             m_axes.value(SDL_CONTROLLER_AXIS_RIGHTX)->setY((float)sdlEvent.value / (float)32767);
             Q_EMIT axisStateChanged(SDL_CONTROLLER_AXIS_RIGHTY);
+        }
+        break;
+    case SDL_CONTROLLER_AXIS_TRIGGERLEFT:
+    case SDL_CONTROLLER_AXIS_TRIGGERRIGHT:
+        if (m_triggers.contains(sdlEvent.axis)) {
+            m_triggers.value(sdlEvent.axis)->setValue((float)sdlEvent.value / (float)32767);
+            Q_EMIT triggerStateChanged(sdlEvent.axis);
         }
         break;
     }
