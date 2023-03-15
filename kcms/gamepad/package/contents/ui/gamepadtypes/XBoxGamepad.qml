@@ -21,7 +21,7 @@ Image {
 
     required property var device
 
-    source: "../images/controller.svg"
+    source: "./images/controller.svg"
 
     //anchors.top: formLayout.bottom
     y: 300
