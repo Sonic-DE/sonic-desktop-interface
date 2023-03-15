@@ -102,6 +102,8 @@ public:
 
     friend class DeviceModel;
 
+    SDL_GameControllerType gamepadType();
+
 signals:
     void buttonStateChanged(int index);
     void axisStateChanged(int index);
