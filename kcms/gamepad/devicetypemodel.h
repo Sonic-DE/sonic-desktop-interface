@@ -14,22 +14,9 @@ class DeviceTypeModel : public QAbstractListModel
     Q_OBJECT
 public:
     enum CustomRoles {
-        NameRole = Qt::UserRole + 1,
+        NameRole = Qt::UserRole + 1, // Name shown in the gui for selection
         QMLName, // Which gamepadtype qml file to load
     };
-
-    enum Type {
-        Generic,
-        NintendoSwitchPro,
-        NintendoJoyCon,
-        PS3,
-        PS4,
-        PS5,
-        XBox,
-        SteamDeck,
-        SteamController,
-    };
-    Q_ENUMS(Type)
 
     DeviceTypeModel();
 
@@ -40,10 +27,8 @@ public:
     Q_INVOKABLE QString qmlName(int row);
 
 private:
-    void addType(const QString &type, const QString &qmlName);
+    void addType(int type, const QString &guiName, const QString &qmlName);
 
-    // List to maintain order of insertion
-    QStringList m_typeNames;
-    // Map of type names to layout names
-    QMap<QString, QString> m_types;
+    // Map of SDL type enum, to gamepad name and qml name
+    QMap<int, std::pair<QString, QString>> m_types;
 };
