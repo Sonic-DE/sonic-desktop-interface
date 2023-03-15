@@ -17,6 +17,8 @@
 #include <csignal>
 #include <fcntl.h>
 
+#include "devicetypemodel.h"
+
 Gamepad::Gamepad(SDL_Joystick *joystick, SDL_GameController *controller, QObject *parent)
     : QObject(parent)
     , m_joystick(joystick)
@@ -64,6 +66,14 @@ Gamepad::Gamepad(SDL_Joystick *joystick, SDL_GameController *controller, QObject
 Gamepad::Gamepad()
     : m_model(i18n("Unknown Model"))
 {
+}
+
+SDL_GameControllerType Gamepad::gamepadType()
+{
+    // First check if user has specified one for this device by it's id
+
+    // If not get the autodetected one from the devicetypemodel
+    return SDL_GameControllerGetType(m_gameController);
 }
 
 void Gamepad::onButtonEvent(const SDL_ControllerButtonEvent sdlEvent)
