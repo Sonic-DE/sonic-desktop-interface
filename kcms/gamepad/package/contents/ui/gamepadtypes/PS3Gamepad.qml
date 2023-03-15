@@ -21,7 +21,7 @@ Image {
 
     required property var device
 
-    source: "../images/controller.svg"
+    source: "./images/genericgamepad.svg"
 
     //anchors.top: formLayout.bottom
     y: 300
