@@ -72,6 +72,14 @@ KCM.SimpleKCM {
                 target: deviceModel
                 function onRowsRemoved() {
                     deviceSelector.currentIndex = Math.min(deviceSelector.currentIndex, deviceModel.rowCount() - 1)
+                    selectGamepadType()
+                }
+            }
+
+            Connections {
+                target: deviceSelector
+                function onActivated() {
+                    selectGamepadType()
                 }
             }
         }
@@ -90,7 +98,19 @@ KCM.SimpleKCM {
     }
 
     Component.onCompleted: {
+        // First select the gamepad type for the current gamepad if any
+        selectGamepadType()
+
+        // Then generate the gamepad object to show
         makeGamepadObject()
+    }
+
+    function selectGamepadType() {
+        // Select the default gamepad type for the current gamepad
+        var deviceType = currentDevice.type
+        console.log("Current device type: " + deviceType)
+        // NOTE: For this to work deviceType needs to match 1:1 to the combobox contents...
+        deviceTypeSelector.currentIndex = currentDevice.deviceType
     }
 
     function makeGamepadObject() {
