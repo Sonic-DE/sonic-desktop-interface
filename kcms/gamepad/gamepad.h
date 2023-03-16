@@ -30,6 +30,7 @@ class Gamepad : public QObject
     Q_PROPERTY(QString model READ getModel CONSTANT)
     Q_PROPERTY(int numButtons MEMBER m_numButtons CONSTANT)
     Q_PROPERTY(int numAxes MEMBER m_numAxes CONSTANT)
+    Q_PROPERTY(int deviceType READ gamepadType CONSTANT)
     Q_PROPERTY(bool hasRumble MEMBER m_hasRumble CONSTANT)
     Q_PROPERTY(bool hasTouchPad READ hasTouchPad CONSTANT)
     Q_PROPERTY(QVariantList buttons READ getButtons NOTIFY buttonStateChanged)
