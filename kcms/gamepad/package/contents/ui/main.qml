@@ -16,7 +16,7 @@ import QtQuick.Shapes 1.15
 
 KCM.SimpleKCM {
     id: root
-    KCM.ConfigModule.quickHelp: i18n("This module lets you test and configure game controllers.")
+    // KCM.ConfigModule.quickHelp: i18n("This module lets you test and configure game controllers.")
 
     DeviceModel {
         id: deviceModel
