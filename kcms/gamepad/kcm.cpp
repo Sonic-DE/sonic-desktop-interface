@@ -23,7 +23,7 @@ K_PLUGIN_FACTORY_WITH_JSON(KCMJoystickFactory, "kcm_gamepad.json", registerPlugi
 const QLatin1String s_nonePluginName("None");
 
 KCMGamePad::KCMGamePad(QObject *parent, const KPluginMetaData &metaData, const QVariantList &args)
-    : KQuickAddons::ManagedConfigModule(parent, metaData, args)
+    : KQuickManagedConfigModule(parent, metaData, args)
 {
     qmlRegisterType<DeviceModel>("org.kde.plasma.gamepad.kcm", 1, 0, "DeviceModel");
     qmlRegisterType<DeviceTypeModel>("org.kde.plasma.gamepad.kcm", 1, 0, "DeviceTypeModel");
