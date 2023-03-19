@@ -20,13 +20,14 @@ target_link_libraries(kcm_gamepad
   KF6::CoreAddons
   KF6::ConfigWidgets
   KF6::KCMUtils
-  KF6::QuickAddons
+  KF6::KCMUtilsQuick
   KF6::I18n
   KF6::Plasma
   KF6::PlasmaQuick
   KF6::Solid
 
   Qt::Widgets
+  Qt::Quick
   Qt::QuickWidgets
 
   udev
