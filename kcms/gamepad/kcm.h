@@ -6,9 +6,9 @@
 
 #pragma once
 
-#include <KQuickAddons/ManagedConfigModule>
+#include <KQuickManagedConfigModule>
 
-class KCMGamePad : public KQuickAddons::ManagedConfigModule
+class KCMGamePad : public KQuickManagedConfigModule
 {
     Q_OBJECT
 
