@@ -35,6 +35,10 @@ Gamepad::Gamepad(SDL_Joystick *joystick, SDL_GameController *controller, QObject
     m_numAxes = SDL_JoystickNumAxes(joystick);
     m_hasRumble = SDL_JoystickHasRumble(joystick);
 
+    m_hasTouchPad = (SDL_GameControllerGetNumTouchpads(m_gameController) > 0);
+
+    qDebug() << "Has touchpad: " << m_hasTouchPad;
+
     for (int i = 0; i < SDL_CONTROLLER_BUTTON_MAX; i++) {
         if (SDL_GameControllerHasButton(m_gameController, (SDL_GameControllerButton)i)) {
             m_buttons.push_back(new GamepadButton(m_vendor, i, this));
