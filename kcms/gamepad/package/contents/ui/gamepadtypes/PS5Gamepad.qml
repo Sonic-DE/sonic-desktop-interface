@@ -21,32 +21,13 @@ Image {
 
     required property var device
 
-    source: "./images/controller.svg"
+    source: "./images/genericgamepad.svg"
 
     //anchors.top: formLayout.bottom
     y: 300
 
     width: parent.width
     height: parent.width * (sourceSize.height / sourceSize.width)
-
-    //sourceSize.width: paintedWidth
-    //sourceSize.height: paintedHeight
-
-    /*Rectangle {
-        width: 0.08 * controllerImage.paintedWidth
-        height: width
-        radius: width * 0.5
-        x: (0.3 * controllerImage.paintedWidth) + currentDevice.axes[0].gridValue.x * 50
-        y: (controllerImage.paintedHeight / 2) + currentDevice.axes[0].gridValue.y * 50
-    }
-
-    Rectangle {
-        width: 0.08 * controllerImage.paintedWidth
-        height: width
-        radius: width * 0.5
-        x: (0.6 * controllerImage.paintedWidth) + currentDevice.axes[1].gridValue.x * 50
-        y: (controllerImage.paintedHeight / 2) + currentDevice.axes[1].gridValue.y * 50
-    }*/
 
     // left trigger
     GamepadButton {
@@ -58,6 +39,14 @@ Image {
         posY: 0.08
     }
 
+    GamepadTrigger {
+        idx: 0
+        device: root.device
+        controllerImage: root
+        posX: 0.27
+        posY: 0.10
+    }
+
     // right trigger
     GamepadButton {
         idx: 10
@@ -66,6 +55,14 @@ Image {
 
         posX: 0.8
         posY: 0.08
+    }
+
+    GamepadTrigger {
+        idx: 1
+        device: root.device
+        controllerImage: root
+        posX: 0.8
+        posY: 0.10
     }
 
     // left d-pad
