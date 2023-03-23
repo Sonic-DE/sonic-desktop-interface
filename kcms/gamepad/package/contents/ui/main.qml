@@ -74,6 +74,13 @@ KCM.SimpleKCM {
                     deviceSelector.currentIndex = Math.min(deviceSelector.currentIndex, deviceModel.rowCount() - 1)
                     selectGamepadType()
                 }
+
+                function onRowsInserted() {
+                    if (deviceSelector.currentIndex == -1) {
+                        deviceSelector.currentIndex = 0
+                        selectGamepadType()
+                    }
+                }
             }
 
             Connections {
