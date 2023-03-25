@@ -160,8 +160,8 @@ function activateTask(index, model, modifiers, task, plasmoid, tasks) {
                 task.hideImmediately();
             } else {
                 tasks.toolTipOpenedByClick = task;
+                task.updateMainItemBindings();
                 task.showToolTip();
-                task.containsMouseChanged();
             }
         }
 
