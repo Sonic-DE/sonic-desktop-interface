@@ -598,6 +598,7 @@ MouseArea {
              * properties here.
              */
             if (plasmoid.configuration.groupedTaskVisualization === 1) {
+                tasks.toolTipOpenedByClick = task;
                 task.updateMainItemBindings();
             }
 
