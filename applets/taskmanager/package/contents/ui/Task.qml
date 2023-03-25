@@ -264,7 +264,7 @@ PlasmaCore.ToolTipArea {
 
     // Will also be called in activateTaskAtIndex(index)
     function updateMainItemBindings() {
-        if (mainItem.parentTask === task || (tasks.toolTipOpenedByClick !== null && tasks.toolTipOpenedByClick !== task)) {
+        if (mainItem.parentTask === task || (tasks.toolTipOpenedByClick === null && !task.active) || (tasks.toolTipOpenedByClick !== null && tasks.toolTipOpenedByClick !== task)) {
             return;
         }
 
