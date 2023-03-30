@@ -98,7 +98,13 @@ void DeviceModel::addDevice(const int deviceIndex)
     const auto id = SDL_JoystickInstanceID(joystick);
 
     if (m_devices.contains(id)) {
-        qDebug() << "Got a duplicate add event, ignoring";
+        qDebug() << "Got a duplicate add event, ignoring. Index: " << deviceIndex;
+        return;
+    }
+
+    const auto gamepad = SDL_GameControllerOpen(deviceIndex);
+    if (SDL_GameControllerTypeForIndex(deviceIndex) == SDL_CONTROLLER_TYPE_VIRTUAL) {
+        qDebug() << "Skipping gamepad since it is virtual. Index: " << deviceIndex;
         return;
     }
 
@@ -106,7 +112,7 @@ void DeviceModel::addDevice(const int deviceIndex)
     qDebug() << "adding device: " << deviceIndex << " at row: " << nextIndex << " with instance id: " << id;
 
     beginInsertRows(QModelIndex(), nextIndex, nextIndex);
-    m_devices.insert(id, new Gamepad(joystick, SDL_GameControllerOpen(deviceIndex), this));
+    m_devices.insert(id, new Gamepad(joystick, gamepad, this));
     endInsertRows();
 }
 
