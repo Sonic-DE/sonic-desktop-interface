@@ -29,7 +29,7 @@ Gamepad::Gamepad(SDL_Joystick *joystick, SDL_GameController *controller, QObject
 
     m_vendor = SDL_JoystickGetVendor(m_joystick);
 
-    qDebug() << "Gamepad vendor: " << m_vendor;
+    qDebug() << "Gamepad vendor: " << Qt::hex << m_vendor;
 
     m_numButtons = SDL_JoystickNumButtons(joystick);
     m_numAxes = SDL_JoystickNumAxes(joystick);
