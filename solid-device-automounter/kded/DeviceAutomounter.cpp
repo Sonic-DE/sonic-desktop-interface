@@ -96,10 +96,7 @@ void DeviceAutomounter::deviceAdded(const QString &udi)
 
     Solid::Device dev(udi);
 
-    Solid::StorageDrive *drive = nullptr;
-    if (dev.parent().isValid()) {
-        drive = dev.parent().as<Solid::StorageDrive>();
-    }
+    Solid::StorageDrive *drive = dev.parent().as<Solid::StorageDrive>();
     if (!drive) {
         return;
     }
