@@ -10,6 +10,7 @@
 
 #include <Solid/DeviceNotifier>
 #include <Solid/StorageAccess>
+#include <Solid/StorageDrive>
 #include <Solid/StorageVolume>
 
 #include <QDBusConnection>
@@ -94,6 +95,24 @@ void DeviceAutomounter::deviceAdded(const QString &udi)
     m_settings->load();
 
     Solid::Device dev(udi);
+
+    Solid::StorageDrive *drive = nullptr;
+    if (dev.parent().isValid()) {
+        drive = dev.parent().as<Solid::StorageDrive>();
+    }
+    if (!drive) {
+        return;
+    }
+
+    // If the partition is detected a long time after the drive is detected it
+    // must be a false positive. Either:
+    //  - an eject call failed; which happens when we try to unmount
+    //  - the user is repartitioning the drive
+    // Neither should result in an automount
+    if (drive->timeDetected().secsTo(QDateTime::currentDateTimeUtc()) > 5) {
+        return;
+    }
+
     automountDevice(dev, AutomounterSettings::Attach);
     m_settings->save();
 
