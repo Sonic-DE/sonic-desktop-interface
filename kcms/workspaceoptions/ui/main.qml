@@ -316,5 +316,41 @@ KCM.SimpleKCM {
         // "click to zoom the handle" behavior because Qt doesn't invert the
         // middle-click functionality when using this; see
         // https://bugreports.qt.io/browse/QTBUG-80728
+
+        RowLayout {
+            Kirigami.FormData.label: i18n("Double click interval:")
+            QQC2.SpinBox {
+                id: spinbox
+                from: 100
+                to: 2000
+                stepSize: 100
+
+                validator: IntValidator {
+                    bottom: Math.min(spinbox.from, spinbox.to)
+                    top: Math.max(spinbox.from, spinbox.to)
+                }
+
+                textFromValue: function(value, locale) {
+                    return i18np("%1 msec", "%1 msec", value)
+                }
+
+                valueFromText: function(text, locale) {
+                    return Number.fromLocaleString(locale, text.replace(i18n("msec"), ""))
+                }
+
+                onValueChanged: kcm.globalsSettings.doubleClickInterval = value
+
+                value: kcm.globalsSettings.doubleClickInterval
+
+                KCM.SettingStateBinding {
+                    configObject: kcm.globalsSettings
+                    settingName: "doubleClickInterval"
+                }
+            }
+
+            KCM.ContextualHelpButton {
+                toolTipText: i18n("Touch Mode will be automatically activated whenever the system detects a touchscreen but no mouse or touchpad. For example: when a transformable laptop's keyboard is flipped around or detached.")
+            }
+        }
     }
 }
