@@ -16,7 +16,7 @@ class DeviceModel : public QAbstractListModel
 {
     Q_OBJECT
 public:
-    enum CustomRoles { NameRole = Qt::UserRole + 1, DeviceRole };
+    enum CustomRoles { NameRole = Qt::UserRole + 1, DeviceRole, ConnectionType };
 
     DeviceModel();
 

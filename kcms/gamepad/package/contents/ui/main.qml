@@ -16,19 +16,38 @@ import QtQuick.Shapes 1.15
 
 KCM.SimpleKCM {
     id: root
-    // KCM.ConfigModule.quickHelp: i18n("This module lets you test and configure game controllers.")
+
+    implicitWidth: Kirigami.Units.gridUnit * 80
+    implicitHeight: Kirigami.Units.gridUnit * 35
 
     DeviceModel {
         id: deviceModel
+    }
+
+    Connections {
+        target: deviceModel
+        function onRowsRemoved() {
+            selectedDevice = Math.min(selectedDevice, deviceModel.rowCount() - 1)
+            selectGamepadType()
+        }
+
+        function onRowsInserted() {
+            // Nothing selected before, so select the one existing item
+            if (deviceModel.rowCount() === 1) {
+                selectedDevice = 0
+                selectGamepadType()
+            }
+        }
     }
 
     DeviceTypeModel {
         id: deviceTypeModel
     }
 
-    property var gamepadCount: deviceSelector.count
-    property int selectedDevice: deviceSelector.currentIndex
+    property int gamepadCount: deviceList.count
+    property int selectedDevice: deviceList.currentIndex
     property var currentDevice: deviceModel.device(selectedDevice)
+    property var newlayout
 
     Kirigami.PlaceholderMessage {
         text: i18n("No gamepad found")
@@ -37,59 +56,67 @@ KCM.SimpleKCM {
         width: parent.width - (Kirigami.Units.largeSpacing * 4)
     }
 
-    actions: [
-        Kirigami.Action {
-            id: addAction
-            icon.name: "list-add"
-            text: i18nc("@action:button", "Add bluetooth device...")
-            onTriggered: { Qt.openUrlExternally("systemsettings://kcm_bluetooth"); }
-        },
+//    actions: [
+//        Kirigami.Action {
+//            id: addAction
+//            icon.name: "list-add"
+//            text: i18nc("@action:button", "Add bluetooth device...")
+//            onTriggered: { Qt.openUrlExternally("systemsettings://kcm_bluetooth"); }
+//        },
 
-        Kirigami.Action {
-            icon.name: "configure"
-            text: i18nd("kcm_pulseaudio", "Advanced View…")
-            onTriggered: kcm.push("AdvancedPage.qml", { "device": currentDevice })
-            enabled: currentDevice !== null
-        }
-    ]
+//        Kirigami.Action {
+//            icon.name: "configure"
+//            text: i18nd("kcm_pulseaudio", "Advanced View…")
+//            onTriggered: kcm.push("AdvancedPage.qml", { "device": currentDevice })
+//            enabled: currentDevice !== null
+//        }
+//    ]
 
-    Kirigami.FormLayout {
-        id: formLayout
+    ColumnLayout {
+        id: layout
 
-        anchors.fill: parent
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
+        implicitWidth: parent.width
 
         visible: gamepadCount > 0
 
-        QQC2.ComboBox {
-            Kirigami.FormData.label: i18nd("kcm_gamepad", "Device:")
-            id: deviceSelector
-
-            Layouts.Layout.fillWidth: true
+        ListView {
+            id: deviceList
+            width: parent.width
+            height: 50
+            orientation: Qt.Horizontal
             model: deviceModel
-            textRole: "name"
 
-            Connections {
-                target: deviceModel
-                function onRowsRemoved() {
-                    deviceSelector.currentIndex = Math.min(deviceSelector.currentIndex, deviceModel.rowCount() - 1)
-                    selectGamepadType()
-                }
+            // Device selection row
+            Layouts.Layout.fillWidth: true
 
-                function onRowsInserted() {
-                    if (deviceSelector.currentIndex == -1) {
-                        deviceSelector.currentIndex = 0
-                        selectGamepadType()
+            delegate:
+                QQC2.Button {
+                    checkable: true
+                    checked: deviceList.currentIndex === index
+                    icon.name: connectionType === Gamepad.BluetoothType ? "network-bluetooth" : "input-gamepad"
+                    hoverEnabled: true
+
+                    QQC2.ToolTip.delay: 1000
+                    QQC2.ToolTip.timeout: 5000
+                    QQC2.ToolTip.visible: hovered
+                    QQC2.ToolTip.text: name
+                    text: i18nc("Controller number name", "Gamepad #" + (index + 1))
+                    onClicked: {
+                        deviceList.currentIndex = index
+                        selectGamepadType();
                     }
                 }
-            }
 
-            Connections {
-                target: deviceSelector
-                function onActivated() {
-                    selectGamepadType()
-                }
-            }
         }
+
+//            Connections {
+//                target: deviceSelector
+//                function onActivated() {
+//                    selectGamepadType()
+//                }
+//            }
 
         QQC2.ComboBox {
             Kirigami.FormData.label: i18nd("kcm_gamepad", "Device type:")
@@ -122,7 +149,7 @@ KCM.SimpleKCM {
 
     function makeGamepadObject() {
 
-        // Create a new gamepad of the given type and load it after formLayout
+        // Create a new gamepad of the given type and load it after control
         var currentIndex = deviceTypeSelector.currentIndex
         console.log("currentIndex: " + deviceTypeSelector.currentIndex)
 
@@ -130,13 +157,13 @@ KCM.SimpleKCM {
         console.log("typename: " + typeName)
         if (typeName != "") {
             // Remove the gamepad object if any
-            if (typeof gamepadgui !== "undefined") {
-                gamepadgui.destroy()
+            if (typeof newlayout !== "undefined") {
+                newlayout.destroy()
             }
 
             var str = "import './gamepadtypes' as GamepadTypes
-                GamepadTypes." + typeName + "{ id: gamepadgui; device: currentDevice; visible: currentDevice != null }"
-            var newlayout = Qt.createQmlObject(str, root)
+                GamepadTypes." + typeName + "{ id: gamepadgui; device: currentDevice; visible: currentDevice != null; }"
+            newlayout = Qt.createQmlObject(str, layout)
         }
     }
 }
