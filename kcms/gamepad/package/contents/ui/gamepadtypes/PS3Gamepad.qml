@@ -21,32 +21,14 @@ Image {
 
     required property var device
 
+    Layouts.Layout.fillWidth: true
+    Layouts.Layout.fillHeight: true
+
     source: "./images/genericgamepad.svg"
 
-    //anchors.top: formLayout.bottom
-    y: 300
-
-    width: parent.width
-    height: parent.width * (sourceSize.height / sourceSize.width)
-
-    //sourceSize.width: paintedWidth
-    //sourceSize.height: paintedHeight
-
-    /*Rectangle {
-        width: 0.08 * controllerImage.paintedWidth
-        height: width
-        radius: width * 0.5
-        x: (0.3 * controllerImage.paintedWidth) + currentDevice.axes[0].gridValue.x * 50
-        y: (controllerImage.paintedHeight / 2) + currentDevice.axes[0].gridValue.y * 50
+    Component.onCompleted: {
+        console.log("width: " + root.width + " height: " + root.height + " sourceSize: " + sourceSize)
     }
-
-    Rectangle {
-        width: 0.08 * controllerImage.paintedWidth
-        height: width
-        radius: width * 0.5
-        x: (0.6 * controllerImage.paintedWidth) + currentDevice.axes[1].gridValue.x * 50
-        y: (controllerImage.paintedHeight / 2) + currentDevice.axes[1].gridValue.y * 50
-    }*/
 
     // left trigger
     GamepadButton {
