@@ -24,6 +24,7 @@ Gamepad::Gamepad(SDL_Joystick *joystick, SDL_GameController *controller, QObject
     , m_joystick(joystick)
     , m_gameController(controller)
     , m_model(i18n("Unknown Model"))
+    , m_connectionType(UnknownType)
 {
     m_name = SDL_JoystickName(m_joystick);
 
@@ -36,6 +37,14 @@ Gamepad::Gamepad(SDL_Joystick *joystick, SDL_GameController *controller, QObject
     m_hasRumble = SDL_JoystickHasRumble(joystick);
 
     m_hasTouchPad = (SDL_GameControllerGetNumTouchpads(m_gameController) > 0);
+
+    auto path = SDL_GameControllerPath(m_gameController);
+    qDebug() << "Path: " << path;
+
+    auto powerLevel = SDL_JoystickCurrentPowerLevel(m_joystick);
+    qDebug() << "Power level: " << powerLevel;
+
+    m_connectionType = (powerLevel == SDL_JOYSTICK_POWER_WIRED ? USBType : BluetoothType);
 
     qDebug() << "Has touchpad: " << m_hasTouchPad;
 
