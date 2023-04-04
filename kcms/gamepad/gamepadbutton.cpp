@@ -38,7 +38,7 @@ GamepadButton::GamepadButton()
 
 void GamepadButton::setState(bool state)
 {
-    qDebug() << "button with name: " << name(m_code) << " state changed: " << state;
+    qDebug() << "button with name: " << name(m_code) << " code: " << m_code << " state changed: " << state;
     m_state = state;
     emit stateChanged();
 }
