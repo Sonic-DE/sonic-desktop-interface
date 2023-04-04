@@ -21,8 +21,6 @@
 #include <KSharedConfig>
 #include <QFile>
 
-#include <updatelaunchenvjob.h>
-
 #include <X11/X.h>
 #include <X11/Xatom.h>
 #include <X11/Xlib.h>
@@ -122,11 +120,4 @@ void X11Backend::kcmInit()
         theme = "breeze_cursors";
     }
     applyCursorTheme(theme, size);
-
-    // Tell klauncher to set the XCURSOR_THEME and XCURSOR_SIZE environment
-    // variables when launching applications.
-    if (!theme.isEmpty()) {
-        UpdateLaunchEnvJob launchEnvJob(QStringLiteral("XCURSOR_THEME"), theme);
-    }
-    UpdateLaunchEnvJob launchEnvJob(QStringLiteral("XCURSOR_SIZE"), QByteArray::number(size));
 }
