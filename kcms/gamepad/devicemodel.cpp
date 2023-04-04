@@ -53,6 +53,8 @@ QVariant DeviceModel::data(const QModelIndex &index, int role) const
         return m_devices.value(sdlIndex)->getName();
     case CustomRoles::DeviceRole:
         return QVariant::fromValue(m_devices.value(sdlIndex));
+    case CustomRoles::ConnectionType:
+        return QVariant::fromValue(m_devices.value(sdlIndex)->getConnectionType());
     default:
         return {};
     }
@@ -60,7 +62,7 @@ QVariant DeviceModel::data(const QModelIndex &index, int role) const
 
 QHash<int, QByteArray> DeviceModel::roleNames() const
 {
-    return {{CustomRoles::NameRole, "name"}, {CustomRoles::DeviceRole, "device"}};
+    return {{CustomRoles::NameRole, "name"}, {CustomRoles::DeviceRole, "device"}, {CustomRoles::ConnectionType, "connectionType"}};
 }
 
 void DeviceModel::poll()
