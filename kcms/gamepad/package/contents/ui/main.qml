@@ -17,7 +17,7 @@ import QtQuick.Shapes 1.15
 KCM.SimpleKCM {
     id: root
 
-    implicitWidth: Kirigami.Units.gridUnit * 80
+    implicitWidth: Kirigami.Units.gridUnit * 40
     implicitHeight: Kirigami.Units.gridUnit * 35
 
     DeviceModel {
@@ -56,21 +56,21 @@ KCM.SimpleKCM {
         width: parent.width - (Kirigami.Units.largeSpacing * 4)
     }
 
-//    actions: [
-//        Kirigami.Action {
-//            id: addAction
-//            icon.name: "list-add"
-//            text: i18nc("@action:button", "Add bluetooth device...")
-//            onTriggered: { Qt.openUrlExternally("systemsettings://kcm_bluetooth"); }
-//        },
+    actions: [
+        Kirigami.Action {
+            id: addAction
+            icon.name: "list-add"
+            text: i18nc("@action:button", "Add bluetooth device...")
+            onTriggered: { Qt.openUrlExternally("systemsettings://kcm_bluetooth"); }
+        },
 
-//        Kirigami.Action {
-//            icon.name: "configure"
-//            text: i18nd("kcm_pulseaudio", "Advanced View…")
-//            onTriggered: kcm.push("AdvancedPage.qml", { "device": currentDevice })
-//            enabled: currentDevice !== null
-//        }
-//    ]
+        Kirigami.Action {
+            icon.name: "configure"
+            text: i18nd("kcm_pulseaudio", "Advanced View…")
+            onTriggered: kcm.push("AdvancedPage.qml", { "device": currentDevice })
+            enabled: currentDevice !== null
+        }
+    ]
 
     ColumnLayout {
         id: layout
@@ -81,35 +81,39 @@ KCM.SimpleKCM {
 
         visible: gamepadCount > 0
 
-        ListView {
-            id: deviceList
-            width: parent.width
-            height: 50
-            orientation: Qt.Horizontal
-            model: deviceModel
+        Kirigami.FormLayout {
+            id: deviceSelectionlayout
 
-            // Device selection row
-            Layouts.Layout.fillWidth: true
+            ListView {
+                Kirigami.FormData.label: i18nd("kcm_gamepad", "Device:")
+                id: deviceList
+    //            width: parent.width
+                implicitHeight: 40
+                orientation: Qt.Horizontal
+                model: deviceModel
 
-            delegate:
-                QQC2.Button {
-                    checkable: true
-                    checked: deviceList.currentIndex === index
-                    icon.name: connectionType === Gamepad.BluetoothType ? "network-bluetooth" : "input-gamepad"
-                    hoverEnabled: true
+                // Device selection row
+                Layouts.Layout.fillWidth: true
 
-                    QQC2.ToolTip.delay: 1000
-                    QQC2.ToolTip.timeout: 5000
-                    QQC2.ToolTip.visible: hovered
-                    QQC2.ToolTip.text: name
-                    text: i18nc("Controller number name", "Gamepad #" + (index + 1))
-                    onClicked: {
-                        deviceList.currentIndex = index
-                        selectGamepadType();
+                delegate:
+                    QQC2.Button {
+                        checkable: true
+                        checked: deviceList.currentIndex === index
+                        icon.name: connectionType === Gamepad.BluetoothType ? "network-bluetooth" : "input-gamepad"
+                        hoverEnabled: true
+
+                        QQC2.ToolTip.delay: 1000
+                        QQC2.ToolTip.timeout: 5000
+                        QQC2.ToolTip.visible: hovered
+                        QQC2.ToolTip.text: name
+                        text: i18nc("Controller number name", "Gamepad #" + (index + 1))
+                        onClicked: {
+                            deviceList.currentIndex = index
+                            selectGamepadType();
+                        }
                     }
-                }
 
-        }
+            }
 
 //            Connections {
 //                target: deviceSelector
@@ -118,15 +122,16 @@ KCM.SimpleKCM {
 //                }
 //            }
 
-        QQC2.ComboBox {
-            Kirigami.FormData.label: i18nd("kcm_gamepad", "Device type:")
-            id: deviceTypeSelector
+            QQC2.ComboBox {
+                Kirigami.FormData.label: i18nd("kcm_gamepad", "Device type:")
+                id: deviceTypeSelector
 
-            Layouts.Layout.fillWidth: true
-            model: deviceTypeModel
-            textRole: "name"
-            onCurrentIndexChanged: {
-                makeGamepadObject();
+                Layouts.Layout.fillWidth: true
+                model: deviceTypeModel
+                textRole: "name"
+                onCurrentIndexChanged: {
+                    makeGamepadObject();
+                }
             }
         }
     }
