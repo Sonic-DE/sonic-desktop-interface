@@ -29,8 +29,12 @@ MainConfigurationWidget::MainConfigurationWidget(QObject *parent, const KPluginM
 {
     d->setupUi(widget());
 
-    d->tabs->insertTab(0, d->tabActivities = new ActivitiesTab(d->tabs), i18n("Activities"));
-    d->tabs->insertTab(1, d->tabSwitching = new SwitchingTab(d->tabs), i18n("Switching"));
+    d->verticalLayout->addWidget(d->tabActivities = new ActivitiesTab(widget()));
+    d->verticalLayout->addWidget(d->tabSwitching = new SwitchingTab(widget()));
+
+    d->tabActivities->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
+    d->tabSwitching->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Maximum);
+    d->tabSwitching->layout()->setContentsMargins(0, 0, 0, 0);
 
     addConfig(d->tabSwitching->mainConfig(), d->tabSwitching);
 }
