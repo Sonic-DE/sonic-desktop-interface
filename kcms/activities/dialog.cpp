@@ -24,7 +24,7 @@
 #include <KLocalizedString>
 #include <KMessageWidget>
 
-#include "../kactivities-kcm-features.h"
+#include "kactivities-kcm-features.h"
 
 #include "features_interface.h"
 #include "kactivities/controller.h"
@@ -108,7 +108,7 @@ Dialog::Dialog(QObject *parent)
     d->view->rootContext()->setContextProperty(QStringLiteral("dialog"), this);
     d->view->rootContext()->setContextObject(new KLocalizedContext(d->view));
 
-    const QString sourceFile = QStringLiteral(KAMD_KCM_DATADIR) + "qml/activityDialog/GeneralTab.qml";
+    const QString sourceFile = QStringLiteral(KAMD_KCM_DATADIR) + "contents/ui/ActivityEditor.qml";
 
     if (QFile::exists(sourceFile)) {
         d->view->setSource(QUrl::fromLocalFile(sourceFile));
