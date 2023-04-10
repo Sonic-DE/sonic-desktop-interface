@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: plasma-desktop\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-03-17 02:33+0000\n"
-"PO-Revision-Date: 2023-03-28 06:54+0200\n"
+"PO-Revision-Date: 2023-04-09 08:45+0200\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
 "Language: ka\n"
@@ -876,6 +876,7 @@ msgid ""
 "Your finger needs to produce this many scrolls per second in order to start "
 "coasting"
 msgstr ""
+"თქვენს თითს სჭირდება ამდენი გადახვევა წამში, რომ ინერციით გადახვევა დაიწყოთ"
 
 #. i18n: ectx: property (suffix), widget (QSpinBox, kcfg_CoastingSpeed)
 #: kcm/xlib/ui/scroll.ui:233
@@ -894,7 +895,7 @@ msgstr "შენელება:"
 #: kcm/xlib/ui/scroll.ui:250
 #, kde-format
 msgid "Number of scrolls/second² to decrease the coasting speed"
-msgstr ""
+msgstr "წამების/წამების² რაოდენობა ინერციით გადახვევის სიჩქარის შესამცირებლად"
 
 #. i18n: ectx: property (suffix), widget (QSpinBox, kcfg_CoastingFriction)
 #: kcm/xlib/ui/scroll.ui:256
@@ -951,7 +952,7 @@ msgstr "ტრიგერის რაიონი:"
 #: kcm/xlib/ui/scroll.ui:316
 #, kde-format
 msgid "Trigger region on the touchpad to start circular scrolling"
-msgstr ""
+msgstr "ტრიგერის ადგილი თაჩპედზე მრგვლად გადახვევის დასაწყებად"
 
 #. i18n: ectx: property (text), widget (QLabel, label_6)
 #: kcm/xlib/ui/scroll.ui:323
@@ -964,7 +965,7 @@ msgstr "კუთხე:"
 #: kcm/xlib/ui/scroll.ui:345
 #, kde-format
 msgid "Move angle (degrees) of finger to generate a scroll event"
-msgstr ""
+msgstr "თითის გადაადგილების კუთხე (გრადუსებში) გადახვევის მოვლენის დასაწყებად"
 
 #. i18n: ectx: property (suffix), widget (QDoubleSpinBox, kcfg_CircScrollDelta)
 #: kcm/xlib/ui/scroll.ui:348
@@ -1057,13 +1058,13 @@ msgstr "მინიმალური დაწოლა:"
 #: kcm/xlib/ui/sensitivity.ui:113
 #, kde-format
 msgid "Minimum finger width at which touch is considered a palm"
-msgstr ""
+msgstr "თითის მინიმალური სიგანე, რომლის შემდეგაც ის ხელისგულად იქნება აღქმული"
 
 #. i18n: ectx: property (toolTip), widget (QSlider, kcfg_PalmMinZ)
 #: kcm/xlib/ui/sensitivity.ui:129
 #, kde-format
 msgid "Minimum finger pressure at which touch is considered a palm"
-msgstr ""
+msgstr "თითის მინიმალური წნევა, რომლის შემდეგაც ის ხელისგულად იქნება აღქმული"
 
 #. i18n: ectx: property (windowTitle), widget (QWidget, TapForm)
 #: kcm/xlib/ui/tap.ui:14
