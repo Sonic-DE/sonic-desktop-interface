@@ -4,9 +4,9 @@
     SPDX-License-Identifier: GPL-2.0-only OR GPL-3.0-only OR LicenseRef-KDE-Accepted-GPL
 */
 
-import org.kde.kirigami 2.6 as Kirigami
+import QtQuick.Controls 2.15 as QQC2
 
-Kirigami.Action {
+QQC2.Action {
     property string category
     checked: window.pageStack.get(0).title === text
     text: i18ndc("org.kde.plasma.emojier", "Emoji Category", category)
