@@ -86,19 +86,45 @@ Kirigami.ApplicationWindow
             }
         }
 
-        Instantiator {
-            model: emoji.categories
-            CategoryAction {
-                category: modelData
-            }
-            onObjectAdded: {
-                var actions = Array.prototype.map.call(drawer.actions, i => i)
-                actions.splice(index + 3, 0, object)
-                drawer.actions = actions
+        function getIcon(category: string) {
+            switch (category.trim()) {
+                case 'Activities': return 'games-highscores'
+                case 'Animals and Nature': return 'animal'
+                case 'Flags': return 'flag'
+                case 'Food and Drink': return 'food'
+                case 'Objects': return 'object'
+                case 'People and Body': return 'user'
+                case 'Smileys and Emotion': return 'smiley'
+                case 'Symbols': return 'checkmark'
+                case 'Travel and Places': return 'globe'
+                default: return 'folder'
             }
         }
-        actions: [recentAction, searchAction, allAction]
     }
 
-    Component.onCompleted: recentAction.trigger()
+    Instantiator {
+        id: instantiator
+        property int loadCount: 0
+        asynchronous: true
+        CategoryAction {
+            category: modelData
+            icon.name: drawer.getIcon(category)
+        }
+        onObjectAdded: (index, object) => {
+            if (++loadCount !== model.length) {
+                return;
+            }
+
+            let actions = [recentAction, searchAction, allAction];
+            for (let i = 0; i < count; ++i) {
+                actions.push(this.objectAt(i));
+            }
+            drawer.actions = actions;
+        }
+    }
+
+    Component.onCompleted: {
+        recentAction.trigger();
+        instantiator.model = emoji.categories;
+    }
 }
