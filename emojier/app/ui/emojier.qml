@@ -100,30 +100,31 @@ Kirigami.ApplicationWindow
                 default: return 'folder'
             }
         }
+    }
 
-        Instantiator {
-            property int loadCount: 0
-            asynchronous: true
-            model: emoji.categories
-            CategoryAction {
-                category: modelData
-                icon.name: drawer.getIcon(category)
+    Instantiator {
+        id: instantiator
+        property int loadCount: 0
+        asynchronous: true
+        CategoryAction {
+            category: modelData
+            icon.name: drawer.getIcon(category)
+        }
+        onObjectAdded: (index, object) => {
+            if (++loadCount !== model.length) {
+                return;
             }
-            onObjectAdded: (index, object) => {
-                if (++loadCount !== model.length) {
-                    return;
-                }
 
-                let actions = [recentAction, searchAction, allAction];
-                for (let i = 0; i < count; ++i) {
-                    actions.push(this.objectAt(i));
-                }
-                drawer.actions = actions;
+            let actions = [recentAction, searchAction, allAction];
+            for (let i = 0; i < count; ++i) {
+                actions.push(this.objectAt(i));
             }
+            drawer.actions = actions;
         }
     }
 
     Component.onCompleted: {
         recentAction.trigger();
+        instantiator.model = emoji.categories;
     }
 }
