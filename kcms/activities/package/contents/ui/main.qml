@@ -22,6 +22,17 @@ KCM.ScrollViewKCM {
 
     ConfigModule.buttons: ConfigModule.Help
 
+    function configureActivity(activityId) {
+        if (kcm.depth > 1) {
+            kcm.pop()
+        }
+        kcm.push('ActivityEditor.qml', {'activityId': activityId})
+    }
+
+    function newActivity() {
+        configureActivity("")
+    }
+
     view: ListView {
         id: activitiesList
 
@@ -54,7 +65,7 @@ KCM.ScrollViewKCM {
                 Kirigami.Action {
                     icon.name: "configure"
                     tooltip: i18nc("@info:tooltip", "Configure %1 activity", model.name)
-                    onTriggered: kcm.configureActivity(model.id);
+                    onTriggered: configureActivity(model.id);
                 },
                 Kirigami.Action {
                     visible: kcm.newActivityAuthorized
@@ -75,7 +86,7 @@ KCM.ScrollViewKCM {
         visible: kcm.newActivityAuthorized
         text: i18n("Create New…")
         icon.name: "list-add"
-        onTriggered: kcm.newActivity();
+        onTriggered: newActivity();
     }
 
     Kirigami.PromptDialog {
