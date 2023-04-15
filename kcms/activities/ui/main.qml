@@ -57,7 +57,7 @@ KCM.ScrollViewKCM {
                     onTriggered: kcm.configureActivity(model.id);
                 },
                 Kirigami.Action {
-                    visible: kcm.newActivityAuthorized
+                    visible: kcm.isNewActivityAuthorized
                     enabled:  activitiesList.count > 1
                     icon.name: "edit-delete"
                     tooltip: i18nc("@info:tooltip", "Delete %1 activity", model.name)
@@ -72,7 +72,7 @@ KCM.ScrollViewKCM {
     }
 
     actions: Kirigami.Action {
-        visible: kcm.newActivityAuthorized
+        visible: kcm.isNewActivityAuthorized
         text: i18n("Create New…")
         icon.name: "list-add"
         onTriggered: kcm.newActivity();

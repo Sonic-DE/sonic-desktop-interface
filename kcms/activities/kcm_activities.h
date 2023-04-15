@@ -12,19 +12,21 @@
 class ActivitiesModule : public KQuickConfigModule
 {
     Q_OBJECT
-    Q_PROPERTY(bool newActivityAuthorized READ newActivityAuthorized CONSTANT)
+    Q_PROPERTY(bool isNewActivityAuthorized READ isNewActivityAuthorized CONSTANT)
 
 public:
     ActivitiesModule(QObject *parent, const KPluginMetaData &metaData, const QVariantList &args);
     ~ActivitiesModule() override;
 
-    bool newActivityAuthorized() const;
+    bool isNewActivityAuthorized() const;
 
-    Q_INVOKABLE void configureActivities();
     Q_INVOKABLE void configureActivity(const QString &id);
     Q_INVOKABLE void newActivity();
     Q_INVOKABLE void deleteActivity(const QString &id);
 
+    void load() override;
+
 private:
-    bool m_newActivityAuthorized;
+    bool m_isNewActivityAuthorized;
+    QString m_firstArgument;
 };

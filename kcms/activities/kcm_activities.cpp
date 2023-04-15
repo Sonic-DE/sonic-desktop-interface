@@ -6,60 +6,80 @@
  */
 
 #include "kcm_activities.h"
+#include "activityconfig.h"
 
+#include <KActivities/Controller>
 #include <KAuthorized>
 #include <KLocalizedString>
 #include <KPluginFactory>
 
-#include <QMessageBox>
-#include <QProcess>
-
-#include "dialog.h"
-
-#include <KActivities/Controller>
+#include <QtQml/QQmlModuleRegistration>
 
 K_PLUGIN_CLASS_WITH_JSON(ActivitiesModule, "kcm_activities.json")
 
 ActivitiesModule::ActivitiesModule(QObject *parent, const KPluginMetaData &metaData, const QVariantList &args)
     : KQuickConfigModule(parent, metaData, args)
-    , m_newActivityAuthorized(KAuthorized::authorize(QStringLiteral("plasma-desktop/add_activities")))
+    , m_isNewActivityAuthorized(KAuthorized::authorize(QStringLiteral("plasma-desktop/add_activities")))
 {
+    qmlRegisterType<ActivityConfig>("org.kde.kcms.activities", 1, 0, "ActivityConfig");
+
+    if (!args.isEmpty()) {
+        m_firstArgument = args.first().toString();
+    }
 }
 
 ActivitiesModule::~ActivitiesModule()
 {
 }
 
-bool ActivitiesModule::newActivityAuthorized() const
+bool ActivitiesModule::isNewActivityAuthorized() const
 {
-    return m_newActivityAuthorized;
+    return m_isNewActivityAuthorized;
 }
 
 void ActivitiesModule::configureActivity(const QString &id)
 {
-    Dialog::showDialog(id);
+    if (!id.isEmpty() && !KActivities::Controller().activities().contains(id)) {
+        qWarning() << "Cannot configure. There is no activity with id" << id;
+        return;
+    }
+
+    if (depth() > 1) {
+        pop();
+    }
+    push(QStringLiteral("ActivityEditor.qml"), QVariantMap{{QStringLiteral("activityId"), id}});
 }
 
 void ActivitiesModule::newActivity()
 {
-    if (!m_newActivityAuthorized) {
-        return;
-    }
-    Dialog::showDialog();
+    // Launch the editor with an empty string as activity id
+    configureActivity(QString());
 }
 
 void ActivitiesModule::deleteActivity(const QString &id)
 {
-    if (!m_newActivityAuthorized) {
+    if (!m_isNewActivityAuthorized) {
         return;
     }
 
     KActivities::Controller().removeActivity(id);
 }
 
-void ActivitiesModule::configureActivities()
+void ActivitiesModule::load()
 {
-    QProcess::startDetached(QStringLiteral("kcmshell5"), {QStringLiteral("activities")});
+    if (m_firstArgument.isEmpty()) {
+        return;
+    }
+
+    // Delay so the KActivities::Consumer can load the activities status
+    QTimer::singleShot(0, this, [this]() {
+        if (m_firstArgument == QStringLiteral("newActivity")) {
+            newActivity();
+        } else {
+            configureActivity(m_firstArgument);
+        }
+        m_firstArgument = QString();
+    });
 }
 
 #include "kcm_activities.moc"
