@@ -6,17 +6,14 @@
  */
 
 #include "kcm_activities.h"
+#include "activityconfig.h"
 
+#include <KActivities/Controller>
 #include <KAuthorized>
 #include <KLocalizedString>
 #include <KPluginFactory>
 
-#include <QMessageBox>
-#include <QProcess>
-
-#include "dialog.h"
-
-#include <KActivities/Controller>
+#include <QtQml/QQmlModuleRegistration>
 
 K_PLUGIN_CLASS_WITH_JSON(ActivitiesModule, "kcm_activities.json")
 
@@ -24,6 +21,7 @@ ActivitiesModule::ActivitiesModule(QObject *parent, const KPluginMetaData &metaD
     : KQuickConfigModule(parent, metaData, args)
     , m_newActivityAuthorized(KAuthorized::authorize(QStringLiteral("plasma-desktop/add_activities")))
 {
+    qmlRegisterType<ActivityConfig>("org.kde.kcms.activities", 1, 0, "ActivityConfig");
 }
 
 ActivitiesModule::~ActivitiesModule()
@@ -35,19 +33,6 @@ bool ActivitiesModule::newActivityAuthorized() const
     return m_newActivityAuthorized;
 }
 
-void ActivitiesModule::configureActivity(const QString &id)
-{
-    Dialog::showDialog(id);
-}
-
-void ActivitiesModule::newActivity()
-{
-    if (!m_newActivityAuthorized) {
-        return;
-    }
-    Dialog::showDialog();
-}
-
 void ActivitiesModule::deleteActivity(const QString &id)
 {
     if (!m_newActivityAuthorized) {
@@ -55,11 +40,6 @@ void ActivitiesModule::deleteActivity(const QString &id)
     }
 
     KActivities::Controller().removeActivity(id);
-}
-
-void ActivitiesModule::configureActivities()
-{
-    QProcess::startDetached(QStringLiteral("kcmshell5"), {QStringLiteral("activities")});
 }
 
 #include "kcm_activities.moc"

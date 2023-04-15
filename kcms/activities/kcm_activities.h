@@ -20,9 +20,6 @@ public:
 
     bool newActivityAuthorized() const;
 
-    Q_INVOKABLE void configureActivities();
-    Q_INVOKABLE void configureActivity(const QString &id);
-    Q_INVOKABLE void newActivity();
     Q_INVOKABLE void deleteActivity(const QString &id);
 
 private:
