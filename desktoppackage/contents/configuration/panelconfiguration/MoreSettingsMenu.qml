@@ -22,10 +22,9 @@ PlasmaCore.Dialog {
     type: PlasmaCore.Dialog.PopupMenu
     flags: Qt.Popup | Qt.FramelessWindowHint | Qt.WindowDoesNotAcceptFocus
     mainItem: ColumnLayout {
-        id: menuColumn
-        Layout.minimumWidth: menuColumn.implicitWidth + PlasmaCore.Units.largeSpacing * 2 //for compensating for margins
-        Layout.minimumHeight: menuColumn.implicitHeight
-        spacing: PlasmaCore.Units.smallSpacing
+        id: menuColmun
+        width: PlasmaCore.Units.gridUnit * 32
+        height: PlasmaCore.Units.gridUnit * 38
 
         LayoutMirroring.enabled: Qt.application.layoutDirection === Qt.RightToLeft
         LayoutMirroring.childrenInherit: true
@@ -52,20 +51,20 @@ PlasmaCore.Dialog {
             }
         }
 
-        PlasmaExtras.Heading {
-            level: menuColumn.headingLabel
-            Layout.alignment: Qt.AlignHCenter
-            Layout.topMargin: PlasmaCore.Units.smallSpacing
-            Layout.bottomMargin: PlasmaCore.Units.largeSpacing
-            type: PlasmaExtras.Heading.Type.Primary
-            text: i18nd("plasma_shell_org.kde.plasma.desktop", " Select Alignment")
-        }
-
         RowLayout {
             spacing: PlasmaCore.Units.largeSpacing
-            Layout.alignment: Qt.AlignHCenter
             Layout.leftMargin: PlasmaCore.Units.largeSpacing
             Layout.rightMargin: PlasmaCore.Units.largeSpacing
+            PlasmaExtras.Heading {
+                level: menuColumn.headingLabel
+                Layout.alignment: Qt.AlignHCenter
+                Layout.topMargin: PlasmaCore.Units.smallSpacing
+                Layout.bottomMargin: PlasmaCore.Units.largeSpacing
+                type: PlasmaExtras.Heading.Type.Primary
+                text: i18nd("plasma_shell_org.kde.plasma.desktop", " Alignment")
+            }
+
+            Item { Layout.fillWidth: true}
 
             PanelRepresentation {
                 text: panel.formFactor === PlasmaCore.Types.Vertical ? i18nd("plasma_shell_org.kde.plasma.desktop", "Top") : i18nd("plasma_shell_org.kde.plasma.desktop", "Left")
@@ -95,84 +94,99 @@ PlasmaCore.Dialog {
                 onClicked: panel.alignment = Qt.AlignRight
             }
         }
-
-        PlasmaExtras.Heading {
-            level: menuColumn.headingLabel
-            Layout.alignment: Qt.AlignHCenter
-            Layout.topMargin: PlasmaCore.Units.largeSpacing
-            Layout.bottomMargin: PlasmaCore.Units.largeSpacing
-            type: PlasmaExtras.Heading.Type.Primary
-            text: i18nd("plasma_shell_org.kde.plasma.desktop", "Select Visibility")
+        PlasmaCore.SvgItem {
+            Layout.fillWidth: true
+            elementId: "horizontal-line"
+            svg: PlasmaCore.Svg {
+                id: lineSvg
+                imagePath: "widgets/line"
+            }
         }
-
         RowLayout {
             spacing: PlasmaCore.Units.largeSpacing
-            Layout.alignment: Qt.AlignHCenter
-
-            PanelRepresentation {
-                text: i18nd("plasma_shell_org.kde.plasma.desktop", "Always Visible")
-                tooltip: i18nd("plasma_shell_org.kde.plasma.desktop", "Makes the panel remain visible always.")
-                Layout.alignment: Qt.AlignTop
-                alignment: panel.alignment
-                checked: configDialog.visibilityMode === Panel.Global.NormalPanel
-                onClicked: configDialog.visibilityMode = Panel.Global.NormalPanel
-            }
-
-            PanelRepresentation {
-                text: i18nd("plasma_shell_org.kde.plasma.desktop", "Auto Hide")
-                tooltip: i18nd("plasma_shell_org.kde.plasma.desktop", "Makes the panel hidden always but reveals it when mouse enters the area where the panel would have been if it were not hidden.")
-                Layout.alignment: Qt.AlignTop
-                alignment: panel.alignment
-                sunkenPanel: true
-                checked: configDialog.visibilityMode === Panel.Global.AutoHide
-                onClicked: configDialog.visibilityMode = Panel.Global.AutoHide
-            }
-        }
-
-        RowLayout {
-            spacing: PlasmaCore.Units.largeSpacing
-            Layout.alignment: Qt.AlignHCenter
-            Layout.topMargin: PlasmaCore.Units.largeSpacing
-
-            PanelRepresentation {
-                text: i18nd("plasma_shell_org.kde.plasma.desktop", "Windows In Front")
-                tooltip: i18nd("plasma_shell_org.kde.plasma.desktop", "Makes the panel remain visible always but maximized windows shall cover it. It is revealed when mouse enters the area where the panel would have been if it were not covered.")
-                Layout.alignment: Qt.AlignTop
-                alignment: panel.alignment
-                windowVisible: true
-                windowZ: 1
-                checked: configDialog.visibilityMode === Panel.Global.LetWindowsCover
-                onClicked: configDialog.visibilityMode = Panel.Global.LetWindowsCover
-            }
-
-            PanelRepresentation {
-                text: i18nd("plasma_shell_org.kde.plasma.desktop", "Windows Behind")
-                tooltip: i18nd("plasma_shell_org.kde.plasma.desktop", "Makes the panel remain visible always but part of the maximized windows shall go below the panel as though the panel did not exist.")
-                Layout.alignment: Qt.AlignTop
-                alignment: panel.alignment
-                windowVisible: true
-                checked: configDialog.visibilityMode === Panel.Global.WindowsGoBelow
-                onClicked: configDialog.visibilityMode = Panel.Global.WindowsGoBelow
-            }
-        }
-
-        PlasmaExtras.Heading {
-            Layout.alignment: Qt.AlignHCenter
-            Layout.topMargin: PlasmaCore.Units.largeSpacing
-            Layout.bottomMargin: PlasmaCore.Units.largeSpacing
-            type: PlasmaExtras.Heading.Type.Primary
-            level: menuColumn.headingLabel
-            text: i18nd("plasma_shell_org.kde.plasma.desktop", "Select Opacity")
-            visible: panel.adaptiveOpacityEnabled
-        }
-
-        RowLayout {
-            id: opacityButtons
-            spacing: PlasmaCore.Units.largeSpacing
-            Layout.alignment: Qt.AlignHCenter
             Layout.leftMargin: PlasmaCore.Units.largeSpacing
             Layout.rightMargin: PlasmaCore.Units.largeSpacing
-            visible: panel.adaptiveOpacityEnabled
+            PlasmaExtras.Heading {
+                level: menuColumn.headingLabel
+                Layout.alignment: Qt.AlignHCenter
+                Layout.topMargin: PlasmaCore.Units.smallSpacing
+                Layout.bottomMargin: PlasmaCore.Units.largeSpacing
+                type: PlasmaExtras.Heading.Type.Primary
+                text: i18nd("plasma_shell_org.kde.plasma.desktop", "Visibility")
+            }
+
+            Item { Layout.fillWidth: true}
+
+            ColumnLayout {
+                spacing: PlasmaCore.Units.largeSpacing
+                RowLayout {
+                    spacing: PlasmaCore.Units.largeSpacing
+                    PanelRepresentation {
+                        text: i18nd("plasma_shell_org.kde.plasma.desktop", "Always Visible")
+                        tooltip: i18nd("plasma_shell_org.kde.plasma.desktop", "Makes the panel remain visible always.")
+                        Layout.alignment: Qt.AlignTop
+                        alignment: panel.alignment
+                        checked: configDialog.visibilityMode === Panel.Global.NormalPanel
+                        onClicked: configDialog.visibilityMode = Panel.Global.NormalPanel
+                    }
+
+                    PanelRepresentation {
+                        text: i18nd("plasma_shell_org.kde.plasma.desktop", "Auto Hide")
+                        tooltip: i18nd("plasma_shell_org.kde.plasma.desktop", "Makes the panel hidden always but reveals it when mouse enters the area where the panel would have been if it were not hidden.")
+                        Layout.alignment: Qt.AlignTop
+                        alignment: panel.alignment
+                        sunkenPanel: true
+                        checked: configDialog.visibilityMode === Panel.Global.AutoHide
+                        onClicked: configDialog.visibilityMode = Panel.Global.AutoHide
+                    }
+
+                }
+                RowLayout {
+                    spacing: PlasmaCore.Units.largeSpacing
+                    PanelRepresentation {
+                        text: i18nd("plasma_shell_org.kde.plasma.desktop", "Windows In Front")
+                        tooltip: i18nd("plasma_shell_org.kde.plasma.desktop", "Makes the panel remain visible always but maximized windows shall cover it. It is revealed when mouse enters the area where the panel would have been if it were not covered.")
+                        Layout.alignment: Qt.AlignTop
+                        alignment: panel.alignment
+                        windowVisible: true
+                        windowZ: 1
+                        checked: configDialog.visibilityMode === Panel.Global.LetWindowsCover
+                        onClicked: configDialog.visibilityMode = Panel.Global.LetWindowsCover
+                    }
+
+                    PanelRepresentation {
+                        text: i18nd("plasma_shell_org.kde.plasma.desktop", "Windows Behind")
+                        tooltip: i18nd("plasma_shell_org.kde.plasma.desktop", "Makes the panel remain visible always but part of the maximized windows shall go below the panel as though the panel did not exist.")
+                        Layout.alignment: Qt.AlignTop
+                        alignment: panel.alignment
+                        windowVisible: true
+                        checked: configDialog.visibilityMode === Panel.Global.WindowsGoBelow
+                        onClicked: configDialog.visibilityMode = Panel.Global.WindowsGoBelow
+                    }
+                }
+            }
+
+
+        }
+        PlasmaCore.SvgItem {
+            Layout.fillWidth: true
+            elementId: "horizontal-line"
+            svg: lineSvg
+        }
+        RowLayout {
+            spacing: PlasmaCore.Units.largeSpacing
+            Layout.leftMargin: PlasmaCore.Units.largeSpacing
+            Layout.rightMargin: PlasmaCore.Units.largeSpacing
+            PlasmaExtras.Heading {
+                level: menuColumn.headingLabel
+                Layout.alignment: Qt.AlignHCenter
+                Layout.topMargin: PlasmaCore.Units.smallSpacing
+                Layout.bottomMargin: PlasmaCore.Units.largeSpacing
+                type: PlasmaExtras.Heading.Type.Primary
+                text: i18nd("plasma_shell_org.kde.plasma.desktop", "Opacity")
+            }
+
+            Item { Layout.fillWidth: true}
 
             PanelRepresentation {
                 text: i18nd("plasma_shell_org.kde.plasma.desktop", "Fully Opaque")
@@ -203,21 +217,25 @@ PlasmaCore.Dialog {
                 onClicked: configDialog.opacityMode = Panel.Global.Translucent
             }
         }
-
-        PlasmaExtras.Heading {
-            Layout.alignment: Qt.AlignHCenter
-            Layout.topMargin: PlasmaCore.Units.largeSpacing
-            Layout.bottomMargin: PlasmaCore.Units.largeSpacing
-            type: PlasmaExtras.Heading.Type.Primary
-            level: menuColumn.headingLabel
-            text: i18nd("plasma_shell_org.kde.plasma.desktop", "Select Edge Separation")
+        PlasmaCore.SvgItem {
+            Layout.fillWidth: true
+            elementId: "horizontal-line"
+            svg: lineSvg
         }
-
         RowLayout {
             spacing: PlasmaCore.Units.largeSpacing
-            Layout.alignment: Qt.AlignHCenter
             Layout.leftMargin: PlasmaCore.Units.largeSpacing
             Layout.rightMargin: PlasmaCore.Units.largeSpacing
+            PlasmaExtras.Heading {
+                level: menuColumn.headingLabel
+                Layout.alignment: Qt.AlignHCenter
+                Layout.topMargin: PlasmaCore.Units.smallSpacing
+                Layout.bottomMargin: PlasmaCore.Units.largeSpacing
+                type: PlasmaExtras.Heading.Type.Primary
+                text: i18nd("plasma_shell_org.kde.plasma.desktop", "Floating")
+            }
+
+            Item { Layout.fillWidth: true}
 
             PanelRepresentation {
                 text: i18nd("plasma_shell_org.kde.plasma.desktop", "Floating")
@@ -243,6 +261,9 @@ PlasmaCore.Dialog {
         PlasmaExtras.PlasmoidHeading {
             location: PlasmaExtras.PlasmoidHeading.Footer
             Layout.topMargin: PlasmaCore.Units.smallSpacing
+            topPadding: PlasmaCore.Units.smallSpacing * 2
+            bottomPadding: PlasmaCore.Units.smallSpacing
+
             Layout.fillWidth: true
             RowLayout {
                 anchors.centerIn: parent
