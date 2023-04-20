@@ -173,7 +173,7 @@ Item {
             }
         }
 
-        QtControls.Label {
+        PC3.Label {
             text: panelRepresentation.text
             Layout.alignment: Qt.AlignHCenter
             Layout.maximumWidth: screenRect.implicitWidth
