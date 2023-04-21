@@ -7,9 +7,9 @@
 
 #pragma once
 
-#include <QString>
-
 #include <sys/types.h>
+
+#include <QString>
 
 #ifdef Q_OS_LINUX
 #undef __STRICT_ANSI__
