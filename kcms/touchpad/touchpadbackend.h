@@ -15,7 +15,6 @@ enum class TouchpadInputBackendMode {
     Unset = 0,
     WaylandLibinput = 1,
     XLibinput = 2,
-    XSynaptics = 3,
 };
 
 void touchpadApplySavedConfig();

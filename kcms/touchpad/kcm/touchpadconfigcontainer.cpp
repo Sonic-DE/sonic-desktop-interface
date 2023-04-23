@@ -8,7 +8,6 @@
 #include "libinput/touchpadconfiglibinput.h"
 #include "touchpadbackend.h"
 #include "touchpadconfigplugin.h"
-#include "xlib/touchpadconfigxlib.h"
 
 #include <KPluginFactory>
 #include <KWindowSystem>
@@ -28,15 +27,7 @@ TouchpadConfigContainer::TouchpadConfigContainer(QObject *parent, const KPluginM
     : KCModule(parent, data, args)
 {
     TouchpadBackend *backend = TouchpadBackend::implementation();
-    if (KWindowSystem::isPlatformX11()) {
-        if (backend->getMode() == TouchpadInputBackendMode::XLibinput || backend->getMode() == TouchpadInputBackendMode::Unset) {
-            m_plugin = new TouchpadConfigLibinput(this, backend);
-        } else {
-            m_plugin = new TouchpadConfigXlib(this, backend);
-        }
-    } else if (KWindowSystem::isPlatformWayland()) {
-        m_plugin = new TouchpadConfigLibinput(this, backend);
-    }
+    m_plugin = new TouchpadConfigLibinput(this, backend);
 
     setButtons(KCModule::Default | KCModule::Apply);
 }
@@ -47,8 +38,6 @@ void TouchpadConfigContainer::kcmInit()
     if (backend->getMode() == TouchpadInputBackendMode::XLibinput) {
         backend->getConfig();
         backend->applyConfig();
-    } else if (backend->getMode() == TouchpadInputBackendMode::XSynaptics) {
-        TouchpadConfigXlib::kcmInit();
     }
 }
 
