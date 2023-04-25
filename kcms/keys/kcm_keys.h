@@ -10,6 +10,7 @@
 #include <QObject>
 
 #include <KQuickAddons/ConfigModule>
+#include <qobjectdefs.h>
 
 class FilteredShortcutsModel;
 class KGlobalAccelInterface;
@@ -42,6 +43,7 @@ public:
     Q_INVOKABLE void addApplication(QQuickItem *ctx);
     Q_INVOKABLE void addCommand(const QString &exec);
     Q_INVOKABLE QString editCommand(const QString &componentName, const QString &newExec);
+    Q_INVOKABLE QString quoteUrl(const QUrl &url);
 
     Q_INVOKABLE QString keySequenceToString(const QKeySequence &keySequence) const;
     Q_INVOKABLE QString urlFilename(const QUrl &url);
