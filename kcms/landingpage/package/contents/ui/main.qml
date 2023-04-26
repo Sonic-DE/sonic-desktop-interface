@@ -203,7 +203,6 @@ KCM.SimpleKCM {
         GridLayout {
             id: mostUsedGrid
             Kirigami.FormData.label: i18n("Most Used Pages:")
-            Kirigami.FormData.buddyFor: children[1] // 0 is the Repeater
 
             visible: recentlyUsedRepeater.count > 0
             Layout.fillWidth: true
@@ -231,6 +230,12 @@ KCM.SimpleKCM {
                     kcmIcon: model.decoration
                     kcmName: model.display
                     onClicked: kcm.openKCM(model.kcmPlugin)
+                }
+
+                onItemAdded: (index, item) => {
+                    if (index === 0) {
+                        mostUsedGrid.Kirigami.FormData.buddyFor = item;
+                    }
                 }
             }
         }
