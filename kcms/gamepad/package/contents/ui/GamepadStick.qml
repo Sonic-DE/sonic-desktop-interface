@@ -23,25 +23,28 @@ Item {
 
     required property var posX
     required property var posY
-    required property var controllerImage
+    required property var sizeWidth
+    required property var sizeHeight
+    required property var controllerWidth
+    required property var controllerHeight
 
     Rectangle {
         id: outerRing
         border.color: "black"
         color: "transparent"
-        width: root.controllerImage.paintedWidth * 0.05
+        x: (root.posX * root.controllerWidth)
+        y: (root.posY * root.controllerHeight)
+        width: (root.sizeWidth * root.controllerWidth)
         height: width
-        x: (root.posX * root.controllerImage.paintedWidth) - (root.controllerImage.paintedWidth * 0.005)
-        y: (root.posY * root.controllerImage.paintedHeight) - (root.controllerImage.paintedWidth * 0.005)
         radius: 0.5 * width
     }
 
     Rectangle {
         id: icon
-        width: root.controllerImage.paintedWidth * 0.04
+        x: (root.posX * root.controllerWidth) + (root.axis.gridValue.x * 50) + (width * 0.1)
+        y: (root.posY * root.controllerHeight) + (root.axis.gridValue.y * 50) + (width * 0.1)
+        width: (root.sizeWidth * root.controllerWidth * 0.8) // Slightly smaller
         height: width
-        x: (root.posX * root.controllerImage.paintedWidth) + (root.axis.gridValue.x * 50)
-        y: (root.posY * root.controllerImage.paintedHeight) + (root.axis.gridValue.y * 50)
         radius: 0.5 * width
 
         QQC2.ToolTip.visible: hoverHandler.hovered

@@ -26,13 +26,19 @@ Item {
 
     required property var posX
     required property var posY
-    required property var controllerImage
+    required property var sizeWidth
+    required property var sizeHeight
+    required property var controllerWidth
+    required property var controllerHeight
+    required property var image
 
     Image {
         id: icon
-        x: (root.posX * root.controllerImage.paintedWidth)
-        y: (root.posY * root.controllerImage.paintedHeight)
-        source: root.button.image
+        x: (root.posX * root.controllerWidth)
+        y: (root.posY * root.controllerHeight)
+        width: (root.sizeWidth * root.controllerWidth)
+        height: (root.sizeHeight * root.controllerHeight)
+        source: root.image
 
         QQC2.ToolTip.visible: hoverHandler.hovered
         QQC2.ToolTip.text: button.name
@@ -40,6 +46,14 @@ Item {
         HoverHandler {
             id: hoverHandler
             acceptedDevices: PointerDevice.Mouse
+        }
+
+        Component.onCompleted: {
+            console.log("button with index " + idx)
+            console.log("width :" + width + " height : " + height)
+            console.log("sizeWidth: " + root.sizeWidth)
+            console.log("x: " + x + " y: " + y)
+            console.log("source: " + source)
         }
     }
 
