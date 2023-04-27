@@ -49,6 +49,6 @@ Item {
         opacity: trigger.value
         anchors.fill: icon
         source: icon
-        color: "#777777"
+        color: "#444444"
     }
 }
