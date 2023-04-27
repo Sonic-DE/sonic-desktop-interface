@@ -62,13 +62,13 @@ Kirigami.ScrollablePage {
             for (let key in plasmoidConfig) {
                 const changedSignal = item["cfg_" + key + "Changed"]
                 if (changedSignal) {
-                    changedSignal.connect(root.settingValueChanged)
+                    changedSignal.connect(() => root.settingValueChanged())
                 }
             }
 
             const configurationChangedSignal = item.configurationChanged
             if (configurationChangedSignal) {
-                configurationChangedSignal.connect(root.settingValueChanged)
+                configurationChangedSignal.connect(() => root.settingValueChanged())
             }
         }
     }
