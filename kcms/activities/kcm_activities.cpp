@@ -33,6 +33,20 @@ bool ActivitiesModule::newActivityAuthorized() const
     return m_newActivityAuthorized;
 }
 
+void ActivitiesModule::configureActivity(const QString &id)
+{
+    if (depth() > 1) {
+        pop();
+    }
+    push(QStringLiteral("ActivityEditor.qml"), QVariantMap{{QStringLiteral("activityId"), id}});
+}
+
+void ActivitiesModule::newActivity()
+{
+    // Launch the editor with an empty string as activity id
+    configureActivity(QString());
+}
+
 void ActivitiesModule::deleteActivity(const QString &id)
 {
     if (!m_newActivityAuthorized) {
