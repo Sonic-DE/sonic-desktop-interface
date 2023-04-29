@@ -10,8 +10,7 @@ qt_add_dbus_interface (KAMD_KCM_SRCS
    features_interface
 )
 
-kcoreaddons_add_plugin(kcm_activities SOURCES ${KAMD_KCM_SRCS} INSTALL_NAMESPACE "plasma/kcms/systemsettings")
-kcmutils_generate_desktop_file(kcm_activities)
+kcmutils_add_qml_kcm(kcm_activities SOURCES ${KAMD_KCM_SRCS})
 
 target_link_libraries (kcm_activities
    Qt::Quick
