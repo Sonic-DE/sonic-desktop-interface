@@ -19,22 +19,31 @@ K_PLUGIN_CLASS_WITH_JSON(ActivitiesModule, "kcm_activities.json")
 
 ActivitiesModule::ActivitiesModule(QObject *parent, const KPluginMetaData &metaData, const QVariantList &args)
     : KQuickConfigModule(parent, metaData, args)
-    , m_newActivityAuthorized(KAuthorized::authorize(QStringLiteral("plasma-desktop/add_activities")))
+    , m_isNewActivityAuthorized(KAuthorized::authorize(QStringLiteral("plasma-desktop/add_activities")))
 {
     qmlRegisterType<ActivityConfig>("org.kde.kcms.activities", 1, 0, "ActivityConfig");
+
+    if (!args.isEmpty()) {
+        m_firstArgument = args.first().toString();
+    }
 }
 
 ActivitiesModule::~ActivitiesModule()
 {
 }
 
-bool ActivitiesModule::newActivityAuthorized() const
+bool ActivitiesModule::isNewActivityAuthorized() const
 {
-    return m_newActivityAuthorized;
+    return m_isNewActivityAuthorized;
 }
 
 void ActivitiesModule::configureActivity(const QString &id)
 {
+    if (!id.isEmpty() && !KActivities::Controller().activities().contains(id)) {
+        qWarning() << "Cannot configure. There is no activity with id" << id;
+        return;
+    }
+
     if (depth() > 1) {
         pop();
     }
@@ -49,11 +58,26 @@ void ActivitiesModule::newActivity()
 
 void ActivitiesModule::deleteActivity(const QString &id)
 {
-    if (!m_newActivityAuthorized) {
+    if (!m_isNewActivityAuthorized) {
         return;
     }
 
     KActivities::Controller().removeActivity(id);
+}
+
+void ActivitiesModule::load()
+{
+    if (m_firstArgument.isEmpty()) {
+        return;
+    }
+
+    if (m_firstArgument == QStringLiteral("newActivity")) {
+        newActivity();
+    } else {
+        configureActivity(m_firstArgument);
+    }
+
+    m_firstArgument = QString();
 }
 
 #include "kcm_activities.moc"
