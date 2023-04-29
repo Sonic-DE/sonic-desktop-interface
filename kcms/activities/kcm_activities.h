@@ -24,6 +24,13 @@ public:
     Q_INVOKABLE void newActivity();
     Q_INVOKABLE void deleteActivity(const QString &id);
 
+    void load() override;
+
 private:
+<<<<<<< HEAD
     bool m_newActivityAuthorized;
+=======
+    bool m_isNewActivityAuthorized;
+    QString m_firstArgument;
+>>>>>>> c7fd81f60 (kcms/activities: Allow to edit activity via KCM args)
 };
