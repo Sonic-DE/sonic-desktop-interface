@@ -1,4 +1,4 @@
-add_definitions(-DTRANSLATION_DOMAIN=\"kcm_activities5\")
+add_definitions(-DTRANSLATION_DOMAIN=\"kcm_activities\")
 
 set(KAMD_KCM_DATADIR ${KDE_INSTALL_DATADIR}/kactivitymanagerd/workspace/settings/)
 if(NOT IS_ABSOLUTE "${KDE_INSTALL_DATADIR}")
