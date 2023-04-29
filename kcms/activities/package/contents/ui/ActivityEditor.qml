@@ -40,7 +40,7 @@ Rectangle {
             icon.height: Kirigami.Units.iconSizes.medium
             icon.width: Kirigami.Units.iconSizes.medium
             icon.name: "activities"
-            Kirigami.FormData.label: i18nd("kcm_activities5", "Icon:")
+            Kirigami.FormData.label: i18n("Icon:")
 
             KIconThemes.IconDialog {
                 id: iconDialog
@@ -54,12 +54,12 @@ Rectangle {
 
         QQC2.TextField {
             id: activityName
-            Kirigami.FormData.label: i18nd("kcm_activities5", "Name:")
+            Kirigami.FormData.label: i18n("Name:")
         }
 
         QQC2.TextField {
             id: activityDescription
-            Kirigami.FormData.label: i18nd("kcm_activities5", "Description:")
+            Kirigami.FormData.label: i18n("Description:")
         }
 
         Kirigami.Separator {
@@ -68,13 +68,13 @@ Rectangle {
 
         QQC2.CheckBox {
             id: activityIsPrivate
-            Kirigami.FormData.label: i18nd("kcm_activities5", "Privacy:")
-            text: i18nd("kcm_activities5", "Do not track usage for this activity")
+            Kirigami.FormData.label: i18n("Privacy:")
+            text: i18n("Do not track usage for this activity")
         }
 
         KQuickControls.KeySequenceItem {
             id: activityShortcut
-            Kirigami.FormData.label: i18nd("kcm_activities5", "Shortcut for switching:")
+            Kirigami.FormData.label: i18n("Shortcut for switching:")
         }
     }
 }
