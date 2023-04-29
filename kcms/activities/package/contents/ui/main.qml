@@ -73,7 +73,7 @@ KCM.ScrollViewKCM {
 
     actions: Kirigami.Action {
         visible: kcm.newActivityAuthorized
-        text: i18nd("kcm_activities5", "Create New…")
+        text: i18n("Create New…")
         icon.name: "list-add"
         onTriggered: kcm.newActivity();
     }
@@ -84,8 +84,8 @@ KCM.ScrollViewKCM {
         property string activityId: ""
         property string activityName: ""
 
-        title: i18ndc("kcm_activities5", "@title:window", "Delete Activity")
-        subtitle: i18ndc("kcm_activities5", "%1 is an activity name",
+        title: i18nc("@title:window", "Delete Activity")
+        subtitle: i18nc("%1 is an activity name",
                          "Do you want to delete activity '%1'?", activityName)
 
         standardButtons: Kirigami.Dialog.Cancel
