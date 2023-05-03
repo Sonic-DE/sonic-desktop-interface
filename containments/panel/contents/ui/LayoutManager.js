@@ -50,6 +50,7 @@ function addApplet(applet, x, y) {
 }
 
 function restore() {
+    print("AAAAAA"+plasmoid)
     var configString = String(plasmoid.configuration.AppletOrder)
 
     //array, a cell for encoded item order
