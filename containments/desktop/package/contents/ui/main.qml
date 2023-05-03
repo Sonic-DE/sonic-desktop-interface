@@ -21,7 +21,11 @@ import org.kde.plasma.private.containmentlayoutmanager 1.0 as ContainmentLayoutM
 
 import "code/FolderTools.js" as FolderTools
 
-FolderViewDropArea {
+ContainmentItem {
+    switchWidth: { switchSize(); }
+    switchHeight: { switchSize(); }
+    compactRepresentation: (isFolder && !isContainment) ? compactRepresentation : null
+
     id: root
     objectName: isFolder ? "folder" : "desktop"
 
@@ -46,9 +50,6 @@ FolderViewDropArea {
         return 0;
     }
 
-    Plasmoid.switchWidth: { switchSize(); }
-    Plasmoid.switchHeight: { switchSize(); }
-
     LayoutMirroring.enabled: Qt.application.layoutDirection === Qt.RightToLeft
     LayoutMirroring.childrenInherit: true
 
@@ -69,12 +70,9 @@ FolderViewDropArea {
 
     readonly property int hoverActivateDelay: 750 // Magic number that matches Dolphin's auto-expand folders delay.
 
-    preventStealing: true
-
     // Plasmoid.title is set by a Binding {} in FolderViewLayer
-    Plasmoid.toolTipSubText: ""
+    toolTipSubText: ""
     Plasmoid.icon: (!plasmoid.configuration.useCustomIcon && folderViewLayer.ready) ? folderViewLayer.view.model.iconName : plasmoid.configuration.icon
-    Plasmoid.compactRepresentation: (isFolder && !isContainment) ? compactRepresentation : null
 
     onIconHeightChanged: updateGridSize()
 
@@ -155,210 +153,219 @@ FolderViewDropArea {
         }
     }
 
-    onDragEnter: {
-        if (isContainment && plasmoid.immutable && !(isFolder && FolderTools.isFileDrag(event))) {
-            event.ignore();
-        }
+    FolderViewDropArea {
+        id: dropArea
 
-        // Don't allow any drops while listing.
-        if (isFolder && folderViewLayer.view.status === Folder.FolderModel.Listing) {
-            event.ignore();
-        }
-
-        // Firefox tabs are regular drags. Since all of our drop handling is asynchronous
-        // we would accept this drop and have Firefox not spawn a new window. (Bug 337711)
-        if (event.mimeData.formats.indexOf("application/x-moz-tabbrowser-tab") !== -1) {
-            event.ignore();
-        }
-    }
-
-    onDragMove: {
-        // TODO: We should reject drag moves onto file items that don't accept drops
-        // (cf. QAbstractItemModel::flags() here, but DeclarativeDropArea currently
-        // is currently incapable of rejecting drag events.
-
-        // Trigger autoscroll.
-        if (isFolder && FolderTools.isFileDrag(event)) {
-            handleDragMove(folderViewLayer.view, mapToItem(folderViewLayer.view, event.x, event.y));
-        } else if (isContainment) {
-            appletsLayout.showPlaceHolderAt(
-                Qt.rect(event.x - appletsLayout.minimumItemWidth / 2,
-                event.y - appletsLayout.minimumItemHeight / 2,
-                appletsLayout.minimumItemWidth,
-                appletsLayout.minimumItemHeight)
-            );
-        }
-    }
-
-    onDragLeave: {
-        // Cancel autoscroll.
-        if (isFolder) {
-            handleDragEnd(folderViewLayer.view);
-        }
-
-        if (isContainment) {
-            appletsLayout.hidePlaceHolder();
-        }
-    }
-
-    onDrop: {
-        if (isFolder && FolderTools.isFileDrag(event)) {
-            handleDragEnd(folderViewLayer.view);
-            folderViewLayer.view.drop(root, event, mapToItem(folderViewLayer.view, event.x, event.y));
-        } else if (isContainment) {
-            plasmoid.processMimeData(event.mimeData,
-                        event.x - appletsLayout.placeHolder.width / 2, event.y - appletsLayout.placeHolder.height / 2);
-            event.accept(event.proposedAction);
-            appletsLayout.hidePlaceHolder();
-        }
-    }
-
-    Component {
-        id: compactRepresentation
-        CompactRepresentation { folderView: folderViewLayer.view }
-    }
-
-    PlasmaCore.FrameSvgItem {
-        id : highlightItemSvg
-
-        visible: false
-
-        imagePath: isPopup ? "widgets/viewitem" : ""
-        prefix: "hover"
-    }
-
-    PlasmaCore.FrameSvgItem {
-        id : listItemSvg
-
-        visible: false
-
-        imagePath: isPopup ? "widgets/viewitem" : ""
-        prefix: "normal"
-    }
-
-    PlasmaCore.Svg {
-        id: toolBoxSvg
-        imagePath: "widgets/toolbox"
-        property int rightBorder: elementSize("right").width
-        property int topBorder: elementSize("top").height
-        property int bottomBorder: elementSize("bottom").height
-        property int leftBorder: elementSize("left").width
-    }
-
-    // Can be removed?
-    KQuickControlsAddons.EventGenerator {
-        id: eventGenerator
-    }
-
-    Connections {
-        target: plasmoid
-        ignoreUnknownSignals: true
-        function onEditModeChanged() {
-            appletsLayout.editMode = plasmoid.editMode;
-        }
-    }
-
-    ContainmentLayoutManager.AppletsLayout {
-        id: appletsLayout
         anchors.fill: parent
-        relayoutLock: width != plasmoid.availableScreenRect.width || height != plasmoid.availableScreenRect.height
-        // NOTE: use plasmoid.availableScreenRect and not own width and height as they are updated not atomically
-        configKey: "ItemGeometries-" + Math.round(plasmoid.screenGeometry.width) + "x" + Math.round(plasmoid.screenGeometry.height)
-        fallbackConfigKey: plasmoid.availableScreenRect.width > plasmoid.availableScreenRect.height ? "ItemGeometriesHorizontal" : "ItemGeometriesVertical"
 
-        containment: plasmoid
-        editModeCondition: plasmoid.immutable
-                ? ContainmentLayoutManager.AppletsLayout.Locked
-                : ContainmentLayoutManager.AppletsLayout.AfterPressAndHold
+        preventStealing: true
 
-        // Sets the containment in edit mode when we go in edit mode as well
-        onEditModeChanged: plasmoid.editMode = editMode;
-
-        minimumItemWidth: PlasmaCore.Units.gridUnit * 3
-        minimumItemHeight: minimumItemWidth
-
-        cellWidth: PlasmaCore.Units.iconSizes.small
-        cellHeight: cellWidth
-
-        eventManagerToFilter: folderViewLayer.item ? folderViewLayer.item.view.view : null
-
-        appletContainerComponent: ContainmentLayoutManager.BasicAppletContainer {
-            id: appletContainer
-            editModeCondition: plasmoid.immutable
-                ? ContainmentLayoutManager.ItemContainer.Locked
-                : ContainmentLayoutManager.ItemContainer.AfterPressAndHold
-            configOverlayComponent: ConfigOverlay {}
-            onUserDrag: {
-                var pos = mapToItem(root.parent, dragCenter.x, dragCenter.y);
-                var newCont = plasmoid.containmentAt(pos.x, pos.y);
-
-                if (newCont && newCont !== plasmoid) {
-                    var newPos = newCont.mapFromApplet(plasmoid, pos.x, pos.y);
-
-                    newCont.addApplet(appletContainer.applet, newPos.x, newPos.y);
-                    appletsLayout.hidePlaceHolder();
-                }
+        onDragEnter: {
+            if (isContainment && plasmoid.immutable && !(isFolder && FolderTools.isFileDrag(event))) {
+                event.ignore();
             }
-            component DropAnimation : NumberAnimation {
-                duration: PlasmaCore.Units.shortDuration
-                easing.type: Easing.InOutQuad
+
+            // Don't allow any drops while listing.
+            if (isFolder && folderViewLayer.view.status === Folder.FolderModel.Listing) {
+                event.ignore();
             }
-            Behavior on x {
-                DropAnimation { }
-            }
-            Behavior on y {
-                DropAnimation { }
+
+            // Firefox tabs are regular drags. Since all of our drop handling is asynchronous
+            // we would accept this drop and have Firefox not spawn a new window. (Bug 337711)
+            if (event.mimeData.formats.indexOf("application/x-moz-tabbrowser-tab") !== -1) {
+                event.ignore();
             }
         }
 
-        placeHolder: ContainmentLayoutManager.PlaceHolder {}
+        onDragMove: {
+            // TODO: We should reject drag moves onto file items that don't accept drops
+            // (cf. QAbstractItemModel::flags() here, but DeclarativeDropArea currently
+            // is currently incapable of rejecting drag events.
 
-        Loader {
-            id: folderViewLayer
+            // Trigger autoscroll.
+            if (isFolder && FolderTools.isFileDrag(event)) {
+                handleDragMove(folderViewLayer.view, mapToItem(folderViewLayer.view, event.x, event.y));
+            } else if (isContainment) {
+                appletsLayout.showPlaceHolderAt(
+                    Qt.rect(event.x - appletsLayout.minimumItemWidth / 2,
+                    event.y - appletsLayout.minimumItemHeight / 2,
+                    appletsLayout.minimumItemWidth,
+                    appletsLayout.minimumItemHeight)
+                );
+            }
+        }
 
+        onDragLeave: {
+            // Cancel autoscroll.
+            if (isFolder) {
+                handleDragEnd(folderViewLayer.view);
+            }
+
+            if (isContainment) {
+                appletsLayout.hidePlaceHolder();
+            }
+        }
+
+        onDrop: {
+            if (isFolder && FolderTools.isFileDrag(event)) {
+                handleDragEnd(folderViewLayer.view);
+                folderViewLayer.view.drop(root, event, mapToItem(folderViewLayer.view, event.x, event.y));
+            } else if (isContainment) {
+                plasmoid.processMimeData(event.mimeData,
+                            event.x - appletsLayout.placeHolder.width / 2, event.y - appletsLayout.placeHolder.height / 2);
+                event.accept(event.proposedAction);
+                appletsLayout.hidePlaceHolder();
+            }
+        }
+
+        Component {
+            id: compactRepresentation
+            CompactRepresentation { folderView: folderViewLayer.view }
+        }
+
+        PlasmaCore.FrameSvgItem {
+            id : highlightItemSvg
+
+            visible: false
+
+            imagePath: isPopup ? "widgets/viewitem" : ""
+            prefix: "hover"
+        }
+
+        PlasmaCore.FrameSvgItem {
+            id : listItemSvg
+
+            visible: false
+
+            imagePath: isPopup ? "widgets/viewitem" : ""
+            prefix: "normal"
+        }
+
+        PlasmaCore.Svg {
+            id: toolBoxSvg
+            imagePath: "widgets/toolbox"
+            property int rightBorder: elementSize("right").width
+            property int topBorder: elementSize("top").height
+            property int bottomBorder: elementSize("bottom").height
+            property int leftBorder: elementSize("left").width
+        }
+
+        // Can be removed?
+        KQuickControlsAddons.EventGenerator {
+            id: eventGenerator
+        }
+
+        Connections {
+            target: plasmoid
+            ignoreUnknownSignals: true
+            function onEditModeChanged() {
+                appletsLayout.editMode = plasmoid.editMode;
+            }
+        }
+
+        ContainmentLayoutManager.AppletsLayout {
+            id: appletsLayout
             anchors.fill: parent
+            relayoutLock: width != plasmoid.availableScreenRect.width || height != plasmoid.availableScreenRect.height
+            // NOTE: use plasmoid.availableScreenRect and not own width and height as they are updated not atomically
+            configKey: "ItemGeometries-" + Math.round(plasmoid.screenGeometry.width) + "x" + Math.round(plasmoid.screenGeometry.height)
+            fallbackConfigKey: plasmoid.availableScreenRect.width > plasmoid.availableScreenRect.height ? "ItemGeometriesHorizontal" : "ItemGeometriesVertical"
 
-            property bool ready: status === Loader.Ready
-            property Item view: item ? item.view : null
-            property QtObject model: item ? item.model : null
+            containment: plasmoid
+            editModeCondition: plasmoid.immutable
+                    ? ContainmentLayoutManager.AppletsLayout.Locked
+                    : ContainmentLayoutManager.AppletsLayout.AfterPressAndHold
 
-            focus: true
+            // Sets the containment in edit mode when we go in edit mode as well
+            onEditModeChanged: plasmoid.editMode = editMode;
 
-            active: isFolder
-            asynchronous: false
+            minimumItemWidth: PlasmaCore.Units.gridUnit * 3
+            minimumItemHeight: minimumItemWidth
 
-            source: "FolderViewLayer.qml"
+            cellWidth: PlasmaCore.Units.iconSizes.small
+            cellHeight: cellWidth
 
-            onFocusChanged: {
-                if (!focus && model) {
-                    model.clearSelection();
+            eventManagerToFilter: folderViewLayer.item ? folderViewLayer.item.view.view : null
+
+            appletContainerComponent: ContainmentLayoutManager.BasicAppletContainer {
+                id: appletContainer
+                editModeCondition: plasmoid.immutable
+                    ? ContainmentLayoutManager.ItemContainer.Locked
+                    : ContainmentLayoutManager.ItemContainer.AfterPressAndHold
+                configOverlayComponent: ConfigOverlay {}
+                onUserDrag: {
+                    var pos = mapToItem(root.parent, dragCenter.x, dragCenter.y);
+                    var newCont = plasmoid.containmentAt(pos.x, pos.y);
+
+                    if (newCont && newCont !== plasmoid) {
+                        var newPos = newCont.mapFromApplet(plasmoid, pos.x, pos.y);
+
+                        newCont.addApplet(appletContainer.applet, newPos.x, newPos.y);
+                        appletsLayout.hidePlaceHolder();
+                    }
+                }
+                component DropAnimation : NumberAnimation {
+                    duration: PlasmaCore.Units.shortDuration
+                    easing.type: Easing.InOutQuad
+                }
+                Behavior on x {
+                    DropAnimation { }
+                }
+                Behavior on y {
+                    DropAnimation { }
                 }
             }
 
-            Connections {
-                target: folderViewLayer.view
+            placeHolder: ContainmentLayoutManager.PlaceHolder {}
 
-                // `FolderViewDropArea` is not a FocusScope. We need to forward manually.
-                function onPressed() {
-                    folderViewLayer.forceActiveFocus();
+            Loader {
+                id: folderViewLayer
+
+                anchors.fill: parent
+
+                property bool ready: status === Loader.Ready
+                property Item view: item ? item.view : null
+                property QtObject model: item ? item.model : null
+
+                focus: true
+
+                active: isFolder
+                asynchronous: false
+
+                source: "FolderViewLayer.qml"
+
+                onFocusChanged: {
+                    if (!focus && model) {
+                        model.clearSelection();
+                    }
+                }
+
+                Connections {
+                    target: folderViewLayer.view
+
+                    // `FolderViewDropArea` is not a FocusScope. We need to forward manually.
+                    function onPressed() {
+                        folderViewLayer.forceActiveFocus();
+                    }
                 }
             }
         }
-    }
 
-    Component.onCompleted: {
-        if (!isContainment) {
-            return;
+        Component.onCompleted: {
+            if (!isContainment) {
+                return;
+            }
+
+            // Customize the icon and text to improve discoverability
+            plasmoid.setAction("configure", i18n("Configure Desktop and Wallpaper…"), "preferences-desktop-wallpaper")
+
+            // WORKAROUND: that's the only place where we can inject a sensible size.
+            // if root has width defined, it will override the value we set before
+            // the component completes
+            // FIXME: this doesn't work anymore: is this still necessary?
+            //root.width = plasmoid.width;
+
+            updateGridSize();
         }
-
-        // Customize the icon and text to improve discoverability
-        plasmoid.setAction("configure", i18n("Configure Desktop and Wallpaper…"), "preferences-desktop-wallpaper")
-
-        // WORKAROUND: that's the only place where we can inject a sensible size.
-        // if root has width defined, it will override the value we set before
-        // the component completes
-        root.width = plasmoid.width;
-
-        updateGridSize();
     }
 }
