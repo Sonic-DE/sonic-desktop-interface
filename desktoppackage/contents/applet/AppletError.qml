@@ -13,7 +13,7 @@ import org.kde.plasma.components 3.0 as PC3
 import org.kde.plasma.extras 2.0 as PlasmaExtras
 import org.kde.plasma.plasmoid 2.0
 
-GridLayout {
+PlasmoidItem {
     id: root
 
     enum LayoutType {
@@ -41,7 +41,7 @@ GridLayout {
 
         return Plasmoid.formFactor === PlasmaCore.Types.Vertical ? AppletError.VerticalPanel : AppletError.HorizontalPanel;
     }
-
+GridLayout {
     Layout.minimumWidth: {
         switch (root.layoutForm) {
         case AppletError.Desktop:
@@ -254,4 +254,5 @@ GridLayout {
             selectByMouse: true
         }
     }
+}
 }
