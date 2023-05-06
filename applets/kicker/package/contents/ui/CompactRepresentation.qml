@@ -90,7 +90,7 @@ Item {
             }
         }
         Accessible.name: Plasmoid.title
-        Accessible.description: Plasmoid.toolTipSubText
+        Accessible.description: toolTipSubText
         Accessible.role: Accessible.Button
 
         onPressed: {
