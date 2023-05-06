@@ -59,10 +59,8 @@ ContainmentItem {
 
 //BEGIN connections
     Containment.onAppletAdded: (applet) => {
-        var x=0
-        var y=0
         let plasmoidItem = root.itemFor(applet);
-        LayoutManager.addApplet(plasmoidItem, plasmoidItem.x, plasmoidItem.y);
+        LayoutManager.addApplet(applet, plasmoidItem.x, plasmoidItem.y);
         root.checkLastSpacer();
         // When a new preset panel is added, avoid calling save() multiple times
         Qt.callLater(LayoutManager.save);
@@ -213,7 +211,7 @@ ContainmentItem {
                         top: isHorizontal, bottom: isHorizontal,
                         right: !isHorizontal, left: !isHorizontal
                     };
-                    return ((layout[side] || returnAllMargins) && !fillArea) ? Math.round(Math.min(spacingAtMinSize, (inThickArea ? thickPanelSvg.fixedMargins[side] : panelSvg.fixedMargins[side]))) : 0;
+                    return ((layout[side] || returnAllMargins) && !fillArea) ? Math.round(Math.min(dropArea.spacingAtMinSize, (inThickArea ? thickPanelSvg.fixedMargins[side] : panelSvg.fixedMargins[side]))) : 0;
                 }
 
                 Layout.topMargin: getMargins('top')
@@ -289,7 +287,7 @@ ContainmentItem {
                     applet.anchors.fill = container
                 }
 
-                active: applet && applet.busy
+                active: applet && applet.Plasmoid.busy
                 sourceComponent: PlasmaComponents.BusyIndicator {
                     z: 999
                 }
@@ -320,10 +318,10 @@ ContainmentItem {
 //BEGIN UI elements
 
         anchors {
-            leftMargin: isHorizontal ? Math.min(spacingAtMinSize, panelSvg.fixedMargins.left) : 0
-            rightMargin: isHorizontal ? Math.min(spacingAtMinSize, panelSvg.fixedMargins.right) : 0
-            topMargin: isHorizontal ? 0 : Math.min(spacingAtMinSize, panelSvg.fixedMargins.top)
-            bottomMargin: isHorizontal ? 0 : Math.min(spacingAtMinSize, panelSvg.fixedMargins.bottom)
+            leftMargin: isHorizontal ? Math.min(dropArea.spacingAtMinSize, panelSvg.fixedMargins.left) : 0
+            rightMargin: isHorizontal ? Math.min(dropArea.spacingAtMinSize, panelSvg.fixedMargins.right) : 0
+            topMargin: isHorizontal ? 0 : Math.min(dropArea.spacingAtMinSize, panelSvg.fixedMargins.top)
+            bottomMargin: isHorizontal ? 0 : Math.min(dropArea.spacingAtMinSize, panelSvg.fixedMargins.bottom)
         }
 
         Item {
