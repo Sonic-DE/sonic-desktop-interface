@@ -26,7 +26,7 @@ Item {
     readonly property bool touchpadEnabled: typeof dataSource.data.touchpad !== "undefined" && dataSource.data.touchpad.workingTouchpadFound
         && dataSource.data.touchpad.enabled
 
-    Plasmoid.preferredRepresentation: Plasmoid.compactRepresentation
+   preferredRepresentation:compactRepresentation
     Plasmoid.icon: touchpadEnabled ? "input-touchpad-on" : "input-touchpad-off"
     // Touchpad being enabled is normal; only show the applet when it's disabled
     Plasmoid.status: {
@@ -39,7 +39,7 @@ Item {
         }
     }
 
-    Plasmoid.toolTipSubText: {
+    toolTipSubText: {
         if (!hasTouchpad) {
             return i18n("No touchpad was found");
         } else if (touchpadEnabled) {
@@ -55,7 +55,7 @@ Item {
         connectedSources: dataSource.sources
     }
 
-    Plasmoid.compactRepresentation: PlasmaCore.IconItem {
+   compactRepresentation: PlasmaCore.IconItem {
         implicitWidth: PlasmaCore.Units.iconSizes.small
         implicitHeight: PlasmaCore.Units.iconSizes.small
 
@@ -79,7 +79,7 @@ Item {
 
     // This is only accessible from System Tray, when hidden in the popup
     // and you click the list item text instead of the icon
-    Plasmoid.fullRepresentation: Item {
+   fullRepresentation: Item {
 
         PlasmaExtras.PlaceholderMessage {
             anchors.centerIn: parent

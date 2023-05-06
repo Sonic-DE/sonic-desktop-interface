@@ -11,20 +11,19 @@ import org.kde.plasma.core 2.1 as PlasmaCore
 import org.kde.plasma.components 3.0 as PlasmaComponents3
 import org.kde.plasma.workspace.components 2.0
 
-Item {
+PlasmoidItem {
     id: root
 
     signal layoutSelected(int layoutIndex)
 
-    Plasmoid.preferredRepresentation: Plasmoid.compactRepresentation
+    preferredRepresentation: compactRepresentation
+    toolTipSubText: layoutNames.longName
+    Plasmoid.status: hasMultipleKeyboardLayouts ? PlasmaCore.Types.ActiveStatus : PlasmaCore.Types.HiddenStatus
 
-    Plasmoid.compactRepresentation: KeyboardLayoutSwitcher {
+    compactRepresentation: KeyboardLayoutSwitcher {
         id: switcher
 
         hoverEnabled: true
-
-        Plasmoid.toolTipSubText: layoutNames.longName
-        Plasmoid.status: hasMultipleKeyboardLayouts ? PlasmaCore.Types.ActiveStatus : PlasmaCore.Types.HiddenStatus
 
         Connections {
             target: switcher.keyboardLayout

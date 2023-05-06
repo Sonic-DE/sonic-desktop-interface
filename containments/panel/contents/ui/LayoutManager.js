@@ -12,6 +12,7 @@ var marginHighlights;
 var appletsModel;
 
 function addApplet(applet, x, y) {
+    let appletItem = root.itemFor(applet);
     // don't show applet if it chooses to be hidden but still make it
     // accessible in the panelcontroller
     // Due to the nature of how "visible" propagates in QML, we need to
@@ -20,9 +21,9 @@ function addApplet(applet, x, y) {
     // happen that an applet erroneously thinks it's visible, or suddenly
     // starts thinking that way on teardown (virtual desktop pager)
     // leading to crashes
-    var middle, new_element = {applet: applet}
+    var middle, new_element = {applet: appletItem}
 
-    applet.visible = Qt.binding(function() {
+    appletItem.visible = Qt.binding(function() {
         return applet.status !== PlasmaCore.Types.HiddenStatus || (!plasmoid.immutable && plasmoid.userConfiguring);
     });
 
@@ -50,7 +51,6 @@ function addApplet(applet, x, y) {
 }
 
 function restore() {
-    print("AAAAAA"+plasmoid)
     var configString = String(plasmoid.configuration.AppletOrder)
 
     //array, a cell for encoded item order
