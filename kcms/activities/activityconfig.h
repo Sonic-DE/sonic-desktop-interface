@@ -24,6 +24,7 @@ class ActivityConfig : public QObject
     Q_PROPERTY(QString iconName MEMBER m_iconName NOTIFY infoChanged)
     Q_PROPERTY(bool isPrivate MEMBER m_private NOTIFY infoChanged)
     Q_PROPERTY(QKeySequence shortcut MEMBER m_shortcut NOTIFY infoChanged)
+    Q_PROPERTY(bool isSaveNeeded READ isSaveNeeded NOTIFY infoChanged)
 
 public:
     explicit ActivityConfig(QObject *parent = nullptr);
@@ -32,6 +33,8 @@ public:
 public:
     QString activityId() const;
     void setActivityId(const QString &activityId);
+
+    bool isSaveNeeded();
 
     Q_INVOKABLE void save();
 
@@ -55,4 +58,5 @@ private:
 
     KActivities::Controller m_activities;
     org::kde::ActivityManager::Features *m_features;
+    bool m_savedPrivate = false;
 };

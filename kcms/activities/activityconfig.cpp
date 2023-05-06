@@ -61,6 +61,26 @@ void ActivityConfig::setActivityId(const QString &activityId)
     load();
 }
 
+bool ActivityConfig::isSaveNeeded()
+{
+    KActivities::Info activityInfo(m_activityId);
+    if (activityInfo.name() != m_name || activityInfo.description() != m_description || activityInfo.icon() != m_iconName) {
+        return true;
+    }
+
+    const auto shortcuts = KGlobalAccel::self()->globalShortcut(QStringLiteral("ActivityManager"), QStringLiteral("switch-to-activity-%1").arg(m_activityId));
+    QKeySequence savedShortcut = shortcuts.isEmpty() ? QKeySequence() : shortcuts.first();
+    if (savedShortcut != m_shortcut) {
+        return true;
+    }
+
+    if (m_private != m_savedPrivate) {
+        return true;
+    }
+
+    return false;
+}
+
 void ActivityConfig::load()
 {
     if (m_activityId.isEmpty()) {
@@ -84,6 +104,7 @@ void ActivityConfig::load()
     QObject::connect(watcher, &QDBusPendingCallWatcher::finished, this, [&](QDBusPendingCallWatcher *watcher) mutable {
         QDBusPendingReply<QDBusVariant> reply = *watcher;
         m_private = reply.value().variant().toBool();
+        m_savedPrivate = m_private;
         Q_EMIT infoChanged();
         watcher->deleteLater();
     });
