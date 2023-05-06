@@ -29,7 +29,11 @@ KCM.SimpleKCM {
     actions: Kirigami.Action {
         text: i18n("Save")
         icon.name: "document-save"
-        onTriggered: settings.save();
+        enabled: settings.name.length > 0 && settings.isSaveNeeded
+        onTriggered: {
+            settings.save();
+            kcm.pop();
+        }
     }
 
     Kirigami.FormLayout {
