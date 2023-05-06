@@ -16,16 +16,17 @@ PlasmaCore.ToolTipArea {
     objectName: "org.kde.desktop-CompactApplet"
     anchors.fill: parent
 
-    mainText: Plasmoid.toolTipMainText
-    subText: Plasmoid.toolTipSubText
+    mainText: plasmoidItem ? plasmoidItem.toolTipMainText : ""
+    subText: plasmoidItem ? plasmoidItem.toolTipSubText : ""
     location: Plasmoid.location
     active: !Plasmoid.expanded
-    textFormat: Plasmoid.toolTipTextFormat
-    mainItem: Plasmoid.toolTipItem ? Plasmoid.toolTipItem : null
+    textFormat: plasmoidItem ? plasmoidItem.toolTipTextFormat : 0
+    mainItem: plasmoidItem && plasmoidItem.toolTipItem ? plasmoidItem.toolTipItem : null
 
     property Item fullRepresentation
     property Item compactRepresentation
     property Item expandedFeedback: expandedItem
+    property Item plasmoidItem
 
     onCompactRepresentationChanged: {
         if (compactRepresentation) {
@@ -166,7 +167,7 @@ PlasmaCore.ToolTipArea {
         flags: Qt.WindowStaysOnTopHint
         location: Plasmoid.location
         hideOnWindowDeactivate: Plasmoid.hideOnWindowDeactivate
-        visible: Plasmoid.expanded && fullRepresentation
+        visible: root.plasmoidItem && root.plasmoidItem.expanded && fullRepresentation
         visualParent: root.compactRepresentation
         backgroundHints: (Plasmoid.containmentDisplayHints & PlasmaCore.Types.DesktopFullyCovered) ? PlasmaCore.Dialog.SolidBackground : PlasmaCore.Dialog.StandardBackground
         type: PlasmaCore.Dialog.AppletPopup
