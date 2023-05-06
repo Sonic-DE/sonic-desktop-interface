@@ -20,7 +20,7 @@ import org.kde.plasma.private.kicker 0.1 as Kicker
 
 import "code/tools.js" as Tools
 
-Item {
+PlasmoidItem {
     id: kickoff
 
     // The properties are defined here instead of the singleton because each
@@ -145,19 +145,19 @@ Item {
     }
 
     // Used to show smaller Kickoff on small screens
-    readonly property int minimumGridRowCount: Math.min(Screen.desktopAvailableWidth, Screen.desktopAvailableHeight) < KickoffSingleton.gridCellSize * 4 + (Plasmoid.fullRepresentationItem ? Plasmoid.fullRepresentationItem.normalPage.preferredSideBarWidth : KickoffSingleton.gridCellSize * 2) ? 2 : 4
+    readonly property int minimumGridRowCount: Math.min(Screen.desktopAvailableWidth, Screen.desktopAvailableHeight) < KickoffSingleton.gridCellSize * 4 + (fullRepresentationItem ? fullRepresentationItem.normalPage.preferredSideBarWidth : KickoffSingleton.gridCellSize * 2) ? 2 : 4
     //END
-
-    Plasmoid.switchWidth: plasmoid.fullRepresentationItem ? plasmoid.fullRepresentationItem.Layout.minimumWidth : -1
-    Plasmoid.switchHeight: plasmoid.fullRepresentationItem ? plasmoid.fullRepresentationItem.Layout.minimumHeight : -1
-
-    Plasmoid.preferredRepresentation: plasmoid.compactRepresentation
-
-    Plasmoid.fullRepresentation: FullRepresentation { focus: true }
 
     Plasmoid.icon: plasmoid.configuration.icon
 
-    Plasmoid.compactRepresentation: MouseArea {
+    switchWidth: fullRepresentationItem ? fullRepresentationItem.Layout.minimumWidth : -1
+    switchHeight: fullRepresentationItem ? fullRepresentationItem.Layout.minimumHeight : -1
+
+    preferredRepresentation: compactRepresentation
+
+    fullRepresentation: FullRepresentation { focus: true }
+
+    compactRepresentation: MouseArea {
         id: compactRoot
 
         // Taken from DigitalClock to ensure uniform sizing when next to each other
@@ -219,8 +219,8 @@ Item {
 
         property bool wasExpanded
 
-        onPressed: wasExpanded = Plasmoid.expanded
-        onClicked: Plasmoid.expanded = !wasExpanded
+        onPressed: wasExpanded = kickoff.expanded
+        onClicked: kickoff.expanded = !wasExpanded
 
         DropArea {
             id: compactDragArea
