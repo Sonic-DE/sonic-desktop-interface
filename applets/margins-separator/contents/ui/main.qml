@@ -10,7 +10,7 @@ import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.extras 2.0 as PlasmaExtras
 
-Item {
+PlasmoidItem {
     id: root
 
     readonly property bool isVertical: Plasmoid.formFactor === PlasmaCore.Types.Vertical
@@ -24,7 +24,7 @@ Item {
     Layout.maximumHeight: Layout.minimumHeight
 
     Plasmoid.constraintHints: PlasmaCore.Types.MarginAreasSeparator
-    Plasmoid.preferredRepresentation: Plasmoid.fullRepresentation
+   preferredRepresentation:fullRepresentation
 
     Loader {
         anchors.centerIn: parent
