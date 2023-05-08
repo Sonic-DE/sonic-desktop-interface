@@ -72,13 +72,15 @@ void ActivitiesModule::load()
         return;
     }
 
-    if (m_firstArgument == QStringLiteral("newActivity")) {
-        newActivity();
-    } else {
-        configureActivity(m_firstArgument);
-    }
-
-    m_firstArgument = QString();
+    // Delay so the KActivities::Consumer can load the activities status
+    QTimer::singleShot(0, this, [this]() {
+        if (m_firstArgument == QStringLiteral("newActivity")) {
+            newActivity();
+        } else {
+            configureActivity(m_firstArgument);
+        }
+        m_firstArgument = QString();
+    });
 }
 
 #include "kcm_activities.moc"
