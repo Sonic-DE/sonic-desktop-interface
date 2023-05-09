@@ -35,7 +35,7 @@ ContainmentLayoutManager.ConfigOverlayWithHandles {
         }
         ScriptAction {
             script: {
-                appletContainer.applet.action("remove").trigger();
+                appletContainer.applet.plasmoid.action("remove").trigger();
                 appletContainer.editMode = false;
             }
         }
@@ -90,7 +90,7 @@ ContainmentLayoutManager.ConfigOverlayWithHandles {
                 elementId: "rotate"
                 toolTip: !rotateHandle.pressed ? i18n("Rotate") : ""
                 iconSize: overlay.iconSize
-                action: applet ? applet.action("rotate") : null
+                action: applet ? applet.plasmoid.action("rotate") : null
                 down: !rotateHandle.pressed
                 Component.onCompleted: {
                     if (action !== null) {
@@ -166,7 +166,7 @@ ContainmentLayoutManager.ConfigOverlayWithHandles {
                 elementId: "configure"
                 iconSize: overlay.iconSize
                 visible: qAction && qAction.enabled || false
-                qAction: applet ? applet.action("configure") : null
+                qAction: applet ? applet.plasmoid.action("configure") : null
                 Component.onCompleted: {
                     if (qAction) {
                         qAction.enabled = true;
@@ -231,7 +231,7 @@ ContainmentLayoutManager.ConfigOverlayWithHandles {
                     if (!applet) {
                         return false;
                     }
-                    var a = applet.action("remove");
+                    var a = applet.plasmoid.action("remove");
                     return a && a.enabled || false;
                 }
                 // we don't set action, since we want to catch the button click,
@@ -243,7 +243,7 @@ ContainmentLayoutManager.ConfigOverlayWithHandles {
                     removeAnim.restart();
                 }
                 Component.onCompleted: {
-                    var a = applet.action("remove");
+                    var a = applet.plasmoid.action("remove");
                     if (a) {
                         a.enabled = true;
                     }
