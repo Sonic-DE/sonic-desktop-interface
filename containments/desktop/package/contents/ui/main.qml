@@ -22,11 +22,12 @@ import org.kde.plasma.private.containmentlayoutmanager 1.0 as ContainmentLayoutM
 import "code/FolderTools.js" as FolderTools
 
 ContainmentItem {
+    id: root
+
     switchWidth: { switchSize(); }
     switchHeight: { switchSize(); }
     compactRepresentation: (isFolder && !isContainment) ? compactRepresentation : null
 
-    id: root
     objectName: isFolder ? "folder" : "desktop"
 
     width: isPopup ? undefined : preferredWidth(false) // Initial size when adding to e.g. desktop.
@@ -272,6 +273,7 @@ ContainmentItem {
             fallbackConfigKey: plasmoid.availableScreenRect.width > plasmoid.availableScreenRect.height ? "ItemGeometriesHorizontal" : "ItemGeometriesVertical"
 
             containment: plasmoid
+            containmentItem: root
             editModeCondition: plasmoid.immutable
                     ? ContainmentLayoutManager.AppletsLayout.Locked
                     : ContainmentLayoutManager.AppletsLayout.AfterPressAndHold
@@ -295,7 +297,7 @@ ContainmentItem {
                 configOverlayComponent: ConfigOverlay {}
                 onUserDrag: {
                     var pos = mapToItem(root.parent, dragCenter.x, dragCenter.y);
-                    var newCont = plasmoid.containmentAt(pos.x, pos.y);
+                    var newCont = root.containmentAt(pos.x, pos.y);
 
                     if (newCont && newCont !== plasmoid) {
                         var newPos = newCont.mapFromApplet(plasmoid, pos.x, pos.y);

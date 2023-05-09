@@ -52,6 +52,62 @@ PlasmoidItem {
         dragTimer.restart();
     }
 
+    function colorWithAlpha(color: color, alpha: real): color {
+        return Qt.rgba(color.r, color.g, color.b, alpha)
+    }
+
+    readonly property color windowActiveOnActiveDesktopColor: colorWithAlpha(PlasmaCore.Theme.textColor, 0.6)
+    readonly property color windowInactiveOnActiveDesktopColor: colorWithAlpha(PlasmaCore.Theme.textColor, 0.35)
+    readonly property color windowActiveColor: colorWithAlpha(theme.textColor, 0.5)
+    readonly property color windowActiveBorderColor: PlasmaCore.Theme.textColor
+    readonly property color windowInactiveColor: colorWithAlpha(PlasmaCore.Theme.textColor, 0.17)
+    readonly property color windowInactiveBorderColor: colorWithAlpha(PlasmaCore.Theme.textColor, 0.5)
+
+    function action_addDesktop() {
+        pagerModel.addDesktop();
+    }
+
+    function action_removeDesktop() {
+        pagerModel.removeDesktop();
+    }
+
+    function action_openKCM() {
+        KQuickControlsAddonsComponents.KCMShell.openSystemSettings("kcm_kwin_virtualdesktops");
+    }
+
+    function action_showActivityManager() {
+        ActivitySwitcher.Backend.toggleActivityManager()
+    }
+
+    function sanitize(input: string): string {
+        // Based on QQuickStyledTextPrivate::parseEntity
+        const table = {
+            '>': '&gt;',
+            '<': '&lt;',
+            '&': '&amp;',
+            "'": '&apos;',
+            '"': '&quot;',
+            '\u00a0': '&nbsp;',
+        };
+        return input.replace(/[<>&'"\u00a0]/g, c => table[c]);
+    }
+
+    function generateWindowList(windows) {
+        // if we have 5 windows, we would show "4 and another one" with the
+        // hint that there's 1 more taking the same amount of space than just showing it
+        const maximum = windows.length === 5 ? 5 : 4
+
+        let text = "<ul><li>"
+            + windows.slice(0, maximum).map(sanitize).join("</li><li>")
+            + "</li></ul>";
+
+        if (windows.length > maximum) {
+            text += i18np("…and %1 other window", "…and %1 other windows", windows.length - maximum)
+        }
+
+        return text
+    }
+
     MouseArea {
         id: mouseArea
 
@@ -59,62 +115,6 @@ PlasmoidItem {
         acceptedButtons: Qt.NoButton
 
         hoverEnabled: true
-
-        function colorWithAlpha(color: color, alpha: real): color {
-            return Qt.rgba(color.r, color.g, color.b, alpha)
-        }
-
-        readonly property color windowActiveOnActiveDesktopColor: colorWithAlpha(PlasmaCore.Theme.textColor, 0.6)
-        readonly property color windowInactiveOnActiveDesktopColor: colorWithAlpha(PlasmaCore.Theme.textColor, 0.35)
-        readonly property color windowActiveColor: colorWithAlpha(theme.textColor, 0.5)
-        readonly property color windowActiveBorderColor: PlasmaCore.Theme.textColor
-        readonly property color windowInactiveColor: colorWithAlpha(PlasmaCore.Theme.textColor, 0.17)
-        readonly property color windowInactiveBorderColor: colorWithAlpha(PlasmaCore.Theme.textColor, 0.5)
-
-        function action_addDesktop() {
-            pagerModel.addDesktop();
-        }
-
-        function action_removeDesktop() {
-            pagerModel.removeDesktop();
-        }
-
-        function action_openKCM() {
-            KQuickControlsAddonsComponents.KCMShell.openSystemSettings("kcm_kwin_virtualdesktops");
-        }
-
-        function action_showActivityManager() {
-            ActivitySwitcher.Backend.toggleActivityManager()
-        }
-
-        function sanitize(input: string): string {
-            // Based on QQuickStyledTextPrivate::parseEntity
-            const table = {
-                '>': '&gt;',
-                '<': '&lt;',
-                '&': '&amp;',
-                "'": '&apos;',
-                '"': '&quot;',
-                '\u00a0': '&nbsp;',
-            };
-            return input.replace(/[<>&'"\u00a0]/g, c => table[c]);
-        }
-
-        function generateWindowList(windows) {
-            // if we have 5 windows, we would show "4 and another one" with the
-            // hint that there's 1 more taking the same amount of space than just showing it
-            const maximum = windows.length === 5 ? 5 : 4
-
-            let text = "<ul><li>"
-                + windows.slice(0, maximum).map(sanitize).join("</li><li>")
-                + "</li></ul>";
-
-            if (windows.length > maximum) {
-                text += i18np("…and %1 other window", "…and %1 other windows", windows.length - maximum)
-            }
-
-            return text
-        }
 
         onContainsMouseChanged: {
             if (!containsMouse && dragging) {
