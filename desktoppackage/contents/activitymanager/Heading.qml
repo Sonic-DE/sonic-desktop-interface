@@ -11,10 +11,25 @@ import QtQuick.Layouts 1.2
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 3.0 as PlasmaComponents
 import org.kde.plasma.extras 2.0 as PlasmaExtras
+<<<<<<< HEAD
 
 // for KCMShell
 import org.kde.kquickcontrolsaddons 2.0
 
+||||||| parent of 1c78edc78 (Use org.kde.kcmutils/org.kde.config instead of kquickcontroladdons)
+
+// for KCMShell
+import org.kde.kquickcontrolsaddons 2.0
+
+import org.kde.activities.settings 0.1
+
+=======
+import org.kde.activities.settings 0.1
+
+import org.kde.kcmutils as KCM
+import org.kde.config as KConfig
+
+>>>>>>> 1c78edc78 (Use org.kde.kcmutils/org.kde.config instead of kquickcontroladdons)
 Item {
     id: root
 
@@ -90,9 +105,9 @@ Item {
         PlasmaComponents.ToolButton {
             id: configureButton
             icon.name: "configure"
-            visible: KCMShell.authorize("kcm_activities.desktop").length > 0
+            visible: KConfig.KAuthorized.authorizeControlModule("kcm_activities")
             onClicked: {
-                KCMShell.openSystemSettings("kcm_activities");
+                KCM.KCMLauncher.openSystemSettings("kcm_activities");
                 root.closeRequested();
             }
         }
