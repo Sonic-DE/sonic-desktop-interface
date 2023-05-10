@@ -23,7 +23,7 @@ KCM.SimpleKCM {
                       : i18nc("@title:window", "Create a New Activity")
 
     actions: Kirigami.Action {
-        text: i18n("Save")
+        text: i18nc("@action:button as in, 'save changes'", "Save")
         icon.name: "document-save"
         enabled: settings.name.length > 0 && settings.isSaveNeeded
         onTriggered: saveContents();
@@ -54,7 +54,7 @@ KCM.SimpleKCM {
             icon.height: Kirigami.Units.iconSizes.medium
             icon.width: Kirigami.Units.iconSizes.medium
             icon.name: settings.iconName
-            Kirigami.FormData.label: i18n("Icon:")
+            Kirigami.FormData.label: i18nc("@label:chooser", "Icon:")
             onClicked: iconDialog.open();
 
             KIconThemes.IconDialog {
@@ -65,13 +65,13 @@ KCM.SimpleKCM {
         }
 
         QQC2.TextField {
-            Kirigami.FormData.label: i18n("Name:")
+            Kirigami.FormData.label: i18nc("@label:textbox", "Name:")
             text: settings.name
             onTextEdited: settings.name = text
         }
 
         QQC2.TextField {
-            Kirigami.FormData.label: i18n("Description:")
+            Kirigami.FormData.label: i18nc("@label:textbox", "Description:")
             text: settings.description
             onTextEdited: settings.description = text
         }
@@ -81,7 +81,7 @@ KCM.SimpleKCM {
         }
 
         QQC2.CheckBox {
-            Kirigami.FormData.label: i18n("Privacy:")
+            Kirigami.FormData.label: i18nc("@option:check", "Privacy:")
             text: i18n("Do not track usage for this activity")
             checked: settings.isPrivate
             onToggled: settings.isPrivate = checked

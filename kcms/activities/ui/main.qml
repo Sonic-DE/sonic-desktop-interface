@@ -17,8 +17,8 @@ import org.kde.kirigami 2.19 as Kirigami
 
 KCM.ScrollViewKCM {
 
-    implicitWidth: 500
-    implicitHeight: 400
+    implicitWidth: Kirigami.Units.gridUnit * 18
+    implicitHeight: Kirigami.Units.gridUnit * 22
 
     ConfigModule.buttons: ConfigModule.Help
 
