@@ -258,7 +258,7 @@ ContainmentItem {
                             anchors[side+'Margin'] = - inset
                         }
                         elementId: fill ? 'fill' : (isHorizontal ? side + (inThickArea ? 'left' : 'right') : (inThickArea ? 'top' : 'bottom') + side)
-                        svg: marginHighlightSvg
+                        svg: dropArea.marginHighlightSvg
                         anchors {top: parent.top; left: parent.left; right: parent.right; bottom: parent.bottom}
                     }
                     Repeater {
