@@ -150,37 +150,6 @@ PlasmaCore.Dialog {
                 onClicked: configDialog.visibilityMode = Panel.Global.AutoHide
             }
         }
-        RowLayout {
-            spacing: PlasmaCore.Units.largeSpacing
-            Layout.leftMargin: PlasmaCore.Units.largeSpacing
-            Layout.rightMargin: PlasmaCore.Units.largeSpacing
-
-            Item {
-                Layout.preferredWidth: menuColumn.width / 5
-                Layout.rightMargin: PlasmaCore.Units.largeSpacing
-            }
-
-            PanelRepresentation {
-                text: i18nd("plasma_shell_org.kde.plasma.desktop", "Windows In Front")
-                tooltip: i18nd("plasma_shell_org.kde.plasma.desktop", "Makes the panel remain visible always but maximized windows shall cover it. It is revealed when mouse enters the area where the panel would have been if it were not covered.")
-                Layout.alignment: Qt.AlignTop
-                alignment: panel.alignment
-                windowVisible: true
-                windowZ: 1
-                checked: configDialog.visibilityMode === Panel.Global.LetWindowsCover
-                onClicked: configDialog.visibilityMode = Panel.Global.LetWindowsCover
-            }
-
-            PanelRepresentation {
-                text: i18nd("plasma_shell_org.kde.plasma.desktop", "Windows Behind")
-                tooltip: i18nd("plasma_shell_org.kde.plasma.desktop", "Makes the panel remain visible always but part of the maximized windows shall go below the panel as though the panel did not exist.")
-                Layout.alignment: Qt.AlignTop
-                alignment: panel.alignment
-                windowVisible: true
-                checked: configDialog.visibilityMode === Panel.Global.WindowsGoBelow
-                onClicked: configDialog.visibilityMode = Panel.Global.WindowsGoBelow
-            }
-        }
         PlasmaCore.SvgItem {
             Layout.fillWidth: true
             elementId: "horizontal-line"
