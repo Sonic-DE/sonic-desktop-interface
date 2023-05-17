@@ -40,7 +40,7 @@ MouseArea {
                     appletsModel.remove(placeHolder.parent.index);
                     currentApplet.destroy();
                     applet.anchors.fill = undefined
-                    newCont.addApplet(applet, newPos.x, newPos.y);
+                    newCont.addApplet(applet.plasmoid, newPos.x, newPos.y);
                     return;
                 }
             }
@@ -217,10 +217,10 @@ MouseArea {
 
         onVisualParentChanged: {
             if (visualParent) {
-                currentApplet.applet.prepareContextualActions();
-                alternativesButton.visible = currentApplet.applet.action("alternatives") && currentApplet.applet.action("alternatives").enabled;
-                configureButton.visible = currentApplet.applet.action("configure") && currentApplet.applet.action("configure").enabled;
-                label.text = currentApplet.applet.title;
+                currentApplet.applet.plasmoid.contextualActionsAboutToShow();
+                alternativesButton.visible = currentApplet.applet.plasmoid.action("alternatives") && currentApplet.applet.plasmoid.action("alternatives").enabled;
+                configureButton.visible = currentApplet.applet.plasmoid.action("configure") && currentApplet.applet.plasmoid.action("configure").enabled;
+                label.text = currentApplet.applet.plasmoid.title;
             }
         }
 
@@ -254,12 +254,12 @@ MouseArea {
                     // a top panel
                     visible: tooltip.location !== PlasmaCore.Types.TopEdge
                              && currentApplet
-                             && currentApplet.applet.action("remove")
-                             && currentApplet.applet.action("remove").enabled
+                             && currentApplet.applet.plasmoid.action("remove")
+                             && currentApplet.applet.plasmoid.action("remove").enabled
                     icon.name: "delete"
                     text: i18n("Remove")
                     onClicked: {
-                        currentApplet.applet.action("remove").trigger();
+                        currentApplet.applet.plasmoid.action("remove").trigger();
                         currentApplet = null
                     }
                 }
@@ -269,7 +269,7 @@ MouseArea {
                     icon.name: "configure"
                     text: i18n("Configure…")
                     onClicked: {
-                        currentApplet.applet.action("configure").trigger()
+                        currentApplet.applet.plasmoid.action("configure").trigger()
                         currentApplet = null
                     }
                 }
@@ -279,7 +279,7 @@ MouseArea {
                     icon.name: "widget-alternatives"
                     text: i18n("Show Alternatives…")
                     onClicked: {
-                        currentApplet.applet.action("alternatives").trigger()
+                        currentApplet.applet.plasmoid.action("alternatives").trigger()
                         currentApplet = null
                     }
                 }
@@ -289,12 +289,12 @@ MouseArea {
                     // cursor position, so show this on the bottom for top panels
                     visible: tooltip.location === PlasmaCore.Types.TopEdge
                              && currentApplet
-                             && currentApplet.applet.action("remove")
-                             && currentApplet.applet.action("remove").enabled
+                             && currentApplet.applet.plasmoid.action("remove")
+                             && currentApplet.applet.plasmoid.action("remove").enabled
                     icon.name: "delete"
                     text: i18n("Remove")
                     onClicked: {
-                        currentApplet.applet.action("remove").trigger()
+                        currentApplet.applet.plasmoid.action("remove").trigger()
                         currentApplet = null
                     }
                 }
@@ -312,13 +312,13 @@ MouseArea {
                     editable: true
                     Layout.fillWidth: true
                     focus: !Kirigami.InputMethod.willShowOnActive
-                    visible: currentApplet && currentApplet.applet.pluginName === "org.kde.plasma.panelspacer" && !currentApplet.applet.configuration.expanding
+                    visible: currentApplet && currentApplet.applet.plasmoid.pluginName === "org.kde.plasma.panelspacer" && !currentApplet.applet.plasmoid.configuration.expanding
                     from: 0
                     stepSize: 10
                     to: root.width
-                    value: currentApplet && currentApplet.applet.configuration.length ? currentApplet.applet.configuration.length : 0
+                    value: currentApplet && currentApplet.applet.plasmoid.configuration.length ? currentApplet.applet.plasmoid.configuration.length : 0
                     onValueModified: {
-                        currentApplet.applet.configuration.length = value
+                        currentApplet.applet.plasmoid.configuration.length = value
                     }
                 }
             }
