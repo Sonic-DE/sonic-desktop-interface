@@ -24,7 +24,7 @@ PlasmoidItem {
     Layout.maximumHeight: Layout.minimumHeight
 
     Plasmoid.constraintHints: PlasmaCore.Types.MarginAreasSeparator
-   preferredRepresentation:fullRepresentation
+    preferredRepresentation: fullRepresentation
 
     Loader {
         anchors.centerIn: parent
