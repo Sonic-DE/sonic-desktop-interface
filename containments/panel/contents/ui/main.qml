@@ -181,7 +181,7 @@ ContainmentItem {
                 required property int index
                 property Item dragging
                 property bool isAppletContainer: true
-                property bool isMarginSeparator: ((applet.constraintHints & PlasmaCore.Types.MarginAreasSeparator) == PlasmaCore.Types.MarginAreasSeparator)
+                property bool isMarginSeparator: ((applet.plasmoid.constraintHints & PlasmaCore.Types.MarginAreasSeparator) == PlasmaCore.Types.MarginAreasSeparator)
                 property int appletIndex: index // To make sure it's always readable even inside other models
                 property bool inThickArea: false
                 visible: applet.status !== PlasmaCore.Types.HiddenStatus || (!plasmoid.immutable && plasmoid.userConfiguring);
