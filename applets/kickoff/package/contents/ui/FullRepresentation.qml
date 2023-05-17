@@ -26,7 +26,7 @@ EmptyPage {
     rightPadding: -kickoff.backgroundMetrics.rightPadding
     topPadding: 0
     bottomPadding: -kickoff.backgroundMetrics.bottomPadding
-    readonly property var appletInterface: Plasmoid.self
+    readonly property var appletInterface: kickoff
 
     Layout.minimumWidth: implicitWidth
     Layout.maximumWidth: PlasmaCore.Units.gridUnit * 80
