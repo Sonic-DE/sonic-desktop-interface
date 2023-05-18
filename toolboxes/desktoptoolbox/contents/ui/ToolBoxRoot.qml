@@ -78,26 +78,27 @@ Item {
         var tx = Plasmoid.configuration.ToolBoxButtonX
         var ty = Plasmoid.configuration.ToolBoxButtonY
         var pos;
+        const plasmoidItem = main.parent;
 
         switch (ts) {
         case "top":
             ty = main.y;
-            pos = plasmoid.adjustToAvailableScreenRegion(tx, ty, toolBoxContent.width, toolBoxContent.height);
+            pos = plasmoidItem.adjustToAvailableScreenRegion(tx, ty, toolBoxContent.width, toolBoxContent.height);
             break;
         case "bottom":
             ty = main.height + main.y - toolBoxContent.height;
-            pos = plasmoid.adjustToAvailableScreenRegion(tx, ty, toolBoxContent.width, toolBoxContent.height);
+            pos = plasmoidItem.adjustToAvailableScreenRegion(tx, ty, toolBoxContent.width, toolBoxContent.height);
             break;
         case "bottomcenter":
             tx = main.width / 2 - toolBoxContent.width / 2;
             ty = main.height + main.y - toolBoxContent.height;
-            pos = plasmoid.adjustToAvailableScreenRegion(tx, ty, toolBoxContent.width, toolBoxContent.height);
+            pos = plasmoidItem.adjustToAvailableScreenRegion(tx, ty, toolBoxContent.width, toolBoxContent.height);
             break;
         case "topcenter":
         default:
             tx = main.width / 2 - toolBoxContent.width / 2;
             ty = main.y;
-            pos = plasmoid.adjustToAvailableScreenRegion(tx, ty, toolBoxContent.width, toolBoxContent.height);
+            pos = plasmoidItem.adjustToAvailableScreenRegion(tx, ty, toolBoxContent.width, toolBoxContent.height);
             break;
         }
         //print("XXXY Setting toolbox to: " + ts + " " + tx + "x" + ty + " screen: " + main.width+ "x" + main.height+"");
