@@ -42,8 +42,8 @@ Item {
     LayoutMirroring.enabled: (Qt.application.layoutDirection === Qt.RightToLeft)
     LayoutMirroring.childrenInherit: true
 
-    Plasmoid.onEditModeChanged: {
-        if (!Plasmoid.editMode) {
+    Plasmoid.containment.corona.onEditModeChanged: {
+        if (!Plasmoid.containment.corona.editMode) {
             toolBoxContent.exitAnimation.start();
             return;
         }

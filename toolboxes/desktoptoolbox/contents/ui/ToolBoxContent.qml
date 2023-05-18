@@ -303,7 +303,7 @@ MouseArea {
             anchors.verticalCenter: buttonLayout.verticalCenter
             height: addWidgetButton.height
             icon.name: "window-close"
-            onClicked: plasmoid.editMode = false
+            onClicked: plasmoid.containment.corona.editMode = false
             PlasmaComponents3.ToolTip {
                 text: i18nd("plasma_toolbox_org.kde.desktoptoolbox", "Exit Edit Mode")
             }
