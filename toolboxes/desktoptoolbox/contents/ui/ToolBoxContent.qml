@@ -278,7 +278,7 @@ MouseArea {
 
             PlasmaComponents3.ToolButton {
                 id: manageContainmentsButton
-                property QtObject qAction: plasmoid.globalAction("manage-containments")
+                property QtObject qAction: plasmoid.corona.action("manage-containments")
                 text: qAction.text
                 visible: qAction.visible
                 icon.name: "preferences-system-windows-effect-fadedesktop"
