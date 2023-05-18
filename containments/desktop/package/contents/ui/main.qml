@@ -257,10 +257,10 @@ ContainmentItem {
         }
 
         Connections {
-            target: plasmoid
+            target: plasmoid.containment.corona
             ignoreUnknownSignals: true
             function onEditModeChanged() {
-                appletsLayout.editMode = plasmoid.editMode;
+                appletsLayout.editMode = plasmoid.containment.corona.editMode;
             }
         }
 
@@ -279,7 +279,7 @@ ContainmentItem {
                     : ContainmentLayoutManager.AppletsLayout.AfterPressAndHold
 
             // Sets the containment in edit mode when we go in edit mode as well
-            onEditModeChanged: plasmoid.editMode = editMode;
+            onEditModeChanged: plasmoid.containment.corona.editMode = editMode;
 
             minimumItemWidth: PlasmaCore.Units.gridUnit * 3
             minimumItemHeight: minimumItemWidth
