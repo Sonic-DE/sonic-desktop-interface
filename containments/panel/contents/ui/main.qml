@@ -93,7 +93,9 @@ ContainmentItem {
         component.destroy();
     }
 //END connections
-
+Text {
+    text: "EDIT: "+plasmoid.containment.corona.editMode
+}
     DragDrop.DropArea {
         id: dropArea
 
@@ -234,7 +236,7 @@ ContainmentItem {
                     id: marginHighlightElements
                     anchors.fill: parent
                     // index -1 is for floating applets, which do not need a margin highlight
-                    opacity: plasmoid.editMode && marginAreasEnabled && !root.dragAndDropping && index != -1 ? 1 : 0
+                    opacity: plasmoid.containment.corona.editMode && marginAreasEnabled && !root.dragAndDropping && index != -1 ? 1 : 0
                     Behavior on opacity {
                         NumberAnimation {
                             duration: PlasmaCore.Units.longDuration
@@ -349,7 +351,7 @@ ContainmentItem {
             columnSpacing: PlasmaCore.Units.smallSpacing
 
             x: Qt.application.layoutDirection === Qt.RightToLeft && isHorizontal ? toolBoxSize : 0;
-            readonly property int toolBoxSize:  !toolBox || !plasmoid.editMode || Qt.application.layoutDirection === Qt.RightToLeft ? 0 : (isHorizontal ? toolBox.width : toolBox.height)
+            readonly property int toolBoxSize:  !toolBox || !plasmoid.corona.containment.editMode || Qt.application.layoutDirection === Qt.RightToLeft ? 0 : (isHorizontal ? toolBox.width : toolBox.height)
 
     // BEGIN BUG 454095: use lastSpacer to left align applets, as implicitWidth is updated too late
             width: root.width - (isHorizontal ? toolBoxSize : 0)
