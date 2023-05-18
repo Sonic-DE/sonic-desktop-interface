@@ -90,7 +90,7 @@ function save() {
         var child = layout.children[i];
 
         if (child.applet) {
-            ids.push(child.applet.id);
+            ids.push(child.applet.plasmoid.id);
         }
     }
     plasmoid.configuration.AppletOrder = ids.join(';')
