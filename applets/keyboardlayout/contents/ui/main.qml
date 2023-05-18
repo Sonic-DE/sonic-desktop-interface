@@ -18,13 +18,13 @@ PlasmoidItem {
     signal layoutSelected(int layoutIndex)
 
     preferredRepresentation: compactRepresentation
-    toolTipSubText: layoutNames.longName
-    Plasmoid.status: hasMultipleKeyboardLayouts ? PlasmaCore.Types.ActiveStatus : PlasmaCore.Types.HiddenStatus
+    toolTipSubText: compactRepresentationItem ? compactRepresentationItem.layoutNames.longName : ""
 
     compactRepresentation: KeyboardLayoutSwitcher {
         id: switcher
 
         hoverEnabled: true
+        Plasmoid.status: hasMultipleKeyboardLayouts ? PlasmaCore.Types.ActiveStatus : PlasmaCore.Types.HiddenStatus
 
         Connections {
             target: switcher.keyboardLayout
