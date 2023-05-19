@@ -24,17 +24,17 @@ PlasmoidItem {
     }
 
     property var reason
-    property var errorInformation: {}
+    property var errorInformation
 
     readonly property real minimumPreferredWidth: PlasmaCore.Units.gridUnit * 12
     readonly property real minimumPreferredHeight: PlasmaCore.Units.gridUnit * 12
 
     // To properly show the error message in panel
     readonly property int layoutForm: {
-        if (root.width >= root.minimumPreferredWidth) {
-            if (root.height >= root.minimumPreferredHeight) {
+        if (fullRepresentationItem.width >= root.minimumPreferredWidth) {
+            if (fullRepresentationItem.height >= root.minimumPreferredHeight) {
                 return AppletError.Desktop;
-            } else if (root.height >= PlasmaCore.Units.iconSizes.huge + buttonLayout.implicitHeight) {
+            } else if (fullRepresentationItem.height >= PlasmaCore.Units.iconSizes.huge + buttonLayout.implicitHeight) {
                 return AppletError.DesktopCompact;
             }
         }
@@ -42,6 +42,7 @@ PlasmoidItem {
         return Plasmoid.formFactor === PlasmaCore.Types.Vertical ? AppletError.VerticalPanel : AppletError.HorizontalPanel;
     }
     fullRepresentation: GridLayout {
+        id: fullRep
         Layout.minimumWidth: {
             switch (root.layoutForm) {
             case AppletError.Desktop:
@@ -91,12 +92,13 @@ PlasmoidItem {
             id: headingLayout
 
             Layout.margins: root.layoutForm !== AppletError.Desktop ? 0 : PlasmaCore.Units.gridUnit
-            Layout.maximumWidth: root.width
+            Layout.maximumWidth: fullRep.width
             spacing: 0
+            Layout.fillWidth: true
 
             PlasmaCore.IconItem {
                 id: headerIcon
-                implicitWidth: Math.min(PlasmaCore.Units.iconSizes.huge, root.width, root.height)
+                implicitWidth: Math.min(PlasmaCore.Units.iconSizes.huge, fullRep.width, fullRep.height)
                 implicitHeight: implicitWidth
 
                 activeFocusOnTab: true
@@ -114,7 +116,7 @@ PlasmoidItem {
 
             PlasmaExtras.Heading {
                 id: heading
-                visible: root.layoutForm !== AppletError.VerticalPanel
+               // visible: root.layoutForm !== AppletError.VerticalPanel
                 // Descent is equal to the amount of space above and below capital letters.
                 // Add descent to the sides to make the spacing around Latin text look more even.
                 leftPadding: headingFontMetrics.descent
@@ -127,7 +129,7 @@ PlasmoidItem {
                 wrapMode: Text.Wrap
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
-                elide: Text.ElideRight
+                //elide: Text.ElideRight
                 Layout.fillWidth: true
                 Layout.maximumHeight: headerIcon.implicitHeight
 
