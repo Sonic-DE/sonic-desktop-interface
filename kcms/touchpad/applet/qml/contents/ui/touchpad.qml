@@ -15,7 +15,7 @@ import org.kde.plasma.plasma5support 2.0 as P5Support
 
 import org.kde.plasma.plasmoid 2.0
 
-Item {
+PlasmoidItem {
     id: root
 
     // Don't de-duplicate `touchpadEnabled` expression using `hasTouchpad`
@@ -64,7 +64,7 @@ Item {
 
         PlasmaCore.ToolTipArea {
             mainText: plasmoid.title
-            subText: plasmoid.toolTipSubText
+            subText: toolTipSubText
         }
 
         MouseArea {
@@ -84,7 +84,7 @@ Item {
         PlasmaExtras.PlaceholderMessage {
             anchors.centerIn: parent
             width: parent.width - (PlasmaCore.Units.largeSpacing * 8)
-            text: plasmoid.toolTipSubText
+            text: root.toolTipSubText
             iconName: plasmoid.icon
         }
     }
