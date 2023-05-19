@@ -138,7 +138,7 @@ void KCMSplashScreen::addKPackageToModel(const KPackage::Package &pkg)
     const static QString writableLocation = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation);
     QStandardItem *row = new QStandardItem(pkg.metadata().name());
     row->setData(pkg.metadata().pluginId(), PluginNameRole);
-    row->setData(pkg.filePath("previews", QStringLiteral("splash.png")), ScreenshotRole);
+    row->setData(pkg.fileUrl("previews", QStringLiteral("splash.png")), ScreenshotRole);
     row->setData(pkg.metadata().description(), DescriptionRole);
     row->setData(pkg.path().startsWith(writableLocation), UninstallableRole);
     row->setData(false, PendingDeletionRole);
@@ -159,8 +159,10 @@ void KCMSplashScreen::load()
 
     QStandardItem *row = new QStandardItem(i18n("None"));
     row->setData(s_nonePluginName, PluginNameRole);
+    row->setData(QUrl(), ScreenshotRole);
     row->setData(i18n("No splash screen will be shown"), DescriptionRole);
     row->setData(false, UninstallableRole);
+    row->setData(false, PendingDeletionRole);
     m_model->insertRow(0, row);
 
     if (-1 == pluginIndex(m_data->settings()->theme())) {
