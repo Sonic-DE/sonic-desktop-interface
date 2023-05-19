@@ -26,7 +26,7 @@ PlasmaCore.ToolTipArea {
     property Item fullRepresentation
     property Item compactRepresentation
     property Item expandedFeedback: expandedItem
-    property Item plasmoidItem
+    property PlasmoidItem plasmoidItem
 
     onCompactRepresentationChanged: {
         if (compactRepresentation) {
