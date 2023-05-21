@@ -503,8 +503,11 @@ KCM.SimpleKCM{
             id: multiTap
 
             spacing: Kirigami.Units.smallSpacing
+            // hide initially
+            visible: false
 
             function load() {
+                visible = touchpad.supportsLmrTapButtonMap
                 enabled = touchpad.supportsLmrTapButtonMap && tapToClick.checked
                 if (touchpad.tapFingerCount > 2) {
                     multiTapRightClick.text = i18nd("kcm_touchpad", "Right-click (three-finger tap to middle-click)")
@@ -749,6 +752,8 @@ KCM.SimpleKCM{
             id: rightClickMethod
 
             spacing: Kirigami.Units.smallSpacing
+            // hide initially
+            visible:false
 
             function load() {
                 enabled = touchpad.supportsClickMethodAreas && touchpad.supportsClickMethodClickfinger
