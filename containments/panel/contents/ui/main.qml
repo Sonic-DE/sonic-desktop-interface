@@ -67,7 +67,8 @@ ContainmentItem {
     }
 
     Containment.onAppletRemoved: {
-        appletsModel.remove(applet.parent.index);
+        let plasmoidItem = root.itemFor(applet);
+        appletsModel.remove(plasmoidItem.parent.index);
         checkLastSpacer();
         LayoutManager.save();
     }
