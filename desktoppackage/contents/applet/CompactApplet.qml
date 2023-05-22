@@ -167,7 +167,7 @@ PlasmaCore.ToolTipArea {
         flags: Qt.WindowStaysOnTopHint
         location: Plasmoid.location
         hideOnWindowDeactivate: Plasmoid.hideOnWindowDeactivate
-        visible: root.plasmoidItem && root.plasmoidItem.expanded && fullRepresentation
+        visible: root.plasmoidItem && root.Plasmoid.expanded && fullRepresentation
         visualParent: root.compactRepresentation
         backgroundHints: (Plasmoid.containmentDisplayHints & PlasmaCore.Types.DesktopFullyCovered) ? PlasmaCore.Dialog.SolidBackground : PlasmaCore.Dialog.StandardBackground
         type: PlasmaCore.Dialog.AppletPopup
