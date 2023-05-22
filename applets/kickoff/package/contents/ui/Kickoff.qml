@@ -219,8 +219,8 @@ PlasmoidItem {
 
         property bool wasExpanded
 
-        onPressed: wasExpanded = kickoff.expanded
-        onClicked: kickoff.expanded = !wasExpanded
+        onPressed: wasExpanded = Plasmoid.expanded
+        onClicked: Plasmoid.expanded = !wasExpanded
 
         DropArea {
             id: compactDragArea
