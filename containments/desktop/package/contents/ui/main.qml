@@ -212,7 +212,7 @@ ContainmentItem {
                 handleDragEnd(folderViewLayer.view);
                 folderViewLayer.view.drop(root, event, mapToItem(folderViewLayer.view, event.x, event.y));
             } else if (isContainment) {
-                plasmoid.processMimeData(event.mimeData,
+                root.processMimeData(event.mimeData,
                             event.x - appletsLayout.placeHolder.width / 2, event.y - appletsLayout.placeHolder.height / 2);
                 event.accept(event.proposedAction);
                 appletsLayout.hidePlaceHolder();
