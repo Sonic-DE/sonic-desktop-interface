@@ -91,7 +91,7 @@ ContainmentLayoutManager.ConfigOverlayWithHandles {
                 toolTip: !rotateHandle.pressed ? i18n("Rotate") : ""
                 iconSize: overlay.iconSize
                 action: applet ? applet.plasmoid.action("rotate") : null
-                down: !rotateHandle.pressed
+                down: rotateHandle.pressed
                 Component.onCompleted: {
                     if (action !== null) {
                         action.enabled = true;
@@ -179,21 +179,21 @@ ContainmentLayoutManager.ConfigOverlayWithHandles {
                 elementId: "showbackground"
                 toolTip: checked ? i18n("Hide Background") : i18n("Show Background")
                 iconSize: overlay.iconSize
-                visible: (applet.backgroundHints & PlasmaCore.Types.ConfigurableBackground)
-                checked: applet.effectiveBackgroundHints & PlasmaCore.Types.StandardBackground || applet.effectiveBackgroundHints & PlasmaCore.Types.TranslucentBackground
+                visible: (applet.plasmoid.backgroundHints & PlasmaCore.Types.ConfigurableBackground)
+                checked: applet.plasmoid.effectiveBackgroundHints & PlasmaCore.Types.StandardBackground || applet.plasmoid.effectiveBackgroundHints & PlasmaCore.Types.TranslucentBackground
                 checkable: true
                 onClicked: {
                     if (checked) {
-                        if (applet.backgroundHints & PlasmaCore.Types.StandardBackground || applet.backgroundHints & PlasmaCore.Types.TranslucentBackground) {
-                            applet.userBackgroundHints = applet.backgroundHints;
+                        if (applet.plasmoid.backgroundHints & PlasmaCore.Types.StandardBackground || applet.plasmoid.backgroundHints & PlasmaCore.Types.TranslucentBackground) {
+                            applet.plasmoid.userBackgroundHints = applet.plasmoid.backgroundHints;
                         } else {
-                            applet.userBackgroundHints = PlasmaCore.Types.StandardBackground;
+                            applet.plasmoid.userBackgroundHints = PlasmaCore.Types.StandardBackground;
                         }
                     } else {
-                        if (applet.backgroundHints & PlasmaCore.Types.ShadowBackground || applet.backgroundHints & PlasmaCore.Types.NoBackground) {
-                            applet.userBackgroundHints = applet.backgroundHints;
+                        if (applet.plasmoid.backgroundHints & PlasmaCore.Types.ShadowBackground || applet.plasmoid.backgroundHints & PlasmaCore.Types.NoBackground) {
+                            applet.plasmoid.userBackgroundHints = applet.plasmoid.backgroundHints;
                         } else {
-                            applet.userBackgroundHints = PlasmaCore.Types.ShadowBackground;
+                            applet.plasmoid.userBackgroundHints = PlasmaCore.Types.ShadowBackground;
                         }
                     }
                 }
