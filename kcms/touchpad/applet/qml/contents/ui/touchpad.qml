@@ -26,7 +26,6 @@ PlasmoidItem {
     readonly property bool touchpadEnabled: typeof dataSource.data.touchpad !== "undefined" && dataSource.data.touchpad.workingTouchpadFound
         && dataSource.data.touchpad.enabled
 
-   preferredRepresentation:compactRepresentation
     Plasmoid.icon: touchpadEnabled ? "input-touchpad-on" : "input-touchpad-off"
     // Touchpad being enabled is normal; only show the applet when it's disabled
     Plasmoid.status: {
