@@ -367,7 +367,7 @@ FocusScope {
                     height: width
                     checkable: true
                     icon.name: "window-pin"
-                    onCheckedChanged: root.hideOnWindowDeactivate = !checked
+                    onCheckedChanged: root.Plasmoid.hideOnWindowDeactivate = !checked
                 }
             }
 
