@@ -17,10 +17,10 @@ PlasmoidItem {
 
     signal layoutSelected(int layoutIndex)
 
-    preferredRepresentation: compactRepresentation
-    toolTipSubText: compactRepresentationItem ? compactRepresentationItem.layoutNames.longName : ""
+    preferredRepresentation: fullRepresentation
+    toolTipSubText: fullRepresentationItem ? fullRepresentationItem.layoutNames.longName : ""
 
-    compactRepresentation: KeyboardLayoutSwitcher {
+    fullRepresentation: KeyboardLayoutSwitcher {
         id: switcher
 
         hoverEnabled: true
