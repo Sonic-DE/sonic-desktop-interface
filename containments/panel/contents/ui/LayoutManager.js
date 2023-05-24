@@ -88,13 +88,13 @@ function save() {
     var ids = new Array();
     for (var i = 0; i < layout.children.length; ++i) {
         var child = layout.children[i];
-
-        if (child.applet) {
+        if (child.hasOwnProperty("applet") && child.applet) {
             ids.push(child.applet.plasmoid.id);
         }
     }
-    plasmoid.configuration.AppletOrder = ids.join(';')
-    updateMargins()
+    plasmoid.configuration.AppletOrder = ids.join(';');
+    plasmoid.configuration.writeConfig();
+    updateMargins();
 }
 
 function childAtCoordinates(x, y) {
