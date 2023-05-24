@@ -163,17 +163,11 @@ LibinputTouchpad::LibinputTouchpad(Display *display, int deviceId)
         }
         if (classInfo->type == XITouchClass) {
             XITouchClassInfo *touchInfo = (XITouchClassInfo *)classInfo;
-            m_tapFingerCount.avail = true;
             m_tapFingerCount.set(touchInfo->num_touches);
         }
     }
     XIFreeDeviceInfo(deviceInfo);
 
-    /* FingerCount cannot be zero */
-    if (!m_tapFingerCount.val) {
-        m_tapFingerCount.avail = true;
-        m_tapFingerCount.set(1);
-    }
     m_config = KSharedConfig::openConfig(QStringLiteral("touchpadxlibinputrc"));
 }
 

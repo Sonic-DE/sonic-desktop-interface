@@ -153,6 +153,10 @@ class LibinputCommon : public QObject
 public:
     LibinputCommon()
     {
+        /* FingerCount cannot be zero */
+        // default int value is undefined
+        m_tapFingerCount.avail = true;
+        m_tapFingerCount.set(1);
     }
     virtual ~LibinputCommon()
     {
