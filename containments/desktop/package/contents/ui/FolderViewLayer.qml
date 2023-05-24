@@ -172,10 +172,6 @@ FocusScope {
                 }
             }
         }
-
-        function onExternalData(mimetype, data) {
-            plasmoid.configuration.url = data
-        }
     }
 
     function getPositions() {
@@ -287,7 +283,7 @@ FocusScope {
             // propagates recursively) and that confuses the Label, hence the temp property.
             readonly property bool active: (plasmoid.configuration.labelMode !== 0)
 
-            readonly property bool showPin: root.isPopup && plasmoid.compactRepresentationItem && plasmoid.compactRepresentationItem.visible
+            readonly property bool showPin: root.isPopup && root.compactRepresentationItem && root.compactRepresentationItem.visible
 
             width: parent.width
             height: active ? labelHeight : 0
@@ -371,7 +367,7 @@ FocusScope {
                     height: width
                     checkable: true
                     icon.name: "window-pin"
-                    onCheckedChanged: plasmoid.hideOnWindowDeactivate = !checked
+                    onCheckedChanged: root.hideOnWindowDeactivate = !checked
                 }
             }
 
