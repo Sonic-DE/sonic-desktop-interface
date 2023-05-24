@@ -76,6 +76,8 @@ PlasmoidItem {
         // Same as systray popups
         Layout.preferredWidth: PlasmaCore.Units.gridUnit * 24
         Layout.preferredHeight: PlasmaCore.Units.gridUnit * 24
+        Layout.maximumWidth: PlasmaCore.Units.gridUnit * 34
+        Layout.maximumHeight: PlasmaCore.Units.gridUnit * 34
 
         rowSpacing: textArea.topPadding
         columnSpacing: rowSpacing
