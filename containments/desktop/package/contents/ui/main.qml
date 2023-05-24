@@ -33,15 +33,6 @@ ContainmentItem {
     width: isPopup ? undefined : preferredWidth(false) // Initial size when adding to e.g. desktop.
     height: isPopup ? undefined : preferredHeight(false) // Initial size when adding to e.g. desktop.
 
-    Layout.minimumWidth: preferredWidth(!isPopup)
-    Layout.minimumHeight: preferredHeight(!isPopup)
-
-    Layout.preferredWidth: preferredWidth(false)
-    Layout.preferredHeight: preferredHeight(false)
-
-    Layout.maximumWidth: isPopup ? preferredWidth(false) : -1
-    Layout.maximumHeight: isPopup ? preferredHeight(false) : -1
-
     function switchSize() {
         // Support expanding into the full representation on very thick vertical panels.
         if (isPopup && plasmoid.formFactor === PlasmaCore.Types.Vertical) {
@@ -55,7 +46,7 @@ ContainmentItem {
     LayoutMirroring.childrenInherit: true
 
     property bool isFolder: (plasmoid.pluginName === "org.kde.plasma.folder")
-    property bool isContainment: ("containmentType" in plasmoid)
+    property bool isContainment: plasmoid.isContainment
     property bool isPopup: (plasmoid.location !== PlasmaCore.Types.Floating)
     property bool useListViewMode: isPopup && plasmoid.configuration.viewMode === 0
 
@@ -76,17 +67,6 @@ ContainmentItem {
     Plasmoid.icon: (!plasmoid.configuration.useCustomIcon && folderViewLayer.ready) ? folderViewLayer.view.model.iconName : plasmoid.configuration.icon
 
     onIconHeightChanged: updateGridSize()
-
-    anchors {
-        leftMargin: (isContainment && plasmoid.availableScreenRect) ? plasmoid.availableScreenRect.x : 0
-        topMargin: (isContainment && plasmoid.availableScreenRect) ? plasmoid.availableScreenRect.y : 0
-
-        rightMargin: (isContainment && plasmoid.availableScreenRect && parent)
-            ? (parent.width - plasmoid.availableScreenRect.x - plasmoid.availableScreenRect.width) : 0
-
-        bottomMargin: (isContainment && plasmoid.availableScreenRect && parent)
-            ? (parent.height - plasmoid.availableScreenRect.y - plasmoid.availableScreenRect.height) : 0
-    }
 
     Behavior on anchors.topMargin {
         NumberAnimation { duration: PlasmaCore.Units.longDuration; easing.type: Easing.InOutQuad }
@@ -154,10 +134,33 @@ ContainmentItem {
         }
     }
 
+    onExternalData: (mimetype, data) => {
+        plasmoid.configuration.url = data
+    }
+
     FolderViewDropArea {
         id: dropArea
 
-        anchors.fill: parent
+        anchors {
+            fill: parent
+            leftMargin: (isContainment && plasmoid.availableScreenRect) ? plasmoid.availableScreenRect.x : 0
+            topMargin: (isContainment && plasmoid.availableScreenRect) ? plasmoid.availableScreenRect.y : 0
+
+            rightMargin: (isContainment && plasmoid.availableScreenRect && parent)
+                ? (parent.width - plasmoid.availableScreenRect.x - plasmoid.availableScreenRect.width) : 0
+
+            bottomMargin: (isContainment && plasmoid.availableScreenRect && parent)
+                ? (parent.height - plasmoid.availableScreenRect.y - plasmoid.availableScreenRect.height) : 0
+        }
+
+        Layout.minimumWidth: preferredWidth(!isPopup)
+        Layout.minimumHeight: preferredHeight(!isPopup)
+
+        Layout.preferredWidth: preferredWidth(false)
+        Layout.preferredHeight: preferredHeight(false)
+
+        Layout.maximumWidth: isPopup ? preferredWidth(false) : -1
+        Layout.maximumHeight: isPopup ? preferredHeight(false) : -1
 
         preventStealing: true
 
