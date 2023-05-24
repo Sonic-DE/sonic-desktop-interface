@@ -66,7 +66,7 @@ ContainmentItem {
         Qt.callLater(LayoutManager.save);
     }
 
-    Containment.onAppletRemoved: {
+    Containment.onAppletRemoved: (applet) => {
         let plasmoidItem = root.itemFor(applet);
         appletsModel.remove(plasmoidItem.parent.index);
         checkLastSpacer();
@@ -166,7 +166,7 @@ ContainmentItem {
 
         onDrop: {
             appletsModel.remove(dndSpacer.parent.index);
-            plasmoid.processMimeData(event.mimeData, event.x, event.y);
+            root.processMimeData(event.mimeData, event.x, event.y);
             event.accept(event.proposedAction);
             root.fixedWidth = root.fixedHeight = 0;
         }
@@ -205,6 +205,9 @@ ContainmentItem {
                 }
 
                 function getMargins(side, returnAllMargins = false, overrideFillArea = null, overrideThickArea = null) {
+                    if (!applet || !applet.plasmoid) {
+                        return;
+                    }
                     //Margins are either the size of the margins in the SVG, unless that prevents the panel from being at least half a smallMedium icon + smallSpace) tall at which point we set the margin to whatever allows it to be that...or if it still won't fit, 1.
                     let fillArea = overrideFillArea === null ? applet && (applet.plasmoid.constraintHints & PlasmaCore.Types.CanFillArea) : overrideFillArea
                     let inThickArea = overrideThickArea === null ? container.inThickArea : overrideThickArea
@@ -266,17 +269,17 @@ ContainmentItem {
                         model: ['top', 'bottom', 'right', 'left']
                         SideMargin{
                             side: modelData;
-                            inset: getMargins(side);
+                            inset: container.getMargins(side);
                             visible: (modelData == 'top' || modelData == 'bottom') == isHorizontal
-                            padding: getMargins(side, false, false, isMarginSeparator ? false : inThickArea)
+                            padding: container.getMargins(side, false, false, isMarginSeparator ? false : inThickArea)
                         }
                     }
                     Repeater {
                         model: ['top', 'bottom', 'right', 'left']
                         SideMargin{
                             side: modelData;
-                            inset: -getMargins(side, false, false, false);
-                            padding: getMargins(side, false, false, true) + inset;
+                            inset: -container.getMargins(side, false, false, false);
+                            padding: container.getMargins(side, false, false, true) + inset;
                             visible: isMarginSeparator && (modelData == 'top' || modelData == 'bottom') == isHorizontal;
                             fill: false
                         }
