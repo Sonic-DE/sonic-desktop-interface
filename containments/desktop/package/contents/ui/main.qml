@@ -164,7 +164,7 @@ ContainmentItem {
 
         preventStealing: true
 
-        onDragEnter: {
+        onDragEnter: event => {
             if (isContainment && plasmoid.immutable && !(isFolder && FolderTools.isFileDrag(event))) {
                 event.ignore();
             }
@@ -181,7 +181,7 @@ ContainmentItem {
             }
         }
 
-        onDragMove: {
+        onDragMove: event => {
             // TODO: We should reject drag moves onto file items that don't accept drops
             // (cf. QAbstractItemModel::flags() here, but DeclarativeDropArea currently
             // is currently incapable of rejecting drag events.
