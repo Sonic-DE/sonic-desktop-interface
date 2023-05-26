@@ -10,9 +10,10 @@ import QtQuick 2.0
 import org.kde.plasma.plasmoid 2.0
 
 import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.ksvg 2.0 as KSvg
 import org.kde.plasma.components 3.0 as PlasmaComponents3
 
-PlasmaCore.FrameSvgItem {
+KSvg.FrameSvgItem {
     id: upButton
 
     width: gridView.cellWidth
