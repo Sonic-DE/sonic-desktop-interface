@@ -11,6 +11,7 @@ import QtQuick.Layouts 1.15
 
 import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.ksvg 2.0 as KSvg
 import org.kde.draganddrop 2.0 as DragDrop
 import org.kde.kquickcontrolsaddons 2.0 as KQuickControlsAddons
 
@@ -218,7 +219,7 @@ FolderViewDropArea {
         CompactRepresentation { folderView: folderViewLayer.view }
     }
 
-    PlasmaCore.FrameSvgItem {
+    KSvg.FrameSvgItem {
         id : highlightItemSvg
 
         visible: false
@@ -227,7 +228,7 @@ FolderViewDropArea {
         prefix: "hover"
     }
 
-    PlasmaCore.FrameSvgItem {
+    KSvg.FrameSvgItem {
         id : listItemSvg
 
         visible: false
@@ -236,7 +237,7 @@ FolderViewDropArea {
         prefix: "normal"
     }
 
-    PlasmaCore.Svg {
+    KSvg.Svg {
         id: toolBoxSvg
         imagePath: "widgets/toolbox"
         property int rightBorder: elementSize("right").width

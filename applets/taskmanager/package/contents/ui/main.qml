@@ -11,6 +11,7 @@ import QtQml 2.15
 import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.components 3.0 as PlasmaComponents3
 import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.ksvg 2.0 as KSvg
 import org.kde.plasma.plasma5support 2.0 as P5Support
 
 import org.kde.plasma.workspace.trianglemousefilter 1.0
@@ -413,7 +414,7 @@ MouseArea {
         Drag.onDragFinished: tasks.dragSource = null;
     }
 
-    PlasmaCore.FrameSvgItem {
+    KSvg.FrameSvgItem {
         id: taskFrame
 
         visible: false;
@@ -422,7 +423,7 @@ MouseArea {
         prefix: "normal"
     }
 
-    PlasmaCore.Svg {
+    KSvg.Svg {
         id: taskSvg
 
         imagePath: "widgets/tasks"

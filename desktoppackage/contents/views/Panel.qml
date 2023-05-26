@@ -10,6 +10,7 @@ import QtQuick.Layouts 1.1
 import QtQml 2.15
 
 import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.ksvg 2.0 as KSvg
 import org.kde.taskmanager 0.1 as TaskManager
 import org.kde.kwindowsystem 1.0
 import org.kde.kirigami 2.15 as Kirigami
@@ -26,13 +27,13 @@ Item {
     readonly property bool verticalPanel: containment && containment.formFactor === PlasmaCore.Types.Vertical
 
     readonly property real spacingAtMinSize: Math.round(Math.max(1, (verticalPanel ? root.width : root.height) - PlasmaCore.Units.iconSizes.smallMedium)/2)
-    PlasmaCore.FrameSvgItem {
+    KSvg.FrameSvgItem {
         id: thickPanelSvg
         visible: false
         prefix: 'thick'
         imagePath: "widgets/panel-background"
     }
-    PlasmaCore.FrameSvgItem {
+    KSvg.FrameSvgItem {
         id: floatingPanelSvg
         visible: false
         prefix: ['floating', '']
@@ -128,14 +129,14 @@ Item {
     property int maskOffsetX: Math.round(leftFloatingPadding * floatingness)
     property int maskOffsetY: Math.round(topFloatingPadding * floatingness)
 
-    PlasmaCore.FrameSvgItem {
+    KSvg.FrameSvgItem {
         id: translucentItem
         visible: floatingness === 0 && panelOpacity !== 1
         enabledBorders: panel.enabledBorders
         anchors.fill: parent
         imagePath: containment && containment.backgroundHints === PlasmaCore.Types.NoBackground ? "" : "widgets/panel-background"
     }
-    PlasmaCore.FrameSvgItem {
+    KSvg.FrameSvgItem {
         id: floatingTranslucentItem
         visible: floatingness !== 0 && panelOpacity !== 1
         anchors {
@@ -147,7 +148,7 @@ Item {
         }
         imagePath: containment && containment.backgroundHints === PlasmaCore.Types.NoBackground ? "" : "widgets/panel-background"
     }
-    PlasmaCore.FrameSvgItem {
+    KSvg.FrameSvgItem {
         id: floatingOpaqueItem
         visible: floatingness !== 0 && panelOpacity !== 0
         opacity: panelOpacity
@@ -160,7 +161,7 @@ Item {
         }
         imagePath: containment && containment.backgroundHints === PlasmaCore.Types.NoBackground ? "" : "solid/widgets/panel-background"
     }
-    PlasmaCore.FrameSvgItem {
+    KSvg.FrameSvgItem {
         id: opaqueItem
         visible: panelOpacity !== 0 && floatingness === 0
         opacity: panelOpacity
@@ -279,7 +280,7 @@ Item {
         restoreMode: Binding.RestoreBinding
     }
 
-    PlasmaCore.FrameSvgItem {
+    KSvg.FrameSvgItem {
         x: root.verticalPanel || !panel.activeFocusItem
             ? 0
             : Math.max(panel.activeFocusItem.Kirigami.ScenePosition.x, panel.activeFocusItem.Kirigami.ScenePosition.x)

@@ -5,6 +5,7 @@
 */
 import QtQuick 2.1
 import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.ksvg 2.0 as KSvg
 
 Item {
     id: highlight
@@ -19,7 +20,7 @@ Item {
         }
     }
 
-    PlasmaCore.FrameSvgItem {
+    KSvg.FrameSvgItem {
         id: background
         imagePath: "widgets/viewitem"
         prefix: {

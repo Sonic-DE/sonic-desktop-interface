@@ -10,6 +10,7 @@ import QtQuick.Layouts 1.1
 import org.kde.plasma.plasmoid 2.0
 
 import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.ksvg 2.0 as KSvg
 import org.kde.plasma.components 3.0 as PlasmaComponents
 import org.kde.kquickcontrolsaddons 2.0
 import org.kde.draganddrop 2.0 as DragDrop
@@ -40,7 +41,7 @@ DragDrop.DropArea {
     // These are invisible and only used to read panel margins
     // Both will fallback to "standard" panel margins if the theme does not
     // define a normal or a thick margin.
-    PlasmaCore.FrameSvgItem {
+    KSvg.FrameSvgItem {
         id: panelSvg
         visible: false
         prefix: [{[PlasmaCore.Types.LeftEdge]: 'west', [PlasmaCore.Types.TopEdge]: 'north',
@@ -48,7 +49,7 @@ DragDrop.DropArea {
         }[plasmoid.location], ""]
         imagePath: "widgets/panel-background"
     }
-    PlasmaCore.FrameSvgItem {
+    KSvg.FrameSvgItem {
         id: thickPanelSvg
         visible: false
         prefix: ['thick'].concat(panelSvg.prefix)
@@ -239,7 +240,7 @@ function checkLastSpacer() {
                     }
                 }
 
-                component SideMargin: PlasmaCore.SvgItem {
+                component SideMargin: KSvg.SvgItem {
                     property string side; property bool fill: true
                     property int inset; property int padding
                     property var west: ({'left': 'top', 'top': 'left', 'right': 'top', 'bottom': 'left'})
