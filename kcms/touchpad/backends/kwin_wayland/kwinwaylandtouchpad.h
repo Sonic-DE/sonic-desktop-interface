@@ -145,7 +145,7 @@ private:
     bool valueLoader(Prop<T> &prop);
 
     template<typename T>
-    QString valueWriter(const Prop<T> &prop);
+    QString valueWriter(Prop<T> &prop);
     //
     // general
     Prop<QString> m_name = Prop<QString>("name");
