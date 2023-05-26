@@ -11,6 +11,7 @@ import QtQuick.Layouts 1.15
 
 import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.ksvg 2.0 as KSvg
 import org.kde.draganddrop 2.0 as DragDrop
 import org.kde.kquickcontrolsaddons 2.0 as KQuickControlsAddons
 
@@ -128,8 +129,8 @@ ContainmentItem {
         plasmoid.configuration.url = data
     }
 
-    PlasmaCore.FrameSvgItem {
-        id: highlightItemSvg
+    KSvg.FrameSvgItem {
+        id : highlightItemSvg
 
         visible: false
 
@@ -137,8 +138,8 @@ ContainmentItem {
         prefix: "hover"
     }
 
-    PlasmaCore.FrameSvgItem {
-        id: listItemSvg
+    KSvg.FrameSvgItem {
+        id : listItemSvg
 
         visible: false
 
@@ -146,7 +147,7 @@ ContainmentItem {
         prefix: "normal"
     }
 
-    PlasmaCore.Svg {
+    KSvg.Svg {
         id: toolBoxSvg
         imagePath: "widgets/toolbox"
         property int rightBorder: elementSize("right").width
