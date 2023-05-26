@@ -9,6 +9,7 @@ import QtQuick.Layouts 1.15
 
 import org.kde.plasma.components 3.0 as PlasmaComponents3
 import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.ksvg 2.0 as KSvg
 import org.kde.plasma.plasmoid 2.0
 
 import org.kde.plasma.private.kicker 0.1 as Kicker
@@ -171,7 +172,7 @@ PlasmoidItem {
         id: windowSystem
     }
 
-    PlasmaCore.FrameSvgItem {
+    KSvg.FrameSvgItem {
         id: highlightItemSvg
 
         visible: false
@@ -180,7 +181,7 @@ PlasmoidItem {
         prefix: "hover"
     }
 
-    PlasmaCore.FrameSvgItem {
+    KSvg.FrameSvgItem {
         id: listItemSvg
 
         visible: false
@@ -189,14 +190,14 @@ PlasmoidItem {
         prefix: "normal"
     }
 
-    PlasmaCore.Svg {
+    KSvg.Svg {
         id: arrows
 
         imagePath: "widgets/arrows"
         size: "16x16"
     }
 
-    PlasmaCore.Svg {
+    KSvg.Svg {
         id: lineSvg
         imagePath: "widgets/line"
 
