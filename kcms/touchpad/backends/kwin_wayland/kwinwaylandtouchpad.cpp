@@ -192,7 +192,7 @@ bool KWinWaylandTouchpad::isChangedConfig() const
 }
 
 template<typename T>
-QString KWinWaylandTouchpad::valueWriter(const Prop<T> &prop)
+QString KWinWaylandTouchpad::valueWriter(Prop<T> &prop)
 {
     if (!prop.changed()) {
         return QString();
@@ -203,6 +203,7 @@ QString KWinWaylandTouchpad::valueWriter(const Prop<T> &prop)
         qCCritical(KCM_TOUCHPAD) << error.message();
         return error.message();
     }
+    prop.old = prop.val;
     return QString();
 }
 
