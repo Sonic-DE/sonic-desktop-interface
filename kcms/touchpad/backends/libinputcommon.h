@@ -153,10 +153,6 @@ class LibinputCommon : public QObject
 public:
     LibinputCommon()
     {
-        /* FingerCount cannot be zero */
-        // default int value is undefined
-        m_tapFingerCount.avail = true;
-        m_tapFingerCount.set(1);
     }
     virtual ~LibinputCommon()
     {
@@ -485,6 +481,13 @@ protected:
         T old;
         T val;
     };
+    struct PropInt : public Prop<int> {
+        explicit PropInt(const QByteArray &name)
+            : Prop<int>(name)
+        {
+            val = old = 0;
+        }
+    };
 
     //
     // general
@@ -522,7 +525,7 @@ protected:
 
     //
     // tapping
-    Prop<int> m_tapFingerCount = Prop<int>("tapFingerCount");
+    Prop<int> m_tapFingerCount = PropInt("tapFingerCount");
     Prop<bool> m_tapToClickEnabledByDefault = Prop<bool>("tapToClickEnabledByDefault");
     Prop<bool> m_tapToClick = Prop<bool>("tapToClick");
 
