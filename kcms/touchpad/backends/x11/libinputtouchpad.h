@@ -35,7 +35,7 @@ private:
     bool valueLoader(Prop<T> &prop);
 
     template<typename T>
-    QString valueWriter(const Prop<T> &prop);
+    QString valueWriter(Prop<T> &prop);
 
     KSharedConfigPtr m_config;
 
