@@ -150,7 +150,7 @@ PlasmaCore.ToolTipArea {
     Connections {
         target: Plasmoid.action("configure")
         function onTriggered() {
-            if (Plasmoid.hideOnWindowDeactivate) {
+            if (root.plasmoidItem.hideOnWindowDeactivate) {
                 Plasmoid.expanded = false
             }
         }
@@ -166,7 +166,7 @@ PlasmaCore.ToolTipArea {
         objectName: "popupWindow"
         flags: Qt.WindowStaysOnTopHint
         location: Plasmoid.location
-        hideOnWindowDeactivate: Plasmoid.hideOnWindowDeactivate
+        hideOnWindowDeactivate: root.plasmoidItem.hideOnWindowDeactivate
         visible: root.plasmoidItem && root.Plasmoid.expanded && fullRepresentation
         visualParent: root.compactRepresentation
         backgroundHints: (Plasmoid.containmentDisplayHints & PlasmaCore.Types.DesktopFullyCovered) ? PlasmaCore.Dialog.SolidBackground : PlasmaCore.Dialog.StandardBackground

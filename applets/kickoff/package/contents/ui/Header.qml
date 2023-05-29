@@ -243,7 +243,7 @@ PlasmaExtras.PlasmoidHeading {
             PC3.ToolTip.delay: Kirigami.Units.toolTipDelay
             PC3.ToolTip.visible: hovered
             Binding {
-                target: plasmoid
+                target: kickoff
                 property: "hideOnWindowDeactivate"
                 value: !plasmoid.configuration.pin
                 // there should be no other bindings, so don't waste resources

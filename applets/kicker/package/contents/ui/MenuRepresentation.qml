@@ -33,7 +33,7 @@ FocusScope {
     signal appendSearchText(string text)
 
     function reset() {
-        plasmoid.hideOnWindowDeactivate = true;
+        kicker.hideOnWindowDeactivate = true;
 
         rootList.currentIndex = -1;
 
