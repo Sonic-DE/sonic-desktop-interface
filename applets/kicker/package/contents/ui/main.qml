@@ -248,7 +248,7 @@ PlasmoidItem {
         }
 
         windowSystem.focusIn.connect(enableHideOnWindowDeactivate);
-        plasmoid.hideOnWindowDeactivate = true;
+        kicker.hideOnWindowDeactivate = true;
 
         if (plasmoid.immutability !== PlasmaCore.Types.SystemImmutable) {
             plasmoid.setAction("menuedit", i18n("Edit Applications…"), "kmenuedit");
