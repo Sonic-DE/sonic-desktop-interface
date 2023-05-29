@@ -295,7 +295,7 @@ FocusScope {
 
             onVisibleChanged: {
                 if (root.isPopup && !visible) {
-                    plasmoid.hideOnWindowDeactivate = true;
+                    root.hideOnWindowDeactivate = true;
                 }
             }
 
@@ -367,7 +367,7 @@ FocusScope {
                     height: width
                     checkable: true
                     icon.name: "window-pin"
-                    onCheckedChanged: root.Plasmoid.hideOnWindowDeactivate = !checked
+                    onCheckedChanged: root.hideOnWindowDeactivate = !checked
                 }
             }
 
