@@ -64,7 +64,7 @@ FocusScope {
             }
 
             // Gets reenabled after the dialog spawn causes a focus-in on the dialog window.
-            plasmoid.hideOnWindowDeactivate = false;
+            kicker.hideOnWindowDeactivate = false;
 
             itemList.childDialog = itemListDialogComponent.createObject(itemList);
             itemList.childDialog.focusParent = itemList;
