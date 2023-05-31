@@ -111,9 +111,9 @@ PlasmaExtras.PlasmoidHeading {
         }
 
         Connections {
-            target: plasmoid
+            target: kickoff
             function onExpandedChanged() {
-                if (plasmoid.expanded) {
+                if (kickoff.expanded) {
                     tabBar.currentIndex = 0
                 }
             }
@@ -165,7 +165,7 @@ PlasmaExtras.PlasmoidHeading {
     }
 
     Behavior on height {
-        enabled: plasmoid.expanded
+        enabled: kickoff.expanded
         NumberAnimation {
             duration: PlasmaCore.Units.longDuration
             easing.type: Easing.InQuad

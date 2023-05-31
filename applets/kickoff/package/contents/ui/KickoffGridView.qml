@@ -167,9 +167,9 @@ EmptyPage {
         }
 
         Connections {
-            target: plasmoid
+            target: kickoff
             function onExpandedChanged() {
-                if (plasmoid.expanded) {
+                if (kickoff.expanded) {
                     view.currentIndex = 0
                     view.positionViewAtBeginning()
                 }

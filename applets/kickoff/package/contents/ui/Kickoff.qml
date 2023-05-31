@@ -219,8 +219,8 @@ PlasmoidItem {
 
         property bool wasExpanded
 
-        onPressed: wasExpanded = Plasmoid.expanded
-        onClicked: Plasmoid.expanded = !wasExpanded
+        onPressed: wasExpanded = kickoff.expanded
+        onClicked: kickoff.expanded = !wasExpanded
 
         DropArea {
             id: compactDragArea
@@ -232,7 +232,7 @@ PlasmoidItem {
             // this is an interaction and not an animation, so we want it as a constant
             interval: 250
             running: compactDragArea.containsDrag
-            onTriggered: plasmoid.expanded = true
+            onTriggered: kickoff.expanded = true
         }
 
         RowLayout {
