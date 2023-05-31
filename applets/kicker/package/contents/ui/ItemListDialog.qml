@@ -26,7 +26,7 @@ Kicker.SubMenu {
 
     onWindowDeactivated: {
         if (!aboutToBeDestroyed) {
-            plasmoid.expanded = false;
+            kicker.expanded = false;
         }
     }
 
