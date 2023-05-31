@@ -196,9 +196,9 @@ BasePage {
             }
         }
         Connections {
-            target: plasmoid
+            target: kickoff
             function onExpandedChanged() {
-                if (plasmoid.expanded) {
+                if (kickoff.expanded) {
                     kickoff.contentArea.currentItem.forceActiveFocus()
                 }
             }
