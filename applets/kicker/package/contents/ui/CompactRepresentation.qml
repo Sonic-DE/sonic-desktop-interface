@@ -95,7 +95,7 @@ Item {
 
         onPressed: {
             if (!kicker.isDash) {
-                wasExpanded = plasmoid.expanded
+                wasExpanded = kicker.expanded
             }
         }
 
@@ -104,7 +104,7 @@ Item {
                 root.dashWindow.toggle();
                 justOpenedTimer.start();
             } else {
-                plasmoid.expanded = !wasExpanded;
+                kicker.expanded = !wasExpanded;
             }
         }
     }

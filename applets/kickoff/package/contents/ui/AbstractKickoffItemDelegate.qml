@@ -115,7 +115,7 @@ T.ItemDelegate {
             // if successfully triggered, close popup
             if (view.model.trigger && view.model.trigger(index, "", null)) {
                 if (kickoff.hideOnWindowDeactivate) {
-                    plasmoid.expanded = false;
+                    kickoff.expanded = false;
                 }
             }
         }

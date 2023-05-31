@@ -19,7 +19,7 @@ PlasmaCore.ToolTipArea {
     mainText: plasmoidItem ? plasmoidItem.toolTipMainText : ""
     subText: plasmoidItem ? plasmoidItem.toolTipSubText : ""
     location: Plasmoid.location
-    active: !Plasmoid.expanded
+    active: !plasmoidItem.expanded
     textFormat: plasmoidItem ? plasmoidItem.toolTipTextFormat : 0
     mainItem: plasmoidItem && plasmoidItem.toolTipItem ? plasmoidItem.toolTipItem : null
 
@@ -132,7 +132,7 @@ PlasmaCore.ToolTipArea {
             }
             return prefix;
         }
-        opacity: Plasmoid.expanded ? 1 : 0
+        opacity: plasmoidItem.expanded ? 1 : 0
         Behavior on opacity {
             NumberAnimation {
                 duration: PlasmaCore.Units.shortDuration
@@ -144,14 +144,14 @@ PlasmaCore.ToolTipArea {
     Timer {
         id: expandedSync
         interval: 100
-        onTriggered: Plasmoid.expanded = dialog.visible;
+        onTriggered: plasmoidItem.expanded = dialog.visible;
     }
 
     Connections {
         target: Plasmoid.action("configure")
         function onTriggered() {
             if (root.plasmoidItem.hideOnWindowDeactivate) {
-                Plasmoid.expanded = false
+                plasmoidItem.expanded = false
             }
         }
     }
@@ -167,7 +167,7 @@ PlasmaCore.ToolTipArea {
         flags: Qt.WindowStaysOnTopHint
         location: Plasmoid.location
         hideOnWindowDeactivate: root.plasmoidItem.hideOnWindowDeactivate
-        visible: root.plasmoidItem && root.Plasmoid.expanded && fullRepresentation
+        visible: root.plasmoidItem && root.plasmoidItem.expanded && fullRepresentation
         visualParent: root.compactRepresentation
         backgroundHints: (Plasmoid.containmentDisplayHints & PlasmaCore.Types.DesktopFullyCovered) ? PlasmaCore.Dialog.SolidBackground : PlasmaCore.Dialog.StandardBackground
         type: PlasmaCore.Dialog.AppletPopup
@@ -194,7 +194,7 @@ PlasmaCore.ToolTipArea {
             focus: true
 
             Keys.onEscapePressed: {
-                Plasmoid.expanded = false;
+                root.plasmoidItem.expanded = false;
             }
 
             Layout.minimumWidth: fullRepresentation ? fullRepresentation.Layout.minimumWidth : 0
