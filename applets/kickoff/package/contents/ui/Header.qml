@@ -178,9 +178,9 @@ PlasmaExtras.PlasmoidHeading {
                 restoreMode: Binding.RestoreNone
             }
             Connections {
-                target: plasmoid
+                target: kickoff
                 function onExpandedChanged() {
-                    if (plasmoid.expanded) {
+                    if (kickoff.expanded) {
                         searchField.clear()
                     }
                 }

@@ -159,7 +159,7 @@ FocusScope {
 
         function onExpandedChanged() {
             if (root.isPopup) {
-                if (plasmoid.expanded) {
+                if (root.expanded) {
                     folderView.currentIndex = -1;
                     folderView.forceActiveFocus();
                     folderView.positionViewAtBeginning();
