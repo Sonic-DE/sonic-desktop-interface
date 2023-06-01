@@ -161,7 +161,7 @@ FocusScope {
     }
 
     Connections {
-        target: plasmoid
+        target: root
         function onExpandedChanged() {
             if (root.expanded && dir.status === Folder.FolderModel.Ready && !gridView.model) {
                 gridView.model = positioner;

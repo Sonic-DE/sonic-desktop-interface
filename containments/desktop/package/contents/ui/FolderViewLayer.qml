@@ -155,7 +155,7 @@ FocusScope {
     }
 
     Connections {
-        target: plasmoid
+        target: root
 
         function onExpandedChanged() {
             if (root.isPopup) {
