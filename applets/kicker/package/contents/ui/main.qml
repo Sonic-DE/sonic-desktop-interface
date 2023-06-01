@@ -222,7 +222,7 @@ PlasmoidItem {
     }
 
     Connections {
-        target: plasmoid
+        target: kicker
 
         function onExpandedChanged(expanded) {
             if (expanded) {
