@@ -138,7 +138,7 @@ PlasmoidItem {
         }
 
         virtualDesktop: virtualDesktopInfo.currentDesktop
-        screenGeometry: plasmoid.screenGeometry
+        screenGeometry: plasmoid.containment.screenGeometry
         activity: activityInfo.currentActivity
 
         filterByVirtualDesktop: plasmoid.configuration.showOnlyCurrentDesktop
@@ -222,6 +222,20 @@ PlasmoidItem {
         onWindowViewAvailableChanged: TaskTools.windowViewAvailable = windowViewAvailable;
 
         Component.onCompleted: TaskTools.windowViewAvailable = windowViewAvailable;
+    }
+
+    property Component taskInitComponent: Component {
+        Timer {
+            id: timer
+
+            interval: PlasmaCore.Units.longDuration
+            running: true
+
+            onTriggered: {
+                tasksModel.requestPublishDelegateGeometry(parent.modelIndex(), backend.globalRect(parent), parent);
+                timer.destroy();
+            }
+        }
     }
 
     MouseArea {
@@ -385,20 +399,6 @@ PlasmoidItem {
             }
             function onIconSpacingChanged() {
                 taskList.layout();
-            }
-        }
-
-        property Component taskInitComponent: Component {
-            Timer {
-                id: timer
-
-                interval: PlasmaCore.Units.longDuration
-                running: true
-
-                onTriggered: {
-                    tasksModel.requestPublishDelegateGeometry(parent.modelIndex(), backend.globalRect(parent), parent);
-                    timer.destroy();
-                }
             }
         }
 
