@@ -23,7 +23,6 @@ PlasmoidItem {
         DesktopCompact
     }
 
-    property var reason
     property var errorInformation
 
     readonly property real minimumPreferredWidth: PlasmaCore.Units.gridUnit * 12
