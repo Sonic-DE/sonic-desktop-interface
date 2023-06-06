@@ -32,15 +32,15 @@ MouseArea {
             var padding = PlasmaCore.Units.gridUnit * 5;
             if (currentApplet && (mouse.x < -padding || mouse.y < -padding ||
                 mouse.x > width + padding || mouse.y > height + padding)) {
-                var newCont = plasmoid.containmentAt(mouse.x, mouse.y);
+                var newCont = root.containmentAt(mouse.x, mouse.y);
 
                 if (newCont && newCont !== plasmoid) {
-                    var newPos = newCont.mapFromApplet(plasmoid, mouse.x, mouse.y);
+                    var newPos = newCont.mapFromApplet(currentApplet.applet.plasmoid, mouse.x, mouse.y);
                     var applet = currentApplet.applet;
                     appletsModel.remove(placeHolder.parent.index);
                     currentApplet.destroy();
                     applet.anchors.fill = undefined
-                    newCont.addApplet(applet.plasmoid, newPos.x, newPos.y);
+                    newCont.plasmoid.addApplet(applet.plasmoid, Qt.rect(newPos.x, newPos.y, applet.width, applet.height));
                     return;
                 }
             }
