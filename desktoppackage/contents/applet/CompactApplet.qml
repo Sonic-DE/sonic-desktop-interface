@@ -132,7 +132,7 @@ PlasmaCore.ToolTipArea {
             }
             return prefix;
         }
-        opacity: plasmoidItem.expanded ? 1 : 0
+        opacity: plasmoidItem && plasmoidItem.expanded ? 1 : 0
         Behavior on opacity {
             NumberAnimation {
                 duration: PlasmaCore.Units.shortDuration
@@ -166,7 +166,7 @@ PlasmaCore.ToolTipArea {
         objectName: "popupWindow"
         flags: Qt.WindowStaysOnTopHint
         location: Plasmoid.location
-        hideOnWindowDeactivate: root.plasmoidItem.hideOnWindowDeactivate
+        hideOnWindowDeactivate: root.plasmoidItem && root.plasmoidItem.hideOnWindowDeactivate
         visible: root.plasmoidItem && root.plasmoidItem.expanded && fullRepresentation
         visualParent: root.compactRepresentation
         backgroundHints: (Plasmoid.containmentDisplayHints & PlasmaCore.Types.DesktopFullyCovered) ? PlasmaCore.Dialog.SolidBackground : PlasmaCore.Dialog.StandardBackground
