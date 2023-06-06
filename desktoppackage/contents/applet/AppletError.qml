@@ -117,7 +117,7 @@ PlasmoidItem {
 
             PlasmaExtras.Heading {
                 id: heading
-               // visible: root.layoutForm !== AppletError.VerticalPanel
+                visible: root.layoutForm !== AppletError.VerticalPanel
                 // Descent is equal to the amount of space above and below capital letters.
                 // Add descent to the sides to make the spacing around Latin text look more even.
                 leftPadding: headingFontMetrics.descent
@@ -130,7 +130,7 @@ PlasmoidItem {
                 wrapMode: Text.Wrap
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
-                //elide: Text.ElideRight
+                elide: Text.ElideRight
                 Layout.fillWidth: true
                 Layout.maximumHeight: headerIcon.implicitHeight
 
