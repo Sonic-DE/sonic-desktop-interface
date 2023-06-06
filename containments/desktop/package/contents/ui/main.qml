@@ -63,25 +63,13 @@ ContainmentItem {
     readonly property int hoverActivateDelay: 750 // Magic number that matches Dolphin's auto-expand folders delay.
 
     readonly property Loader folderViewLayer: fullRepresentationItem.folderViewLayer
+    readonly property ContainmentLayoutManager.AppletsLayout appletsLayout: fullRepresentationItem.appletsLayout
 
     // Plasmoid.title is set by a Binding {} in FolderViewLayer
     toolTipSubText: ""
     Plasmoid.icon: (!plasmoid.configuration.useCustomIcon && folderViewLayer.ready) ? folderViewLayer.view.model.iconName : plasmoid.configuration.icon
 
     onIconHeightChanged: updateGridSize()
-
-    Behavior on anchors.topMargin {
-        NumberAnimation { duration: PlasmaCore.Units.longDuration; easing.type: Easing.InOutQuad }
-    }
-    Behavior on anchors.leftMargin {
-        NumberAnimation { duration: PlasmaCore.Units.longDuration; easing.type: Easing.InOutQuad }
-    }
-    Behavior on anchors.rightMargin {
-        NumberAnimation { duration: PlasmaCore.Units.longDuration; easing.type: Easing.InOutQuad }
-    }
-    Behavior on anchors.bottomMargin {
-        NumberAnimation { duration: PlasmaCore.Units.longDuration; easing.type: Easing.InOutQuad }
-    }
 
     function updateGridSize() {
         appletsLayout.cellWidth = root.iconWidth + toolBoxSvg.elementSize("left").width + toolBoxSvg.elementSize("right").width;
@@ -157,7 +145,21 @@ ContainmentItem {
                 ? (parent.height - plasmoid.availableScreenRect.y - plasmoid.availableScreenRect.height) : 0
         }
 
+        Behavior on anchors.topMargin {
+            NumberAnimation { duration: PlasmaCore.Units.longDuration; easing.type: Easing.InOutQuad }
+        }
+        Behavior on anchors.leftMargin {
+            NumberAnimation { duration: PlasmaCore.Units.longDuration; easing.type: Easing.InOutQuad }
+        }
+        Behavior on anchors.rightMargin {
+            NumberAnimation { duration: PlasmaCore.Units.longDuration; easing.type: Easing.InOutQuad }
+        }
+        Behavior on anchors.bottomMargin {
+            NumberAnimation { duration: PlasmaCore.Units.longDuration; easing.type: Easing.InOutQuad }
+        }
+
         property alias folderViewLayer: folderViewLayer
+        property alias appletsLayout: appletsLayout
 
         Layout.minimumWidth: preferredWidth(!isPopup)
         Layout.minimumHeight: preferredHeight(!isPopup)
