@@ -97,6 +97,7 @@ ContainmentItem {
 
     DragDrop.DropArea {
         id: dropArea
+        anchors.fill: parent
 
         // These are invisible and only used to read panel margins
         // Both will fallback to "standard" panel margins if the theme does not
