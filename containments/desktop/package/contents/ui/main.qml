@@ -62,6 +62,8 @@ ContainmentItem {
 
     readonly property int hoverActivateDelay: 750 // Magic number that matches Dolphin's auto-expand folders delay.
 
+    readonly property Loader folderViewLayer: fullRepresentationItem.folderViewLayer
+
     // Plasmoid.title is set by a Binding {} in FolderViewLayer
     toolTipSubText: ""
     Plasmoid.icon: (!plasmoid.configuration.useCustomIcon && folderViewLayer.ready) ? folderViewLayer.view.model.iconName : plasmoid.configuration.icon
@@ -138,7 +140,9 @@ ContainmentItem {
         plasmoid.configuration.url = data
     }
 
-    FolderViewDropArea {
+    // FIXME: the use and existence of this property is a workaround
+    preloadFullRepresentation: true
+    fullRepresentation: FolderViewDropArea {
         id: dropArea
 
         anchors {
@@ -152,6 +156,8 @@ ContainmentItem {
             bottomMargin: (isContainment && plasmoid.availableScreenRect && parent)
                 ? (parent.height - plasmoid.availableScreenRect.y - plasmoid.availableScreenRect.height) : 0
         }
+
+        property alias folderViewLayer: folderViewLayer
 
         Layout.minimumWidth: preferredWidth(!isPopup)
         Layout.minimumHeight: preferredHeight(!isPopup)
