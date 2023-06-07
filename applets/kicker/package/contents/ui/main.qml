@@ -71,6 +71,7 @@ PlasmoidItem {
         flat: kicker.isDash || plasmoid.configuration.limitDepth
         sorted: plasmoid.configuration.alphaSort
         showSeparators: !kicker.isDash
+        // TODO: appletInterface property now can be ported to "applet" and have the real Applet* assigned directly
         appletInterface: kicker
 
         showAllApps: kicker.isDash
