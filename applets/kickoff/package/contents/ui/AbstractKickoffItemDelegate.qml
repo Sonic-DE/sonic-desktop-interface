@@ -69,7 +69,7 @@ T.ItemDelegate {
             actionList = allActions;
         }
         if (actionList && actionList.length > 0) {
-            ActionMenu.plasmoid = plasmoid;
+            ActionMenu.plasmoid = kickoff;
             ActionMenu.menu.visualParent = root;
             if (x !== undefined && y !== undefined) {
                 ActionMenu.menu.open(x, y);

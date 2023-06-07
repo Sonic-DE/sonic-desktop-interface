@@ -42,7 +42,7 @@ PlasmoidItem {
     readonly property Kicker.RootModel rootModel: Kicker.RootModel {
         autoPopulate: false
 
-        appletInterface: plasmoid
+        appletInterface: kickoff
 
         flat: true // have categories, but no subcategories
         sorted: plasmoid.configuration.alphaSort

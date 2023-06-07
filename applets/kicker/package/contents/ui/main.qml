@@ -71,7 +71,7 @@ PlasmoidItem {
         flat: kicker.isDash || plasmoid.configuration.limitDepth
         sorted: plasmoid.configuration.alphaSort
         showSeparators: !kicker.isDash
-        appletInterface: plasmoid
+        appletInterface: kicker
 
         showAllApps: kicker.isDash
         showAllAppsCategorized: true
