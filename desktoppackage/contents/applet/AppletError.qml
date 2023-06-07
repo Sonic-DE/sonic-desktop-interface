@@ -33,15 +33,17 @@ PlasmoidItem {
         if (fullRepresentationItem.width >= root.minimumPreferredWidth) {
             if (fullRepresentationItem.height >= root.minimumPreferredHeight) {
                 return AppletError.Desktop;
-            } else if (fullRepresentationItem.height >= PlasmaCore.Units.iconSizes.huge + buttonLayout.implicitHeight) {
+            } else if (fullRepresentationItem.height >= PlasmaCore.Units.iconSizes.huge + root.fullRepresentationItem.buttonLayout.implicitHeight) {
                 return AppletError.DesktopCompact;
             }
         }
 
         return Plasmoid.formFactor === PlasmaCore.Types.Vertical ? AppletError.VerticalPanel : AppletError.HorizontalPanel;
     }
+    preloadFullRepresentation: true
     fullRepresentation: GridLayout {
         id: fullRep
+        property alias buttonLayout: buttonLayout
         Layout.minimumWidth: {
             switch (root.layoutForm) {
             case AppletError.Desktop:
@@ -146,7 +148,7 @@ PlasmoidItem {
 
             Layout.alignment: Qt.AlignCenter
 
-            rowSpacing: parent.rowSpacing
+            rowSpacing: parent.spacing
             columnSpacing: parent.columnSpacing
             flow: {
                 switch (root.layoutForm) {
