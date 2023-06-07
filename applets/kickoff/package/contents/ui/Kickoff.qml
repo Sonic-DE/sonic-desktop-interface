@@ -42,6 +42,7 @@ PlasmoidItem {
     readonly property Kicker.RootModel rootModel: Kicker.RootModel {
         autoPopulate: false
 
+        // TODO: appletInterface property now can be ported to "applet" and have the real Applet* assigned directly
         appletInterface: kickoff
 
         flat: true // have categories, but no subcategories
