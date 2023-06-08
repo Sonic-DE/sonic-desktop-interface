@@ -310,10 +310,10 @@ ContainmentItem {
                     var pos = mapToItem(root.parent, dragCenter.x, dragCenter.y);
                     var newCont = root.containmentAt(pos.x, pos.y);
 
-                    if (newCont && newCont !== plasmoid) {
+                    if (newCont && newCont.plasmoid !== plasmoid) {
                         var newPos = newCont.mapFromApplet(plasmoid, pos.x, pos.y);
 
-                        newCont.addApplet(appletContainer.applet, newPos.x, newPos.y);
+                        newCont.plasmoid.addApplet(appletContainer.applet.plasmoid, Qt.rect(newPos.x, newPos.y, appletContainer.applet.width, appletContainer.applet.height));
                         appletsLayout.hidePlaceHolder();
                     }
                 }
