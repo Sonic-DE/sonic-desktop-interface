@@ -32,7 +32,7 @@ MouseArea {
             var padding = PlasmaCore.Units.gridUnit * 5;
             if (currentApplet && (mouse.x < -padding || mouse.y < -padding ||
                 mouse.x > width + padding || mouse.y > height + padding)) {
-                var newCont = root.containmentAt(mouse.x, mouse.y);
+                var newCont = root.containmentItemAt(mouse.x, mouse.y);
 
                 if (newCont && newCont !== plasmoid) {
                     var newPos = newCont.mapFromApplet(currentApplet.applet.plasmoid, mouse.x, mouse.y);
