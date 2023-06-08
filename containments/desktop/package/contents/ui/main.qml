@@ -308,7 +308,7 @@ ContainmentItem {
                 configOverlayComponent: ConfigOverlay {}
                 onUserDrag: {
                     var pos = mapToItem(root.parent, dragCenter.x, dragCenter.y);
-                    var newCont = root.containmentAt(pos.x, pos.y);
+                    var newCont = root.containmentItemAt(pos.x, pos.y);
 
                     if (newCont && newCont.plasmoid !== plasmoid) {
                         var newPos = newCont.mapFromApplet(plasmoid, pos.x, pos.y);
