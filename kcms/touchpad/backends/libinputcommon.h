@@ -485,6 +485,7 @@ protected:
         explicit PropInt(const QByteArray &name)
             : Prop<int>(name)
         {
+            // unitialized int member value is UB, must initialize
             val = old = 0;
         }
     };
