@@ -8,12 +8,9 @@ import QtQuick 2.4
 import QtQuick.Layouts 1.0
 import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
-<<<<<<< HEAD
 import org.kde.kirigami 2.20 as Kirigami
-=======
-import org.kde.ksvg 2.0 as KSvg
-import org.kde.plasma.extras 2.0 as PlasmaExtras
->>>>>>> ead08d69a (port QML to KSvg)
+import org.kde.ksvg 1.0 as KSvg
+
 
 PlasmoidItem {
     id: root
