@@ -13,7 +13,7 @@ import org.kde.kquickcontrolsaddons 2.0
 import org.kde.kwindowsystem 1.0
 import org.kde.plasma.extras 2.0 as PlasmaExtras
 import org.kde.plasma.core 2.1 as PlasmaCore
-import org.kde.ksvg 2.0 as KSvg
+import org.kde.ksvg 1.0 as KSvg
 import org.kde.plasma.extras 2.0 as PlasmaExtras
 import org.kde.plasma.private.shell 2.0
 
