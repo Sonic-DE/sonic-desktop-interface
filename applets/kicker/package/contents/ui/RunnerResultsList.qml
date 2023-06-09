@@ -9,7 +9,7 @@ import QtQuick.Layouts 1.15
 
 import org.kde.plasma.components 3.0 as PlasmaComponents3
 import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.ksvg 2.0 as KSvg
+import org.kde.ksvg 1.0 as KSvg
 
 FocusScope {
     width: runnerMatches.width + vertLine.width + vertLine.anchors.leftMargin + runnerMatches.anchors.leftMargin
