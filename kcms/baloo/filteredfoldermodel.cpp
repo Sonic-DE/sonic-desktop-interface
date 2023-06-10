@@ -12,6 +12,7 @@
 
 #include <QIcon>
 
+#include <KIO/Global>
 #include <KLocalizedString>
 #include <QDir>
 #include <QStringList>
@@ -71,11 +72,18 @@ void FilteredFolderModel::updateDirectoryList()
             displayName.replace(0, homePath.length(), QStringLiteral("~/"));
         }
 
-        QString icon = QStringLiteral("folder");
-        if (url == homePath) {
-            icon = QStringLiteral("user-home");
-        } else if (!fromConfig) {
-            icon = QStringLiteral("drive-harddisk");
+        QString icon;
+
+        if (!fromConfig) { // External disk
+            icon = QStringLiteral("device-harddisk");
+        } else { // Normal folder
+            QString iconUrl = "file://" + url;
+
+            if (iconUrl.endsWith('/')) {
+                iconUrl.removeLast();
+            }
+
+            icon = KIO::iconNameForUrl(QUrl(iconUrl));
         }
 
         return FolderInfo{url, displayName, icon, include, fromConfig};
