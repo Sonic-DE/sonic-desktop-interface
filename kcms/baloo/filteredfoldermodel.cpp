@@ -73,7 +73,8 @@ void FilteredFolderModel::updateDirectoryList()
         }
 
         QString iconUrl = "file://" + url;
-        iconUrl.removeLast(); // Remove trailing slash
+        if (iconUrl.endsWith('/'))
+            iconUrl.removeLast();
         QString icon = KIO::iconNameForUrl(QUrl(iconUrl));
 
         return FolderInfo{url, displayName, icon, include, fromConfig};
