@@ -18,7 +18,7 @@ PC3.ToolButton {
 
     property QtObject qAction
 
-    property PlasmaCore.Svg svg
+    property KSvg.Svg svg
     property alias elementId: icon.elementId
     property int iconSize: 32
     property alias toolTip: toolTip.text

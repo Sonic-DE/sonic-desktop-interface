@@ -35,12 +35,12 @@ Item {
     //END
 
     //BEGIN Reusable Objects
-    readonly property PlasmaCore.Svg lineSvg: KSvg.Svg {
+    readonly property KSvg.Svg lineSvg: KSvg.Svg {
         imagePath: "widgets/line"
         property int horLineHeight: lineSvg.elementSize("horizontal-line").height
         property int vertLineWidth: lineSvg.elementSize("vertical-line").width
     }
-    readonly property PlasmaCore.Svg arrowsSvg: KSvg.Svg {
+    readonly property KSvg.Svg arrowsSvg: KSvg.Svg {
         imagePath: "widgets/arrows"
     }
     //END
