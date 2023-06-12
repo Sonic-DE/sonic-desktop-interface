@@ -71,7 +71,7 @@ Item {
         filterMinimized: true
 
         screenGeometry: panel.screenGeometry
-        regionGeometry: panel.thickness, panel.offset, panel.length, panel.geometryByDistance(0)
+        regionGeometry: panel.thickness, panel.offset, panel.length, panel.location, Screen.width, Screen.height, panel.geometryByDistance(1 /* Touch the border */ + Math.max(bottomFloatingPadding, topFloatingPadding, leftFloatingPadding, rightFloatingPadding))
         virtualDesktop: virtualDesktopInfo.currentDesktop
         activity: activityInfo.currentActivity
 
