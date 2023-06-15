@@ -753,7 +753,7 @@ KCM.SimpleKCM{
 
             spacing: Kirigami.Units.smallSpacing
             // hide initially
-            visible:false
+            visible: false
 
             function load() {
                 enabled = touchpad.supportsClickMethodAreas && touchpad.supportsClickMethodClickfinger
