@@ -45,7 +45,7 @@ const Parameter libinputProperties[] = {
     {"tapToClick", PT_INT, 0, 1, LIBINPUT_PROP_TAP, 8, 0},
     {"tapToClickEnabledByDefault", PT_INT, 0, 1, LIBINPUT_PROP_TAP_DEFAULT, 8, 0},
 
-    /* LMR */
+    /* LMR 1/2/3-finger tapping to Left/right/middele or lefit/middle/right */
     {"lrmTapButtonMapEnabledByDefault", PT_INT, 0, 1, LIBINPUT_PROP_TAP_BUTTONMAP_DEFAULT, 8, 0},
     {"lrmTapButtonMap", PT_INT, 0, 1, LIBINPUT_PROP_TAP_BUTTONMAP, 8, 0},
     {"lmrTapButtonMapEnabledByDefault", PT_INT, 0, 1, LIBINPUT_PROP_TAP_BUTTONMAP_DEFAULT, 8, 1},
