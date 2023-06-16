@@ -118,7 +118,7 @@ PlasmoidItem {
     //END
 
     //BEGIN Metrics
-    readonly property PlasmaCore.FrameSvgItem backgroundMetrics: KSvg.FrameSvgItem {
+    readonly property KSvg.FrameSvgItem backgroundMetrics: KSvg.FrameSvgItem {
         // Inset defaults to a negative value when not set by margin hints
         readonly property real leftPadding: margins.left - Math.max(inset.left, 0)
         readonly property real rightPadding: margins.right - Math.max(inset.right, 0)

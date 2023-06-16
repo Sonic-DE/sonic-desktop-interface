@@ -194,7 +194,7 @@ PlasmoidItem {
         PlasmaComponents3.Label {
             required property int index
             required property var model
-            required property PlasmaCore.FrameSvgItem desktopFrame
+            required property KSvg.FrameSvgItem desktopFrame
 
             anchors {
                 fill: parent

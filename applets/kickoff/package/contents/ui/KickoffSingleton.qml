@@ -46,7 +46,7 @@ Item {
     //END
 
     //BEGIN Metrics
-    readonly property PlasmaCore.FrameSvgItem listItemMetrics: KSvg.FrameSvgItem {
+    readonly property KSvg.FrameSvgItem listItemMetrics: KSvg.FrameSvgItem {
         visible: false
         imagePath: "widgets/listitem"
         prefix: "normal"
