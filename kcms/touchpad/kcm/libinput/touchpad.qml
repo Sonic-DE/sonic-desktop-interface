@@ -256,18 +256,18 @@ KCM.SimpleKCM{
 
             function onAccelSpeedChanged(val) {
                 // check slider
-                if (val != accelSpeedSlider.accelSpeedValue) {
+                if (val !== accelSpeedSlider.accelSpeedValue) {
                     accelSpeedSlider.accelSpeedValue = val
                     accelSpeedSlider.value = Math.round(6 + (val / 100) / 0.2)
                 }
 
                 // check spinbox
-                if (val != accelSpeedSpinbox.value) {
+                if (val !== accelSpeedSpinbox.value) {
                     accelSpeedSpinbox.value = val
                 }
 
                 // check libinput accelspeed
-                if ((val / 100) != touchpad.pointerAcceleration) {
+                if ((val / 100) !== touchpad.pointerAcceleration) {
                     touchpad.pointerAcceleration = val / 100
                     root.changeSignal()
                 }
@@ -529,7 +529,7 @@ KCM.SimpleKCM{
                     return
                 }
 
-                if(touchpad.lmrTapButtonMap) {
+                if (touchpad.lmrTapButtonMap) {
                     multiTapMiddleClick.checked = true
                 } else {
                     multiTapRightClick.checked = true
