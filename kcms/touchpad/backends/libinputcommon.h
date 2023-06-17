@@ -358,7 +358,7 @@ public:
 
     bool supportsLmrTapButtonMap() const
     {
-        return true;
+        return m_tapFingerCount.val > 1;
     }
     bool lmrTapButtonMapEnabledByDefault() const
     {
