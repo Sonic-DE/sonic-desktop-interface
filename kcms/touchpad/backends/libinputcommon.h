@@ -358,7 +358,7 @@ public:
 
     bool supportsLmrTapButtonMap() const
     {
-        return m_lmrTapButtonMap.avail;
+        return true;
     }
     bool lmrTapButtonMapEnabledByDefault() const
     {
