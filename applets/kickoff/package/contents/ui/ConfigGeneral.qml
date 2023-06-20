@@ -14,7 +14,6 @@ import QtQuick.Controls 2.5
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.iconthemes as KIconThemes
 import org.kde.kirigami 2.20 as Kirigami
-import org.kde.plasma.extras 2.0 as PlasmaExtras
 import org.kde.kcmutils as KCM
 import org.kde.config as KConfig
 

@@ -13,7 +13,6 @@ import org.kde.iconthemes as KIconThemes
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.kirigami 2.20 as Kirigami
 
-import org.kde.plasma.private.kicker 0.1 as Kicker
 
 Kirigami.FormLayout {
     id: configGeneral

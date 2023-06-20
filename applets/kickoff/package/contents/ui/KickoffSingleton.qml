@@ -11,8 +11,6 @@ import QtQml 2.15
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.kirigami 2.20 as Kirigami
 import org.kde.plasma.plasma5support 2.0 as P5Support
-import org.kde.plasma.components 3.0 as PC3
-import org.kde.plasma.private.kicker 0.1 as Kicker
 
 // Using Item because it has a default property.
 // Trying to create a default property for a QtObject seems to cause segfaults.
