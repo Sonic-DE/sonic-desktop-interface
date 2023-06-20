@@ -12,8 +12,8 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.extras 2.0 as PlasmaExtras
 import org.kde.kirigami 2.20 as Kirigami
 
-import org.kde.kquickcontrolsaddons 2.0
-import org.kde.config  // KAuthorize
+import org.kde.kcmutils  // KCMLauncher
+import org.kde.config  // KAuthorized
 
 import org.kde.activities 0.1 as Activities
 import org.kde.plasma.activityswitcher 1.0 as ActivitySwitcher
@@ -138,7 +138,7 @@ Item {
                 PlasmaComponents.ToolTip.visible: hovered
                 PlasmaComponents.ToolTip.text: i18nd("plasma_shell_org.kde.plasma.desktop", "Configure activity")
 
-                onClicked: KCMShell.openSystemSettings("kcm_activities", root.activityId)
+                onClicked: KCMLauncher.openSystemSettings("kcm_activities", root.activityId)
 
                 anchors {
                     right       : deleteButton.left
@@ -156,7 +156,7 @@ Item {
                 PlasmaComponents.ToolTip.text: i18nd("plasma_shell_org.kde.plasma.desktop", "Delete")
 
                 onClicked: ActivitySwitcher.Backend.removeActivity(root.activityId)
-                visible: KAuthorize.authorize("plasma-desktop/add_activities")
+                visible: KAuthorized.authorize("plasma-desktop/add_activities")
 
                 anchors {
                     right       : parent.right
