@@ -303,4 +303,39 @@ Item {
             }
         }
     }
+
+    Column {
+        anchors {
+            bottom: parent.bottom
+            bottomMargin: Kirigami.Units.gridUnit * 10
+            right: parent.right
+            rightMargin: Kirigami.Units.gridUnit * 5
+        }
+        z: root.containment.z + 1
+        spacing: Kirigami.Units.smallSpacing
+
+        opacity: 0.5
+
+        Text {
+            text: "Report Bugs"
+            font.pixelSize: 24
+            style: Text.Outline
+            styleColor: "white"
+        }
+
+        Text {
+            text: "Go to https://bugs.kde.org to report Plasma 6 bugs"
+            font.pixelSize: 16
+            style: Text.Outline
+            styleColor: "white"
+        }
+
+        HoverHandler {
+            cursorShape: Qt.PointingHandCursor
+        }
+
+        TapHandler {
+            onTapped: Qt.openUrlExternally("https://bugs.kde.org/")
+        }
+    }
 }
