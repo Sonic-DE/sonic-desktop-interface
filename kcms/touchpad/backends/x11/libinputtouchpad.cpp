@@ -172,7 +172,14 @@ LibinputTouchpad::LibinputTouchpad(Display *display, int deviceId)
     /* FingerCount cannot be zero */
     if (!m_tapFingerCount.val) {
         m_tapFingerCount.avail = true;
-        m_tapFingerCount.set(3);
+
+        // when lmr or rml are enabled by default, fingercount must be at least 3
+        if ((getParameter(findParameter(m_lmrTapButtonMapEnabledByDefault.name)).toBool()
+             || getParameter(findParameter(m_lrmTapButtonMapEnabledByDefault.name)).toBool())) {
+            m_tapFingerCount.set(3);
+        } else {
+            m_tapFingerCount.set(1);
+        }
     }
     m_config = KSharedConfig::openConfig(QStringLiteral("touchpadxlibinputrc"));
 }
