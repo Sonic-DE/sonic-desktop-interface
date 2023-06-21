@@ -302,4 +302,24 @@ Item {
             }
         }
     }
+
+    Connections {
+        enabled: previewBannerLoader.active
+        target: root.containment.plasmoid
+        function onAvailableScreenRegionChanged() {
+            previewBannerLoader.updateTrigger = !previewBannerLoader.updateTrigger;
+        }
+    }
+
+    Loader {
+        id: previewBannerLoader
+        property bool updateTrigger: false
+        readonly property point pos: updateTrigger, active ? root.containment.adjustToAvailableScreenRegion(root.containment.width + root.containment.x - item.width - Kirigami.Units.largeSpacing, root.containment.height + root.containment.y - item.height - Kirigami.Units.largeSpacing, item.width + Kirigami.Units.largeSpacing, item.height + Kirigami.Units.largeSpacing) : Qt.point()
+        x: pos.x
+        y: pos.y
+        z: Number(root.containment?.z) + 1
+        active: root.containment && Boolean(desktop.showPreviewBanner)
+        visible: active
+        source: "PreviewBanner.qml"
+    }
 }
