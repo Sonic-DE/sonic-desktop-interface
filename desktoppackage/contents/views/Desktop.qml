@@ -303,4 +303,30 @@ Item {
             }
         }
     }
+
+    Rectangle {
+        id: betaFlag
+
+        anchors {
+            bottom: parent.bottom
+            bottomMargin: Kirigami.Units.gridUnit
+            right: parent.right
+            rightMargin: Kirigami.Units.gridUnit
+        }
+        width: previewText.contentWidth + Kirigami.Units.largeSpacing * 2
+        height: previewText.contentHeight + Kirigami.Units.largeSpacing * 2
+        z: root.containment.z + 1
+
+        color: "gray"
+        opacity: 0.5
+
+        Text {
+            id: previewText
+            anchors.centerIn: parent
+            text: "Plasma 6 Preview"
+            font.pixelSize: 36
+            style: Text.Outline
+            styleColor: "white"
+        }
+    }
 }
