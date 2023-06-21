@@ -302,4 +302,24 @@ Item {
             }
         }
     }
+
+    Connections {
+        enabled: previewFlagLoader.active
+        target: root.containment.plasmoid
+        function onAvailableScreenRegionChanged() {
+            previewFlagLoader.updateTrigger = !previewFlagLoader.updateTrigger;
+        }
+    }
+
+    Loader {
+        id: previewFlagLoader
+        property bool updateTrigger: false
+        readonly property point pos: updateTrigger, active ? root.containment.adjustToAvailableScreenRegion(root.containment.width + root.containment.x - item.implicitWidth - Kirigami.Units.largeSpacing, root.containment.height + root.containment.y - item.implicitHeight - Kirigami.Units.largeSpacing, item.implicitWidth + Kirigami.Units.largeSpacing, item.implicitHeight + Kirigami.Units.largeSpacing) : Qt.point()
+        x: pos.x
+        y: pos.y
+        z: Number(root.containment?.z) + 1
+        active: root.containment && Boolean(desktop.showPreviewFlag)
+        visible: active
+        source: "PreviewFlag.qml"
+    }
 }
