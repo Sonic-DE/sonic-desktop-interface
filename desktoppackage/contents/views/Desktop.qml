@@ -303,4 +303,30 @@ Item {
             }
         }
     }
+
+    Column {
+        anchors {
+            bottom: parent.bottom
+            bottomMargin: Kirigami.Units.gridUnit * 5
+            right: parent.right
+            rightMargin: Kirigami.Units.gridUnit * 5
+        }
+        z: root.containment.z + 1
+
+        opacity: 0.5
+
+        Text {
+            text: "Activate Plasma"
+            font.pixelSize: 24
+            style: Text.Outline
+            styleColor: "white"
+        }
+
+        Text {
+            text: "Go to System Settings to activate Plasma"
+            font.pixelSize: 12
+            style: Text.Outline
+            styleColor: "white"
+        }
+    }
 }
