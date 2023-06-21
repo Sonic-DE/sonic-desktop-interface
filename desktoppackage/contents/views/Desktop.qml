@@ -303,4 +303,16 @@ Item {
             }
         }
     }
+
+    Loader {
+        anchors {
+            bottom: parent.bottom
+            bottomMargin: Kirigami.Units.gridUnit * 10
+            right: parent.right
+            rightMargin: Kirigami.Units.gridUnit * 5
+        }
+        z: root.containment.z + 1
+        active: Boolean(desktop.showPreviewFlag)
+        source: "PreviewFlag.qml"
+    }
 }
