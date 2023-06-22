@@ -190,7 +190,6 @@ Item {
                     }
                 }
                 sidePanel.visible = true;
-                KWindowSystem.forceActivateWindow(sidePanel)
             }
             onStateChanged: {
                 if (sidePanelStack.state == "closed") {
