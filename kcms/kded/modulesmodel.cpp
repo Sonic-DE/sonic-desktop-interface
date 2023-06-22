@@ -147,7 +147,7 @@ void ModulesModel::load()
 
     m_data.clear();
 
-    KConfig kdedrc(QStringLiteral("kded5rc"), KConfig::NoGlobals);
+    KConfig kdedrc(QStringLiteral("kded6rc"), KConfig::NoGlobals);
 
     QStringList knownModules;
 

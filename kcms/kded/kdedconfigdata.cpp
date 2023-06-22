@@ -17,7 +17,7 @@ KDEDConfigData::KDEDConfigData(QObject *parent)
 
 bool KDEDConfigData::isDefaults() const
 {
-    KConfig kdedrc(QStringLiteral("kded5rc"), KConfig::NoGlobals);
+    KConfig kdedrc(QStringLiteral("kded6rc"), KConfig::NoGlobals);
     const QStringList groupList = kdedrc.groupList();
     for (auto &groupName : groupList) {
         if (groupName.startsWith(QStringLiteral("Module-"))) {
