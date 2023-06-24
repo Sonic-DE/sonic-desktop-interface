@@ -73,6 +73,9 @@ find_package(KF6 ${KF6_MIN_VERSION} REQUIRED COMPONENTS
     IconThemes
     XmlGui
 )
+if(BUILD_TESTING)
+    find_package(Qt6Test ${QT_MIN_VERSION} CONFIG REQUIRED)
+endif()
 
 # TODO re-enable once KAccounts is ported to Qt6
 # find_package(AccountsQt6 ${ACCOUNTSQT_DEP_VERSION} CONFIG)
