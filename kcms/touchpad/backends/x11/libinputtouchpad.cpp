@@ -382,7 +382,7 @@ bool LibinputTouchpad::valueLoader(Prop<T> &prop)
 }
 
 template<typename T>
-QString LibinputTouchpad::valueWriter(Prop<T> &prop)
+QString LibinputTouchpad::valueWriter(const Prop<T> &prop)
 {
     const Parameter *p = findParameter(QString::fromLatin1(prop.name));
 
@@ -395,8 +395,6 @@ QString LibinputTouchpad::valueWriter(Prop<T> &prop)
         qCCritical(KCM_TOUCHPAD) << "Cannot set property " + QString::fromLatin1(prop.name);
         return QStringLiteral("Cannot set property ") + QString::fromLatin1(prop.name);
     }
-    prop.old = prop.val;
-
     auto touchpadConfig = m_config->group(m_name);
     touchpadConfig.writeEntry(QString(prop.name), prop.val);
     touchpadConfig.config()->sync();
