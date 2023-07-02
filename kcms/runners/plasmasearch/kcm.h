@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include <KLocalizedString>
 #include <KPluginModel>
 #include <KQuickManagedConfigModule>
 #include <KSharedConfig>
@@ -28,6 +29,7 @@ public:
     {
         return m_model;
     }
+    Q_PROPERTY(QString favoriteCategory MEMBER m_favoriteCategory CONSTANT)
 
 public Q_SLOTS:
     void load() override;
@@ -39,6 +41,9 @@ public Q_SLOTS:
     {
         showKCM(KPluginMetaData(QStringLiteral("plasma/kcms/desktop/kcm_krunnersettings")), {QStringLiteral("openedFromPluginSettings")});
     };
+    void addToFavorites(const KPluginMetaData &data);
+    void removeFromFavorites(const KPluginMetaData &data);
+    void movePlugin(int sourceIndex, int destIndex);
 
 private:
     void setDefaultIndicatorVisible(QWidget *widget, bool visible);
@@ -47,4 +52,6 @@ private:
     KSharedConfigPtr m_config;
     QString m_pluginID;
     KCMultiDialog *m_krunnerSettingsDialog = nullptr;
+    const QString m_favoriteCategory = i18n("Favorite Plugins");
+    const QString m_normalCategory = i18n("Available Plugins");
 };

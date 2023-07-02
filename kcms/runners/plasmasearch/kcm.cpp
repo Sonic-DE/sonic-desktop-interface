@@ -12,7 +12,6 @@
 #include <KCModuleData>
 #include <KCMultiDialog>
 #include <KConfigGroup>
-#include <KLocalizedString>
 #include <KPluginFactory>
 #include <KRunner/RunnerManager>
 
@@ -84,7 +83,23 @@ void SearchConfigModule::reloadPlugins()
     m_model->clear();
 
     m_model->setConfig(m_config->group("Plugins"));
-    m_model->addPlugins(KRunner::RunnerManager::runnerMetaDataList(), i18n("Available Plugins"));
+    m_model->addUnsortablePlugins(KRunner::RunnerManager::runnerMetaDataList().sliced(0, 5), m_favoriteCategory);
+    m_model->addPlugins(KRunner::RunnerManager::runnerMetaDataList().sliced(5, 20), m_normalCategory);
+}
+void SearchConfigModule::addToFavorites(const KPluginMetaData &data)
+{
+    m_model->removePlugin(data);
+    m_model->addUnsortablePlugins({data}, m_favoriteCategory);
+}
+void SearchConfigModule::removeFromFavorites(const KPluginMetaData &data)
+{
+    m_model->removePlugin(data);
+    m_model->addPlugins({data}, m_normalCategory);
+}
+
+void SearchConfigModule::movePlugin(int sourceIndex, int destIndex)
+{
+    m_model->moveRow(QModelIndex(), sourceIndex, QModelIndex(), destIndex);
 }
 
 void SearchConfigModule::showKCM(const KPluginMetaData &data, const QVariantList args, const KPluginMetaData &krunnerPluginData) const

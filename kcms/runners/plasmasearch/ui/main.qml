@@ -53,12 +53,36 @@ KCMUtils.ScrollViewKCM {
     }
 
     view: KCMUtils.PluginSelector {
+        id: pluginSelector
         sourceModel: kcm.model
         query: searchField.text
-        delegate: KCMUtils.PluginDelegate {
+        delegate: Item {
+            id: delegate
+            width: pluginSelector.width
+            implicitHeight: pluginDelegate.implicitHeight
+            property bool isFavorite: model.category === kcm.favoriteCategory
+            KCMUtils.PluginDelegate {
+                id: pluginDelegate
+                property var drag: Kirigami.ListItemDragHandle {
+                    listItem: delegate
+                    listView: pluginSelector
+                    onMoveRequested: (oldIndex, newIndex) => {
+                        kcm.movePlugin(oldIndex, newIndex)
+                    }
+                }
+
+                leading: isFavorite ? drag : null
+            additionalActions: [
+                Kirigami.Action {
+                    tooltip: isFavorite ? i18n("Add to favorites") : i18n("Remove from favorites")
+                    icon.name: isFavorite ? "starred-symbolic": "non-starred-symbolic"
+                    onTriggered: isFavorite ? kcm.removeFromFavorites(model.metaData) : kcm.addToFavorites(model.metaData)
+                }
+            ]
             onConfigTriggered: kcm.showKCM(model.config, [], model.metaData)
             highlighted: false
             hoverEnabled: false
+        }
         }
     }
 }
