@@ -53,12 +53,40 @@ KCMUtils.ScrollViewKCM {
     }
 
     view: KCMUtils.PluginSelector {
+        id: pluginSelector
         sourceModel: kcm.model
         query: searchField.text
-        delegate: KCMUtils.PluginDelegate {
+        delegate: Item {
+            id: delegate
+            width: pluginSelector.width
+            implicitHeight: pluginDelegate.implicitHeight
+            property bool isFavorite: model.category === kcm.favoriteCategory
+            KCMUtils.PluginDelegate {
+                id: pluginDelegate
+                property var drag: Kirigami.ListItemDragHandle {
+                    property int dropNewIndex
+                    listItem: pluginDelegate
+                    listView: pluginSelector
+                        // Moving the rows now would cause a model reset and we could not drag an entry multiple rows up/down
+                    onMoveRequested: (oldIndex, newIndex) => (dropNewIndex = newIndex)
+                    onDropped: () => kcm.movePlugin(model.metaData, dropNewIndex)
+                }
+                Component.onCompleted: {
+                    if (isFavorite) {
+                        leading = drag
+                    }
+                }
+            additionalActions: [
+                Kirigami.Action {
+                    tooltip: isFavorite ? i18n("Add to favorites") : i18n("Remove from favorites")
+                    icon.name: isFavorite ? "starred-symbolic": "non-starred-symbolic"
+                    onTriggered: isFavorite ? kcm.removeFromFavorites(model.metaData) : kcm.addToFavorites(model.metaData)
+                }
+            ]
             onConfigTriggered: kcm.showKCM(model.config, [], model.metaData)
             highlighted: false
             hoverEnabled: false
+        }
         }
     }
 }
