@@ -388,7 +388,7 @@ void SwitcherBackend::onCurrentActivityChanged(const QString &id)
     if (!m_previousActivity.isEmpty()) {
         // When leaving an activity, say goodbye and fondly remember
         // the last time we saw it
-        times.writeEntry(m_previousActivity, now);
+        times.writeEntry(m_previousActivity, now - 1);
     }
 
     times.sync();
