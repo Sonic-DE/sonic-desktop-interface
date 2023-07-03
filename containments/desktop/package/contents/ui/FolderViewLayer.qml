@@ -399,6 +399,14 @@ FocusScope {
         }
     }
 
+
+    PlasmaCore.Action {
+        id: viewPropertiesAction
+        text: i18n("Icons")
+        icon.name: "view-list-icons"
+        menu: viewPropertiesMenu.menu
+    }
+
     Component.onCompleted: {
         if (!isContainment) {
             label = labelComponent.createObject(folderViewLayerComponent);
@@ -410,8 +418,12 @@ FocusScope {
         for (var i = 0; i < sharedActions.length; i++) {
             actionName = sharedActions[i];
             modelAction = folderView.model.action(actionName);
-            plasmoid.setAction(actionName, modelAction.text, Folder.MenuHelper.iconName(modelAction));
-
+            //plasmoid.setAction(actionName, modelAction.text, Folder.MenuHelper.iconName(modelAction));
+            plasmoid.contextualActions.push(modelAction)
+            if (actionName === "newMenu") {
+                plasmoid.contextualActions.push(viewPropertiesAction)
+            }
+/*
             var plasmoidAction = plasmoid.action(actionName);
             plasmoidAction.shortcut = modelAction.shortcut;
             plasmoidAction.shortcutContext = Qt.WidgetShortcut;
@@ -424,7 +436,7 @@ FocusScope {
                 Folder.MenuHelper.setMenu(plasmoid.action("viewProperties"), viewPropertiesMenu.menu);
             } else {
                 plasmoidAction.triggered.connect(modelAction.trigger);
-            }
+            }*/
         }
 
         plasmoid.setActionSeparator("separator2");
