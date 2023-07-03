@@ -64,14 +64,18 @@ KCMUtils.ScrollViewKCM {
             KCMUtils.PluginDelegate {
                 id: pluginDelegate
                 property var drag: Kirigami.ListItemDragHandle {
-                    listItem: delegate
+                    listItem: pluginDelegate
                     listView: pluginSelector
                     onMoveRequested: (oldIndex, newIndex) => {
                         kcm.movePlugin(oldIndex, newIndex)
                     }
                 }
 
-                leading: isFavorite ? drag : null
+                Component.onCompleted: {
+                    if (isFavorite) {
+                        leading = drag
+                    }
+                }
             additionalActions: [
                 Kirigami.Action {
                     tooltip: isFavorite ? i18n("Add to favorites") : i18n("Remove from favorites")
