@@ -47,7 +47,7 @@ ContainmentItem {
     LayoutMirroring.childrenInherit: true
 
     property bool isFolder: (plasmoid.pluginName === "org.kde.plasma.folder")
-    property bool isContainment: plasmoid.isContainment
+    property bool isContainment: Plasmoid.isContainment
     property bool isPopup: (plasmoid.location !== PlasmaCore.Types.Floating)
     property bool useListViewMode: isPopup && plasmoid.configuration.viewMode === 0
 
@@ -365,13 +365,17 @@ ContainmentItem {
             }
         }
 
+      //  Plasmoid.contextualActions: folderViewLayer.model.contextualActions
         Component.onCompleted: {
-            if (!isContainment) {
+            if (!Plasmoid.isContainment) {
                 return;
             }
 
+            // TODO: missing way to change name/icon to internal actions
             // Customize the icon and text to improve discoverability
-            plasmoid.setAction("configure", i18n("Configure Desktop and Wallpaper…"), "preferences-desktop-wallpaper")
+            let action = Plasmoid.internalAction("configure")
+            action.text = i18n("Configure Desktop and Wallpaper…")
+            action.icon.name = "preferences-desktop-wallpaper"
 
             updateGridSize();
         }
