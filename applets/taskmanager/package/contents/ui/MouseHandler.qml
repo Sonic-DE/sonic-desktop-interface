@@ -25,15 +25,7 @@ DropArea {
         if (above) {
             return above.itemIndex;
         } else {
-            var distance = tasks.vertical ? x : y;
-            var step = tasks.vertical ? LayoutManager.taskWidth() : LayoutManager.taskHeight();
-            var stripe = Math.ceil(distance / step);
-
-            if (stripe === LayoutManager.calculateStripes()) {
-                return tasks.tasksModel.count - 1;
-            } else {
-                return stripe * LayoutManager.tasksPerStripe();
-            }
+            return Math.ceil((tasks.vertical ? x + taskList.contentX : y + taskList.contentY) / taskList.totalLength);
         }
     }
 
@@ -53,7 +45,7 @@ DropArea {
         if (isGroupDialog) {
             above = target.itemAt(event.x, event.y);
         } else {
-            above = target.childAt(event.x, event.y);
+            above = target.itemAt(event.x + taskList.contentX, event.y + taskList.contentY);
         }
 
         if (!above) {
