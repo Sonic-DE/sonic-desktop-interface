@@ -406,6 +406,10 @@ FocusScope {
         icon.name: "view-list-icons"
         menu: viewPropertiesMenu.menu
     }
+    PlasmaCore.Action {
+        id: actionSeparator
+        isSeparator: true
+    }
 
     Component.onCompleted: {
         if (!isContainment) {
@@ -418,28 +422,13 @@ FocusScope {
         for (var i = 0; i < sharedActions.length; i++) {
             actionName = sharedActions[i];
             modelAction = folderView.model.action(actionName);
-            //plasmoid.setAction(actionName, modelAction.text, Folder.MenuHelper.iconName(modelAction));
             plasmoid.contextualActions.push(modelAction)
             if (actionName === "newMenu") {
                 plasmoid.contextualActions.push(viewPropertiesAction)
             }
-/*
-            var plasmoidAction = plasmoid.action(actionName);
-            plasmoidAction.shortcut = modelAction.shortcut;
-            plasmoidAction.shortcutContext = Qt.WidgetShortcut;
-
-            if (actionName === "newMenu") {
-                Folder.MenuHelper.setMenu(plasmoidAction, folderView.model.newMenu);
-                plasmoid.setActionSeparator("separator1");
-
-                plasmoid.setAction("viewProperties", i18n("Icons"), "view-list-icons");
-                Folder.MenuHelper.setMenu(plasmoid.action("viewProperties"), viewPropertiesMenu.menu);
-            } else {
-                plasmoidAction.triggered.connect(modelAction.trigger);
-            }*/
         }
 
-        plasmoid.setActionSeparator("separator2");
+        plasmoid.contextualActions.push(actionSeparator);
 
         plasmoid.contextualActionsAboutToShow.connect(updateContextualActions);
         plasmoid.contextualActionsAboutToShow.connect(folderView.model.clearSelection);
