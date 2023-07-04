@@ -26,10 +26,27 @@ PlasmoidItem {
         hoverEnabled: true
         Plasmoid.status: hasMultipleKeyboardLayouts ? PlasmaCore.Types.ActiveStatus : PlasmaCore.Types.HiddenStatus
 
+        Instantiator {
+            model: switcher.keyboardLayout.layoutsList.length
+            delegate: PlasmaCore.Action {
+                text: switcher.keyboardLayout.layoutsList[modelData].longName
+                icon.name: KCMKeyboard.Flags.getIcon(switcher.keyboardLayout.layoutsList[modelData].shortName)
+                onTriggered: {
+                    layoutSelected(modelData);
+                }
+            }
+            onObjectAdded: (index, object) => {
+                print("Added layout" + object)
+                Plasmoid.contextualActions.push(object)
+            }
+            onObjectRemoved: (index, object) => {
+                Plasmoid.contextualActions.splice(Plasmoid.contextualActions.indexOf(object), 1)
+            }
+        }
         Connections {
             target: switcher.keyboardLayout
 
-            function onLayoutsListChanged() {
+            function onLayoutsListChanged() {return;
                 root.Plasmoid.clearActions();
 
                 switcher.keyboardLayout.layoutsList.forEach((layout, layoutIndex) => {

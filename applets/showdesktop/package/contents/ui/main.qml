@@ -165,32 +165,23 @@ PlasmoidItem {
             textFormat: Text.PlainText
         }
 
-        function action_minimizeall() {
-            minimizeAllController.toggle();
-        }
-
-        function action_peek() {
-            peekController.toggle();
-        }
-
-        Component.onCompleted: {
-            var action;
-
-            Plasmoid.setAction("minimizeall", "");
-            action = Plasmoid.action("minimizeall")
-            action.checkable = true;
-            action.checked = Qt.binding(() => minimizeAllController.active);
-            action.text = Qt.binding(() => minimizeAllController.titleInactive);
-            action.toolTip = Qt.binding(() => minimizeAllController.description);
-            action.enabled = Qt.binding(() => !peekController.active)
-
-            Plasmoid.setAction("peek", "");
-            action = Plasmoid.action("peek")
-            action.checkable = true;
-            action.checked = Qt.binding(() => peekController.active);
-            action.text = Qt.binding(() => peekController.titleInactive);
-            action.toolTip = Qt.binding(() => peekController.description);
-            action.enabled = Qt.binding(() => !minimizeAllController.active)
-        }
+        Plasmoid.contextualActions: [
+            PlasmaCore.Action {
+                text: minimizeAllController.titleInactive
+                checkable: true
+                checked: minimizeAllController.active
+                toolTip: minimizeAllController.description
+                enabled: !peekController.active
+                onTriggered: minimizeAllController.toggle()
+            },
+            PlasmaCore.Action {
+                text: peekController.titleInactive
+                checkable: true
+                checked: peekController.active
+                toolTip: peekController.description
+                enabled: !minimizeAllController.active
+                onTriggered: peekController.toggle()
+            }
+        ]
     }
 }
