@@ -325,7 +325,7 @@ ContainmentItem {
                             easing.type: Easing.InOutQuad
                         }
                 }
-                
+
                     DropBehavior on x { }
                     DropBehavior on y { }
              }
@@ -365,18 +365,12 @@ ContainmentItem {
             }
         }
 
-      //  Plasmoid.contextualActions: folderViewLayer.model.contextualActions
         Component.onCompleted: {
             if (!Plasmoid.isContainment) {
                 return;
             }
 
-            // TODO: missing way to change name/icon to internal actions
-            // Customize the icon and text to improve discoverability
-            let action = Plasmoid.internalAction("configure")
-            action.text = i18n("Configure Desktop and Wallpaper…")
-            action.icon.name = "preferences-desktop-wallpaper"
-
+            Plasmoid.updateInternalAction("configure", i18n("Configure Desktop and Wallpaper…"), "preferences-desktop-wallpaper");
             updateGridSize();
         }
     }
