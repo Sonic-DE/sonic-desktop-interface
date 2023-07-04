@@ -24,8 +24,6 @@ Kirigami.FormLayout {
     property alias cfg_highlightWindows: highlightWindows.checked
     property bool cfg_indicateAudioStreams
     property alias cfg_fill: fill.checked
-    property alias cfg_maxStripes: maxStripes.value
-    property alias cfg_forceStripes: forceStripes.checked
     property int cfg_iconSpacing: 0
 
     CheckBox {
@@ -54,18 +52,6 @@ Kirigami.FormLayout {
 
     Item {
         Kirigami.FormData.isSection: true
-    }
-
-    SpinBox {
-        id: maxStripes
-        Kirigami.FormData.label: plasmoidVertical ? i18n("Maximum columns:") : i18n("Maximum rows:")
-        from: 1
-    }
-
-    CheckBox {
-        id: forceStripes
-        text: plasmoidVertical ? i18n("Always arrange tasks in rows of as many columns") : i18n("Always arrange tasks in columns of as many rows")
-        enabled: maxStripes.value > 1
     }
 
     Item {
