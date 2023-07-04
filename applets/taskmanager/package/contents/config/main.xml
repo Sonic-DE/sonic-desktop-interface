@@ -58,15 +58,6 @@
       <label>Whether launcher tasks are sorted separately at the left side of the widget or can be mixed with other tasks.</label>
       <default>true</default>
     </entry>
-    <entry name="maxStripes" type="Int">
-      <label>The maximum number of rows (in a horizontal-orientation containment, i.e. panel) or columns (in a vertical-orientation containment) to layout task buttons in.</label>
-      <default>1</default>
-      <min>1</min>
-    </entry>
-    <entry name="forceStripes" type="Bool">
-      <label>Whether to try and always layout task buttons in as many rows/columns as set via maxStripes.</label>
-      <default>false</default>
-    </entry>
     <entry name="showToolTips" type="Bool">
       <label>Whether to show tooltips when hovering task buttons.</label>
       <default>true</default>
