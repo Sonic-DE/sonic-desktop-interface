@@ -36,7 +36,6 @@ PlasmoidItem {
                 }
             }
             onObjectAdded: (index, object) => {
-                print("Added layout" + object)
                 Plasmoid.contextualActions.push(object)
             }
             onObjectRemoved: (index, object) => {
@@ -45,17 +44,6 @@ PlasmoidItem {
         }
         Connections {
             target: switcher.keyboardLayout
-
-            function onLayoutsListChanged() {return;
-                root.Plasmoid.clearActions();
-
-                switcher.keyboardLayout.layoutsList.forEach((layout, layoutIndex) => {
-                    const actionName = layoutIndex.toString();
-                    const actionText = layout.longName;
-                    const icon = KCMKeyboard.Flags.getIcon(layout.shortName)
-                    root.Plasmoid.setAction(actionName, actionText, icon);
-                });
-            }
 
             function onLayoutChanged() {
                 root.Plasmoid.activated();
