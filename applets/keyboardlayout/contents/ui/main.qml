@@ -27,12 +27,13 @@ PlasmoidItem {
         Plasmoid.status: hasMultipleKeyboardLayouts ? PlasmaCore.Types.ActiveStatus : PlasmaCore.Types.HiddenStatus
 
         Instantiator {
-            model: switcher.keyboardLayout.layoutsList.length
+            id: actionsInstantiator
+            model: switcher.keyboardLayout.layoutsList
             delegate: PlasmaCore.Action {
-                text: switcher.keyboardLayout.layoutsList[modelData].longName
-                icon.name: KCMKeyboard.Flags.getIcon(switcher.keyboardLayout.layoutsList[modelData].shortName)
+                text: modelData.longName
+                icon.icon: KCMKeyboard.Flags.getIcon(modelData.shortName)
                 onTriggered: {
-                    layoutSelected(modelData);
+                    layoutSelected(index);
                 }
             }
             onObjectAdded: (index, object) => {
