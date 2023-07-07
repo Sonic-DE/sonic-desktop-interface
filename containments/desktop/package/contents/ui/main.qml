@@ -365,12 +365,20 @@ ContainmentItem {
             }
         }
 
+        PlasmaCore.Action {
+            id: configAction
+            text: i18n("Configure Desktop and Wallpaper…")
+            icon.name: "preferences-desktop-wallpaper"
+            shortcut: "alt+d,s"
+            onTriggered: Plasmoid.containment.configureRequested(Plasmoid)
+        }
+
         Component.onCompleted: {
             if (!Plasmoid.isContainment) {
                 return;
             }
 
-            Plasmoid.updateInternalAction("configure", i18n("Configure Desktop and Wallpaper…"), "preferences-desktop-wallpaper");
+            Plasmoid.setInternalAction("configure", configAction)
             updateGridSize();
         }
     }
