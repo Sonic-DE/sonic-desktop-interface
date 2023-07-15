@@ -120,8 +120,9 @@ PlasmaCore.ToolTipArea {
 
     onContainsMouseChanged: if (containsMouse) {
         task.forceActiveFocus(Qt.MouseFocusReason);
-        task.updateMainItemBindings();
+        updateMainItemBindingsTimer.start();
     } else {
+        updateMainItemBindingsTimer.stop();
         tasks.toolTipOpenedByClick = null;
     }
 
@@ -296,6 +297,12 @@ PlasmaCore.ToolTipArea {
         function onStreamsChanged() {
             task.updateAudioStreams({delay: true})
         }
+    }
+
+    Timer {
+        id: updateMainItemBindingsTimer
+        interval: 200
+        onTriggered: updateMainItemBindings()
     }
 
     TapHandler {
