@@ -120,8 +120,9 @@ PlasmaCore.ToolTipArea {
 
     onContainsMouseChanged: if (containsMouse) {
         task.forceActiveFocus(Qt.MouseFocusReason);
-        task.updateMainItemBindings();
+        updateMainItemBindingsTimer.start();
     } else {
+        updateMainItemBindingsTimer.stop();
         tasks.toolTipOpenedByClick = null;
     }
 
@@ -295,6 +296,14 @@ PlasmaCore.ToolTipArea {
         ignoreUnknownSignals: true // Plasma-PA might not be available
         function onStreamsChanged() {
             task.updateAudioStreams({delay: true})
+        }
+    }
+
+    Timer {
+        id: updateMainItemBindingsTimer
+        interval: task.interactive ? 200 : 0
+        onTriggered: if (task.containsMouse) {
+            updateMainItemBindings()
         }
     }
 
