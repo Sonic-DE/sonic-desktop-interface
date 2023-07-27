@@ -307,7 +307,7 @@ ContainmentItem {
                     ? ContainmentLayoutManager.ItemContainer.Locked
                     : ContainmentLayoutManager.ItemContainer.AfterPressAndHold
                 configOverlayComponent: ConfigOverlay {}
-                onUserDrag: {
+                onUserDrag: (/*point*/ newPosition, /*point*/ dragCenter) => {
                     var pos = mapToItem(root.parent, dragCenter.x, dragCenter.y);
                     var newCont = root.containmentItemAt(pos.x, pos.y);
 
