@@ -130,7 +130,7 @@ ContainmentItem {
     }
 
     KSvg.FrameSvgItem {
-        id : highlightItemSvg
+        id: highlightItemSvg
 
         visible: false
 
@@ -139,7 +139,7 @@ ContainmentItem {
     }
 
     KSvg.FrameSvgItem {
-        id : listItemSvg
+        id: listItemSvg
 
         visible: false
 
@@ -320,15 +320,15 @@ ContainmentItem {
                 }
 
                 component DropBehavior : Behavior {
-                        NumberAnimation {
-                            duration: Kirigami.Units.shortDuration
-                            easing.type: Easing.InOutQuad
-                        }
+                    NumberAnimation {
+                        duration: Kirigami.Units.shortDuration
+                        easing.type: Easing.InOutQuad
+                    }
                 }
 
-                    DropBehavior on x { }
-                    DropBehavior on y { }
-             }
+                DropBehavior on x { }
+                DropBehavior on y { }
+            }
 
             placeHolder: ContainmentLayoutManager.PlaceHolder {}
 
