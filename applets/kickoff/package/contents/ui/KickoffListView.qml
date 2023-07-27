@@ -201,7 +201,7 @@ EmptyPage {
             horizontalStepSize: 20 * Qt.styleHints.wheelScrollLines
             verticalStepSize: 20 * Qt.styleHints.wheelScrollLines
 
-            onWheel: {
+            onWheel: wheel => {
                 view.movedWithWheel = true
                 view.movedWithKeyboard = false
                 movedWithWheelTimer.restart()
@@ -242,7 +242,7 @@ EmptyPage {
             currentItem.forceActiveFocus(Qt.ShortcutFocusReason)
             currentItem.openActionMenu()
         }
-        Keys.onPressed: {
+        Keys.onPressed: event => {
             let targetX = currentItem ? currentItem.x : contentX
             let targetY = currentItem ? currentItem.y : contentY
             let targetIndex = currentIndex
