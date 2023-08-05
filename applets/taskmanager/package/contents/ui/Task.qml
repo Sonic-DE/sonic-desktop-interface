@@ -65,7 +65,7 @@ PlasmaCore.ToolTipArea {
         || (!!tasks.groupDialog && tasks.groupDialog.visualParent === task)
 
     active: (plasmoid.configuration.showToolTips || tasks.toolTipOpenedByClick === task) && !inPopup && !tasks.groupDialog
-    interactive: model.IsWindow || mainItem.hasPlayer
+    interactive: model.IsWindow || mainItem.playerData
     location: plasmoid.location
     mainItem: model.IsWindow ? openWindowToolTipDelegate : pinnedAppToolTipDelegate
 
@@ -353,12 +353,12 @@ PlasmaCore.ToolTipArea {
                     tasksModel.requestVirtualDesktops(modelIndex(), [virtualDesktopInfo.currentDesktop]);
                 }
             } else if (button === Qt.BackButton || button === Qt.ForwardButton) {
-                var sourceName = mpris2Source.sourceNameForLauncherUrl(model.LauncherUrlWithoutIcon, model.AppPid);
+                const playerData = mpris2Source.playerForLauncherUrl(model.LauncherUrlWithoutIcon, model.AppPid);
                 if (sourceName) {
                     if (button === Qt.BackButton) {
-                        mpris2Source.goPrevious(sourceName);
+                        playerData.Previous();
                     } else {
-                        mpris2Source.goNext(sourceName);
+                        playerData.Next();
                     }
                 } else {
                     eventPoint.accepted = false;
