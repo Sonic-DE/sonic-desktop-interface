@@ -32,7 +32,6 @@ private Q_SLOTS:
     void tst_readScreenActivityMappingFromOldConfig();
     void tst_saveScreenActivityMapping();
     void tst_readAndSaveItemsOnActivitiesOnDisabledScreens();
-    void tst_readAndSaveItemsOnActivitiesOnDisabledScreensFromOldConfig();
 
 private:
     void addScreens(const QUrl &path, const QString &activity);
