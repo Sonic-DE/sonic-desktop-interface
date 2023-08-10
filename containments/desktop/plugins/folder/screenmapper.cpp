@@ -116,18 +116,19 @@ void ScreenMapper::addScreen(int screenId, const QString &activity, const QUrl &
     auto it = m_itemsOnDisabledScreensMap.find(pair);
     if (it != m_itemsOnDisabledScreensMap.end()) {
         auto items = it.value();
-
-        decltype(items.size()) removedItemsCount = 0;
-
-        for (const auto &name : std::as_const(items)) {
+        auto itemIt = items.begin();
+        while (itemIt != items.end()) {
             // add the items to the new screen, if they are on a disabled screen and their
             // location is below the new screen's path
-            if (name.url().startsWith(screenPathWithScheme)) {
-                addMapping(name, screenId, activity, DelayedSignal);
-                ++removedItemsCount;
+            if (itemIt->url().startsWith(screenPathWithScheme)) {
+                addMapping(*itemIt, screenId, activity, DelayedSignal);
+                itemIt = items.erase(itemIt);
+                continue;
             }
+            itemIt = std::next(itemIt);
         }
-        if (removedItemsCount == items.size()) {
+
+        if (items.empty()) {
             m_itemsOnDisabledScreensMap.erase(it);
         } else {
             *it = items;
