@@ -1,5 +1,6 @@
 /*
     SPDX-FileCopyrightText: 2014-2015 Eike Hein <hein@kde.org>
+    SPDX-FileCopyrightText: 2023 Harald Sitter <sitter@kde.org>
 
     SPDX-License-Identifier: GPL-2.0-or-later
 */
@@ -1185,6 +1186,14 @@ FocusScope {
                         updateHistory();
                     }
                 }
+            }
+
+            Kirigami.InlineMessage {
+                width: parent.width / 2.0
+                anchors.horizontalCenter: parent.horizontalCenter
+                type: Kirigami.MessageType.Warning
+                text: "Oh deary me, you seem to have an awful lot of icons on your desktop. We can't deal with that many and may make an oopsie whoopsie. Please take some away UwU."
+                visible: true
             }
         }
 
