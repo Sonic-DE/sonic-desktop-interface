@@ -119,7 +119,7 @@ set_package_properties(KF6Kirigami2 PROPERTIES
 find_package(KF6KirigamiAddons2 0.10.0 CONFIG)
 set_package_properties(KF6KirigamiAddons2 PROPERTIES
     DESCRIPTION "Extra controls for Kirigami applications"
-    PURPOSE "Required at runtime for the Kickoff"
+    PURPOSE "Required at runtime for Kickoff"
     TYPE RUNTIME
 )
 
