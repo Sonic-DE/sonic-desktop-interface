@@ -146,14 +146,14 @@ FocusScope {
         var dragIndex = gridView.indexAt(dragPos.x, dragPos.y);
 
         if (listener.dragX === -1 || dragIndex !== dropIndex) {
-            dir.drop(target, event, dropItemAt(dropPos), root.isContainment && !plasmoid.immutable);
+            dir.drop(target, event, dropItemAt(dropPos), root.isContainment && !main.Plasmoid.immutable);
         }
     }
 
     Connections {
         target: dir
         function onPopupMenuAboutToShow(dropJob, mimeData, x, y) {
-            if (root.isContainment && !plasmoid.immutable) {
+            if (root.isContainment && !main.Plasmoid.immutable) {
                 root.processMimeData(mimeData, x, y, dropJob);
             }
         }
@@ -169,7 +169,7 @@ FocusScope {
     }
 
     Binding {
-        target: plasmoid
+        target: main.Plasmoid
         property: "busy"
         value: !gridView.model && dir.status === Folder.FolderModel.Listing
         restoreMode: Binding.RestoreBinding
@@ -257,7 +257,7 @@ FocusScope {
             scrollArea.focus = true;
 
             if (mouse.buttons & Qt.BackButton) {
-                if (root.isPopup && dir.resolvedUrl !== dir.resolve(plasmoid.configuration.url)) {
+                if (root.isPopup && dir.resolvedUrl !== dir.resolve(main.Plasmoid.configuration.url)) {
                     doBack();
                     mouse.accepted = true;
                 }
@@ -413,7 +413,7 @@ FocusScope {
                     && previouslySelectedItemIndex === gridView.currentIndex
                     && gridView.currentIndex !== -1
                     && !Qt.styleHints.singleClickActivation
-                    && plasmoid.configuration.renameInline
+                    && main.Plasmoid.configuration.renameInline
                     && !doubleClickInProgress
                 ) {
                     rename();
@@ -620,7 +620,7 @@ FocusScope {
 
                 if (root.useListViewMode) {
                     doCd(index);
-                } else if (plasmoid.configuration.popups) {
+                } else if (main.Plasmoid.configuration.popups) {
                     hoveredItem.openPopup();
                 }
             }
@@ -701,7 +701,7 @@ FocusScope {
                     } else {
                         var iconWidth = iconSize + (2 * Kirigami.Units.gridUnit) + (2 * Kirigami.Units.smallSpacing);
                         if (root.isContainment && isRootView && scrollArea.viewportWidth > 0) {
-                            var minIconWidth = Math.max(iconWidth, Kirigami.Units.iconSizes.small * ((plasmoid.configuration.labelWidth * 2) + 4));
+                            var minIconWidth = Math.max(iconWidth, Kirigami.Units.iconSizes.small * ((main.Plasmoid.configuration.labelWidth * 2) + 4));
                             var extraWidth = calcExtraSpacing(minIconWidth, scrollArea.viewportWidth);
                             return minIconWidth + extraWidth;
                         } else {
@@ -717,7 +717,7 @@ FocusScope {
                             listItemSvg.margins.top + listItemSvg.margins.bottom)) / 2) * 2;
                     } else {
                         // the smallSpacings are for padding
-                        var iconHeight = iconSize + (Kirigami.Units.gridUnit * plasmoid.configuration.textLines) + (Kirigami.Units.smallSpacing * 3);
+                        var iconHeight = iconSize + (Kirigami.Units.gridUnit * main.Plasmoid.configuration.textLines) + (Kirigami.Units.smallSpacing * 3);
                         if (root.isContainment && isRootView && scrollArea.viewportHeight > 0) {
                             var extraHeight = calcExtraSpacing(iconHeight, scrollArea.viewportHeight);
                             return iconHeight + extraHeight;
@@ -867,7 +867,7 @@ FocusScope {
                         return Kirigami.Units.iconSizes.small;
                     }
 
-                    return FolderTools.iconSizeFromTheme(plasmoid.configuration.iconSize);
+                    return FolderTools.iconSizeFromTheme(main.Plasmoid.configuration.iconSize);
                 }
 
                 function updateSelection(modifier) {
@@ -1069,7 +1069,7 @@ FocusScope {
 
                 Keys.onLeftPressed: event => {
                     if (root.isPopup && root.useListViewMode) {
-                        if (dir.resolvedUrl !== dir.resolve(plasmoid.configuration.url)) {
+                        if (dir.resolvedUrl !== dir.resolve(main.Plasmoid.configuration.url)) {
                             doBack();
                         }
                     } else if (positioner.enabled) {
@@ -1164,7 +1164,7 @@ FocusScope {
                 }
 
                 Keys.onBackPressed: event => {
-                    if (root.isPopup && dir.resolvedUrl !== dir.resolve(plasmoid.configuration.url)) {
+                    if (root.isPopup && dir.resolvedUrl !== dir.resolve(main.Plasmoid.configuration.url)) {
                         doBack();
                     }
                 }
@@ -1178,7 +1178,7 @@ FocusScope {
                 }
 
                 Connections {
-                    target: plasmoid.configuration
+                    target: main.Plasmoid.configuration
 
                     function onIconSizeChanged() {
                         gridView.iconSize = gridView.makeIconSize();
@@ -1200,19 +1200,19 @@ FocusScope {
             anchors.fill: parent
 
             enabled: root.isContainment && !gridView.overflowing
-            destination: plasmoid
+            destination: main.Plasmoid
         }
 
         Folder.FolderModel {
             id: dir
 
             usedByContainment: root.isContainment && main.isRootView
-            sortDesc: plasmoid.configuration.sortDesc
-            sortDirsFirst: plasmoid.configuration.sortDirsFirst
-            parseDesktopFiles: (plasmoid.configuration.url === "desktop:/")
-            previews: plasmoid.configuration.previews
-            previewPlugins: plasmoid.configuration.previewPlugins
-            applet: plasmoid
+            sortDesc: main.Plasmoid.configuration.sortDesc
+            sortDirsFirst: main.Plasmoid.configuration.sortDirsFirst
+            parseDesktopFiles: (main.Plasmoid.configuration.url === "desktop:/")
+            previews: main.Plasmoid.configuration.previews
+            previewPlugins: main.Plasmoid.configuration.previewPlugins
+            applet: main.Plasmoid
 
             onListingCompleted: {
                 if (!gridView.model && root.expanded) {
