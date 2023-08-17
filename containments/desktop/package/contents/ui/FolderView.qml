@@ -674,6 +674,15 @@ FocusScope {
 
                 property var cachedRectangleSelection: null
 
+                property var lastPossibleIndex: {
+                    const availableColumns = Math.floor(scrollArea.viewportWidth / cellWidth);
+                    console.log("!- availableColumns", availableColumns)
+                    const availableRows = Math.floor(scrollArea.viewportHeight / cellHeight);
+                    console.log("!- availableRows", availableRows)
+                    console.log("!- (availableColumns * availableRows - 1)", (availableColumns * availableRows - 1))
+                    return (availableColumns * availableRows - 1)
+                }
+
                 currentIndex: -1
 
                 keyNavigationWraps: false
@@ -1208,6 +1217,7 @@ FocusScope {
 
         Folder.FolderModel {
             id: dir
+            limit: Math.max(1, gridView.lastPossibleIndex)
 
             usedByContainment: root.isContainment && main.isRootView
             sortDesc: plasmoid.configuration.sortDesc

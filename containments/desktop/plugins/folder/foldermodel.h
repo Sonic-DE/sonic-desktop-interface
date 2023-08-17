@@ -90,6 +90,16 @@ class FOLDERPLUGIN_TESTS_EXPORT FolderModel : public QSortFilterProxyModel, publ
     Q_PROPERTY(Plasma::Applet *applet READ applet WRITE setApplet NOTIFY appletChanged)
     Q_PROPERTY(bool showHiddenFiles READ showHiddenFiles WRITE setShowHiddenFiles NOTIFY showHiddenFilesChanged)
 
+    Q_PROPERTY(int limit MEMBER m_limit WRITE setLimit NOTIFY limitChanged)
+public:
+    void setLimit(int limit);
+
+Q_SIGNALS:
+    void limitChanged();
+
+private:
+    int m_limit = -1;
+
 public:
     enum DataRole {
         BlankRole = Qt::UserRole + 1,
@@ -309,6 +319,7 @@ private:
     static bool isTrashEmpty();
     static bool isDeleteCommandShown();
     QList<QUrl> selectedUrls() const;
+    bool isIndexShowMore(const QModelIndex &index) const;
     KDirModel *m_dirModel;
     KDirWatch *m_dirWatch;
     QString m_url;
@@ -355,6 +366,7 @@ private:
     Plasma::Applet *m_applet = nullptr;
     bool m_complete;
     QPoint m_menuPosition;
+    KFileItem m_rootNode;
 
     /**
      * This property is used to save the current activity when FolderModel is initialized.

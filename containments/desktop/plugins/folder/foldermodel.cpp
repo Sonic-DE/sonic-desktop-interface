@@ -62,6 +62,7 @@
 #include <KIO/JobUiDelegateFactory>
 #include <KIO/OpenUrlJob>
 #include <KIO/PreviewJob>
+#include <KIO/StatJob>
 #include <KProtocolInfo>
 #include <KStringHandler>
 
@@ -362,6 +363,21 @@ void FolderModel::setUrl(const QString &url)
     m_url = url;
     m_isDirCache.clear();
     m_dirModel->dirLister()->openUrl(resolvedNewUrl);
+
+    m_rootNode = KFileItem(); // clear
+    // Stat the requested url, to create the visible node
+    KIO::StatJob *statJob = KIO::stat(resolvedNewUrl, KIO::HideProgressInfo);
+    connect(statJob, &KJob::result, this, [statJob, resolvedNewUrl, url, this]() {
+        if (!statJob->error()) {
+            KIO::UDSEntry entry = statJob->statResult();
+            entry.replace(KIO::UDSEntry::UDS_ICON_NAME, QStringLiteral("view-more-horizontal-symbolic"));
+            entry.replace(KIO::UDSEntry::UDS_DISPLAY_NAME, i18nc("@label opens a folder manage to view more content than fits in the folder view", "Show More…"));
+            m_rootNode = KFileItem(entry, resolvedNewUrl);
+        } else {
+            qCWarning(FOLDERMODEL) << statJob->errorString();
+        }
+    });
+
     clearDragImages();
     m_dragIndexes.clear();
     endResetModel();
@@ -1364,6 +1380,8 @@ QVariant FolderModel::data(const QModelIndex &index, int role) const
         return itemForIndex(index).url().fileName();
     } else if (role == FileNameWrappedRole) {
         return KStringHandler::preProcessWrap(itemForIndex(index).text());
+    } else if (role == Qt::DecorationRole && isIndexShowMore(index)) {
+        return m_rootNode.iconName();
     }
 
     return QSortFilterProxyModel::data(index, role);
@@ -1376,6 +1394,10 @@ int FolderModel::indexForUrl(const QUrl &url) const
 
 KFileItem FolderModel::itemForIndex(const QModelIndex &index) const
 {
+    if (isIndexShowMore(index)) {
+        return m_rootNode;
+    }
+
     return m_dirModel->itemForIndex(mapToSource(index));
 }
 
@@ -1593,6 +1615,11 @@ bool FolderModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParen
             // the item belongs to a different screen, filter it out
             return false;
         }
+    }
+
+    if (m_usedByContainment && sourceRow > m_limit) {
+        qDebug() << "filtering" << item;
+        return false;
     }
 
     if (m_filterMode == NoFilter) {
@@ -2140,4 +2167,21 @@ bool FolderModel::isDeleteCommandShown()
 {
     KConfigGroup cg(KSharedConfig::openConfig(), "KDE");
     return cg.readEntry("ShowDeleteCommand", false);
+}
+
+void FolderModel::setLimit(int limit)
+{
+    qDebug() << "!- LIMIT" << limit << m_limit;
+    if (m_limit == limit) {
+        return;
+    }
+
+    m_limit = limit;
+    Q_EMIT limitChanged();
+    invalidateIfComplete();
+}
+
+bool FolderModel::isIndexShowMore(const QModelIndex &index) const
+{
+    return m_limit > 0 && index.row() == m_limit;
 }
