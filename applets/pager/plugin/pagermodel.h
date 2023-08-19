@@ -78,6 +78,7 @@ public:
 
     int layoutRows() const;
     QSize pagerItemSize() const;
+    QRect virtualGeometry() const;
 
 #if HAVE_X11
     QList<WId> stackingOrder() const;
@@ -111,6 +112,9 @@ Q_SIGNALS:
     void currentPageChanged() const;
     void layoutRowsChanged() const;
     void pagerItemSizeChanged() const;
+
+private Q_SLOTS:
+    void computePagerItemSize();
 
 private:
     class Private;
