@@ -9,8 +9,9 @@ import QtQuick.Controls 2.3 as QQC2
 import QtQuick.Layouts 1.0
 import org.kde.kquickcontrols 2.0
 import org.kde.kirigami 2.14 as Kirigami
+import org.kde.kcmutils as KCM
 
-Kirigami.ScrollablePage {
+KCM.SimpleKCM {
     id: root
 
     title: i18n("Shortcuts")

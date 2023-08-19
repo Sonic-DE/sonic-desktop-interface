@@ -15,6 +15,7 @@ import QtQuick.Layouts 1.15
 import org.kde.kirigami 2.20 as Kirigami
 import org.kde.kitemmodels 1.0 as KItemModels
 import org.kde.plasma.configuration 2.0
+import org.kde.plasma.plasmoid 2.0
 
 Rectangle {
     id: root
@@ -41,6 +42,24 @@ Rectangle {
             return false;
         }
         return true;
+    }
+
+    function saveConfig() {
+        const config = Plasmoid.configuration; // type: KConfigPropertyMap
+
+        config.keys().forEach(key => {
+            const cfgKey = "cfg_" + key;
+            if (cfgKey in app.pageStack.currentItem) {
+                config[key] = app.pageStack.currentItem[cfgKey];
+            }
+        })
+
+        plasmoid.configuration.writeConfig();
+
+        // For ConfigurationContainmentActions.qml
+        if (app.pageStack.currentItem.hasOwnProperty("saveConfig")) {
+            app.pageStack.currentItem.saveConfig()
+        }
     }
 
     Connections {
@@ -90,7 +109,24 @@ Rectangle {
         app.isAboutPage = false;
         if (item.source) {
             app.isAboutPage = item.source === "AboutPlugin.qml";
-            pushReplace(Qt.resolvedUrl("ConfigurationAppletPage.qml"), {configItem: item});
+
+            if (isContainment) {
+                pushReplace(Qt.resolvedUrl("ConfigurationAppletPage.qml"), {configItem: item});
+            } else {
+
+                const config = Plasmoid.configuration; // type: KConfigPropertyMap
+
+                const props = {
+                    "title": item.name
+                };
+
+                config.keys().forEach(key => {
+                    props["cfg_" + key] = config[key];
+                });
+
+                pushReplace(Qt.resolvedUrl(item.source), props);
+            }
+
         } else if (item.kcm) {
             pushReplace(configurationKcmPageComponent, {kcm: item.kcm, internalPage: item.kcm.mainUi});
         } else {
@@ -105,6 +141,28 @@ Rectangle {
 
         function onSettingValueChanged() {
             applyButton.enabled = true;
+        }
+    }
+
+    Connections {
+        target: app.pageStack
+
+        function onCurrentItemChanged() {
+            if (app.pageStack.currentItem !== null && !isContainment) {
+                const config = Plasmoid.configuration; // type: KConfigPropertyMap
+
+                config.keys().forEach(key => {
+                    const changedSignal = app.pageStack.currentItem["cfg_" + key + "Changed"];
+                    if (changedSignal) {
+                        changedSignal.connect(() => root.settingValueChanged());
+                    }
+                });
+
+                const configurationChangedSignal = app.pageStack.currentItem.configurationChanged;
+                if (configurationChangedSignal) {
+                    configurationChangedSignal.connect(() => root.settingValueChanged());
+                }
+            }
         }
     }
 
@@ -367,7 +425,11 @@ Rectangle {
         QQC2.Action {
             id: applyAction
             onTriggered: {
-                app.pageStack.get(0).saveConfig()
+                if (isContainment) {
+                    app.pageStack.get(0).saveConfig()
+                } else {
+                    root.saveConfig()
+                }
 
                 applyButton.enabled = false;
             }
