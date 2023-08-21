@@ -22,7 +22,7 @@ Item {
     property Item toolBoxContent
 
     Connections {
-        target: main.Plasmoid
+        target: Plasmoid
         function onAvailableScreenRegionChanged() {
             placeToolBoxTimer.restart();
         }
@@ -59,7 +59,7 @@ Item {
         repeat: false
         running: false
         onTriggered: {
-            placeToolBox(main.Plasmoid.configuration.ToolBoxButtonState);
+            placeToolBox(Plasmoid.configuration.ToolBoxButtonState);
         }
     }
 
