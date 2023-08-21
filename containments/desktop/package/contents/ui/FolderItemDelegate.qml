@@ -119,7 +119,7 @@ Item {
             onHoveredChanged: {
                 if (hovered) {
                     // In list view, it behaves more like a menu, and menus always activate their items on a single click
-                    if (main.Plasmoid.configuration.selectionMarkers && (Qt.styleHints.singleClickActivation || root.useListViewMode)) {
+                    if (Plasmoid.configuration.selectionMarkers && (Qt.styleHints.singleClickActivation || root.useListViewMode)) {
                         selectionButton = selectionButtonComponent.createObject(actions);
                     }
 
@@ -128,7 +128,7 @@ Item {
                             hoverActivateTimer.restart();
                         }
 
-                        if (main.Plasmoid.configuration.popups && !root.useListViewMode) {
+                        if (Plasmoid.configuration.popups && !root.useListViewMode) {
                             popupButton = popupButtonComponent.createObject(actions);
                         }
                     }
@@ -161,11 +161,11 @@ Item {
             PlasmaCore.ToolTipArea {
                 id: toolTip
 
-                active: (main.Plasmoid.configuration.toolTips || label.truncated)
+                active: (Plasmoid.configuration.toolTips || label.truncated)
                         && popupDialog === null
                         && !model.blank
                 interactive: false
-                location: root.useListViewMode ? (main.Plasmoid.location === PlasmaCore.Types.LeftEdge ? PlasmaCore.Types.LeftEdge : PlasmaCore.Types.RightEdge) : main.Plasmoid.location
+                location: root.useListViewMode ? (Plasmoid.location === PlasmaCore.Types.LeftEdge ? PlasmaCore.Types.LeftEdge : PlasmaCore.Types.RightEdge) : Plasmoid.location
 
                 onContainsMouseChanged:  {
                     if (containsMouse && !model.blank) {
@@ -318,7 +318,7 @@ Item {
                                 target: label
                                 anchors.topMargin: Kirigami.Units.smallSpacing
                                 width: parent.width - Kirigami.Units.smallSpacing
-                                maximumLineCount: main.Plasmoid.configuration.textLines
+                                maximumLineCount: Plasmoid.configuration.textLines
                                 horizontalAlignment: Text.AlignHCenter
                             }
                         },
@@ -441,7 +441,7 @@ Item {
                     },
                     State {
                         name: "hover"
-                        when: hovered && !model.selected && main.Plasmoid.configuration.iconHoverEffect
+                        when: hovered && !model.selected && Plasmoid.configuration.iconHoverEffect
 
                         PropertyChanges {
                             target: frameLoader
@@ -450,7 +450,7 @@ Item {
                     },
                     State {
                         name: "selected+hover"
-                        when: hovered && model.selected && main.Plasmoid.configuration.iconHoverEffect
+                        when: hovered && model.selected && Plasmoid.configuration.iconHoverEffect
 
                         PropertyChanges {
                             target: frameLoader
