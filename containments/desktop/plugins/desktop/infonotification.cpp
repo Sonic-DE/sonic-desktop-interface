@@ -42,9 +42,11 @@ void InfoNotification::show()
         m_notification->setIconName(m_iconName);
         m_notification->setTitle(m_titleText);
         m_notification->setText(m_text);
-        m_notification->setActions(QStringList() << m_acknowledgeActionText);
 
-        connect(m_notification.data(), &KNotification::action1Activated, this, &InfoNotification::acknowledged);
+        auto acknowledgeAction = new KNotificationAction(m_acknowledgeActionText);
+        connect(acknowledgeAction, &KNotificationAction::activated, this, &InfoNotification::acknowledged);
+
+        m_notification->setActions({acknowledgeAction});
 
         m_notification->sendEvent();
     }
