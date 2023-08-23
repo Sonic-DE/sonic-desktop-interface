@@ -6,7 +6,6 @@
 
 import QtQuick 2.15
 import QtQuick.Controls 2.15
-import QtQuick.Controls 1.0 as QQC1
 import QtQuick.Layouts 1.15
 
 import org.kde.kirigami 2.20 as Kirigami
@@ -92,101 +91,145 @@ ColumnLayout {
             visible: false
         }
 
-        QQC1.TableView {
-            id: mimeTypesView
-
-            // Signal the delegates listen to when user presses space to toggle current row.
-            signal toggleCurrent()
-
+        ScrollView {
             Layout.fillWidth: true
             Layout.fillHeight: true
+            Layout.maximumHeight: 200
+            //background.visible: true
+            ListView {
+                id: mimeTypesView
+                clip: true
 
-            enabled: (filterMode.currentIndex > 0)
+                // Signal the delegates listen to when user presses space to toggle current row.
+                signal toggleCurrent()
 
-            model: filteredMimeTypesModel
+                enabled: (filterMode.currentIndex > 0)
 
-            sortIndicatorVisible: true
-            sortIndicatorColumn: 2 // Default to sort by "File type".
+                model: filteredMimeTypesModel
+                property real columnSize: Kirigami.Units.gridUnit * 15
+    /*
+                sortIndicatorVisible: true
+                sortIndicatorColumn: 2 // Default to sort by "File type".
 
-            onSortIndicatorColumnChanged: { // Disallow sorting by icon.
-                if (sortIndicatorColumn === 1) {
-                    sortIndicatorColumn = 2;
-                }
-            }
-
-            Keys.onSpacePressed: toggleCurrent()
-
-            function adjustColumns() {
-                // Resize description column to take whatever space is left.
-                var width = viewport.width;
-                for (var i = 0; i < columnCount - 1; ++i) {
-                    width -= getColumn(i).width;
-                }
-                descriptionColumn.width = width;
-            }
-
-            onWidthChanged: adjustColumns()
-            // Component.onCompleted is too early to do this...
-            onRowCountChanged: adjustColumns()
-
-            QQC1.TableViewColumn {
-                role: "checked"
-                width: metricsCheckBox.width
-                resizable: false
-                movable: false
-
-                delegate: CheckBox {
-                    id: checkBox
-
-                    checked: styleData.value
-                    activeFocusOnTab: false // only let the TableView as a whole get focus
-                    onClicked: {
-                        model.checked = checked
-                        // Clicking it breaks the binding to the model value which becomes
-                        // an issue during sorting as TableView re-uses delegates.
-                        checked = Qt.binding(() => styleData.value);
+                onSortIndicatorColumnChanged: { // Disallow sorting by icon.
+                    if (sortIndicatorColumn === 1) {
+                        sortIndicatorColumn = 2;
                     }
+                }*/
 
-                    Connections {
-                        target: mimeTypesView
-                        function onToggleCurrent() {
-                            if (styleData.row === mimeTypesView.currentRow) {
-                                model.checked = !checkBox.checked;
+                Keys.onSpacePressed: toggleCurrent()
+
+                function adjustColumns() {return
+                    // Resize description column to take whatever space is left.
+                    var w = width;
+                    for (var i = 0; i < columns - 1; ++i) {
+                        w -= getColumn(i).width;
+                    }
+                    descriptionColumn.width = w;
+                }
+
+                onWidthChanged: adjustColumns()
+                // Component.onCompleted is too early to do this...
+                onCountChanged: adjustColumns()
+
+                header: RowLayout {
+                    width: mimeTypesView.width
+                    Label {
+                        text: i18n("File type")
+                        Layout.preferredWidth: mimeTypesView.columnSize
+                    }
+                    Label {
+                        text: i18n("Description")
+                        Layout.fillWidth: true
+                    }
+                }
+                delegate: ItemDelegate {
+                    id: delegate
+                    width: mimeTypesView.width
+                    required property string name
+                    required property string comment
+                    required property var decoration
+
+                    contentItem: RowLayout {
+                        CheckBox{
+                            checked: delegate.checked
+                        }
+                        Kirigami.Icon {
+                            width: Kirigami.Units.iconSizes.small
+                            height: Kirigami.Units.iconSizes.small
+                            animated: false // TableView re-uses delegates, avoid animation when sorting/filtering.
+                            source: decoration
+                        }
+                        Label {
+                            text: name
+                            Layout.preferredWidth: mimeTypesView.columnSize
+                        }
+                        Label {
+                            text: comment
+                            Layout.fillWidth: true
+                        }
+                    }
+                }
+    /*
+                QQC1.TableViewColumn {
+                    role: "checked"
+                    width: metricsCheckBox.width
+                    resizable: false
+                    movable: false
+
+                    delegate: CheckBox {
+                        id: checkBox
+
+                        checked: styleData.value
+                        activeFocusOnTab: false // only let the TableView as a whole get focus
+                        onClicked: {
+                            model.checked = checked
+                            // Clicking it breaks the binding to the model value which becomes
+                            // an issue during sorting as TableView re-uses delegates.
+                            checked = Qt.binding(() => styleData.value);
+                        }
+
+                        Connections {
+                            target: mimeTypesView
+                            function onToggleCurrent() {
+                                if (styleData.row === mimeTypesView.currentRow) {
+                                    model.checked = !checkBox.checked;
+                                }
                             }
                         }
                     }
                 }
-            }
 
-            QQC1.TableViewColumn {
-                role: "decoration"
-                width: Kirigami.Units.iconSizes.small
-                resizable: false
-                movable: false
-
-                delegate: Kirigami.Icon {
+                QQC1.TableViewColumn {
+                    role: "decoration"
                     width: Kirigami.Units.iconSizes.small
-                    height: Kirigami.Units.iconSizes.small
-                    animated: false // TableView re-uses delegates, avoid animation when sorting/filtering.
-                    source: styleData.value
+                    resizable: false
+                    movable: false
+
+                    delegate: Kirigami.Icon {
+                        width: Kirigami.Units.iconSizes.small
+                        height: Kirigami.Units.iconSizes.small
+                        animated: false // TableView re-uses delegates, avoid animation when sorting/filtering.
+                        source: styleData.value
+                    }
                 }
-            }
 
-            QQC1.TableViewColumn {
-                id: nameColumn
-                role: "name"
-                title: i18n("File type")
-                width: Kirigami.Units.gridUnit * 10 // Assume somewhat reasonable default for mime type name.
-                onWidthChanged: mimeTypesView.adjustColumns()
-                movable: false
-            }
+                QQC1.TableViewColumn {
+                    id: nameColumn
+                    role: "name"
+                    title: i18n("File type")
+                    width: Kirigami.Units.gridUnit * 10 // Assume somewhat reasonable default for mime type name.
+                    onWidthChanged: mimeTypesView.adjustColumns()
+                    movable: false
+                }
 
-            QQC1.TableViewColumn {
-                id: descriptionColumn
-                role: "comment"
-                title: i18n("Description")
-                movable: false
-                resizable: false
+                QQC1.TableViewColumn {
+                    id: descriptionColumn
+                    role: "comment"
+                    title: i18n("Description")
+                    movable: false
+                    resizable: false
+                }*/
             }
         }
 
