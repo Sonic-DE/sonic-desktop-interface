@@ -89,7 +89,7 @@ function save() {
     for (var i = 0; i < layout.children.length; ++i) {
         var child = layout.children[i];
         if (child.hasOwnProperty("applet") && child.applet) {
-            ids.push(child.applet.root.plasmoid.id);
+            ids.push(child.applet.plasmoid.id);
         }
     }
     root.plasmoid.configuration.AppletOrder = ids.join(';');
