@@ -36,43 +36,6 @@ PlasmoidItem {
     ].includes(plasmoid.location)
     readonly property bool vertical: plasmoid.formFactor === PlasmaCore.Types.Vertical
 
-    // Used to prevent the width from changing frequently when the scrollbar appears or disappears
-    readonly property bool mayHaveGridWithScrollBar: plasmoid.configuration.applicationsDisplay === 0
-        || (plasmoid.configuration.favoritesDisplay === 0 && rootModel.favoritesModel.count > minimumGridRowCount * minimumGridRowCount)
-
-    //BEGIN Models
-    Kicker.RootModel {
-        id: rootModel
-        autoPopulate: false
-
-        // TODO: appletInterface property now can be ported to "applet" and have the real Applet* assigned directly
-        appletInterface: kickoff
-
-        flat: true // have categories, but no subcategories
-        sorted: plasmoid.configuration.alphaSort
-        showSeparators: true
-        showTopLevelItems: true
-
-        showAllApps: true
-        showAllAppsCategorized: false
-        showRecentApps: false
-        showRecentDocs: false
-        showPowerSession: false
-        showFavoritesPlaceholder: true
-
-        Component.onCompleted: {
-            favoritesModel.initForClient("org.kde.plasma.kickoff.favorites.instance-" + plasmoid.id)
-
-            if (!plasmoid.configuration.favoritesPortedToKAstats) {
-                if (favoritesModel.count < 1) {
-                    favoritesModel.portOldFavorites(plasmoid.configuration.favorites);
-                }
-                plasmoid.configuration.favoritesPortedToKAstats = true;
-            }
-        }
-    }
-    //END
-
     //BEGIN UI elements
     readonly property Item header: fullRepresentationItem?.header ?? null
     readonly property PC3.TextField searchField: kickoff.header?.searchField ?? null
@@ -114,9 +77,6 @@ PlasmoidItem {
         action: null
         indicator: null
     }
-
-    // Used to show smaller Kickoff on small screens
-    readonly property int minimumGridRowCount: Math.min(Screen.desktopAvailableWidth, Screen.desktopAvailableHeight) * Screen.devicePixelRatio < KickoffSingleton.gridCellSize * 4 + (fullRepresentationItem ? fullRepresentationItem.normalPage.preferredSideBarWidth : KickoffSingleton.gridCellSize * 2) ? 2 : 4
     //END
 
     Plasmoid.icon: plasmoid.configuration.icon

@@ -85,16 +85,16 @@ EmptyPage {
         implicitWidth: {
             let totalMargins = leftMargin + rightMargin
             if (mainContentView) {
-                if (kickoff.mayHaveGridWithScrollBar) {
+                if (kickoff.fullRepresentationItem.mayHaveGridWithScrollBar) {
                     totalMargins += verticalScrollBar.implicitWidth
                 }
-                return KickoffSingleton.gridCellSize * kickoff.minimumGridRowCount + totalMargins
+                return KickoffSingleton.gridCellSize * kickoff.fullRepresentationItem.minimumGridRowCount + totalMargins
             }
             return contentWidth + totalMargins
         }
         implicitHeight: {
             // use grid cells to determine size
-            let h = KickoffSingleton.gridCellSize * kickoff.minimumGridRowCount
+            let h = KickoffSingleton.gridCellSize * kickoff.fullRepresentationItem.minimumGridRowCount
             // If no grids are used, use the number of items that would fit in the grid height
             if (plasmoid.configuration.favoritesDisplay !== 0 && plasmoid.configuration.applicationsDisplay !== 0) {
                 h = Math.floor(h / kickoff.listDelegateHeight) * kickoff.listDelegateHeight

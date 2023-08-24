@@ -74,8 +74,8 @@ EmptyPage {
         // There are lots of ways to try to center the content of a GridView
         // and many of them have bad visual flaws. This way works pretty well.
         // Not center aligning when there might be a scrollbar to keep click target positions consistent.
-        anchors.horizontalCenter: kickoff.mayHaveGridWithScrollBar ? undefined : parent.horizontalCenter
-        anchors.horizontalCenterOffset: if (kickoff.mayHaveGridWithScrollBar) {
+        anchors.horizontalCenter: kickoff.fullRepresentationItem.mayHaveGridWithScrollBar ? undefined : parent.horizontalCenter
+        anchors.horizontalCenterOffset: if (kickoff.fullRepresentationItem.mayHaveGridWithScrollBar) {
             if (root.mirrored) {
                 return verticalScrollBar.implicitWidth/2
             } else {
@@ -84,19 +84,19 @@ EmptyPage {
         } else {
             return 0
         }
-        width: Math.min(parent.width, Math.floor((parent.width - leftMargin - rightMargin - (kickoff.mayHaveGridWithScrollBar ? verticalScrollBar.implicitWidth : 0)) / cellWidth) * cellWidth + leftMargin + rightMargin)
+        width: Math.min(parent.width, Math.floor((parent.width - leftMargin - rightMargin - (kickoff.fullRepresentationItem.mayHaveGridWithScrollBar ? verticalScrollBar.implicitWidth : 0)) / cellWidth) * cellWidth + leftMargin + rightMargin)
 
         Accessible.description: i18n("Grid with %1 rows, %2 columns", rows, columns) // can't use i18np here
 
 
         implicitWidth: {
-            let w = view.cellWidth * kickoff.minimumGridRowCount + leftMargin + rightMargin
-            if (kickoff.mayHaveGridWithScrollBar) {
+            let w = view.cellWidth * kickoff.fullRepresentationItem.minimumGridRowCount + leftMargin + rightMargin
+            if (kickoff.fullRepresentationItem.mayHaveGridWithScrollBar) {
                 w += verticalScrollBar.implicitWidth
             }
             return w
         }
-        implicitHeight: view.cellHeight * kickoff.minimumGridRowCount + topMargin + bottomMargin
+        implicitHeight: view.cellHeight * kickoff.fullRepresentationItem.minimumGridRowCount + topMargin + bottomMargin
 
         leftMargin: kickoff.backgroundMetrics.leftPadding
         rightMargin: kickoff.backgroundMetrics.rightPadding

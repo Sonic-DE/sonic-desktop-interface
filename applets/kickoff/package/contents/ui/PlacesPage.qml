@@ -41,18 +41,18 @@ BasePage {
     Kicker.ComputerModel {
         id: computerModel
         appletInterface: kickoff
-        favoritesModel: rootModel.favoritesModel
+        favoritesModel: kickoff.fullRepresentationItem.rootModel.favoritesModel
         systemApplications: plasmoid.configuration.systemApplications
     }
 
     Kicker.RecentUsageModel {
         id: recentUsageModel
-        favoritesModel: rootModel.favoritesModel
+        favoritesModel: kickoff.fullRepresentationItem.rootModel.favoritesModel
     }
 
     Kicker.RecentUsageModel {
         id: frequentUsageModel
-        favoritesModel: rootModel.favoritesModel
+        favoritesModel: kickoff.fullRepresentationItem.rootModel.favoritesModel
         ordering: 1 // Popular / Frequently Used
     }
 

@@ -35,8 +35,48 @@ EmptyPage {
     Layout.preferredWidth: Math.max(implicitWidth, width)
     Layout.preferredHeight: Math.max(implicitHeight, height)
 
+    // Used to show smaller Kickoff on small screens
+    readonly property int minimumGridRowCount: Math.min(Screen.desktopAvailableWidth, Screen.desktopAvailableHeight) * Screen.devicePixelRatio < KickoffSingleton.gridCellSize * 4 + normalPage.preferredSideBarWidth ? 2 : 4
+    // Used to prevent the width from changing frequently when the scrollbar appears or disappears
+    readonly property bool mayHaveGridWithScrollBar: plasmoid.configuration.applicationsDisplay === 0
+        || (plasmoid.configuration.favoritesDisplay === 0 && rootModel.favoritesModel.count > minimumGridRowCount * minimumGridRowCount)
+
+    readonly property alias rootModel: rootModel
     property alias normalPage: normalPage
     property bool blockingHoverFocus: false
+
+    //BEGIN Models
+    Kicker.RootModel {
+        id: rootModel
+        autoPopulate: false
+
+        // TODO: appletInterface property now can be ported to "applet" and have the real Applet* assigned directly
+        appletInterface: kickoff
+
+        flat: true // have categories, but no subcategories
+        sorted: plasmoid.configuration.alphaSort
+        showSeparators: true
+        showTopLevelItems: true
+
+        showAllApps: true
+        showAllAppsCategorized: false
+        showRecentApps: false
+        showRecentDocs: false
+        showPowerSession: false
+        showFavoritesPlaceholder: true
+
+        Component.onCompleted: {
+            favoritesModel.initForClient("org.kde.plasma.kickoff.favorites.instance-" + plasmoid.id)
+
+            if (!plasmoid.configuration.favoritesPortedToKAstats) {
+                if (favoritesModel.count < 1) {
+                    favoritesModel.portOldFavorites(plasmoid.configuration.favorites);
+                }
+                plasmoid.configuration.favoritesPortedToKAstats = true;
+            }
+        }
+    }
+    //END
 
     /* NOTE: Important things to know about keyboard input handling:
      *

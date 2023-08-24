@@ -21,7 +21,7 @@ RowLayout {
 
     Kicker.SystemModel {
         id: systemModel
-        favoritesModel: rootModel.systemFavoritesModel
+        favoritesModel: kickoff.fullRepresentationItem.rootModel.systemFavoritesModel
     }
 
     component FilteredModel : KItemModels.KSortFilterProxyModel {
