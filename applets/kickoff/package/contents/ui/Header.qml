@@ -23,6 +23,7 @@ import org.kde.config as KConfig
 PlasmaExtras.PlasmoidHeading {
     id: root
 
+    property alias searchField: searchField
     property alias searchText: searchField.text
     property Item configureButton: configureButton
     property Item avatar: avatar
@@ -147,13 +148,6 @@ PlasmaExtras.PlasmoidHeading {
             Layout.leftMargin: kickoff.backgroundMetrics.leftPadding
             focus: true
 
-            Binding {
-                target: kickoff
-                property: "searchField"
-                value: searchField
-                // there's only one header ever, so don't waste resources
-                restoreMode: Binding.RestoreNone
-            }
             Connections {
                 target: kickoff
                 function onExpandedChanged() {
