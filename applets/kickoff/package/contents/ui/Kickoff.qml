@@ -258,7 +258,7 @@ PlasmoidItem {
                 Layout.preferredHeight: !kickoff.vertical ? -1 : width * (implicitHeight / implicitWidth)
                 Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
                 source: Tools.iconOrDefault(plasmoid.formFactor, plasmoid.icon)
-                active: compactHoverHandler.hovered || compactDragArea.containsDrag
+                active: compactHoverHandler.hovered || compactRoot.containsDrag
                 roundToIconSize: implicitHeight === implicitWidth
                 visible: valid
             }
