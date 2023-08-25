@@ -99,7 +99,7 @@ ColumnLayout {
             enabled: (filterMode.currentIndex > 0)
             Layout.fillWidth: true
             Layout.fillHeight: true
-            Layout.preferredHeight: 100//parent.height - metricsCheckBox.height //- selectLayout.height
+            Layout.preferredHeight: 100 // Note: this arbitrary number is a workaround to the layout trying to resize the scrollview to an huge value, the behavior is still correctly stretching
             leftPadding: LayoutMirroring.enabled ? ScrollBar.vertical.width : 2
             topPadding: 2
             rightPadding: LayoutMirroring.enabled ? 2 : ScrollBar.vertical.width
@@ -121,96 +121,25 @@ ColumnLayout {
 
 
                 model: filteredMimeTypesModel
-                property real columnSize: Kirigami.Units.gridUnit * 10
+                property real columnSize: Kirigami.Units.gridUnit * 15
                 headerPositioning: ListView.OverlayHeader
 
                 Keys.onSpacePressed: toggleCurrent()
 
-                function adjustColumns() {return
-                    // Resize description column to take whatever space is left.
-                    var w = width;
-                    for (var i = 0; i < columns - 1; ++i) {
-                        w -= getColumn(i).width;
-                    }
-                    descriptionColumn.width = w;
-                }
-
-                onWidthChanged: adjustColumns()
-                // Component.onCompleted is too early to do this...
-                onCountChanged: adjustColumns()
-
-                header: RowLayout {
+                header: HorizontalHeaderView {
+                    id: headerView
                     z: 9
                     width: mimeTypesView.width
-                    spacing: 0
-                    Button {
-                        Layout.preferredWidth: Kirigami.Units.gridUnit * 2
-                        onClicked: {
-                            if (filteredMimeTypesModel.sortRole == "checked") {
-                                filteredMimeTypesModel.sortOrder = filteredMimeTypesModel.sortOrder == Qt.AscendingOrder ? Qt.DescendingOrder : Qt.AscendingOrder;
-                                filteredMimeTypesModel.sort(0, filteredMimeTypesModel.sortOrder)
-                                filteredMimeTypesModel.sortOrderChanged()
-                            } else {
-                                filteredMimeTypesModel.sortRole = "checked"
-                            }
-                        }
-                        background: StylePrivate.StyleItem {
-                            control: parent
-                            elementType: "header"
-                            sunken: control.down
-                            activeControl: filteredMimeTypesModel.sortRole == "checked" ? (filteredMimeTypesModel.sortOrder == Qt.AscendingOrder ? "down" : "up") : ""
-                            properties: {
-                                "headerpos": "beginning"
-                            }
-                        }
-                    }
-                    Button {
-                        text: i18n("File type")
-                        Layout.preferredWidth: mimeTypesView.columnSize + Kirigami.Units.iconSizes.small + Kirigami.Units.smallSpacing * 2
-                        onClicked: {
-                            if (filteredMimeTypesModel.sortRole == "name") {
-                                filteredMimeTypesModel.sortOrder = filteredMimeTypesModel.sortOrder == Qt.AscendingOrder ? Qt.DescendingOrder : Qt.AscendingOrder;
-                                filteredMimeTypesModel.sort(0, filteredMimeTypesModel.sortOrder)
-                                filteredMimeTypesModel.sortOrderChanged()
-                            } else {
-                                filteredMimeTypesModel.sortRole = "name"
-                            }
-                        }
-                        background: StylePrivate.StyleItem {
-                            control: parent
-                            text: control.text
-                            elementType: "header"
-                            sunken: control.down
-                            activeControl: filteredMimeTypesModel.sortRole == "name" ? (filteredMimeTypesModel.sortOrder == Qt.AscendingOrder ? "down" : "up") : ""
-                            properties: {
-                                "headerpos": "middle"
-                            }
-                        }
-                    }
-                    Button {
-                        text: i18n("Description")
-                        Layout.fillWidth: true
-                        onClicked: {
-                            if (filteredMimeTypesModel.sortRole == "description") {
-                                filteredMimeTypesModel.sortOrder =  filteredMimeTypesModel.sortOrder == Qt.AscendingOrder ? Qt.DescendingOrder : Qt.AscendingOrder;
-                                filteredMimeTypesModel.sort(0, filteredMimeTypesModel.sortOrder)
-                                filteredMimeTypesModel.sortOrderChanged()
-                            } else {
-                                filteredMimeTypesModel.sortRole = "description"
-                            }
-                        }
-                        background: StylePrivate.StyleItem {
-                            control: parent
-                            text: control.text
-                            elementType: "header"
-                            sunken: control.down
-                            activeControl: filteredMimeTypesModel.sortRole == "description" ? (filteredMimeTypesModel.sortOrder == Qt.AscendingOrder ? "down" : "up") : ""
-                            properties: {
-                                "headerpos": "end"
-                            }
+                    model: [i18n("File Type"), i18n("Description")]
+                    columnWidthProvider: function(column) {
+                        if (column == 0) {
+                            return mimeTypesView.columnSize;
+                        } else {
+                            return mimeTypesView.width - mimeTypesView.columnSize;
                         }
                     }
                 }
+
                 delegate: ItemDelegate {
                     id: delegate
                     width: mimeTypesView.width
@@ -220,30 +149,35 @@ ColumnLayout {
                     required property var decoration
 
                     contentItem: RowLayout {
-                        CheckBox{
+                        RowLayout {
+                            Layout.preferredWidth: mimeTypesView.columnSize
+                            Layout.maximumWidth: mimeTypesView.columnSize
                             Layout.fillHeight: true
-                            checked: mimeTypesModel.checkedTypes.indexOf(name) >= 0
-                            onToggled: {
-                                let idx = mimeTypesModel.checkedTypes.indexOf(name);
-                                if (idx >= 0) {
-                                    mimeTypesModel.checkedTypes.splice(idx, 1);
-                                } else {
-                                    mimeTypesModel.checkedTypes.push(name)
+                            CheckBox {
+                                Layout.fillHeight: true
+                                checked: mimeTypesModel.checkedTypes.indexOf(name) >= 0
+                                onToggled: {
+                                    let idx = mimeTypesModel.checkedTypes.indexOf(name);
+                                    if (idx >= 0) {
+                                        mimeTypesModel.checkedTypes.splice(idx, 1);
+                                    } else {
+                                        mimeTypesModel.checkedTypes.push(name)
+                                    }
                                 }
                             }
-                        }
-                        Kirigami.Icon {
-                            Layout.fillHeight: true
-                            implicitWidth: Kirigami.Units.iconSizes.small
-                            implicitHeight: Kirigami.Units.iconSizes.small
-                            animated: false // TableView re-uses delegates, avoid animation when sorting/filtering.
-                            source: decoration
-                        }
-                        Label {
-                            text: name
-                            elide: Text.ElideRight
-                            Layout.preferredWidth: mimeTypesView.columnSize
-                            Layout.fillHeight: true
+                            Kirigami.Icon {
+                                Layout.fillHeight: true
+                                implicitWidth: Kirigami.Units.iconSizes.small
+                                implicitHeight: Kirigami.Units.iconSizes.small
+                                animated: false // TableView re-uses delegates, avoid animation when sorting/filtering.
+                                source: decoration
+                            }
+                            Label {
+                                text: name
+                                elide: Text.ElideRight
+                                Layout.fillWidth: true
+                                Layout.fillHeight: true
+                            }
                         }
                         Label {
                             text: comment
@@ -276,6 +210,18 @@ ColumnLayout {
                 ToolTip.visible: (Kirigami.Settings.isMobile ? pressed : hovered) && ToolTip.text.length > 0
                 ToolTip.text: i18n("Deselect All")
                 onClicked: filteredMimeTypesModel.uncheckFiltered()
+            }
+
+            Button {
+                enabled: (filterMode.currentIndex > 0)
+                icon.name: filteredMimeTypesModel.sortOrder == Qt.AscendingOrder ? "view-sort-ascending-symbolic" : "view-sort-descending-symbolic"
+                ToolTip.delay: Kirigami.Units.toolTipDelay
+                ToolTip.visible: (Kirigami.Settings.isMobile ? pressed : hovered) && ToolTip.text.length > 0
+                ToolTip.text: i18n("Switch Sort Order")
+                onClicked: {
+                    filteredMimeTypesModel.sortOrder = filteredMimeTypesModel.sortOrder == Qt.AscendingOrder ? Qt.DescendingOrder : Qt.AscendingOrder;
+                    filteredMimeTypesModel.sort(0, filteredMimeTypesModel.sortOrder);
+                }
             }
         }
     }
