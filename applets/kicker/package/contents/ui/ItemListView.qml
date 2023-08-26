@@ -63,16 +63,12 @@ FocusScope {
                 itemList.childDialog.delayedDestroy();
             }
 
-            // Gets reenabled after the dialog spawn causes a focus-in on the dialog window.
-            kicker.hideOnWindowDeactivate = false;
-
             itemList.childDialog = itemListDialogComponent.createObject(itemList);
             itemList.childDialog.focusParent = itemList;
             itemList.childDialog.visualParent = listView.currentItem;
             itemList.childDialog.model = model.modelForRow(listView.currentIndex);
             itemList.childDialog.visible = true;
 
-            windowSystem.forceActive(itemList.childDialog.mainItem);
             itemList.childDialog.mainItem.focus = true;
 
             if (focusOnSpawn) {
@@ -222,7 +218,6 @@ FocusScope {
 
                         showChildDialogs = true;
                     } else if ((event.key === Qt.Key_Right || event.key === Qt.Key_Return || event.key === Qt.Key_Enter) && itemList.childDialog != null) {
-                        windowSystem.forceActive(itemList.childDialog.mainItem);
                         itemList.childDialog.mainItem.focus = true;
                         itemList.childDialog.mainItem.currentIndex = 0;
                     } else if ((event.key === Qt.Key_Right || event.key === Qt.Key_Return || event.key === Qt.Key_Enter) && itemList.childDialog == null
@@ -249,8 +244,6 @@ FocusScope {
     }
 
     Component.onCompleted: {
-        windowSystem.monitorWindowFocus(itemList);
-
         if (dialog == null) {
             appendSearchText.connect(root.appendSearchText);
         }

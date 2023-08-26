@@ -20,18 +20,13 @@ PlasmoidItem {
 
     anchors.fill: parent
 
-    signal reset
+    switchWidth: fullRepresentationItem?.Layout.minimumWidth ?? 0
+    switchHeight: fullRepresentationItem>.Layout.minimumHeight ?? 0
 
-    property bool isDash: Plasmoid.pluginName === "org.kde.plasma.kickerdash"
-
-    switchWidth: isDash || !fullRepresentationItem ? 0 :fullRepresentationItem.Layout.minimumWidth
-    switchHeight: isDash || !fullRepresentationItem ? 0 :fullRepresentationItem.Layout.minimumHeight
-
-    // this is a bit of a hack to prevent Plasma from spawning a dialog on its own when we're Dash
-   preferredRepresentation: isDash ?fullRepresentation : null
-
-   compactRepresentation: isDash ? null : compactRepresentation
-   fullRepresentation: isDash ? compactRepresentation : menuRepresentation
+    activationTogglesExpanded: true
+    hideOnWindowDeactivate: true
+    compactRepresentation: CompactRepresentation { }
+    fullRepresentation: MenuRepresentation { }
 
     property Component itemListDialogComponent: Qt.createComponent(Qt.resolvedUrl("./ItemListDialog.qml"))
     property Item dragSource: null
@@ -41,27 +36,20 @@ PlasmoidItem {
 
     Plasmoid.icon: Plasmoid.configuration.useCustomButtonImage ? Plasmoid.configuration.customButtonImage : Plasmoid.configuration.icon
 
-    onSystemFavoritesChanged: {
-        systemFavorites.favorites = Plasmoid.configuration.favoriteSystemActions;
+    onExpandedChanged: expanded => {
+        if (expanded) {
+            kicker.fullRepresentationItem.searchField.text = "";
+            justOpenedTimer.start();
+        }
     }
 
-    function action_menuedit() {
-        processRunner.runMenuEditor();
+    onSystemFavoritesChanged: {
+        systemFavorites.favorites = Plasmoid.configuration.favoriteSystemActions;
     }
 
     function updateSvgMetrics() {
         lineSvg.horLineHeight = lineSvg.elementSize("horizontal-line").height;
         lineSvg.vertLineWidth = lineSvg.elementSize("vertical-line").width;
-    }
-
-    Component {
-        id: compactRepresentation
-        CompactRepresentation {}
-    }
-
-    Component {
-        id: menuRepresentation
-        MenuRepresentation {}
     }
 
     Kicker.RootModel {
@@ -70,15 +58,15 @@ PlasmoidItem {
         autoPopulate: false
 
         appNameFormat: Plasmoid.configuration.appNameFormat
-        flat: kicker.isDash || Plasmoid.configuration.limitDepth
+        flat: Plasmoid.configuration.limitDepth
         sorted: Plasmoid.configuration.alphaSort
-        showSeparators: !kicker.isDash
+        showSeparators: true
         // TODO: appletInterface property now can be ported to "applet" and have the real Applet* assigned directly
         appletInterface: kicker
 
-        showAllApps: kicker.isDash
+        showAllApps: false
         showAllAppsCategorized: true
-        showTopLevelItems: !kicker.isDash
+        showTopLevelItems: true
         showRecentApps: Plasmoid.configuration.showRecentApps
         showRecentDocs: Plasmoid.configuration.showRecentDocs
         recentOrdering: Plasmoid.configuration.recentOrdering
@@ -97,13 +85,6 @@ PlasmoidItem {
 
         Component.onCompleted: {
             favoritesModel.initForClient("org.kde.plasma.kicker.favorites.instance-" + Plasmoid.id)
-
-            if (!Plasmoid.configuration.favoritesPortedToKAstats) {
-                if (favoritesModel.count < 1) {
-                    favoritesModel.portOldFavorites(Plasmoid.configuration.favoriteApps);
-                }
-                Plasmoid.configuration.favoritesPortedToKAstats = true;
-            }
         }
     }
 
@@ -145,10 +126,6 @@ PlasmoidItem {
         runners: {
             const results = ["krunner_services", "krunner_systemsettings"];
 
-            if (kicker.isDash) {
-                results.push("krunner_sessions", "krunner_powerdevil", "calculator", "unitconverter");
-            }
-
             if (Plasmoid.configuration.useExtraRunners) {
                 results.push(...Plasmoid.configuration.extraRunners);
             }
@@ -165,10 +142,6 @@ PlasmoidItem {
 
     Kicker.ProcessRunner {
         id: processRunner
-    }
-
-    Kicker.WindowSystem {
-        id: windowSystem
     }
 
     KSvg.FrameSvgItem {
@@ -215,25 +188,8 @@ PlasmoidItem {
         interval: 600
     }
 
-    Connections {
-        target: kicker
-
-        function onExpandedChanged(expanded) {
-            if (expanded) {
-                windowSystem.monitorWindowVisibility(Plasmoid.fullRepresentationItem);
-                justOpenedTimer.start();
-            } else {
-                kicker.reset();
-            }
-        }
-    }
-
     function resetDragSource() {
         dragSource = null;
-    }
-
-    function enableHideOnWindowDeactivate() {
-        Plasmoid.hideOnWindowDeactivate = true;
     }
 
     Plasmoid.contextualActions: [
@@ -246,17 +202,8 @@ PlasmoidItem {
     ]
 
     Component.onCompleted: {
-        if (Plasmoid.hasOwnProperty("activationTogglesExpanded")) {
-            Plasmoid.activationTogglesExpanded = !kicker.isDash
-        }
-
-        windowSystem.focusIn.connect(enableHideOnWindowDeactivate);
-        kicker.hideOnWindowDeactivate = true;
-
         updateSvgMetrics();
         PlasmaCore.Theme.themeChanged.connect(updateSvgMetrics);
-
-        rootModel.refreshed.connect(reset);
 
         dragHelper.dropped.connect(resetDragSource);
     }
