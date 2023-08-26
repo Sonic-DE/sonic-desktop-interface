@@ -21,7 +21,7 @@ Kicker.SubMenu {
     property bool aboutToBeDestroyed: false
 
     visible: false
-    hideOnWindowDeactivate: kicker.hideOnWindowDeactivate
+    hideOnWindowDeactivate: true
     location: PlasmaCore.Types.Floating
     offset: Kirigami.Units.smallSpacing
 
@@ -73,10 +73,6 @@ Kicker.SubMenu {
 
             property bool sorted: sourceModel.hasOwnProperty("sorted") ? sourceModel.sorted : false
 
-            Component.onCompleted: {
-                kicker.reset.connect(funnelModel.reset);
-            }
-
             onCountChanged: {
                 if (sourceModel && count === 0) {
                     itemDialog.delayedDestroy();
@@ -91,7 +87,6 @@ Kicker.SubMenu {
 
     function delayedDestroy() {
         aboutToBeDestroyed = true;
-        Plasmoid.hideOnWindowDeactivate = false;
         visible = false;
 
         Qt.callLater(() => itemDialog.destroy());

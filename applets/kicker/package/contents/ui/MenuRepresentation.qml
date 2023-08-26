@@ -33,14 +33,7 @@ FocusScope {
 
     signal appendSearchText(string text)
 
-    function reset() {
-        kicker.hideOnWindowDeactivate = true;
-
-        rootList.currentIndex = -1;
-
-        searchField.text = "";
-        searchField.focus = true;
-    }
+    readonly property alias searchField: searchField
 
     Row {
         id: mainRow
@@ -440,9 +433,6 @@ FocusScope {
 
     Component.onCompleted: {
         appendSearchText.connect(searchField.appendText);
-
-        kicker.reset.connect(reset);
-        windowSystem.hidden.connect(reset);
 
         rootModel.refresh();
     }
