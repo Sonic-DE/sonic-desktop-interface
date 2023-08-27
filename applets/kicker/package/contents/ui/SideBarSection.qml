@@ -4,10 +4,9 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 
-import QtQuick 2.15
+import QtQuick
 
-import org.kde.draganddrop 2.0
-import org.kde.kirigami 2.20 as Kirigami
+import org.kde.kirigami 2 as Kirigami
 
 DropArea {
     id: root
@@ -19,19 +18,19 @@ DropArea {
 
     property int contentHeight: model ? (model.count * Kirigami.Units.iconSizes.medium) + ((model.count - 1) * flow.spacing) : 0
 
+    readonly property Item firstItem: repeater.count > 0 ? repeater.indexAt(0) : null
     property alias model: repeater.model
 
-    onDragMove: event => {
+    onPositionChanged: event => {
         if (flow.animating) {
             return;
         }
 
         var above = flow.childAt(event.x, event.y);
 
-        if (above && above !== kicker.dragSource && dragSource.parent == flow) {
-            repeater.model.moveRow(dragSource.itemIndex, above.itemIndex);
+        if (above && above !== dragSource.sourceItem && dragSource.sourceItem.parent == flow) {
+            repeater.model.moveRow(dragSource.sourceItem.itemIndex, above.itemIndex);
         }
-
     }
 
     Flow {
@@ -61,7 +60,7 @@ DropArea {
         Repeater {
             id: repeater
 
-            delegate: SideBarItem {}
+            delegate: SideBarItem { }
 
             onCountChanged: {
                 flow.animationDuration = 0;
