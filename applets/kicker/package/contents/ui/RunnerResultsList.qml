@@ -20,7 +20,6 @@ FocusScope {
 
     property alias currentIndex: runnerMatches.currentIndex
     property alias count: runnerMatches.count
-    property alias containsMouse: runnerMatches.containsMouse
 
     Accessible.name: header.text
     Accessible.role: Accessible.MenuItem
@@ -83,8 +82,6 @@ FocusScope {
 
         iconsEnabled: true
         keyNavigationWraps: (index != 0)
-
-        resetOnExitDelay: 0
 
         model: runnerModel.modelForRow(index)
 

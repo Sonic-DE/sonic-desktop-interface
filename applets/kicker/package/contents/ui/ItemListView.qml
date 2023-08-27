@@ -20,9 +20,7 @@ FocusScope {
     width: minimumWidth
     height: listView.contentHeight
 
-    signal exited
     signal keyNavigationAtListEnd
-    signal appendSearchText(string text)
 
     property Item focusParent: null
     property QtObject dialog: null
@@ -39,220 +37,128 @@ FocusScope {
     property alias showChildDialogs: listView.showChildDialogs
     property alias model: listView.model
     property alias count: listView.count
-    property alias containsMouse: listener.containsMouse
-    property alias resetOnExitDelay: resetIndexTimer.interval
 
-    onFocusParentChanged: {
-        appendSearchText.connect(focusParent.appendSearchText);
+    function spawnDialog(focusOnSpawn = false) {
+        if (!kicker.expanded || model === undefined || currentIndex == -1) {
+            return;
+        }
+
+        if (itemList.childDialog !== null) {
+            return;
+        }
+
+        itemList.childDialog = itemListDialogComponent.createObject(itemList, {
+            "focusParent": itemList,
+        });
+
+        if (focusOnSpawn) {
+            itemList.childDialog.mainItem.showChildDialogs = false;
+            itemList.childDialog.mainItem.currentIndex = 0;
+            itemList.childDialog.mainItem.showChildDialogs = true;
+        }
     }
 
-    Timer {
-        id: dialogSpawnTimer
-
-        property bool focusOnSpawn: false
-
-        interval: 70
-        repeat: false
-
-        onTriggered: {
-            if (!kicker.expanded || model === undefined || currentIndex == -1) {
-                return;
-            }
-
-            if (itemList.childDialog != null) {
-                itemList.childDialog.delayedDestroy();
-            }
-
-            // Gets reenabled after the dialog spawn causes a focus-in on the dialog window.
-            kicker.hideOnWindowDeactivate = false;
-
-            itemList.childDialog = itemListDialogComponent.createObject(itemList);
-            itemList.childDialog.focusParent = itemList;
-            itemList.childDialog.visualParent = listView.currentItem;
-            itemList.childDialog.model = model.modelForRow(listView.currentIndex);
-            itemList.childDialog.visible = true;
-
-            windowSystem.forceActive(itemList.childDialog.mainItem);
-            itemList.childDialog.mainItem.focus = true;
-
-            if (focusOnSpawn) {
-                itemList.childDialog.mainItem.showChildDialogs = false;
-                itemList.childDialog.mainItem.currentIndex = 0;
-                itemList.childDialog.mainItem.showChildDialogs = true;
+    Connections {
+        target: kicker
+        function onExpandedChanged(expanded) {
+            if (!expanded) {
+                childDialog?.destroy();
             }
         }
     }
 
-    Timer {
-        id: resetIndexTimer
-
-        interval: (dialog != null) ? 50 : 150
-        repeat: false
-
-        onTriggered: {
-            if (focus && (!itemList.childDialog || !itemList.childDialog.mainItem.containsMouse)) {
-                currentIndex = -1;
-                itemList.exited();
-            }
-        }
-    }
-
-    MouseEventListener {
-        id: listener
-
+    ScrollView {
         anchors.fill: parent
 
-        hoverEnabled: true
+        focus: true
 
-        onContainsMouseChanged: {
-            listView.eligibleWidth = listView.width;
+        ListView {
+            id: listView
 
-            if (containsMouse) {
-                resetIndexTimer.stop();
-                itemList.forceActiveFocus();
-            } else if ((!itemList.childDialog || !dialog)
-                && (!currentItem || !currentItem.menu.opened)) {
-                resetIndexTimer.start();
+            property bool showChildDialogs: true
+            property int eligibleWidth: width
+
+            currentIndex: -1
+
+            boundsBehavior: Flickable.StopAtBounds
+            snapMode: ListView.SnapToItem
+            spacing: 0
+            keyNavigationWraps: (dialog != null)
+
+            delegate: ItemListDelegate {
+                onFullTextWidthChanged: {
+                    if (fullTextWidth > itemList.width) itemList.width = Math.min(fullTextWidth, itemList.maximumWidth);
+                }
             }
-        }
 
-        ScrollView {
-            anchors.fill: parent
+            highlight: PlasmaExtras.Highlight {
+                visible: listView.currentItem && !listView.currentItem.isSeparator
+            }
 
-            focus: true
+            highlightMoveDuration: 0
 
-            ListView {
-                id: listView
+            onCountChanged: {
+                currentIndex = -1;
+            }
 
-                property bool showChildDialogs: true
-                property int eligibleWidth: width
+            onCurrentIndexChanged: {
+                if (!currentItem?.hasChildren || !kicker.expanded || currentIndex === -1) {
+                    itemList.childDialog?.destroy();
+                } else if (listView.showChildDialogs) {
+                    itemList.spawnDialog();
+                }
+            }
 
-                currentIndex: -1
+            Keys.onPressed: event => {
+                if (event.key === Qt.Key_Up) {
+                    event.accepted = true;
 
-                boundsBehavior: Flickable.StopAtBounds
-                snapMode: ListView.SnapToItem
-                spacing: 0
-                keyNavigationWraps: (dialog != null)
+                    if (!keyNavigationWraps && currentIndex == 0) {
+                        itemList.keyNavigationAtListEnd();
 
-                delegate: ItemListDelegate {
-                    onFullTextWidthChanged: {
-                        if (fullTextWidth > itemList.width) itemList.width = Math.min(fullTextWidth, itemList.maximumWidth);
+                        return;
                     }
-                }
 
-                highlight: PlasmaExtras.Highlight {
-                    visible: listView.currentItem && !listView.currentItem.isSeparator
-                }
+                    showChildDialogs = false;
+                    decrementCurrentIndex();
 
-                highlightMoveDuration: 0
-
-                onCountChanged: {
-                    currentIndex = -1;
-                }
-
-                onCurrentIndexChanged: {
-                    if (currentIndex != -1) {
-                        if (itemList.childDialog) {
-                            if (currentItem && currentItem.hasChildren) {
-                                itemList.childDialog.mainItem.width = itemList.minimumWidth;
-                                itemList.childDialog.model = model.modelForRow(currentIndex);
-                                itemList.childDialog.visualParent = listView.currentItem;
-                            } else {
-                                itemList.childDialog.delayedDestroy();
-                            }
-
-                            return;
-                        }
-
-                        if (currentItem == null || !currentItem.hasChildren || !kicker.expanded) {
-                            dialogSpawnTimer.stop();
-
-                            return;
-                        }
-
-                        if (showChildDialogs) {
-                            dialogSpawnTimer.focusOnSpawn = false;
-                            dialogSpawnTimer.restart();
-                        }
-                    } else if (itemList.childDialog != null) {
-                        itemList.childDialog.delayedDestroy();
-                        itemList.childDialog = null;
-                    }
-                }
-
-                onCurrentItemChanged: {
-                    if (currentItem) {
-                        currentItem.menu.closed.connect(resetIndexTimer.restart);
-                    }
-                }
-
-                Keys.onPressed: event => {
-                    if (event.key === Qt.Key_Up) {
-                        event.accepted = true;
-
-                        if (!keyNavigationWraps && currentIndex == 0) {
-                            itemList.keyNavigationAtListEnd();
-
-                            return;
-                        }
-
-                        showChildDialogs = false;
+                    if (currentItem.isSeparator) {
                         decrementCurrentIndex();
-
-                        if (currentItem.isSeparator) {
-                            decrementCurrentIndex();
-                        }
-
-                        showChildDialogs = true;
-                    } else if (event.key === Qt.Key_Down) {
-                        event.accepted = true;
-
-                        if (!keyNavigationWraps && currentIndex == count - 1) {
-                            itemList.keyNavigationAtListEnd();
-
-                            return;
-                        }
-
-                        showChildDialogs = false;
-                        incrementCurrentIndex();
-
-                        if (currentItem.isSeparator) {
-                            incrementCurrentIndex();
-                        }
-
-                        showChildDialogs = true;
-                    } else if ((event.key === Qt.Key_Right || event.key === Qt.Key_Return || event.key === Qt.Key_Enter) && itemList.childDialog != null) {
-                        windowSystem.forceActive(itemList.childDialog.mainItem);
-                        itemList.childDialog.mainItem.focus = true;
-                        itemList.childDialog.mainItem.currentIndex = 0;
-                    } else if ((event.key === Qt.Key_Right || event.key === Qt.Key_Return || event.key === Qt.Key_Enter) && itemList.childDialog == null
-                        && currentItem != null && currentItem.hasChildren) {
-                        dialogSpawnTimer.focusOnSpawn = true;
-                        dialogSpawnTimer.restart();
-                    } else if (event.key === Qt.Key_Left && dialog != null) {
-                        dialog.destroy();
-                    } else if (event.key === Qt.Key_Escape) {
-                        kicker.expanded = false;
-                    } else if (event.key === Qt.Key_Tab) {
-                        //do nothing, and skip appending text
-                    } else if (event.text !== "") {
-                        if (/[\x00-\x1F\x7F]/.test(event.text)) {
-                            // We still want to focus it
-                            appendSearchText("");
-                        } else {
-                            appendSearchText(event.text);
-                        }
                     }
+
+                    showChildDialogs = true;
+                } else if (event.key === Qt.Key_Down) {
+                    event.accepted = true;
+
+                    if (!keyNavigationWraps && currentIndex == count - 1) {
+                        itemList.keyNavigationAtListEnd();
+
+                        return;
+                    }
+
+                    showChildDialogs = false;
+                    incrementCurrentIndex();
+
+                    if (currentItem.isSeparator) {
+                        incrementCurrentIndex();
+                    }
+
+                    showChildDialogs = true;
+                } else if ((event.key === Qt.Key_Right || event.key === Qt.Key_Return || event.key === Qt.Key_Enter) && itemList.childDialog != null) {
+                    itemList.childDialog.mainItem.focus = true;
+                    itemList.childDialog.mainItem.currentIndex = 0;
+                } else if ((event.key === Qt.Key_Right || event.key === Qt.Key_Return || event.key === Qt.Key_Enter) && itemList.childDialog == null
+                    && currentItem != null && currentItem.hasChildren) {
+                    dialogSpawnTimer.focusOnSpawn = true;
+                    dialogSpawnTimer.restart();
+                } else if (event.key === Qt.Key_Left && dialog != null) {
+                    dialog.destroy();
+                } else if (event.key === Qt.Key_Escape) {
+                    kicker.expanded = false;
+                } else if (event.key === Qt.Key_Tab) {
+                    //do nothing, and skip appending text
                 }
             }
-        }
-    }
-
-    Component.onCompleted: {
-        windowSystem.monitorWindowFocus(itemList);
-
-        if (dialog == null) {
-            appendSearchText.connect(root.appendSearchText);
         }
     }
 }

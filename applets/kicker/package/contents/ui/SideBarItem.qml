@@ -51,72 +51,47 @@ Item {
         }
     }
 
+    TapHandler {
+        acceptedButtons: Qt.LeftButton
+        onTapped: {
+            repeater.model.trigger(index, "", null);
+            kicker.expanded = false;
+        }
+    }
+
+    TapHandler {
+        enabled: item.hasActionList
+        acceptedButtons: Qt.RightButton
+        gesturePolicy: TapHandler.WithinBounds // Release grab when menu appears
+        onPressedChanged: if (pressed) {
+            item.openActionMenu(item, point.position.x, point.position.y);
+        }
+    }
+
     Kirigami.Icon {
+        id: icon
         anchors.fill: parent
 
         active: toolTip.containsMouse
 
         source: model.decoration
-    }
 
-    MouseEventListener {
-        id: listener
-
-        anchors {
-            fill: parent
-            leftMargin: - sideBar.margins.left
-            rightMargin: - sideBar.margins.right
-        }
-
-        enabled: (item.parent && !item.parent.animating)
-
-        property bool pressed: false
-        property int pressX: -1
-        property int pressY: -1
-
-        hoverEnabled: true
-        acceptedButtons: Qt.LeftButton | Qt.RightButton
-
-        onPressed: {
-            if (mouse.buttons & Qt.RightButton) {
-                if (item.hasActionList) {
-                    item.openActionMenu(item, mouse.x, mouse.y);
-                }
+        DragHandler {
+            id: dragHandler
+            onActiveChanged: if (active) {
+                icon.grabToImage((result) => {
+                    if (!dragHandler.active) {
+                        return;
+                    }
+                    dragSource.Drag.imageSource = result.url;
+                    dragSource.Drag.mimeData = {
+                        "text/uri-list": model.url.toString(),
+                    };
+                    dragSource.sourceItem = item;
+                    dragSource.Drag.active = dragHandler.active;
+                });
             } else {
-                pressed = true;
-                pressX = mouse.x;
-                pressY = mouse.y;
-            }
-        }
-
-        onReleased: {
-            if (pressed) {
-                repeater.model.trigger(index, "", null);
-                kicker.expanded = false;
-            }
-
-            pressed = false;
-            pressX = -1;
-            pressY = -1;
-        }
-
-        onContainsMouseChanged: {
-            if (!containsMouse) {
-                pressed = false;
-                pressX = -1;
-                pressY = -1;
-            }
-        }
-
-        onPositionChanged: {
-            if (pressX !== -1 && dragHelper.isDrag(pressX, pressY, mouse.x, mouse.y)) {
-                kicker.dragSource = item;
-                dragHelper.startDrag(kicker, model.url, model.icon);
-                pressed = false;
-                pressX = -1;
-                pressY = -1;
-
-                return;
+                dragSource.Drag.active = false;
             }
         }
     }

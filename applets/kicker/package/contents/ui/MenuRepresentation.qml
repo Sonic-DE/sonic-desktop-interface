@@ -31,16 +31,7 @@ FocusScope {
         + (4 * Kirigami.Units.smallSpacing))
     Layout.maximumHeight: Layout.minimumHeight
 
-    signal appendSearchText(string text)
-
-    function reset() {
-        kicker.hideOnWindowDeactivate = true;
-
-        rootList.currentIndex = -1;
-
-        searchField.text = "";
-        searchField.focus = true;
-    }
+    readonly property alias searchField: searchField
 
     Row {
         id: mainRow
@@ -190,18 +181,12 @@ FocusScope {
                     anchors.top: parent.top
                 }
             }]
-
-            Component.onCompleted: {
-                rootList.exited.connect(root.reset);
-            }
         }
 
         Row {
             id: runnerColumns
 
             height: parent.height
-
-            signal focusChanged()
 
             visible: searchField.text !== "" && runnerModel.count > 0
 
@@ -216,24 +201,6 @@ FocusScope {
 
                     onKeyNavigationAtListEnd: {
                         searchField.focus = true;
-                    }
-
-                    onContainsMouseChanged: {
-                        if (containsMouse) {
-                            runnerMatches.focus = true;
-                        }
-                    }
-
-                    onFocusChanged: {
-                        if (focus) {
-                            runnerColumns.focusChanged();
-                        }
-                    }
-
-                    function focusChanged() {
-                        if (!runnerMatches.focus && runnerMatches.currentIndex != -1) {
-                            runnerMatches.currentIndex = -1;
-                        }
                     }
 
                     Keys.onPressed: event => {
@@ -281,14 +248,6 @@ FocusScope {
                             target.currentIndex = 0;
                             target.focus = true;
                         }
-                    }
-
-                    Component.onCompleted: {
-                        runnerColumns.focusChanged.connect(focusChanged);
-                    }
-
-                    Component.onDestruction: {
-                        runnerColumns.focusChanged.disconnect(focusChanged);
                     }
                 }
             }
@@ -425,25 +384,13 @@ FocusScope {
                 }
             }
         }
-
-        function appendText(newText) {
-            focus = true;
-            text = text + newText;
-        }
     }
 
-    Keys.onPressed: event => {
-        if (event.key === Qt.Key_Escape) {
-            kicker.expanded = false;
-        }
+    Keys.onEscapePressed: {
+        kicker.expanded = false;
     }
 
     Component.onCompleted: {
-        appendSearchText.connect(searchField.appendText);
-
-        kicker.reset.connect(reset);
-        windowSystem.hidden.connect(reset);
-
         rootModel.refresh();
     }
 }
