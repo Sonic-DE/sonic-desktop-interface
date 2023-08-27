@@ -9,6 +9,7 @@ import QtQuick 2.15
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.plasmoid 2.0
 import org.kde.kirigami 2.20 as Kirigami
+import org.kde.kwindowsystem
 
 import org.kde.plasma.private.kicker 0.1 as Kicker
 
@@ -16,26 +17,23 @@ Kicker.SubMenu {
     id: itemDialog
 
     property alias focusParent: itemListView.focusParent
-    property alias model: funnelModel.sourceModel
 
-    property bool aboutToBeDestroyed: false
-
-    visible: false
-    hideOnWindowDeactivate: kicker.hideOnWindowDeactivate
+    visible: true
+    visualParent: focusParent.currentItem
+    hideOnWindowDeactivate: true
     location: PlasmaCore.Types.Floating
     offset: Kirigami.Units.smallSpacing
 
     onWindowDeactivated: {
-        if (!aboutToBeDestroyed) {
-            kicker.expanded = false;
-        }
+        kicker.expanded = false;
     }
 
     mainItem: ItemListView {
         id: itemListView
 
+        width: itemListView.focusParent.minimumWidth
         height: {
-            const m = funnelModel.sourceModel;
+            const m = itemListView.model.sourceModel;
 
             if (m === null || m === undefined) {
                 // TODO: setting height to 0 triggers a warning in PlasmaQuick::Dialog
@@ -62,38 +60,22 @@ Kicker.SubMenu {
             return (Math.floor(x / y) - 1) * y;
         }
 
+        focus: true
         iconsEnabled: true
-
         dialog: itemDialog
 
-        model: funnelModel
-
-        Kicker.FunnelModel {
+        model: Kicker.FunnelModel {
             id: funnelModel
+            sourceModel: itemListView.focusParent.model.modelForRow(itemListView.focusParent.currentIndex)
+        }
 
-            property bool sorted: sourceModel.hasOwnProperty("sorted") ? sourceModel.sorted : false
-
-            Component.onCompleted: {
-                kicker.reset.connect(funnelModel.reset);
-            }
-
-            onCountChanged: {
-                if (sourceModel && count === 0) {
-                    itemDialog.delayedDestroy();
-                }
-            }
-
-            onSourceModelChanged: {
-                itemListView.currentIndex = -1;
-            }
+        Keys.onEscapePressed: {
+            itemDialog.destroy();
         }
     }
 
-    function delayedDestroy() {
-        aboutToBeDestroyed = true;
-        Plasmoid.hideOnWindowDeactivate = false;
-        visible = false;
-
-        Qt.callLater(() => itemDialog.destroy());
+    Component.onCompleted: KX11Extras.forceActiveWindow(itemDialog)
+    Component.onDestruction: if (itemDialog.focusParent) {
+        KX11Extras.forceActiveWindow(itemDialog.focusParent.Window.window)
     }
 }
