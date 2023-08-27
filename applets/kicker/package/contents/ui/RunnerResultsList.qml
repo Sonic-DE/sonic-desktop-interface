@@ -13,14 +13,14 @@ import org.kde.ksvg 1.0 as KSvg
 import org.kde.plasma.plasmoid 2.0
 
 FocusScope {
+    id: runnerMatchesScope
     width: runnerMatches.width + vertLine.width + vertLine.anchors.leftMargin + runnerMatches.anchors.leftMargin
     height: parent.height
 
-    signal keyNavigationAtListEnd
-
+    readonly property alias firstItem: runnerMatches.firstItem
+    readonly property alias lastItem: runnerMatches.lastItem
     property alias currentIndex: runnerMatches.currentIndex
     property alias count: runnerMatches.count
-    property alias containsMouse: runnerMatches.containsMouse
 
     Accessible.name: header.text
     Accessible.role: Accessible.MenuItem
@@ -49,7 +49,7 @@ FocusScope {
         height: runnerMatches.itemHeight + Kirigami.Units.smallSpacing
 
         horizontalAlignment: Text.AlignHCenter
-        verticalAlignment: Text.AlignVTop
+        verticalAlignment: Text.AlignTop
 
         textFormat: Text.PlainText
         wrapMode: Text.NoWrap
@@ -62,7 +62,7 @@ FocusScope {
     ItemListView {
         id: runnerMatches
 
-        anchors.top: Plasmoid.configuration.alignResultsToBottom ? undefined : header.bottom
+        anchors.top: header.bottom
         anchors.bottom: Plasmoid.configuration.alignResultsToBottom ? parent.bottom : undefined
         anchors.bottomMargin: (index == 0 && anchors.bottom !== undefined) ? searchField.height + (2 * Kirigami.Units.smallSpacing) : undefined
         anchors.left: vertLine.right
@@ -79,14 +79,13 @@ FocusScope {
             return listHeight;
         }
 
-        focus: true
-
         iconsEnabled: true
-        keyNavigationWraps: (index != 0)
-
-        resetOnExitDelay: 0
 
         model: runnerModel.modelForRow(index)
+
+        // Otherwise ScrollView accepts the event
+        Keys.onLeftPressed: event => runnerMatchesScope.Keys.onLeftPressed(event)
+        Keys.onRightPressed: event => runnerMatchesScope.Keys.onRightPressed(event)
 
         onModelChanged: {
             if (model === undefined || model === null) {
@@ -100,9 +99,5 @@ FocusScope {
                 currentIndex = 0;
             }
         }
-    }
-
-    Component.onCompleted: {
-        runnerMatches.keyNavigationAtListEnd.connect(keyNavigationAtListEnd);
     }
 }
