@@ -91,6 +91,7 @@ Item {
     }
 
     HoverHandler {
+        enabled: !item.ListView.isCurrentItem
         onHoveredChanged: if (hovered) {
             item.ListView.view.currentIndex = index;
         }
@@ -193,7 +194,7 @@ Item {
             height: width
 
             visible: item.hasChildren
-            opacity: (item.ListView.view.currentIndex === index) ? 1.0 : 0.4
+            opacity: item.ListView.isCurrentItem ? 1.0 : 0.4
 
             source: Qt.application.layoutDirection !== Qt.RightToLeft
                 ? "go-next-symbolic"

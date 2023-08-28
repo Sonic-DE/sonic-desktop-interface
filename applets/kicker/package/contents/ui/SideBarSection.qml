@@ -91,7 +91,7 @@ FocusScope {
             delegate: SideBarItem {
                 width: section.width
                 height: width
-                KeyNavigation.right: section.KeyNavigation.right
+                KeyNavigation.right: section.KeyNavigation.right /* ListView will propagate focus to currentItem */
 
                 // Prevent searchField from accepting events
                 Keys.onUpPressed: event => {

@@ -220,18 +220,21 @@ FocusScope {
         focus: !Kirigami.InputMethod.willShowOnActive && kicker.expanded
 
         KeyNavigation.up: if (runnerColumns.visible) {
-            return runnerColumnsRepeater.itemAt(0).listView.itemAtIndex(runnerColumnsRepeater.itemAt(0).count - 1);
+            runnerColumnsRepeater.count; // Trigger update
+            const firstList = runnerColumnsRepeater.itemAt(0);
+            return firstList.listView.itemAtIndex(firstList.count - 1);
         } else {
             rootList.count; // Trigger update
             return rootList.listView.itemAtIndex(rootList.count - 1);
         }
 
         KeyNavigation.down: if (runnerColumns.visible) {
-            runnerColumnsRepeater.itemAt(0).count; // Trigger update
-            return runnerColumnsRepeater.itemAt(0).listView.itemAtIndex(0);
+            runnerColumnsRepeater.count; // Trigger update
+            const firstList = runnerColumnsRepeater.itemAt(0);
+            return firstList.listView.itemAtIndex(Math.min(1, firstList.count - 1)); // Skip the first item because it's selected by default
         } else {
             rootList.count; // Trigger update
-            return rootList.listView.itemAtIndex(0); // Skip the first item because it's selected by default
+            return rootList.listView.itemAtIndex(0);
         }
         KeyNavigation.left: favoriteApps.repeater.count > 0 ? favoriteApps : favoriteSystemActions
 
@@ -254,32 +257,30 @@ FocusScope {
 
         Keys.onUpPressed: event => {
             if (runnerColumns.visible) {
-                const lastList = runnerColumnsRepeater.itemAt(runnerColumnsRepeater.count - 1);
-                lastList.currentIndex = lastList.count - 1;
+                const firstList = runnerColumnsRepeater.itemAt(0);
+                firstList.currentIndex = firstList.count - 1;
             } else {
                 // Create child dialogs only after a key is pressed
                 rootList.showChildDialogs = false;
                 rootList.currentIndex = rootList.count - 1;
             }
-
             event.accepted = false; // Pass the event to KeyNavigation.up
         }
-
         Keys.onDownPressed: event => {
             if (runnerColumns.visible) {
-                runnerColumnsRepeater.itemAt(0).currentIndex = 0;
+                const firstList = runnerColumnsRepeater.itemAt(0);
+                firstList.currentIndex = Math.min(1, firstList.count - 1);
             } else {
                 // Create child dialogs only after a key is pressed
                 rootList.showChildDialogs = false;
                 rootList.currentIndex = 0;
             }
-
             event.accepted = false; // Pass the event to KeyNavigation.down
         }
 
         Keys.onReturnPressed: event => {
             if (runnerColumns.visible) {
-                KeyNavigation.down.Keys.onReturnPressed(event);
+                runnerColumnsRepeater.itemAt(0).listView.currentItem.Keys.onReturnPressed(event);
             } else {
                 event.accepted = false;
             }
