@@ -50,6 +50,7 @@ FocusScope {
         id: flow
 
         anchors.fill: parent
+        focus: true
 
         property bool animating: false
         property int animationDuration: resetAnimationDurationTimer.interval
@@ -73,7 +74,34 @@ FocusScope {
         Repeater {
             id: repeater
 
-            delegate: SideBarItem {}
+            delegate: SideBarItem {
+                width: section.width
+                height: width
+                KeyNavigation.right: section.KeyNavigation.right /* ListView will propagate focus to currentItem */
+
+                // Prevent searchField from accepting events
+                Keys.onUpPressed: event => {
+                    if (index > 0) {
+                        repeater.itemAt(index - 1).forceActiveFocus(Qt.TabFocusReason);
+                    } else {
+                        section.KeyNavigation.up?.repeater.itemAt(section.KeyNavigation.up.repeater.count - 1).forceActiveFocus(Qt.TabFocusReason);
+                    }
+                }
+                Keys.onDownPressed: event => {
+                    if (index < repeater.count - 1) {
+                        repeater.itemAt(index + 1).forceActiveFocus(Qt.TabFocusReason);
+                    } else {
+                        section.KeyNavigation.down?.repeater.itemAt(0).forceActiveFocus(Qt.TabFocusReason);
+                    }
+                }
+                Keys.onRightPressed: event => {
+                    if (!runnerColumns.visible) {
+                        rootList.showChildDialogs = false;
+                        rootList.currentIndex = 0;
+                    }
+                    event.accepted = false;
+                }
+            }
 
             onCountChanged: {
                 flow.animationDuration = 0;
