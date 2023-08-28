@@ -111,7 +111,7 @@ ColumnLayout {
                 hasFocus: mimeTypesView.activeFocus
                 hover: scrollView.hovered
             }
-            ListView {
+            contentItem: ListView {
                 id: mimeTypesView
                 clip: true
 
