@@ -13,8 +13,6 @@ import org.kde.plasma.core 2.1 as PlasmaCore
 import org.kde.private.desktopcontainment.folder 0.1 as Folder
 import org.kde.kitemmodels 1.0 as KItemModels
 
-import org.kde.qqc2desktopstyle.private as StylePrivate // Can it be avoided?
-
 ColumnLayout {
     id: configIcons
 
@@ -100,17 +98,11 @@ ColumnLayout {
             Layout.fillWidth: true
             Layout.fillHeight: true
             Layout.preferredHeight: 100 // Note: this arbitrary number is a workaround to the layout trying to resize the scrollview to an huge value, the behavior is still correctly stretching
-            leftPadding: LayoutMirroring.enabled ? ScrollBar.vertical.width : 2
-            topPadding: 2
-            rightPadding: LayoutMirroring.enabled ? 2 : ScrollBar.vertical.width
-            bottomPadding: 2
-            background: StylePrivate.StyleItem {
-                control: scrollView
-                elementType: "edit"
 
-                sunken: true
-                hasFocus: mimeTypesView.activeFocus
-                hover: scrollView.hovered
+            Component.onCompleted: {
+                if (background) {
+                    background.visible = true;
+                }
             }
             contentItem: ListView {
                 id: mimeTypesView
