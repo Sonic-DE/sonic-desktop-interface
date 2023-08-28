@@ -97,13 +97,6 @@ PlasmoidItem {
 
         Component.onCompleted: {
             favoritesModel.initForClient("org.kde.plasma.kicker.favorites.instance-" + Plasmoid.id)
-
-            if (!Plasmoid.configuration.favoritesPortedToKAstats) {
-                if (favoritesModel.count < 1) {
-                    favoritesModel.portOldFavorites(Plasmoid.configuration.favoriteApps);
-                }
-                Plasmoid.configuration.favoritesPortedToKAstats = true;
-            }
         }
     }
 
