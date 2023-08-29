@@ -103,6 +103,7 @@ ColumnLayout {
                     background.visible = true;
                 }
             }
+
             contentItem: ListView {
                 id: mimeTypesView
                 clip: true
@@ -120,8 +121,10 @@ ColumnLayout {
                 header: HorizontalHeaderView {
                     id: headerView
                     z: 9
-                    width: mimeTypesView.width
+                    implicitWidth: mimeTypesView.width
+                    clip: true // This removes event handling blocking by the header
                     model: [i18n("File Type"), i18n("Description")]
+                    interactive: false
                     columnWidthProvider: function(column) {
                         if (column == 0) {
                             return mimeTypesView.columnSize;
