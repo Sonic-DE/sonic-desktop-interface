@@ -122,6 +122,9 @@ ColumnLayout {
                     id: headerView
                     z: 9
                     implicitWidth: mimeTypesView.width
+                    rowHeightProvider: function () {
+                        return Kirigami.Units.gridUnit * 2
+                    }
                     clip: true // This removes event handling blocking by the header
                     model: [i18n("File Type"), i18n("Description")]
                     interactive: false
