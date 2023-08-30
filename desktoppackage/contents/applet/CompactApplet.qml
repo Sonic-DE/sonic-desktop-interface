@@ -163,17 +163,37 @@ PlasmaCore.ToolTipArea {
         function onContextualActionsAboutToShow() { root.hideImmediately() }
     }
 
-    PlasmaCore.Dialog {
+    PlasmaCore.AppletPopup {
         id: dialog
         objectName: "popupWindow"
-        flags: Qt.WindowStaysOnTopHint
-        location: Plasmoid.location
+        popupDirection: switch(Plasmoid.location) {
+            case PlasmaCore.Types.TopEdge:
+                return Qt.BottomEdge
+            case PlasmaCore.Types.LeftEdge:
+                return Qt.RightEdge
+            case PlasmaCore.Types.RightEdge:
+                return Qt.LeftEdge
+            default:
+                return Qt.TopEdge
+        }
+        floating: Plasmoid.Location == PlasmaCore.Desktop
+        removeBorderStrategy: Plasmoid.location === PlasmaCore.Types.Floating
+            ? PlasmaCore.AppletPopup.AtScreenEdges
+            : PlasmaCore.AppletPopup.AtScreenEdges | PlasmaCore.AppletPopup.AtPanelEdges
+
         hideOnWindowDeactivate: root.plasmoidItem && root.plasmoidItem.hideOnWindowDeactivate
         visible: root.plasmoidItem && root.plasmoidItem.expanded && fullRepresentation
         visualParent: root.compactRepresentation
-        backgroundHints: (Plasmoid.containmentDisplayHints & PlasmaCore.Types.DesktopFullyCovered) ? PlasmaCore.Dialog.SolidBackground : PlasmaCore.Dialog.StandardBackground
-        type: PlasmaCore.Dialog.AppletPopup
+        backgroundHints: (Plasmoid.containmentDisplayHints & PlasmaCore.Types.DesktopFullyCovered) ? PlasmaCore.AppletPopup.SolidBackground : PlasmaCore.AppletPopup.StandardBackground
         appletInterface: fullRepresentation && fullRepresentation.appletInterface || null
+
+        implicitWidth: mainItem.implicitWidth + dialog.leftMargin + dialog.rightMargin
+        minimumWidth: mainItem.Layout.minimumWidth + dialog.leftMargin + dialog.rightMargin
+        maximumWidth: mainItem.Layout.maximumWidth + dialog.leftMargin + dialog.rightMargin
+
+        implicitHeight: mainItem.implicitHeight + dialog.topMargin + dialog.bottomMargin
+        minimumHeight: mainItem.Layout.minimumHeight + dialog.topMargin + dialog.bottomMargin
+        maximumHeight: mainItem.Layout.maximumHeight + dialog.topMargin + dialog.bottomMargin
 
         property var oldStatus: PlasmaCore.Types.UnknownStatus
 
@@ -208,7 +228,7 @@ PlasmaCore.ToolTipArea {
             Layout.maximumWidth: fullRepresentation ? fullRepresentation.Layout.maximumWidth : Infinity
             Layout.maximumHeight: fullRepresentation ? fullRepresentation.Layout.maximumHeight : Infinity
 
-            width: {
+            implicitWidth: {
                 if (root.fullRepresentation !== null) {
                     /****/ if (root.fullRepresentation.Layout.preferredWidth > 0) {
                         return root.fullRepresentation.Layout.preferredWidth;
@@ -218,7 +238,7 @@ PlasmaCore.ToolTipArea {
                 }
                 return Kirigami.Units.iconSizes.sizeForLabels * 35;
             }
-            height: {
+            implicitHeight: {
                 if (root.fullRepresentation !== null) {
                     /****/ if (fullRepresentation.Layout.preferredHeight > 0) {
                         return fullRepresentation.Layout.preferredHeight;
@@ -245,10 +265,10 @@ PlasmaCore.ToolTipArea {
                     left: Plasmoid.location === PlasmaCore.Types.RightEdge ? undefined : parent.left
                     right: Plasmoid.location === PlasmaCore.Types.LeftEdge ? undefined : parent.right
                     bottom: Plasmoid.location === PlasmaCore.Types.TopEdge ? undefined : parent.bottom
-                    topMargin: Plasmoid.location === PlasmaCore.Types.BottomEdge ? undefined : -dialog.margins.top
-                    leftMargin: Plasmoid.location === PlasmaCore.Types.RightEdge ? undefined : -dialog.margins.left
-                    rightMargin: Plasmoid.location === PlasmaCore.Types.LeftEdge ? undefined : -dialog.margins.right
-                    bottomMargin: Plasmoid.location === PlasmaCore.Types.TopEdge ? undefined : -dialog.margins.bottom
+                    topMargin: Plasmoid.location === PlasmaCore.Types.BottomEdge ? undefined : -dialog.topMarin
+                    leftMargin: Plasmoid.location === PlasmaCore.Types.RightEdge ? undefined : -dialog.leftMargin
+                    rightMargin: Plasmoid.location === PlasmaCore.Types.LeftEdge ? undefined : -dialog.rightMargin
+                    bottomMargin: Plasmoid.location === PlasmaCore.Types.TopEdge ? undefined : -dialog.bottomMargin
                 }
                 height: (Plasmoid.location === PlasmaCore.Types.TopEdge || Plasmoid.location === PlasmaCore.Types.BottomEdge) ? 1 : undefined
                 width: (Plasmoid.location === PlasmaCore.Types.LeftEdge || Plasmoid.location === PlasmaCore.Types.RightEdge) ? 1 : undefined
