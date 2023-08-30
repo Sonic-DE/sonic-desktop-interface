@@ -163,16 +163,14 @@ PlasmaCore.ToolTipArea {
         function onContextualActionsAboutToShow() { root.hideImmediately() }
     }
 
-    PlasmaCore.Dialog {
+    PlasmaCore.AppletPopup {
         id: dialog
         objectName: "popupWindow"
-        flags: Qt.WindowStaysOnTopHint
-        location: Plasmoid.location
+        // location: Plasmoid.location
         hideOnWindowDeactivate: root.plasmoidItem && root.plasmoidItem.hideOnWindowDeactivate
         visible: root.plasmoidItem && root.plasmoidItem.expanded && fullRepresentation
         visualParent: root.compactRepresentation
-        backgroundHints: (Plasmoid.containmentDisplayHints & PlasmaCore.Types.DesktopFullyCovered) ? PlasmaCore.Dialog.SolidBackground : PlasmaCore.Dialog.StandardBackground
-        type: PlasmaCore.Dialog.AppletPopup
+        // backgroundHints: (Plasmoid.containmentDisplayHints & PlasmaCore.Types.DesktopFullyCovered) ? PlasmaCore.Dialog.SolidBackground : PlasmaCore.Dialog.StandardBackground
         appletInterface: fullRepresentation && fullRepresentation.appletInterface || null
 
         property var oldStatus: PlasmaCore.Types.UnknownStatus
@@ -208,7 +206,7 @@ PlasmaCore.ToolTipArea {
             Layout.maximumWidth: fullRepresentation ? fullRepresentation.Layout.maximumWidth : Infinity
             Layout.maximumHeight: fullRepresentation ? fullRepresentation.Layout.maximumHeight : Infinity
 
-            width: {
+            implicitWidth: {
                 if (root.fullRepresentation !== null) {
                     /****/ if (root.fullRepresentation.Layout.preferredWidth > 0) {
                         return root.fullRepresentation.Layout.preferredWidth;
@@ -218,7 +216,7 @@ PlasmaCore.ToolTipArea {
                 }
                 return Kirigami.Units.iconSizes.sizeForLabels * 35;
             }
-            height: {
+            implicitHeight: {
                 if (root.fullRepresentation !== null) {
                     /****/ if (fullRepresentation.Layout.preferredHeight > 0) {
                         return fullRepresentation.Layout.preferredHeight;
