@@ -163,17 +163,32 @@ PlasmaCore.ToolTipArea {
         function onContextualActionsAboutToShow() { root.hideImmediately() }
     }
 
-    PlasmaCore.Dialog {
+    PlasmaCore.AppletPopup {
         id: dialog
         objectName: "popupWindow"
-        flags: Qt.WindowStaysOnTopHint
-        location: Plasmoid.location
+        popupDirection: switch(Plasmoid.location) {
+            case PlasmaCore.Types.TopEdge:
+                return Qt.BottomEdge
+            case PlasmaCore.Types.LeftEdge:
+                return Qt.RightEdge
+            case PlasmaCore.Types.RightEdge:
+                return Qt.LeftEdge
+            default:
+                return Qt.TopEdge
+        }
+        floating: Plasmoid.Location == PlasmaCore.Desktop
         hideOnWindowDeactivate: root.plasmoidItem && root.plasmoidItem.hideOnWindowDeactivate
         visible: root.plasmoidItem && root.plasmoidItem.expanded && fullRepresentation
         visualParent: root.compactRepresentation
-        backgroundHints: (Plasmoid.containmentDisplayHints & PlasmaCore.Types.DesktopFullyCovered) ? PlasmaCore.Dialog.SolidBackground : PlasmaCore.Dialog.StandardBackground
-        type: PlasmaCore.Dialog.AppletPopup
+        backgroundHints: (Plasmoid.containmentDisplayHints & PlasmaCore.Types.DesktopFullyCovered) ? PlasmaCore.AppletPopup.SolidBackground : PlasmaCore.AppletPopup.StandardBackground
         appletInterface: fullRepresentation && fullRepresentation.appletInterface || null
+
+        implicitWidth: mainItem.implicitWidth + dialog.marginSize.width
+        implicitHeight: mainItem.implicitHeight + dialog.marginSize.height
+        minimumWidth: mainItem.Layout.minimumWidth + dialog.marginSize.width
+        minimumHeight: mainItem.Layout.minimumHeight + dialog.marginSize.height
+        maximumWidth: mainItem.Layout.maximumWidth + dialog.marginSize.width
+        maximumHeight: mainItem.Layout.maximumHeight + dialog.marginSize.height
 
         property var oldStatus: PlasmaCore.Types.UnknownStatus
 
@@ -208,7 +223,7 @@ PlasmaCore.ToolTipArea {
             Layout.maximumWidth: fullRepresentation ? fullRepresentation.Layout.maximumWidth : Infinity
             Layout.maximumHeight: fullRepresentation ? fullRepresentation.Layout.maximumHeight : Infinity
 
-            width: {
+            implicitWidth: {
                 if (root.fullRepresentation !== null) {
                     /****/ if (root.fullRepresentation.Layout.preferredWidth > 0) {
                         return root.fullRepresentation.Layout.preferredWidth;
@@ -218,7 +233,7 @@ PlasmaCore.ToolTipArea {
                 }
                 return Kirigami.Units.iconSizes.sizeForLabels * 35;
             }
-            height: {
+            implicitHeight: {
                 if (root.fullRepresentation !== null) {
                     /****/ if (fullRepresentation.Layout.preferredHeight > 0) {
                         return fullRepresentation.Layout.preferredHeight;
