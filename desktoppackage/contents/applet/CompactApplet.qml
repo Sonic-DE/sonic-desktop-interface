@@ -184,7 +184,6 @@ PlasmaCore.ToolTipArea {
         property var oldStatus: PlasmaCore.Types.UnknownStatus
 
         onVisibleChanged: {
-            console.log(dialog.marginSize)
             if (!visible) {
                 expandedSync.restart();
                 Plasmoid.status = oldStatus;
