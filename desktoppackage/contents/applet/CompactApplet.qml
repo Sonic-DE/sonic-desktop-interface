@@ -170,12 +170,21 @@ PlasmaCore.ToolTipArea {
         hideOnWindowDeactivate: root.plasmoidItem && root.plasmoidItem.hideOnWindowDeactivate
         visible: root.plasmoidItem && root.plasmoidItem.expanded && fullRepresentation
         visualParent: root.compactRepresentation
-        // backgroundHints: (Plasmoid.containmentDisplayHints & PlasmaCore.Types.DesktopFullyCovered) ? PlasmaCore.Dialog.SolidBackground : PlasmaCore.Dialog.StandardBackground
+        backgroundHints: (Plasmoid.containmentDisplayHints & PlasmaCore.Types.DesktopFullyCovered) ? PlasmaCore.Dialog.SolidBackground : PlasmaCore.Dialog.StandardBackground
         appletInterface: fullRepresentation && fullRepresentation.appletInterface || null
+
+        // restoration of size from config needs to be here now?
+        width: mainItem.implicitWidth + dialog.marginSize.width
+        height: mainItem.implicitHeight + dialog.marginSize.height
+        minimumWidth: mainItem.Layout.minimumWidth + dialog.marginSize.width
+        minimumHeight: mainItem.Layout.minimumHeight + dialog.marginSize.height
+        maximumWidth: mainItem.Layout.maximumWidth + dialog.marginSize.width
+        maximumHeight: mainItem.Layout.maximumHeight + dialog.marginSize.height
 
         property var oldStatus: PlasmaCore.Types.UnknownStatus
 
         onVisibleChanged: {
+            console.log(dialog.marginSize)
             if (!visible) {
                 expandedSync.restart();
                 Plasmoid.status = oldStatus;
