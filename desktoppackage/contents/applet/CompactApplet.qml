@@ -174,8 +174,8 @@ PlasmaCore.ToolTipArea {
         appletInterface: fullRepresentation && fullRepresentation.appletInterface || null
 
         // restoration of size from config needs to be here now?
-        width: mainItem.implicitWidth + dialog.marginSize.width
-        height: mainItem.implicitHeight + dialog.marginSize.height
+        implicitWidth: mainItem.implicitWidth + dialog.marginSize.width
+        implicitHeight: mainItem.implicitHeight + dialog.marginSize.height
         minimumWidth: mainItem.Layout.minimumWidth + dialog.marginSize.width
         minimumHeight: mainItem.Layout.minimumHeight + dialog.marginSize.height
         maximumWidth: mainItem.Layout.maximumWidth + dialog.marginSize.width
