@@ -264,7 +264,8 @@ FocusScope {
 
         Keys.onReturnPressed: event => {
             if (runnerColumns.visible) {
-                runnerColumns.visibleChildren[0].listView.(currentItem || itemAtIndex(0)).Keys.onReturnPressed(event);
+                const listView = runnerColumns.visibleChildren[0].listView;
+                (listView.currentItem || listView.itemAtIndex(0)).Keys.onReturnPressed(event);
             } else {
                 event.accepted = false;
             }
