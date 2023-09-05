@@ -103,6 +103,7 @@ void PositionerTest::tst_move()
 {
     QFETCH(QVariantList, moves);
     QFETCH(QVector<int>, result);
+
     m_positioner->move(moves);
     for (int i = 0; i < m_positioner->rowCount(); i++) {
         QCOMPARE(m_positioner->map(i), result[i]);
