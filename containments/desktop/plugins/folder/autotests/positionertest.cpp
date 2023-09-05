@@ -103,6 +103,11 @@ void PositionerTest::tst_move()
 {
     QFETCH(QVariantList, moves);
     QFETCH(QVector<int>, result);
+    if (m_folderModel->status() == FolderModel::Listing) {
+        QSignalSpy folderModelReadySpy(m_folderModel, &FolderModel::statusChanged);
+        QVERIFY(folderModelReadySpy.wait());
+    }
+
     m_positioner->move(moves);
     for (int i = 0; i < m_positioner->rowCount(); i++) {
         QCOMPARE(m_positioner->map(i), result[i]);
