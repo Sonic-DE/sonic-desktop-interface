@@ -56,6 +56,10 @@ void PositionerTest::init()
     m_folderModel->setUrl(m_folderDir->path() + QDir::separator() + desktop);
     QSignalSpy s(m_folderModel, &FolderModel::listingCompleted);
     s.wait(1000);
+    if (m_folderModel->status() == FolderModel::Listing) {
+        QSignalSpy folderModelReadySpy(m_folderModel, &FolderModel::statusChanged);
+        QVERIFY(folderModelReadySpy.wait());
+    }
 }
 
 void PositionerTest::cleanup()
@@ -103,6 +107,7 @@ void PositionerTest::tst_move()
 {
     QFETCH(QVariantList, moves);
     QFETCH(QVector<int>, result);
+
     m_positioner->move(moves);
     for (int i = 0; i < m_positioner->rowCount(); i++) {
         QCOMPARE(m_positioner->map(i), result[i]);
