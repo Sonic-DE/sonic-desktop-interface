@@ -78,7 +78,7 @@ KCMUtils.ScrollViewKCM {
                 }
             additionalActions: [
                 Kirigami.Action {
-                    tooltip: isFavorite ? i18n("Remove from favorites") : i18n("Add to favorites")
+                    text: isFavorite ? i18n("Remove from favorites") : i18n("Add to favorites")
                     icon.name: isFavorite ? "starred-symbolic": "non-starred-symbolic"
                     onTriggered: isFavorite ? kcm.removeFromFavorites(model.metaData) : kcm.addToFavorites(model.metaData)
                 }
