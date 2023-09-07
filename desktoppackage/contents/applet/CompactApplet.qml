@@ -176,6 +176,9 @@ PlasmaCore.ToolTipArea {
             default:
                 return Qt.TopEdge
         }
+        removeBorderStrategy: Plasmoid.location === PlasmaCore.Types.FLoating
+                ? PlasmaCore.AppletPopup.AtScreenEdges
+                : PlasmaCore.AppletPopup.AtScreenEdges | PlasmaCore.AppletPopup.AtPanelEdges
         floating: Plasmoid.Location == PlasmaCore.Desktop
         hideOnWindowDeactivate: root.plasmoidItem && root.plasmoidItem.hideOnWindowDeactivate
         visible: root.plasmoidItem && root.plasmoidItem.expanded && fullRepresentation
