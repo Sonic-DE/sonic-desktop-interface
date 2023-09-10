@@ -5,16 +5,19 @@
 */
 
 import QtQuick 2.0
+import QtQuick.Layouts 1.0
 import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core as PlasmaCore
+import org.kde.plasma.extras 2.0 as PlasmaExtras
 import org.kde.kirigami 2.20 as Kirigami
 import org.kde.ksvg 1.0 as KSvg
 import org.kde.plasma.configuration 2.0
+import org.kde.plasma.shell.panel 0.1 as Panel
 import "panelconfiguration"
 
 
 //TODO: all of this will be done with desktop components
-KSvg.FrameSvgItem {
+Item {
     id: dialogRoot
 
     signal closeContextMenu
@@ -22,7 +25,8 @@ KSvg.FrameSvgItem {
 //BEGIN Properties
     width: 640
     height: 64
-    imagePath: "dialogs/background"
+    implicitWidth: ruler.implicitWidth
+    implicitHeight: ruler.implicitHeight
 
     LayoutMirroring.enabled: Qt.application.layoutDirection === Qt.RightToLeft
     LayoutMirroring.childrenInherit: true
@@ -71,103 +75,60 @@ KSvg.FrameSvgItem {
 
     Ruler {
         id: ruler
+        visible: panel.lengthMode === Panel.Global.Custom
+        property var shortSide: vertical ? width : height
         state: dialogRoot.state
     }
 
-    ToolBar {
-        id: toolBar
-        state: dialogRoot.state
+    PlasmaCore.Dialog {
+        id: mainDialog
+        visible: dialogRoot.visible
+
+        property var targetWidth: Kirigami.Units.gridUnit * 27
+        property var targetHeight: mainItem.height
+
+        mainItem: DialogContent {
+            width: mainDialog.targetWidth
+        }
+
+        location: PlasmaCore.Types.Floating
+        flags: Qt.WindowStaysOnTopHint | Qt.WindowDoesNotAcceptFocus | Qt.BypassWindowManagerHint
     }
+
 //END UI components
-
-//BEGIN Animations
-    //when EdgeHandle is released animate to old panel position
-    ParallelAnimation {
-        id: panelResetAnimation
-        NumberAnimation {
-            target: panel
-            properties: (panel.location === PlasmaCore.Types.LeftEdge || panel.location === PlasmaCore.Types.RightEdge) ? "x" : "y"
-            to:  {
-                switch (panel.location) {
-                case PlasmaCore.Types.TopEdge:
-                    return panel.screenGeometry.y + panel.distance
-                case PlasmaCore.Types.LeftEdge:
-                    return panel.screenGeometry.x + panel.distance
-                case PlasmaCore.Types.RightEdge:
-                    return panel.screenGeometry.x + panel.screenGeometry.width - panel.width - panel.distance
-                case PlasmaCore.Types.BottomEdge:
-                default:
-                    return panel.screenGeometry.y + panel.screenGeometry.height - panel.height - panel.distance
-                }
-            }
-            duration: Kirigami.Units.shortDuration
-        }
-
-        NumberAnimation {
-            target: configDialog
-            properties: (panel.location === PlasmaCore.Types.LeftEdge || panel.location === PlasmaCore.Types.RightEdge) ? "x" : "y"
-            to: {
-                switch (panel.location) {
-                case PlasmaCore.Types.TopEdge:
-                    return panel.screenGeometry.y + panel.height + panel.distance
-                case PlasmaCore.Types.LeftEdge:
-                    return panel.screenGeometry.x + panel.width + panel.distance
-                case PlasmaCore.Types.RightEdge:
-                    return panel.screenGeometry.x + panel.screenGeometry.width - panel.width - configDialog.width - panel.distance
-                case PlasmaCore.Types.BottomEdge:
-                default:
-                    return panel.screenGeometry.y + panel.screenGeometry.height - panel.height - configDialog.height - panel.distance
-                }
-            }
-            duration: Kirigami.Units.shortDuration
-        }
-    }
-//END Animations
 
 //BEGIN States
 states: [
         State {
             name: "TopEdge"
             PropertyChanges {
-                target: dialogRoot
-                enabledBorders: "TopBorder|BottomBorder"
-            }
-            PropertyChanges {
-                target: dialogRoot
-                implicitHeight: ruler.implicitHeight + toolBar.implicitHeight
+                target: mainDialog
+                x: panel.screenGeometry.x + panel.screenGeometry.width / 2 - mainDialog.targetWidth / 2
+                y: panel.screenGeometry.y + Kirigami.Units.gridUnit * 2 + (ruler.visible ? ruler.shortSide : 0)
             }
         },
         State {
             name: "BottomEdge"
             PropertyChanges {
-                target: dialogRoot
-                enabledBorders: "TopBorder|BottomBorder"
-            }
-            PropertyChanges {
-                target: dialogRoot
-                implicitHeight: ruler.implicitHeight + toolBar.implicitHeight
+                target: mainDialog
+                x: panel.screenGeometry.x + panel.screenGeometry.width / 2 - mainDialog.targetWidth / 2
+                y: panel.screenGeometry.y + panel.screenGeometry.height - panel.thickness - Kirigami.Units.gridUnit * 2 - mainDialog.targetHeight - (ruler.visible ? ruler.shortSide : 0)
             }
         },
         State {
             name: "LeftEdge"
             PropertyChanges {
-                target: dialogRoot
-                enabledBorders: "LeftBorder|RightBorder"
-            }
-            PropertyChanges {
-                target: dialogRoot
-                implicitWidth: ruler.implicitWidth + toolBar.implicitWidth
+                target: mainDialog
+                y: panel.screenGeometry.y + panel.screenGeometry.height / 2 - mainDialog.targetHeight / 2
+                x: panel.screenGeometry.x + Kirigami.Units.gridUnit * 2 + (ruler.visible ? ruler.shortSide : 0)
             }
         },
         State {
             name: "RightEdge"
             PropertyChanges {
-                target: dialogRoot
-                enabledBorders: "LeftBorder|RightBorder"
-            }
-            PropertyChanges {
-                target: dialogRoot
-                implicitWidth: ruler.implicitWidth + toolBar.implicitWidth
+                target: mainDialog
+                y: panel.screenGeometry.y + panel.screenGeometry.height / 2 - mainDialog.targetHeight / 2
+                x: panel.screenGeometry.x + panel.screenGeometry.width - panel.thickness - (ruler.visible ? ruler.shortSide : 0) - mainDialog.targetWidth - Kirigami.Units.gridUnit * 2
             }
         }
     ]
