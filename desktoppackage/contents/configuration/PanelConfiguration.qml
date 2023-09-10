@@ -5,8 +5,10 @@
 */
 
 import QtQuick 2.0
+import QtQuick.Layouts 1.0
 import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core as PlasmaCore
+import org.kde.plasma.extras 2.0 as PlasmaExtras
 import org.kde.kirigami 2.20 as Kirigami
 import org.kde.ksvg 1.0 as KSvg
 import org.kde.plasma.configuration 2.0
@@ -14,7 +16,7 @@ import "panelconfiguration"
 
 
 //TODO: all of this will be done with desktop components
-KSvg.FrameSvgItem {
+Item {
     id: dialogRoot
 
     signal closeContextMenu
@@ -22,7 +24,8 @@ KSvg.FrameSvgItem {
 //BEGIN Properties
     width: 640
     height: 64
-    imagePath: "dialogs/background"
+    implicitWidth: Kirigami.Units.gridUnit * 2
+    implicitHeight: Kirigami.Units.gridUnit * 2
 
     LayoutMirroring.enabled: Qt.application.layoutDirection === Qt.RightToLeft
     LayoutMirroring.childrenInherit: true
@@ -69,15 +72,24 @@ KSvg.FrameSvgItem {
 
 //BEGIN UI components
 
-    Ruler {
-        id: ruler
-        state: dialogRoot.state
+    PlasmaCore.Dialog {
+        id: mainDialog
+        visible: dialogRoot.visible
+
+        property var targetWidth: Kirigami.Units.gridUnit * 27
+        property var targetHeight: Kirigami.Units.gridUnit * 31
+
+        x: panel.screenGeometry.width / 2 - targetWidth / 2
+        y: panel.screenGeometry.height - panel.thickness - Kirigami.Units.gridUnit * 2 - mainItem.height
+
+        mainItem: DialogContent {
+            width: mainDialog.targetWidth
+        }
+
+        location: PlasmaCore.Types.Floating
+        flags: Qt.WindowStaysOnTopHint | Qt.WindowDoesNotAcceptFocus | Qt.BypassWindowManagerHint
     }
 
-    ToolBar {
-        id: toolBar
-        state: dialogRoot.state
-    }
 //END UI components
 
 //BEGIN Animations
@@ -128,47 +140,15 @@ KSvg.FrameSvgItem {
 states: [
         State {
             name: "TopEdge"
-            PropertyChanges {
-                target: dialogRoot
-                enabledBorders: "TopBorder|BottomBorder"
-            }
-            PropertyChanges {
-                target: dialogRoot
-                implicitHeight: ruler.implicitHeight + toolBar.implicitHeight
-            }
         },
         State {
             name: "BottomEdge"
-            PropertyChanges {
-                target: dialogRoot
-                enabledBorders: "TopBorder|BottomBorder"
-            }
-            PropertyChanges {
-                target: dialogRoot
-                implicitHeight: ruler.implicitHeight + toolBar.implicitHeight
-            }
         },
         State {
             name: "LeftEdge"
-            PropertyChanges {
-                target: dialogRoot
-                enabledBorders: "LeftBorder|RightBorder"
-            }
-            PropertyChanges {
-                target: dialogRoot
-                implicitWidth: ruler.implicitWidth + toolBar.implicitWidth
-            }
         },
         State {
             name: "RightEdge"
-            PropertyChanges {
-                target: dialogRoot
-                enabledBorders: "LeftBorder|RightBorder"
-            }
-            PropertyChanges {
-                target: dialogRoot
-                implicitWidth: ruler.implicitWidth + toolBar.implicitWidth
-            }
         }
     ]
 //END States
