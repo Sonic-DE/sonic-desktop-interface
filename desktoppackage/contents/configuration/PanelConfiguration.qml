@@ -23,10 +23,14 @@ Item {
     signal closeContextMenu
 
 //BEGIN Properties
-    width: 640
-    height: 64
-    implicitWidth: ruler.implicitWidth
-    implicitHeight: ruler.implicitHeight
+    //width: 640
+    //height: 64
+    //implicitWidth: ruler.implicitWidth
+    //implicitHeight: ruler.implicitHeight TODO stuff, working on it
+    implicitWidth: 1
+    implicitHeight: 1
+    width: 1
+    height: 1
 
     LayoutMirroring.enabled: Qt.application.layoutDirection === Qt.RightToLeft
     LayoutMirroring.childrenInherit: true
@@ -87,8 +91,26 @@ Item {
         property var targetWidth: Kirigami.Units.gridUnit * 27
         property var targetHeight: mainItem.height
 
-        mainItem: DialogContent {
+        mainItem: Item {
             width: mainDialog.targetWidth
+            height: mainContent.implicitHeight
+            DialogContent {
+                id: mainContent
+                width: parent.width
+            }
+
+            Kirigami.PlaceholderMessage {
+                width: parent.width - Kirigami.Units.largeSpacing * 2
+                anchors.centerIn: parent
+                visible: !mainContent.visible
+                text: "Click on the arrows near the screen edge you want the panel to occupy."
+
+                helpfulAction: Kirigami.Action {
+                    icon.name: "dialog-conce"
+                    text: "Cancel"
+                    onTriggered: mainContent.visible = true
+                }
+            }
         }
 
         location: PlasmaCore.Types.Floating
@@ -103,8 +125,8 @@ states: [
             name: "TopEdge"
             PropertyChanges {
                 target: mainDialog
-                x: panel.screenGeometry.x + panel.screenGeometry.width / 2 - mainDialog.targetWidth / 2
                 y: panel.screenGeometry.y + Kirigami.Units.gridUnit * 2 + (ruler.visible ? ruler.shortSide : 0)
+                y: panel.screenGeometry.y + Kirigami.Units.gridUnit * 2 + (ruler.visible ? ruler.shortSide : 0) + panel.thickness
             }
         },
         State {
@@ -120,7 +142,7 @@ states: [
             PropertyChanges {
                 target: mainDialog
                 y: panel.screenGeometry.y + panel.screenGeometry.height / 2 - mainDialog.targetHeight / 2
-                x: panel.screenGeometry.x + Kirigami.Units.gridUnit * 2 + (ruler.visible ? ruler.shortSide : 0)
+                x: panel.screenGeometry.x + Kirigami.Units.gridUnit * 2 + (ruler.visible ? ruler.shortSide : 0) + panel.thickness
             }
         },
         State {
