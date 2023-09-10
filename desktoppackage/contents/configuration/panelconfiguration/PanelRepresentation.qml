@@ -21,7 +21,7 @@ Item {
     property bool translucentPanel: false
     property bool sunkenPanel: false
     property bool adaptivePanel: false
-    property int floatingGap: -1
+    property int floatingGap: 0
     property int windowZ: 0
     property int screenHeight: Math.round(screenRect.height / 2)
 
