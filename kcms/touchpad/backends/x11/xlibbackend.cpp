@@ -361,9 +361,9 @@ void XlibBackend::watchForEvents(bool keyboard)
 {
     if (!m_notifications) {
         m_notifications.reset(new XlibNotifications(m_display.get(), m_device ? m_device->deviceId() : XIAllDevices));
-        connect(m_notifications.get(), SIGNAL(devicePlugged(int)), SLOT(devicePlugged(int)));
-        connect(m_notifications.get(), SIGNAL(touchpadDetached()), SLOT(touchpadDetached()));
-        connect(m_notifications.get(), SIGNAL(propertyChanged(xcb_atom_t)), SLOT(propertyChanged(xcb_atom_t)));
+        connect(m_notifications.get(), &XlibNotifications::devicePlugged, this, &XlibBackend::devicePlugged);
+        connect(m_notifications.get(), &XlibNotifications::touchpadDetached, this, &XlibBackend::touchpadDetached);
+        connect(m_notifications.get(), &XlibNotifications::propertyChanged, this, &XlibBackend::propertyChanged);
     }
 
     if (keyboard == (m_keyboard != nullptr)) {
