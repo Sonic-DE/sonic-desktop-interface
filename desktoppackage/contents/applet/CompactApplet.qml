@@ -259,7 +259,6 @@ PlasmaCore.ToolTipArea {
                                 top: separator.parent.top
                                 left: separator.parent.left
                                 right: separator.parent.right
-                                bottom: undefined
                             }
                         }
                         PropertyChanges {
@@ -274,7 +273,6 @@ PlasmaCore.ToolTipArea {
                             anchors {
                                 left: separator.parent.left
                                 top: separator.parent.top
-                                right: undefined
                                 bottom: separator.parent.bottom
                             }
                         }
@@ -288,7 +286,6 @@ PlasmaCore.ToolTipArea {
                         AnchorChanges {
                             target: separator
                             anchors {
-                                left: undefined
                                 top: separator.parent.top
                                 right: separator.parent.right
                                 bottom: separator.parent.bottom
@@ -305,7 +302,6 @@ PlasmaCore.ToolTipArea {
                             target: separator
                             anchors {
                                 left: separator.parent.left
-                                top: undefined
                                 right: separator.parent.right
                                 bottom: separator.parent.bottom
                             }
