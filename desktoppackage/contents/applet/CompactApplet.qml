@@ -185,7 +185,7 @@ PlasmaCore.ToolTipArea {
         visible: root.plasmoidItem && root.plasmoidItem.expanded && fullRepresentation
         visualParent: root.compactRepresentation
         backgroundHints: (Plasmoid.containmentDisplayHints & PlasmaCore.Types.DesktopFullyCovered) ? PlasmaCore.AppletPopup.SolidBackground : PlasmaCore.AppletPopup.StandardBackground
-        appletInterface: fullRepresentation && fullRepresentation.appletInterface || null
+        appletInterface: root.plasmoidItem
 
         property var oldStatus: PlasmaCore.Types.UnknownStatus
 
