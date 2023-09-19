@@ -253,13 +253,12 @@ ColumnLayout {
                             second = Qt.AlignBottom
                         }
                     }
-                    console.log('!!!!', menuColumn.vertical)
                     return first | second;
                 }
                 onClicked: stackView.push("subpages/Alignment.qml", {stackView: stackView})
                 isVertical: menuColumn.vertical
             }
-            QQC2.ComboBox {
+            PC3.ComboBox {
                 id: alignmentBox
                 Layout.alignment: Qt.AlignHCenter
                 property int previewIndex: highlightedIndex > -1 ? highlightedIndex : currentIndex
@@ -288,7 +287,7 @@ ColumnLayout {
             Kirigami.Heading {
                 level: menuColumn.headingLevel
                 Layout.alignment: Qt.AlignHCenter
-                text: i18nd("plasma_shell_org.kde.plasma.desktop", "Width")
+                text: i18ndc("plasma_shell_org.kde.plasma.desktop", "@label", "Width")
             }
             PanelRepresentation {
                 Layout.alignment: Qt.AlignHCenter
@@ -298,10 +297,12 @@ ColumnLayout {
                 alignment: positionRepresentation.alignment
                 fillAvailable: widthBox.previewIndex === 0
             }
-            QQC2.ComboBox {
+            PC3.ComboBox {
                 id: widthBox
-                Layout.alignment: Qt.AlignHCenter
+
                 property int previewIndex: highlightedIndex > -1 ? highlightedIndex : currentIndex
+
+                Layout.alignment: Qt.AlignHCenter
                 model: [
                     menuColumn.vertical ? i18nd("plasma_shell_org.kde.plasma.desktop", "Fill height") : i18nd("plasma_shell_org.kde.plasma.desktop", "Fill width"),
                     i18nd("plasma_shell_org.kde.plasma.desktop", "Fit content"),
@@ -333,7 +334,7 @@ ColumnLayout {
             Kirigami.Heading {
                 Layout.alignment: Qt.AlignTop | Qt.AlignHCenter
                 level: menuColumn.headingLevel
-                text: i18nd("plasma_shell_org.kde.plasma.desktop", "Visibility")
+                text: i18ndc("plasma_shell_org.kde.plasma.desktop", "@label", "Visibility")
             }
             PanelRepresentation {
                 Layout.alignment: Qt.AlignHCenter
@@ -367,7 +368,7 @@ ColumnLayout {
                 adaptivePanel: transparencyBox.previewIndex === 0
                 translucentPanel: transparencyBox.previewIndex === 2
             }
-            QQC2.ComboBox {
+            PC3.ComboBox {
                 id: transparencyBox
                 Layout.alignment: Qt.AlignHCenter
                 property int previewIndex: popup.visible ? highlightedIndex : currentIndex
@@ -399,7 +400,7 @@ ColumnLayout {
                 text: i18nd("plasma_shell_org.kde.plasma.desktop", "Style")
             }
             PanelRepresentation {
-                text: "Yes"
+                text: i18nd("plasma_shell_org.kde.plasma.desktop", "Yes")
                 Layout.alignment: Qt.AlignHCenter
                 floatingGap: Kirigami.Units.smallSpacing * floatingSwitch.checked
             }
