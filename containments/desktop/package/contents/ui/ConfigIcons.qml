@@ -28,6 +28,7 @@ Item {
     property alias cfg_arrangement: arrangement.currentIndex
     property alias cfg_alignment: alignment.currentIndex
     property bool cfg_locked
+    property bool cfg_dropHighlight
     property alias cfg_sortMode: sortMode.mode
     property alias cfg_sortDesc: sortDesc.checked
     property alias cfg_sortDirsFirst: sortDirsFirst.checked
@@ -158,6 +159,21 @@ Item {
             }
 
             text: i18n("Lock in place")
+        }
+
+        CheckBox {
+            id: dropHighlight
+            visible: ("containmentType" in plasmoid)
+            checked: !cfg_locked && cfg_dropHighlight
+            enabled: !(cfg_locked || lockedByKiosk)
+
+            onCheckedChanged: {
+                if (!lockedByKiosk) {
+                    cfg_dropHighlight = checked;
+                }
+            }
+
+            text: i18n("Drag-and-drop indication")
         }
 
         Item {

@@ -231,7 +231,7 @@ ContainmentItem {
 
             // Trigger autoscroll.
             if (isFolder && FolderTools.isFileDrag(event)) {
-                handleDragMove(folderViewLayer.view, mapToItem(folderViewLayer.view, event.x, event.y));
+                handleDragMove(folderViewLayer.view, event, mapToItem(folderViewLayer.view, event.x, event.y));
             } else if (isContainment) {
                 appletsLayout.showPlaceHolderAt(
                     Qt.rect(event.x - appletsLayout.minimumItemWidth / 2,

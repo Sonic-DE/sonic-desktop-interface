@@ -14,14 +14,14 @@ DragDrop.DropArea {
 
     property Item folderView: null
 
-    function handleDragMove(folderView, pos) {
+    function handleDragMove(folderView, event, pos) {
         // Trigger autoscroll.
         folderView.scrollLeft = (pos.x < (Kirigami.Units.gridUnit * 3));
         folderView.scrollRight = (pos.x > width - (Kirigami.Units.gridUnit * 3));
         folderView.scrollUp = (pos.y < (Kirigami.Units.gridUnit * 3));
         folderView.scrollDown = (pos.y > height - (Kirigami.Units.gridUnit * 3));
 
-        folderView.handleDragMove(pos.x, pos.y);
+        folderView.handleDragMove(event, pos);
     }
 
     function handleDragEnd(folderView) {

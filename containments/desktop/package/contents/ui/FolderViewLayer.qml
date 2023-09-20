@@ -215,6 +215,7 @@ FocusScope {
         filterPattern: Plasmoid.configuration.filterPattern
         filterMimeTypes: Plasmoid.configuration.filterMimeTypes
         showHiddenFiles: Plasmoid.configuration.showHiddenFiles
+        dropHighlight: plasmoid.configuration.dropHighlight
 
         flow: (Plasmoid.configuration.arrangement === 0) ? GridView.FlowLeftToRight : GridView.FlowTopToBottom
         layoutDirection: (Plasmoid.configuration.alignment === 0) ? Qt.LeftToRight : Qt.RightToLeft
