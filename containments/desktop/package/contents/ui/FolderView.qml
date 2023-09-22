@@ -212,6 +212,10 @@ FocusScope {
         }
     }
 
+    EventGenerator {
+        id: eventGenerator
+    }
+
     MouseEventListener {
         id: listener
 
