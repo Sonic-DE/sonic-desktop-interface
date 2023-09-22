@@ -1236,6 +1236,10 @@ void FolderModel::drop(QQuickItem *target, QObject *dropEvent, int row, bool sho
      */
     connect(dropJob, &KIO::DropJob::copyJobStarted, this, [this, dropPos, dropTargetUrl](KIO::CopyJob *copyJob) {
         auto map = [this, dropPos, dropTargetUrl](const QUrl &targetUrl) {
+            // KIO::CopyJob::copyingDone is emitted recursively, ignore everyhting not directly in the target folder
+            if ((dropTargetUrl.path() + QStringLiteral("/") + targetUrl.fileName()) != targetUrl.path()) {
+                return;
+            }
             m_dropTargetPositions.insert(targetUrl.fileName(), dropPos);
             m_dropTargetPositionsCleanup->start();
 
@@ -1259,7 +1263,7 @@ void FolderModel::drop(QQuickItem *target, QObject *dropEvent, int row, bool sho
             }
         };
         // remember drop target position for target URL and forget about the source URL
-        connect(copyJob, &KIO::CopyJob::copyingDone, this, [map](KIO::Job *, const QUrl &, const QUrl &targetUrl, const QDateTime &, bool, bool) {
+        connect(copyJob, &KIO::CopyJob::copyingDone, this, [this, map](KIO::Job *, const QUrl &, const QUrl &targetUrl, const QDateTime &, bool, bool) {
             map(targetUrl);
         });
         connect(copyJob, &KIO::CopyJob::copyingLinkDone, this, [map](KIO::Job *, const QUrl &, const QString &, const QUrl &targetUrl) {
