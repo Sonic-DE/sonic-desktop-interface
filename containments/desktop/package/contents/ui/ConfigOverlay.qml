@@ -186,7 +186,7 @@ ContainmentLayoutManager.ConfigOverlayWithHandles {
                         if (applet.plasmoid.backgroundHints & PlasmaCore.Types.ShadowBackground || applet.plasmoid.backgroundHints & PlasmaCore.Types.NoBackground) {
                             applet.plasmoid.userBackgroundHints = applet.plasmoid.backgroundHints;
                         } else {
-                            applet.plasmoid.userBackgroundHints = PlasmaCore.Types.ShadowBackground;
+                            applet.plasmoid.userBackgroundHints = PlasmaCore.Types.NoBackground;
                         }
                     }
                 }
