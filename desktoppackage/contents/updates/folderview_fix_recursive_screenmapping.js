@@ -1,3 +1,9 @@
+/*   vim:set foldmethod=marker:
+
+    SPDX-FileCopyrightText: 2023 Marco Martin <mart@kde.org>
+
+    SPDX-License-Identifier: GPL-2.0-or-later
+*/
 
 function filterDisabled(entries) {
     let filteredEntries = [];
