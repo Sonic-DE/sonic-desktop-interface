@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: plasma-desktop\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-09-13 02:06+0000\n"
-"PO-Revision-Date: 2023-09-13 09:22+0200\n"
+"PO-Revision-Date: 2023-09-24 17:18+0200\n"
 "Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
 "Language: ca\n"
@@ -70,8 +70,8 @@ msgid ""
 "Current icon is %1. Click to open menu to change the current icon or reset "
 "to the default icon."
 msgstr ""
-"La icona actual és %1. Feu-hi clic per a obrir un menú per canviar la icona "
-"actual o restablir la icona predeterminada."
+"La icona actual és %1. Feu-hi clic per a obrir un menú per a canviar la "
+"icona actual o restablir la icona predeterminada."
 
 #: package/contents/ui/ConfigGeneral.qml:52
 #, kde-format
@@ -113,7 +113,7 @@ msgstr "Etiqueta de text:"
 #, kde-format
 msgctxt "@info:placeholder"
 msgid "Type here to add a text label"
-msgstr "Teclegeu aquí per afegir una etiqueta de text"
+msgstr "Teclegeu aquí per a afegir una etiqueta de text"
 
 #: package/contents/ui/ConfigGeneral.qml:125
 #, kde-format
@@ -125,7 +125,7 @@ msgstr "Inicialitza l'etiqueta del menú"
 #, kde-format
 msgctxt "@info"
 msgid "A text label cannot be set when the Panel is vertical."
-msgstr "No és pot definir una etiqueta de text quan el plafó és vertical."
+msgstr "No es pot definir una etiqueta de text quan el plafó és vertical."
 
 #: package/contents/ui/ConfigGeneral.qml:150
 #, kde-format
