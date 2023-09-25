@@ -31,9 +31,11 @@ Item {
     property alias cfg_showOnlyCurrentDesktop: showOnlyCurrentDesktop.checked
     property alias cfg_showOnlyCurrentActivity: showOnlyCurrentActivity.checked
     property alias cfg_showOnlyMinimized: showOnlyMinimized.checked
+    property alias cfg_showOnlyLaunchers: showOnlyLaunchers.checked
     property alias cfg_minimizeActiveTaskOnClick: minimizeActive.checked
     property alias cfg_unhideOnAttention: unhideOnAttention.checked
     property alias cfg_reverseMode: reverseMode.checked
+    property alias cfg_pinnedAppsOnlyLaunchApp: pinnedAppsOnlyLaunchApp.checked
 
     TaskManagerApplet.Backend {
         id: backend
@@ -112,6 +114,11 @@ Item {
             enabled: sortingStrategy.currentIndex == 1
         }
 
+        CheckBox {
+            id: pinnedAppsOnlyLaunchApp
+            text: i18n("Always create new entry for launched applications")
+        }
+
         Item {
             Kirigami.FormData.isSection: true
             visible: (Plasmoid.pluginName !== "org.kde.plasma.icontasks")
@@ -182,6 +189,11 @@ Item {
         CheckBox {
             id: showOnlyMinimized
             text: i18n("That are minimized")
+        }
+
+        CheckBox {
+            id: showOnlyLaunchers
+            text: i18n("That are pinned")
         }
 
         Item {

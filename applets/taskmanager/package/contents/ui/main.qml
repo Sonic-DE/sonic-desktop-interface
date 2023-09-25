@@ -147,9 +147,10 @@ PlasmoidItem {
         filterByScreen: Plasmoid.configuration.showOnlyCurrentScreen
         filterByActivity: Plasmoid.configuration.showOnlyCurrentActivity
         filterNotMinimized: Plasmoid.configuration.showOnlyMinimized
+        filterNotLauncher: Plasmoid.configuration.showOnlyLaunchers
 
         sortMode: sortModeEnumValue(Plasmoid.configuration.sortingStrategy)
-        launchInPlace: iconsOnly && Plasmoid.configuration.sortingStrategy === 1
+        launchInPlace: !Plasmoid.configuration.pinnedAppsOnlyLaunchApp && iconsOnly && Plasmoid.configuration.sortingStrategy === 1
         separateLaunchers: {
             if (!iconsOnly && !Plasmoid.configuration.separateLaunchers
                 && Plasmoid.configuration.sortingStrategy === 1) {
@@ -158,6 +159,7 @@ PlasmoidItem {
 
             return true;
         }
+        alwaysLaunchInNewEntry: Plasmoid.configuration.pinnedAppsOnlyLaunchApp
 
         groupMode: groupModeEnumValue(Plasmoid.configuration.groupingStrategy)
         groupInline: !Plasmoid.configuration.groupPopups && !iconsOnly
