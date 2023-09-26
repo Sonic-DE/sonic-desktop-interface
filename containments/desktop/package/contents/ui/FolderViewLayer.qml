@@ -317,6 +317,19 @@ FocusScope {
                 }
             }
 
+            DropShadow {
+                id: labelTextShadow
+                anchors.fill: text
+                visible: !(plasmoid.userBackgroundHints & PlasmaCore.Types.StandardBackground)
+                horizontalOffset: 1
+                verticalOffset: 1
+                radius: 4
+                samples: 9
+                spread: 0.35
+                color: "black"
+                source: (plasmoid.userBackgroundHints & PlasmaCore.Types.StandardBackground) ? null : text
+            }
+
             PlasmaComponents.Label {
                 id: text
 
