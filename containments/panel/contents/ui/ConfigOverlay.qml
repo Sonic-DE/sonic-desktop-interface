@@ -46,7 +46,7 @@ MouseArea {
                     return;
                 }
             }
-            if (Plasmoid.formFactor === PlasmaCore.Types.Vertical) {
+            if (Plasmoid.formFactor === PlasmaCore.Types.Vertical && currentApplet) {
                 currentApplet.y = mouse.y - startDragOffset;
             } else {
                 currentApplet.x = mouse.x - startDragOffset;
@@ -94,8 +94,10 @@ MouseArea {
         // with with a touchscreen, because there are no entered events in that
         // case
         let item = currentLayout.childAt(mouse.x, mouse.y);
+        console.log(mouse.x, mouse.y, item)
         // BUG 454095: Don't allow dragging lastSpacer as it's not a real applet
         if (!item || item == lastSpacer) {
+            configurationArea.currentApplet = null
             return;
         }
         tooltip.raise();
@@ -105,7 +107,8 @@ MouseArea {
         // to be able to read its properties from the LayoutManager
         appletsModel.insert(item.index, {applet: placeHolder});
         placeHolder.parent.inThickArea = item.inThickArea
-        currentApplet = appletContainerComponent.createObject(root, {applet: item.applet, x: item.x, y: item.y, z: 900,
+        currentApplet = appletContainerComponent.createObject(dropArea, {applet: item.applet, x: item.x,
+                                                                     y: item.y, z: 900,
                                                                      width: item.width, height: item.height, index: -1})
         placeHolder.parent.dragging = currentApplet
         appletsModel.remove(item.index)
@@ -131,7 +134,7 @@ MouseArea {
         let newCurrentApplet = currentApplet.applet.parent
         newCurrentApplet.animateFrom(currentApplet.x, currentApplet.y)
         newCurrentApplet.dragging = null
-        placeHolder.parent = this;
+        placeHolder.parent = this
         currentApplet.destroy()
         root.layoutManager.save()
     }
@@ -174,6 +177,7 @@ MouseArea {
             source: "transform-move"
             width: Math.min(parent.width, parent.height)
             height: width
+            anchors.centerIn: parent
         }
         Behavior on x {
             enabled: !configurationArea.pressed
