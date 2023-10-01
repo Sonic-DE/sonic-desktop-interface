@@ -46,10 +46,10 @@ MouseArea {
                     return;
                 }
             }
-            if (Plasmoid.formFactor === PlasmaCore.Types.Vertical) {
-                currentApplet.y = mouse.y - startDragOffset;
+            if (Plasmoid.formFactor === PlasmaCore.Types.Vertical && currentApplet) {
+                currentApplet.y = mouse.y - startDragOffset + dropArea.anchors.leftMargin;
             } else {
-                currentApplet.x = mouse.x - startDragOffset;
+                currentApplet.x = mouse.x - startDragOffset + dropArea.anchors.topMargin;
             }
 
             const item = root.layoutManager.childAtCoordinates(mouse.x, mouse.y);
@@ -96,6 +96,7 @@ MouseArea {
         let item = currentLayout.childAt(mouse.x, mouse.y);
         // BUG 454095: Don't allow dragging lastSpacer as it's not a real applet
         if (!item || item == lastSpacer) {
+            configurationArea.currentApplet = null
             return;
         }
         tooltip.raise();
@@ -105,7 +106,8 @@ MouseArea {
         // to be able to read its properties from the LayoutManager
         appletsModel.insert(item.index, {applet: placeHolder});
         placeHolder.parent.inThickArea = item.inThickArea
-        currentApplet = appletContainerComponent.createObject(root, {applet: item.applet, x: item.x, y: item.y, z: 900,
+        currentApplet = appletContainerComponent.createObject(root, {applet: item.applet, x: item.x + dropArea.anchors.leftMargin,
+                                                                     y: item.y + dropArea.anchors.topMargin, z: 900,
                                                                      width: item.width, height: item.height, index: -1})
         placeHolder.parent.dragging = currentApplet
         appletsModel.remove(item.index)
@@ -129,9 +131,9 @@ MouseArea {
         }
         appletsModel.set(placeHolder.parent.index, {applet: currentApplet.applet})
         let newCurrentApplet = currentApplet.applet.parent
-        newCurrentApplet.animateFrom(currentApplet.x, currentApplet.y)
+        newCurrentApplet.animateFrom(currentApplet.x - dropArea.anchors.leftMargin, currentApplet.y - dropArea.anchors.topMargin)
         newCurrentApplet.dragging = null
-        placeHolder.parent = this;
+        placeHolder.parent = this
         currentApplet.destroy()
         root.layoutManager.save()
     }
@@ -160,8 +162,8 @@ MouseArea {
     Rectangle {
         id: handle
 
-        x: configurationArea.currentApplet?.x ?? 0
-        y: configurationArea.currentApplet?.y ?? 0
+        x: configurationArea.currentApplet?.x + dropArea.anchors.leftMargin ?? 0
+        y: configurationArea.currentApplet?.y + dropArea.anchors.topMargin ?? 0
         width: configurationArea.currentApplet?.width ?? 0
         height: configurationArea.currentApplet?.height ?? 0
 
@@ -174,6 +176,7 @@ MouseArea {
             source: "transform-move"
             width: Math.min(parent.width, parent.height)
             height: width
+            anchors.centerIn: parent
         }
         Behavior on x {
             enabled: !configurationArea.pressed
