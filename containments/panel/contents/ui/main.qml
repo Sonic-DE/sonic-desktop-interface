@@ -5,8 +5,8 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 
-import QtQuick 2.1
-import QtQuick.Layouts 1.1
+import QtQuick
+import QtQuick.Layouts
 import org.kde.plasma.plasmoid 2.0
 
 import org.kde.plasma.core as PlasmaCore
@@ -93,6 +93,7 @@ ContainmentItem {
     Plasmoid.onUserConfiguringChanged: {
         if (!Plasmoid.userConfiguring) {
             if (root.configOverlay) {
+                root.configOverlay.dragAndDropToDifferentPanel = false
                 root.configOverlay.destroy();
                 root.configOverlay = null;
             }
@@ -154,7 +155,7 @@ ContainmentItem {
         }
 
         onDragEnter: event => {
-            if (Plasmoid.immutable) {
+            if (Plasmoid.immutable || root.configOverlay.dragAndDropToDifferentPanel) {
                 event.ignore();
                 return;
             }
@@ -202,6 +203,14 @@ ContainmentItem {
                 property int appletIndex: index // To make sure it's always readable even inside other models
                 property bool inThickArea: false
                 visible: applet.plasmoid.status !== PlasmaCore.Types.HiddenStatus || (!Plasmoid.immutable && Plasmoid.userConfiguring);
+
+                opacity: root?.configOverlay?.dragAndDropToDifferentPanel && root?.configOverlay?.currentApplet !== container ? 0.25 : 1
+                Behavior on opacity {
+                    NumberAnimation {
+                        duration: Kirigami.Units.longDuration
+                        easing.type: Easing.InOutQuad
+                    }
+                }
 
                 //when the applet moves caused by its resize, don't animate.
                 //this is completely heuristic, but looks way less "jumpy"
@@ -254,7 +263,7 @@ ContainmentItem {
                     id: marginHighlightElements
                     anchors.fill: parent
                     // index -1 is for floating applets, which do not need a margin highlight
-                    opacity: Plasmoid.containment.corona.editMode && dropArea.marginAreasEnabled && !root.dragAndDropping && index != -1 ? 1 : 0
+                    opacity: Plasmoid.userConfiguring && dropArea.marginAreasEnabled && !root.dragAndDropping && index != -1 && !root?.configOverlay?.dragAndDropToDifferentPanel ? 1 : 0
                     Behavior on opacity {
                         NumberAnimation {
                             duration: Kirigami.Units.longDuration
