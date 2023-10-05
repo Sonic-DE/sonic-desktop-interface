@@ -141,7 +141,7 @@ Item {
                 return result;
             }
 
-            var rect = containment.plasmoid.availableScreenRect;
+            var rect = containment.Plasmoid.availableScreenRect;
             result += rect.x;
 
             if (Qt.application.layoutDirection === Qt.RightToLeft) {
@@ -150,7 +150,7 @@ Item {
 
             return result;
         }
-        y: desktop.y + (containment ? containment.plasmoid.availableScreenRect.y : 0)
+        y: desktop.y + (containment ? containment.Plasmoid.availableScreenRect.y : 0)
 
         onVisibleChanged: {
             if (!visible) {
@@ -163,7 +163,7 @@ Item {
             id: sidePanelStack
             asynchronous: true
             width: item ? item.width: 0
-            height: containment ? containment.plasmoid.availableScreenRect.height - sidePanel.margins.top - sidePanel.margins.bottom : 1000
+            height: containment ? containment.Plasmoid.availableScreenRect.height - sidePanel.margins.top - sidePanel.margins.bottom : 1000
             state: "closed"
 
             LayoutMirroring.enabled: Qt.application.layoutDirection === Qt.RightToLeft
@@ -305,7 +305,7 @@ Item {
 
     Loader {
         id: previewBannerLoader
-        readonly property point pos: root.containment?.plasmoid.availableScreenRegion,
+        readonly property point pos: root.containment?.Plasmoid.availableScreenRegion,
             active ? root.containment.adjustToAvailableScreenRegion(
                 root.containment.width + root.containment.x - item.width - Kirigami.Units.largeSpacing,
                 root.containment.height + root.containment.y - item.height - Kirigami.Units.largeSpacing,

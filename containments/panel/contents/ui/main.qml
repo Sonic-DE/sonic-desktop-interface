@@ -198,10 +198,10 @@ ContainmentItem {
                 required property int index
                 property Item dragging
                 property bool isAppletContainer: true
-                property bool isMarginSeparator: ((applet.plasmoid.constraintHints & PlasmaCore.Types.MarginAreasSeparator) == PlasmaCore.Types.MarginAreasSeparator)
+                property bool isMarginSeparator: ((applet.Plasmoid.constraintHints & PlasmaCore.Types.MarginAreasSeparator) == PlasmaCore.Types.MarginAreasSeparator)
                 property int appletIndex: index // To make sure it's always readable even inside other models
                 property bool inThickArea: false
-                visible: applet.plasmoid.status !== PlasmaCore.Types.HiddenStatus || (!Plasmoid.immutable && Plasmoid.userConfiguring);
+                visible: applet.Plasmoid.status !== PlasmaCore.Types.HiddenStatus || (!Plasmoid.immutable && Plasmoid.userConfiguring);
 
                 //when the applet moves caused by its resize, don't animate.
                 //this is completely heuristic, but looks way less "jumpy"
@@ -225,7 +225,7 @@ ContainmentItem {
                         return 0;
                     }
                     //Margins are either the size of the margins in the SVG, unless that prevents the panel from being at least half a smallMedium icon + smallSpace) tall at which point we set the margin to whatever allows it to be that...or if it still won't fit, 1.
-                    let fillArea = overrideFillArea === null ? applet && (applet.plasmoid.constraintHints & PlasmaCore.Types.CanFillArea) : overrideFillArea
+                    let fillArea = overrideFillArea === null ? applet && (applet.Plasmoid.constraintHints & PlasmaCore.Types.CanFillArea) : overrideFillArea
                     let inThickArea = overrideThickArea === null ? container.inThickArea : overrideThickArea
                     var layout = {
                         top: isHorizontal, bottom: isHorizontal,

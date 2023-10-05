@@ -247,7 +247,7 @@ PlasmaExtras.PlasmoidHeading {
                 nextItemInFocusChain(!kickoff.sideBarOnRight).forceActiveFocus(
                     Qt.application.layoutDirection == Qt.RightToLeft ? Qt.BacktabFocusReason : Qt.TabFocusReason)
             }
-            onClicked: plasmoid.internalAction("configure").trigger()
+            onClicked: Plasmoid.internalAction("configure").trigger()
         }
         PC3.ToolButton {
             id: pinButton

@@ -222,14 +222,14 @@ Item {
         // be still read as the initial value here, before the animation starts.
         if (containment) {
             if (opaqueApplets) {
-                containment.plasmoid.containmentDisplayHints |= PlasmaCore.Types.ContainmentPrefersOpaqueBackground
+                containment.Plasmoid.containmentDisplayHints |= PlasmaCore.Types.ContainmentPrefersOpaqueBackground
             } else {
-                containment.plasmoid.containmentDisplayHints &= ~PlasmaCore.Types.ContainmentPrefersOpaqueBackground
+                containment.Plasmoid.containmentDisplayHints &= ~PlasmaCore.Types.ContainmentPrefersOpaqueBackground
             }
             if (floatingApplets) {
-                containment.plasmoid.containmentDisplayHints |= PlasmaCore.Types.ContainmentPrefersFloatingApplets
+                containment.Plasmoid.containmentDisplayHints |= PlasmaCore.Types.ContainmentPrefersFloatingApplets
             } else {
-                containment.plasmoid.containmentDisplayHints &= ~PlasmaCore.Types.ContainmentPrefersFloatingApplets
+                containment.Plasmoid.containmentDisplayHints &= ~PlasmaCore.Types.ContainmentPrefersFloatingApplets
             }
         }
     }
@@ -239,7 +239,7 @@ Item {
             return "";
         }
         var pre;
-        switch (containment.plasmoid.location) {
+        switch (containment.Plasmoid.location) {
         case PlasmaCore.Types.LeftEdge:
             pre = "west";
             break;
@@ -266,7 +266,7 @@ Item {
         containment.parent = containmentParent;
         containment.visible = true;
         containment.anchors.fill = containmentParent;
-        containment.plasmoid.locationChanged.connect(adjustPrefix);
+        containment.Plasmoid.locationChanged.connect(adjustPrefix);
         adjustPrefix();
     }
 
@@ -297,7 +297,7 @@ Item {
                 return;
             }
 
-            return containment.plasmoid.backgroundHints;
+            return containment.Plasmoid.backgroundHints;
         }
         restoreMode: Binding.RestoreBinding
     }
@@ -325,7 +325,7 @@ Item {
                 return "";
             }
             var prefix = ""
-            switch (root.containment.plasmoid.location) {
+            switch (root.containment.Plasmoid.location) {
                 case PlasmaCore.Types.LeftEdge:
                     prefix = "west-active-tab";
                     break;

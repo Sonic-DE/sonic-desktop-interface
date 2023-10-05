@@ -42,7 +42,7 @@ MouseArea {
                     appletsModel.remove(placeHolder.parent.index);
                     currentApplet.destroy();
                     applet.anchors.fill = undefined
-                    newCont.plasmoid.addApplet(applet.plasmoid, Qt.rect(newPos.x, newPos.y, applet.width, applet.height));
+                    newCont.Plasmoid.addApplet(applet.plasmoid, Qt.rect(newPos.x, newPos.y, applet.width, applet.height));
                     return;
                 }
             }
@@ -258,11 +258,11 @@ MouseArea {
                     // cursor position, so show this on the top unless it's on
                     // a top panel
                     visible: tooltip.location !== PlasmaCore.Types.TopEdge
-                             && (configurationArea.currentApplet?.applet.plasmoid.internalAction("remove")?.enabled ?? false)
+                             && (configurationArea.currentApplet?.applet.Plasmoid.internalAction("remove")?.enabled ?? false)
                     icon.name: "delete"
                     text: i18n("Remove")
                     onClicked: {
-                        configurationArea.currentApplet.applet.plasmoid.internalAction("remove").trigger();
+                        configurationArea.currentApplet.applet.Plasmoid.internalAction("remove").trigger();
                         configurationArea.currentApplet = null;
                     }
                 }
@@ -272,7 +272,7 @@ MouseArea {
                     icon.name: "configure"
                     text: i18n("Configure…")
                     onClicked: {
-                        configurationArea.currentApplet.applet.plasmoid.internalAction("configure").trigger();
+                        configurationArea.currentApplet.applet.Plasmoid.internalAction("configure").trigger();
                         configurationArea.currentApplet = null;
                     }
                 }
@@ -282,7 +282,7 @@ MouseArea {
                     icon.name: "widget-alternatives"
                     text: i18n("Show Alternatives…")
                     onClicked: {
-                        configurationArea.currentApplet.applet.plasmoid.internalAction("alternatives").trigger();
+                        configurationArea.currentApplet.applet.Plasmoid.internalAction("alternatives").trigger();
                         configurationArea.currentApplet = null;
                     }
                 }
@@ -291,11 +291,11 @@ MouseArea {
                     // we want destructive actions to be far from the initial
                     // cursor position, so show this on the bottom for top panels
                     visible: tooltip.location === PlasmaCore.Types.TopEdge
-                             && (configurationArea.currentApplet?.applet.plasmoid.internalAction("remove")?.enabled ?? false)
+                             && (configurationArea.currentApplet?.applet.Plasmoid.internalAction("remove")?.enabled ?? false)
                     icon.name: "delete"
                     text: i18n("Remove")
                     onClicked: {
-                        configurationArea.currentApplet.applet.plasmoid.internalAction("remove").trigger();
+                        configurationArea.currentApplet.applet.Plasmoid.internalAction("remove").trigger();
                         configurationArea.currentApplet = null;
                     }
                 }
@@ -313,14 +313,14 @@ MouseArea {
                     editable: true
                     Layout.fillWidth: true
                     focus: !Kirigami.InputMethod.willShowOnActive
-                    visible: configurationArea.currentApplet?.applet.plasmoid.pluginName === "org.kde.plasma.panelspacer"
-                        && !configurationArea.currentApplet.applet.plasmoid.configuration.expanding
+                    visible: configurationArea.currentApplet?.applet.Plasmoid.pluginName === "org.kde.plasma.panelspacer"
+                        && !configurationArea.currentApplet.applet.Plasmoid.configuration.expanding
                     from: 0
                     stepSize: 10
                     to: root.width
-                    value: configurationArea.currentApplet?.applet.plasmoid.configuration.length ?? 0
+                    value: configurationArea.currentApplet?.applet.Plasmoid.configuration.length ?? 0
                     onValueModified: {
-                        configurationArea.currentApplet.applet.plasmoid.configuration.length = value
+                        configurationArea.currentApplet.applet.Plasmoid.configuration.length = value
                     }
                 }
             }
