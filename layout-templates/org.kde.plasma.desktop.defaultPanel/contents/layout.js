@@ -24,7 +24,7 @@ if (panel.formFactor === "horizontal") {
 var kickoff = panel.addWidget("org.kde.plasma.kickoff")
 kickoff.currentConfigGroup = ["Shortcuts"]
 kickoff.writeConfig("global", "Alt+F1")
-
+return
 //panel.addWidget("org.kde.plasma.showActivityManager")
 panel.addWidget("org.kde.plasma.pager")
 panel.addWidget("org.kde.plasma.icontasks")
