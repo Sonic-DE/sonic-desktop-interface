@@ -246,7 +246,7 @@ KCM.ScrollViewKCM {
             }
         }
 
-        delegate: Loader {
+        delegate: listDelegateComponent
             width: list.width
             sourceComponent: listDelegateComponent
         }
