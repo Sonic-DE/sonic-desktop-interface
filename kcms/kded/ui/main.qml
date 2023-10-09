@@ -247,8 +247,5 @@ KCM.ScrollViewKCM {
         }
 
         delegate: listDelegateComponent
-            width: list.width
-            sourceComponent: listDelegateComponent
-        }
     }
 }
