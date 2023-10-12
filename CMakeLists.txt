@@ -78,6 +78,7 @@ find_package(KF6 ${KF6_MIN_VERSION} REQUIRED COMPONENTS
     Package
     IconThemes
     XmlGui
+    Svg
 )
 if(BUILD_TESTING)
     find_package(Qt6Test ${QT_MIN_VERSION} CONFIG REQUIRED)
@@ -203,6 +204,13 @@ if (BUILD_KCM_TOUCHPAD_X11)
         TYPE REQUIRED
     )
 endif()
+
+
+find_package(ICU COMPONENTS i18n uc)
+set_package_properties(ICU PROPERTIES
+    PURPOSE "Retrieving timezone info"
+    TYPE REQUIRED
+)
 
 set_package_properties(XCB PROPERTIES TYPE REQUIRED)
 add_feature_info("XCB-XKB" XCB_XKB_FOUND "Required for building kcm/keyboard")
