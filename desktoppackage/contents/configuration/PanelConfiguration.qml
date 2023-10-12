@@ -25,9 +25,16 @@ ColumnLayout {
     signal closeContextMenu
     implicitWidth: Kirigami.Units.gridUnit * 27
 
+    required property QtObject panelConfiguration
+
     property bool vertical: (panel.location === PlasmaCore.Types.LeftEdge || panel.location === PlasmaCore.Types.RightEdge)
 
     readonly property int headingLevel: 2
+
+    property Item panelRuler: Rectangle {
+        implicitWidth: 40
+        implicitHeight: 40
+    }
 
     PlasmaExtras.PlasmoidHeading {
         RowLayout {
@@ -294,10 +301,18 @@ ColumnLayout {
                 onActivated: (index) => {
                     if (index === 0) {
                         panel.lengthMode = Panel.Global.FillAvailable
+                        panelConfiguration.panelRulerView.visible = false
                     } else if (index === 1) {
                         panel.lengthMode = Panel.Global.FitContent
+                        panelConfiguration.panelRulerView.visible = false
                     } else {
                         panel.lengthMode = Panel.Global.Custom
+                        panelConfiguration.panelRulerView.visible = true
+                    }
+                }
+                Component.onCompleted: {
+                    if (panel.lengthMode === Panel.Global.Custom) {
+                        panelConfiguration.panelRulerView.visible = true
                     }
                 }
             }
