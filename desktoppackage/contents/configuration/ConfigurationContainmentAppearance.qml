@@ -143,7 +143,9 @@ Item {
                 const wallpaperConfig = configDialog.wallpaperConfiguration
                 // BUG 407619: wallpaperConfig can be null before calling `ContainmentItem::loadWallpaper()`
                 if (wallpaperConfig && sourceFile) {
-                    var props = {}
+                    var props = {
+                        "configDialog": configDialog
+                    }
 
                     for (var key in wallpaperConfig) {
                         props["cfg_" + key] = wallpaperConfig[key]
