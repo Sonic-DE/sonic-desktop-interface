@@ -18,7 +18,7 @@ import org.kde.kquickcontrols 2.0
 import "panelconfiguration"
 
 ColumnLayout {
-    id: menuColumn
+    id: dialogRoot
     spacing: Kirigami.Units.largeSpacing * 2
     visible: true
 
@@ -31,10 +31,39 @@ ColumnLayout {
 
     readonly property int headingLevel: 2
 
-    property Item panelRuler: Rectangle {
-        implicitWidth: 40
-        implicitHeight: 40
+    property Item panelRuler: Ruler {
+        id: ruler
+
+        prefix: {
+            switch (panel.location) {
+            case PlasmaCore.Types.TopEdge:
+                return "north"
+            case PlasmaCore.Types.LeftEdge:
+                return "west"
+            case PlasmaCore.Types.RightEdge:
+                return "east"
+            case PlasmaCore.Types.BottomEdge:
+            default:
+                return "south"
+            }
+        }
+
     }
+
+    Connections {
+        target: panel
+        function onOffsetChanged() {
+            ruler.offset = panel.offset
+        }
+        function onMinimumLengthChanged() {
+            ruler.minimumLength = panel.minimumLength
+        }
+        function onMaximumLengthChanged() {
+            ruler.maximumLength = panel.maximumLength
+        }
+    }
+
+
 
     PlasmaExtras.PlasmoidHeading {
         RowLayout {
@@ -74,11 +103,11 @@ ColumnLayout {
         Layout.fillWidth: true
 
         ColumnLayout {
-            Layout.preferredWidth: menuColumn.width / 3
+            Layout.preferredWidth: dialogRoot.width / 3
             spacing: Kirigami.Units.mediumSpacing
             Kirigami.Heading {
                 Layout.alignment: Qt.AlignHCenter
-                level: menuColumn.headingLevel
+                level: dialogRoot.headingLevel
                 text: i18nd("plasma_shell_org.kde.plasma.desktop", "Position")
             }
             PanelRepresentation {
@@ -92,7 +121,7 @@ ColumnLayout {
                             panel.location === PlasmaCore.Types.RightEdge ? Qt.AlignVCenter | Qt.AlignRight :
                             panel.location === PlasmaCore.Types.LeftEdge ? Qt.AlignVCenter | Qt.AlignLeft :
                             Qt.AlignHCenter | Qt.AlignBottom)
-                isVertical: menuColumn.vertical
+                isVertical: dialogRoot.vertical
                 mainIconSource: (panel.location === PlasmaCore.Types.TopEdge ? "arrow-top" :
                                  panel.location === PlasmaCore.Types.RightEdge ? "arrow-right" :
                                  panel.location === PlasmaCore.Types.LeftEdge ? "arrow-left": "arrow-down")
@@ -102,7 +131,7 @@ ColumnLayout {
                 id: setPositionButton
                 Layout.alignment: Qt.AlignHCenter
                 text: i18nd("plasma_shell_org.kde.plasma.desktop", "Set Position...")
-                onClicked: menuColumn.visible = false
+                onClicked: dialogRoot.visible = false
             }
             Repeater {
                 model: Application.screens
@@ -115,7 +144,7 @@ ColumnLayout {
                         property var onClickedLocation
                         flags: Qt.WindowStaysOnTopHint | Qt.WindowDoesNotAcceptFocus | Qt.BypassWindowManagerHint
                         location: PlasmaCore.Types.Floating
-                        visible: !menuColumn.visible && panel.location !== onClickedLocation
+                        visible: !dialogRoot.visible && panel.location !== onClickedLocation
 
                         x: modelData.virtualX + Kirigami.Units.largeSpacing
                         y: modelData.virtualY + modelData.height / 2 - mainItem.height / 2 - margins.top
@@ -149,7 +178,7 @@ ColumnLayout {
                                 width: Kirigami.Units.iconSizes.huge
                                 height: Kirigami.Units.iconSizes.huge
                                 onClicked: {
-                                    menuColumn.visible = true
+                                    dialogRoot.visible = true
                                     panel.location = root.onClickedLocation
                                 }
                             }
@@ -185,17 +214,17 @@ ColumnLayout {
         }
 
         ColumnLayout {
-            Layout.preferredWidth: menuColumn.width / 3
+            Layout.preferredWidth: dialogRoot.width / 3
             spacing: Kirigami.Units.mediumSpacing
             Kirigami.Heading {
                 Layout.alignment: Qt.AlignHCenter
-                level: menuColumn.headingLevel
+                level: dialogRoot.headingLevel
                 text: i18nd("plasma_shell_org.kde.plasma.desktop", "Alignment")
             }
             PanelRepresentation {
                 Layout.alignment: Qt.AlignHCenter
                 mainIconSource: {
-                    if (menuColumn.vertical) {
+                    if (dialogRoot.vertical) {
                         if (alignmentBox.previewIndex === 0) {
                             return "align-vertical-top"
                         } else if (alignmentBox.previewIndex === 1) {
@@ -215,7 +244,7 @@ ColumnLayout {
                 }
                 alignment: {
                     let first, second;
-                    if (menuColumn.vertical) {
+                    if (dialogRoot.vertical) {
                         if (alignmentBox.previewIndex === 0) {
                             first = Qt.AlignTop
                         } else if (alignmentBox.previewIndex === 1) {
@@ -242,20 +271,20 @@ ColumnLayout {
                             second = Qt.AlignBottom
                         }
                     }
-                    console.log('!!!!', menuColumn.vertical)
+                    console.log('!!!!', dialogRoot.vertical)
                     return first | second;
                 }
                 onClicked: stackView.push("subpages/Alignment.qml", {stackView: stackView})
-                isVertical: menuColumn.vertical
+                isVertical: dialogRoot.vertical
             }
             QQC2.ComboBox {
                 id: alignmentBox
                 Layout.alignment: Qt.AlignHCenter
                 property int previewIndex: highlightedIndex > -1 ? highlightedIndex : currentIndex
                 model: [
-                    menuColumn.vertical ? i18nd("plasma_shell_org.kde.plasma.desktop", "Top") : i18nd("plasma_shell_org.kde.plasma.desktop", "Left"),
+                    dialogRoot.vertical ? i18nd("plasma_shell_org.kde.plasma.desktop", "Top") : i18nd("plasma_shell_org.kde.plasma.desktop", "Left"),
                     i18nd("plasma_shell_org.kde.plasma.desktop", "Center"),
-                    menuColumn.vertical ? i18nd("plasma_shell_org.kde.plasma.desktop", "Bottom") : i18nd("plasma_shell_org.kde.plasma.desktop", "Right")
+                    dialogRoot.vertical ? i18nd("plasma_shell_org.kde.plasma.desktop", "Bottom") : i18nd("plasma_shell_org.kde.plasma.desktop", "Right")
                 ]
                 currentIndex: (panel.alignment === Qt.AlignLeft ? 0 :
                                 panel.alignment === Qt.AlignCenter ? 1 : 2)
@@ -272,18 +301,18 @@ ColumnLayout {
         }
 
         ColumnLayout {
-            Layout.preferredWidth: menuColumn.width / 3
+            Layout.preferredWidth: dialogRoot.width / 3
             spacing: Kirigami.Units.mediumSpacing
             Kirigami.Heading {
-                level: menuColumn.headingLevel
+                level: dialogRoot.headingLevel
                 Layout.alignment: Qt.AlignHCenter
                 text: i18nd("plasma_shell_org.kde.plasma.desktop", "Width")
             }
             PanelRepresentation {
                 Layout.alignment: Qt.AlignHCenter
                 mainIconSource: (widthBox.previewIndex === 1 ? "gnumeric-ungroup" :
-                                 widthBox.previewIndex === 0 ? (menuColumn.vertical ? "panel-fit-height" : "panel-fit-width") : "kdenlive-custom-effect")
-                isVertical: menuColumn.vertical
+                                 widthBox.previewIndex === 0 ? (dialogRoot.vertical ? "panel-fit-height" : "panel-fit-width") : "kdenlive-custom-effect")
+                isVertical: dialogRoot.vertical
                 alignment: positionRepresentation.alignment
                 fillAvailable: widthBox.previewIndex === 0
             }
@@ -292,7 +321,7 @@ ColumnLayout {
                 Layout.alignment: Qt.AlignHCenter
                 property int previewIndex: highlightedIndex > -1 ? highlightedIndex : currentIndex
                 model: [
-                    menuColumn.vertical ? i18nd("plasma_shell_org.kde.plasma.desktop", "Fill height") : i18nd("plasma_shell_org.kde.plasma.desktop", "Fill width"),
+                    dialogRoot.vertical ? i18nd("plasma_shell_org.kde.plasma.desktop", "Fill height") : i18nd("plasma_shell_org.kde.plasma.desktop", "Fill width"),
                     i18nd("plasma_shell_org.kde.plasma.desktop", "Fit content"),
                     i18nd("plasma_shell_org.kde.plasma.desktop", "Custom")
                 ]
@@ -325,11 +354,11 @@ ColumnLayout {
         Layout.fillWidth: true
 
         ColumnLayout {
-            Layout.preferredWidth: menuColumn.width / 3
+            Layout.preferredWidth: dialogRoot.width / 3
             spacing: Kirigami.Units.mediumSpacing
             Kirigami.Heading {
                 Layout.alignment: Qt.AlignTop | Qt.AlignHCenter
-                level: menuColumn.headingLevel
+                level: dialogRoot.headingLevel
                 text: i18nd("plasma_shell_org.kde.plasma.desktop", "Visibility")
             }
             PanelRepresentation {
@@ -352,11 +381,11 @@ ColumnLayout {
         }
 
         ColumnLayout {
-            Layout.preferredWidth: menuColumn.width / 3
+            Layout.preferredWidth: dialogRoot.width / 3
             spacing: Kirigami.Units.mediumSpacing
             Kirigami.Heading {
                 Layout.alignment: Qt.AlignTop | Qt.AlignHCenter
-                level: menuColumn.headingLevel
+                level: dialogRoot.headingLevel
                 text: i18nd("plasma_shell_org.kde.plasma.desktop", "Opacity")
             }
             PanelRepresentation {
@@ -388,10 +417,10 @@ ColumnLayout {
         }
 
         ColumnLayout {
-            Layout.preferredWidth: menuColumn.width / 3
+            Layout.preferredWidth: dialogRoot.width / 3
             spacing: Kirigami.Units.mediumSpacing
             Kirigami.Heading {
-                level: menuColumn.headingLevel
+                level: dialogRoot.headingLevel
                 Layout.alignment: Qt.AlignTop | Qt.AlignHCenter
                 text: i18nd("plasma_shell_org.kde.plasma.desktop", "Style")
             }
