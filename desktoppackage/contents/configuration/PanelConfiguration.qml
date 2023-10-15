@@ -81,18 +81,23 @@ ColumnLayout {
                 text: i18nd("plasma_shell_org.kde.plasma.desktop", "Add Spacer")
                 icon.name: "distribute-horizontal-x"
 
-                PC3.ToolTip.text: i18nd("plasma_shell_org.kde.plasma.desktop", "Remove this panel; this action is undo-able")
+                PC3.ToolTip.text: i18nd("plasma_shell_org.kde.plasma.desktop", "Add spacer widget to the panel")
                 PC3.ToolTip.delay: Kirigami.Units.toolTipDelay
                 PC3.ToolTip.visible: hovered
+                onClicked: configDialog.addPanelSpacer()
             }
 
             PC3.ToolButton {
                 text: i18nd("plasma_shell_org.kde.plasma.desktop", "Add Widgets…")
                 icon.name: "list-add"
 
-                PC3.ToolTip.text: i18nd("plasma_shell_org.kde.plasma.desktop", "Remove this panel; this action is undo-able")
+                PC3.ToolTip.text: i18nd("plasma_shell_org.kde.plasma.desktop", "Open the widget selector to drag and drop widgets to the panel")
                 PC3.ToolTip.delay: Kirigami.Units.toolTipDelay
                 PC3.ToolTip.visible: hovered
+                onClicked: {
+                    configDialog.close()
+                    configDialog.showAddWidgetDialog()
+                }
             }
 
         }
