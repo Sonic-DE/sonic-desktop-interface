@@ -20,7 +20,6 @@ import "panelconfiguration"
 ColumnLayout {
     id: dialogRoot
     spacing: Kirigami.Units.largeSpacing * 2
-    visible: true
 
     signal closeContextMenu
     implicitWidth: Kirigami.Units.gridUnit * 27
@@ -81,18 +80,23 @@ ColumnLayout {
                 text: i18nd("plasma_shell_org.kde.plasma.desktop", "Add Spacer")
                 icon.name: "distribute-horizontal-x"
 
-                PC3.ToolTip.text: i18nd("plasma_shell_org.kde.plasma.desktop", "Remove this panel; this action is undo-able")
+                PC3.ToolTip.text: i18nd("plasma_shell_org.kde.plasma.desktop", "Add spacer widget to the panel")
                 PC3.ToolTip.delay: Kirigami.Units.toolTipDelay
                 PC3.ToolTip.visible: hovered
+                onClicked: configDialog.addPanelSpacer()
             }
 
             PC3.ToolButton {
                 text: i18nd("plasma_shell_org.kde.plasma.desktop", "Add Widgets…")
                 icon.name: "list-add"
 
-                PC3.ToolTip.text: i18nd("plasma_shell_org.kde.plasma.desktop", "Remove this panel; this action is undo-able")
+                PC3.ToolTip.text: i18nd("plasma_shell_org.kde.plasma.desktop", "Open the widget selector to drag and drop widgets to the panel")
                 PC3.ToolTip.delay: Kirigami.Units.toolTipDelay
                 PC3.ToolTip.visible: hovered
+                onClicked: {
+                    configDialog.close()
+                    configDialog.showAddWidgetDialog()
+                }
             }
 
         }
@@ -129,86 +133,87 @@ ColumnLayout {
             }
             PC3.Button {
                 id: setPositionButton
+                Layout.minimumHeight: transparencyBox.height
                 Layout.alignment: Qt.AlignHCenter
                 text: i18nd("plasma_shell_org.kde.plasma.desktop", "Set Position...")
-                onClicked: dialogRoot.visible = false
+                checkable: true
             }
-            Repeater {
-                model: Application.screens
-                Item {
-                    required property var modelData
+        }
+        Repeater {
+            model: Application.screens
+            Item {
+                required property var modelData
 
-                    component Indicator : PlasmaCore.Dialog {
-                        id: root
-                        property string iconSource
-                        property var onClickedLocation
-                        flags: Qt.WindowStaysOnTopHint | Qt.WindowDoesNotAcceptFocus | Qt.BypassWindowManagerHint
-                        location: PlasmaCore.Types.Floating
-                        visible: !dialogRoot.visible && panel.location !== onClickedLocation
+                component Indicator : PlasmaCore.Dialog {
+                    id: root
+                    property string iconSource
+                    property var onClickedLocation
+                    flags: Qt.WindowStaysOnTopHint | Qt.WindowDoesNotAcceptFocus | Qt.BypassWindowManagerHint
+                    location: PlasmaCore.Types.Floating
+                    visible: setPositionButton.checked && panel.location !== onClickedLocation
 
-                        x: modelData.virtualX + Kirigami.Units.largeSpacing
-                        y: modelData.virtualY + modelData.height / 2 - mainItem.height / 2 - margins.top
+                    x: modelData.virtualX + Kirigami.Units.largeSpacing
+                    y: modelData.virtualY + modelData.height / 2 - mainItem.height / 2 - margins.top
 
-                        mainItem: Item {
-                            width: mainItem.implicitWidth
-                            height: mainItem.implicitHeight
-                            GridLayout {
-                                id: mainItem
-                                anchors.fill: parent
-                                columns: (onClickedLocation === PlasmaCore.Types.LeftEdge || onClickedLocation === PlasmaCore.Types.RightEdge) ? 1 : 3
-                                Kirigami.Icon {
-                                    implicitWidth: Kirigami.Units.iconSizes.huge
-                                    implicitHeight: Kirigami.Units.iconSizes.huge
-                                    source: root.iconSource
-                                }
-                                Kirigami.Icon {
-                                    implicitWidth: Kirigami.Units.iconSizes.huge
-                                    implicitHeight: Kirigami.Units.iconSizes.huge
-                                    source: root.iconSource
-                                }
-                                Kirigami.Icon {
-                                    implicitWidth: Kirigami.Units.iconSizes.huge
-                                    implicitHeight: Kirigami.Units.iconSizes.huge
-                                    source: root.iconSource
-                                }
+                    mainItem: Item {
+                        width: mainItem.implicitWidth
+                        height: mainItem.implicitHeight
+                        GridLayout {
+                            id: mainItem
+                            anchors.fill: parent
+                            columns: (onClickedLocation === PlasmaCore.Types.LeftEdge || onClickedLocation === PlasmaCore.Types.RightEdge) ? 1 : 3
+                            Kirigami.Icon {
+                                implicitWidth: Kirigami.Units.iconSizes.huge
+                                implicitHeight: Kirigami.Units.iconSizes.huge
+                                source: root.iconSource
                             }
-                            MouseArea {
-                                anchors.fill: parent
-                                cursorShape: Qt.PointingHandCursor
-                                width: Kirigami.Units.iconSizes.huge
-                                height: Kirigami.Units.iconSizes.huge
-                                onClicked: {
-                                    dialogRoot.visible = true
-                                    panel.location = root.onClickedLocation
-                                }
+                            Kirigami.Icon {
+                                implicitWidth: Kirigami.Units.iconSizes.huge
+                                implicitHeight: Kirigami.Units.iconSizes.huge
+                                source: root.iconSource
+                            }
+                            Kirigami.Icon {
+                                implicitWidth: Kirigami.Units.iconSizes.huge
+                                implicitHeight: Kirigami.Units.iconSizes.huge
+                                source: root.iconSource
+                            }
+                        }
+                        MouseArea {
+                            anchors.fill: parent
+                            cursorShape: Qt.PointingHandCursor
+                            width: Kirigami.Units.iconSizes.huge
+                            height: Kirigami.Units.iconSizes.huge
+                            onClicked: {
+                                setPositionButton.checked = false
+                                panel.location = root.onClickedLocation
                             }
                         }
                     }
+                }
 
-                    Indicator {
-                        x: modelData.virtualX + Kirigami.Units.largeSpacing
-                        y: modelData.virtualY + modelData.height / 2 - mainItem.height / 2 - margins.top
-                        iconSource: "arrow-left"
-                        onClickedLocation: PlasmaCore.Types.LeftEdge
-                    }
-                    Indicator {
-                        x: modelData.virtualX + modelData.width - Kirigami.Units.largeSpacing - margins.left - margins.right - mainItem.width
-                        y: modelData.virtualY + modelData.height / 2 - mainItem.height / 2 - margins.top
-                        iconSource: "arrow-right"
-                        onClickedLocation: PlasmaCore.Types.RightEdge
-                    }
-                    Indicator {
-                        x: modelData.virtualX + modelData.width / 2 - mainItem.width / 2 - margins.left
-                        y: modelData.virtualY + Kirigami.Units.largeSpacing
-                        iconSource: "arrow-up"
-                        onClickedLocation: PlasmaCore.Types.TopEdge
-                    }
-                    Indicator {
-                        x: modelData.virtualX + modelData.width / 2 - mainItem.width / 2 - margins.left
-                        y: modelData.virtualY + modelData.height - mainItem.height - margins.top - margins.bottom - Kirigami.Units.largeSpacing
-                        iconSource: "arrow-down"
-                        onClickedLocation: PlasmaCore.Types.BottomEdge
-                    }
+                Indicator {
+                    x: modelData.virtualX + Kirigami.Units.largeSpacing
+                    y: modelData.virtualY + modelData.height / 2 - mainItem.height / 2 - margins.top
+                    iconSource: "arrow-left"
+                    onClickedLocation: PlasmaCore.Types.LeftEdge
+                }
+                Indicator {
+                    x: modelData.virtualX + modelData.width - Kirigami.Units.largeSpacing - margins.left - margins.right - mainItem.width
+                    y: modelData.virtualY + modelData.height / 2 - mainItem.height / 2 - margins.top
+                    iconSource: "arrow-right"
+                    onClickedLocation: PlasmaCore.Types.RightEdge
+                }
+                Indicator {
+                    x: modelData.virtualX + modelData.width / 2 - mainItem.width / 2 - margins.left
+                    y: modelData.virtualY + Kirigami.Units.largeSpacing
+                    iconSource: "arrow-up"
+                    onClickedLocation: PlasmaCore.Types.TopEdge
+                }
+                Indicator {
+                    x: modelData.virtualX + modelData.width / 2 - mainItem.width / 2 - margins.left
+                    y: modelData.virtualY + modelData.height - mainItem.height - margins.top - margins.bottom - Kirigami.Units.largeSpacing
+                    iconSource: "arrow-down"
+                    onClickedLocation: PlasmaCore.Types.BottomEdge
                 }
             }
         }
@@ -306,7 +311,7 @@ ColumnLayout {
             Kirigami.Heading {
                 level: dialogRoot.headingLevel
                 Layout.alignment: Qt.AlignHCenter
-                text: i18nd("plasma_shell_org.kde.plasma.desktop", "Width")
+                text: i18nd("plasma_shell_org.kde.plasma.desktop", "Length")
             }
             PanelRepresentation {
                 Layout.alignment: Qt.AlignHCenter
@@ -368,6 +373,7 @@ ColumnLayout {
             PC3.Switch {
                 id: autoHideSwitch
                 Layout.alignment: Qt.AlignHCenter
+                Layout.minimumHeight: transparencyBox.height
                 text: i18nd("plasma_shell_org.kde.plasma.desktop", "Auto hide")
                 Component.onCompleted: checked = configDialog.visibilityMode === Panel.Global.AutoHide
                 onCheckedChanged: {
@@ -432,6 +438,7 @@ ColumnLayout {
             PC3.Switch {
                 id: floatingSwitch
                 Layout.alignment: Qt.AlignHCenter
+                Layout.minimumHeight: transparencyBox.height
                 text: "Floating"
                 Component.onCompleted: checked = panel.floating
                 onCheckedChanged: panel.floating = checked
@@ -508,7 +515,7 @@ ColumnLayout {
             Item {Layout.fillWidth: true}
 
             PC3.ToolButton {
-                text: i18ndc("plasma_shell_org.kde.plasma.desktop", "@action:button Delete the panel", "Delete")
+                text: i18ndc("plasma_shell_org.kde.plasma.desktop", "@action:button Delete the panel", "Delete Panel")
                 icon.name: "delete"
 
                 PC3.ToolTip.text: i18nd("plasma_shell_org.kde.plasma.desktop", "Remove this panel; this action is undo-able")
