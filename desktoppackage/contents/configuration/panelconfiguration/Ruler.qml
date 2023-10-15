@@ -30,8 +30,8 @@ KSvg.FrameSvgItem {
     property string minimumText: (dialogRoot.vertical ? i18nd("plasma_shell_org.kde.plasma.desktop", "Drag to change minimum height.") : i18nd("plasma_shell_org.kde.plasma.desktop", "Drag to change minimum width.")) + "\n" + i18nd("plasma_shell_org.kde.plasma.desktop", "Double click to reset.")
 
     imagePath: "widgets/containment-controls"
-    implicitWidth: Math.max(offsetHandle.width, rightMinimumLengthHandle.width)
-    implicitHeight: Math.max(offsetHandle.height, rightMinimumLengthHandle.height)
+    implicitWidth: Math.max(offsetHandle.width, rightMinimumLengthHandle.width + rightMaximumLengthHandle.width)
+    implicitHeight: Math.max(offsetHandle.height, rightMinimumLengthHandle.height + rightMaximumLengthHandle.height)
 
     onMinimumLengthChanged: rightMinimumLengthHandle.value = leftMinimumLengthHandle.value = minimumLength
     onMaximumLengthChanged: rightMaximumLengthHandle.value = leftMaximumLengthHandle.value = maximumLength
@@ -70,10 +70,10 @@ KSvg.FrameSvgItem {
     SliderHandle {
         id: offsetHandle
         anchors {
-            right: root.prefix === 'west' ? root.right : undefined
-            left: root.prefix === 'east' ? root.left : undefined
-            top: root.prefix === 'south' ? root.top : undefined
-            bottom: root.prefix === 'north' ? root.bottom : undefined
+            right: root.prefix[0] === 'west' ? root.right : undefined
+            left: root.prefix[0] === 'east' ? root.left : undefined
+            top: root.prefix[0] === 'south' ? root.top : undefined
+            bottom: root.prefix[0] === 'north' ? root.bottom : undefined
         }
         graphicElementName: "offsetslider"
         description: i18nd("plasma_shell_org.kde.plasma.desktop", "Drag to change position on this screen edge.\nDouble click to reset.")
@@ -130,10 +130,10 @@ KSvg.FrameSvgItem {
     SliderHandle {
         id: rightMinimumLengthHandle
         anchors {
-            right: root.prefix === 'east' ? root.right : undefined
-            left: root.prefix === 'west' ? root.left : undefined
-            top: root.prefix === 'north' ? root.top : undefined
-            bottom: root.prefix === 'south' ? root.bottom : undefined
+            right: root.prefix[0] === 'east' ? root.right : undefined
+            left: root.prefix[0] === 'west' ? root.left : undefined
+            top: root.prefix[0] === 'north' ? root.top : undefined
+            bottom: root.prefix[0] === 'south' ? root.bottom : undefined
         }
         description: root.minimumText
         alignment: panel.alignment | Qt.AlignLeft
@@ -152,10 +152,10 @@ KSvg.FrameSvgItem {
     SliderHandle {
         id: rightMaximumLengthHandle
         anchors {
-            right: root.prefix === 'west' ? root.right : undefined
-            left: root.prefix === 'east' ? root.left : undefined
-            top: root.prefix === 'south' ? root.top : undefined
-            bottom: root.prefix === 'north' ? root.bottom : undefined
+            right: root.prefix[0] === 'west' ? root.right : undefined
+            left: root.prefix[0] === 'east' ? root.left : undefined
+            top: root.prefix[0] === 'south' ? root.top : undefined
+            bottom: root.prefix[0] === 'north' ? root.bottom : undefined
         }
         description: root.maximumText
         alignment: panel.alignment | Qt.AlignLeft
@@ -174,10 +174,10 @@ KSvg.FrameSvgItem {
     SliderHandle {
         id: leftMinimumLengthHandle
         anchors {
-            right: root.prefix === 'east' ? root.right : undefined
-            left: root.prefix === 'west' ? root.left : undefined
-            top: root.prefix === 'north' ? root.top : undefined
-            bottom: root.prefix === 'south' ? root.bottom : undefined
+            right: root.prefix[0] === 'east' ? root.right : undefined
+            left: root.prefix[0] === 'west' ? root.left : undefined
+            top: root.prefix[0] === 'north' ? root.top : undefined
+            bottom: root.prefix[0] === 'south' ? root.bottom : undefined
         }
         description: root.minimumText
         alignment: panel.alignment | Qt.AlignRight
@@ -195,10 +195,10 @@ KSvg.FrameSvgItem {
     SliderHandle {
         id: leftMaximumLengthHandle
         anchors {
-            right: root.prefix === 'west' ? root.right : undefined
-            left: root.prefix === 'east' ? root.left : undefined
-            top: root.prefix === 'south' ? root.top : undefined
-            bottom: root.prefix === 'north' ? root.bottom : undefined
+            right: root.prefix[0] === 'west' ? root.right : undefined
+            left: root.prefix[0] === 'east' ? root.left : undefined
+            top: root.prefix[0] === 'south' ? root.top : undefined
+            bottom: root.prefix[0] === 'north' ? root.bottom : undefined
         }
         description: root.maximumText
         alignment: panel.alignment | Qt.AlignRight
