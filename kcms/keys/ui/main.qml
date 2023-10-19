@@ -5,16 +5,16 @@
 */
 
 import QtCore
-import QtQuick 2.15
-import QtQuick.Dialogs 6.3
-import QtQuick.Layouts 1.15
-import QtQuick.Controls 2.3 as QQC2
-import QtQml 2.15
-import QtQml.Models 2.3
+import QtQuick
+import QtQuick.Dialogs
+import QtQuick.Layouts
+import QtQuick.Controls as QQC2
+import QtQml
+import QtQml.Models
 
-import org.kde.kirigami 2.20 as Kirigami
+import org.kde.kirigami as Kirigami
 import org.kde.kcmutils as KCM
-import org.kde.private.kcms.keys 2.0 as Private
+import org.kde.private.kcms.keys as Private
 
 KCM.AbstractKCM {
     id: root
