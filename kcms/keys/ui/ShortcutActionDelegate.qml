@@ -4,30 +4,33 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 
-import QtQuick 2.12
-import QtQuick.Layouts 1.3
-import QtQuick.Controls 2.3 as QQC2
+import QtQuick
+import QtQuick.Layouts
+import QtQuick.Controls as QQC2
 
-import org.kde.kirigami 2.20 as Kirigami
-import org.kde.kquickcontrols 2.0
+import org.kde.kirigami as Kirigami
+import org.kde.kquickcontrols
 import org.kde.kcmutils as KCM
 
 
-Kirigami.AbstractListItem {
+QQC2.ItemDelegate {
     id: root
     property bool showExpandButton: true
+
+    width: shortcutsList.width
 
     highlighted: false
     // If it's the only one in the list, clicking it won't do anything, so don't provide any visual feedback.
     hoverEnabled: showExpandButton
     down: showExpandButton ? undefined : false
 
-    width: shortcutsList.width
-    action: QQC2.Action {
+    action: Kirigami.Action {
         id: expandAction
-        onTriggered: root.state == 'expanded' ?  shortcutsList.selectedIndex = -1 : shortcutsList.selectedIndex = index
+        onTriggered: root.state === 'expanded' ?  shortcutsList.selectedIndex = -1 : shortcutsList.selectedIndex = index
     }
-    Accessible.name: root.state == 'expanded' ? i18n("Editing shortcut: %1", displayLabel.text) : displayLabel.text + keySequenceList.text
+
+    Accessible.name: root.state === 'expanded' ? i18n("Editing shortcut: %1", displayLabel.text) : displayLabel.text + keySequenceList.text
+
     contentItem: ColumnLayout {
         clip: true
         Item {
@@ -45,12 +48,12 @@ Kirigami.AbstractListItem {
                 QQC2.Label {
                     id: keySequenceList
                     Layout.fillWidth: true
-                    color: model.activeShortcuts.length != 0 ? Kirigami.Theme.textColor : Kirigami.Theme.disabledTextColor
+                    color: model?.activeShortcuts?.length !== 0 ? Kirigami.Theme.textColor : Kirigami.Theme.disabledTextColor
                     elide: Text.ElideRight
                     horizontalAlignment: Text.AlignRight
                     text: {
-                        if (model.activeShortcuts.length != 0) {
-                            return model.activeShortcuts.map(s => kcm.keySequenceToString(s)).join(", ")
+                        if (model?.activeShortcuts?.length !== 0) {
+                            return model?.activeShortcuts?.map(s => kcm.keySequenceToString(s)).join(", ")
                         } else {
                             return i18n("No active shortcuts")
                         }
@@ -91,7 +94,7 @@ Kirigami.AbstractListItem {
                     Layout.preferredWidth: parent.width * 0.5
                     Kirigami.Heading {
                         level: 4
-                        text: model.defaultShortcuts &&  model.defaultShortcuts.length != 0 ?
+                        text: model.defaultShortcuts &&  model.defaultShortcuts.length !== 0 ?
                             i18ncp("%1 decides if singular or plural will be used", "Default shortcut",
                             "Default shortcuts", model.defaultShortcuts.length) :
                             i18n("No default shortcuts")
@@ -103,7 +106,7 @@ Kirigami.AbstractListItem {
                         model: defaultShortcuts
                         QQC2.CheckBox {
                             Accessible.name: checked ? i18n("Default shortcut %1 is enabled.", modelData) : i18n("Default shortcut %1 is disabled.", modelData)
-                            checked: activeShortcuts.indexOf(modelData) != -1
+                            checked: activeShortcuts.indexOf(modelData) !== -1
                             text: modelData
                             onToggled: {
                                 if (checked) {
@@ -198,10 +201,11 @@ Kirigami.AbstractListItem {
             }
         }
     }
+
     states: [
         State {
             name: "expanded"
-            when: shortcutsList.selectedIndex == index || shortcutsList.count == 1
+            when: shortcutsList.selectedIndex === index || shortcutsList.count == 1
             PropertyChanges {
                 target: root
                 hoverEnabled: false
@@ -226,6 +230,7 @@ Kirigami.AbstractListItem {
             }
         }
     ]
+
     Behavior on height {
         NumberAnimation {
             properties: "height"
