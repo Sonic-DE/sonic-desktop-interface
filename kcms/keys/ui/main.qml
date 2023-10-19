@@ -5,16 +5,16 @@
 */
 
 import QtCore
-import QtQuick 2.15
-import QtQuick.Dialogs 6.3
-import QtQuick.Layouts 1.15
-import QtQuick.Controls 2.3 as QQC2
-import QtQml 2.15
-import QtQml.Models 2.3
+import QtQuick
+import QtQuick.Dialogs
+import QtQuick.Layouts
+import QtQuick.Controls as QQC2
+import QtQml
+import QtQml.Models
 
-import org.kde.kirigami 2.20 as Kirigami
+import org.kde.kirigami as Kirigami
 import org.kde.kcmutils as KCM
-import org.kde.private.kcms.keys 2.0 as Private
+import org.kde.private.kcms.keys as Private
 
 KCM.AbstractKCM {
     id: root
@@ -22,12 +22,14 @@ KCM.AbstractKCM {
     implicitHeight: Kirigami.Units.gridUnit * 33
 
     framedView: false
+    LayoutMirroring.enabled: Qt.application.layoutDirection === Qt.RightToLeft
+    LayoutMirroring.childrenInherit: true
 
     // order must be in sync with ComponentType enum in basemodel.h
     readonly property var sectionNames: [i18n("Applications"), i18n("Commands"), i18n("System Settings"), i18n("Common Actions")]
 
     property alias exportActive: exportInfo.visible
-    readonly property bool errorOccured: kcm.lastError != ""
+    readonly property bool errorOccured: kcm.lastError !== ""
 
     Connections {
         target: kcm
@@ -35,6 +37,28 @@ KCM.AbstractKCM {
             components.currentIndex = row
         }
     }
+
+    actions: [
+        Kirigami.Action {
+            enabled: !exportActive
+            icon.name: "document-import"
+            text: i18n("Import…")
+            onTriggered: importSheet.open()
+        }, Kirigami.Action {
+            icon.name: exportActive ? "dialog-cancel" : "document-export"
+            text: exportActive ? i18n("Cancel Export") : i18n("Export")
+            onTriggered: {
+                if (exportActive) {
+                    exportActive = false
+                } else if (kcm.needsSave) {
+                    exportWarning.visible = true
+                } else {
+                    search.text = ""
+                    exportActive = true
+                }
+            }
+        }
+    ]
 
     header: ColumnLayout {
         spacing: Kirigami.Units.smallSpacing
@@ -66,7 +90,7 @@ KCM.AbstractKCM {
             actions: [
                 Kirigami.Action {
                     icon.name: "document-save"
-                    text: i18n("Save scheme")
+                    text: i18n("Save Scheme")
                     onTriggered: {
                         shortcutSchemeFileDialogLoader.save = true
                         shortcutSchemeFileDialogLoader.active = true
@@ -97,16 +121,16 @@ KCM.AbstractKCM {
         Kirigami.Theme.colorSet: Kirigami.Theme.View
         color: Kirigami.Theme.backgroundColor
 
-        RowLayout  {
+        RowLayout {
             anchors.fill: parent
             enabled: !errorOccured
             spacing: 0
 
             QQC2.ScrollView {
                 id: categoryList
-
                 Layout.preferredWidth: Kirigami.Units.gridUnit * 16
                 Layout.fillHeight: true
+                clip: true
 
                 ListView {
                     id: components
@@ -122,24 +146,79 @@ KCM.AbstractKCM {
                         }
                     }
 
+                    headerPositioning: ListView.OverlayHeader
+                    header: Kirigami.InlineViewHeader {
+                        width: ListView.view.width
+                        text: i18n("New Shortcut")
+                        actions: [
+                            Kirigami.Action {
+                                enabled: !exportActive
+                                icon.name: "list-add"
+                                text: i18nc("@action:button Keep translated text as short as possible", "Application…")
+                                onTriggered: kcm.addApplication(root)
+                            }, Kirigami.Action {
+                                enabled: !exportActive
+                                icon.name: "list-add"
+                                text: i18nc("@action:button Keep translated text as short as possible", "Command or Script…")
+                                onTriggered: addCommandDialog.open()
+                            }
+                        ]
+                    }
+
+                    section {
+                        property: "section"
+                        delegate: Kirigami.ListSectionHeader {
+                            width: ListView.view.width
+                            label: root.sectionNames[section]
+                            QQC2.CheckBox {
+                                id: sectionCheckbox
+                                Layout.alignment: Qt.AlignRight
+                                // width of indicator + layout spacing
+                                Layout.rightMargin: kcm.defaultsIndicatorsVisible ? Kirigami.Units.largeSpacing + Kirigami.Units.smallSpacing : 0
+                                visible: exportActive
+                                onToggled: {
+                                    const checked = sectionCheckbox.checked
+                                    const startIndex = kcm.shortcutsModel.index(0, 0)
+                                    const indices = kcm.shortcutsModel.match(startIndex, Private.BaseModel.SectionRole, section, -1, Qt.MatchExactly)
+                                    for (const index of indices) {
+                                        kcm.shortcutsModel.setData(index, checked, Private.BaseModel.CheckedRole)
+                                    }
+                                }
+                                Connections {
+                                    enabled: exportActive
+                                    target: kcm.shortcutsModel
+                                    function onDataChanged (topLeft, bottomRight, roles) {
+                                        const startIndex = kcm.shortcutsModel.index(0, 0)
+                                        const indices = kcm.shortcutsModel.match(startIndex, Private.BaseModel.SectionRole, section, -1, Qt.MatchExactly)
+                                        sectionCheckbox.checked = indices.reduce((acc, index) => acc && kcm.shortcutsModel.data(index, Private.BaseModel.CheckedRole), true)
+                                    }
+                                }
+                            }
+                        }
+                    }
+
                     // Not using CheckableListItem despite having a checkbox because
                     // the list item is not always in a checkable state, so the checkbox
                     // does not always need to be visible, but CheckableListItem
                     // makes that assumption.
-                    delegate: Kirigami.BasicListItem {
+                    delegate: QQC2.ItemDelegate {
                         id: componentDelegate
-
+                        highlighted: index === ListView.view.currentIndex
+                        width: ListView.view.width
                         height: deleteButton.height + (Kirigami.Units.smallSpacing * 2)
-
-                        fadeContent: model.pendingDeletion
 
                         KeyNavigation.right: shortcutsList
 
-                        icon.name: model.decoration
-                        label: model.display
+                        onClicked: ListView.view.currentIndex = index
 
-                        trailing: RowLayout {
+                        contentItem: RowLayout {
                             spacing: Kirigami.Units.smallSpacing
+                            Kirigami.IconTitleSubtitle {
+                                icon.name: model.decoration
+                                title: model.display
+                                Layout.fillWidth: true
+                                opacity: model.pendingDeletion ? 0.5 : 1.0
+                            }
 
                             QQC2.CheckBox {
                                 checked: model.checked
@@ -152,7 +231,7 @@ KCM.AbstractKCM {
                                 implicitHeight: Kirigami.Units.iconSizes.small + 2 * Kirigami.Units.smallSpacing
                                 implicitWidth: implicitHeight
 
-                                visible: model.section == Private.ComponentType.Command
+                                visible: model.section === Private.ComponentType.Command
                                          && !exportActive
                                          && !model.pendingDeletion
                                          && (componentDelegate.containsMouse || componentDelegate.ListView.isCurrentItem)
@@ -175,7 +254,7 @@ KCM.AbstractKCM {
                                 implicitHeight: Kirigami.Units.iconSizes.small + 2 * Kirigami.Units.smallSpacing
                                 implicitWidth: implicitHeight
 
-                                visible: model.section != Private.ComponentType.CommonAction
+                                visible: model.section !== Private.ComponentType.CommonAction
                                          && !exportActive
                                          && !model.pendingDeletion
                                          && (componentDelegate.containsMouse || componentDelegate.ListView.isCurrentItem)
@@ -207,38 +286,9 @@ KCM.AbstractKCM {
                             }
                         }
                     }
-                    section.property: "section"
-                    section.delegate: Kirigami.ListSectionHeader {
-                        label: root.sectionNames[section]
-                        QQC2.CheckBox {
-                            id: sectionCheckbox
-                            Layout.alignment: Qt.AlignRight
-                            // width of indicator + layout spacing
-                            Layout.rightMargin: kcm.defaultsIndicatorsVisible ? Kirigami.Units.largeSpacing + Kirigami.Units.smallSpacing : 0
-                            visible: exportActive
-                            onToggled: {
-                                const checked = sectionCheckbox.checked
-                                const startIndex = kcm.shortcutsModel.index(0, 0)
-                                const indices = kcm.shortcutsModel.match(startIndex, Private.BaseModel.SectionRole, section, -1, Qt.MatchExactly)
-                                for (const index of indices) {
-                                    kcm.shortcutsModel.setData(index, checked, Private.BaseModel.CheckedRole)
-                                }
-                            }
-                            Connections {
-                                enabled: exportActive
-                                target: kcm.shortcutsModel
-                                function onDataChanged (topLeft, bottomRight, roles) {
-                                    const startIndex = kcm.shortcutsModel.index(0, 0)
-                                    const indices = kcm.shortcutsModel.match(startIndex, Private.BaseModel.SectionRole, section, -1, Qt.MatchExactly)
-                                    sectionCheckbox.checked = indices.reduce((acc, index) => acc && kcm.shortcutsModel.data(index, Private.BaseModel.CheckedRole), true)
-                                }
-                            }
-                        }
-                    }
+
                     onCurrentItemChanged: dm.rootIndex = kcm.filteredModel.index(currentIndex, 0)
-                    onCurrentIndexChanged: {
-                        shortcutsList.selectedIndex = -1;
-                    }
+                    onCurrentIndexChanged: shortcutsList.selectedIndex = -1;
 
                     Kirigami.PlaceholderMessage {
                         anchors.centerIn: parent
@@ -247,10 +297,6 @@ KCM.AbstractKCM {
                         text: i18n("No items matched the search terms")
                     }
                 }
-            }
-
-            Kirigami.Separator {
-                Layout.fillHeight: true
             }
 
             QQC2.ScrollView  {
@@ -266,7 +312,7 @@ KCM.AbstractKCM {
                     property int selectedIndex: -1
                     model: DelegateModel {
                         id: dm
-                        model: rootIndex.valid ?  kcm.filteredModel : undefined
+                        model: rootIndex.valid ? kcm.filteredModel : undefined
                         delegate: ShortcutActionDelegate {
                             showExpandButton: shortcutsList.count > 1
                         }
@@ -281,73 +327,7 @@ KCM.AbstractKCM {
                     }
                 }
             }
-        }
-    }
 
-    footer: RowLayout {
-        enabled: !errorOccured
-
-        GridLayout {
-            id: addButtonsLayout
-            // if the left-hand-side components view (which is bound to the width of this) is getting too wide, switch to vertical stack
-            readonly property bool useStackedLayout: addAppButton.implicitWidth + addCommandButton.implicitWidth >= categoryList.width
-            rows: 2
-            columns: 2
-            flow: useStackedLayout ? GridLayout.TopToBottom : GridLayout.LeftToRight
-            Layout.alignment: Qt.AlignRight
-            Layout.maximumWidth: categoryList.width - (root.margins * 2)
-
-            QQC2.Button {
-                id: addAppButton
-                Layout.fillWidth: true
-                enabled: !exportActive
-                icon.name: "list-add"
-                text: i18nc("@action:button Keep translated text as short as possible", "Add Application…")
-                onClicked: {
-                    kcm.addApplication(this)
-                }
-            }
-            QQC2.Button {
-                id: addCommandButton
-                Layout.fillWidth: true
-                enabled: !exportActive
-                icon.name: "list-add"
-                text: i18nc("@action:button Keep translated text as short as possible", "Add Command…")
-                onClicked: {
-                    addCommandDialog.open()
-                }
-            }
-        }
-
-        // To tighten up the button groups
-        Item {
-            Layout.fillWidth: true
-        }
-
-        RowLayout {
-            Layout.alignment: Qt.AlignTop | Qt.AlignRight
-            spacing: Kirigami.Units.smallSpacing
-
-            QQC2.Button {
-                enabled: !exportActive
-                icon.name: "document-import"
-                text: i18n("Import Scheme…")
-                onClicked: importSheet.open()
-            }
-            QQC2.Button {
-                icon.name: exportActive ? "dialog-cancel" : "document-export"
-                text: exportActive ? i18n("Cancel Export") : i18n("Export Scheme…")
-                onClicked: {
-                    if (exportActive) {
-                        exportActive = false
-                    } else if (kcm.needsSave) {
-                        exportWarning.visible = true
-                    } else {
-                        search.text = ""
-                        exportActive = true
-                    }
-                }
-            }
         }
     }
 
@@ -476,13 +456,15 @@ KCM.AbstractKCM {
 
         ColumnLayout {
             anchors.centerIn: parent
-            spacing: Kirigami.Units.smallSpacing
 
             QQC2.Label {
                 text: i18n("Select the scheme to import:")
+                Layout.margins: Kirigami.Units.smallSpacing
             }
+
             RowLayout {
                 spacing: Kirigami.Units.smallSpacing
+                Layout.margins: Kirigami.Units.smallSpacing
 
                 QQC2.ComboBox {
                     id: schemeBox
