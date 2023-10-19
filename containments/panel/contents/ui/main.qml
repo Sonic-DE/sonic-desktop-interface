@@ -207,14 +207,14 @@ ContainmentItem {
                 //this is completely heuristic, but looks way less "jumpy"
                 property bool movingForResize: false
 
-                property bool wantsToFillWidth: applet && applet.Layout.fillWidth
-                onWantsToFillWidthChanged: () => {
+                readonly property bool wantsToFillWidth: applet && applet.Layout.fillWidth
+                onWantsToFillWidthChanged: {
                     if (Plasmoid.formFactor !== PlasmaCore.Types.Vertical) {
                         checkLastSpacer();
                     }
                 }
-                property bool wantsToFillHeight: applet && applet.Layout.fillWidth
-                onWantsToFillHeightChanged: () => {
+                readonly property bool wantsToFillHeight: applet && applet.Layout.fillWidth
+                onWantsToFillHeightChanged: {
                     if (Plasmoid.formFactor === PlasmaCore.Types.Vertical) {
                         checkLastSpacer();
                     }
@@ -246,15 +246,15 @@ ContainmentItem {
                 Layout.rightMargin: getMargins('right')
 
     // BEGIN BUG 454095: do not combine these expressions to a function or the bindings won't work
-                property real appletMaxWidth: applet?.Layout.maximumWidth >= 0 ? applet.Layout.maximumWidth : root.width
-                property real appletPrefWidth: Math.max(root.height,
+                readonly property real appletMaxWidth: applet?.Layout.maximumWidth >= 0 ? applet.Layout.maximumWidth : root.width
+                readonly property real appletPrefWidth: Math.max(root.height,
                                                         applet
                                                         ? (applet.Layout.preferredWidth >= 0
                                                             ? applet.Layout.preferredWidth
                                                             : (applet.implicitWidth > 0 ? applet.implicitWidth : applet.Layout.minimumWidth))
                                                         : root.height)
-                property real appletMaxHeight: applet?.Layout.maximumHeight >= 0 ? applet.Layout.maximumHeight : root.height
-                property real appletPrefHeight: Math.max(root.width,
+                readonly property real appletMaxHeight: applet?.Layout.maximumHeight >= 0 ? applet.Layout.maximumHeight : root.height
+                readonly property real appletPrefHeight: Math.max(root.width,
                                                          applet
                                                          ? (applet.Layout.preferredHeight >= 0
                                                             ? applet.Layout.preferredHeight
