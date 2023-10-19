@@ -4,14 +4,13 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 
-import QtQuick 2.12
-import QtQuick.Layouts 1.3
-import QtQuick.Controls 2.3 as QQC2
+import QtQuick
+import QtQuick.Layouts
+import QtQuick.Controls as QQC2
 
-import org.kde.kirigami 2.20 as Kirigami
-import org.kde.kquickcontrols 2.0
+import org.kde.kirigami as Kirigami
+import org.kde.kquickcontrols
 import org.kde.kcmutils as KCM
-
 
 Kirigami.AbstractListItem {
     id: root
