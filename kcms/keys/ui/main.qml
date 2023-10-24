@@ -88,7 +88,7 @@ KCM.AbstractKCM {
             actions: [
                 Kirigami.Action {
                     icon.name: "document-save"
-                    text: i18n("Save scheme")
+                    text: i18nc("@action:button Save shortcut scheme", "Save Scheme")
                     onTriggered: {
                         shortcutSchemeFileDialogLoader.save = true
                         shortcutSchemeFileDialogLoader.active = true
