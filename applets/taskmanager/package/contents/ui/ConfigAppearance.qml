@@ -56,16 +56,43 @@ Kirigami.FormLayout {
         Kirigami.FormData.isSection: true
     }
 
-    SpinBox {
-        id: maxStripes
-        Kirigami.FormData.label: plasmoidVertical ? i18n("Maximum columns:") : i18n("Maximum rows:")
-        from: 1
+    RadioButton {
+        Kirigami.FormData.label: plasmoidVertical ? i18n("Use multi-column view:") : i18n("Use multi-row view:")
+        checked: maxStripes.value == 1
+        onCheckedChanged: {
+            if (checked) {
+                maxStripes.value = 1
+            }
+        }
+        text: i18n("Never")
     }
 
-    CheckBox {
+    RadioButton {
+        checked: Plasmoid.configuration.forceStripes === false && maxStripes.value > 1
+        onCheckedChanged: {
+            if (checked) {
+                maxStripes.value = Math.max(2, maxStripes.value)
+            }
+        }
+        text: i18n("When Panel is low on space and thick enough")
+    }
+
+    RadioButton {
         id: forceStripes
-        text: plasmoidVertical ? i18n("Always arrange tasks in rows of as many columns") : i18n("Always arrange tasks in columns of as many rows")
+        checked: Plasmoid.configuration.forceStripes === true && maxStripes.value > 1
+        onCheckedChanged: {
+            if (checked) {
+                maxStripes.value = Math.max(2, maxStripes.value)
+            }
+        }
+        text: i18n("Always when Panel is thick enough")
+    }
+
+    SpinBox {
+        id: maxStripes
         enabled: maxStripes.value > 1
+        Kirigami.FormData.label: plasmoidVertical ? i18n("Maximum columns:") : i18n("Maximum rows:")
+        from: 1
     }
 
     Item {
