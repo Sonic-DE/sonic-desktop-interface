@@ -126,20 +126,25 @@ KCM.AbstractKCM {
                     // the list item is not always in a checkable state, so the checkbox
                     // does not always need to be visible, but CheckableListItem
                     // makes that assumption.
-                    delegate: Kirigami.BasicListItem {
+                    delegate: QQC2.ItemDelegate {
                         id: componentDelegate
-
+                        width: ListView.view.width
                         height: deleteButton.height + (Kirigami.Units.smallSpacing * 2)
-
-                        fadeContent: model.pendingDeletion
 
                         KeyNavigation.right: shortcutsList
 
-                        icon.name: model.decoration
-                        label: model.display
+                        onClicked: ListView.view.currentIndex = index
+                        highlighted: index === ListView.view.currentIndex
 
-                        trailing: RowLayout {
+                        contentItem: RowLayout {
                             spacing: Kirigami.Units.smallSpacing
+                            Kirigami.IconTitleSubtitle {
+                                icon.name: model.decoration
+                                title: model.display
+                                Layout.fillWidth: true
+                                opacity: model.pendingDeletion ? 0.5 : 1.0
+                                selected: componentDelegate.highlighted
+                            }
 
                             QQC2.CheckBox {
                                 checked: model.checked
@@ -152,10 +157,10 @@ KCM.AbstractKCM {
                                 implicitHeight: Kirigami.Units.iconSizes.small + 2 * Kirigami.Units.smallSpacing
                                 implicitWidth: implicitHeight
 
-                                visible: model.section == Private.ComponentType.Command
+                                visible: model.section === Private.ComponentType.Command
                                          && !exportActive
                                          && !model.pendingDeletion
-                                         && (componentDelegate.containsMouse || componentDelegate.ListView.isCurrentItem)
+                                         && (componentDelegate.hovered || componentDelegate.ListView.isCurrentItem)
                                 icon.name: "edit-rename"
                                 onClicked: {
                                     addCommandDialog.editing = true;
@@ -175,10 +180,10 @@ KCM.AbstractKCM {
                                 implicitHeight: Kirigami.Units.iconSizes.small + 2 * Kirigami.Units.smallSpacing
                                 implicitWidth: implicitHeight
 
-                                visible: model.section != Private.ComponentType.CommonAction
+                                visible: model.section !== Private.ComponentType.CommonAction
                                          && !exportActive
                                          && !model.pendingDeletion
-                                         && (componentDelegate.containsMouse || componentDelegate.ListView.isCurrentItem)
+                                         && (componentDelegate.hovered || componentDelegate.ListView.isCurrentItem)
                                 icon.name: "edit-delete"
                                 onClicked: model.pendingDeletion = true
                                 QQC2.ToolTip {
@@ -207,6 +212,7 @@ KCM.AbstractKCM {
                             }
                         }
                     }
+
                     section.property: "section"
                     section.delegate: Kirigami.ListSectionHeader {
                         label: root.sectionNames[section]
@@ -235,6 +241,7 @@ KCM.AbstractKCM {
                             }
                         }
                     }
+
                     onCurrentItemChanged: dm.rootIndex = kcm.filteredModel.index(currentIndex, 0)
                     onCurrentIndexChanged: {
                         shortcutsList.selectedIndex = -1;
