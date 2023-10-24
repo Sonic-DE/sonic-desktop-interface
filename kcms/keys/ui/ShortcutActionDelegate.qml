@@ -26,7 +26,16 @@ Kirigami.AbstractListItem {
         id: expandAction
         onTriggered: root.state === 'expanded' ?  shortcutsList.selectedIndex = -1 : shortcutsList.selectedIndex = index
     }
+
     Accessible.name: root.state === 'expanded' ? i18n("Editing shortcut: %1", displayLabel.text) : displayLabel.text + keySequenceList.text
+
+    background: Loader {
+        active: root.state === 'expanded'
+        sourceComponent: Rectangle {
+            color: Kirigami.Theme.highlightColor
+        }
+    }
+
     contentItem: ColumnLayout {
         clip: true
         Item {
@@ -197,6 +206,7 @@ Kirigami.AbstractListItem {
             }
         }
     }
+
     states: [
         State {
             name: "expanded"
@@ -225,6 +235,7 @@ Kirigami.AbstractListItem {
             }
         }
     ]
+
     Behavior on height {
         NumberAnimation {
             properties: "height"
