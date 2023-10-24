@@ -62,10 +62,17 @@ Kirigami.FormLayout {
         from: 1
     }
 
-    CheckBox {
+    RadioButton {
         id: forceStripes
-        text: plasmoidVertical ? i18n("Always arrange tasks in rows of as many columns") : i18n("Always arrange tasks in columns of as many rows")
         enabled: maxStripes.value > 1
+        checked: Plasmoid.configuration.forceStripes === true
+        text: plasmoidVertical ? i18n("Always use as many columns as the panel width allows for") : i18n("Always use as many rows as the panel height allows for")
+    }
+
+    RadioButton {
+        enabled: forceStripes.enabled
+        checked: !forceStripes.checked
+        text: plasmoidVertical ? i18n("Only use multiple columns when necessary to show all tasks") : i18n("Only use multiple rows when necessary to show all tasks")
     }
 
     Item {
