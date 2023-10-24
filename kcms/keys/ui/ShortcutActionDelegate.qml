@@ -24,9 +24,9 @@ Kirigami.AbstractListItem {
     width: shortcutsList.width
     action: QQC2.Action {
         id: expandAction
-        onTriggered: root.state == 'expanded' ?  shortcutsList.selectedIndex = -1 : shortcutsList.selectedIndex = index
+        onTriggered: root.state === 'expanded' ?  shortcutsList.selectedIndex = -1 : shortcutsList.selectedIndex = index
     }
-    Accessible.name: root.state == 'expanded' ? i18n("Editing shortcut: %1", displayLabel.text) : displayLabel.text + keySequenceList.text
+    Accessible.name: root.state === 'expanded' ? i18n("Editing shortcut: %1", displayLabel.text) : displayLabel.text + keySequenceList.text
     contentItem: ColumnLayout {
         clip: true
         Item {
@@ -44,12 +44,12 @@ Kirigami.AbstractListItem {
                 QQC2.Label {
                     id: keySequenceList
                     Layout.fillWidth: true
-                    color: model.activeShortcuts.length != 0 ? Kirigami.Theme.textColor : Kirigami.Theme.disabledTextColor
+                    color: model?.activeShortcuts?.length !== 0 ? Kirigami.Theme.textColor : Kirigami.Theme.disabledTextColor
                     elide: Text.ElideRight
                     horizontalAlignment: Text.AlignRight
                     text: {
-                        if (model.activeShortcuts.length != 0) {
-                            return model.activeShortcuts.map(s => kcm.keySequenceToString(s)).join(", ")
+                        if (model?.activeShortcuts?.length !== 0) {
+                            return model?.activeShortcuts?.map(s => kcm.keySequenceToString(s)).join(", ")
                         } else {
                             return i18n("No active shortcuts")
                         }
@@ -200,7 +200,7 @@ Kirigami.AbstractListItem {
     states: [
         State {
             name: "expanded"
-            when: shortcutsList.selectedIndex == index || shortcutsList.count == 1
+            when: shortcutsList.selectedIndex === index || shortcutsList.count == 1
             PropertyChanges {
                 target: root
                 hoverEnabled: false
