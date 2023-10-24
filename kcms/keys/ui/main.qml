@@ -27,7 +27,7 @@ KCM.AbstractKCM {
     readonly property var sectionNames: [i18n("Applications"), i18n("Commands"), i18n("System Settings"), i18n("Common Actions")]
 
     property alias exportActive: exportInfo.visible
-    readonly property bool errorOccured: kcm.lastError != ""
+    readonly property bool errorOccured: kcm.lastError !== ""
 
     Connections {
         target: kcm
