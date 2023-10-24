@@ -129,6 +129,7 @@ KCM.AbstractKCM {
 
                 Layout.preferredWidth: Kirigami.Units.gridUnit * 16
                 Layout.fillHeight: true
+                clip: true
 
                 ListView {
                     id: components
@@ -141,6 +142,33 @@ KCM.AbstractKCM {
                             target: components
                             property: "currentIndex"
                             value: transition.ViewTransition.index
+                        }
+                    }
+
+                    headerPositioning: ListView.OverlayHeader
+                    header: Kirigami.InlineViewHeader {
+                        width: ListView.view.width
+                        Kirigami.ActionToolBar {
+                            alignment: Qt.AlignRight
+                            enabled: !exportActive
+
+                            actions: Kirigami.Action {
+                                text: i18n("New Shortcut")
+                                icon.name: "list-add-symbolic"
+                                displayHint: Kirigami.DisplayHint.KeepVisible
+
+                                Kirigami.Action {
+                                    icon.name: "applications-all-symbolic"
+                                    text: i18nc("@action:menu Keep translated text as short as possible", "Application…")
+                                    onTriggered: kcm.addApplication(root)
+                                }
+
+                                Kirigami.Action {
+                                    icon.name: "new-command-alarm-symbolic"
+                                    text: i18nc("@action:menu Keep translated text as short as possible", "Command or Script…")
+                                    onTriggered: addCommandDialog.open()
+                                }
+                            }
                         }
                     }
 
