@@ -36,6 +36,28 @@ KCM.AbstractKCM {
         }
     }
 
+    actions: [
+        Kirigami.Action {
+            enabled: !exportActive
+            icon.name: "document-import"
+            text: i18n("Import…")
+            onTriggered: importSheet.open()
+        }, Kirigami.Action {
+            icon.name: exportActive ? "dialog-cancel" : "document-export"
+            text: exportActive ? i18n("Cancel Export") : i18n("Export")
+            onTriggered: {
+                if (exportActive) {
+                    exportActive = false
+                } else if (kcm.needsSave) {
+                    exportWarning.visible = true
+                } else {
+                    search.text = ""
+                    exportActive = true
+                }
+            }
+        }
+    ]
+
     header: ColumnLayout {
         spacing: Kirigami.Units.smallSpacing
 
@@ -293,73 +315,6 @@ KCM.AbstractKCM {
         }
     }
 
-    footer: RowLayout {
-        enabled: !errorOccured
-
-        GridLayout {
-            id: addButtonsLayout
-            // if the left-hand-side components view (which is bound to the width of this) is getting too wide, switch to vertical stack
-            readonly property bool useStackedLayout: addAppButton.implicitWidth + addCommandButton.implicitWidth >= categoryList.width
-            rows: 2
-            columns: 2
-            flow: useStackedLayout ? GridLayout.TopToBottom : GridLayout.LeftToRight
-            Layout.alignment: Qt.AlignRight
-            Layout.maximumWidth: categoryList.width - (root.margins * 2)
-
-            QQC2.Button {
-                id: addAppButton
-                Layout.fillWidth: true
-                enabled: !exportActive
-                icon.name: "list-add"
-                text: i18nc("@action:button Keep translated text as short as possible", "Add Application…")
-                onClicked: {
-                    kcm.addApplication(this)
-                }
-            }
-            QQC2.Button {
-                id: addCommandButton
-                Layout.fillWidth: true
-                enabled: !exportActive
-                icon.name: "list-add"
-                text: i18nc("@action:button Keep translated text as short as possible", "Add Command…")
-                onClicked: {
-                    addCommandDialog.open()
-                }
-            }
-        }
-
-        // To tighten up the button groups
-        Item {
-            Layout.fillWidth: true
-        }
-
-        RowLayout {
-            Layout.alignment: Qt.AlignTop | Qt.AlignRight
-            spacing: Kirigami.Units.smallSpacing
-
-            QQC2.Button {
-                enabled: !exportActive
-                icon.name: "document-import"
-                text: i18n("Import Scheme…")
-                onClicked: importSheet.open()
-            }
-            QQC2.Button {
-                icon.name: exportActive ? "dialog-cancel" : "document-export"
-                text: exportActive ? i18n("Cancel Export") : i18n("Export Scheme…")
-                onClicked: {
-                    if (exportActive) {
-                        exportActive = false
-                    } else if (kcm.needsSave) {
-                        exportWarning.visible = true
-                    } else {
-                        search.text = ""
-                        exportActive = true
-                    }
-                }
-            }
-        }
-    }
-
     Loader {
         id: shortcutSchemeFileDialogLoader
         active: false
@@ -489,9 +444,12 @@ KCM.AbstractKCM {
 
             QQC2.Label {
                 text: i18n("Select the scheme to import:")
+                Layout.margins: Kirigami.Units.largeSpacing
             }
+
             RowLayout {
                 spacing: Kirigami.Units.smallSpacing
+                Layout.margins: Kirigami.Units.largeSpacing
 
                 QQC2.ComboBox {
                     id: schemeBox
