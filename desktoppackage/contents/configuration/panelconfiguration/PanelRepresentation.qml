@@ -176,15 +176,6 @@ Item {
                 source: panelRepresentation.mainIconSource
             }
         }
-
-        /*PC3.Label {
-            text: panelRepresentation.text
-            Layout.alignment: Qt.AlignHCenter
-            horizontalAlignment: Text.AlignHCenter
-            Layout.maximumWidth: screenRect.implicitWidth
-            wrapMode: Text.Wrap
-            color: panelRepresentation.iconAndLabelsShouldlookSelected ? Kirigami.Theme.highlightedTextColor : Kirigami.Theme.textColor
-        }*/
     }
 }
 
