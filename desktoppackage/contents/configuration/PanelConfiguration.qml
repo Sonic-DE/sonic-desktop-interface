@@ -173,38 +173,14 @@ ColumnLayout {
                     x: modelData.virtualX + Kirigami.Units.largeSpacing
                     y: modelData.virtualY + modelData.height / 2 - mainItem.height / 2 - margins.top
 
-                    mainItem: Item {
-                        width: mainItem.implicitWidth
-                        height: mainItem.implicitHeight
-                        GridLayout {
-                            id: mainItem
-                            anchors.fill: parent
-                            columns: (onClickedLocation === PlasmaCore.Types.LeftEdge || onClickedLocation === PlasmaCore.Types.RightEdge) ? 1 : 3
-                            Kirigami.Icon {
-                                implicitWidth: Kirigami.Units.iconSizes.huge
-                                implicitHeight: Kirigami.Units.iconSizes.huge
-                                source: root.iconSource
-                            }
-                            Kirigami.Icon {
-                                implicitWidth: Kirigami.Units.iconSizes.huge
-                                implicitHeight: Kirigami.Units.iconSizes.huge
-                                source: root.iconSource
-                            }
-                            Kirigami.Icon {
-                                implicitWidth: Kirigami.Units.iconSizes.huge
-                                implicitHeight: Kirigami.Units.iconSizes.huge
-                                source: root.iconSource
-                            }
-                        }
-                        MouseArea {
-                            anchors.fill: parent
-                            cursorShape: Qt.PointingHandCursor
-                            width: Kirigami.Units.iconSizes.huge
-                            height: Kirigami.Units.iconSizes.huge
-                            onClicked: {
-                                setPositionButton.checked = false
-                                panel.location = root.onClickedLocation
-                            }
+                    mainItem: PC3.ToolButton {
+                        width: Kirigami.Units.iconSizes.enormous
+                        height: Kirigami.Units.iconSizes.enormous
+                        icon.name: root.iconSource
+
+                        onClicked: {
+                            setPositionButton.checked = false
+                            panel.location = root.onClickedLocation
                         }
                     }
                 }
