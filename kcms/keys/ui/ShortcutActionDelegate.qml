@@ -85,6 +85,7 @@ Kirigami.AbstractListItem {
                     return kcm.shortcutsModel.mapToSource(concatenatedIndex)
                 }
                 spacing: 0
+
                 ColumnLayout {
                     Layout.alignment: Qt.AlignTop
                     Layout.preferredWidth: parent.width * 0.5
@@ -117,11 +118,12 @@ Kirigami.AbstractListItem {
                         }
                     }
                 }
+
                 ColumnLayout {
-                    Layout.preferredWidth: parent.width * 0.5
-                    Layout.alignment: Qt.AlignTop
+                    Layout.alignment: Qt.AlignTop | Qt.AlignRight
                     Kirigami.Heading {
                         level: 4
+                        Layout.alignment: Qt.AlignRight
                         text: i18n("Custom shortcuts")
                     }
                     Kirigami.Separator {
@@ -131,6 +133,7 @@ Kirigami.AbstractListItem {
                         model: customShortcuts
                         RowLayout {
                             KeySequenceItem {
+                                Layout.alignment: Qt.AlignRight
                                 keySequence: modelData
                                 showClearButton: false
                                 modifierOnlyAllowed: true
@@ -154,7 +157,8 @@ Kirigami.AbstractListItem {
                     }
                     QQC2.Button {
                         text: i18n("Add custom shortcut")
-                        icon.name: "list-add"
+                        icon.name: "list-add-symbolic"
+                        Layout.alignment: Qt.AlignRight
                         onClicked: {
                             this.visible = false
                             var newKeySequenceItem = newKeySequenceComponent.createObject(parent)
@@ -174,6 +178,7 @@ Kirigami.AbstractListItem {
                         id: newKeySequenceComponent
                         RowLayout {
                             signal finished
+                            Layout.alignment: Qt.AlignRight
                             KeySequenceItem {
                                 showClearButton: false
                                 modifierOnlyAllowed: true
