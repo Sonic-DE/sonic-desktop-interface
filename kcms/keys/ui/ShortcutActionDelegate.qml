@@ -152,9 +152,9 @@ Kirigami.AbstractListItem {
                             }
                         }
                     }
-                    QQC2.Button {
+                    QQC2.ToolButton {
                         text: i18n("Add custom shortcut")
-                        icon.name: "list-add"
+                        icon.name: "list-add-symbolic"
                         onClicked: {
                             this.visible = false
                             var newKeySequenceItem = newKeySequenceComponent.createObject(parent)
