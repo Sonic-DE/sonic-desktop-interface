@@ -4,7 +4,7 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 
-import QtQuick 2.0
+import QtQuick
 import QtQuick.Layouts 1.0
 import QtQuick.Controls 2.4 as QQC2
 import org.kde.plasma.plasmoid 2.0
@@ -46,7 +46,25 @@ ColumnLayout {
                 return "south"
             }
         }
-
+        Item {
+            activeFocusOnTab: true
+            onActiveFocusChanged: {
+                if (activeFocus && dialogRoot.Window.window && dialogRoot.Window.window.visible) {
+                    dialogRoot.Window.window.requestActivate()
+                }
+            }
+        }
+        // This item is used to "pass" focus to the main window when we're at the last of the control of the ruler
+        Item {
+            parent: dialogRoot.parent // Used to not take space in the ColumnLayout
+            activeFocusOnTab: true
+            onActiveFocusChanged: {
+                let window = dialogRoot.Window.window
+                if (activeFocus && window && window.visible) {
+                    window.requestActivate()
+                }
+            }
+        }
     }
 
     Connections {
@@ -523,6 +541,17 @@ ColumnLayout {
                 PC3.ToolTip.visible: hovered
 
                 onClicked: Plasmoid.internalAction("remove").trigger();
+            }
+        }
+    }
+    // This item is used to "pass" focus to the ruler with tab when we're at the last of the control of this window
+    Item {
+        parent: dialogRoot.parent // Used to not take space in the ColumnLayout
+        activeFocusOnTab: true
+        onActiveFocusChanged: {
+            let window = ruler.Window.window
+            if (activeFocus && window && window.visible) {
+                window.requestActivate()
             }
         }
     }
