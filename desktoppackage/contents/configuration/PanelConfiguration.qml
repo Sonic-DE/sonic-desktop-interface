@@ -475,7 +475,7 @@ ColumnLayout {
     }
 
     PlasmaExtras.PlasmoidHeading {
-        location: PlasmaExtras.PlasmoidHeading.Footer
+        position: PlasmaExtras.PlasmoidHeading.Footer
         Layout.topMargin: Kirigami.Units.smallSpacing
         topPadding: Kirigami.Units.smallSpacing * 2
         leftPadding: Kirigami.Units.smallSpacing
