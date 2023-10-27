@@ -256,7 +256,6 @@ PlasmaCore.Dialog {
         }
 
         PlasmaExtras.PlasmoidHeading {
-            location: PlasmaExtras.PlasmoidHeading.Footer
             Layout.topMargin: Kirigami.Units.smallSpacing
             topPadding: Kirigami.Units.smallSpacing * 2
             bottomPadding: Kirigami.Units.smallSpacing
