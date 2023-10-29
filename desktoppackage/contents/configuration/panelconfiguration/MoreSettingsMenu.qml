@@ -22,7 +22,6 @@ PlasmaCore.Dialog {
     visualParent: settingsButton
     location: Plasmoid.location
     type: PlasmaCore.Dialog.PopupMenu
-    flags: Qt.Popup | Qt.FramelessWindowHint | Qt.WindowDoesNotAcceptFocus
     mainItem: ColumnLayout {
         id: menuColumn
 
