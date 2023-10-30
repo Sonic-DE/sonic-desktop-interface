@@ -87,6 +87,19 @@ KCM.SimpleKCM {
             onToggled: settings.isPrivate = checked
         }
 
+        QQC2.CheckBox {
+            Kirigami.FormData.label: i18nc("@option:check", "Power management:")
+            text: i18n("Do not turn off the screen while on this activity")
+            checked: settings.inhibitScreen
+            onToggled: settings.inhibitScreen = checked
+        }
+
+        QQC2.CheckBox {
+            text: i18n("Do not shut down the computer or let it go to sleep while on this activity")
+            checked: settings.inhibitSleep
+            onToggled: settings.inhibitSleep = checked
+        }
+
         KQuickControls.KeySequenceItem {
             Kirigami.FormData.label: i18n("Shortcut for switching:")
             keySequence: settings.shortcut
