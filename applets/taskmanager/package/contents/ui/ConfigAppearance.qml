@@ -43,7 +43,7 @@ Kirigami.FormLayout {
         id: indicateAudioStreams
         text: i18n("Mark applications that play audio")
         checked: cfg_indicateAudioStreams && plasmaPaAvailable
-        onCheckedChanged: cfg_indicateAudioStreams = checked
+        onToggled: cfg_indicateAudioStreams = checked
         enabled: plasmaPaAvailable
     }
 
@@ -57,41 +57,41 @@ Kirigami.FormLayout {
     }
 
     RadioButton {
-        Kirigami.FormData.label: plasmoidVertical ? i18n("Use multi-column view:") : i18n("Use multi-row view:")
+        Kirigami.FormData.label: plasmoidVertical ? i18nc("@option: radio", "Use multi-column view:") : i18nc("@option:radio", "Use multi-row view:")
         checked: maxStripes.value == 1
-        onCheckedChanged: {
+        onToggled: {
             if (checked) {
                 maxStripes.value = 1
             }
         }
-        text: i18n("Never")
+        text: i18nc("Never use multi-column view for Task Manager", "Never")
     }
 
     RadioButton {
-        checked: Plasmoid.configuration.forceStripes === false && maxStripes.value > 1
-        onCheckedChanged: {
+        checked: !Plasmoid.configuration.forceStripes && maxStripes.value > 1
+        onToggled: {
             if (checked) {
                 maxStripes.value = Math.max(2, maxStripes.value)
             }
         }
-        text: i18n("When Panel is low on space and thick enough")
+        text: i18nc("When to use multi-row view in Task Manager", "When Panel is low on space and thick enough")
     }
 
     RadioButton {
         id: forceStripes
-        checked: Plasmoid.configuration.forceStripes === true && maxStripes.value > 1
-        onCheckedChanged: {
+        checked: Plasmoid.configuration.forceStripes && maxStripes.value > 1
+        onToggled: {
             if (checked) {
                 maxStripes.value = Math.max(2, maxStripes.value)
             }
         }
-        text: i18n("Always when Panel is thick enough")
+        text: i18nc("When to use multi-row view in Task Manager", "Always when Panel is thick enough")
     }
 
     SpinBox {
         id: maxStripes
         enabled: maxStripes.value > 1
-        Kirigami.FormData.label: plasmoidVertical ? i18n("Maximum columns:") : i18n("Maximum rows:")
+        Kirigami.FormData.label: plasmoidVertical ? i18nc("@label:spinbox", "Maximum columns:") : i18nc("@label:spinbox", "Maximum rows:")
         from: 1
     }
 
