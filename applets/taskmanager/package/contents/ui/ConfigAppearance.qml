@@ -57,7 +57,7 @@ Kirigami.FormLayout {
     }
 
     RadioButton {
-        Kirigami.FormData.label: plasmoidVertical ? i18n("Use multi-column view:") : i18n("Use multi-row view:")
+        Kirigami.FormData.label: plasmoidVertical ? i18nc("@option: radio", "Use multi-column view:") : i18nc("@option:radio", "Use multi-row view:")
         checked: maxStripes.value == 1
         onCheckedChanged: {
             if (checked) {
@@ -91,7 +91,7 @@ Kirigami.FormLayout {
     SpinBox {
         id: maxStripes
         enabled: maxStripes.value > 1
-        Kirigami.FormData.label: plasmoidVertical ? i18n("Maximum columns:") : i18n("Maximum rows:")
+        Kirigami.FormData.label: plasmoidVertical ? i18nc("@label:spinbox", "Maximum columns:") : i18nc("@label:spinbox", "Maximum rows:")
         from: 1
     }
 
