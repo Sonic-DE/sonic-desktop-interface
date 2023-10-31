@@ -7,6 +7,7 @@
 #include "globalaccelmodel.h"
 
 #include <QDBusPendingCallWatcher>
+#include <QFile>
 #include <QIcon>
 
 #include <KApplicationTrader>
@@ -329,6 +330,8 @@ void GlobalAccelModel::addApplication(const QString &desktopFileName, const QStr
     });
 }
 
+#include <iostream>
+
 void GlobalAccelModel::removeComponent(const Component &component)
 {
     const QString &uniqueName = component.id;
@@ -337,6 +340,13 @@ void GlobalAccelModel::removeComponent(const Component &component)
     if (!componentReply.isValid()) {
         genericErrorOccured(QStringLiteral("Error while calling objectPath of component") + uniqueName, componentReply.error());
         return;
+    }
+    if (component.type == ComponentType::Command) {
+        KService::Ptr service = KService::serviceByStorageId(component.id);
+        if (service) {
+            qCDebug(KCMKEYS) << "Removing " << service->entryPath();
+            QFile::remove(service->entryPath());
+        }
     }
     KGlobalAccelComponentInterface componentInterface(m_globalAccelInterface->service(), componentReply.value().path(), m_globalAccelInterface->connection());
     qCDebug(KCMKEYS) << "Cleaning up component at" << componentReply.value().path();
