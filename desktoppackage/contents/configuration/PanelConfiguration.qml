@@ -276,7 +276,7 @@ ColumnLayout {
                 onClicked: stackView.push("subpages/Alignment.qml", {stackView: stackView})
                 isVertical: dialogRoot.vertical
             }
-            QQC2.ComboBox {
+            PC3.ComboBox {
                 id: alignmentBox
                 Layout.alignment: Qt.AlignHCenter
                 property int previewIndex: highlightedIndex > -1 ? highlightedIndex : currentIndex
@@ -315,7 +315,7 @@ ColumnLayout {
                 alignment: positionRepresentation.alignment
                 fillAvailable: widthBox.previewIndex === 0
             }
-            QQC2.ComboBox {
+            PC3.ComboBox {
                 id: widthBox
                 Layout.alignment: Qt.AlignHCenter
                 property int previewIndex: highlightedIndex > -1 ? highlightedIndex : currentIndex
@@ -393,7 +393,7 @@ ColumnLayout {
                 adaptivePanel: transparencyBox.previewIndex === 0
                 translucentPanel: transparencyBox.previewIndex === 2
             }
-            QQC2.ComboBox {
+            PC3.ComboBox {
                 id: transparencyBox
                 Layout.alignment: Qt.AlignHCenter
                 property int previewIndex: popup.visible ? highlightedIndex : currentIndex
