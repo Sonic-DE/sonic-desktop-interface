@@ -160,7 +160,8 @@ class DesktopTest(unittest.TestCase):
         """
         Until the panel is ready
         """
-        self.driver.find_element(AppiumBy.NAME, "Application Launcher")
+        wait = WebDriverWait(self.driver, 30)
+        wait.until(EC.presence_of_element_located((AppiumBy.NAME, "Application Launcher")))
 
     def test_1_open_edit_mode(self) -> None:
         """
