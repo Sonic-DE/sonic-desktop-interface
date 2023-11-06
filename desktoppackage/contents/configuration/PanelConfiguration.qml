@@ -147,7 +147,7 @@ ColumnLayout {
                 mainIconSource: (panel.location === PlasmaCore.Types.TopEdge ? "arrow-top" :
                                  panel.location === PlasmaCore.Types.RightEdge ? "arrow-right" :
                                  panel.location === PlasmaCore.Types.LeftEdge ? "arrow-left": "arrow-down")
-                onClicked: stackView.push("subpages/Location.qml", {stackView: stackView})
+                onClicked: setPositionButton.checked = !setPositionButton.checked
             }
             PC3.Button {
                 id: setPositionButton
@@ -270,10 +270,9 @@ ColumnLayout {
                             second = Qt.AlignBottom
                         }
                     }
-                    console.log('!!!!', dialogRoot.vertical)
                     return first | second;
                 }
-                onClicked: stackView.push("subpages/Alignment.qml", {stackView: stackView})
+                onClicked: alignmentBox.popup.visible = true
                 isVertical: dialogRoot.vertical
             }
             PC3.ComboBox {
@@ -314,6 +313,7 @@ ColumnLayout {
                 isVertical: dialogRoot.vertical
                 alignment: positionRepresentation.alignment
                 fillAvailable: widthBox.previewIndex === 0
+                onClicked: widthBox.popup.visible = true
             }
             PC3.ComboBox {
                 id: widthBox
@@ -363,6 +363,7 @@ ColumnLayout {
             PanelRepresentation {
                 Layout.alignment: Qt.AlignHCenter
                 sunkenPanel: autoHideSwitch.checked
+                onClicked: autoHideSwitch.checked = !autoHideSwitch.checked
             }
             PC3.Switch {
                 id: autoHideSwitch
@@ -392,6 +393,7 @@ ColumnLayout {
                 Layout.alignment: Qt.AlignHCenter
                 adaptivePanel: transparencyBox.previewIndex === 0
                 translucentPanel: transparencyBox.previewIndex === 2
+                onClicked: transparencyBox.popup.visible = true
             }
             PC3.ComboBox {
                 id: transparencyBox
@@ -428,6 +430,7 @@ ColumnLayout {
                 text: "Yes"
                 Layout.alignment: Qt.AlignHCenter
                 floatingGap: Kirigami.Units.smallSpacing * floatingSwitch.checked
+                onClicked: floatingSwitch.checked = !floatingSwitch.checked
             }
             PC3.Switch {
                 id: floatingSwitch
