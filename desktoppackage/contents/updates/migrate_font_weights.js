@@ -29,13 +29,16 @@ function migrateFontWeight(oldWeight) {
 }
 
 var containments = desktops().concat(panels());
-for (var i in containments) {
-    var cont = containments[i];
-    for (var j in cont.widgetIds) {
-        // Digital clock
-        if (widget.type == "org.kde.plasma.digitalclock") {
-            widget.currentConfigGroup = new Array('Appearance');
-            widget.writeConfig("fontWeight", migrateFontWeight(widget.readConfig("fontWeight")));
+for (var c in containments) {
+    const cont = containments[c];
+    const widgets = cont.widgets();
+    for (var w in widgets) {
+        const widget = widgets[w];
+        switch(widget.type) {
+            case "org.kde.plasma.digitalclock":
+                widget.currentConfigGroup = new Array('Appearance');
+                widget.writeConfig("fontWeight", migrateFontWeight(widget.readConfig("fontWeight")));
+                break;
         }
     }
 }
