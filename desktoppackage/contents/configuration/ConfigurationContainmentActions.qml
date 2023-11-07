@@ -122,6 +122,7 @@ Item {
                 model: configDialog.containmentActionConfigModel
                 textRole: "name"
                 property bool initialized: false
+                Accessible.name: i18ndc("plasma_shell_org.kde.plasma.desktop", "@info:whatsthis", "Plugin combobox")
                 Component.onCompleted: {
                     for (var i = 0; i < configDialog.containmentActionConfigModel.count; ++i) {
                         if (configDialog.containmentActionConfigModel.get(i).pluginName === pluginName) {

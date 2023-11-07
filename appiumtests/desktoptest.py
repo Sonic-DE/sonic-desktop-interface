@@ -4,25 +4,28 @@
 # SPDX-FileCopyrightText: 2023 Fushan Wen <qydwhotmail@gmail.com>
 # SPDX-License-Identifier: GPL-2.0-or-later
 
-from enum import Enum
 import os
 import pathlib
 import subprocess
 import sys
 import sysconfig
+import tempfile
 import time
 import unittest
+from enum import Enum
 from typing import Final
 
 import gi
 from appium import webdriver
 from appium.options.common.base import AppiumOptions
 from appium.webdriver.common.appiumby import AppiumBy
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
+from appium.webdriver.webdriver import ExtensionBase
+from appium.webdriver.webelement import WebElement
 
 gi.require_version('Gdk', '3.0')
-from gi.repository import Gdk, Gio, GLib
+from gi.repository import Gdk, GdkPixbuf, Gio, GLib
 
 if "KDECI_BUILD" not in os.environ:
     CMAKE_INSTALL_PREFIX: Final = os.environ.get("CMAKE_INSTALL_PREFIX", os.path.join(pathlib.Path.home(), "kde", "usr"))
@@ -59,6 +62,27 @@ class XKeyCode(Enum):
     Super = 0xffeb
     Tab = 0xff09
     Up = 0xff52
+
+
+class SetValueCommand(ExtensionBase):
+
+    def method_name(self):
+        return "set_value"
+
+    def set_value(self, element: WebElement, value: str):
+        """
+        Set the value on this element in the application
+        Args:
+            value: The value to be set
+        """
+        data = {
+            "id": element.id,
+            "text": value,
+        }
+        return self.execute(data)["value"]
+
+    def add_command(self):
+        return "post", "/session/$sessionId/appium/element/$id/value"
 
 
 def name_has_owner(session_bus: Gio.DBusConnection, name: str) -> bool:
@@ -135,7 +159,7 @@ class DesktopTest(unittest.TestCase):
         options = AppiumOptions()
         options.set_capability("app", "Root")
         options.set_capability("timeouts", {'implicit': 30000})
-        cls.driver = webdriver.Remote(command_executor='http://127.0.0.1:4723', options=options)
+        cls.driver = webdriver.Remote(command_executor='http://127.0.0.1:4723', extensions=[SetValueCommand], options=options)
 
     def tearDown(self) -> None:
         """
@@ -156,17 +180,9 @@ class DesktopTest(unittest.TestCase):
             cls.kactivitymanagerd.kill()
         cls.driver.quit()
 
-    def test_0_panel_ready(self) -> None:
+    def _enter_edit_mode(self):
         """
-        Until the panel is ready
-        """
-        wait = WebDriverWait(self.driver, 30)
-        wait.until(EC.presence_of_element_located((AppiumBy.NAME, "Application Launcher")))
-
-    def test_1_open_edit_mode(self) -> None:
-        """
-        Tests the edit mode toolbox can be loaded
-        Consolidates https://invent.kde.org/frameworks/plasma-framework/-/commit/3bb099a427cacd44fef7668225d8094f952dd5b2
+        Uses the keyboard shortcut to enter edit mode
         """
         # Key values are from https://www.cl.cam.ac.uk/~mgk25/ucs/keysymdef.h
         # Alt+D
@@ -181,11 +197,45 @@ class DesktopTest(unittest.TestCase):
         time.sleep(0.5)
         IS.key_release(keyval_to_keycode(XKeyCode.E))
 
+    def _exit_edit_mode(self) -> None:
+        """
+        Finds the close button and clicks it
+        """
         global_theme_button = self.driver.find_element(AppiumBy.NAME, "Choose Global Theme…")
         self.driver.find_element(AppiumBy.NAME, "Exit Edit Mode").click()
         WebDriverWait(self.driver, 30).until(lambda _: not global_theme_button.is_displayed())
 
+    def test_0_panel_ready(self) -> None:
+        """
+        Wait until the panel is ready
+        """
+        wait = WebDriverWait(self.driver, 30)
+        wait.until(EC.presence_of_element_located((AppiumBy.NAME, "Application Launcher")))
+
     def test_2_open_panel_edit_mode(self) -> None:
+        """
+        Tests the edit mode toolbox can be loaded
+        Consolidates https://invent.kde.org/frameworks/plasma-framework/-/commit/3bb099a427cacd44fef7668225d8094f952dd5b2
+        """
+        self._enter_edit_mode()
+
+        wait = WebDriverWait(self.driver, 30)
+        self.driver.find_element(AppiumBy.NAME, "Configure Panel…").click()
+        wait.until(EC.presence_of_element_located((AppiumBy.NAME, "Add Widgets…")))
+        spacer_button: WebElement = wait.until(EC.presence_of_element_located((AppiumBy.NAME, "Add Spacer")))
+
+        IS.key_press(keyval_to_keycode(XKeyCode.Escape))
+        time.sleep(0.5)
+        IS.key_release(keyval_to_keycode(XKeyCode.Escape))
+
+        wait.until_not(lambda _: spacer_button.is_displayed())
+
+        self._exit_edit_mode()
+
+    def test_3_containment_config_dialog_1_open(self) -> None:
+        """
+        Opens the containment config dialog by clicking the button in the toolbox
+        """
         # Alt+D
         IS.key_press(keyval_to_keycode(XKeyCode.Alt))
         IS.key_press(keyval_to_keycode(XKeyCode.D))
@@ -193,15 +243,89 @@ class DesktopTest(unittest.TestCase):
         IS.key_release(keyval_to_keycode(XKeyCode.Alt))
         IS.key_release(keyval_to_keycode(XKeyCode.D))
         time.sleep(0.5)
-        # E
-        IS.key_press(keyval_to_keycode(XKeyCode.E))
+        # S
+        IS.key_press(keyval_to_keycode(XKeyCode.S))
         time.sleep(0.5)
-        IS.key_release(keyval_to_keycode(XKeyCode.E))
+        IS.key_release(keyval_to_keycode(XKeyCode.S))
+        wait = WebDriverWait(self.driver, 30)
+        wait.until(EC.presence_of_element_located((AppiumBy.NAME, "Wallpaper type:")))
+
+    def test_3_containment_config_dialog_2_change_wallpaper_type(self) -> None:
+        """
+        Tests if the wallpaper type is changed sucessfully
+        """
+        self.driver.find_element(AppiumBy.NAME, "Wallpaper type combobox").click()
+        self.driver.set_value(self.driver.find_element(AppiumBy.NAME, "Wallpaper type combobox"), "org.kde.color")  # Plain Color
+        wait = WebDriverWait(self.driver, 30)
+        wait.until(EC.presence_of_element_located((AppiumBy.NAME, "Color:")))
+        label_element = wait.until(EC.presence_of_element_located((AppiumBy.NAME, "Wallpaper type:")))
+        self.driver.find_element(AppiumBy.NAME, "OK").click()
+        wait.until(lambda _: not label_element.is_displayed())
+
+        with tempfile.TemporaryDirectory() as temp_dir:
+            saved_image_path: str = os.path.join(temp_dir, "desktop.png")
+            self.assertTrue(self.driver.get_screenshot_as_file(saved_image_path))
+
+            pixbuf: GdkPixbuf.Pixbuf | None = GdkPixbuf.Pixbuf.new_from_file(saved_image_path)
+            self.assertIsNotNone(pixbuf)
+            self.assertGreater(pixbuf.get_width(), 1)
+            self.assertGreater(pixbuf.get_height(), 1)
+            self.assertEqual(pixbuf.get_n_channels(), 4)  # R, G, B, A
+
+            pixel_data: bytes = pixbuf.get_pixels()  # R, G, B, A, R, G, B, A, ...
+
+        i: int = 0
+        while i < len(pixel_data):
+            color = (pixel_data[i], pixel_data[i + 1], pixel_data[i + 2])  # 0~255
+            if color == (29, 153, 243):  # Default value #1d99f3
+                return
+            i += 4
+
+        self.fail("Test failed. Taking screenshot...")
+
+    def test_3_containment_config_dialog_3_other_sections(self) -> None:
+        """
+        Opens other sections successively
+        """
+        self.test_3_containment_config_dialog_1_open()
 
         wait = WebDriverWait(self.driver, 30)
-        self.driver.find_element(AppiumBy.NAME, "Configure Panel…").click()
-        wait.until(EC.presence_of_element_located((AppiumBy.NAME, "Add Widgets…")))
-        wait.until(EC.presence_of_element_located((AppiumBy.NAME, "Add Spacer")))
+        mouseaction_element = wait.until(EC.presence_of_element_located((AppiumBy.NAME, "Mouse Actions")))
+        location_element = wait.until(EC.presence_of_element_located((AppiumBy.NAME, "Location")))
+        icons_element = wait.until(EC.presence_of_element_located((AppiumBy.NAME, "Icons")))
+        filter_element = wait.until(EC.presence_of_element_located((AppiumBy.NAME, "Filter")))
+
+        mouseaction_element.click()
+        wait.until(EC.presence_of_element_located((AppiumBy.NAME, "Plugin combobox")))
+        wait.until(EC.presence_of_element_located((AppiumBy.NAME, "Add Action")))
+
+        location_element.click()
+        wait.until(EC.presence_of_element_located((AppiumBy.NAME, "Desktop folder")))
+
+        icons_element.click()
+        wait.until(EC.presence_of_element_located((AppiumBy.NAME, "Configure Preview Plugins…"))).click()
+        wait.until(EC.presence_of_element_located((AppiumBy.NAME, "Preview Plugins")))
+
+        filter_element.click()
+        wait.until(EC.presence_of_element_located((AppiumBy.NAME, "File name pattern:")))
+
+    def test_3_containment_config_dialog_3_switch_layout(self) -> None:
+        """
+        Opens other sections successively
+        """
+        self.driver.find_element(AppiumBy.NAME, "Wallpaper").click()
+        wait = WebDriverWait(self.driver, 30)
+        layout_element: WebElement = wait.until(EC.presence_of_element_located((AppiumBy.NAME, "Layout combobox")))
+        self.driver.set_value(layout_element, "0")  # Desktop
+
+        wait.until(EC.presence_of_element_located((AppiumBy.NAME, "Layout changes must be applied before other changes can be made")))
+        wait.until(EC.presence_of_element_located((AppiumBy.NAME, "Apply Now"))).click()
+        wait.until_not(lambda _: layout_element.is_displayed())
+
+        wait.until(EC.presence_of_element_located((AppiumBy.NAME, "Layout combobox")))
+        wait.until(EC.presence_of_element_located((AppiumBy.NAME, "About"))).click()
+        wait.until(EC.presence_of_element_located((AppiumBy.NAME, "A clean and simple layout")))
+        self.driver.find_element(AppiumBy.NAME, "OK").click()
 
 
 if __name__ == '__main__':
