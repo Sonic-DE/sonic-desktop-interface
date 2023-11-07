@@ -83,6 +83,8 @@ Item {
                 enabled: !Plasmoid.immutable
                 model: configDialog.containmentPluginsConfigModel
                 textRole: "name"
+                Accessible.name: i18ndc("plasma_shell_org.kde.plasma.desktop", "@info:whatsthis", "Layout combobox")
+                Accessible.description: pluginComboBox.currentText
                 onActivated: {
                     var model = configDialog.containmentPluginsConfigModel.get(currentIndex)
                     appearanceRoot.containmentPlugin = model.pluginName
@@ -100,6 +102,8 @@ Item {
                     Layout.preferredWidth: Math.max(implicitWidth, pluginComboBox.implicitWidth)
                     model: configDialog.wallpaperConfigModel
                     textRole: "name"
+                    Accessible.name: i18ndc("plasma_shell_org.kde.plasma.desktop", "@info:whatsthis", "Wallpaper type combobox")
+                    Accessible.description: wallpaperComboBox.currentText
                     onActivated: {
                         var model = configDialog.wallpaperConfigModel.get(currentIndex)
                         if (appearanceRoot.currentWallpaper === model.pluginName) {
