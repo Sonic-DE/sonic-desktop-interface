@@ -1,3 +1,9 @@
+/*
+    SPDX-FileCopyrightText: 2023 Akseli Lahtinen <akselmo@akselmo.dev>
+
+    SPDX-License-Identifier: GPL-2.0-or-later
+*/
+
 // Find all depicted widgets and migrate their font weights from qt5 to qt6 style
 
 var containments = desktops().concat(panels());
@@ -9,8 +15,8 @@ for (var c in containments) {
         switch(widget.type) {
             case "org.kde.plasma.digitalclock":
                 widget.currentConfigGroup = ['Appearance'];
-                print(widget.readConfig("fontWeight"));
-                const oldFontWeight = widget.readConfig("fontWeight");
+                // Use "normal" weight as default if weight is not set
+                const oldFontWeight = widget.readConfig("fontWeight", 400);
                 const newFontWeight = migrateFontWeight(Number(oldFontWeight));
                 widget.writeConfig("fontWeight", newFontWeight);
                 break;
