@@ -92,10 +92,10 @@ Item {
             delayed: true
             property real verticalMargin: (fixedTopFloatingPadding + fixedBottomFloatingPadding) * (1 - floatingness)
             property real horizontalMargin: (fixedLeftFloatingPadding + fixedRightFloatingPadding) * (1 - floatingness)
-            // This makes the panel de-float when a window is 6px from it or less.
-            // 6px is chosen to avoid any potential issue with kwin snapping behavior,
+            // This makes the panel de-float when a window is 12px from it or less.
+            // 12px is chosen to avoid any potential issue with kwin snapping behavior,
             // and it looks like the panel hides away from the active window.
-            value: floatingness, panel.width, panel.height, panel.x, panel.y, panel.geometryByDistance(6 + (verticalPanel ? horizontalMargin : verticalMargin))
+            value: floatingness, panel.width, panel.height, panel.x, panel.y, panel.geometryByDistance(12 + (verticalPanel ? horizontalMargin : verticalMargin))
         }
     }
 
