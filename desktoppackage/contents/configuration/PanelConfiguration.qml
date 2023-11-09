@@ -13,6 +13,7 @@ import org.kde.plasma.extras 2.0 as PlasmaExtras
 import org.kde.kirigami 2.20 as Kirigami
 import org.kde.ksvg 1.0 as KSvg
 import org.kde.plasma.components 3.0 as PC3
+import org.kde.kquickcontrolsaddons 2.0 as KQuickControlsAddons
 import org.kde.plasma.shell.panel 0.1 as Panel
 import org.kde.kquickcontrols 2.0
 import "panelconfiguration"
@@ -178,9 +179,13 @@ ColumnLayout {
                         height: Kirigami.Units.iconSizes.enormous
                         icon.name: root.iconSource
 
-                        onClicked: {
-                            setPositionButton.checked = false
-                            panel.location = root.onClickedLocation
+                        KQuickControlsAddons.MouseEventListener {
+                            anchors.fill: parent
+                            onClicked: mouse => {
+                                setPositionButton.checked = false
+                                panel.location = root.onClickedLocation
+                                panel.screenToFollow = mouse.screen
+                            }
                         }
                     }
                 }
