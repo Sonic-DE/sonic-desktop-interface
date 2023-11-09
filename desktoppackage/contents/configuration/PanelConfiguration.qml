@@ -362,20 +362,29 @@ ColumnLayout {
             }
             PanelRepresentation {
                 Layout.alignment: Qt.AlignHCenter
-                sunkenPanel: autoHideSwitch.checked
-                onClicked: autoHideSwitch.checked = !autoHideSwitch.checked
+                sunkenPanel: autoHideBox.previewIndex !== 0
+                onClicked: autoHideBox.popup.visible = true
             }
-            PC3.Switch {
-                id: autoHideSwitch
+            PC3.ComboBox {
+                id: autoHideBox
                 Layout.alignment: Qt.AlignHCenter
-                Layout.minimumHeight: transparencyBox.height
-                text: i18nd("plasma_shell_org.kde.plasma.desktop", "Auto hide")
-                Component.onCompleted: checked = configDialog.visibilityMode === Panel.Global.AutoHide
-                onCheckedChanged: {
-                    if (checked) {
-                        configDialog.visibilityMode = Panel.Global.AutoHide
+                property int previewIndex: popup.visible ? highlightedIndex : currentIndex
+                Layout.maximumWidth: dialogRoot.width / 3
+                Layout.minimumWidth: dialogRoot.width / 3
+                model: [
+                    i18nd("plasma_shell_org.kde.plasma.desktop", "Always visible"),
+                    i18nd("plasma_shell_org.kde.plasma.desktop", "Auto hide"),
+                    i18nd("plasma_shell_org.kde.plasma.desktop", "Intellihide"),
+                ]
+                currentIndex: (panel.visibilityMode === Panel.Global.NormalPanel ? 0 :
+                                panel.visibilityMode === Panel.Global.AutoHide ? 1 : 2)
+                onActivated: (index) => {
+                    if (index === 0) {
+                        panel.visibilityMode = Panel.Global.NormalPanel
+                    } else if (index === 1) {
+                        panel.visibilityMode = Panel.Global.AutoHide
                     } else {
-                        configDialog.visibilityMode = Panel.Global.NormalPanel
+                        panel.visibilityMode = Panel.Global.IntelliHide
                     }
                 }
             }
