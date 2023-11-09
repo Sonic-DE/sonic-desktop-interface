@@ -366,20 +366,43 @@ ColumnLayout {
             }
             PanelRepresentation {
                 Layout.alignment: Qt.AlignHCenter
-                sunkenPanel: autoHideSwitch.checked
-                onClicked: autoHideSwitch.checked = !autoHideSwitch.checked
+                sunkenPanel: autoHideBox.previewIndex !== 0
+                onClicked: autoHideBox.popup.visible = true
             }
-            PC3.Switch {
-                id: autoHideSwitch
+            PC3.ComboBox {
+                id: autoHideBox
                 Layout.alignment: Qt.AlignHCenter
-                Layout.minimumHeight: transparencyBox.height
-                text: i18nd("plasma_shell_org.kde.plasma.desktop", "Auto hide")
-                Component.onCompleted: checked = configDialog.visibilityMode === Panel.Global.AutoHide
-                onCheckedChanged: {
-                    if (checked) {
-                        configDialog.visibilityMode = Panel.Global.AutoHide
-                    } else {
-                        configDialog.visibilityMode = Panel.Global.NormalPanel
+                property int previewIndex: popup.visible ? highlightedIndex : currentIndex
+                Layout.maximumWidth: dialogRoot.width / 3
+                Layout.minimumWidth: dialogRoot.width / 3
+                model: [
+                    i18nd("plasma_shell_org.kde.plasma.desktop", "Always visible"),
+                    i18nd("plasma_shell_org.kde.plasma.desktop", "Auto hide"),
+                    i18nd("plasma_shell_org.kde.plasma.desktop", "Intellihide"),
+                ]
+                currentIndex: {
+                    switch (panel.visibilityMode) {
+                        case Panel.Global.AutoHide:
+                            return 1;
+                        case Panel.Global.IntelliHide:
+                            return 2;
+                        case Panel.Global.NormalPanel:
+                        default:
+                            return 0;
+                    }
+                }
+                onActivated: (index) => {
+                    switch (index) {
+                        case 1:
+                            panel.visibilityMode = Panel.Global.AutoHide;
+                            break;
+                        case 2:
+                            panel.visibilityMode = Panel.Global.IntelliHide;
+                            break;
+                        case 0:
+                        default:
+                            panel.visibilityMode = Panel.Global.NormalPanel;
+                            break;
                     }
                 }
             }
