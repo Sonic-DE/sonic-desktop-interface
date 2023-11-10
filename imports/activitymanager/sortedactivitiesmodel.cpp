@@ -22,6 +22,7 @@
 #include <KSharedConfig>
 #include <KWindowInfo>
 #include <KX11Extras>
+#include <kwindowsystem.h>
 
 static const char *s_plasma_config = "plasma-org.kde.plasma.desktop-appletsrc";
 
@@ -211,23 +212,25 @@ SortedActivitiesModel::SortedActivitiesModel(const QList<KActivities::Info::Stat
 
     backgrounds().subscribe(this);
 
-    const QList<WId> windows = KX11Extras::stackingOrder();
+    if (KWindowSystem::isPlatformX11()) {
+        const QList<WId> windows = KX11Extras::stackingOrder();
 
-    for (const auto &window : windows) {
-        KWindowInfo info(window, NET::WMVisibleName, NET::WM2Activities);
-        const QStringList activities = info.activities();
+        for (const auto &window : windows) {
+            KWindowInfo info(window, NET::WMVisibleName, NET::WM2Activities);
+            const QStringList activities = info.activities();
 
-        if (activities.isEmpty() || activities.contains(QLatin1String{"00000000-0000-0000-0000-000000000000"}))
-            continue;
+            if (activities.isEmpty() || activities.contains(QLatin1String{"00000000-0000-0000-0000-000000000000"}))
+                continue;
 
-        for (const auto &activity : activities) {
-            m_activitiesWindows[activity] << window;
+            for (const auto &activity : activities) {
+                m_activitiesWindows[activity] << window;
+            }
         }
-    }
 
-    connect(KX11Extras::self(), &KX11Extras::windowAdded, this, &SortedActivitiesModel::onWindowAdded);
-    connect(KX11Extras::self(), &KX11Extras::windowRemoved, this, &SortedActivitiesModel::onWindowRemoved);
-    connect(KX11Extras::self(), &KX11Extras::windowChanged, this, &SortedActivitiesModel::onWindowChanged);
+        connect(KX11Extras::self(), &KX11Extras::windowAdded, this, &SortedActivitiesModel::onWindowAdded);
+        connect(KX11Extras::self(), &KX11Extras::windowRemoved, this, &SortedActivitiesModel::onWindowRemoved);
+        connect(KX11Extras::self(), &KX11Extras::windowChanged, this, &SortedActivitiesModel::onWindowChanged);
+    }
 }
 
 SortedActivitiesModel::~SortedActivitiesModel()
