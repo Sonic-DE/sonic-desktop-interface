@@ -64,7 +64,7 @@ public:
     QList<WindowModel *> windowModels;
 
 #if HAVE_X11
-    QList<WId> cachedStackingOrder = KX11Extras::stackingOrder();
+    QList<WId> cachedStackingOrder;
 #endif
 
     void refreshDataSource();
@@ -105,13 +105,16 @@ PagerModel::Private::Private(PagerModel *q)
     QObject::connect(virtualDesktopInfo, &VirtualDesktopInfo::desktopLayoutRowsChanged, q, &PagerModel::layoutRowsChanged);
 
 #if HAVE_X11
-    QObject::connect(KX11Extras::self(), &KX11Extras::stackingOrderChanged, q, [this]() {
-        cachedStackingOrder = KX11Extras::stackingOrder();
+    if (KWindowSystem::isPlatformX11()) {
+        QObject::connect(KX11Extras::self(), &KX11Extras::stackingOrderChanged, q, [this]() {
+            cachedStackingOrder = KX11Extras::stackingOrder();
 
-        for (auto windowModel : std::as_const(windowModels)) {
-            windowModel->refreshStackingOrder();
-        }
-    });
+            for (auto windowModel : std::as_const(windowModels)) {
+                windowModel->refreshStackingOrder();
+            }
+        });
+    }
+
 #endif
 }
 
