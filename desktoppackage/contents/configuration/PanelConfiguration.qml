@@ -374,13 +374,13 @@ ColumnLayout {
                 model: [
                     i18nd("plasma_shell_org.kde.plasma.desktop", "Always visible"),
                     i18nd("plasma_shell_org.kde.plasma.desktop", "Auto hide"),
-                    i18nd("plasma_shell_org.kde.plasma.desktop", "Intellihide"),
+                    i18nd("plasma_shell_org.kde.plasma.desktop", "Dodge windows"),
                 ]
                 currentIndex: {
                     switch (panel.visibilityMode) {
                         case Panel.Global.AutoHide:
                             return 1;
-                        case Panel.Global.IntelliHide:
+                        case Panel.Global.DodgeWindows:
                             return 2;
                         case Panel.Global.NormalPanel:
                         default:
@@ -393,7 +393,7 @@ ColumnLayout {
                             panel.visibilityMode = Panel.Global.AutoHide;
                             break;
                         case 2:
-                            panel.visibilityMode = Panel.Global.IntelliHide;
+                            panel.visibilityMode = Panel.Global.DodgeWindows;
                             break;
                         case 0:
                         default:
