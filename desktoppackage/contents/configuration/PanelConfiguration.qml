@@ -421,7 +421,7 @@ ColumnLayout {
             PC3.ComboBox {
                 id: transparencyBox
                 Layout.alignment: Qt.AlignHCenter
-                property int previewIndex: popup.visible ? highlightedIndex : currentIndex
+                readonly property int previewIndex: popup.visible ? highlightedIndex : currentIndex
                 model: [
                     i18nd("plasma_shell_org.kde.plasma.desktop", "Adaptive"),
                     i18nd("plasma_shell_org.kde.plasma.desktop", "Opaque"),
