@@ -40,6 +40,9 @@ Item {
         imagePath: "widgets/panel-background"
     }
 
+    // NOTE: Many of the properties in this file are accessed directly in C++ PanelView!
+    // If you change these, make sure to also correct the related code in panelview.cpp.
+
     readonly property bool topEdge: containment?.plasmoid?.location === PlasmaCore.Types.TopEdge
     readonly property bool leftEdge: containment?.plasmoid?.location === PlasmaCore.Types.LeftEdge
     readonly property bool rightEdge: containment?.plasmoid?.location === PlasmaCore.Types.RightEdge
