@@ -98,7 +98,7 @@ QVariant WindowModel::data(const QModelIndex &index, int role) const
         const QVariantList &winIds = TaskFilterProxyModel::data(index, AbstractTasksModel::WinIdList).toList();
 
         if (winIds.count()) {
-            const WId winId = winIds.at(0).toLongLong();
+            const QVariant winId = winIds.at(0);
             const int z = d->pagerModel->stackingOrder(index).indexOf(winId);
 
             if (z != -1) {
