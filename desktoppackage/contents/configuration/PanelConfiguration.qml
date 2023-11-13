@@ -365,21 +365,21 @@ ColumnLayout {
                 text: i18nd("plasma_shell_org.kde.plasma.desktop", "Visibility")
             }
             PanelRepresentation {
+                id: visibilityRepresentation
                 Layout.alignment: Qt.AlignHCenter
                 sunkenPanel: autoHideBox.previewIndex !== 0
                 onClicked: autoHideBox.popup.visible = true
             }
             PC3.ComboBox {
                 id: autoHideBox
-                Layout.alignment: Qt.AlignHCenter
                 property int previewIndex: popup.visible ? highlightedIndex : currentIndex
-                Layout.maximumWidth: dialogRoot.width / 3
-                Layout.minimumWidth: dialogRoot.width / 3
                 model: [
                     i18nd("plasma_shell_org.kde.plasma.desktop", "Always visible"),
                     i18nd("plasma_shell_org.kde.plasma.desktop", "Auto hide"),
                     i18nd("plasma_shell_org.kde.plasma.desktop", "Dodge windows"),
                 ]
+                Layout.alignment: Qt.AlignHCenter
+                Layout.minimumWidth: visibilityRepresentation.width
                 currentIndex: {
                     switch (panel.visibilityMode) {
                         case Panel.Global.AutoHide:
