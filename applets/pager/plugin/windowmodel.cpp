@@ -95,15 +95,11 @@ QVariant WindowModel::data(const QModelIndex &index, int role) const
         // Restrict to desktop/screen rect.
         return windowGeo.intersected(clampingRect);
     } else if (role == StackingOrder) {
-        const QVariantList &winIds = TaskFilterProxyModel::data(index, AbstractTasksModel::WinIdList).toList();
+        const auto &winId = TaskFilterProxyModel::data(index, AbstractTasksModel::WinIdList);
+        const int z = d->pagerModel->stackingOrder(index).indexOf(winId);
 
-        if (winIds.count()) {
-            const QVariant winId = winIds.at(0);
-            const int z = d->pagerModel->stackingOrder(index).indexOf(winId);
-
-            if (z != -1) {
-                return z;
-            }
+        if (z != -1) {
+            return z;
         }
         return 0;
     }
