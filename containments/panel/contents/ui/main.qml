@@ -427,7 +427,7 @@ ContainmentItem {
                 Layout.alignment: Qt.AlignHCenter
                 visible: appletsModel.count === 0
                 text: isHorizontal ? i18nd("plasma_shell_org.kde.plasma.desktop", "Add Widgets…") : undefined
-                icon.name: "list-add"
+                icon.name: "list-add-symbolic"
                 onClicked: Plasmoid.internalAction("add widgets").trigger()
             }
 
