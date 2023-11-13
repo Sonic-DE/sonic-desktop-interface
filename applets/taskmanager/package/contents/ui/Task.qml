@@ -33,7 +33,8 @@ PlasmaCore.ToolTipArea {
     LayoutMirroring.enabled: (Qt.application.layoutDirection == Qt.RightToLeft)
     LayoutMirroring.childrenInherit: (Qt.application.layoutDirection == Qt.RightToLeft)
 
-    readonly property var m: model
+    required property var model
+    required property int index
 
     readonly property int pid: model.AppPid
     readonly property string appName: model.AppName

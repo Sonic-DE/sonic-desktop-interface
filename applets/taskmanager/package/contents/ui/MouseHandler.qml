@@ -76,7 +76,7 @@ DropArea {
         // the movement direction has reversed, establishing user intent to
         // move back.
         if (!Plasmoid.configuration.separateLaunchers && tasks.dragSource != null
-                && tasks.dragSource.m.IsLauncher && !above.m.IsLauncher
+                && tasks.dragSource.model.IsLauncher && !above.model.IsLauncher
                 && above === ignoredItem) {
             return;
         } else {
@@ -161,9 +161,9 @@ DropArea {
         repeat: false
 
         onTriggered: {
-            if (parent.hoveredItem.m.IsGroupParent) {
+            if (parent.hoveredItem.model.IsGroupParent) {
                 TaskTools.createGroupDialog(parent.hoveredItem, tasks);
-            } else if (!parent.hoveredItem.m.IsLauncher) {
+            } else if (!parent.hoveredItem.model.IsLauncher) {
                 tasksModel.requestActivate(parent.hoveredItem.modelIndex());
             }
         }
