@@ -111,13 +111,6 @@ QVariant WindowModel::data(const QModelIndex &index, int role) const
     return TaskFilterProxyModel::data(index, role);
 }
 
-void WindowModel::refreshStackingOrder()
-{
-    if (rowCount()) {
-        Q_EMIT dataChanged(index(0, 0), index(rowCount() - 1, 0), QList<int>{StackingOrder});
-    }
-}
-
 void WindowModel::onPagerItemSizeChanged()
 {
     if (rowCount() > 0) {
