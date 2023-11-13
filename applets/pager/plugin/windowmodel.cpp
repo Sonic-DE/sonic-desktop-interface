@@ -15,8 +15,6 @@
 #include <KWindowSystem>
 #include <KX11Extras>
 
-#include <algorithm>
-
 using namespace TaskManager;
 
 class WindowModel::Private

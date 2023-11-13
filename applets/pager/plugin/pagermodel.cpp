@@ -9,9 +9,7 @@
 #include "pagermodel.h"
 #include "windowmodel.h"
 
-#include <abstracttasksmodel.h>
 #include <activityinfo.h>
-#include <kwindowsystem.h>
 #include <virtualdesktopinfo.h>
 #include <waylandtasksmodel.h>
 #include <windowtasksmodel.h>
