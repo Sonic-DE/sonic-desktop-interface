@@ -42,6 +42,11 @@ WindowModel::WindowModel(PagerModel *parent)
 {
     d->pagerModel = parent;
     connect(parent, &PagerModel::pagerItemSizeChanged, this, &WindowModel::onPagerItemSizeChanged);
+    connect(this, &QAbstractItemModel::dataChanged, this, [this](const QModelIndex &topLeft, const QModelIndex &bottomRight, const QList<int> &roles) {
+        if (roles.contains(AbstractTasksModel::StackingOrder)) {
+            Q_EMIT dataChanged(topLeft, bottomRight, {WindowModelRoles::StackingOrder});
+        }
+    });
 }
 
 WindowModel::~WindowModel()
