@@ -24,6 +24,7 @@
 #include <KSharedConfig>
 #include <KWindowInfo>
 #include <taskfilterproxymodel.h>
+#include <tasksmodel.h>
 #include <windowtasksmodel.h>
 
 static const char *s_plasma_config = "plasma-org.kde.plasma.desktop-appletsrc";
@@ -411,9 +412,10 @@ void SortedActivitiesModel::onBackgroundsUpdated(const QStringList &activities)
     }
 }
 
-void SortedActivitiesModel::onWindowAdded(QVariant window)
+void SortedActivitiesModel::onWindowAdded(const QModelIndex &parent, int first)
 {
-    const QStringList activities = window.toModelIndex().data(TaskManager::AbstractTasksModel::Activities).toStringList();
+    auto window = windowTasksModel->index(first, 0, parent);
+    const QStringList activities = window.data(TaskManager::AbstractTasksModel::Activities).toStringList();
 
     if (activities.isEmpty() || activities.contains(QLatin1String{"00000000-0000-0000-0000-000000000000"}))
         return;
@@ -430,8 +432,10 @@ void SortedActivitiesModel::onWindowAdded(QVariant window)
     }
 }
 
-void SortedActivitiesModel::onWindowRemoved(QVariant window)
+void SortedActivitiesModel::onWindowRemoved(const QModelIndex &parent, int first)
 {
+    auto window = windowTasksModel->index(first, 0, parent);
+
     for (const auto &activity : m_activitiesWindows.keys()) {
         if (m_activitiesWindows[activity].contains(window)) {
             m_activitiesWindows[activity].removeAll(window);
@@ -444,10 +448,13 @@ void SortedActivitiesModel::onWindowRemoved(QVariant window)
     }
 }
 
-void SortedActivitiesModel::onWindowChanged(QVariant window)
+void SortedActivitiesModel::onWindowChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight, const QList<int> &roles)
 {
-    onWindowRemoved(window);
-    onWindowAdded(window);
+    // If Activities are changed, remove and add the window again to correct activity
+    if (roles.contains(TaskManager::AbstractTasksModel::Activities)) {
+        onWindowRemoved(topLeft.parent(), topLeft.row());
+        onWindowAdded(topLeft.parent(), topLeft.row());
+    }
 }
 
 void SortedActivitiesModel::rowChanged(int row, const QList<int> &roles)
