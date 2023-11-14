@@ -317,16 +317,16 @@ QVariant SortedActivitiesModel::data(const QModelIndex &index, int role) const
         }
 
     } else if (role == HasWindows || role == WindowCount) {
-        if (role == HasWindows) {
-            return index.data(TaskManager::AbstractTasksModel::StackingOrder).toList().count() > 0;
-        } else {
-            const auto activityId = activityIdForIndex(index);
-            int windows = 0;
-            for (auto windowActivity : index.data(TaskManager::AbstractTasksModel::Activities).toList()) {
-                if (windowActivity == activityId) {
-                    windows += 1;
-                }
+        const auto activityId = activityIdForIndex(index);
+        int windows = 0;
+        for (auto windowActivity : index.data(TaskManager::AbstractTasksModel::Activities).toList()) {
+            if (windowActivity == activityId) {
+                windows += 1;
             }
+        }
+        if (role == HasWindows) {
+            return windows > 0;
+        } else {
             return windows;
         }
 
