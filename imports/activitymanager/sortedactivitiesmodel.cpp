@@ -201,7 +201,7 @@ static BackgroundCache &backgrounds()
 }
 
 SortedActivitiesModel::SortedActivitiesModel(const QList<KActivities::Info::State> &states, QObject *parent)
-    : TaskFilterProxyModel(parent)
+    : QSortFilterProxyModel(parent)
     , m_activitiesModel(new KActivities::ActivitiesModel(states, this))
     , m_activities(new KActivities::Consumer(this))
 {

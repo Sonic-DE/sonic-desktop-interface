@@ -21,7 +21,7 @@
 
 #include <taskfilterproxymodel.h>
 
-class SortedActivitiesModel : public TaskManager::TaskFilterProxyModel
+class SortedActivitiesModel : public QSortFilterProxyModel
 {
     Q_OBJECT
 
