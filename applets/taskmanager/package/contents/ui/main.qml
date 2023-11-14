@@ -133,7 +133,7 @@ PlasmoidItem {
 
                 // During destruction required properties such as item.model can go null for a while,
                 // so in paths that can trigger on those moments, they need to be guarded
-                if (item && item.model && item.model.IsStartup && item.model.HasLauncher) {
+                if (item?.model?.IsStartup && item.model.HasLauncher) {
                     ++startupsWithLaunchers;
                 }
             }
