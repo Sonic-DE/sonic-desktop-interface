@@ -112,7 +112,7 @@ PlasmoidItem {
             var task = taskItems[i];
 
             if (!task.model.IsLauncher && !task.model.IsStartup) {
-                tasks.tasksModel.requestPublishDelegateGeometry(tasks.tasksModel.makeModelIndex(task.itemIndex),
+                tasks.tasksModel.requestPublishDelegateGeometry(tasks.tasksModel.makeModelIndex(task.index),
                     backend.globalRect(task), task);
             }
         }

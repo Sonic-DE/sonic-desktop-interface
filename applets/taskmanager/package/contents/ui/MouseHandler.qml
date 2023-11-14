@@ -25,7 +25,7 @@ DropArea {
 
     function insertIndexAt(above, x, y) {
         if (above) {
-            return above.itemIndex;
+            return above.index;
         } else {
             var distance = tasks.vertical ? x : y;
             var step = tasks.vertical ? LayoutManager.taskWidth() : LayoutManager.taskHeight();
@@ -91,12 +91,12 @@ DropArea {
 
             var insertAt = insertIndexAt(above, event.x, event.y);
 
-            if (tasks.dragSource !== above && tasks.dragSource.itemIndex !== insertAt) {
+            if (tasks.dragSource !== above && tasks.dragSource.index !== insertAt) {
                 if (!!tasks.groupDialog) {
-                    tasksModel.move(tasks.dragSource.itemIndex, insertAt,
-                        tasksModel.makeModelIndex(tasks.groupDialog.visualParent.itemIndex));
+                    tasksModel.move(tasks.dragSource.index, insertAt,
+                        tasksModel.makeModelIndex(tasks.groupDialog.visualParent.index));
                 } else {
-                    tasksModel.move(tasks.dragSource.itemIndex, insertAt);
+                    tasksModel.move(tasks.dragSource.index, insertAt);
                 }
 
                 ignoredItem = above;
