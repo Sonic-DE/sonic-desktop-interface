@@ -8,6 +8,9 @@
 #include "sortedactivitiesmodel.h"
 
 // C++
+#include <abstracttasksmodel.h>
+#include <abstracttasksmodeliface.h>
+#include <activityinfo.h>
 #include <functional>
 
 // Qt
@@ -22,6 +25,8 @@
 #include <KSharedConfig>
 #include <KWindowInfo>
 #include <KX11Extras>
+#include <taskfilterproxymodel.h>
+#include <windowtasksmodel.h>
 
 static const char *s_plasma_config = "plasma-org.kde.plasma.desktop-appletsrc";
 
@@ -205,29 +210,17 @@ SortedActivitiesModel::SortedActivitiesModel(const QList<KActivities::Info::Stat
 {
     setSourceModel(m_activitiesModel);
 
+    windowTasksModel = new TaskManager::WindowTasksModel();
+
     setDynamicSortFilter(true);
     setSortRole(LastTimeUsed);
     sort(0, Qt::DescendingOrder);
 
     backgrounds().subscribe(this);
 
-    const QList<WId> windows = KX11Extras::stackingOrder();
-
-    for (const auto &window : windows) {
-        KWindowInfo info(window, NET::WMVisibleName, NET::WM2Activities);
-        const QStringList activities = info.activities();
-
-        if (activities.isEmpty() || activities.contains(QLatin1String{"00000000-0000-0000-0000-000000000000"}))
-            continue;
-
-        for (const auto &activity : activities) {
-            m_activitiesWindows[activity] << window;
-        }
-    }
-
-    connect(KX11Extras::self(), &KX11Extras::windowAdded, this, &SortedActivitiesModel::onWindowAdded);
-    connect(KX11Extras::self(), &KX11Extras::windowRemoved, this, &SortedActivitiesModel::onWindowRemoved);
-    connect(KX11Extras::self(), &KX11Extras::windowChanged, this, &SortedActivitiesModel::onWindowChanged);
+    connect(windowTasksModel, &TaskManager::WindowTasksModel::rowsInserted, this, &SortedActivitiesModel::onWindowAdded);
+    connect(windowTasksModel, &TaskManager::WindowTasksModel::rowsRemoved, this, &SortedActivitiesModel::onWindowRemoved);
+    connect(windowTasksModel, &TaskManager::WindowTasksModel::dataChanged, this, &SortedActivitiesModel::onWindowChanged);
 }
 
 SortedActivitiesModel::~SortedActivitiesModel()
@@ -420,10 +413,9 @@ void SortedActivitiesModel::onBackgroundsUpdated(const QStringList &activities)
     }
 }
 
-void SortedActivitiesModel::onWindowAdded(WId window)
+void SortedActivitiesModel::onWindowAdded(QVariant window)
 {
-    KWindowInfo info(window, NET::Properties(), NET::WM2Activities);
-    const QStringList activities = info.activities();
+    const QStringList activities = window.toModelIndex().data(TaskManager::AbstractTasksModel::Activities).toStringList();
 
     if (activities.isEmpty() || activities.contains(QLatin1String{"00000000-0000-0000-0000-000000000000"}))
         return;
@@ -440,7 +432,7 @@ void SortedActivitiesModel::onWindowAdded(WId window)
     }
 }
 
-void SortedActivitiesModel::onWindowRemoved(WId window)
+void SortedActivitiesModel::onWindowRemoved(QVariant window)
 {
     for (const auto &activity : m_activitiesWindows.keys()) {
         if (m_activitiesWindows[activity].contains(window)) {
@@ -454,14 +446,10 @@ void SortedActivitiesModel::onWindowRemoved(WId window)
     }
 }
 
-void SortedActivitiesModel::onWindowChanged(WId window, NET::Properties properties, NET::Properties2 properties2)
+void SortedActivitiesModel::onWindowChanged(QVariant window)
 {
-    Q_UNUSED(properties);
-
-    if (properties2 & NET::WM2Activities) {
-        onWindowRemoved(window);
-        onWindowAdded(window);
-    }
+    onWindowRemoved(window);
+    onWindowAdded(window);
 }
 
 void SortedActivitiesModel::rowChanged(int row, const QList<int> &roles)
