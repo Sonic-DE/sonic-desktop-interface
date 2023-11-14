@@ -15,11 +15,13 @@
 #include <KActivities/Consumer>
 #include <KActivities/Info>
 
+#include <abstracttasksmodel.h>
 #include <config-X11.h>
 
 #include <netwm.h>
 
 #include <taskfilterproxymodel.h>
+#include <windowtasksmodel.h>
 
 class SortedActivitiesModel : public QSortFilterProxyModel
 {

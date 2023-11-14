@@ -9,6 +9,7 @@
 
 // C++
 #include <abstracttasksmodel.h>
+#include <algorithm>
 #include <functional>
 
 // Qt
@@ -206,7 +207,6 @@ SortedActivitiesModel::SortedActivitiesModel(const QList<KActivities::Info::Stat
     , m_activities(new KActivities::Consumer(this))
 {
     setSourceModel(m_activitiesModel);
-
     setDynamicSortFilter(true);
     setSortRole(LastTimeUsed);
     sort(0, Qt::DescendingOrder);
@@ -318,16 +318,16 @@ QVariant SortedActivitiesModel::data(const QModelIndex &index, int role) const
 
     } else if (role == HasWindows || role == WindowCount) {
         const auto activityId = activityIdForIndex(index);
-        int windows = 0;
-        for (auto windowActivity : index.data(TaskManager::AbstractTasksModel::Activities).toList()) {
-            if (windowActivity == activityId) {
-                windows += 1;
-            }
-        }
-        if (role == HasWindows) {
-            return windows > 0;
+        const auto activities = index.data(TaskManager::AbstractTasksModel::Activities).toList();
+
+        if (role == WindowCount) {
+            return std::count_if(activities.begin(), activities.end(), [activityId](auto window) {
+                return window == activityId;
+            });
         } else {
-            return windows;
+            return std::any_of(activities.begin(), activities.end(), [activityId](auto window) {
+                return window == activityId;
+            });
         }
 
     } else {
