@@ -62,9 +62,9 @@ public Q_SLOTS:
 
     void rowChanged(int row, const QList<int> &roles);
 
-    void onWindowAdded(QVariant window);
-    void onWindowRemoved(QVariant window);
-    void onWindowChanged(QVariant window);
+    void onWindowAdded(const QModelIndex &parent, int first);
+    void onWindowRemoved(const QModelIndex &parent, int first);
+    void onWindowChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight, const QList<int> &roles);
 
 Q_SIGNALS:
     void inhibitUpdatesChanged(bool inhibitUpdates);
