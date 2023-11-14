@@ -19,7 +19,9 @@
 
 #include <netwm.h>
 
-class SortedActivitiesModel : public QSortFilterProxyModel
+#include <taskfilterproxymodel.h>
+
+class SortedActivitiesModel : public TaskManager::TaskFilterProxyModel
 {
     Q_OBJECT
 
@@ -59,10 +61,6 @@ public Q_SLOTS:
 
     void rowChanged(int row, const QList<int> &roles);
 
-    void onWindowAdded(WId window);
-    void onWindowRemoved(WId window);
-    void onWindowChanged(WId window, NET::Properties properties, NET::Properties2 properties2);
-
 Q_SIGNALS:
     void inhibitUpdatesChanged(bool inhibitUpdates);
 
@@ -73,6 +71,4 @@ private:
 
     KActivities::ActivitiesModel *m_activitiesModel = nullptr;
     KActivities::Consumer *m_activities = nullptr;
-
-    QHash<QString, QList<WId>> m_activitiesWindows;
 };

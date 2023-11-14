@@ -8,6 +8,7 @@
 #include "sortedactivitiesmodel.h"
 
 // C++
+#include <abstracttasksmodel.h>
 #include <functional>
 
 // Qt
@@ -22,6 +23,7 @@
 #include <KSharedConfig>
 #include <KWindowInfo>
 #include <KX11Extras>
+#include <taskfilterproxymodel.h>
 
 static const char *s_plasma_config = "plasma-org.kde.plasma.desktop-appletsrc";
 
@@ -199,7 +201,7 @@ static BackgroundCache &backgrounds()
 }
 
 SortedActivitiesModel::SortedActivitiesModel(const QList<KActivities::Info::State> &states, QObject *parent)
-    : QSortFilterProxyModel(parent)
+    : TaskFilterProxyModel(parent)
     , m_activitiesModel(new KActivities::ActivitiesModel(states, this))
     , m_activities(new KActivities::Consumer(this))
 {
@@ -210,24 +212,6 @@ SortedActivitiesModel::SortedActivitiesModel(const QList<KActivities::Info::Stat
     sort(0, Qt::DescendingOrder);
 
     backgrounds().subscribe(this);
-
-    const QList<WId> windows = KX11Extras::stackingOrder();
-
-    for (const auto &window : windows) {
-        KWindowInfo info(window, NET::WMVisibleName, NET::WM2Activities);
-        const QStringList activities = info.activities();
-
-        if (activities.isEmpty() || activities.contains(QLatin1String{"00000000-0000-0000-0000-000000000000"}))
-            continue;
-
-        for (const auto &activity : activities) {
-            m_activitiesWindows[activity] << window;
-        }
-    }
-
-    connect(KX11Extras::self(), &KX11Extras::windowAdded, this, &SortedActivitiesModel::onWindowAdded);
-    connect(KX11Extras::self(), &KX11Extras::windowRemoved, this, &SortedActivitiesModel::onWindowRemoved);
-    connect(KX11Extras::self(), &KX11Extras::windowChanged, this, &SortedActivitiesModel::onWindowChanged);
 }
 
 SortedActivitiesModel::~SortedActivitiesModel()
@@ -333,12 +317,17 @@ QVariant SortedActivitiesModel::data(const QModelIndex &index, int role) const
         }
 
     } else if (role == HasWindows || role == WindowCount) {
-        const auto activity = activityIdForIndex(index);
-
         if (role == HasWindows) {
-            return (m_activitiesWindows[activity].size() > 0);
+            return index.data(TaskManager::AbstractTasksModel::StackingOrder).toList().count() > 0;
         } else {
-            return m_activitiesWindows[activity].size();
+            const auto activityId = activityIdForIndex(index);
+            int windows = 0;
+            for (auto windowActivity : index.data(TaskManager::AbstractTasksModel::Activities).toList()) {
+                if (windowActivity == activityId) {
+                    windows += 1;
+                }
+            }
+            return windows;
         }
 
     } else {
@@ -417,50 +406,6 @@ void SortedActivitiesModel::onBackgroundsUpdated(const QStringList &activities)
     for (const auto &activity : activities) {
         const int row = rowForActivityId(activity);
         rowChanged(row, {KActivities::ActivitiesModel::ActivityBackground});
-    }
-}
-
-void SortedActivitiesModel::onWindowAdded(WId window)
-{
-    KWindowInfo info(window, NET::Properties(), NET::WM2Activities);
-    const QStringList activities = info.activities();
-
-    if (activities.isEmpty() || activities.contains(QLatin1String{"00000000-0000-0000-0000-000000000000"}))
-        return;
-
-    for (const auto &activity : activities) {
-        if (!m_activitiesWindows[activity].contains(window)) {
-            m_activitiesWindows[activity] << window;
-
-            rowChanged(rowForActivityId(activity),
-                       m_activitiesWindows.size() == 1 //
-                           ? QList<int>{WindowCount, HasWindows}
-                           : QList<int>{WindowCount});
-        }
-    }
-}
-
-void SortedActivitiesModel::onWindowRemoved(WId window)
-{
-    for (const auto &activity : m_activitiesWindows.keys()) {
-        if (m_activitiesWindows[activity].contains(window)) {
-            m_activitiesWindows[activity].removeAll(window);
-
-            rowChanged(rowForActivityId(activity),
-                       m_activitiesWindows.size() == 0 //
-                           ? QList<int>{WindowCount, HasWindows}
-                           : QList<int>{WindowCount});
-        }
-    }
-}
-
-void SortedActivitiesModel::onWindowChanged(WId window, NET::Properties properties, NET::Properties2 properties2)
-{
-    Q_UNUSED(properties);
-
-    if (properties2 & NET::WM2Activities) {
-        onWindowRemoved(window);
-        onWindowAdded(window);
     }
 }
 
