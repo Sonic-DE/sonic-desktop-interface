@@ -208,7 +208,7 @@ SortedActivitiesModel::SortedActivitiesModel(const QList<KActivities::Info::Stat
 {
     setSourceModel(m_activitiesModel);
 
-    windowTasksModel = new TaskManager::WindowTasksModel();
+    windowTasksModel = new TaskManager::WindowTasksModel(parent);
 
     setDynamicSortFilter(true);
     setSortRole(LastTimeUsed);
