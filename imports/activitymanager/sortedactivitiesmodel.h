@@ -8,7 +8,7 @@
 
 // Qt
 #include <QSortFilterProxyModel>
-#include <QWidgetList> //For WId
+#include <QWidgetList> //For QVariant
 
 // KDE
 #include <KActivities/ActivitiesModel>
@@ -18,6 +18,7 @@
 #include <config-X11.h>
 
 #include <netwm.h>
+#include <windowtasksmodel.h>
 
 class SortedActivitiesModel : public QSortFilterProxyModel
 {
@@ -34,6 +35,8 @@ public:
     QHash<int, QByteArray> roleNames() const override;
 
     QString relativeActivity(int relative) const;
+
+    TaskManager::WindowTasksModel *windowTasksModel = nullptr;
 
 protected:
     uint lastUsedTime(const QString &activity) const;
@@ -59,9 +62,9 @@ public Q_SLOTS:
 
     void rowChanged(int row, const QList<int> &roles);
 
-    void onWindowAdded(WId window);
-    void onWindowRemoved(WId window);
-    void onWindowChanged(WId window, NET::Properties properties, NET::Properties2 properties2);
+    void onWindowAdded(QVariant window);
+    void onWindowRemoved(QVariant window);
+    void onWindowChanged(QVariant window);
 
 Q_SIGNALS:
     void inhibitUpdatesChanged(bool inhibitUpdates);
@@ -74,5 +77,5 @@ private:
     KActivities::ActivitiesModel *m_activitiesModel = nullptr;
     KActivities::Consumer *m_activities = nullptr;
 
-    QHash<QString, QList<WId>> m_activitiesWindows;
+    QHash<QString, QList<QVariant>> m_activitiesWindows;
 };
