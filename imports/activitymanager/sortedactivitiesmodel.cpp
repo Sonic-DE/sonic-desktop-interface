@@ -11,7 +11,6 @@
 #include <abstracttasksmodel.h>
 #include <abstracttasksmodeliface.h>
 #include <activityinfo.h>
-#include <functional>
 
 // Qt
 #include <QColor>
@@ -24,7 +23,6 @@
 #include <KLocalizedString>
 #include <KSharedConfig>
 #include <KWindowInfo>
-#include <KX11Extras>
 #include <taskfilterproxymodel.h>
 #include <windowtasksmodel.h>
 
