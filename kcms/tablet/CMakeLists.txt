@@ -25,6 +25,7 @@ ecm_qt_install_logging_categories(
 target_sources(kcm_tablet PRIVATE
     kcmtablet.cpp
     tabletevents.cpp
+    calibrationtool.cpp
 )
 
 target_link_libraries(kcm_tablet PRIVATE
@@ -38,6 +39,7 @@ target_link_libraries(kcm_tablet PRIVATE
     Qt::WaylandClient
     Wayland::Client
     kwindevices
+    Canberra::Canberra
 )
 if (Qt${QT_MAJOR_VERSION}_VERSION VERSION_LESS "6.5.0")
     target_link_libraries(kcm_tablet PRIVATE Qt::GuiPrivate)

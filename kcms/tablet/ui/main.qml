@@ -282,6 +282,16 @@ SimpleKCM {
             }
         }
 
+        QQC2.Button {
+            text: i18nc("@action:button Calibrate the pen display", "Calibrate")
+            icon.name: "crosshairs"
+            enabled: form.device.supportsCalibrationMatrix
+            onClicked: {
+                let window = Qt.createComponent("Calibration.qml").createObject(null, {device: form.device, tabletEvents});
+                window.show();
+            }
+        }
+
         Kirigami.Separator {
             Layout.fillWidth: true
         }
