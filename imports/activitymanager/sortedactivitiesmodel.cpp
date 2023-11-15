@@ -206,10 +206,9 @@ SortedActivitiesModel::SortedActivitiesModel(const QList<KActivities::Info::Stat
     : QSortFilterProxyModel(parent)
     , m_activitiesModel(new KActivities::ActivitiesModel(states, this))
     , m_activities(new KActivities::Consumer(this))
+    , m_windowTasksModel(new TaskManager::WindowTasksModel(this))
 {
     setSourceModel(m_activitiesModel);
-
-    windowTasksModel = new TaskManager::WindowTasksModel(this);
 
     setDynamicSortFilter(true);
     setSortRole(LastTimeUsed);
@@ -217,9 +216,9 @@ SortedActivitiesModel::SortedActivitiesModel(const QList<KActivities::Info::Stat
 
     backgrounds().subscribe(this);
 
-    connect(windowTasksModel, &TaskManager::WindowTasksModel::rowsInserted, this, &SortedActivitiesModel::onWindowAdded);
-    connect(windowTasksModel, &TaskManager::WindowTasksModel::rowsRemoved, this, &SortedActivitiesModel::onWindowRemoved);
-    connect(windowTasksModel, &TaskManager::WindowTasksModel::dataChanged, this, &SortedActivitiesModel::onWindowChanged);
+    connect(m_windowTasksModel, &TaskManager::WindowTasksModel::rowsInserted, this, &SortedActivitiesModel::onWindowAdded);
+    connect(m_windowTasksModel, &TaskManager::WindowTasksModel::rowsRemoved, this, &SortedActivitiesModel::onWindowRemoved);
+    connect(m_windowTasksModel, &TaskManager::WindowTasksModel::dataChanged, this, &SortedActivitiesModel::onWindowChanged);
 }
 
 SortedActivitiesModel::~SortedActivitiesModel()
@@ -412,38 +411,42 @@ void SortedActivitiesModel::onBackgroundsUpdated(const QStringList &activities)
     }
 }
 
-void SortedActivitiesModel::onWindowAdded(const QModelIndex &parent, int first)
+void SortedActivitiesModel::onWindowAdded(const QModelIndex &parent, int first, int last)
 {
-    auto window = windowTasksModel->index(first, 0, parent);
-    const QStringList activities = window.data(TaskManager::AbstractTasksModel::Activities).toStringList();
+    for (int row = first; row < last; row++) {
+        auto window = m_windowTasksModel->index(row, 0, parent);
+        const QStringList activities = window.data(TaskManager::AbstractTasksModel::Activities).toStringList();
 
-    if (activities.isEmpty() || activities.contains(QLatin1String{"00000000-0000-0000-0000-000000000000"}))
-        return;
+        if (activities.isEmpty() || activities.contains(QLatin1String{"00000000-0000-0000-0000-000000000000"}))
+            return;
 
-    for (const auto &activity : activities) {
-        if (!m_activitiesWindows[activity].contains(window)) {
-            m_activitiesWindows[activity] << window;
+        for (const auto &activity : activities) {
+            if (!m_activitiesWindows[activity].contains(window)) {
+                m_activitiesWindows[activity] << window;
 
-            rowChanged(rowForActivityId(activity),
-                       m_activitiesWindows.size() == 1 //
-                           ? QList<int>{WindowCount, HasWindows}
-                           : QList<int>{WindowCount});
+                rowChanged(rowForActivityId(activity),
+                           m_activitiesWindows.size() == 1 //
+                               ? QList<int>{WindowCount, HasWindows}
+                               : QList<int>{WindowCount});
+            }
         }
     }
 }
 
-void SortedActivitiesModel::onWindowRemoved(const QModelIndex &parent, int first)
+void SortedActivitiesModel::onWindowRemoved(const QModelIndex &parent, int first, int last)
 {
-    auto window = windowTasksModel->index(first, 0, parent);
+    for (int row = first; row < last; row++) {
+        auto window = m_windowTasksModel->index(row, 0, parent);
 
-    for (const auto &activity : m_activitiesWindows.keys()) {
-        if (m_activitiesWindows[activity].contains(window)) {
-            m_activitiesWindows[activity].removeAll(window);
+        for (const auto &activity : m_activitiesWindows.keys()) {
+            if (m_activitiesWindows[activity].contains(window)) {
+                m_activitiesWindows[activity].removeAll(window);
 
-            rowChanged(rowForActivityId(activity),
-                       m_activitiesWindows.size() == 0 //
-                           ? QList<int>{WindowCount, HasWindows}
-                           : QList<int>{WindowCount});
+                rowChanged(rowForActivityId(activity),
+                           m_activitiesWindows.size() == 0 //
+                               ? QList<int>{WindowCount, HasWindows}
+                               : QList<int>{WindowCount});
+            }
         }
     }
 }
@@ -452,8 +455,8 @@ void SortedActivitiesModel::onWindowChanged(const QModelIndex &topLeft, const QM
 {
     // If Activities are changed, remove and add the window again to correct activity
     if (roles.contains(TaskManager::AbstractTasksModel::Activities)) {
-        onWindowRemoved(topLeft.parent(), topLeft.row());
-        onWindowAdded(topLeft.parent(), topLeft.row());
+        onWindowRemoved(topLeft.parent(), topLeft.row(), bottomRight.row());
+        onWindowAdded(topLeft.parent(), topLeft.row(), bottomRight.row());
     }
 }
 
