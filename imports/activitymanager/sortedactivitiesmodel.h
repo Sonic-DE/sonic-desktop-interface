@@ -78,4 +78,6 @@ private:
     KActivities::Consumer *m_activities = nullptr;
 
     QHash<QString, QVariantList> m_activitiesWindows;
+
+    QVariantList getWinIdList(const QModelIndex &parent, int row);
 };
