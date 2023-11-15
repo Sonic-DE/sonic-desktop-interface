@@ -62,8 +62,8 @@ public Q_SLOTS:
 
     void rowChanged(int row, const QList<int> &roles);
 
-    void onWindowAdded(const QModelIndex &parent, int first);
-    void onWindowRemoved(const QModelIndex &parent, int first);
+    void onWindowAdded(const QModelIndex &parent, int first, int last);
+    void onWindowRemoved(const QModelIndex &parent, int first, int last);
     void onWindowChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight, const QList<int> &roles);
 
 Q_SIGNALS:
