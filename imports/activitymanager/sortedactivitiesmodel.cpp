@@ -420,7 +420,7 @@ void SortedActivitiesModel::onWindowAdded(const QModelIndex &parent, int first, 
             if (!m_activitiesWindows[activity].contains(winIds)) {
                 m_activitiesWindows[activity].append(winIds);
 
-                rowChanged(row,
+                rowChanged(rowForActivityId(activity),
                            m_activitiesWindows[activity].size() == 1 //
                                ? QList<int>{WindowCount, HasWindows}
                                : QList<int>{WindowCount});
@@ -438,7 +438,7 @@ void SortedActivitiesModel::onWindowRemoved(const QModelIndex &parent, int first
             if (m_activitiesWindows[activity].contains(winIds)) {
                 m_activitiesWindows[activity].removeAll(winIds);
 
-                rowChanged(row,
+                rowChanged(rowForActivityId(activity),
                            m_activitiesWindows[activity].size() == 0 //
                                ? QList<int>{WindowCount, HasWindows}
                                : QList<int>{WindowCount});
