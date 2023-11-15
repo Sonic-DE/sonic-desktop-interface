@@ -99,6 +99,7 @@ PlasmoidItem {
 
         // also activate when dragging an item over the plasmoid so a user can easily drag data to the desktop
         DropArea {
+            id: dropArea
             anchors.fill: parent
             onEntered: activateTimer.start()
             onExited: activateTimer.stop()
@@ -134,7 +135,6 @@ PlasmoidItem {
                 bottomMargin: !vertical && containerMargins ? -containerMargins('bottom', returnAllMargins) : 0
             }
             imagePath: "widgets/tabbar"
-            visible: opacity > 0
             prefix: {
                 let prefix;
                 switch (Plasmoid.location) {
@@ -153,14 +153,13 @@ PlasmoidItem {
                 if (!hasElementPrefix(prefix)) {
                     prefix = "active-tab";
                 }
-                return prefix;
-            }
-            opacity: activeController.active ? 1 : 0
 
-            Behavior on opacity {
-                NumberAnimation {
-                    duration: Kirigami.Units.shortDuration
-                    easing.type: Easing.InOutQuad
+                if (mouseArea.containsPress) {
+                    return activeController.active ? ["selected-pressed", prefix] : "pressed";
+                } else if (mouseArea.containsMouse || dropArea.containsDrag) {
+                    return activeController.active ? ["selected-hover", prefix] : "hover";
+                } else {
+                    return activeController.active ? ["selected", prefix] : "normal";
                 }
             }
         }

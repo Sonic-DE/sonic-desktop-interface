@@ -115,7 +115,6 @@ PlasmaCore.ToolTipArea {
             rightMargin: vertical && containerMargins ? -containerMargins('right', returnAllMargins) : 0;
         }
         imagePath: "widgets/tabbar"
-        visible: opacity > 0
         prefix: {
             let prefix;
             switch (Plasmoid.location) {
@@ -134,13 +133,14 @@ PlasmaCore.ToolTipArea {
             if (!hasElementPrefix(prefix)) {
                 prefix = "active-tab";
             }
-            return prefix;
-        }
-        opacity: plasmoidItem && plasmoidItem.expanded ? 1 : 0
-        Behavior on opacity {
-            NumberAnimation {
-                duration: Kirigami.Units.shortDuration
-                easing.type: Easing.InOutQuad
+
+            // FIXME: Add ToolTip::containsPress
+            // if (containsPress) {
+            //     return plasmoidItem?.expanded ? ["selected-pressed", prefix] : "pressed";
+            if (containsMouse) {
+                return plasmoidItem?.expanded ? ["selected-hover", prefix] : "hover";
+            } else {
+                return plasmoidItem?.expanded ? ["selected", prefix] : "normal";
             }
         }
     }
