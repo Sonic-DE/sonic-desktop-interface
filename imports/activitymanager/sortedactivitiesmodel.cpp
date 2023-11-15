@@ -212,6 +212,7 @@ SortedActivitiesModel::SortedActivitiesModel(const QList<KActivities::Info::Stat
     backgrounds().subscribe(this);
 
     connect(m_windowTasksModel, &TaskManager::WindowTasksModel::rowsInserted, this, &SortedActivitiesModel::onWindowAdded);
+    // Using rowsAboutToBeRemoved because we can't fetch data from already removed rows
     connect(m_windowTasksModel, &TaskManager::WindowTasksModel::rowsAboutToBeRemoved, this, &SortedActivitiesModel::onWindowRemoved);
     connect(m_windowTasksModel, &TaskManager::WindowTasksModel::dataChanged, this, &SortedActivitiesModel::onWindowChanged);
 
