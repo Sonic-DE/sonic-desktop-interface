@@ -15,6 +15,8 @@ import org.kde.kquickcontrols 2.0
 SimpleKCM {
     id: root
 
+    property bool calibrationWindowOpen: false
+
     ConfigModule.buttons: ConfigModule.Default | ConfigModule.Apply
 
     implicitWidth: Kirigami.Units.gridUnit * 38
@@ -278,6 +280,34 @@ SimpleKCM {
 
                 onCaptureFinished: {
                     kcm.assignToolButtonMapping(form.device.name, modelData.value, keySequence)
+                }
+            }
+        }
+
+        QQC2.Button {
+            text: form.device.supportsCalibrationMatrix ?
+                i18nc("@action:button Calibrate the pen display", "Calibrate") :
+                i18nc("@action:button Pen display doesn't support calibration", "Calibration Not Supported")
+            icon.name: "crosshairs"
+            enabled: form.device.supportsCalibrationMatrix && !root.calibrationWindowOpen
+            onClicked: {
+                const component = Qt.createComponent("Calibration.qml");
+                if (component.status === Component.Ready) {
+                    let screenIndex = 0;
+                    for (let i = 0; i < Qt.application.screens.length; i++) {
+                        if (Qt.application.screens[i].name === form.device.outputName) {
+                            screenIndex = i;
+                            break;
+                        }
+                    }
+
+                    const window = component.createObject(root, {device: form.device, tabletEvents, screen: Qt.application.screens[screenIndex]});
+                    window.showFullScreen();
+                    window.closing.connect((close) => {
+                        root.calibrationWindowOpen = false;
+                    });
+
+                    root.calibrationWindowOpen = true;
                 }
             }
         }
