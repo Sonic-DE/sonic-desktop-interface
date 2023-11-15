@@ -79,5 +79,5 @@ private:
 
     QHash<QString, QVariantList> m_activitiesWindows;
 
-    QVariantList getWinIdList(const QModelIndex &parent, int row);
+    QVariant getWinIdList(const QModelIndex &parent, int row);
 };
