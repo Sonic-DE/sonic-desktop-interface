@@ -15,10 +15,12 @@
 #include <KActivities/Consumer>
 #include <KActivities/Info>
 
-#include <config-X11.h>
+#include <config-X11.h> // Required by files that include this header
 
-#include <netwm.h>
-#include <windowtasksmodel.h>
+namespace TaskManager
+{
+class WindowTasksModel;
+}
 
 class SortedActivitiesModel : public QSortFilterProxyModel
 {
