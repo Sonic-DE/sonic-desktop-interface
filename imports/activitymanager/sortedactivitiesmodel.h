@@ -8,7 +8,7 @@
 
 // Qt
 #include <QSortFilterProxyModel>
-#include <QWidgetList> //For QVariant
+#include <QVariant>
 
 // KDE
 #include <KActivities/ActivitiesModel>
@@ -36,7 +36,7 @@ public:
 
     QString relativeActivity(int relative) const;
 
-    TaskManager::WindowTasksModel *windowTasksModel = nullptr;
+    TaskManager::WindowTasksModel * const m_windowTasksModel;
 
 protected:
     uint lastUsedTime(const QString &activity) const;
@@ -77,5 +77,5 @@ private:
     KActivities::ActivitiesModel *m_activitiesModel = nullptr;
     KActivities::Consumer *m_activities = nullptr;
 
-    QHash<QString, QList<QVariant>> m_activitiesWindows;
+    QHash<QString, QVariantList> m_activitiesWindows;
 };
