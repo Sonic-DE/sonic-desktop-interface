@@ -413,7 +413,7 @@ void SortedActivitiesModel::onBackgroundsUpdated(const QStringList &activities)
 
 void SortedActivitiesModel::onWindowAdded(const QModelIndex &parent, int first, int last)
 {
-    for (int row = first; row < last; row++) {
+    for (int row = first; row < last; ++row) {
         auto window = m_windowTasksModel->index(row, 0, parent);
         const QStringList activities = window.data(TaskManager::AbstractTasksModel::Activities).toStringList();
 
@@ -435,7 +435,7 @@ void SortedActivitiesModel::onWindowAdded(const QModelIndex &parent, int first, 
 
 void SortedActivitiesModel::onWindowRemoved(const QModelIndex &parent, int first, int last)
 {
-    for (int row = first; row < last; row++) {
+    for (int row = first; row < last; ++row) {
         auto window = m_windowTasksModel->index(row, 0, parent);
 
         for (const auto &activity : m_activitiesWindows.keys()) {
