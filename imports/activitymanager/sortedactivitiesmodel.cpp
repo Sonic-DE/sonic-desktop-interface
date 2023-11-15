@@ -451,7 +451,7 @@ void SortedActivitiesModel::onWindowRemoved(const QModelIndex &parent, int first
 void SortedActivitiesModel::onWindowChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight, const QList<int> &roles)
 {
     // If Activities are changed, remove and add the window again to correct activity
-    if (roles.contains(TaskManager::AbstractTasksModel::Activities)) {
+    if (roles.contains(TaskManager::AbstractTasksModel::Activities) || roles.isEmpty()) {
         onWindowRemoved(topLeft.parent(), topLeft.row(), bottomRight.row());
         onWindowAdded(topLeft.parent(), topLeft.row(), bottomRight.row());
     }
