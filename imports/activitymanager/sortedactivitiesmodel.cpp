@@ -9,8 +9,7 @@
 
 // C++
 #include <abstracttasksmodel.h>
-#include <abstracttasksmodeliface.h>
-#include <activityinfo.h>
+#include <windowtasksmodel.h>
 
 // Qt
 #include <QColor>
@@ -22,10 +21,6 @@
 #include <KDirWatch>
 #include <KLocalizedString>
 #include <KSharedConfig>
-#include <KWindowInfo>
-#include <taskfilterproxymodel.h>
-#include <tasksmodel.h>
-#include <windowtasksmodel.h>
 
 static const char *s_plasma_config = "plasma-org.kde.plasma.desktop-appletsrc";
 
@@ -204,9 +199,9 @@ static BackgroundCache &backgrounds()
 
 SortedActivitiesModel::SortedActivitiesModel(const QList<KActivities::Info::State> &states, QObject *parent)
     : QSortFilterProxyModel(parent)
+    , m_windowTasksModel(new TaskManager::WindowTasksModel(this))
     , m_activitiesModel(new KActivities::ActivitiesModel(states, this))
     , m_activities(new KActivities::Consumer(this))
-    , m_windowTasksModel(new TaskManager::WindowTasksModel(this))
 {
     setSourceModel(m_activitiesModel);
 
