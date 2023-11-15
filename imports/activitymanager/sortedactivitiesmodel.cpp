@@ -214,6 +214,9 @@ SortedActivitiesModel::SortedActivitiesModel(const QList<KActivities::Info::Stat
     connect(m_windowTasksModel, &TaskManager::WindowTasksModel::rowsInserted, this, &SortedActivitiesModel::onWindowAdded);
     connect(m_windowTasksModel, &TaskManager::WindowTasksModel::rowsAboutToBeRemoved, this, &SortedActivitiesModel::onWindowRemoved);
     connect(m_windowTasksModel, &TaskManager::WindowTasksModel::dataChanged, this, &SortedActivitiesModel::onWindowChanged);
+
+    // Update windows at start
+    onWindowAdded(QModelIndex(), 0, m_windowTasksModel->rowCount());
 }
 
 SortedActivitiesModel::~SortedActivitiesModel()
