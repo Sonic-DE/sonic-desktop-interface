@@ -92,6 +92,51 @@ def keyval_to_keycode(key_val: XKeyCode) -> int:
     return keys[0].keycode
 
 
+def start_kactivitymanagerd() -> subprocess.Popen | None:
+    session_bus: Gio.DBusConnection = Gio.bus_get_sync(Gio.BusType.SESSION)
+    kactivitymanagerd = None
+    if not name_has_owner(session_bus, KACTIVITYMANAGERD_SERVICE_NAME):
+        kactivitymanagerd = subprocess.Popen([KACTIVITYMANAGERD_PATH], stdout=sys.stderr, stderr=sys.stderr)
+        kactivitymanagerd_started: bool = False
+        for _ in range(10):
+            if name_has_owner(session_bus, KACTIVITYMANAGERD_SERVICE_NAME):
+                kactivitymanagerd_started = True
+                break
+            print("waiting for kactivitymanagerd to appear on the DBus session")
+            time.sleep(1)
+        assert kactivitymanagerd_started
+
+    return kactivitymanagerd
+
+
+def start_kded() -> subprocess.Popen | None:
+    session_bus: Gio.DBusConnection = Gio.bus_get_sync(Gio.BusType.SESSION)
+    kded = None
+    if not name_has_owner(session_bus, f"org.kde.kded{KDE_VERSION}"):
+        kded = subprocess.Popen([f"kded{KDE_VERSION}"], stdout=sys.stderr, stderr=sys.stderr)
+        kded_started: bool = False
+        for _ in range(10):
+            if name_has_owner(session_bus, f"org.kde.kded{KDE_VERSION}"):
+                kded_started = True
+                break
+            print(f"waiting for kded{KDE_VERSION} to appear on the dbus session")
+            time.sleep(1)
+        assert kded_started
+
+    return kded
+
+
+def start_plasmashell() -> tuple:
+    """
+    Launches plashashell and returns the subprocess instances
+    """
+    kactivitymanagerd = start_kactivitymanagerd()
+    kded = start_kded()
+    plasmashell = subprocess.Popen(["plasmashell", "-p", "org.kde.plasma.desktop", "--no-respawn"], stdout=sys.stderr, stderr=sys.stderr)
+
+    return (kactivitymanagerd, kded, plasmashell)
+
+
 class DesktopTest(unittest.TestCase):
     """
     Tests for the desktop package
@@ -107,33 +152,8 @@ class DesktopTest(unittest.TestCase):
         """
         Initializes the webdriver
         """
-        session_bus: Gio.DBusConnection = Gio.bus_get_sync(Gio.BusType.SESSION)
-        if not name_has_owner(session_bus, KACTIVITYMANAGERD_SERVICE_NAME):
-            cls.kactivitymanagerd = subprocess.Popen([KACTIVITYMANAGERD_PATH], stdout=sys.stderr, stderr=sys.stderr)
-            kactivitymanagerd_started: bool = False
-            for _ in range(10):
-                if name_has_owner(session_bus, KACTIVITYMANAGERD_SERVICE_NAME):
-                    kactivitymanagerd_started = True
-                    break
-                print("waiting for kactivitymanagerd to appear on the DBus session")
-                time.sleep(1)
-            assert kactivitymanagerd_started
-
-        if not name_has_owner(session_bus, f"org.kde.kded{KDE_VERSION}"):
-            cls.kded = subprocess.Popen([f"kded{KDE_VERSION}"], stdout=sys.stderr, stderr=sys.stderr)
-            kded_started: bool = False
-            for _ in range(10):
-                if name_has_owner(session_bus, f"org.kde.kded{KDE_VERSION}"):
-                    kded_started = True
-                    break
-                print(f"waiting for kded{KDE_VERSION} to appear on the dbus session")
-                time.sleep(1)
-            assert kded_started
-
-        cls.plasmashell = subprocess.Popen(["plasmashell", "-p", "org.kde.plasma.desktop", "--no-respawn"], stdout=sys.stderr, stderr=sys.stderr)
-
+        cls.kactivitymanagerd, cls.kded, cls.plasmashell = start_plasmashell()
         IS.init_module()
-
         options = AppiumOptions()
         options.set_capability("app", "Root")
         options.set_capability("timeouts", {'implicit': 30000})
