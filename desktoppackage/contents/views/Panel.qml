@@ -74,7 +74,20 @@ Item {
         id: activityInfo
     }
 
-    property bool touchingWindow: visibleWindowsModel.count > 0
+    // We need to have a little gap between the raw visibleWindowsModel count
+    // and actually determining if a window is touching.
+    // This is because certain dialog windows start off with a position of (screenwidth/2, screenheight/2)
+    // and they register as "touching" in the split-second before KWin can place them correctly.
+    // This avoids the panel flashing if it is auto-hide etc and such a window is shown.
+    // Examples of such windows: properties of a file on desktop, or portal "open with" dialog
+    property bool touchingWindow: false
+    property bool touchingWindowDirect: visibleWindowsModel.count > 0
+    Timer {
+        id: touchingWindowDebounceTimer
+        interval: 10  // ms, I find that this value is enough while not causing unresponsiveness while dragging windows close
+        onTriggered: root.touchingWindow = root.touchingWindowDirect
+    }
+    onTouchingWindowDirectChanged: touchingWindowDebounceTimer.start()
 
     TaskManager.TasksModel {
         id: visibleWindowsModel
