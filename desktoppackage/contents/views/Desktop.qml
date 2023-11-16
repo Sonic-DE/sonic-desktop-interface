@@ -190,8 +190,7 @@ Item {
                     }
                 }
                 sidePanel.visible = true;
-                if (KWindowSystem.isPlatformX11)
-                {
+                if (KWindowSystem.isPlatformX11) {
                     KX11Extras.forceActiveWindow(sidePanel);
                 }
             }
