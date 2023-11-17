@@ -12,6 +12,7 @@ var marginHighlights;
 var appletsModel;
 
 function addApplet(applet, x, y) {
+    console.log('ECCO -------->', x, y)
     let appletItem = root.itemFor(applet);
     // don't show applet if it chooses to be hidden but still make it
     // accessible in the panelcontroller
@@ -40,10 +41,8 @@ function addApplet(applet, x, y) {
     if (applet.pluginName === "org.kde.plasma.icon" && x === 0 && y === 0 &&
             (middle = currentLayout.childAt(root.width / 2, root.height / 2))) {
         appletsModel.insert(middle.index, new_element);
-    // Fall through to determining an appropriate insert position.
-    } else if (x >= 0 && y >= 0) {
+    } else if (x == 0 && y == 0) {
         appletsModel.insert(indexAtCoordinates(x, y), new_element)
-
     } else {
         appletsModel.append(new_element);
     }
