@@ -81,7 +81,14 @@ Item {
     // This avoids the panel flashing if it is auto-hide etc and such a window is shown.
     // Examples of such windows: properties of a file on desktop, or portal "open with" dialog
     property bool touchingWindow: false
-    property bool touchingActiveWindow: touchingWindow && visibleWindowsModel.activeTask.valid
+    property bool touchingActiveWindow: touchingWindow, visibleWindowsModel.count, visibleWindowsModel.activeTask, activeTasksModel.activeTask, (function() {
+        // sometimes, the active window is not a valid task: eg Yakuake, notifications, etc
+        // in such cases we shouldn't briefly show-then-hide the panel
+        // this case is: "active task isn't touching, but what is touching is not a valid task at all"
+        let activeTaskIsTouching = visibleWindowsModel.activeTask.valid;
+        let activeWindowIsTask = activeTasksModel.activeTask.valid;
+        return touchingWindow && (activeTaskIsTouching || (!activeTaskIsTouching && !activeWindowIsTask));
+    })()
     property bool touchingWindowDirect: visibleWindowsModel.count > 0
     Timer {
         id: touchingWindowDebounceTimer
@@ -89,6 +96,21 @@ Item {
         onTriggered: root.touchingWindow = root.touchingWindowDirect
     }
     onTouchingWindowDirectChanged: touchingWindowDebounceTimer.start()
+
+    TaskManager.TasksModel {
+        id: activeTasksModel
+        filterByVirtualDesktop: true
+        filterByActivity: true
+        filterByScreen: true
+        filterHidden: true
+        filterMinimized: true
+
+        screenGeometry: panel.screenGeometry
+        virtualDesktop: virtualDesktopInfo.currentDesktop
+        activity: activityInfo.currentActivity
+
+        groupMode: TaskManager.TasksModel.GroupDisabled
+    }
 
     TaskManager.TasksModel {
         id: visibleWindowsModel
