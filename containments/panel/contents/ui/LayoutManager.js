@@ -41,11 +41,13 @@ function addApplet(applet, x, y) {
             (middle = currentLayout.childAt(root.width / 2, root.height / 2))) {
         appletsModel.insert(middle.index, new_element);
     // Fall through to determining an appropriate insert position.
-    } else if (x >= 0 && y >= 0) {
-        appletsModel.insert(indexAtCoordinates(x, y), new_element)
-
-    } else {
+    // If the applet is added with coordinates (0, 0) or negative, we assume it's
+    // being added manually, e.g. by createApplet, and we insert it in the last
+    // position instead of at the top-left point of the panel.
+    } else if ((x == 0 && y == 0) || x < 0 || y < 0) {
         appletsModel.append(new_element);
+    } else {
+        appletsModel.insert(indexAtCoordinates(x, y), new_element)
     }
     updateMargins();
 }
