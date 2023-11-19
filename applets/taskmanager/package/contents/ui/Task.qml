@@ -414,6 +414,22 @@ PlasmaCore.ToolTipArea {
         }
     }
 
+    KSvg.Svg {
+        id: taskSvg
+
+        readonly property bool hasGroupExpanders: hasElement("group-expander-top")
+                                               && hasElement("group-expander-bottom")
+                                               && hasElement("group-expander-left")
+                                               && hasElement("group-expander-right")
+
+        readonly property bool hasRunningIndicators: hasElement("running-indicator-top")
+                                                  && hasElement("running-indicator-bottom")
+                                                  && hasElement("running-indicator-left")
+                                                  && hasElement("running-indicator-right")
+
+        imagePath: "widgets/tasks"
+    }
+
     Loader {
         id: taskProgressOverlayLoader
 
@@ -571,8 +587,14 @@ PlasmaCore.ToolTipArea {
     ]
 
     Component.onCompleted: {
-        if (!inPopup && model.IsWindow) {
-            var component = Qt.createComponent("GroupExpanderOverlay.qml");
+        if (!inPopup && model.IsWindow && taskSvg.hasGroupExpanders) {
+            const component = Qt.createComponent("GroupExpanderOverlay.qml");
+            component.createObject(task);
+            component.destroy();
+        }
+
+        if (!inPopup && model.IsWindow && taskSvg.hasRunningIndicators) {
+            const component = Qt.createComponent("RunningIndicatorOverlay.qml");
             component.createObject(task);
             component.destroy();
         }
