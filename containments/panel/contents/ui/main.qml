@@ -74,7 +74,6 @@ ContainmentItem {
 
 //BEGIN connections
     Containment.onAppletAdded: (applet, geometry) => {
-        let plasmoidItem = root.itemFor(applet);
         LayoutManager.addApplet(applet, geometry.x, geometry.y);
         root.checkLastSpacer();
         // When a new preset panel is added, avoid calling save() multiple times
