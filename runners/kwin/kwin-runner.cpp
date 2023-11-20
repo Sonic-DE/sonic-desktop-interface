@@ -12,6 +12,7 @@
 #include <QDBusServiceWatcher>
 
 #include <KLocalizedString>
+#include <qstringliteral.h>
 
 K_PLUGIN_CLASS_WITH_JSON(KWinRunner, "plasma-runner-kwin.json")
 
@@ -34,7 +35,7 @@ void KWinRunner::match(RunnerContext &context)
     if (m_enabled && containsAnyKeyword) {
         QueryMatch match(this);
         match.setId(QStringLiteral("kwin"));
-        if (context.query().contains(s_keywords.first(), Qt::CaseInsensitive)) {
+        if (context.query().compare(s_keywords.join(QStringLiteral(" ")), Qt::CaseInsensitive) == 0) {
             match.setCategoryRelevance(QueryMatch::CategoryRelevance::Highest);
         }
         match.setIconName(QStringLiteral("kwin"));
