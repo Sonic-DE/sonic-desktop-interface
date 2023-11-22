@@ -27,6 +27,10 @@ KCM.SimpleKCM {
     property int cfg_iconSpacing: 0
 
     Component.onCompleted: {
+        /* Don't rely on bindings for checking the radiobuttons
+           When checking forceStripes, the condition for the checked value for the allow stripes button
+           became true and that one got checked instead, stealing the checked state for the just clicked checkbox
+        */
         if (maxStripes.value === 1) {
             forbidStripes.checked = true;
         } else if (!Plasmoid.configuration.forceStripes && maxStripes.value > 1) {
