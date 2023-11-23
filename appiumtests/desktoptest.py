@@ -6,6 +6,7 @@
 
 import os
 import pathlib
+import stat
 import subprocess
 import sys
 import time
@@ -77,6 +78,19 @@ class DesktopTest(unittest.TestCase):
                 time.sleep(1)
             assert kded_started
 
+        # Prepare desktop files
+        os.makedirs(os.path.join(GLib.get_user_data_dir(), "applications"))
+        desktopfile_path: str = os.path.join(GLib.get_user_data_dir(), "applications", "org.kde.discover.desktop")
+        with open(desktopfile_path, "w", encoding="utf-8") as file_handler:
+            file_handler.write(f"""[Desktop Entry]
+Exec=python3 {os.path.join(os.getcwd(), "resources", "org.kde.discover.py")}
+Icon=preferences-system
+Type=Application
+Name=Software Center
+""")
+        os.chmod(desktopfile_path, stat.S_IEXEC)
+        cls.addClassCleanup(lambda: os.remove(desktopfile_path))
+
         cls.plasmashell = subprocess.Popen(["plasmashell", "-p", "org.kde.plasma.desktop", "--no-respawn"], stdout=sys.stderr, stderr=sys.stderr)
 
         options = AppiumOptions()
@@ -114,7 +128,7 @@ class DesktopTest(unittest.TestCase):
     def _open_containment_config_dialog(self) -> None:
         # Alt+D, S
         actions = ActionChains(self.driver)
-        actions.key_down(Keys.ALT).key_down("d").key_up("d").key_up(Keys.ALT).perform()
+        actions.key_down(Keys.ALT).send_keys("d").key_up(Keys.ALT).perform()
         time.sleep(0.5)
         actions.send_keys("s").perform()
         WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((AppiumBy.NAME, "Wallpaper type:")))
@@ -173,7 +187,7 @@ class DesktopTest(unittest.TestCase):
         """
         # Alt+D, E
         actions = ActionChains(self.driver)
-        actions.key_down(Keys.ALT).key_down("d").key_up("d").key_up(Keys.ALT).perform()
+        actions.key_down(Keys.ALT).send_keys("d").key_up(Keys.ALT).perform()
         actions.send_keys("e").perform()
 
         wait = WebDriverWait(self.driver, 30)
@@ -181,10 +195,22 @@ class DesktopTest(unittest.TestCase):
         widget_button: WebElement = wait.until(EC.presence_of_element_located((AppiumBy.NAME, "Add Widgets…")))
         wait.until(EC.presence_of_element_located((AppiumBy.NAME, "Add Spacer")))
 
-        ActionChains(self.driver).send_keys(Keys.ESCAPE).perform()
+        actions.send_keys(Keys.ESCAPE).perform()
         wait.until_not(lambda _: widget_button.is_displayed())
 
         self._exit_edit_mode()
+
+    def test_4_bug477185_meta_number_shortcut(self) -> None:
+        """
+        Meta+1 should activate the first launcher item
+        """
+        wait = WebDriverWait(self.driver, 30)
+        message: Gio.DBusMessage = Gio.DBusMessage.new_method_call("org.kde.kglobalaccel", "/component/plasmashell", "org.kde.kglobalaccel.Component", "invokeShortcut")
+        message.set_body(GLib.Variant("(s)", ["activate task manager entry 1"]))
+        Gio.bus_get_sync(Gio.BusType.SESSION).send_message_with_reply_sync(message, Gio.DBusSendMessageFlags.NONE, 1000)
+        title_element: WebElement = wait.until(EC.presence_of_element_located((AppiumBy.NAME, "Quick Settings")))
+        title_element.click()
+        wait.until_not(lambda _: title_element.is_displayed())
 
 
 if __name__ == '__main__':
