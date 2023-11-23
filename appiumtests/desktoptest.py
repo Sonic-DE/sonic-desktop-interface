@@ -4,8 +4,10 @@
 # SPDX-FileCopyrightText: 2023 Fushan Wen <qydwhotmail@gmail.com>
 # SPDX-License-Identifier: GPL-2.0-or-later
 
+import functools
 import os
 import pathlib
+import stat
 import subprocess
 import sys
 import time
@@ -48,6 +50,7 @@ class DesktopTest(unittest.TestCase):
     kactivitymanagerd: subprocess.Popen | None = None
     kded: subprocess.Popen | None = None
     plasmashell: subprocess.Popen | None = None
+    desktopfile_path: str = ""
 
     @classmethod
     def setUpClass(cls) -> None:
@@ -76,6 +79,20 @@ class DesktopTest(unittest.TestCase):
                 print(f"waiting for kded{KDE_VERSION} to appear on the dbus session")
                 time.sleep(1)
             assert kded_started
+
+        # Prepare a desktop file
+        os.makedirs(os.path.join(GLib.get_user_data_dir(), "applications"))
+        cls.desktopfile_path = os.path.join(GLib.get_user_data_dir(), "applications", "org.kde.testwindow.desktop")
+        with open(cls.desktopfile_path, "w", encoding="utf-8") as file_handler:
+            file_handler.writelines([
+                "[Desktop Entry]",
+                "Type=Application",
+                "Icon=preferences-system",
+                "Name=Software Center",
+                f"Exec=python3 {os.path.join(os.getcwd(), 'resources', 'org.kde.testwindow.py')}",
+            ])
+            file_handler.flush()
+            cls.addClassCleanup(functools.partial(os.remove, cls.desktopfile_path))
 
         cls.plasmashell = subprocess.Popen(["plasmashell", "-p", "org.kde.plasma.desktop", "--no-respawn"], stdout=sys.stderr, stderr=sys.stderr)
 
@@ -114,7 +131,7 @@ class DesktopTest(unittest.TestCase):
     def _open_containment_config_dialog(self) -> None:
         # Alt+D, S
         actions = ActionChains(self.driver)
-        actions.key_down(Keys.ALT).key_down("d").key_up("d").key_up(Keys.ALT).perform()
+        actions.key_down(Keys.ALT).send_keys("d").key_up(Keys.ALT).perform()
         time.sleep(0.5)
         actions.send_keys("s").perform()
         WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((AppiumBy.NAME, "Wallpaper type:")))
@@ -173,7 +190,7 @@ class DesktopTest(unittest.TestCase):
         """
         # Alt+D, E
         actions = ActionChains(self.driver)
-        actions.key_down(Keys.ALT).key_down("d").key_up("d").key_up(Keys.ALT).perform()
+        actions.key_down(Keys.ALT).send_keys("d").key_up(Keys.ALT).perform()
         actions.send_keys("e").perform()
 
         wait = WebDriverWait(self.driver, 30)
@@ -181,10 +198,36 @@ class DesktopTest(unittest.TestCase):
         widget_button: WebElement = wait.until(EC.presence_of_element_located((AppiumBy.NAME, "Add Widgets…")))
         wait.until(EC.presence_of_element_located((AppiumBy.NAME, "Add Spacer")))
 
-        ActionChains(self.driver).send_keys(Keys.ESCAPE).perform()
+        actions.send_keys(Keys.ESCAPE).perform()
         wait.until_not(lambda _: widget_button.is_displayed())
 
         self._exit_edit_mode()
+
+    def test_4_bug477185_meta_number_shortcut(self) -> None:
+        """
+        Meta+1 should activate the first launcher item
+        """
+        with open(self.desktopfile_path, "r", encoding="utf-8") as f:
+            print(f.readlines(), file=sys.stderr, flush=True)
+        session_bus = Gio.bus_get_sync(Gio.BusType.SESSION)
+
+        # Add a new launcher item
+        message: Gio.DBusMessage = Gio.DBusMessage.new_method_call("org.kde.plasmashell", "/PlasmaShell", "org.kde.PlasmaShell", "evaluateScript")
+        message.set_body(GLib.Variant("(s)", [f"panels().forEach(containment => containment.widgets('org.kde.plasma.icontasks').forEach(widget => {{widget.currentConfigGroup = ['General'];widget.writeConfig('launchers', 'file://{self.desktopfile_path}');}}))"]))
+        session_bus.send_message_with_reply_sync(message, Gio.DBusSendMessageFlags.NONE, 1000)
+
+        wait = WebDriverWait(self.driver, 30)
+        # wait.until(EC.presence_of_element_located((AppiumBy.NAME, "Software Center")))
+
+        # Activate the first launcher
+        message = Gio.DBusMessage.new_method_call("org.kde.kglobalaccel", "/component/plasmashell", "org.kde.kglobalaccel.Component", "invokeShortcut")
+        message.set_body(GLib.Variant("(s)", ["activate task manager entry 1"]))
+        session_bus.send_message_with_reply_sync(message, Gio.DBusSendMessageFlags.NONE, 1000)
+        time.sleep(1)
+        self.driver.get_screenshot_as_file("failed_test_shot_plasmashell_after.png")
+        title_element: WebElement = wait.until(EC.presence_of_element_located((AppiumBy.NAME, "Install Software")))
+        title_element.click()
+        wait.until_not(lambda _: title_element.is_displayed())
 
 
 if __name__ == '__main__':
