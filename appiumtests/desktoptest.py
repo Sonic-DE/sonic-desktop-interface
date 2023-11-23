@@ -181,10 +181,23 @@ class DesktopTest(unittest.TestCase):
         widget_button: WebElement = wait.until(EC.presence_of_element_located((AppiumBy.NAME, "Add Widgets…")))
         wait.until(EC.presence_of_element_located((AppiumBy.NAME, "Add Spacer")))
 
-        ActionChains(self.driver).send_keys(Keys.ESCAPE).perform()
+        actions.send_keys(Keys.ESCAPE).perform()
         wait.until_not(lambda _: widget_button.is_displayed())
 
         self._exit_edit_mode()
+
+    def test_4_bug477185_meta_number_shortcut(self) -> None:
+        """
+        Meta+1 should activate the first launcher item
+        """
+        wait = WebDriverWait(self.driver, 30)
+        wait.until(EC.presence_of_element_located((AppiumBy.NAME, "System Settings")))
+
+        actions = ActionChains(self.driver)
+        actions.key_down(Keys.META).key_down("1").key_up("1").key_up(Keys.META).perform()
+        title_element: WebElement = wait.until(EC.presence_of_element_located((AppiumBy.NAME, "Quick Settings")))
+        actions.key_down(Keys.ALT).key_down(Keys.F4).key_up(Keys.F4).key_up(Keys.ALT).perform()
+        wait.until_not(lambda _: title_element.is_displayed())
 
 
 if __name__ == '__main__':
