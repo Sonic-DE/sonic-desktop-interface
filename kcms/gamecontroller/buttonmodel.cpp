@@ -11,6 +11,8 @@
 
 #include <SDL2/SDL_joystick.h>
 
+#include <KLocalizedString>
+
 ButtonModel::ButtonModel(QObject *parent)
     : QAbstractTableModel(parent)
 {
@@ -68,7 +70,8 @@ QVariant ButtonModel::data(const QModelIndex &index, int role) const
     }
 
     if (index.column() == 0 && role == ButtonStateRole) {
-        return SDL_GameControllerGetButton(m_device->gamecontroller(), m_buttons.at(index.row()));
+        const int pressed = SDL_GameControllerGetButton(m_device->gamecontroller(), m_buttons.at(index.row()));
+        return pressed ? i18nc("Status of a gamepad button", "PRESSED") : QStringLiteral("-");
     }
 
     return {};
