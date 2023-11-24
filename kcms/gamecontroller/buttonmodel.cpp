@@ -83,7 +83,7 @@ QVariant ButtonModel::headerData(int section, Qt::Orientation orientation, int r
         if (orientation == Qt::Horizontal && section == 0) {
             return i18nc("@label Button state", "State");
         } else if (orientation == Qt::Vertical) {
-            return QVariant::fromValue(section + 1);
+            return QString::number(section + 1);
         }
     }
 
@@ -92,7 +92,10 @@ QVariant ButtonModel::headerData(int section, Qt::Orientation orientation, int r
 
 QHash<int, QByteArray> ButtonModel::roleNames() const
 {
-    return {{ButtonStateRole, QByteArrayLiteral("buttonState")}};
+    return {
+        {Qt::DisplayRole, QByteArrayLiteral("display")},
+        {ButtonStateRole, QByteArrayLiteral("buttonState")},
+    };
 }
 
 #include "moc_buttonmodel.cpp"
