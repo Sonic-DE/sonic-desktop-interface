@@ -59,7 +59,7 @@ KCM.SimpleKCM {
 
                 model: deviceModel
 
-                textRole: "name"
+                textRole: "display"
 
                 Layout.fillWidth: true
             }
@@ -103,8 +103,6 @@ KCM.SimpleKCM {
                         device: root.device
                     }
 
-                    textRole: "buttonState"
-
                     Layout.fillWidth: true
                     Layout.fillHeight: true
                 }
@@ -125,8 +123,6 @@ KCM.SimpleKCM {
                     model: AxesModel {
                         device: root.device
                     }
-
-                    textRole: "axisValue"
 
                     Layout.fillWidth: true
                     Layout.fillHeight: true
