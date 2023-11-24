@@ -62,7 +62,7 @@ QVariant AxesModel::headerData(int section, Qt::Orientation orientation, int rol
         if (orientation == Qt::Horizontal && section == 0) {
             return i18nc("@label Axis value", "Value");
         } else if (orientation == Qt::Vertical) {
-            return QVariant::fromValue(section + 1);
+            return QString::number(section + 1);
         }
     }
 
@@ -71,7 +71,10 @@ QVariant AxesModel::headerData(int section, Qt::Orientation orientation, int rol
 
 QHash<int, QByteArray> AxesModel::roleNames() const
 {
-    return {{AxisValueRole, QByteArrayLiteral("axisValue")}};
+    return {
+        {Qt::DisplayRole, QByteArrayLiteral("display")},
+        {AxisValueRole, QByteArrayLiteral("axisValue")},
+    };
 }
 
 #include "moc_axesmodel.cpp"
