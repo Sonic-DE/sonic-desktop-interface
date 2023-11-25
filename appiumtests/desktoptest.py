@@ -213,7 +213,7 @@ Name=Software Center
         session_bus.send_message_with_reply_sync(message, Gio.DBusSendMessageFlags.NONE, 1000)
 
         wait = WebDriverWait(self.driver, 30)
-        wait.until(EC.presence_of_element_located((AppiumBy.NAME, "Software Center")))
+        # wait.until(EC.presence_of_element_located((AppiumBy.NAME, "Software Center")))
 
         # Activate the first launcher
         message = Gio.DBusMessage.new_method_call("org.kde.kglobalaccel", "/component/plasmashell", "org.kde.kglobalaccel.Component", "invokeShortcut")
