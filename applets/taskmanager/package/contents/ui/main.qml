@@ -170,6 +170,7 @@ PlasmoidItem {
         onLauncherListChanged: {
             layoutTimer.restart();
             Plasmoid.configuration.launchers = launcherList;
+            console.error("Plasmoid.configuration.launchers", launcherList)
         }
 
         onGroupingAppIdBlacklistChanged: {
@@ -208,6 +209,13 @@ PlasmoidItem {
 
         Component.onCompleted: {
             launcherList = Plasmoid.configuration.launchers;
+            console.error("main.qml", launcherList)
+            console.error("main.qml", launcherList)
+            console.error("main.qml", launcherList)
+            console.error("main.qml", launcherList)
+            console.error("main.qml", launcherList)
+            console.error("main.qml", launcherList)
+            console.error("main.qml", launcherList)
             groupingAppIdBlacklist = Plasmoid.configuration.groupingAppIdBlacklist;
             groupingLauncherUrlBlacklist = Plasmoid.configuration.groupingLauncherUrlBlacklist;
 
@@ -319,6 +327,7 @@ PlasmoidItem {
 
             function onLaunchersChanged() {
                 tasksModel.launcherList = Plasmoid.configuration.launchers
+                console.error("onLaunchersChanged", tasksModel.launcherList)
             }
             function onGroupingAppIdBlacklistChanged() {
                 tasksModel.groupingAppIdBlacklist = Plasmoid.configuration.groupingAppIdBlacklist;
