@@ -581,6 +581,14 @@ PlasmaCore.ToolTipArea {
             taskInitComponent.createObject(task);
         }
 
+        console.error(appName, appId)
+        console.error(appName, appId)
+        console.error(appName, appId)
+        console.error(appName, appId)
+        console.error(appName, appId)
+        console.error(appName, appId)
+        console.error(appName, appId)
+
         updateAudioStreams({delay: false})
     }
 }
