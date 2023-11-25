@@ -202,12 +202,14 @@ Name=Software Center
 
     def test_4_bug477185_meta_number_shortcut(self) -> None:
         """
-        Meta+1 should activate the first launcher item
+        Meta+2 should activate the second launcher item
         """
         wait = WebDriverWait(self.driver, 30)
         message: Gio.DBusMessage = Gio.DBusMessage.new_method_call("org.kde.kglobalaccel", "/component/plasmashell", "org.kde.kglobalaccel.Component", "invokeShortcut")
         message.set_body(GLib.Variant("(s)", ["activate task manager entry 2"]))
         Gio.bus_get_sync(Gio.BusType.SESSION).send_message_with_reply_sync(message, Gio.DBusSendMessageFlags.NONE, 1000)
+        time.sleep(1)
+        self.driver.get_screenshot_as_file(f"failed_test_shot_plasmashell_notification.png")
         title_element: WebElement = wait.until(EC.presence_of_element_located((AppiumBy.NAME, "Install Software")))
         title_element.click()
         wait.until_not(lambda _: title_element.is_displayed())
