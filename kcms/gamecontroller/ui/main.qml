@@ -92,6 +92,7 @@ KCM.SimpleKCM {
 
                 Layout.fillWidth: true
                 Layout.fillHeight: true
+                Layout.preferredWidth: 50 // Same space for the two columns
 
                 QQC2.Label {
                     text: i18nc("@label Gamepad buttons", "Buttons:")
@@ -114,6 +115,7 @@ KCM.SimpleKCM {
 
                 Layout.fillWidth: true
                 Layout.fillHeight: true
+                Layout.preferredWidth: 50 // Same space for the two columns
 
                 QQC2.Label {
                     text: i18nc("@label Gamepad axes (sticks)", "Axes:")
