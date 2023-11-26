@@ -29,6 +29,13 @@ add_test(
 set_tests_properties(folderviewtest PROPERTIES TIMEOUT 300 ENVIRONMENT "CMAKE_BINARY_DIR=${CMAKE_BINARY_DIR};KACTIVITYMANAGERD_PATH=${KDE_INSTALL_FULL_LIBEXECDIR}/kactivitymanagerd")
 
 add_test(
+    NAME taskmanagertest
+    COMMAND selenium-webdriver-at-spi-run ${CMAKE_CURRENT_SOURCE_DIR}/taskmanagertest.py --failfast
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+)
+set_tests_properties(taskmanagertest PROPERTIES TIMEOUT 300 ENVIRONMENT "WAYLAND_DEBUG=1")
+
+add_test(
     NAME kcm_plasmasearch_test
     COMMAND selenium-webdriver-at-spi-run ${CMAKE_CURRENT_SOURCE_DIR}/kcm_plasmasearch_test.py
 )
