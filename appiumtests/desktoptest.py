@@ -4,10 +4,8 @@
 # SPDX-FileCopyrightText: 2023 Fushan Wen <qydwhotmail@gmail.com>
 # SPDX-License-Identifier: GPL-2.0-or-later
 
-import functools
 import os
 import pathlib
-import stat
 import subprocess
 import sys
 import time
@@ -19,6 +17,7 @@ from appium.options.common.base import AppiumOptions
 from appium.webdriver.common.appiumby import AppiumBy
 from appium.webdriver.webelement import WebElement
 from gi.repository import Gio, GLib
+from resources.testwindow import DesktopFileWrapper
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
@@ -212,37 +211,22 @@ class DesktopTest(unittest.TestCase):
         """
         Meta+1 should activate the first launcher item
         """
-        # Prepare a desktop file
-        os.makedirs(os.path.join(GLib.get_user_data_dir(), "applications"))
-        desktopfile_path = os.path.join(GLib.get_user_data_dir(), "applications", "org.kde.testwindow.desktop")
-        with open(desktopfile_path, "w", encoding="utf-8") as file_handler:
-            file_handler.writelines([
-                "[Desktop Entry]\n",
-                "Type=Application\n",
-                "Icon=preferences-system\n",
-                "Name=Software Center\n",
-                f"Exec=python3 {os.path.join(os.getcwd(), 'resources', 'org.kde.testwindow.py')}\n",
-            ])
-            file_handler.flush()
-        os.chmod(desktopfile_path, os.stat(desktopfile_path).st_mode | stat.S_IEXEC)
-        self.addCleanup(functools.partial(os.remove, desktopfile_path))
+        with DesktopFileWrapper() as wrapper:
+            session_bus = Gio.bus_get_sync(Gio.BusType.SESSION)
+            # Add a new launcher item
+            message: Gio.DBusMessage = Gio.DBusMessage.new_method_call("org.kde.plasmashell", "/PlasmaShell", "org.kde.PlasmaShell", "evaluateScript")
+            message.set_body(GLib.Variant("(s)", [f"panels().forEach(containment => containment.widgets('org.kde.plasma.icontasks').forEach(widget => {{widget.currentConfigGroup = ['General'];widget.writeConfig('launchers', 'file://{wrapper.path}');}}))"]))
+            session_bus.send_message_with_reply_sync(message, Gio.DBusSendMessageFlags.NONE, 1000)
 
-        session_bus = Gio.bus_get_sync(Gio.BusType.SESSION)
+            wait = WebDriverWait(self.driver, 30)
+            wait.until(EC.presence_of_element_located((AppiumBy.NAME, "Software Center")))
 
-        # Add a new launcher item
-        message: Gio.DBusMessage = Gio.DBusMessage.new_method_call("org.kde.plasmashell", "/PlasmaShell", "org.kde.PlasmaShell", "evaluateScript")
-        message.set_body(GLib.Variant("(s)", [f"panels().forEach(containment => containment.widgets('org.kde.plasma.icontasks').forEach(widget => {{widget.currentConfigGroup = ['General'];widget.writeConfig('launchers', 'file://{desktopfile_path}');}}))"]))
-        session_bus.send_message_with_reply_sync(message, Gio.DBusSendMessageFlags.NONE, 1000)
-
-        wait = WebDriverWait(self.driver, 30)
-        wait.until(EC.presence_of_element_located((AppiumBy.NAME, "Software Center")))
-
-        # Activate the first launcher
-        # ActionChains(self.driver).key_down(Keys.META).send_keys("1").key_up(Keys.META) # FIXME Meta modifier doesn't work
-        message = Gio.DBusMessage.new_method_call("org.kde.kglobalaccel", "/component/plasmashell", "org.kde.kglobalaccel.Component", "invokeShortcut")
-        message.set_body(GLib.Variant("(s)", ["activate task manager entry 1"]))
-        session_bus.send_message_with_reply_sync(message, Gio.DBusSendMessageFlags.NONE, 1000)
-        wait.until(EC.presence_of_element_located((AppiumBy.NAME, "Install Software")))
+            # Activate the first launcher
+            # ActionChains(self.driver).key_down(Keys.META).send_keys("1").key_up(Keys.META) # FIXME Meta modifier doesn't work
+            message = Gio.DBusMessage.new_method_call("org.kde.kglobalaccel", "/component/plasmashell", "org.kde.kglobalaccel.Component", "invokeShortcut")
+            message.set_body(GLib.Variant("(s)", ["activate task manager entry 1"]))
+            session_bus.send_message_with_reply_sync(message, Gio.DBusSendMessageFlags.NONE, 1000)
+            wait.until(EC.presence_of_element_located((AppiumBy.NAME, "Install Software")))
 
     def test_5_sentry_3516_load_layout(self) -> None:
         """
