@@ -17,6 +17,7 @@
 
 #include <algorithm>
 
+#include "log_settings.h"
 #include <settings.h>
 
 using namespace SmartLauncher;
@@ -65,17 +66,17 @@ void Backend::setupUnity()
                             QStringLiteral("Update"),
                             this,
                             SLOT(update(QString, QMap<QString, QVariant>)))) {
-        qWarning() << "failed to register Update signal";
+        qCWarning(TASKMANAGER_DEBUG) << "failed to register Update signal";
         return;
     }
 
     if (!sessionBus.registerObject(QStringLiteral("/Unity"), this)) {
-        qWarning() << "Failed to register unity object";
+        qCWarning(TASKMANAGER_DEBUG) << "Failed to register unity object";
         return;
     }
 
     if (!sessionBus.registerService(QStringLiteral("com.canonical.Unity"))) {
-        qWarning() << "Failed to register unity service";
+        qCDebug(TASKMANAGER_DEBUG) << "Failed to register unity service";
         // In case an external process uses this (e.g. Latte Dock), let it just listen.
     }
 
@@ -168,7 +169,7 @@ void Backend::update(const QString &uri, const QMap<QString, QVariant> &properti
 
         KService::Ptr service = KService::serviceByStorageId(normalizedUri);
         if (!service) {
-            qWarning() << "Failed to find service for Unity Launcher" << uri;
+            qCWarning(TASKMANAGER_DEBUG) << "Failed to find service for Unity Launcher" << uri;
             return;
         }
 
