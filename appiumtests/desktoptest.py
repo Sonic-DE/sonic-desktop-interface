@@ -122,7 +122,7 @@ class DesktopTest(unittest.TestCase):
         actions = ActionChains(self.driver)
         actions.key_down(Keys.ALT).send_keys("d").key_up(Keys.ALT).perform()
         time.sleep(0.5)
-        actions.send_keys("s").perform()
+        actions.key_down(Keys.ALT).send_keys("s").key_up(Keys.ALT).perform()
         WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((AppiumBy.NAME, "Wallpaper type:")))
 
     def test_0_panel_ready(self) -> None:
