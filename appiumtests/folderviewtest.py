@@ -102,6 +102,9 @@ class FolderViewTest(unittest.TestCase):
         self.driver.find_image_occurrence(first_image, second_image)
 
     def test_2_bug469260_new_file_appear_without_refresh(self) -> None:
+        """
+        A new file on desktop created by other applications should show up immediately
+        """
         with open(os.path.join(self.desktop_dir, "test.txt"), "w", encoding="utf-8") as handler:
             handler.write("\n")
 
