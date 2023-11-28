@@ -77,20 +77,15 @@ Item {
 
             onBackgroundColorChanged: Qt.callLater(update)
             onTextColorChanged: Qt.callLater(update)
-
-            property Binding colorBinding: Binding {
-                target: desktop
-                property: "accentColor"
-                value: {
-                    if (!Qt.colorEqual(imageColors.colorFromPlugin, "transparent")) {
-                        return imageColors.colorFromPlugin;
-                    }
-                    if (imageColors.palette.length === 0) {
-                        return "transparent";
-                    }
-                    return imageColors.dominant;
+            // Don't use binding as usedInAccentColor may be disabled immediately after a query from kcm_colors
+            onPaletteChanged: {
+                if (!Qt.colorEqual(imageColors.colorFromPlugin, "transparent")) {
+                    desktop.accentColor = imageColors.colorFromPlugin;
+                } else if (imageColors.palette.length === 0) {
+                    desktop.accentColor = "transparent";
+                } else {
+                    desktop.accentColor = imageColors.dominant;
                 }
-                when: desktop.usedInAccentColor // Without this, accentColor may still be updated after usedInAccentColor becomes false
             }
 
             property Connections repaintConnection: Connections {
