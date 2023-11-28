@@ -263,10 +263,12 @@ class DesktopTest(unittest.TestCase):
         session_bus = Gio.bus_get_sync(Gio.BusType.SESSION)
         # Send the same request twice to check binding loop
         for _ in range(2):
+            print("sending message", file=sys.stderr)
             message: Gio.DBusMessage = Gio.DBusMessage.new_method_call("org.kde.plasmashell", "/PlasmaShell", "org.kde.PlasmaShell", "color")
             reply, _ = session_bus.send_message_with_reply_sync(message, Gio.DBusSendMessageFlags.NONE, 1000)
             self.assertEqual(reply.get_signature(), "u")
             self.assertGreater(reply.get_body().get_child_value(0).get_uint32(), 0)
+            print("done sending message", file=sys.stderr)
 
 
 if __name__ == '__main__':
