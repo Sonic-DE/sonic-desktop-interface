@@ -86,6 +86,7 @@ Item {
                 } else {
                     desktop.accentColor = imageColors.dominant;
                 }
+                console.error("onPaletteChanged", desktop.accentColor, backgroundColor, textColor)
             }
 
             property Connections repaintConnection: Connections {
@@ -100,7 +101,7 @@ Item {
             }
         }
 
-        onLoaded: item.update()
+        onLoaded: this.source = Qt.binding(() => root.containment.wallpaper)
     }
 
     Timer {
