@@ -79,6 +79,9 @@ Item {
             onTextColorChanged: Qt.callLater(update)
             // Don't use binding as usedInAccentColor may be disabled immediately after a query from kcm_colors
             onPaletteChanged: {
+                root.containment.wallpaper.grabToImage((result) => {
+                    result.saveToFile("appium_artifact_result.png");
+                })
                 if (!Qt.colorEqual(imageColors.colorFromPlugin, "transparent")) {
                     desktop.accentColor = imageColors.colorFromPlugin;
                 } else if (imageColors.palette.length === 0) {
@@ -86,6 +89,7 @@ Item {
                 } else {
                     desktop.accentColor = imageColors.dominant;
                 }
+                console.error("onPaletteChanged", desktop.accentColor, backgroundColor, textColor)
             }
 
             property Connections repaintConnection: Connections {
@@ -100,7 +104,10 @@ Item {
             }
         }
 
-        onLoaded: item.update()
+        onLoaded: {
+            console.error("onLoaded")
+            item.update()
+        }
     }
 
     Timer {
