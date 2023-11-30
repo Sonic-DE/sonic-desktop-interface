@@ -69,7 +69,6 @@ Item {
 
             readonly property color backgroundColor: Kirigami.Theme.backgroundColor
             readonly property color textColor: Kirigami.Theme.textColor
-            property color colorFromPlugin: "transparent"
 
             Kirigami.Theme.inherit: false
             Kirigami.Theme.backgroundColor: backgroundColor
@@ -82,8 +81,8 @@ Item {
                 target: desktop
                 property: "accentColor"
                 value: {
-                    if (!Qt.colorEqual(imageColors.colorFromPlugin, "transparent")) {
-                        return imageColors.colorFromPlugin;
+                    if (!Qt.colorEqual(root.containment.wallpaper.accentColor, "transparent")) {
+                        return root.containment.wallpaper.accentColor;
                     }
                     if (imageColors.palette.length === 0) {
                         return "transparent";
@@ -95,17 +94,22 @@ Item {
 
             property Connections repaintConnection: Connections {
                 target: root.containment.wallpaper
-                function onRepaintNeeded(color) {
-                    imageColors.colorFromPlugin = color;
+                function onRepaintNeeded() {
+                    if (Qt.colorEqual(root.containment.wallpaper.accentColor, "transparent")) {
+                        imageColors.update();
+                    }
+                }
+            }
 
-                    if (Qt.colorEqual(color, "transparent")) {
+            property Connections repaintConnection: Connections {
+                target: root.containment.wallpaper
+                function onAccentColorChanged() {
+                    if (Qt.colorEqual(root.containment.wallpaper.accentColor, "transparent")) {
                         imageColors.update();
                     }
                 }
             }
         }
-
-        onLoaded: item.update()
     }
 
     Timer {
