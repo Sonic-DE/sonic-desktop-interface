@@ -213,7 +213,7 @@ MouseArea {
             }
         }
     }
-    PlasmaCore.AppletPopup {
+    PlasmaCore.PopupPlasmaWindow {
         id: tooltip
         visible: configurationArea.currentApplet && !root.dragAndDropping
         visualParent: configurationArea.currentApplet
