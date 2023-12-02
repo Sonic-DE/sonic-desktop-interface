@@ -50,6 +50,22 @@ public:
         , blacklistedApplicationsModel(new BlacklistedApplicationsModel(parent))
     {
     }
+
+    void setDefaultIndicatorVisible(QWidget *widget, bool visible)
+    {
+        widget->setProperty("_kde_highlight_neutral", visible);
+        widget->update();
+    }
+
+    void updateUiDefaultIndicator(bool visible)
+    {
+        setDefaultIndicatorVisible(radioDontRememberApplications, visible && radioDontRememberApplications->isChecked());
+        setDefaultIndicatorVisible(radioRememberSpecificApplications, visible && radioRememberSpecificApplications->isChecked());
+
+        setDefaultIndicatorVisible(kcfg_keepHistoryFor, visible && pluginConfig->defaultKeepHistoryForValue() != kcfg_keepHistoryFor->value());
+
+        setDefaultIndicatorVisible(kcfg_blockedByDefault, visible && kcfg_blockedByDefault->isChecked());
+    }
 };
 
 RecentFilesKcm::RecentFilesKcm(QObject *parent, const KPluginMetaData &data)
@@ -90,6 +106,7 @@ RecentFilesKcm::RecentFilesKcm(QObject *parent, const KPluginMetaData &data)
     // React to changes
 
     connect(d->radioRememberSpecificApplications, &QAbstractButton::toggled, d->blacklistedApplicationsModel, &BlacklistedApplicationsModel::setEnabled);
+    connect(d->radioRememberSpecificApplications, &QAbstractButton::toggled, d->kcfg_blockedByDefault, &QCheckBox::setEnabled);
 
     // By default the KCModule (and eventually the kconfigdialogmanager) use
     // the index of checked radio button as the value of the setting. In this
@@ -110,6 +127,10 @@ RecentFilesKcm::RecentFilesKcm(QObject *parent, const KPluginMetaData &data)
 
     d->blacklistedApplicationsModel->setEnabled(false);
     d->messageWidget->setVisible(false);
+
+    connect(this, &RecentFilesKcm::defaultsIndicatorsVisibleChanged, this, [this]() {
+        d->updateUiDefaultIndicator(defaultsIndicatorsVisible());
+    });
 
     addConfig(d->pluginConfig, widget());
     addConfig(d->mainConfig, widget());
@@ -138,6 +159,9 @@ void RecentFilesKcm::load()
     d->radioRememberSpecificApplications->setChecked(wtr == SpecificApplications);
     d->radioDontRememberApplications->setChecked(wtr == NoApplications);
     d->radioRememberAllApplications->setChecked(wtr == AllApplications);
+
+    d->blacklistedApplicationsModel->setEnabled(d->radioRememberSpecificApplications->isChecked());
+    d->updateUiDefaultIndicator(defaultsIndicatorsVisible());
 }
 
 void RecentFilesKcm::whatToRememberWidgetChanged(bool)
@@ -152,7 +176,9 @@ void RecentFilesKcm::whatToRememberWidgetChanged(bool)
     // clang-format on
     qCDebug(LOG_KCMS_RECENTFILES) << "whatToRememberWidgetChangeState: " << whatToRemember;
     d->kcfg_whatToRemember->setProperty("kcfg_value", whatToRemember);
-    KCModule::setNeedsSave(whatToRemember != d->pluginConfig->whatToRemember());
+    setNeedsSave(whatToRemember != d->pluginConfig->whatToRemember());
+
+    d->updateUiDefaultIndicator(defaultsIndicatorsVisible());
 }
 
 void RecentFilesKcm::save()
