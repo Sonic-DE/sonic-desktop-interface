@@ -45,8 +45,8 @@ Item {
 
         Component.onCompleted: {
             for (var i = 0; i < configDialog.containmentPluginsConfigModel.count; ++i) {
-                var data = configDialog.containmentPluginsConfigModel.get(i);
-                if (configDialog.containmentPlugin === data.pluginName) {
+                var pluginName = configDialog.containmentPluginsConfigModel.data(configDialog.containmentPluginsConfigModel.index(i, 0), configDialog.containmentPluginsConfigModel.PluginNameRole);
+                if (configDialog.containmentPlugin === pluginName) {
                     pluginComboBox.currentIndex = i
                     pluginComboBox.activated(i);
                     break;
@@ -54,8 +54,8 @@ Item {
             }
 
             for (var i = 0; i < configDialog.wallpaperConfigModel.count; ++i) {
-                var data = configDialog.wallpaperConfigModel.get(i);
-                if (configDialog.currentWallpaper === data.pluginName) {
+                var pluginName = configDialog.wallpaperConfigModel.data(configDialog.wallpaperConfigModel.index(i, 0), configDialog.wallpaperConfigModel.PluginNameRole);
+                if (configDialog.currentWallpaper === pluginName) {
                     wallpaperComboBox.currentIndex = i
                     wallpaperComboBox.activated(i);
                     break;
@@ -102,12 +102,12 @@ Item {
                     model: configDialog.wallpaperConfigModel
                     textRole: "name"
                     onActivated: {
-                        var model = configDialog.wallpaperConfigModel.get(currentIndex)
-                        if (appearanceRoot.currentWallpaper === model.pluginName) {
+                        var pluginName = configDialog.wallpaperConfigModel.data(configDialog.wallpaperConfigModel.index(currentIndex, 0), configDialog.wallpaperConfigModel.PluginNameRole)
+                        if (appearanceRoot.currentWallpaper === pluginName) {
                             return;
                         }
-                        appearanceRoot.currentWallpaper = model.pluginName
-                        configDialog.currentWallpaper = model.pluginName
+                        appearanceRoot.currentWallpaper = pluginName
+                        configDialog.currentWallpaper = pluginName
                         main.sourceFile = model.source
                         appearanceRoot.configurationChanged()
                     }
