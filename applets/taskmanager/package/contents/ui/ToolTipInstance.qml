@@ -181,7 +181,7 @@ ColumnLayout {
             // shadow can cover up the highlight
             anchors.margins: Kirigami.Units.smallSpacing * 2
 
-            sourceComponent: thumbnailSourceItem.isMinimized || pipeWireLoader.active || KWindowSystem.isPlatformWayland ? iconItem : x11Thumbnail
+            sourceComponent: thumbnailSourceItem.isMinimized || pipeWireLoader.active ? iconItem : x11Thumbnail
 
             Component {
                 id: x11Thumbnail
