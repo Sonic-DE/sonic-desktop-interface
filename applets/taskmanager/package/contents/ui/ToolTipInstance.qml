@@ -17,6 +17,7 @@ import org.kde.plasma.core as PlasmaCore
 import org.kde.plasma.components 3.0 as PlasmaComponents3
 import org.kde.plasma.extras 2.0 as PlasmaExtras
 import org.kde.kirigami 2 as Kirigami
+import org.kde.kwindowsystem 1.0
 
 ColumnLayout {
     property var submodelIndex
@@ -180,7 +181,7 @@ ColumnLayout {
             // shadow can cover up the highlight
             anchors.margins: Kirigami.Units.smallSpacing * 2
 
-            sourceComponent: thumbnailSourceItem.isMinimized || pipeWireLoader.active ? iconItem : x11Thumbnail
+            sourceComponent: thumbnailSourceItem.isMinimized || pipeWireLoader.active || KWindowSystem.isPlatformWayland ? iconItem : x11Thumbnail
 
             Component {
                 id: x11Thumbnail
