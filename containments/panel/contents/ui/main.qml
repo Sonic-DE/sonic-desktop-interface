@@ -244,33 +244,27 @@ ContainmentItem {
                 Layout.rightMargin: getMargins('right')
 
     // BEGIN BUG 454095: do not combine these expressions to a function or the bindings won't work
-                readonly property real appletMaxWidth: applet?.Layout.maximumWidth >= 0 ? applet.Layout.maximumWidth : root.width
-                readonly property real appletPrefWidth: (applet ? (applet.Layout.preferredWidth >= 0
-                                                            ? applet.Layout.preferredWidth
-                                                            : Math.max(root.height,
-                                                                (applet.implicitWidth > 0 ?
-                                                                applet.implicitWidth : applet.Layout.minimumWidth)))
-                                                        : root.height)
-                readonly property real appletMaxHeight: applet?.Layout.maximumHeight >= 0 ? applet.Layout.maximumHeight : root.height
-                readonly property real appletPrefHeight: (applet ? (applet.Layout.preferredHeight >= 0
-                                                            ? applet.Layout.preferredHeight
-                                                            : Math.max(root.width,
-                                                                (applet.implicitHeight > 0 ?
-                                                                applet.implicitHeight : applet.Layout.minimumHeight)))
-                                                         : root.width)
 
-                Layout.minimumWidth: (root.isHorizontal ? (applet && applet.Layout.minimumWidth > 0 ? applet.Layout.minimumWidth : root.height) : root.width) - Layout.leftMargin - Layout.rightMargin
-                Layout.minimumHeight: (!root.isHorizontal ? (applet && applet.Layout.minimumHeight > 0 ? applet.Layout.minimumHeight : root.width) : root.height) - Layout.bottomMargin - Layout.topMargin
+                // <value> || <value> will return the first value if it defined and positive; by using this, we can
+                // set fallbacks for undefined or zero values by chaining the || operator.
+                readonly property real appletMaxWidth: applet?.Layout.maximumWidth || root.width
+                readonly property real appletPrefWidth: Math.max(applet?.Layout.preferredWidth, 0) || Math.max(root.height, applet.implicitWidth || applet.Layout.minimumWidth)
+
+                readonly property real appletMaxHeight: applet?.Layout.maximumHeight || root.height
+                readonly property real appletPrefHeight: Math.max(applet?.Layout.preferredHeight, 0) || Math.max(root.width, applet.implicitHeight || applet.Layout.minimumHeight)
+
+                Layout.minimumWidth: (root.isHorizontal ? (applet?.Layout.minimumWidth || root.height) : root.width) - Layout.leftMargin - Layout.rightMargin
+                Layout.minimumHeight: (!root.isHorizontal ? (applet?.Layout.minimumHeight || root.width) : root.height) - Layout.bottomMargin - Layout.topMargin
 
                 Layout.preferredWidth: (root.isHorizontal ? appletPrefWidth : root.width) - Layout.leftMargin - Layout.rightMargin
                 Layout.preferredHeight: (!root.isHorizontal ? appletPrefHeight : root.height) - Layout.bottomMargin - Layout.topMargin
 
                 // Use the preferred width as maximum in the case the applet doesn't want to fill width, see BUG:473420
                 Layout.maximumWidth: (root.isHorizontal
-                        ? (applet?.Layout.fillWidth ? appletMaxWidth : appletPrefWidth)
+                        ? (appletMaxWidth || appletPrefWidth)
                         : root.height) - Layout.leftMargin - Layout.rightMargin
                 Layout.maximumHeight: (!root.isHorizontal
-                        ? (applet?.Layout.fillHeight ? appletMaxHeight : appletPrefHeight)
+                        ? (appletMaxHeight || appletPrefHeight)
                         : root.width) - Layout.bottomMargin - Layout.topMargin
     // END BUG 454095
                 Item {
