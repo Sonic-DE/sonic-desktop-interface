@@ -219,6 +219,8 @@ MouseArea {
         visualParent: configurationArea.currentApplet
         // Try to dodge the ruler, as we can't cover it since it's a layershell surface
         margin: configurationArea.Window.window?.lengthMode === 2 ? Kirigami.Units.gridUnit * 2 : 0
+        width: handleButtons.implicitWidth
+        height: handleButtons.implicitHeight
 
         popupDirection: switch (Plasmoid.location) {
             case PlasmaCore.Types.TopEdge:
@@ -243,8 +245,6 @@ MouseArea {
 
         mainItem: MouseArea {
             enabled: tooltip.visible
-            implicitWidth: handleButtons.width
-            implicitHeight: handleButtons.height
             hoverEnabled: true
             onEntered: hideTimer.stop();
             onExited:  hideTimer.restart();
