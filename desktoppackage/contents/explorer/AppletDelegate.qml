@@ -26,7 +26,6 @@ Item {
 
     HoverHandler {
         id: hoverHandler
-        enabled: model.isSupported
         onHoveredChanged: if (hovered) delegate.GridView.view.currentIndex = index
     }
 
@@ -46,7 +45,6 @@ Item {
     // Avoid repositioning delegate item after dragFinished
     Item {
         anchors.fill: parent
-        enabled: model.isSupported
 
         Drag.dragType: Drag.Automatic
         Drag.supportedActions: Qt.MoveAction | Qt.LinkAction
@@ -82,7 +80,6 @@ Item {
 
     ColumnLayout {
         id: mainLayout
-        enabled: model.isSupported
 
         readonly property color textColor: tapHandler.pressed ? Kirigami.Theme.highlightedTextColor : Kirigami.Theme.textColor
 
@@ -112,6 +109,7 @@ Item {
             Item {
                 id: iconWidget
                 anchors.fill: parent
+                enabled: model.isSupported
                 Kirigami.Icon {
                     anchors.fill: parent
                     source: model.decoration
@@ -220,6 +218,7 @@ Item {
         Kirigami.Heading {
             id: heading
             Layout.fillWidth: true
+            enabled: model.isSupported
             level: 4
             text: model.name
             elide: Text.ElideRight
@@ -231,6 +230,7 @@ Item {
         }
         PlasmaComponents.Label {
             Layout.fillWidth: true
+            enabled: model.isSupported
             // otherwise causes binding loop due to the way the Plasma sets the height
             height: implicitHeight
             text: model.description
