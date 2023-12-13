@@ -28,14 +28,14 @@ class Q_DECL_EXPORT KeyboardDaemon : public KDEDModule
     KeyboardLayoutActionCollection *actionCollection;
     XInputEventNotifier *xEventNotifier;
     LayoutMemory layoutMemory;
-    std::optional<uint> lastUsedLayout;
+    QList<uint> lastUsedLayouts;
     const Rules *rules;
 
     void registerListeners();
     void registerShortcut();
     void unregisterListeners();
     void unregisterShortcut();
-    void setLastUsedLayoutValue(uint newValue);
+    void updateLastUsedLayouts();
 
 private Q_SLOTS:
     void configureKeyboard();
