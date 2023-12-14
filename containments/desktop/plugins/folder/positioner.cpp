@@ -373,6 +373,53 @@ int Positioner::move(const QVariantList &moves)
     }
 
     const int oldCount = rowCount();
+    int newEnd = oldCount - 1;
+    int maxRow = -1;
+    QSet<int> toBeRemoved;
+
+    for (int i = 0; i < fromIndices.count(); ++i) {
+        const int from = fromIndices[i];
+        int to = toIndices[i];
+        const int sourceRow = sourceRows[i].toInt();
+
+        if (sourceRow == -1 || from == to) {
+            continue;
+        }
+
+        if (to == -1) {
+            to = firstFreeRow();
+
+            if (to == -1) {
+                to = lastRow() + 1;
+            }
+        }
+
+        if (!fromIndices.contains(to) && !isBlank(to)) {
+            /* find the next blank space
+             * we won't be happy if we're moving two icons to the same place
+             */
+            while ((!isBlank(to) && from != to) || toIndices.contains(to)) {
+                to++;
+            }
+        }
+
+        toIndices[i] = to;
+
+        if (from == newEnd) {
+            for (int i = oldCount - 1; i >= 0 && (isBlank(i) || toBeRemoved.contains(i)); --i) {
+                newEnd = i;
+            }
+            toBeRemoved.insert(newEnd);
+        }
+        maxRow = std::max(maxRow, to);
+        newEnd = std::max(newEnd, maxRow);
+    }
+
+    if (newEnd < oldCount - 1) {
+        beginRemoveRows(QModelIndex(), newEnd + 1, oldCount - 1);
+    } else if (newEnd > oldCount - 1 && !m_beginInsertRowsCalled) {
+        beginInsertRows(QModelIndex(), oldCount, newEnd);
+    }
 
     for (int i = 0; i < fromIndices.count(); ++i) {
         const int from = fromIndices[i];
@@ -417,20 +464,11 @@ int Positioner::move(const QVariantList &moves)
         }
     }
 
-    const int newCount = rowCount();
-
-    if (newCount > oldCount) {
-        if (m_beginInsertRowsCalled) {
-            endInsertRows();
-            m_beginInsertRowsCalled = false;
-        }
-        beginInsertRows(QModelIndex(), oldCount, newCount - 1);
-        endInsertRows();
-    }
-
-    if (newCount < oldCount) {
-        beginRemoveRows(QModelIndex(), newCount, oldCount - 1);
+    if (newEnd < oldCount) {
         endRemoveRows();
+    } else if (newEnd > oldCount - 1) {
+        endInsertRows();
+        m_beginInsertRowsCalled = false;
     }
 
     m_folderModel->updateSelection(sourceRows, true);
