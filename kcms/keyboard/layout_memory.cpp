@@ -165,7 +165,7 @@ void LayoutMemory::setCurrentLayoutFromMap()
             X11Helper::setLayout(layoutFromMap.currentLayout);
         }
     }
-
+    Q_EMIT layoutHasChanged();
     previousLayoutMapKey = layoutMapKey;
 }
 
