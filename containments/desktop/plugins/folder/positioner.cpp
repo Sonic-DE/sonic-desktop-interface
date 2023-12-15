@@ -12,12 +12,6 @@
 
 #include <QTimer>
 
-struct RowMove {
-    int from;
-    int to;
-    int sourceRow;
-};
-
 Positioner::Positioner(QObject *parent)
     : QAbstractItemModel(parent)
     , m_enabled(false)
@@ -353,6 +347,12 @@ void Positioner::reset()
 
 int Positioner::move(const QVariantList &moves)
 {
+    struct RowMove {
+        int from;
+        int to;
+        int sourceRow;
+    };
+
     // Don't allow moves while listing.
     if (m_folderModel->status() == FolderModel::Listing) {
         m_deferMovePositions.append(moves);
