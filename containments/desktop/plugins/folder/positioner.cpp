@@ -12,6 +12,12 @@
 
 #include <QTimer>
 
+struct RowMove {
+    int from;
+    int to;
+    int sourceRow;
+};
+
 Positioner::Positioner(QObject *parent)
     : QAbstractItemModel(parent)
     , m_enabled(false)
@@ -356,6 +362,7 @@ int Positioner::move(const QVariantList &moves)
     QList<int> fromIndices;
     QList<int> toIndices;
     QVariantList sourceRows;
+    QList<RowMove> actualMoves;
 
     for (int i = 0; i < moves.count(); ++i) {
         const int isFrom = (i % 2 == 0);
@@ -419,6 +426,7 @@ int Positioner::move(const QVariantList &moves)
         }
         maxTo = std::max(maxTo, to);
         newEnd = std::max(newEnd, maxTo);
+        actualMoves.append({from, to, sourceRow});
     }
 
     if (newEnd < oldCount - 1) {
@@ -427,45 +435,18 @@ int Positioner::move(const QVariantList &moves)
         beginInsertRows(QModelIndex(), oldCount, newEnd);
     }
 
-    for (int i = 0; i < fromIndices.count(); ++i) {
-        const int from = fromIndices[i];
-        int to = toIndices[i];
-        const int sourceRow = sourceRows[i].toInt();
-
-        if (sourceRow == -1 || from == to) {
-            continue;
+    for (const RowMove &move : std::as_const(actualMoves)) {
+        if (!toIndices.contains(move.from)) {
+            m_proxyToSource.remove(move.from);
         }
 
-        if (to == -1) {
-            to = firstFreeRow();
+        updateMaps(move.to, move.sourceRow);
 
-            if (to == -1) {
-                to = lastRow() + 1;
-            }
-        }
-
-        if (!fromIndices.contains(to) && !isBlank(to)) {
-            /* find the next blank space
-             * we won't be happy if we're moving two icons to the same place
-             */
-            while ((!isBlank(to) && from != to) || toIndices.contains(to)) {
-                to++;
-            }
-        }
-
-        toIndices[i] = to;
-
-        if (!toIndices.contains(from)) {
-            m_proxyToSource.remove(from);
-        }
-
-        updateMaps(to, sourceRow);
-
-        const QModelIndex &fromIdx = index(from, 0);
+        const QModelIndex &fromIdx = index(move.from, 0);
         Q_EMIT dataChanged(fromIdx, fromIdx);
 
-        if (to < oldCount) {
-            const QModelIndex &toIdx = index(to, 0);
+        if (move.to < oldCount) {
+            const QModelIndex &toIdx = index(move.to, 0);
             Q_EMIT dataChanged(toIdx, toIdx);
         }
     }
