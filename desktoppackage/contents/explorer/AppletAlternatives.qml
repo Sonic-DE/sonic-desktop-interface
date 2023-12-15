@@ -21,6 +21,7 @@ PlasmaCore.Dialog {
     visualParent: alternativesHelper.applet
     location: alternativesHelper.applet.Plasmoid.location
     hideOnWindowDeactivate: true
+    backgroundHints: (alternativesHelper.applet.Plasmoid.containmentDisplayHints & PlasmaCore.Types.ContainmentPrefersOpaqueBackground) ? PlasmaCore.Dialog.SolidBackground : PlasmaCore.Dialog.StandardBackground
 
     Component.onCompleted: {
         flags = flags |  Qt.WindowStaysOnTopHint;
@@ -61,6 +62,7 @@ PlasmaCore.Dialog {
 
         PlasmaExtras.PlasmoidHeading {
             Kirigami.Heading {
+                anchors.horizontalCenter: parent.horizontalCenter
                 id: heading
                 text: i18nd("plasma_shell_org.kde.plasma.desktop", "Alternative Widgets");
             }
