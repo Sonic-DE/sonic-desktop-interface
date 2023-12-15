@@ -374,9 +374,11 @@ int Positioner::move(const QVariantList &moves)
 
     const int oldCount = rowCount();
     int newEnd = oldCount - 1;
-    int maxRow = -1;
+    int maxTo = -1;
     QSet<int> toBeRemoved;
 
+    // NOTE: this is the same code repeated twice: first it "tries" the move to see what the final count would look like to know if there would be rows
+    // insertions or removals. then do it for real enclosed in beginRemoveRows/endRemoveRows or beginInsertRows/endRemoveRows
     for (int i = 0; i < fromIndices.count(); ++i) {
         const int from = fromIndices[i];
         int to = toIndices[i];
@@ -405,14 +407,18 @@ int Positioner::move(const QVariantList &moves)
 
         toIndices[i] = to;
 
+        if (toBeRemoved.contains(to)) {
+            toBeRemoved.remove(to);
+        }
+
         if (from == newEnd) {
             for (int i = oldCount - 1; i >= 0 && (isBlank(i) || toBeRemoved.contains(i)); --i) {
                 newEnd = i;
             }
             toBeRemoved.insert(newEnd);
         }
-        maxRow = std::max(maxRow, to);
-        newEnd = std::max(newEnd, maxRow);
+        maxTo = std::max(maxTo, to);
+        newEnd = std::max(newEnd, maxTo);
     }
 
     if (newEnd < oldCount - 1) {
@@ -464,7 +470,7 @@ int Positioner::move(const QVariantList &moves)
         }
     }
 
-    if (newEnd < oldCount) {
+    if (newEnd < oldCount - 1) {
         endRemoveRows();
     } else if (newEnd > oldCount - 1) {
         endInsertRows();
