@@ -22,7 +22,6 @@ ColumnLayout {
     spacing: Kirigami.Units.largeSpacing * 2
 
     signal closeContextMenu
-    implicitWidth: Kirigami.Units.gridUnit * 27
 
     required property QtObject panelConfiguration
 
@@ -120,12 +119,17 @@ ColumnLayout {
         }
     }
 
-    RowLayout {
-        spacing: Kirigami.Units.smallSpacing
-        Layout.fillWidth: true
+    GridLayout {
+        Layout.leftMargin: columnSpacing
+        Layout.rightMargin: columnSpacing
+        Layout.alignment: Qt.AlignHCenter
+        Layout.minimumWidth: (positionRepresentation.implicitWidth + columnSpacing) * columns + columnSpacing
+        rowSpacing: dialogRoot.spacing
+        columnSpacing: Kirigami.Units.smallSpacing
+        rows: 2
+        columns: 3
 
         ColumnLayout {
-            Layout.preferredWidth: dialogRoot.width / 3
             spacing: Kirigami.Units.mediumSpacing
             Kirigami.Heading {
                 Layout.alignment: Qt.AlignHCenter
@@ -173,7 +177,6 @@ ColumnLayout {
         }
 
         ColumnLayout {
-            Layout.preferredWidth: dialogRoot.width / 3
             spacing: Kirigami.Units.mediumSpacing
             Kirigami.Heading {
                 Layout.alignment: Qt.AlignHCenter
@@ -261,7 +264,6 @@ ColumnLayout {
         }
 
         ColumnLayout {
-            Layout.preferredWidth: dialogRoot.width / 3
             spacing: Kirigami.Units.mediumSpacing
             Kirigami.Heading {
                 level: dialogRoot.headingLevel
@@ -310,14 +312,7 @@ ColumnLayout {
             }
         }
 
-    }
-
-    RowLayout {
-        spacing: Kirigami.Units.smallSpacing
-        Layout.fillWidth: true
-
         ColumnLayout {
-            Layout.preferredWidth: dialogRoot.width / 3
             spacing: Kirigami.Units.mediumSpacing
             Kirigami.Heading {
                 Layout.alignment: Qt.AlignTop | Qt.AlignHCenter
@@ -375,7 +370,6 @@ ColumnLayout {
         }
 
         ColumnLayout {
-            Layout.preferredWidth: dialogRoot.width / 3
             spacing: Kirigami.Units.mediumSpacing
             Kirigami.Heading {
                 Layout.alignment: Qt.AlignTop | Qt.AlignHCenter
@@ -414,7 +408,6 @@ ColumnLayout {
         }
 
         ColumnLayout {
-            Layout.preferredWidth: dialogRoot.width / 3
             spacing: Kirigami.Units.mediumSpacing
             Kirigami.Heading {
                 level: dialogRoot.headingLevel
@@ -435,6 +428,8 @@ ColumnLayout {
                 onCheckedChanged: panel.floating = checked
             }
         }
+    }
+
     Instantiator {
         active: setPositionButton.checked
         asynchronous: true
