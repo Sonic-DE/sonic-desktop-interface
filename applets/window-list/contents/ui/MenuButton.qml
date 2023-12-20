@@ -79,7 +79,6 @@ AbstractButton {
             visible: Plasmoid.formFactor === PlasmaCore.Types.Horizontal && Plasmoid.configuration.showText
 
             text: controlRoot.Kirigami.MnemonicData.richTextLabel
-            textFormat: Text.StyledText
             color: controlRoot.hovered ? Kirigami.Theme.highlightedTextColor : Kirigami.Theme.textColor
             verticalAlignment: Text.AlignVCenter
             Layout.fillHeight: true
