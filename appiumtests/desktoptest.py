@@ -14,12 +14,19 @@ import time
 import unittest
 from typing import Final
 
+import gi
+
+gi.require_version('Gtk', '4.0')
+
 from appium import webdriver
 from appium.options.common.base import AppiumOptions
 from appium.webdriver.common.appiumby import AppiumBy
 from appium.webdriver.webelement import WebElement
-from gi.repository import Gio, GLib
+from gi.repository import Gio, GLib, Gtk
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.actions.action_builder import ActionBuilder
+from selenium.webdriver.common.actions.interaction import POINTER_TOUCH
+from selenium.webdriver.common.actions.pointer_input import PointerInput
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
@@ -208,7 +215,19 @@ class DesktopTest(unittest.TestCase):
 
         self._exit_edit_mode()
 
-    def test_4_bug477185_meta_number_shortcut(self) -> None:
+    def test_4_touch_long_press_on_desktop(self) -> None:
+        """
+        Long press on the desktop to enter the edit mode
+        """
+        screen_geometry = Gtk.Window().get_display().get_monitors()[0].get_geometry()
+        action = ActionBuilder(self.driver, mouse=PointerInput(POINTER_TOUCH, "finger"))
+        action.pointer_action.move_to_location(int(screen_geometry.width / 2), int(screen_geometry.height / 2)).pointer_down().pause(2).pointer_up()
+        action.perform()
+        wait = WebDriverWait(self.driver, 30)
+        wait.until(EC.presence_of_element_located((AppiumBy.NAME, "More")))
+        self._exit_edit_mode()
+
+    def test_5_bug477185_meta_number_shortcut(self) -> None:
         """
         Meta+1 should activate the first launcher item
         """
@@ -244,7 +263,7 @@ class DesktopTest(unittest.TestCase):
         session_bus.send_message_with_reply_sync(message, Gio.DBusSendMessageFlags.NONE, 1000)
         wait.until(EC.presence_of_element_located((AppiumBy.NAME, "Install Software")))
 
-    def test_5_sentry_3516_load_layout(self) -> None:
+    def test_6_sentry_3516_load_layout(self) -> None:
         """
         ShellCorona::loadLookAndFeelDefaultLayout -> ShellCorona::unload() -> qDeleteAll(panelViews) -> QWindow::visibleChanged -> rectNotify() -> 💣
         @see https://bugreports.qt.io/browse/QTBUG-118841
@@ -258,7 +277,7 @@ class DesktopTest(unittest.TestCase):
         self.assertFalse(kickoff_element.is_displayed())
         self.driver.find_element(AppiumBy.NAME, "Application Launcher")
 
-    def test_6_bug_query_accent_color_binding_loop(self) -> None:
+    def test_7_bug_query_accent_color_binding_loop(self) -> None:
         """
         Don't use binding as usedInAccentColor may be disabled immediately after a query from kcm_colors.
 
