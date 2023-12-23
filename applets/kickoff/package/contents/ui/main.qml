@@ -184,8 +184,6 @@ PlasmoidItem {
         readonly property bool shouldHaveIcon: Plasmoid.formFactor === PlasmaCore.Types.Vertical || Plasmoid.icon !== ""
         readonly property bool shouldHaveLabel: Plasmoid.formFactor !== PlasmaCore.Types.Vertical && Plasmoid.configuration.menuLabel !== ""
 
-        readonly property int iconSize: 48
-
         readonly property var sizing: {
             const displayedIcon = buttonIcon.valid ? buttonIcon : buttonIconFallback;
 
@@ -196,36 +194,38 @@ PlasmoidItem {
             if (shouldHaveLabel) {
                 impWidth += labelTextField.contentWidth + labelTextField.Layout.leftMargin + labelTextField.Layout.rightMargin;
             }
-            const impHeight = displayedIcon.height > 0 ? displayedIcon.height : iconSize
 
             // at least square, but can be wider/taller
             if (kickoff.inPanel) {
                 if (kickoff.vertical) {
                     return {
-                        preferredWidth: iconSize,
-                        preferredHeight: impHeight
+                        minimumWidth: -1,
+                        minimumHeight: -1,
+                        maximumWidth: -1,
+                        maximumHeight: -1,
                     };
                 } else { // horizontal
                     return {
-                        preferredWidth: impWidth,
-                        preferredHeight: iconSize
+                        minimumWidth: shouldHaveLabel ? impWidth : -1,
+                        minimumHeight: -1,
+                        maximumWidth: shouldHaveLabel ? impWidth : -1,
+                        maximumHeight: -1,
                     };
                 }
             } else {
                 return {
-                    preferredWidth: impWidth,
-                    preferredHeight: Kirigami.Units.iconSizes.small,
+                    minimumWidth: shouldHaveLabel ? impWidth : -1,
+                    minimumHeight: -1,
+                    maximumWidth: shouldHaveLabel ? impWidth : -1,
+                    maximumHeight: -1,
                 };
             }
         }
 
-        implicitWidth: iconSize
-        implicitHeight: iconSize
-
-        Layout.preferredWidth: sizing.preferredWidth
-        Layout.preferredHeight: sizing.preferredHeight
-        Layout.minimumWidth: Layout.preferredWidth
-        Layout.minimumHeight: Layout.preferredHeight
+        Layout.minimumWidth: sizing.minimumWidth
+        Layout.minimumHeight: sizing.minimumHeight
+        Layout.maximumWidth: sizing.maximumWidth
+        Layout.maximumHeight: sizing.maximumHeight
 
         hoverEnabled: true
 
