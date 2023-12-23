@@ -206,6 +206,15 @@ ContainmentItem {
                 //this is completely heuristic, but looks way less "jumpy"
                 property bool movingForResize: false
 
+                function getButtonMargins(side): int {
+                    const panelPadding = panelSvg.fixedMargins[side];
+                    const layout = {
+                        top: isHorizontal, bottom: isHorizontal,
+                        right: !isHorizontal, left: !isHorizontal
+                    };
+                    return (layout[side]) ? Math.round(panelPadding) : Math.floor(panelPadding / 2);
+                }
+
                 function getMargins(side, returnAllMargins = false, overrideFillArea = null, overrideThickArea = null): real {
                     if (!applet || !applet.plasmoid) {
                         return 0;
@@ -237,14 +246,16 @@ ContainmentItem {
 
                 property int availWidth: root.width - Layout.leftMargin - Layout.rightMargin
                 property int availHeight: root.height - Layout.topMargin - Layout.bottomMargin
+                property int prefWidth: root.height - getButtonMargins('left') - getButtonMargins('right')
+                property int prefHeight: root.width - getButtonMargins('top') - getButtonMargins('bottom')
                 function findPositive(first, second) {return first > 0 ? first : second}
 
     // BEGIN BUG 454095: do not combine these expressions to a function or the bindings won't work
-                Layout.minimumWidth: root.isHorizontal ? findPositive(applet?.Layout.minimumWidth, root.height) : availWidth
-                Layout.minimumHeight: !root.isHorizontal ? findPositive(applet?.Layout.minimumHeight, root.width) : availHeight
+                Layout.minimumWidth: root.isHorizontal ? findPositive(applet?.Layout.minimumWidth, prefWidth) : availWidth
+                Layout.minimumHeight: !root.isHorizontal ? findPositive(applet?.Layout.minimumHeight, prefHeight) : availHeight
 
-                Layout.preferredWidth: root.isHorizontal ? findPositive(applet?.Layout.preferredWidth, Layout.minimumWidth) : availWidth
-                Layout.preferredHeight: !root.isHorizontal ? findPositive(applet?.Layout.preferredHeight, Layout.minimumHeight) : availHeight
+                Layout.preferredWidth: root.isHorizontal ? findPositive(applet?.Layout.preferredWidth, Math.max(Layout.minimumWidth, prefWidth)) : availWidth
+                Layout.preferredHeight: !root.isHorizontal ? findPositive(applet?.Layout.preferredHeight, Math.max(Layout.minimumHeight, prefHeight)) : availHeight
 
                 Layout.maximumWidth: root.isHorizontal ? (wantsToFillWidth ? findPositive(applet?.Layout.maximumWidth, root.width) : Layout.preferredWidth) : availWidth
                 Layout.maximumHeight: !root.isHorizontal ? (wantsToFillHeight ? findPositive(applet?.Layout.maximumHeight, root.height) : Layout.preferredHeight) : availHeight
@@ -277,8 +288,8 @@ ContainmentItem {
                             } else {
                                 width = padding;
                             }
-                            anchors[left+'Margin'] = - currentLayout.rowSpacing/2 - (appletIndex == 0 ? dropArea.anchors[left + 'Margin'] + currentLayout.x : 0)
-                            anchors[right+'Margin'] = - currentLayout.rowSpacing/2 - (appletIndex == appletsModel.count-1 ? dropArea.anchors[right + 'Margin'] + currentLayout.toolBoxSize : 0)
+                            anchors[left+'Margin'] = - (appletIndex == 0 ? dropArea.anchors[left + 'Margin'] + currentLayout.x : 0)
+                            anchors[right+'Margin'] = - (appletIndex == appletsModel.count-1 ? dropArea.anchors[right + 'Margin'] + currentLayout.toolBoxSize : 0)
                             anchors[side+'Margin'] = - inset
                         }
                         elementId: fill ? 'fill' : (root.isHorizontal ? side + (inThickArea ? 'left' : 'right') : (inThickArea ? 'top' : 'bottom') + side)
@@ -346,10 +357,10 @@ ContainmentItem {
 //BEGIN UI elements
 
         anchors {
-            leftMargin: isHorizontal ? Math.min(dropArea.spacingAtMinSize, panelSvg.fixedMargins.left + currentLayout.rowSpacing) : 0
-            rightMargin: isHorizontal ? Math.min(dropArea.spacingAtMinSize, panelSvg.fixedMargins.right + currentLayout.rowSpacing) : 0
-            topMargin: isHorizontal ? 0 : Math.min(dropArea.spacingAtMinSize, panelSvg.fixedMargins.top + currentLayout.rowSpacing)
-            bottomMargin: isHorizontal ? 0 : Math.min(dropArea.spacingAtMinSize, panelSvg.fixedMargins.bottom + currentLayout.rowSpacing)
+            leftMargin: isHorizontal ? Math.min(dropArea.spacingAtMinSize, Math.floor(panelSvg.fixedMargins.left / 2)) : 0
+            rightMargin: isHorizontal ? Math.min(dropArea.spacingAtMinSize, Math.floor(panelSvg.fixedMargins.right / 2)) : 0
+            topMargin: isHorizontal ? 0 : Math.min(dropArea.spacingAtMinSize, Math.floor(panelSvg.fixedMargins.top / 2))
+            bottomMargin: isHorizontal ? 0 : Math.min(dropArea.spacingAtMinSize, Math.floor(panelSvg.fixedMargins.bottom / 2))
         }
 
         Item {
@@ -373,8 +384,8 @@ ContainmentItem {
                 delegate: appletContainerComponent
             }
 
-            rowSpacing: Kirigami.Units.smallSpacing
-            columnSpacing: Kirigami.Units.smallSpacing
+            rowSpacing: 0
+            columnSpacing: 0
 
             x: Qt.application.layoutDirection === Qt.RightToLeft && isHorizontal ? toolBoxSize : 0;
             readonly property int toolBoxSize: !toolBox || !Plasmoid.containment.corona.editMode || Qt.application.layoutDirection === Qt.RightToLeft ? 0 : (isHorizontal ? toolBox.width : toolBox.height)
