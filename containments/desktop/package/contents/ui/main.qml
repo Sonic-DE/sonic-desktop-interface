@@ -164,6 +164,11 @@ ContainmentItem {
         }
     }
 
+    TapHandler {
+        acceptedDevices: PointerDevice.Touch
+        onLongPressed: console.error("long pressed 1")
+    }
+
     KSvg.FrameSvgItem {
         id: highlightItemSvg
 
@@ -391,6 +396,11 @@ ContainmentItem {
             icon.name: "preferences-desktop-wallpaper"
             shortcut: "alt+d,alt+s"
             onTriggered: Plasmoid.containment.configureRequested(Plasmoid)
+        }
+
+        TapHandler {
+            acceptedDevices: PointerDevice.Touch
+            onLongPressed: console.error("long pressed 2")
         }
 
         Component.onCompleted: {
