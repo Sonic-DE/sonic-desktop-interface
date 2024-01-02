@@ -6,16 +6,13 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 
-pragma ComponentBehavior: Bound
-
 import QtQuick
 import QtQuick.Controls as QQC2
 import QtQuick.Layouts
 
+import org.kde.kcmutils as KCM
 import org.kde.kirigami as Kirigami
-import org.kde.kquickcontrols as KQuickControls
-
-import org.kde.plasma.private.kcm_mouse as Mouse
+import org.kde.kquickcontrols
 
 Kirigami.ApplicationItem {
     id: root
@@ -24,19 +21,12 @@ Kirigami.ApplicationItem {
     pageStack.columnView.columnResizeMode: Kirigami.ColumnView.SingleColumn
     pageStack.defaultColumnWidth: Kirigami.Units.gridUnit * 20
 
-    readonly property int deviceIndex: (
-        (deviceSelector.currentIndex >= 0 && deviceSelector.currentIndex < backend.inputDevices.length)
+    property int deviceIndex: (
+        (deviceSelector.currentIndex >= 0 && deviceSelector.currentIndex < backend.inputDevices?.length)
             ? deviceSelector.currentIndex
             : -1
     )
-
-    // Would be nice to use a `required` qualifier, but QQuickWidget doesn't
-    // have an API to provide a mapping of initial properties.
-    readonly property Mouse.InputBackend backend: __backend
-
-    readonly property /*X11LibinputDummyDevice | KWinWaylandDevice*/QtObject device:
-        deviceIndex >= 0 ? backend.inputDevices[deviceIndex] : null
-
+    property QtObject device: deviceIndex >= 0 ? backend.inputDevices[deviceIndex] : null
     signal changeSignal()
 
     enabled: device !== null
@@ -46,28 +36,21 @@ Kirigami.ApplicationItem {
 
         Kirigami.FormLayout {
             id: formLayout
-            enabled: root.backend.inputDevices.length > 0
+            enabled: backend.inputDevices?.length > 0
 
             // Device
             QQC2.ComboBox {
                 id: deviceSelector
                 Kirigami.FormData.label: i18nd("kcmmouse", "Device:")
-                visible: !root.backend.isAnonymousInputDevice
+                visible: !backend.isAnonymousInputDevice
                 enabled: count > 1
                 Layout.fillWidth: true
-                model: {
-                    const devices = root.backend.inputDevices;
-                    if (devices.length > 0) {
-                        return devices;
-                    } else {
-                        return [""];
-                    }
-                }
+                model: backend.inputDevices?.length > 0 ? backend.inputDevices : [""]
                 textRole: "name"
 
                 Connections {
-                    target: root.backend
-                    function onDeviceRemoved(index: int): void {
+                    target: backend
+                    function onDeviceRemoved(index) {
                         if (index < deviceSelector.currentIndex) {
                             --deviceSelector.currentIndex;
                         }
@@ -84,13 +67,13 @@ Kirigami.ApplicationItem {
                 id: deviceEnabled
                 Kirigami.FormData.label: i18nd("kcmmouse", "General:")
                 text: i18nd("kcmmouse", "Device enabled")
-                visible: !root.backend.isAnonymousInputDevice
-                enabled: root.device?.supportsDisableEvents ?? false
-                checked: enabled && (root.device?.enabled ?? false)
+                visible: !backend.isAnonymousInputDevice
+                enabled: device?.supportsDisableEvents ?? false
+                checked: enabled && device.enabled
 
                 onToggled: {
-                    if (root.device) {
-                        root.device.enabled = checked
+                    if (device) {
+                        device.enabled = checked
                         root.changeSignal()
                     }
                 }
@@ -104,12 +87,12 @@ Kirigami.ApplicationItem {
                 id: leftHanded
                 Kirigami.FormData.label: deviceEnabled.visible ? null : deviceEnabled.Kirigami.FormData.label
                 text: i18nd("kcmmouse", "Left handed mode")
-                enabled: root.device?.supportsLeftHanded ?? false
-                checked: enabled && (root.device?.leftHanded ?? false)
+                enabled: device?.supportsLeftHanded ?? false
+                checked: enabled && device.leftHanded
 
                 onToggled: {
-                    if (root.device) {
-                        root.device.leftHanded = checked
+                    if (device) {
+                        device.leftHanded = checked
                         root.changeSignal()
                     }
                 }
@@ -124,12 +107,12 @@ Kirigami.ApplicationItem {
                 QQC2.CheckBox {
                     id: middleEmulation
                     text: i18nd("kcmmouse", "Press left and right buttons for middle-click")
-                    enabled: root.device?.supportsMiddleEmulation ?? false
-                    checked: enabled && (root.device?.middleEmulation ?? false)
+                    enabled: device?.supportsMiddleEmulation ?? false
+                    checked: enabled && device.middleEmulation
 
                     onToggled: {
-                        if (root.device) {
-                            root.device.middleEmulation = checked
+                        if (device) {
+                            device.middleEmulation = checked
                             root.changeSignal()
                         }
                     }
@@ -150,16 +133,25 @@ Kirigami.ApplicationItem {
 
             // Acceleration
             RowLayout {
-                id: accelSpeed
-
                 Kirigami.FormData.label: i18nd("kcmmouse", "Pointer speed:")
+                id: accelSpeed
                 Layout.fillWidth: true
 
-                spacing: Kirigami.Units.smallSpacing
+                function onAccelSpeedChanged(val) {
+                    // check slider
+                    if (val !== accelSpeedSlider.accelSpeedValue) {
+                        accelSpeedSlider.accelSpeedValue = val
+                        accelSpeedSlider.value = accelSpeedSlider.getClosestSliderPosition(val)
+                    }
 
-                function onAccelSpeedChanged(value: int): void {
-                    if (root.device && (value / 1000) !== root.device.pointerAcceleration) {
-                        root.device.pointerAcceleration = value / 100
+                    // check spinbox
+                    if (val !== accelSpeedSpinbox.value) {
+                        accelSpeedSpinbox.value = val + 1000
+                    }
+
+                    // check libinput accelspeed
+                    if ((val / 1000) !== device.pointerAcceleration) {
+                        device.pointerAcceleration = val / 1000
                         root.changeSignal()
                     }
                 }
@@ -171,15 +163,48 @@ Kirigami.ApplicationItem {
                     from: 1
                     to: 11
                     stepSize: 1
-                    enabled: root.device?.supportsPointerAcceleration ?? false
+                    enabled: device?.supportsPointerAcceleration ?? false
+                    property int accelSpeedValue // [-1000, 1000]
 
-                    // convert libinput pointer acceleration range [-1, 1] to slider range [1, 11]
-                    value: enabled && root.device ? Math.round(6 + root.device.pointerAcceleration / 0.2) : 0
+                    // Values for non linear slider positions
+                    property var accelSpeedSliderPositions: {
+                        1: -937,
+                        2: -875,
+                        3: -750,
+                        4: -500,
+                        5: -250,
+                        6: 0,
+                        7: 200,
+                        8: 400,
+                        9: 600,
+                        10: 800,
+                        11: 1000
+                    };
 
-                    onMoved: {
-                        if (root.device) {
-                            // convert slider range [1, 11] to accelSpeedValue range [-100, 100]
-                            const accelSpeedValue = Math.round(((value - 6) * 0.2) * 100)
+                    // Find slider position closest to the value
+                    function getClosestSliderPosition(val) {
+                        var closestSliderPosition;
+                        for (var position in accelSpeedSliderPositions) {
+                            var diff = Math.abs(accelSpeedSliderPositions[position] - accelSpeedValue)
+                            if (
+                                closestSliderPosition === undefined
+                                || (diff < Math.abs(accelSpeedSliderPositions[closestSliderPosition] - accelSpeedValue))
+                            ) {
+                                closestSliderPosition = position;
+                            }
+                        }
+                        return closestSliderPosition;
+                    }
+
+                    accelSpeedValue: enabled ? Math.round(device.pointerAcceleration * 1000) : 0
+                    // convert libinput pointer acceleration range [-1, 1] to closest slider range [1, 11]
+                    value: getClosestSliderPosition(accelSpeedValue)
+
+                    onValueChanged: {
+                        if (device != undefined && enabled && !root.loading) {
+                            // convert slider range [1, 11] to accelSpeedValue range [-1000, 1000]
+                            accelSpeedValue = accelSpeedSliderPositions[value]
+
                             accelSpeed.onAccelSpeedChanged(accelSpeedValue)
                         }
                     }
@@ -189,39 +214,32 @@ Kirigami.ApplicationItem {
                     id: accelSpeedSpinbox
                     Layout.minimumWidth: Kirigami.Units.gridUnit * 5
 
-                    from: -100
-                    to: 100
-                    stepSize: 1
+                    from: 0
+                    to: 2000
+                    stepSize: 100
                     editable: true
-                    enabled: root.device?.supportsPointerAcceleration ?? false
+                    enabled: device?.supportsPointerAcceleration ?? false
 
-                    // if existing configuration or another application set a value with more than 2 decimals
-                    // we reduce the precision to 2
-                    value: enabled && root.device ? Math.round(root.device.pointerAcceleration * 100) : 0
+                    value: enabled ? Math.round(1000 + device.pointerAcceleration * 1000) : 0
 
                     validator: DoubleValidator {
                         bottom: accelSpeedSpinbox.from
                         top: accelSpeedSpinbox.to
                     }
 
-                    onValueModified: {
-                        if (root.device) {
-                            accelSpeed.onAccelSpeedChanged(value)
-                            // Keyboard input breaks SpinBox value bindings with current Qt.
-                            // Restore the binding so clicking "Reset" will update it correctly.
-                            value = Qt.binding(() => accelSpeedSpinbox.enabled && root.device
-                                ? Math.round(root.device.pointerAcceleration * 100)
-                                : 0
-                            );
+                    onValueChanged: {
+                        if (device != undefined && enabled && !root.loading) {
+                            accelSpeed.onAccelSpeedChanged(value - 1000)
                         }
                     }
 
-                    textFromValue: function(val, locale) {
-                        return Number(val / 100).toLocaleString(locale, "f", 2)
+                    textFromValue: function(value, locale) {
+                        locale.numberOptions = Locale.OmitGroupSeparator;
+                        return Number(value / 10).toLocaleString(locale, 'f', 1)+" %"
                     }
 
                     valueFromText: function(text, locale) {
-                        return Number.fromLocaleString(locale, text) * 100
+                        return Number.fromLocaleString(locale, text.replace(" %", "")) * 10
                     }
                 }
             }
@@ -231,14 +249,14 @@ Kirigami.ApplicationItem {
                 spacing: Kirigami.Units.smallSpacing
                 Kirigami.FormData.label: i18nd("kcmmouse", "Pointer acceleration:")
                 Kirigami.FormData.buddyFor: accelProfileFlat
-                enabled: root.device?.supportsPointerAccelerationProfileAdaptive ?? false
+                enabled: device?.supportsPointerAccelerationProfileAdaptive ?? false
 
                 QQC2.ButtonGroup {
                     buttons: [accelProfileFlat, accelProfileAdaptive]
                     onClicked: {
-                        if (root.device) {
-                            root.device.pointerAccelerationProfileFlat = accelProfileFlat.checked
-                            root.device.pointerAccelerationProfileAdaptive = accelProfileAdaptive.checked
+                        if (device) {
+                            device.pointerAccelerationProfileFlat = accelProfileFlat.checked
+                            device.pointerAccelerationProfileAdaptive = accelProfileAdaptive.checked
                             root.changeSignal()
                         }
                     }
@@ -246,7 +264,7 @@ Kirigami.ApplicationItem {
                 QQC2.RadioButton {
                     id: accelProfileFlat
                     text: i18nd("kcmmouse", "None")
-                    checked: accelProfile.enabled && (root.device?.pointerAccelerationProfileFlat ?? false)
+                    checked: accelProfile.enabled && device.pointerAccelerationProfileFlat
 
                     QQC2.ToolTip.delay: 1000
                     QQC2.ToolTip.visible: hovered
@@ -255,7 +273,7 @@ Kirigami.ApplicationItem {
                 QQC2.RadioButton {
                     id: accelProfileAdaptive
                     text: i18nd("kcmmouse", "Standard")
-                    checked: accelProfile.enabled && (root.device?.pointerAccelerationProfileAdaptive ?? false)
+                    checked: accelProfile.enabled && device.pointerAccelerationProfileAdaptive
 
                     QQC2.ToolTip.delay: 1000
                     QQC2.ToolTip.visible: hovered
@@ -272,12 +290,12 @@ Kirigami.ApplicationItem {
                 id: naturalScroll
                 Kirigami.FormData.label: i18nd("kcmmouse", "Scrolling:")
                 text: i18nd("kcmmouse", "Invert scroll direction")
-                enabled: root.device?.supportsNaturalScroll ?? false
-                checked: enabled && (root.device?.naturalScroll ?? false)
+                enabled: device?.supportsNaturalScroll ?? false
+                checked: enabled && device.naturalScroll
 
                 onToggled: {
-                    if (root.device) {
-                        root.device.naturalScroll = checked
+                    if (device) {
+                        device.naturalScroll = checked
                         root.changeSignal()
                     }
                 }
@@ -293,7 +311,7 @@ Kirigami.ApplicationItem {
                 Kirigami.FormData.buddyFor: scrollFactor
                 Layout.fillWidth: true
 
-                visible: !root.backend.isAnonymousInputDevice
+                visible: !backend.isAnonymousInputDevice
                 columns: 3
 
                 QQC2.Slider {
@@ -304,7 +322,7 @@ Kirigami.ApplicationItem {
                     from: 0
                     to: 14
                     stepSize: 1
-                    enabled: root.device !== null
+                    enabled: device
 
                     readonly property list<real> values: [
                         0.1,
@@ -324,15 +342,15 @@ Kirigami.ApplicationItem {
                         20
                     ]
 
-                    function indexOf(val: real): int {
+                    function indexOf(val) {
                         const index = values.indexOf(val)
                         return index === -1 ? values.indexOf(1) : index
                     }
-                    value: indexOf(root.device?.scrollFactor ?? 1)
+                    value: indexOf(device?.scrollFactor ?? 1)
 
                     onMoved: {
-                        if (root.device) {
-                            root.device.scrollFactor = values[value]
+                        if (device) {
+                            device.scrollFactor = values[value]
                             root.changeSignal()
                         }
                     }
@@ -359,12 +377,12 @@ Kirigami.ApplicationItem {
 
             QQC2.Button  {
                 text: i18ndc("kcmmouse", "@action:button", "Re-bind Additional Mouse Buttons…")
-                visible: !root.backend.isAnonymousInputDevice && (
-                    buttonMappings.model.length > 0 || root.backend.inputDevices.some(supportsExtraButtons)
+                visible: !backend.isAnonymousInputDevice && (
+                    buttonMappings.model.length > 0 || Array.prototype.some.call(backend.inputDevices, supportsExtraButtons)
                 )
                 onClicked: root.pageStack.push(buttonPage)
 
-                function supportsExtraButtons(device: QtObject): bool {
+                function supportsExtraButtons(device) {
                     return (device?.supportedButtons ?? 0) & ~(Qt.LeftButton | Qt.RightButton | Qt.MiddleButton);
                 }
             }
@@ -378,13 +396,13 @@ Kirigami.ApplicationItem {
         MouseArea {
             // Deliberately using MouseArea on the page instead of a TapHandler on the button, so we can capture clicks anywhere
             id: buttonCapture
-            property var lastButton: undefined
+            property var lastButton: {}
 
             anchors.fill: parent
             enabled: newBinding.checked
             preventStealing: true
             acceptedButtons: Qt.AllButtons & ~(Qt.LeftButton | Qt.RightButton | Qt.MiddleButton)
-            onClicked: mouse => {
+            onClicked: {
                 lastButton = buttonMappings.extraButtons.find(entry => Qt[entry.buttonName] === mouse.button)
                 newBinding.visible = false
                 newKeySequenceItem.visible = true
@@ -393,14 +411,12 @@ Kirigami.ApplicationItem {
         }
 
         ColumnLayout {
-            spacing: Kirigami.Units.smallSpacing
-
             Kirigami.FormLayout {
                 id: buttonLayout
                 twinFormLayouts: otherLayout
                 Repeater {
                     id: buttonMappings
-                    model: extraButtons?.filter(entry => root.backend.buttonMapping?.hasOwnProperty(entry.buttonName)) ?? []
+                    model: extraButtons?.filter(entry => backend.buttonMapping?.hasOwnProperty(entry.buttonName)) ?? []
 
                     readonly property var extraButtons: Array.from({length: 24}, (value, index) => ({
                         buttonName: "ExtraButton" + (index + 1),
@@ -408,22 +424,20 @@ Kirigami.ApplicationItem {
                         label: i18ndc("kcmmouse", "@label for assigning an action to a numbered button", "Extra Button %1:", index + 1)
                     }))
 
-                    delegate: KQuickControls.KeySequenceItem {
-                        required property var modelData
-
+                    delegate: KeySequenceItem {
                         Kirigami.FormData.label: modelData.label
 
-                        keySequence: root.backend.buttonMapping[modelData.buttonName]
+                        keySequence: backend.buttonMapping[modelData.buttonName]
 
                         modifierlessAllowed: true
                         modifierOnlyAllowed: true
                         multiKeyShortcutsAllowed: false
-                        checkForConflictsAgainst: KQuickControls.ShortcutType.None
+                        checkForConflictsAgainst: ShortcutType.None
 
                         onCaptureFinished: {
-                            const copy = root.backend.buttonMapping;
+                            const copy = backend.buttonMapping;
                             copy[modelData.buttonName] = keySequence
-                            root.backend.buttonMapping = copy
+                            backend.buttonMapping = copy
                             root.changeSignal()
                         }
                     }
@@ -434,15 +448,13 @@ Kirigami.ApplicationItem {
                 id: explanationLabel
                 Layout.fillWidth: true
                 visible: newBinding.checked || newKeySequenceItem.visible
-                text: newBinding.visible
-                    ? i18ndc("kcmmouse","@action:button", "Press the mouse button for which you want to add a key binding")
-                    : i18ndc("kcmmouse","@action:button, %1 is the translation of 'Extra Button %1' from above",
-                        "Enter the new key combination for %1", buttonCapture.lastButton?.label ?? "")
+                text: newBinding.visible ? i18ndc("kcmmouse","@action:button", "Press the mouse button for which you want to add a key binding") :
+                    i18ndc("kcmmouse","@action:button, %1 is the translation of 'Extra Button %1' from above", "Enter the new key combination for %1", buttonCapture.lastButton?.label ?? "")
                 actions: [
                     Kirigami.Action {
                         icon.name: "dialog-cancel"
                         text: i18ndc("kcmmouse", "@action:button", "Cancel")
-                        onTriggered: source => {
+                        onTriggered: {
                             newKeySequenceItem.visible = false;
                             newBinding.visible = true
                             newBinding.checked = false
@@ -458,27 +470,26 @@ Kirigami.ApplicationItem {
                 QQC2.Button {
                     id: newBinding
                     checkable: true
-                    text: checked
-                        ? i18ndc("kcmmouse", "@action:button", "Press a mouse button")
-                        : i18ndc("kcmmouse", "@action:button, Bind a mousebutton to keyboard key(s)", "Add Binding…")
+                    text: checked ? i18ndc("kcmmouse", "@action:button", "Press a mouse button ") :
+                        i18ndc("kcmmouse", "@action:button, Bind a mousebutton to keyboard key(s)", "Add Binding…")
                     icon.name: "list-add"
                 }
-                KQuickControls.KeySequenceItem {
+                KeySequenceItem {
                     id: newKeySequenceItem
                     visible: false
 
                     modifierlessAllowed: true
                     modifierOnlyAllowed: true
                     multiKeyShortcutsAllowed: false
-                    checkForConflictsAgainst: KQuickControls.ShortcutType.None
+                    checkForConflictsAgainst: ShortcutType.None
 
                     onCaptureFinished: {
                         visible = false
                         newBinding.visible = true
                         newBinding.checked = false
-                        const copy = root.backend.buttonMapping;
+                        const copy = backend.buttonMapping;
                         copy[buttonCapture.lastButton.buttonName] = keySequence
-                        root.backend.buttonMapping = copy
+                        backend.buttonMapping = copy
                         root.changeSignal()
                     }
                 }
