@@ -29,6 +29,16 @@ add_test(
 set_tests_properties(folderviewtest PROPERTIES TIMEOUT 300 ENVIRONMENT "CMAKE_BINARY_DIR=${CMAKE_BINARY_DIR};KACTIVITYMANAGERD_PATH=${KDE_INSTALL_FULL_LIBEXECDIR}/kactivitymanagerd")
 
 add_test(
+    NAME bug472909test_x11
+    COMMAND selenium-webdriver-at-spi-run ${CMAKE_CURRENT_SOURCE_DIR}/bug472909.py --failfast
+)
+set_tests_properties(bug472909test_x11 PROPERTIES TIMEOUT 600 ENVIRONMENT "TEST_WITH_KWIN_WAYLAND=0;CMAKE_BINARY_DIR=${CMAKE_BINARY_DIR};KACTIVITYMANAGERD_PATH=${KDE_INSTALL_FULL_LIBEXECDIR}/kactivitymanagerd;GDK_BACKEND=x11")
+
+add_test(
+    NAME bug472909test_wayland
+    COMMAND selenium-webdriver-at-spi-run ${CMAKE_CURRENT_SOURCE_DIR}/bug472909.py --failfast
+)
+add_test(
     NAME bug476968test
     COMMAND selenium-webdriver-at-spi-run ${CMAKE_CURRENT_SOURCE_DIR}/bug476968.py --failfast
 )
@@ -36,7 +46,7 @@ add_test(
     NAME bug477220test
     COMMAND selenium-webdriver-at-spi-run ${CMAKE_CURRENT_SOURCE_DIR}/bug477220.py --failfast
 )
-set_tests_properties(bug476968test bug477220test PROPERTIES TIMEOUT 600 ENVIRONMENT "CMAKE_BINARY_DIR=${CMAKE_BINARY_DIR};KACTIVITYMANAGERD_PATH=${KDE_INSTALL_FULL_LIBEXECDIR}/kactivitymanagerd")
+set_tests_properties(bug472909test_wayland bug476968test bug477220test PROPERTIES TIMEOUT 600 ENVIRONMENT "CMAKE_BINARY_DIR=${CMAKE_BINARY_DIR};KACTIVITYMANAGERD_PATH=${KDE_INSTALL_FULL_LIBEXECDIR}/kactivitymanagerd;GDK_BACKEND=wayland")
 
 add_test(
     NAME emojiertest
