@@ -126,7 +126,7 @@ Item {
     }
 
     Connections {
-        target: root.containment?.plasmoid
+        target: root.containment?.plasmoid ?? null
         function onActivated() {
             // BUG 472909: status changes to PassiveStatus or ActiveStatus after applet shortcut is pressed for the second time
             if (root.containment.plasmoid.status === PlasmaCore.Types.PassiveStatus /*After pressing panel shortcut*/ || root.containment.plasmoid.status === PlasmaCore.Types.ActiveStatus) {
