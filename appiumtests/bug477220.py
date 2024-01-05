@@ -69,7 +69,7 @@ class Bug477220Test(unittest.TestCase):
         """
         time.sleep(3)
         screen_geometry = Gtk.Window().get_display().get_monitors()[0].get_geometry()
-        long_press_time_ms: int = Gtk.Settings.get_default().get_property("gtk-long-press-time") * 2 + 5000
+        long_press_time_ms: int = Gtk.Settings.get_default().get_property("gtk-long-press-time") * 2 + 10000
         self.assertGreater(screen_geometry.width, 0)
         self.assertGreater(screen_geometry.height, 0)
 
