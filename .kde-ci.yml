@@ -62,6 +62,7 @@ RuntimeDependencies:
     'frameworks/qqc2-desktop-style': '@latest-kf6'
     'network/kio-extras': '@latest-kf6'
     'plasma/kactivitymanagerd': '@same'
+    'plasma/kglobalacceld': '@same'
     'sdk/selenium-webdriver-at-spi': '@latest-kf6'
 
 Options:
