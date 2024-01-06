@@ -169,6 +169,13 @@ SimpleKCM {
                 toolTipText: xi18nc("@info", "Tells the device to accommodate left-handed users. Effects will vary by device, but often it reverses the pad buttonsʼ functionality so the tablet can be used upside-down.")
             }
         }
+        QQC2.CheckBox {
+            Kirigami.FormData.label: i18nd("kcm_tablet", "Relative mode:")
+            checked: parent.device && parent.device.relative
+            onCheckedChanged: {
+                parent.device.relative = checked
+            }
+        }
         QQC2.ComboBox {
             id: outputAreaCombo
             Layout.fillWidth: true
