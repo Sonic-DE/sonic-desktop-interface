@@ -65,6 +65,7 @@ InputDevice::InputDevice(const QString &dbusName, QObject *parent)
     connect(this, &InputDevice::mapToWorkspaceChanged, this, &InputDevice::needsSaveChanged);
     connect(this, &InputDevice::pressureCurveChanged, this, &InputDevice::needsSaveChanged);
     connect(this, &InputDevice::inputAreaChanged, this, &InputDevice::needsSaveChanged);
+    connect(this, &InputDevice::relativeChanged, this, &InputDevice::needsSaveChanged);
 }
 
 void InputDevice::save()
@@ -77,12 +78,14 @@ void InputDevice::save()
     m_mapToWorkspace.save();
     m_pressureCurve.save();
     m_inputArea.save();
+    m_relative.save();
 }
 
 bool InputDevice::isSaveNeeded() const
 {
     return m_leftHanded.changed() || m_orientation.changed() || m_outputName.changed() || m_outputArea.changed() || m_enabled.changed()
-        || m_mapToWorkspace.changed() || m_pressureCurve.changed() || m_inputArea.changed();
+        || m_mapToWorkspace.changed() || m_pressureCurve.changed() || m_inputArea.changed()
+        || m_mapToWorkspace.changed() || m_pressureCurve.changed() || m_relative.changed();
 }
 
 void InputDevice::defaults()
@@ -98,12 +101,14 @@ void InputDevice::defaults()
     }
     m_pressureCurve.resetFromDefaults();
     m_inputArea.resetFromDefaults();
+    m_relative.resetFromDefaults();
 }
 
 bool InputDevice::isDefaults() const
 {
     return m_leftHanded.isDefaults() && m_orientation.isDefaults() && m_outputName.isDefaults() && m_outputArea.isDefaults() && m_enabled.isDefaults()
-        && m_mapToWorkspace.isDefaults() && m_pressureCurve.isDefaults() && m_inputArea.isDefaults();
+        && m_mapToWorkspace.isDefaults() && m_pressureCurve.isDefaults() && m_inputArea.isDefaults()
+        && m_mapToWorkspace.isDefaults() && m_pressureCurve.isDefaults() && m_relative.isDefaults();
 }
 
 void InputDevice::load()
@@ -116,6 +121,7 @@ void InputDevice::load()
     m_mapToWorkspace.resetFromSaved();
     m_pressureCurve.resetFromSaved();
     m_inputArea.resetFromSaved();
+    m_relative.resetFromSaved();
 }
 
 void InputDevice::setOrientation(int ori)
@@ -161,6 +167,11 @@ void InputDevice::setPressureCurve(const QString &curve)
 bool InputDevice::pressureCurveIsDefault() const
 {
     return m_pressureCurve.isDefaults();
+}
+
+void InputDevice::setRelative(bool relative)
+{
+    m_relative.set(relative);
 }
 
 #include "moc_inputdevice.cpp"
