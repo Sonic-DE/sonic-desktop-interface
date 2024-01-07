@@ -76,7 +76,7 @@ class Bug477220Test(unittest.TestCase):
         # Click "More" to open the desktop context menu
         wait = WebDriverWait(self.driver, 5)
         success = False
-        for _ in range(20):
+        for i in range(20):
             try:
                 action = ActionBuilder(self.driver, mouse=PointerInput(POINTER_TOUCH, "finger"))
                 action.pointer_action.move_to_location(int(screen_geometry.width / 2), int(screen_geometry.height / 2)).pointer_down().pause(long_press_time_ms / 1000).pointer_up()
@@ -85,6 +85,7 @@ class Bug477220Test(unittest.TestCase):
                 success = True
                 break
             except TimeoutException:
+                self.driver.get_screenshot_as_file(f"failed_test_shot_bug478958_{i}.png")
                 continue
         self.assertTrue(success)
 
