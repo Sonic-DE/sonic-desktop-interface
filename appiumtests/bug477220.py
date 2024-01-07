@@ -69,22 +69,22 @@ class Bug477220Test(unittest.TestCase):
         """
         time.sleep(3)
         screen_geometry = Gtk.Window().get_display().get_monitors()[0].get_geometry()
-        long_press_time_ms: int = Gtk.Settings.get_default().get_property("gtk-long-press-time") * 2 + 5000
         self.assertGreater(screen_geometry.width, 0)
         self.assertGreater(screen_geometry.height, 0)
 
         # Click "More" to open the desktop context menu
         wait = WebDriverWait(self.driver, 5)
         success = False
-        for _ in range(20):
+        for i in range(20):
             try:
                 action = ActionBuilder(self.driver, mouse=PointerInput(POINTER_TOUCH, "finger"))
-                action.pointer_action.move_to_location(int(screen_geometry.width / 2), int(screen_geometry.height / 2)).pointer_down().pause(long_press_time_ms / 1000).pointer_up()
+                action.pointer_action.move_to_location(int(screen_geometry.width / 2), int(screen_geometry.height / 2)).pointer_down().pause(10).pointer_up()
                 action.perform()
                 wait.until(EC.presence_of_element_located((AppiumBy.NAME, "More"))).click()
                 success = True
                 break
             except TimeoutException:
+                self.driver.get_screenshot_as_file(f"failed_test_shot_bug478958_{i}.png")
                 continue
         self.assertTrue(success)
 
