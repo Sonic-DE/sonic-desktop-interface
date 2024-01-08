@@ -1,13 +1,13 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
-# Sergiu Bivol <sergiu@cip.md>, 2014, 2020, 2022.
+# Sergiu Bivol <sergiu@cip.md>, 2014, 2020, 2022, 2023, 2024.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-11-04 12:20+0000\n"
-"PO-Revision-Date: 2022-12-28 21:16+0000\n"
+"PO-Revision-Date: 2024-01-07 18:28+0000\n"
 "Last-Translator: Sergiu Bivol <sergiu@cip.md>\n"
 "Language-Team: Romanian <kde-i18n-ro@kde.org>\n"
 "Language: ro\n"
@@ -24,11 +24,13 @@ msgid ""
 "The system must be restarted before changes to the middle-click paste "
 "setting can take effect."
 msgstr ""
+"Sistemul trebuie repornit pentru ca modificările lipirii cu clic mijlociu să "
+"intre în vigoare."
 
 #: ui/main.qml:30
 #, kde-format
 msgid "Restart"
-msgstr ""
+msgstr "Repornește"
 
 #: ui/main.qml:47
 #, kde-format
@@ -120,16 +122,14 @@ msgid "Middle-click to scroll to clicked location"
 msgstr "Clic-mijloc pentru derulare la locul ales"
 
 #: ui/main.qml:229
-#, fuzzy, kde-format
-#| msgid "Middle Click:"
+#, kde-format
 msgctxt ""
 "@radio part of a complete sentence: 'Middle click pastes selected text'"
 msgid "Middle Click:"
 msgstr "Clic mijlociu:"
 
 #: ui/main.qml:231
-#, fuzzy, kde-format
-#| msgid "Paste selected text"
+#, kde-format
 msgctxt ""
 "@radio part of a complete sentence: 'Middle click pastes selected text'"
 msgid "Pastes selected text"
@@ -179,23 +179,22 @@ msgstr ""
 "mai mari pentru a facilita interacțiunea prin atingeri."
 
 #: ui/main.qml:328
-#, fuzzy, kde-format
-#| msgid "Open by double-clicking instead"
+#, kde-format
 msgid "Double-click interval:"
-msgstr "Deschide prin apăsare dublă în schimb"
+msgstr "Interval dublu-clic:"
 
 #: ui/main.qml:343
 #, kde-format
 msgid "%1 msec"
 msgid_plural "%1 msec"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "%1 msec"
+msgstr[1] "%1 msec"
+msgstr[2] "%1 de msec"
 
 #: ui/main.qml:347
 #, kde-format
 msgid "msec"
-msgstr ""
+msgstr "msec"
 
 #: ui/main.qml:361
 #, kde-format
@@ -203,6 +202,8 @@ msgid ""
 "Two clicks within this duration are considered a double-click. Some "
 "applications may not honor this setting."
 msgstr ""
+"Două clicuri în acest interval sunt considerate ca fiind dublu-clic. Unele "
+"aplicații pot să nu onoreze această configurare."
 
 #. i18n: ectx: label, entry (singleClick), group (KDE)
 #: workspaceoptions_kdeglobalssettings.kcfg:9
@@ -224,10 +225,9 @@ msgstr "Clic stâng în calea barei de derulare mută bara cu o pagină"
 
 #. i18n: ectx: label, entry (doubleClickInterval), group (KDE)
 #: workspaceoptions_kdeglobalssettings.kcfg:21
-#, fuzzy, kde-format
-#| msgid "Open by double-clicking instead"
+#, kde-format
 msgid "Double click interval"
-msgstr "Deschide prin apăsare dublă în schimb"
+msgstr "Interval dublu-clic"
 
 #. i18n: ectx: label, entry (tabletMode), group (Input)
 #: workspaceoptions_kwinsettings.kcfg:9
