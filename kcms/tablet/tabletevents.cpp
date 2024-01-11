@@ -80,8 +80,27 @@ public:
         Q_EMIT m_events->toolButtonReceived(m_hardware_serial_hi, m_hardware_serial_lo, button, state);
     }
 
+    void zwp_tablet_tool_v2_motion(wl_fixed_t x, wl_fixed_t y) override
+    {
+        m_tool_x = x;
+        m_tool_y = y;
+        Q_EMIT m_events->toolMotion(wl_fixed_to_double(m_tool_x), wl_fixed_to_double(m_tool_y));
+    }
+
+    void zwp_tablet_tool_v2_down(uint32_t serial) override
+    {
+        Q_EMIT m_events->toolDown(wl_fixed_to_double(m_tool_x), wl_fixed_to_double(m_tool_y));
+    }
+
+    void zwp_tablet_tool_v2_up() override
+    {
+        Q_EMIT m_events->toolUp();
+    }
+
     uint32_t m_hardware_serial_hi = 0;
     uint32_t m_hardware_serial_lo = 0;
+    wl_fixed_t m_tool_x = 0;
+    wl_fixed_t m_tool_y = 0;
     TabletEvents *const m_events;
 };
 
