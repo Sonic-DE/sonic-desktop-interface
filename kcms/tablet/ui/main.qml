@@ -31,6 +31,22 @@ SimpleKCM {
         text: i18nd("kcm_tablet", "No drawing tablets found.")
     }
 
+    actions: [
+        Kirigami.Action {
+            text: i18ndc("kcm_tablet", "Tests tablet functionality like the pen", "Tablet Tester")
+            icon.name: "tool_pen"
+            onTriggered: {
+                const component = Qt.createComponent("Tester.qml");
+                if (component.status === Component.Ready) {
+                    const window = component.createObject(root, {tabletEvents});
+                    window.show();
+                } else {
+                    console.error(component.errorString());
+                }
+            }
+        }
+    ]
+
     Kirigami.FormLayout {
         id: form
         enabled: combo.count > 0
