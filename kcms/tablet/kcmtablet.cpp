@@ -6,6 +6,7 @@
 
 #include "kcmtablet.h"
 #include "inputdevice.h"
+#include "kis_cubic_curve.h"
 #include "tabletevents.h"
 
 #include <KConfigGroup>
@@ -152,6 +153,7 @@ Tablet::Tablet(QObject *parent, const KPluginMetaData &metaData)
     qmlRegisterType<OutputsFittingModel>("org.kde.plasma.tablet.kcm", 1, 1, "OutputsFittingModel");
     qmlRegisterType<TabletEvents>("org.kde.plasma.tablet.kcm", 1, 1, "TabletEvents");
     qmlRegisterAnonymousType<InputDevice>("org.kde.plasma.tablet.kcm", 1);
+    qmlRegisterType<KisCubicCurve>("org.kde.plasma.tablet.kcm", 1, 0, "KisCubicCurve");
 
     connect(m_toolsModel, &DevicesModel::needsSaveChanged, this, &Tablet::refreshNeedsSave);
     connect(m_padsModel, &DevicesModel::needsSaveChanged, this, &Tablet::refreshNeedsSave);

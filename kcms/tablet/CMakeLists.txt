@@ -25,6 +25,7 @@ ecm_qt_install_logging_categories(
 target_sources(kcm_tablet PRIVATE
     kcmtablet.cpp
     tabletevents.cpp
+    kis_cubic_curve.cpp
 )
 
 target_link_libraries(kcm_tablet PRIVATE
