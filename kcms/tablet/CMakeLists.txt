@@ -40,6 +40,7 @@ target_link_libraries(kcm_tablet PRIVATE
     Wayland::Client
     kwindevices
     Canberra::Canberra
+    KWin::kwin # For KWin::CubicCurve
 )
 
 if(BUILD_TESTING)

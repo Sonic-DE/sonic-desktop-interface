@@ -17,6 +17,8 @@
 #include <QScreen>
 #include <QStandardItemModel>
 
+#include <kwin/utils/cubic_curve.h>
+
 K_PLUGIN_FACTORY_WITH_JSON(TabletFactory, "kcm_tablet.json", registerPlugin<Tablet>();)
 
 class OrientationsModel : public QStandardItemModel
@@ -207,6 +209,7 @@ Tablet::Tablet(QObject *parent, const KPluginMetaData &metaData)
     qmlRegisterType<TabletEvents>("org.kde.plasma.tablet.kcm", 1, 1, "TabletEvents");
     qmlRegisterAnonymousType<InputDevice>("org.kde.plasma.tablet.kcm", 1);
     qmlRegisterType<CalibrationTool>("org.kde.plasma.tablet.kcm", 1, 1, "CalibrationTool");
+    qmlRegisterType<KWin::CubicCurve>("org.kde.plasma.tablet.kcm", 1, 0, "CubicCurve");
 
     connect(m_toolsModel, &DevicesModel::needsSaveChanged, this, &Tablet::refreshNeedsSave);
     connect(m_padsModel, &DevicesModel::needsSaveChanged, this, &Tablet::refreshNeedsSave);
