@@ -59,6 +59,7 @@ SimpleKCM {
             onCurrentIndexChanged: {
                 parent.device = kcm.toolsModel.deviceAt(combo.currentIndex)
                 reloadOutputView()
+                pressureCurve.reloadSettings();
             }
 
             Connections {
@@ -278,6 +279,61 @@ SimpleKCM {
 
                 onCaptureFinished: {
                     kcm.assignToolButtonMapping(form.device.name, modelData.value, keySequence)
+                }
+            }
+        }
+
+        RowLayout {
+            Kirigami.FormData.label: i18nd("kcm_tablet", "Pen Pressure:")
+
+            Layout.fillWidth: true
+
+            ColumnLayout {
+                PressureCurve {
+                    id: pressureCurve
+
+                    onControlPointsUpdated: (points) => form.device.pressureCurve = points
+
+                    Layout.fillWidth: true
+
+                    Component.onCompleted: {
+                        pressureCurve.curve.fromString(form.device.pressureCurve);
+                        pressureCurve.update();
+                    }
+
+                    function reloadSettings() {
+                        pressureCurve.curve.fromString(form.device.pressureCurve);
+                        pressureCurve.update();
+                    }
+                }
+                RowLayout {
+                    QQC2.Label {
+                        text: i18ndc("kcm_tablet", "Low pen pressure", "Low Pressure")
+                    }
+
+                    Item {
+                        Layout.fillWidth: true
+                    }
+
+                    QQC2.Label {
+                        text: i18ndc("kcm_tablet", "High pen pressure", "High Pressure")
+                    }
+                }
+            }
+            ColumnLayout {
+                Layout.maximumHeight: pressureCurve.implicitHeight
+                Layout.alignment: Qt.AlignTop
+
+                QQC2.Label {
+                    text: "1.0"
+                }
+
+                Item {
+                    Layout.fillHeight: true
+                }
+
+                QQC2.Label {
+                    text: "0.0"
                 }
             }
         }
