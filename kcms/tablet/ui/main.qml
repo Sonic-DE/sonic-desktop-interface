@@ -86,6 +86,7 @@ SimpleKCM {
             onCurrentIndexChanged: {
                 parent.device = kcm.toolsModel.deviceAt(combo.currentIndex)
                 reloadOutputView()
+                pressureCurve.reloadSettings();
             }
 
             Connections {
@@ -315,6 +316,79 @@ SimpleKCM {
                 onCaptureFinished: {
                     kcm.assignToolButtonMapping(form.device.name, modelData.value, keySequence)
                 }
+            }
+        }
+
+        RowLayout {
+            Kirigami.FormData.label: i18nd("kcm_tablet", "Pen Pressure:")
+
+            Layout.fillWidth: true
+
+            spacing: Kirigami.Units.smallSpacing
+
+            ColumnLayout {
+                spacing: Kirigami.Units.smallSpacing
+
+                PressureCurve {
+                    id: pressureCurve
+
+                    onControlPointsUpdated: (points) => form.device.pressureCurve = points
+
+                    Layout.fillWidth: true
+
+                    Component.onCompleted: {
+                        pressureCurve.curve.fromString(form.device.pressureCurve);
+                        pressureCurve.update();
+                    }
+
+                    function reloadSettings() {
+                        pressureCurve.curve.fromString(form.device.pressureCurve);
+                        pressureCurve.update();
+                    }
+
+                    Connections {
+                        target: form.device
+
+                        // For reloading the curve when it's reset/set to default
+                        function onPressureCurveChanged(): void {
+                            pressureCurve.reloadSettings();
+                        }
+                    }
+                }
+                RowLayout {
+                    QQC2.Label {
+                        text: i18ndc("kcm_tablet", "Low pen pressure", "Low Pressure")
+                    }
+
+                    Item {
+                        Layout.fillWidth: true
+                    }
+
+                    QQC2.Label {
+                        text: i18ndc("kcm_tablet", "High pen pressure", "High Pressure")
+                    }
+                }
+            }
+            ColumnLayout {
+                Layout.maximumHeight: pressureCurve.implicitHeight
+                Layout.alignment: Qt.AlignTop
+
+                spacing: Kirigami.Units.smallSpacing
+
+                QQC2.Label {
+                    text: "1.0"
+                }
+
+                Item {
+                    Layout.fillHeight: true
+                }
+
+                QQC2.Label {
+                    text: "0.0"
+                }
+            }
+            Kirigami.ContextualHelpButton {
+                toolTipText: i18ndc("kcm_tablet", "@info", "This curve controls the relationship between the pressure on the stylus and the pressure values received by applications. Tap on the curve to add up to two points. Press the Delete key to remove existing points.")
             }
         }
 

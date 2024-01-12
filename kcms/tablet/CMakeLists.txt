@@ -38,6 +38,7 @@ target_link_libraries(kcm_tablet PRIVATE
     Qt::WaylandClient
     Wayland::Client
     kwindevices
+    KWin::kwin # For KWin::CubicCurve
 )
 if (Qt${QT_MAJOR_VERSION}_VERSION VERSION_LESS "6.5.0")
     target_link_libraries(kcm_tablet PRIVATE Qt::GuiPrivate)
