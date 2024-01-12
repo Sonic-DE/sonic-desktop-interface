@@ -10,6 +10,7 @@
 
 #include <KSharedConfig>
 #include <QKeySequence>
+#include <QPointF>
 
 #include "devicesmodel.h"
 

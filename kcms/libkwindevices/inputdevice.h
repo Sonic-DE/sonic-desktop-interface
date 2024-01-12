@@ -29,6 +29,7 @@ class InputDevice : public QObject
     Q_PROPERTY(int orientation READ orientation WRITE setOrientation NOTIFY orientationChanged)
     Q_PROPERTY(QString outputName READ outputName WRITE setOutputName NOTIFY outputNameChanged)
     Q_PROPERTY(QRectF outputArea READ outputArea WRITE setOutputArea NOTIFY outputAreaChanged)
+    Q_PROPERTY(QString pressureCurve READ pressureCurve WRITE setPressureCurve NOTIFY pressureCurveChanged)
 
 public:
     InputDevice(const QString &dbusName, QObject *parent);
@@ -91,6 +92,12 @@ public:
 
     void setEnabled(bool enabled);
 
+    QString pressureCurve() const
+    {
+        return m_pressureCurve.value();
+    }
+    void setPressureCurve(const QString &outputArea);
+
 Q_SIGNALS:
     void needsSaveChanged();
 
@@ -99,6 +106,7 @@ Q_SIGNALS:
     void outputNameChanged();
     void outputAreaChanged();
     void enabledChanged();
+    void pressureCurveChanged();
 
 private:
     template<typename T>
@@ -214,6 +222,8 @@ private:
                                              &OrgKdeKWinInputDeviceInterface::defaultOutputArea,
                                              &OrgKdeKWinInputDeviceInterface::supportsOutputArea,
                                              &InputDevice::outputAreaChanged);
+
+    Prop<QString> m_pressureCurve = Prop<QString>(this, "pressureCurve", nullptr, nullptr, &InputDevice::pressureCurveChanged);
 
     std::unique_ptr<OrgKdeKWinInputDeviceInterface> m_iface;
 };
