@@ -34,6 +34,7 @@ SimpleKCM {
     Kirigami.FormLayout {
         id: form
         enabled: combo.count > 0
+
         QQC2.ComboBox {
             id: combo
             Kirigami.FormData.label: i18ndc("kcm_tablet", "@label:listbox The device we are configuring", "Device:")
@@ -59,6 +60,7 @@ SimpleKCM {
             onCurrentIndexChanged: {
                 parent.device = kcm.toolsModel.deviceAt(combo.currentIndex)
                 reloadOutputView()
+                pressureCurve.reloadSettings();
             }
 
             Connections {
@@ -278,6 +280,59 @@ SimpleKCM {
 
                 onCaptureFinished: {
                     kcm.assignToolButtonMapping(form.device.name, modelData.value, keySequence)
+                }
+            }
+        }
+
+        RowLayout {
+            Kirigami.FormData.label: i18nd("kcm_tablet", "Pen Pressure:")
+
+            ColumnLayout {
+                PressureCurve {
+                    id: pressureCurve
+
+                    onControlPointsUpdated: (points) => form.device.pressureCurve = points
+
+                    Component.onCompleted: {
+                        pressureCurve.curve.fromString(form.device.pressureCurve);
+                        pressureCurve.updatePolyLine();
+                        pressureCurve.updateControlPoints();
+                    }
+
+                    function reloadSettings() {
+                        pressureCurve.curve.fromString(form.device.pressureCurve);
+                        pressureCurve.updatePolyLine();
+                        pressureCurve.updateControlPoints();
+                    }
+                }
+                RowLayout {
+                    QQC2.Label {
+                        text: "Low Pressure"
+                    }
+
+                    Item {
+                        Layout.fillWidth: true
+                    }
+
+                    QQC2.Label {
+                        text: "High Pressure"
+                    }
+                }
+            }
+            ColumnLayout {
+                Layout.maximumHeight: pressureCurve.implicitHeight
+                Layout.alignment: Qt.AlignTop
+
+                QQC2.Label {
+                    text: "1.0"
+                }
+
+                Item {
+                    Layout.fillHeight: true
+                }
+
+                QQC2.Label {
+                    text: "0.0"
                 }
             }
         }

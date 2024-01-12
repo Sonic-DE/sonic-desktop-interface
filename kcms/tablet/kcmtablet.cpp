@@ -15,6 +15,8 @@
 #include <QScreen>
 #include <QStandardItemModel>
 
+#include <kwin/utils/cubic_curve.h>
+
 K_PLUGIN_FACTORY_WITH_JSON(TabletFactory, "kcm_tablet.json", registerPlugin<Tablet>();)
 
 class OrientationsModel : public QStandardItemModel
@@ -152,6 +154,7 @@ Tablet::Tablet(QObject *parent, const KPluginMetaData &metaData)
     qmlRegisterType<OutputsFittingModel>("org.kde.plasma.tablet.kcm", 1, 1, "OutputsFittingModel");
     qmlRegisterType<TabletEvents>("org.kde.plasma.tablet.kcm", 1, 1, "TabletEvents");
     qmlRegisterAnonymousType<InputDevice>("org.kde.plasma.tablet.kcm", 1);
+    qmlRegisterType<KWin::CubicCurve>("org.kde.plasma.tablet.kcm", 1, 0, "CubicCurve");
 
     connect(m_toolsModel, &DevicesModel::needsSaveChanged, this, &Tablet::refreshNeedsSave);
     connect(m_padsModel, &DevicesModel::needsSaveChanged, this, &Tablet::refreshNeedsSave);
@@ -162,17 +165,21 @@ Tablet::~Tablet() = default;
 
 void Tablet::refreshNeedsSave()
 {
+    qInfo() << "refreshing..";
     setNeedsSave(isSaveNeeded());
 }
 
 bool Tablet::isSaveNeeded() const
 {
-    return !m_unsavedMappings.isEmpty() || m_toolsModel->isSaveNeeded() || m_padsModel->isSaveNeeded();
+    return !m_unsavedMappings.isEmpty() || !m_unsavedPressureCurves.isEmpty() || m_toolsModel->isSaveNeeded() || m_padsModel->isSaveNeeded();
 }
 
 bool Tablet::isDefaults() const
 {
     if (!m_unsavedMappings.isEmpty())
+        return false;
+
+    if (!m_unsavedPressureCurves.isEmpty())
         return false;
 
     const auto cfg = KSharedConfig::openConfig("kcminputrc");
