@@ -256,6 +256,14 @@ MouseArea {
             }
 
             PlasmaComponents3.ToolButton {
+                id: addPanelButton
+                property QtObject qAction: Plasmoid.corona.action("add panel")
+                text: qAction.text
+                icon.name: "list-add"
+                onClicked: qAction.trigger()
+            }
+
+            PlasmaComponents3.ToolButton {
                 id: configureButton
                 property QtObject qAction: Plasmoid.internalAction("configure")
                 text: qAction.text
