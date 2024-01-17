@@ -258,7 +258,7 @@ MouseArea {
             PlasmaComponents3.ToolButton {
                 id: addPanelButton
                 property QtObject qAction: Plasmoid.corona.action("add panel")
-                text: qAction.text + "..."
+                text: i18nd("plasma_toolbox_org.kde.desktoptoolbox", "Add Panel…")
                 icon.name: "list-add"
                 onClicked: qAction.trigger()
             }
