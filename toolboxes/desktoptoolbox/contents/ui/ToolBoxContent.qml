@@ -260,6 +260,7 @@ MouseArea {
                 property QtObject qAction: Plasmoid.corona.action("add panel")
                 text: qAction.text
                 icon.name: "list-add"
+                Accessible.role: Accessible.ButtonMenu
                 onClicked: qAction.trigger()
             }
 
