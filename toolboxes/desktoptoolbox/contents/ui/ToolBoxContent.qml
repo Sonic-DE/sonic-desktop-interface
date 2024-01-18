@@ -239,6 +239,7 @@ MouseArea {
 
             // Show buttons in two lines if screen space is limited
             readonly property real buttonWidth: addWidgetButton.implicitWidth
+                + addPanelButton.implicitWidth
                 + configureButton.implicitWidth
                 + themeButton.implicitWidth
                 + displaySettingsButton.implicitWidth
