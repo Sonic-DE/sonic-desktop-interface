@@ -257,11 +257,12 @@ MouseArea {
 
             PlasmaComponents3.ToolButton {
                 id: addPanelButton
+                height: addWidgetButton.height
                 property QtObject qAction: Plasmoid.corona.action("add panel")
                 text: qAction.text
                 icon.name: "list-add"
                 Accessible.role: Accessible.ButtonMenu
-                onClicked: qAction.trigger()
+                onClicked: Plasmoid.corona.showAddPanelContextMenu(mapToGlobal(0, height))
             }
 
             PlasmaComponents3.ToolButton {
