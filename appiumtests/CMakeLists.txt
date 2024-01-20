@@ -52,3 +52,9 @@ add_test(
     COMMAND selenium-webdriver-at-spi-run ${CMAKE_CURRENT_SOURCE_DIR}/kcm_plasmasearch_test.py
 )
 set_tests_properties(kcm_plasmasearch_test PROPERTIES TIMEOUT 120)
+
+add_test(
+    NAME kcm_tablet_test
+    COMMAND umockdev-wrapper selenium-webdriver-at-spi-run ${CMAKE_CURRENT_SOURCE_DIR}/kcm_tablet_test.py
+)
+set_tests_properties(kcm_tablet_test PROPERTIES TIMEOUT 120)
