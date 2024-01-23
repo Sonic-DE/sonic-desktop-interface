@@ -250,6 +250,11 @@ ContainmentItem {
                 Layout.maximumHeight: !root.isHorizontal ? (wantsToFillHeight ? findPositive(applet?.Layout.maximumHeight, root.height) : Layout.preferredHeight) : availHeight
     // END BUG 454095
 
+                Rectangle {
+                    anchors.fill: parent
+                    color: "red"
+                }
+
                 Item {
                     id: marginHighlightElements
                     anchors.fill: parent
