@@ -39,8 +39,6 @@ PlasmoidItem {
     readonly property bool inPanel: [PlasmaCore.Types.TopEdge, PlasmaCore.Types.RightEdge, PlasmaCore.Types.BottomEdge, PlasmaCore.Types.LeftEdge]
             .includes(Plasmoid.location)
 
-    readonly property bool vertical: Plasmoid.location === PlasmaCore.Types.RightEdge || Plasmoid.location === PlasmaCore.Types.LeftEdge
-
     /**
     * @c true if the current applet is Minimize All, @c false if the
     * current applet is Show Desktop.
@@ -112,12 +110,12 @@ PlasmoidItem {
 
         // Active/not active indicator
         KSvg.FrameSvgItem {
-            property var containerMargins: {
+            property var container: {
                 let item = this;
                 while (item.parent) {
                     item = item.parent;
                     if (item.isAppletContainer) {
-                        return item.getMargins;
+                        return item;
                     }
                 }
                 return undefined;
@@ -125,42 +123,19 @@ PlasmoidItem {
 
             anchors {
                 fill: parent
-                property bool returnAllMargins: true
-                // The above makes sure margin is returned even for side margins
-                // that would be otherwise turned off.
-                topMargin: !vertical && containerMargins ? -containerMargins('top', returnAllMargins) : 0
-                leftMargin: vertical && containerMargins ? -containerMargins('left', returnAllMargins) : 0
-                rightMargin: vertical && containerMargins ? -containerMargins('right', returnAllMargins) : 0
-                bottomMargin: !vertical && containerMargins ? -containerMargins('bottom', returnAllMargins) : 0
+                topMargin: container ? (container.getButtonMargins("top") - container.getMargins("top")) : 0
+                leftMargin: container ? (container.getButtonMargins("left") - container.getMargins("left")) : 0
+                rightMargin: container ? (container.getButtonMargins("right") - container.getMargins("right")) : 0
+                bottomMargin: container ? (container.getButtonMargins("bottom") - container.getMargins("bottom")) : 0
             }
-            imagePath: "widgets/tabbar"
-            visible: opacity > 0
+            imagePath: "widgets/button"
             prefix: {
-                let prefix;
-                switch (Plasmoid.location) {
-                case PlasmaCore.Types.LeftEdge:
-                    prefix = "west-active-tab";
-                    break;
-                case PlasmaCore.Types.TopEdge:
-                    prefix = "north-active-tab";
-                    break;
-                case PlasmaCore.Types.RightEdge:
-                    prefix = "east-active-tab";
-                    break;
-                default:
-                    prefix = "south-active-tab";
-                }
-                if (!hasElementPrefix(prefix)) {
-                    prefix = "active-tab";
-                }
-                return prefix;
-            }
-            opacity: activeController.active ? 1 : 0
-
-            Behavior on opacity {
-                NumberAnimation {
-                    duration: Kirigami.Units.shortDuration
-                    easing.type: Easing.InOutQuad
+                if (mouseArea.containsPress) {
+                    return activeController.active ? ["toolbutton-selected-pressed", "toolbutton-pressed"] : "toolbutton-pressed";
+                } else if (mouseArea.containsMouse) {
+                    return activeController.active ? ["toolbutton-selected-hover", "toolbutton-pressed"] : "toolbutton-hover";
+                } else {
+                    return activeController.active ? ["toolbutton-selected", "toolbutton-pressed"] : "toolbutton-normal";
                 }
             }
         }

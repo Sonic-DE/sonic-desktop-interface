@@ -25,8 +25,6 @@ PlasmaCore.ToolTipArea {
     textFormat: plasmoidItem ? plasmoidItem.toolTipTextFormat : 0
     mainItem: plasmoidItem && plasmoidItem.toolTipItem ? plasmoidItem.toolTipItem : null
 
-    readonly property bool vertical: location === PlasmaCore.Types.RightEdge || location === PlasmaCore.Types.LeftEdge
-
     property Item fullRepresentation
     property Item compactRepresentation
     property Item expandedFeedback: expandedItem
@@ -89,16 +87,23 @@ PlasmaCore.ToolTipArea {
         }
     }
 
+    MouseArea {
+        id: mouseArea
+        anchors.fill: parent
+        hoverEnabled: true
+        onClicked: Plasmoid.activated()
+    }
+
     KSvg.FrameSvgItem {
         id: expandedItem
         z: -100
 
-        property var containerMargins: {
+        property var container: {
             let item = root;
             while (item.parent) {
                 item = item.parent;
                 if (item.isAppletContainer) {
-                    return item.getMargins;
+                    return item;
                 }
             }
             return undefined;
@@ -106,41 +111,19 @@ PlasmaCore.ToolTipArea {
 
         anchors {
             fill: parent
-            property bool returnAllMargins: true
-            // The above makes sure margin is returned even for side margins, that
-            // would be otherwise turned off.
-            bottomMargin: !vertical && containerMargins ? -containerMargins('bottom', returnAllMargins) : 0;
-            topMargin: !vertical && containerMargins ? -containerMargins('top', returnAllMargins) : 0;
-            leftMargin: vertical && containerMargins ? -containerMargins('left', returnAllMargins) : 0;
-            rightMargin: vertical && containerMargins ? -containerMargins('right', returnAllMargins) : 0;
+            topMargin: container ? (container.getButtonMargins("top") - container.getMargins("top")) : 0
+            leftMargin: container ? (container.getButtonMargins("left") - container.getMargins("left")) : 0
+            rightMargin: container ? (container.getButtonMargins("right") - container.getMargins("right")) : 0
+            bottomMargin: container ? (container.getButtonMargins("bottom") - container.getMargins("bottom")) : 0
         }
-        imagePath: "widgets/tabbar"
-        visible: opacity > 0
+        imagePath: "widgets/button"
         prefix: {
-            let prefix;
-            switch (Plasmoid.location) {
-            case PlasmaCore.Types.LeftEdge:
-                prefix = "west-active-tab";
-                break;
-            case PlasmaCore.Types.TopEdge:
-                prefix = "north-active-tab";
-                break;
-            case PlasmaCore.Types.RightEdge:
-                prefix = "east-active-tab";
-                break;
-            default:
-                prefix = "south-active-tab";
-            }
-            if (!hasElementPrefix(prefix)) {
-                prefix = "active-tab";
-            }
-            return prefix;
-        }
-        opacity: plasmoidItem && plasmoidItem.expanded ? 1 : 0
-        Behavior on opacity {
-            NumberAnimation {
-                duration: Kirigami.Units.shortDuration
-                easing.type: Easing.InOutQuad
+            if (mouseArea.containsPress) {
+                return plasmoidItem?.expanded ? ["toolbutton-selected-pressed", "toolbutton-pressed"] : "toolbutton-pressed";
+            } else if (mouseArea.containsMouse) {
+                return plasmoidItem?.expanded ? ["toolbutton-selected-hover", "toolbutton-pressed"] : "toolbutton-hover";
+            } else {
+                return plasmoidItem?.expanded ? ["toolbutton-selected", "toolbutton-pressed"] : "toolbutton-normal";
             }
         }
     }
