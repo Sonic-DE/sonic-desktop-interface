@@ -277,6 +277,7 @@ QHash<int, QByteArray> FolderModel::staticRoleNames()
     roleNames[IsDirRole] = "isDir";
     roleNames[IsLinkRole] = "isLink";
     roleNames[IsHiddenRole] = "isHidden";
+    roleNames[IsFoundRole] = "isFound";
     roleNames[UrlRole] = "url";
     roleNames[LinkDestinationUrl] = "linkDestinationUrl";
     roleNames[SizeRole] = "size";
@@ -336,6 +337,32 @@ void FolderModel::newFileMenuItemCreated(const QUrl &url)
         m_dropTargetPositions.insert(url.fileName(), localMenuPosition());
         m_menuPosition = {};
         m_dropTargetPositionsCleanup->start();
+    }
+}
+
+void FolderModel::search(const QRegularExpression &regExp)
+{
+    const QList<int> roles{IsFoundRole};
+
+    if (regExp.pattern().isEmpty()) {
+        m_foundIndexes.clear();
+        Q_EMIT dataChanged(index(0, 0), index(rowCount() - 1, 0), roles);
+        return;
+    }
+
+    for (int row = 0; row < rowCount(); ++row) {
+        QModelIndex currentIndex = index(row, 0);
+        QString fileName = itemForIndex(currentIndex).url().fileName();
+
+        bool found = regExp.match(fileName).hasMatch();
+
+        if (m_foundIndexes.contains(currentIndex) && !found) {
+            m_foundIndexes.removeAll(currentIndex);
+            Q_EMIT dataChanged(currentIndex, currentIndex, roles);
+        } else if (found) {
+            m_foundIndexes.append(currentIndex);
+            Q_EMIT dataChanged(currentIndex, currentIndex, roles);
+        }
     }
 }
 
@@ -1343,6 +1370,8 @@ QVariant FolderModel::data(const QModelIndex &index, int role) const
     } else if (role == IsHiddenRole) {
         const KFileItem item = itemForIndex(index);
         return item.isHidden();
+    } else if (role == IsFoundRole) {
+        return m_foundIndexes.contains(index);
     } else if (role == UrlRole) {
         return itemForIndex(index).url();
     } else if (role == LinkDestinationUrl) {

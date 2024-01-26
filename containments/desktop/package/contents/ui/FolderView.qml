@@ -9,6 +9,7 @@ import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQml 2.15
 
+import org.kde.plasma.core as PlasmaCore
 import org.kde.plasma.plasmoid 2.0
 import org.kde.kirigami 2.20 as Kirigami
 import org.kde.plasma.components 3.0 as PlasmaComponents
@@ -1358,6 +1359,31 @@ FocusScope {
     Component.onCompleted: {
         if (backButton === null && root.useListViewMode) {
             backButton = makeBackButton();
+        }
+
+        Plasmoid.setInternalAction("search", searchAction)
+    }
+
+    FolderViewSearch {
+        id: searchDialog
+
+        x: parent.width - width - Kirigami.Units.largeSpacing
+        y: (isContainment && root.availableScreenRect) ? root.availableScreenRect.y : 0 + Kirigami.Units.largeSpacing
+
+        visible: false
+    }
+
+    PlasmaCore.Action {
+        id: searchAction
+        text: i18n("Search")
+        icon.name: "file-search-symbolic"
+        shortcut: "ctrl+f"
+        onTriggered: {
+            if (searchDialog.visible) {
+                searchDialog.forceFocusToField();
+            } else {
+                searchDialog.visible = true;
+            }
         }
     }
 }

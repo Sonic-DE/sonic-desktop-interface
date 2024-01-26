@@ -97,6 +97,7 @@ public:
         IsDirRole,
         IsLinkRole,
         IsHiddenRole,
+        IsFoundRole,
         UrlRole,
         LinkDestinationUrl,
         SizeRole,
@@ -216,6 +217,8 @@ public:
 
     Q_INVOKABLE bool isBlank(int row) const;
 
+    Q_INVOKABLE void search(const QRegularExpression &regExp);
+
     Q_INVOKABLE QAction *action(const QString &name) const;
     QObject *newMenu() const;
     Q_INVOKABLE void updateActions();
@@ -317,6 +320,7 @@ private:
     QItemSelectionModel *m_selectionModel;
     QItemSelection m_pinnedSelection;
     QModelIndexList m_dragIndexes;
+    QModelIndexList m_foundIndexes;
     QHash<int, DragImage *> m_dragImages;
     QPoint m_dragHotSpotScrollOffset;
     bool m_urlChangedWhileDragging;

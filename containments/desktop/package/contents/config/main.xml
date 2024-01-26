@@ -135,5 +135,17 @@
       <label>Show hidden files.</label>
       <default>false</default>
     </entry>
+    <entry name="searchSensitivity" type="Bool">
+      <label>Case-sensitive.</label>
+      <default>false</default>
+    </entry>
+    <entry name="matchWholeWord" type="Bool">
+      <label>Match Whole Word.</label>
+      <default>false</default>
+    </entry>
+    <entry name="useRegularExpression" type="Bool">
+      <label>Use Regular Expression.</label>
+      <default>false</default>
+    </entry>
   </group>
 </kcfg>

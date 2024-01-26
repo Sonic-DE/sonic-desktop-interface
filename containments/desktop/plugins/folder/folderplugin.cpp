@@ -17,6 +17,7 @@
 #include "positioner.h"
 #include "previewpluginsmodel.h"
 #include "rubberband.h"
+#include "searchdialog.h"
 #include "shortcut.h"
 #include "subdialog.h"
 #include "viewpropertiesmenu.h"
@@ -52,6 +53,7 @@ void FolderPlugin::registerTypes(const char *uri)
     qmlRegisterType<Positioner>(uri, 0, 1, "Positioner");
     qmlRegisterType<PreviewPluginsModel>(uri, 0, 1, "PreviewPluginsModel");
     qmlRegisterType<RubberBand>(uri, 0, 1, "RubberBand");
+    qmlRegisterType<SearchDialog>(uri, 0, 1, "SearchDialog");
     qmlRegisterType<SubDialog>(uri, 0, 1, "SubDialog");
     qmlRegisterType<ViewPropertiesMenu>(uri, 0, 1, "ViewPropertiesMenu");
     qmlRegisterType<WheelInterceptor>(uri, 0, 1, "WheelInterceptor");

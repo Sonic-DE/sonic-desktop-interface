@@ -225,6 +225,20 @@ Item {
             }
 
             Loader {
+                id: foundLoader
+
+                x: frameLoader.x
+                y: frameLoader.y
+
+                width: frameLoader.width
+                height: frameLoader.height
+
+                sourceComponent: foundComponent
+                active: model.isFound
+                asynchronous: true
+            }
+
+            Loader {
                 id: frameLoader
 
                 x: root.useListViewMode ? 0 : Kirigami.Units.smallSpacing
@@ -366,6 +380,15 @@ Item {
                     font.italic: model.isLink
                     wrapMode: (maximumLineCount === 1) ? Text.NoWrap : Text.Wrap
                     horizontalAlignment: Text.AlignHCenter
+                }
+
+                Component {
+                    id: foundComponent
+
+                    KSvg.FrameSvgItem {
+                        prefix: "hover"
+                        imagePath: "widgets/viewitem"
+                    }
                 }
 
                 Component {
