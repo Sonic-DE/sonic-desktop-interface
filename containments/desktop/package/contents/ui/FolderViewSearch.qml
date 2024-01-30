@@ -8,7 +8,7 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls as QQC2
 
-import org.kde.plasma.plasmoid 2.0
+import org.kde.plasma.plasmoid
 import org.kde.plasma.components as PlasmaComponents
 import org.kde.plasma.core as PlasmaCore
 import org.kde.kirigami as Kirigami
@@ -17,6 +17,9 @@ import org.kde.private.desktopcontainment.folder as Folder
 
 Folder.SearchDialog {
     id: dialog
+
+    height: mainItem.implicitHeight + dialog.margins.top + + dialog.margins.bottom
+    Behavior on height { NumberAnimation { duration: Kirigami.Units.shortDuration } }
 
     location: PlasmaCore.Types.Floating
     type: PlasmaCore.Dialog.Dock
@@ -41,93 +44,178 @@ Folder.SearchDialog {
         searchField.forceActiveFocus();
     }
 
-    mainItem:
-        RowLayout {
+    ColumnLayout {
         width: Kirigami.Units.gridUnit * 30
 
-        Kirigami.SearchField {
-            id: searchField
-
-            focusSequence: undefined // To not display the shortcut tooltip
+        RowLayout {
             Layout.fillWidth: true
+            Layout.alignment: Qt.AlignTop
 
-            property bool hasError: false
+            Kirigami.SearchField {
+                id: searchField
 
-            background: Item {}
-            color: hasError ? Kirigami.Theme.negativeTextColor : Kirigami.Theme.textColor
-            Keys.onEscapePressed: dialog.visible = false
+                focusSequence: undefined // To not display the shortcut tooltip
+                Layout.fillWidth: true
 
-            onAccepted: {
-                dialog.searchString = text.trim();
+                property bool hasError: false
 
-                if (Plasmoid.configuration.useRegularExpression && !dialog.isValidRegularExpression()) {
-                    searchField.hasError = true;
-                    return;
+                background: Item {}
+                color: hasError ? Kirigami.Theme.negativeTextColor : Kirigami.Theme.textColor
+
+                onAccepted: {
+                    dialog.searchString = text.trim();
+
+                    if (Plasmoid.configuration.useRegularExpression && !dialog.isValidRegularExpression()) {
+                        searchField.hasError = true;
+                        return;
+                    }
+
+                    searchField.hasError = false;
+                    dir.search(dialog.getRegularExpression());
+                }
+            }
+
+            QQC2.ToolButton {
+                icon.name: "edit-select-all"
+
+                QQC2.ToolTip.text: i18n("Select Found")
+                QQC2.ToolTip.visible: hovered
+                QQC2.ToolTip.delay: Kirigami.Units.toolTipDelay
+
+                onClicked: dir.selectFound()
+            }
+        }
+
+            QQC2.ToolButton {
+                icon.name: "edit-select-none"
+
+                QQC2.ToolTip.text: i18n("Deselect Found")
+                QQC2.ToolTip.visible: hovered
+                QQC2.ToolTip.delay: Kirigami.Units.toolTipDelay
+
+                onClicked: dir.clearSelection()
+            }
+        }
+
+            QQC2.ToolButton {
+                id: powerSettings
+
+                QQC2.ToolTip.text: i18n("Power Search")
+                QQC2.ToolTip.visible: hovered
+                QQC2.ToolTip.delay: Kirigami.Units.toolTipDelay
+
+                action: Kirigami.Action {
+                    checkable: true
+
+                    icon.name: "settings-configure"
+                    shortcut: "Alt+S"
                 }
 
-                searchField.hasError = false;
-                dir.search(dialog.getRegularExpression());
+                // To indicate about enabled search options
+                Rectangle {
+                    width: Kirigami.Units.largeSpacing
+                    height: Kirigami.Units.largeSpacing
+
+                    anchors {
+                        right: parent.right
+                        top: parent.top
+                        margins: -Kirigami.Units.largeSpacing / 4
+                    }
+
+                    radius: width * 0.5
+                    Kirigami.Theme.colorSet: Kirigami.Theme.View
+                    color: Kirigami.Theme.neutralTextColor
+                    visible: dialog.searchSensitivity || dialog.matchWholeWord || dialog.useRegularExpression
+                }
             }
         }
 
-        QQC2.ToolButton {
-            checkable: true
-            checked: dialog.searchSensitivity
-            icon.name: checked ? "format-text-uppercase" : "format-text-lowercase"
-            display: QQC2.AbstractButton.IconOnly
+            QQC2.ToolButton {
+                QQC2.ToolTip.text: i18n("Close (Escape)")
+                QQC2.ToolTip.visible: hovered
+                QQC2.ToolTip.delay: Kirigami.Units.toolTipDelay
 
-            QQC2.ToolTip.text: i18n("Match Case")
-            QQC2.ToolTip.visible: hovered
-            QQC2.ToolTip.delay: Kirigami.Units.toolTipDelay
+                action: Kirigami.Action {
+                    icon.name: "window-close"
+                    shortcut: "Escape"
 
-            onClicked: {
-                Plasmoid.configuration.searchSensitivity = checked;
-                searchField.accepted();
+                    onTriggered: dialog.hide()
+                }
             }
         }
 
-        QQC2.ToolButton {
-            checkable: true
-            checked: dialog.matchWholeWord
-            icon.name: "markasblank"
-            display: QQC2.AbstractButton.IconOnly
+        RowLayout {
+            Layout.fillWidth: true
+            Layout.leftMargin: Kirigami.Units.smallSpacing * 2
+            visible: powerSettings.checked
 
-            QQC2.ToolTip.text: i18n("Match Whole Word")
-            QQC2.ToolTip.visible: hovered
-            QQC2.ToolTip.delay: Kirigami.Units.toolTipDelay
+            QQC2.ToolButton {
+                QQC2.ToolTip.text: i18n("Match Case (Alt+C)")
+                QQC2.ToolTip.visible: hovered
+                QQC2.ToolTip.delay: Kirigami.Units.toolTipDelay
 
-            onClicked: {
-                Plasmoid.configuration.matchWholeWord = checked;
-                searchField.accepted();
+                action: Kirigami.Action {
+                    checkable: true
+                    checked: dialog.searchSensitivity
+                
+                    icon.name: checked ? "format-text-uppercase" : "format-text-lowercase"
+                    text: i18n("Match Case")
+
+                    shortcut: "Alt+C"
+
+                    onTriggered: {
+                        Plasmoid.configuration.searchSensitivity = checked;
+                        searchField.accepted();
+                    }
+                }
             }
-        }
 
-        QQC2.ToolButton {
-            checkable: true
-            checked: dialog.useRegularExpression
-            icon.name: "code-context"
-            display: QQC2.AbstractButton.IconOnly
+            QQC2.ToolButton {
+                QQC2.ToolTip.text: i18n("Match Whole Word (Alt+W)")
+                QQC2.ToolTip.visible: hovered
+                QQC2.ToolTip.delay: Kirigami.Units.toolTipDelay
 
-            QQC2.ToolTip.text: i18n("Use Regular Expression")
-            QQC2.ToolTip.visible: hovered
-            QQC2.ToolTip.delay: Kirigami.Units.toolTipDelay
+                action: Kirigami.Action {
+                    checkable: true
+                    checked: dialog.matchWholeWord
 
-            onClicked: {
-                Plasmoid.configuration.useRegularExpression = checked;
-                searchField.accepted();
+                    icon.name: "markasblank"
+                    text: i18n("Whole Word")
+
+                    shortcut: "Alt+W"
+
+                    onTriggered: {
+                        Plasmoid.configuration.matchWholeWord = checked;
+                        searchField.accepted();
+                    }
+                }
             }
-        }
 
-        QQC2.ToolButton {
-            id: closeButton
-            icon.name: "window-close"
-            display: QQC2.AbstractButton.IconOnly
+            QQC2.ToolButton {
+                QQC2.ToolTip.text: i18n("Use Regular Expression (Alt+R)")
+                QQC2.ToolTip.visible: hovered
+                QQC2.ToolTip.delay: Kirigami.Units.toolTipDelay
 
-            QQC2.ToolTip.text: i18n("Close")
-            QQC2.ToolTip.visible: hovered
-            QQC2.ToolTip.delay: Kirigami.Units.toolTipDelay
+                onClicked: {
+                    Plasmoid.configuration.useRegularExpression = checked;
+                    searchField.accepted();
+                }
 
-            onClicked: dialog.visible = false
+                action: Kirigami.Action {
+                    checkable: true
+                    checked: dialog.useRegularExpression
+
+                    icon.name: "code-context"
+                    text: i18n("RegExp")
+
+                    shortcut: "Alt+R"
+
+                    onTriggered: {
+                        Plasmoid.configuration.useRegularExpression = checked;
+                        searchField.accepted();
+                    }
+                }
+            }
         }
     }
 }

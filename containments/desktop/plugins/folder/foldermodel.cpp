@@ -344,9 +344,12 @@ void FolderModel::search(const QRegularExpression &regExp)
 {
     const QList<int> roles{IsFoundRole};
 
-    if (regExp.pattern().isEmpty()) {
-        m_foundIndexes.clear();
-        Q_EMIT dataChanged(index(0, 0), index(rowCount() - 1, 0), roles);
+    if (regExp.pattern().isEmpty() || !regExp.isValid()) {
+        if (!m_foundIndexes.isEmpty()) {
+            m_foundIndexes.clear();
+            Q_EMIT dataChanged(index(0, 0), index(rowCount() - 1, 0), roles);
+        }
+
         return;
     }
 
@@ -947,6 +950,15 @@ void FolderModel::pinSelection()
 void FolderModel::unpinSelection()
 {
     m_pinnedSelection = QItemSelection();
+}
+
+void FolderModel::selectFound()
+{
+    QItemSelection newSelection;
+    for (const QModelIndex &index : std::as_const(m_foundIndexes)) {
+        newSelection.select(index, index);
+        m_selectionModel->select(newSelection, QItemSelectionModel::ClearAndSelect);
+    }
 }
 
 void FolderModel::addItemDragImage(int row, int x, int y, int width, int height, const QVariant &image)

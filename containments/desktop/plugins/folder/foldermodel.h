@@ -206,6 +206,7 @@ public:
     Q_INVOKABLE void clearSelection();
     Q_INVOKABLE void pinSelection();
     Q_INVOKABLE void unpinSelection();
+    Q_INVOKABLE void selectFound();
 
     Q_INVOKABLE void addItemDragImage(int row, int x, int y, int width, int height, const QVariant &image);
     Q_INVOKABLE void clearDragImages();

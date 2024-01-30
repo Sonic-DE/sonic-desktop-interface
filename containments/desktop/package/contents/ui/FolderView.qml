@@ -1382,7 +1382,7 @@ FocusScope {
             if (searchDialog.visible) {
                 searchDialog.forceFocusToField();
             } else {
-                searchDialog.visible = true;
+                searchDialog.show();
             }
         }
     }
