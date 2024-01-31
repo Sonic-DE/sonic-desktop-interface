@@ -1368,7 +1368,7 @@ FocusScope {
         id: searchDialog
 
         x: parent.width - width - Kirigami.Units.largeSpacing
-        y: (isContainment && root.availableScreenRect) ? root.availableScreenRect.y : 0 + Kirigami.Units.largeSpacing
+        y: Kirigami.Units.largeSpacing
 
         visible: false
     }
