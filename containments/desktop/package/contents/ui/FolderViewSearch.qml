@@ -9,7 +9,6 @@ import QtQuick.Layouts
 import QtQuick.Controls as QQC2
 
 import org.kde.plasma.plasmoid
-import org.kde.plasma.components as PlasmaComponents
 import org.kde.plasma.core as PlasmaCore
 import org.kde.kirigami as Kirigami
 
@@ -22,9 +21,6 @@ Folder.SearchDialog {
     Behavior on height { NumberAnimation { duration: Kirigami.Units.shortDuration } }
 
     location: PlasmaCore.Types.Floating
-    type: PlasmaCore.Dialog.Dock
-    flags: Qt.WindowStaysOnTopHint
-
     hideOnWindowDeactivate: true
 
     searchSensitivity: Plasmoid.configuration.searchSensitivity ? Qt.CaseSensitive : Qt.CaseInsensitive
@@ -38,6 +34,16 @@ Folder.SearchDialog {
             searchField.text = "";
             searchField.accepted();
         }
+    }
+
+    onRegularExpressionChanged: {
+        if (Plasmoid.configuration.useRegularExpression && !dialog.isValidRegularExpression()) {
+            searchField.hasError = true;
+            return;
+        }
+
+        searchField.hasError = false;
+        dir.search(dialog.regularExpression);
     }
 
     function forceFocusToField() {
@@ -62,17 +68,7 @@ Folder.SearchDialog {
                 background: Item {}
                 color: hasError ? Kirigami.Theme.negativeTextColor : Kirigami.Theme.textColor
 
-                onAccepted: {
-                    dialog.searchString = text.trim();
-
-                    if (Plasmoid.configuration.useRegularExpression && !dialog.isValidRegularExpression()) {
-                        searchField.hasError = true;
-                        return;
-                    }
-
-                    searchField.hasError = false;
-                    dir.search(dialog.getRegularExpression());
-                }
+                onAccepted: dialog.searchString = text.trim();
             }
 
             QQC2.ToolButton {
@@ -81,10 +77,11 @@ Folder.SearchDialog {
                 QQC2.ToolTip.text: i18n("Select Found")
                 QQC2.ToolTip.visible: hovered
                 QQC2.ToolTip.delay: Kirigami.Units.toolTipDelay
+                QQC2.ToolTip.timeout: Kirigami.Units.humanMoment
 
                 onClicked: dir.selectFound()
             }
-        }
+        
 
             QQC2.ToolButton {
                 icon.name: "edit-select-none"
@@ -92,10 +89,11 @@ Folder.SearchDialog {
                 QQC2.ToolTip.text: i18n("Deselect Found")
                 QQC2.ToolTip.visible: hovered
                 QQC2.ToolTip.delay: Kirigami.Units.toolTipDelay
+                QQC2.ToolTip.timeout: Kirigami.Units.humanMoment
 
                 onClicked: dir.clearSelection()
             }
-        }
+        
 
             QQC2.ToolButton {
                 id: powerSettings
@@ -103,6 +101,7 @@ Folder.SearchDialog {
                 QQC2.ToolTip.text: i18n("Power Search")
                 QQC2.ToolTip.visible: hovered
                 QQC2.ToolTip.delay: Kirigami.Units.toolTipDelay
+                QQC2.ToolTip.timeout: Kirigami.Units.humanMoment
 
                 action: Kirigami.Action {
                     checkable: true
@@ -122,18 +121,18 @@ Folder.SearchDialog {
                         margins: -Kirigami.Units.largeSpacing / 4
                     }
 
-                    radius: width * 0.5
+                    radius: width
                     Kirigami.Theme.colorSet: Kirigami.Theme.View
                     color: Kirigami.Theme.neutralTextColor
                     visible: dialog.searchSensitivity || dialog.matchWholeWord || dialog.useRegularExpression
                 }
             }
-        }
 
             QQC2.ToolButton {
                 QQC2.ToolTip.text: i18n("Close (Escape)")
-                QQC2.ToolTip.visible: hovered
+                QQC2.ToolTip.visible: hovered && !pressed
                 QQC2.ToolTip.delay: Kirigami.Units.toolTipDelay
+                QQC2.ToolTip.timeout: Kirigami.Units.humanMoment
 
                 action: Kirigami.Action {
                     icon.name: "window-close"
@@ -153,6 +152,7 @@ Folder.SearchDialog {
                 QQC2.ToolTip.text: i18n("Match Case (Alt+C)")
                 QQC2.ToolTip.visible: hovered
                 QQC2.ToolTip.delay: Kirigami.Units.toolTipDelay
+                QQC2.ToolTip.timeout: Kirigami.Units.humanMoment
 
                 action: Kirigami.Action {
                     checkable: true
@@ -163,10 +163,7 @@ Folder.SearchDialog {
 
                     shortcut: "Alt+C"
 
-                    onTriggered: {
-                        Plasmoid.configuration.searchSensitivity = checked;
-                        searchField.accepted();
-                    }
+                    onTriggered: Plasmoid.configuration.searchSensitivity = checked
                 }
             }
 
@@ -174,6 +171,7 @@ Folder.SearchDialog {
                 QQC2.ToolTip.text: i18n("Match Whole Word (Alt+W)")
                 QQC2.ToolTip.visible: hovered
                 QQC2.ToolTip.delay: Kirigami.Units.toolTipDelay
+                QQC2.ToolTip.timeout: Kirigami.Units.humanMoment
 
                 action: Kirigami.Action {
                     checkable: true
@@ -184,10 +182,7 @@ Folder.SearchDialog {
 
                     shortcut: "Alt+W"
 
-                    onTriggered: {
-                        Plasmoid.configuration.matchWholeWord = checked;
-                        searchField.accepted();
-                    }
+                    onTriggered: Plasmoid.configuration.matchWholeWord = checked
                 }
             }
 
@@ -195,11 +190,7 @@ Folder.SearchDialog {
                 QQC2.ToolTip.text: i18n("Use Regular Expression (Alt+R)")
                 QQC2.ToolTip.visible: hovered
                 QQC2.ToolTip.delay: Kirigami.Units.toolTipDelay
-
-                onClicked: {
-                    Plasmoid.configuration.useRegularExpression = checked;
-                    searchField.accepted();
-                }
+                QQC2.ToolTip.timeout: Kirigami.Units.humanMoment
 
                 action: Kirigami.Action {
                     checkable: true
@@ -210,10 +201,7 @@ Folder.SearchDialog {
 
                     shortcut: "Alt+R"
 
-                    onTriggered: {
-                        Plasmoid.configuration.useRegularExpression = checked;
-                        searchField.accepted();
-                    }
+                    onTriggered: Plasmoid.configuration.useRegularExpression = checked
                 }
             }
         }

@@ -6,8 +6,6 @@
 
 #include "searchdialog.h"
 
-#include <QRegularExpression>
-
 SearchDialog::SearchDialog(QQuickItem *parent)
     : PlasmaQuick::Dialog(parent)
 {
@@ -17,33 +15,14 @@ SearchDialog::~SearchDialog()
 {
 }
 
-QRegularExpression SearchDialog::getRegularExpression()
-{
-    QRegularExpression regExp;
-    if (m_matchWholeWord) {
-        regExp.setPattern(QLatin1String("\\b") + m_searchString + QLatin1String("\\b"));
-    } else {
-        regExp.setPattern(m_searchString);
-    }
-
-    if (!m_useRegularExpression) {
-        regExp.escape(m_searchString);
-    }
-
-    if (!regExp.isValid()) {
-        return QRegularExpression();
-    }
-
-    if (m_searchSensitivity == Qt::CaseSensitivity::CaseInsensitive) {
-        regExp.setPatternOptions(QRegularExpression::CaseInsensitiveOption);
-    }
-
-    return regExp;
-}
-
 bool SearchDialog::isValidRegularExpression() 
 {
-    return getRegularExpression().isValid();
+    return m_expression.isValid();
+}
+
+QRegularExpression SearchDialog::regularExpression() const 
+{
+    return m_expression;
 }
 
 QString SearchDialog::searchString() const 
@@ -57,6 +36,9 @@ void SearchDialog::setSearchString(const QString &search)
         m_searchString = search;
 
         Q_EMIT searchStringChanged();
+
+        m_expression.setPattern(makePattern());
+        Q_EMIT regularExpressionChanged();
     }
 }
 
@@ -71,6 +53,11 @@ void SearchDialog::setSearchSensitivity(Qt::CaseSensitivity sensitivity)
         m_searchSensitivity = sensitivity;
 
         Q_EMIT searchSensitivityChanged();
+
+        if (m_searchSensitivity == Qt::CaseSensitivity::CaseInsensitive) {
+            m_expression.setPatternOptions(QRegularExpression::CaseInsensitiveOption);
+            Q_EMIT regularExpressionChanged();
+        }
     }
 }
 
@@ -85,6 +72,9 @@ void SearchDialog::setMatchWholeWord(bool flag)
         m_matchWholeWord = flag;
 
         Q_EMIT matchWholeWordChanged();
+
+        m_expression.setPattern(makePattern());
+        Q_EMIT regularExpressionChanged();
     }
 }
 
@@ -99,5 +89,24 @@ void SearchDialog::setUseRegularExpression(bool flag)
         m_useRegularExpression = flag;
 
         Q_EMIT useRegularExpressionChanged();
+
+        m_expression.setPattern(makePattern());
+        Q_EMIT regularExpressionChanged();
     }
+}
+
+QString SearchDialog::makePattern() 
+{
+    QString pattern;
+    if (!m_useRegularExpression) {
+        pattern = QRegularExpression::escape(m_searchString);
+    } else {
+        pattern = m_searchString;
+    }
+
+    if (m_matchWholeWord && !m_searchString.isEmpty()) {
+        pattern = QLatin1String("\\b") + pattern + QLatin1String("\\b");
+    }
+
+    return pattern;
 }
