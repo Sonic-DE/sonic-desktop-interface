@@ -27,6 +27,15 @@ PlasmaCore.ToolTipArea {
 
     readonly property bool vertical: location === PlasmaCore.Types.RightEdge || location === PlasmaCore.Types.LeftEdge
 
+    Connections {
+        target: root.plasmoidItem
+        function onRequestedHide() {
+            console.log(dialog)
+            console.log(dialog.requestHide)
+            dialog.requestHide()
+        }
+    }
+
     property Item fullRepresentation
     property Item compactRepresentation
     property Item expandedFeedback: expandedItem
