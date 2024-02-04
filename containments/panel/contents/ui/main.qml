@@ -155,7 +155,8 @@ ContainmentItem {
         }
 
         onDragEnter: event => {
-            if (Plasmoid.immutable || root.appletRequestsInhibitDnD) {
+            if (root.appletRequestsInhibitDnD) return;
+            if (Plasmoid.immutable) {
                 event.ignore();
                 return;
             }
@@ -166,6 +167,7 @@ ContainmentItem {
         }
 
         onDragMove: event => {
+            if (root.appletRequestsInhibitDnD) return;
             LayoutManager.move(dndSpacer.parent, LayoutManager.indexAtCoordinates(event.x, event.y));
         }
 
@@ -182,6 +184,7 @@ ContainmentItem {
         }
 
         onDrop: event => {
+            if (root.appletRequestsInhibitDnD) return;
             appletsModel.remove(dndSpacer.parent.index);
             root.processMimeData(event.mimeData, event.x, event.y);
             event.accept(event.proposedAction);
