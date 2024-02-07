@@ -36,6 +36,8 @@ Rectangle {
 
     property url currentSource
 
+    property string title: app.currentConfigPage ? app.currentConfigPage.title : ""
+
     function closing() {
         if (applyButton.enabled) {
             messageDialog.item = null;
@@ -338,7 +340,7 @@ Rectangle {
             bottom: parent.bottom
         }
 
-        pageStack.globalToolBar.style: Kirigami.ApplicationHeaderStyle.Breadcrumb
+        pageStack.globalToolBar.style: app.pageStack.depth > 1 ? Kirigami.ApplicationHeaderStyle.Breadcrumb : Kirigami.ApplicationHeaderStyle.None
         wideScreen: true
         pageStack.globalToolBar.separatorVisible: bottomSeparator.visible
         pageStack.globalToolBar.colorSet: Kirigami.Theme.Window
