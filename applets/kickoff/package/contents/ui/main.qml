@@ -107,7 +107,7 @@ PlasmoidItem {
     property Item header: null
 
     // Set in Header.qml
-    property PC3.TextField searchField: null
+    property Item searchField: null
 
     // Set in FullRepresentation.qml, ApplicationPage.qml, PlacesPage.qml
     property Item sideBar: null // is null when searching
