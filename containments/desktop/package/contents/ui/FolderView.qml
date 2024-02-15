@@ -1375,7 +1375,7 @@ FocusScope {
 
     PlasmaCore.Action {
         id: searchAction
-        text: i18n("Search")
+        text: i18nc("@action:button", "Search")
         icon.name: "file-search-symbolic"
         shortcut: "ctrl+f"
         onTriggered: {

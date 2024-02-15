@@ -73,8 +73,10 @@ Folder.SearchDialog {
 
             QQC2.ToolButton {
                 icon.name: "edit-select-all"
+                text: i18nc("@action:button", "Select Found")
+                display: QQC2.ToolButton.IconOnly
 
-                QQC2.ToolTip.text: i18n("Select Found")
+                QQC2.ToolTip.text: text
                 QQC2.ToolTip.visible: hovered
                 QQC2.ToolTip.delay: Kirigami.Units.toolTipDelay
                 QQC2.ToolTip.timeout: Kirigami.Units.humanMoment
@@ -85,8 +87,10 @@ Folder.SearchDialog {
 
             QQC2.ToolButton {
                 icon.name: "edit-select-none"
+                text: i18nc("@action:button", "Deselect Found")
+                display: QQC2.ToolButton.IconOnly
 
-                QQC2.ToolTip.text: i18n("Deselect Found")
+                QQC2.ToolTip.text: text
                 QQC2.ToolTip.visible: hovered
                 QQC2.ToolTip.delay: Kirigami.Units.toolTipDelay
                 QQC2.ToolTip.timeout: Kirigami.Units.humanMoment
@@ -98,15 +102,17 @@ Folder.SearchDialog {
             QQC2.ToolButton {
                 id: powerSettings
 
-                QQC2.ToolTip.text: i18n("Power Search")
+                icon.name: "settings-configure"
+                text: i18nc("@action:button", "Power Search")
+                display: QQC2.ToolButton.IconOnly
+
+                QQC2.ToolTip.text: text
                 QQC2.ToolTip.visible: hovered
                 QQC2.ToolTip.delay: Kirigami.Units.toolTipDelay
                 QQC2.ToolTip.timeout: Kirigami.Units.humanMoment
 
                 action: Kirigami.Action {
                     checkable: true
-
-                    icon.name: "settings-configure"
                     shortcut: "Alt+S"
                 }
 
@@ -129,15 +135,17 @@ Folder.SearchDialog {
             }
 
             QQC2.ToolButton {
-                QQC2.ToolTip.text: i18n("Close (Escape)")
+                text: i18nc("@action:button", "Close (Escape)")
+                display: QQC2.ToolButton.IconOnly
+
+                QQC2.ToolTip.text: text
                 QQC2.ToolTip.visible: hovered && !pressed
                 QQC2.ToolTip.delay: Kirigami.Units.toolTipDelay
                 QQC2.ToolTip.timeout: Kirigami.Units.humanMoment
 
                 action: Kirigami.Action {
                     icon.name: "window-close"
-                    shortcut: "Escape"
-
+                    shortcut: StandardKey.Cancel
                     onTriggered: dialog.hide()
                 }
             }
@@ -149,7 +157,9 @@ Folder.SearchDialog {
             visible: powerSettings.checked
 
             QQC2.ToolButton {
-                QQC2.ToolTip.text: i18n("Match Case (Alt+C)")
+                text: i18nc("@action:button", "Match Case")
+
+                QQC2.ToolTip.text: i18nc("@info:tooltip", "Match Case (Alt+C)")
                 QQC2.ToolTip.visible: hovered
                 QQC2.ToolTip.delay: Kirigami.Units.toolTipDelay
                 QQC2.ToolTip.timeout: Kirigami.Units.humanMoment
@@ -159,7 +169,6 @@ Folder.SearchDialog {
                     checked: dialog.searchSensitivity
                 
                     icon.name: checked ? "format-text-uppercase" : "format-text-lowercase"
-                    text: i18n("Match Case")
 
                     shortcut: "Alt+C"
 
@@ -168,7 +177,9 @@ Folder.SearchDialog {
             }
 
             QQC2.ToolButton {
-                QQC2.ToolTip.text: i18n("Match Whole Word (Alt+W)")
+                text: i18nc("@action:button", "Whole Word")
+
+                QQC2.ToolTip.text: i18nc("@info:tooltip", "Match Whole Word (Alt+W)")
                 QQC2.ToolTip.visible: hovered
                 QQC2.ToolTip.delay: Kirigami.Units.toolTipDelay
                 QQC2.ToolTip.timeout: Kirigami.Units.humanMoment
@@ -178,7 +189,6 @@ Folder.SearchDialog {
                     checked: dialog.matchWholeWord
 
                     icon.name: "markasblank"
-                    text: i18n("Whole Word")
 
                     shortcut: "Alt+W"
 
@@ -187,7 +197,9 @@ Folder.SearchDialog {
             }
 
             QQC2.ToolButton {
-                QQC2.ToolTip.text: i18n("Use Regular Expression (Alt+R)")
+                text: i18nc("@action:button", "RegExp")
+
+                QQC2.ToolTip.text: i18nc("@info:tooltip", "Use Regular Expression (Alt+R)")
                 QQC2.ToolTip.visible: hovered
                 QQC2.ToolTip.delay: Kirigami.Units.toolTipDelay
                 QQC2.ToolTip.timeout: Kirigami.Units.humanMoment
@@ -197,7 +209,6 @@ Folder.SearchDialog {
                     checked: dialog.useRegularExpression
 
                     icon.name: "code-context"
-                    text: i18n("RegExp")
 
                     shortcut: "Alt+R"
 
