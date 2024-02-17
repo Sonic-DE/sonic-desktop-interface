@@ -3,15 +3,11 @@
 # SPDX-FileCopyrightText: 2023 Fushan Wen <qydwhotmail@gmail.com>
 # SPDX-License-Identifier: MIT
 
-import base64
-import os
 import subprocess
 import sys
-import tempfile
 import time
 import unittest
 
-import cv2 as cv
 import gi
 
 gi.require_version('Gtk', '4.0')
@@ -21,9 +17,11 @@ from appium.webdriver.common.appiumby import AppiumBy
 from desktoptest import start_kactivitymanagerd, start_kded
 from gi.repository import Gtk
 from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.actions.action_builder import ActionBuilder
 from selenium.webdriver.common.actions.interaction import POINTER_TOUCH
 from selenium.webdriver.common.actions.pointer_input import PointerInput
+from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
@@ -100,16 +98,12 @@ class Bug477220Test(unittest.TestCase):
         "More" button in the desktop toolbox does not open the context menu
         """
         time.sleep(3)  # Wait until the menu appears
-        with tempfile.TemporaryDirectory() as temp_dir:
-            saved_image_path: str = os.path.join(temp_dir, "desktop.png")
-            self.assertTrue(self.driver.get_screenshot_as_file(saved_image_path))
-
-            cv_first_image = cv.imread(saved_image_path, cv.IMREAD_COLOR)
-            first_image = base64.b64encode(cv.imencode('.png', cv_first_image)[1].tobytes()).decode()
-
-        cv_expected_image = cv.imread(os.path.join(os.path.dirname(os.path.abspath(__file__)), "resources", "bug478958_new_file_menu_item_icon.png"), cv.IMREAD_COLOR)
-        expected_image = base64.b64encode(cv.imencode('.png', cv_expected_image)[1].tobytes()).decode()
-        self.driver.find_image_occurrence(first_image, expected_image, threshold=1e-7)
+        actions = ActionChains(self.driver)
+        # Menu items are exposed to AT-SPI only after they receive a hover event
+        for _ in range(7):  # The number of menu items by default
+            actions = actions.send_keys(Keys.DOWN).pause(0.5)
+        actions.perform()
+        self.driver.find_element(AppiumBy.NAME, "Icons")
 
         # Click an empty area to close the menu
         screen_geometry = Gtk.Window().get_display().get_monitors()[0].get_geometry()
