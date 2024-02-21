@@ -235,6 +235,5 @@ QHash<int, QByteArray> BaseModel::roleNames() const
             {CustomShortcutsRole, QByteArrayLiteral("customShortcuts")},
             {CheckedRole, QByteArrayLiteral("checked")},
             {PendingDeletionRole, QByteArrayLiteral("pendingDeletion")},
-            {IsDefaultRole, QByteArrayLiteral("isDefault")},
-            {SupportsMultipleKeysRole, QByteArrayLiteral("supportsMultipleKeys")}};
+            {IsDefaultRole, QByteArrayLiteral("isDefault")}};
 }
