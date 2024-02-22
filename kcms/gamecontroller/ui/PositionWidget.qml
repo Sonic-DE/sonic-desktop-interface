@@ -17,12 +17,13 @@ Rectangle {
     implicitHeight: 220
 
     required property var device
+    required property var index
     readonly property color lightColor: Kirigami.ColorUtils.tintWithAlpha(Kirigami.Theme.backgroundColor, Kirigami.Theme.textColor, 0.2)
 
     readonly property int markWidth: 5
 
-    readonly property real axisXValue: device !== null ? device.axisValue.x : 0
-    readonly property real axisYValue: device !== null ? device.axisValue.y : 0
+    readonly property real axisXValue: device !== null ? device.axis(index).gridValue.x : 0
+    readonly property real axisYValue: device !== null ? device.axis(index).gridValue.y : 0
 
     readonly property real axisX: (axisXValue * root.width / 2) + (root.width / 2)
     readonly property real axisY: (axisYValue * root.height / 2) + (root.height / 2)
