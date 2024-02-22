@@ -45,10 +45,17 @@ QVariant DeviceModel::data(const QModelIndex &index, int role) const
         return {};
     }
 
-    if (role == Qt::DisplayRole) {
-        const int sdlIndex = m_devices.keys().at(index.row());
+    const int sdlIndex = m_devices.keys().at(index.row());
 
+    switch (role) {
+    case Qt::DisplayRole:
         return i18nc("Device name and path", "%1 (%2)", m_devices.value(sdlIndex)->name(), m_devices.value(sdlIndex)->path());
+    case CustomRoles::NameRole:
+        return m_devices.value(sdlIndex)->name();
+    case CustomRoles::DeviceRole:
+        return QVariant::fromValue(m_devices.value(sdlIndex));
+    case CustomRoles::ConnectionType:
+        return QVariant::fromValue(m_devices.value(sdlIndex)->connectionType());
     }
 
     return {};
@@ -78,6 +85,7 @@ void DeviceModel::poll()
 
 void DeviceModel::addDevice(const int deviceIndex)
 {
+    qCDebug(KCM_GAMECONTROLLER) << "Adding sdl device with index: " << deviceIndex;
     const auto joystick = SDL_JoystickOpen(deviceIndex);
     const auto id = SDL_JoystickInstanceID(joystick);
 
@@ -89,6 +97,11 @@ void DeviceModel::addDevice(const int deviceIndex)
     const auto gamepad = SDL_GameControllerOpen(deviceIndex);
     if (SDL_GameControllerTypeForIndex(deviceIndex) == SDL_CONTROLLER_TYPE_VIRTUAL) {
         qCWarning(KCM_GAMECONTROLLER) << "Skipping gamepad since it is virtual. Index: " << deviceIndex;
+        return;
+    }
+
+    if (joystick == nullptr || gamepad == nullptr) {
+        qCWarning(KCM_GAMECONTROLLER) << "Skipping gamepad since it is somehow null.";
         return;
     }
 
@@ -119,6 +132,11 @@ void DeviceModel::removeDevice(const int deviceIndex)
 int DeviceModel::count() const
 {
     return m_devices.size();
+}
+
+QHash<int, QByteArray> DeviceModel::roleNames() const
+{
+    return {{CustomRoles::NameRole, "name"}, {CustomRoles::DeviceRole, "device"}, {CustomRoles::ConnectionType, "connectionType"}};
 }
 
 #include "moc_devicemodel.cpp"
