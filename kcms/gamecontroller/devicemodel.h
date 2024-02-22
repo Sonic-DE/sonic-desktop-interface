@@ -21,10 +21,13 @@ class DeviceModel : public QAbstractListModel
 public:
     DeviceModel();
 
+    enum CustomRoles { NameRole = Qt::UserRole + 1, DeviceRole, ConnectionType };
+
     Q_INVOKABLE Gamepad *device(int index) const;
 
     int rowCount(const QModelIndex &parent) const override;
     QVariant data(const QModelIndex &index, int role) const override;
+    QHash<int, QByteArray> roleNames() const override;
 
     int count() const;
 
