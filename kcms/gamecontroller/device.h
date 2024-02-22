@@ -16,6 +16,7 @@
 #include <SDL2/SDL_joystick.h>
 
 struct udev;
+class GamepadButton;
 
 class Device : public QObject
 {
@@ -64,6 +65,7 @@ public:
     bool buttonState(int index) const;
     // The name of a given button if known
     QString buttonName(int index) const;
+    Q_INVOKABLE GamepadButton *button(int index);
 
     int axisCount() const;
     QVector2D leftAxisValue() const;
@@ -108,4 +110,5 @@ private:
     ConnectionType m_connectionType = UnknownType;
 
     udev *m_udev;
+    QMap<int, GamepadButton *> m_buttons;
 };
