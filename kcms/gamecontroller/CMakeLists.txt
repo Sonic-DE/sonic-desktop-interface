@@ -27,7 +27,11 @@ ecm_qt_install_logging_categories(
 
 target_sources(kcm_gamecontroller PRIVATE
     devicemodel.cpp
+    devicetypemodel.cpp
     gamepad.cpp
+    gamepadbutton.cpp
+    gamepadstick.cpp
+    gamepadtrigger.cpp
     axesmodel.cpp
     buttonmodel.cpp
     kcm.cpp
@@ -38,6 +42,7 @@ target_link_libraries(kcm_gamecontroller
     KF6::KCMUtils
     KF6::KCMUtilsQuick
     KF6::I18n
+    KF6::Svg
     Qt6::Quick
     Qt6::QuickWidgets
     SDL2::SDL2
