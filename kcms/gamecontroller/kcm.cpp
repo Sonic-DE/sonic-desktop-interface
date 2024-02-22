@@ -14,6 +14,7 @@
 #include "axesmodel.h"
 #include "buttonmodel.h"
 #include "devicemodel.h"
+#include "devicetypemodel.h"
 
 K_PLUGIN_CLASS_WITH_JSON(KCMGameController, "kcm_gamecontroller.json")
 
@@ -27,8 +28,10 @@ KCMGameController::KCMGameController(QObject *parent, const KPluginMetaData &met
     constexpr const char *uri{"org.kde.plasma.gamecontroller.kcm"};
 
     qmlRegisterType<DeviceModel>(uri, 1, 0, "DeviceModel");
+    qmlRegisterType<DeviceTypeModel>(uri, 1, 0, "DeviceTypeModel");
     qmlRegisterType<AxesModel>(uri, 1, 0, "AxesModel");
     qmlRegisterType<ButtonModel>(uri, 1, 0, "ButtonModel");
+    qmlRegisterType<GamepadButton>(uri, 1, 0, "GamepadButton");
 }
 
 KCMGameController::~KCMGameController()
