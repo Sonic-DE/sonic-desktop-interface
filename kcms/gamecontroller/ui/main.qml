@@ -1,5 +1,7 @@
 /*
     SPDX-FileCopyrightText: 2023 Joshua Goins <josh@redstrate.com>
+    SPDX-FileCopyrightText: 2023 Niccolò Venerandi <niccolo@venerandi.com>
+    SPDX-FileCopyrightText: 2023 Jeremy Whiting <jpwhiting@kde.org>
 
     SPDX-License-Identifier: GPL-2.0-or-later
 */
@@ -10,13 +12,15 @@ import QtQuick.Controls as QQC2
 
 import org.kde.kcmutils as KCM
 import org.kde.kirigami as Kirigami
+// import org.kde.config // KAuthorized
 
 import org.kde.plasma.gamecontroller.kcm
 
 KCM.SimpleKCM {
     id: root
 
-    readonly property var device: deviceModel.device(deviceCombo.currentIndex)
+    implicitWidth: Kirigami.Units.gridUnit * 40
+    implicitHeight: Kirigami.Units.gridUnit * 35
 
     Kirigami.PlaceholderMessage {
         icon.name: "input-gamepad"
@@ -27,113 +31,93 @@ KCM.SimpleKCM {
         width: parent.width - (Kirigami.Units.largeSpacing * 4)
     }
 
+    Kirigami.Theme.colorSet: Kirigami.Theme.View
+    Kirigami.Theme.inherit: false
+
     DeviceModel {
         id: deviceModel
+    }
 
-        onDevicesChanged: {
-            // If there are no devices, make sure the combo box is set to no selection
-            if (deviceModel.count === 0) {
-                deviceCombo.currentIndex = -1;
-            } else if (deviceCombo.currentIndex === -1) {
-                // However if we didn't have a selection before, and now have a device
-                deviceCombo.currentIndex = 0;
-            }
-        }
+    DeviceTypeModel {
+        id: deviceTypeModel
     }
 
     ColumnLayout {
-        anchors.fill: parent
+        Kirigami.CardsLayout {
+            maximumColumns: 4
 
-        visible: deviceCombo.count !== 0
-        spacing: Kirigami.Units.largeSpacing
-
-        RowLayout {
-            spacing: Kirigami.Units.largeSpacing
-
-            Layout.fillWidth: true
-
-            QQC2.Label {
-                text: i18nc("@label:textbox", "Device:")
-                textFormat: Text.PlainText
-            }
-
-            QQC2.ComboBox {
-                id: deviceCombo
+            Repeater {
+                id: repeater
 
                 model: deviceModel
 
-                textRole: "display"
+                Kirigami.Card {
+                    required property int index
+                    required property string name
 
-                Layout.fillWidth: true
-            }
-        }
+                    Kirigami.Theme.colorSet: Kirigami.Theme.Window
+                    Kirigami.Theme.inherit: false
 
-        RowLayout {
-            spacing: Kirigami.Units.largeSpacing
+                    property var deviceTypeRow: deviceTypeModel.rowFromType(deviceModel.device(index).gamepadType)
 
-            Layout.fillWidth: true
-            Layout.fillHeight: true
+                    banner.title: name
 
-            ColumnLayout {
-                spacing: Kirigami.Units.largeSpacing
+                    topPadding: Kirigami.Units.gridUnit * 2
 
-                Layout.alignment: Qt.AlignTop
+                    contentItem: Item {
+                        implicitWidth: gamepadgui.width
+                        implicitHeight: gamepadgui.height
 
-                QQC2.Label {
-                    text: i18nc("@label Visual representation of an axis position", "Position:")
-                    textFormat: Text.PlainText
-                }
+                        GamepadRoot {
+                            id: gamepadgui
 
-                PositionWidget {
-                    id: posWidget
+                            anchors.centerIn: parent
 
-                    device: root.device
-                }
-            }
+                            width: Kirigami.Units.gridUnit * 20
+                            height: Kirigami.Units.gridUnit * 20
 
-            ColumnLayout {
-                spacing: Kirigami.Units.largeSpacing
-
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-                Layout.preferredWidth: 50 // Same space for the two columns
-
-                QQC2.Label {
-                    text: i18nc("@label Gamepad buttons", "Buttons:")
-                    textFormat: Text.PlainText
-                }
-
-                Table {
-                    model: ButtonModel {
-                        device: root.device
+                            device: deviceModel.device(index)
+                            svgPath: deviceTypeModel.pathFromRow(deviceTypeRow)
+                        }
                     }
+                    actions: [
+                        Kirigami.Action {
+                            id: typesToPopulate
 
-                    Layout.fillWidth: true
-                    Layout.fillHeight: true
-                }
-            }
+                            text: i18nc("@action:button Change type of gamepad preview", "Preview Type")
+                            icon.name: "view-preview"
+                        },
+                        Kirigami.Action {
+                            text: i18nc("@action:button", "Controller Information")
+                            icon.name: "input-gamepad-symbolic"
+                            onTriggered: kcm.push("AdvancedPage.qml", { device: gamepadgui.device })
+                        }
+                    ]
 
-            ColumnLayout {
-                spacing: Kirigami.Units.largeSpacing
+                    // HACK: Delegates of the Repeater must be Items, so I add an Action inside an Item,
+                    // and I cannot use a Repeater inside another Action so I instantiate them here
+                    // and re-parent them manually.
+                    Repeater {
+                        model: deviceTypeModel
 
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-                Layout.preferredWidth: 50 // Same space for the two columns
+                        Item {
+                            Kirigami.Action {
+                                id: deviceTypeAction
 
-                QQC2.Label {
-                    text: i18nc("@label Gamepad axes (sticks)", "Axes:")
-                    textFormat: Text.PlainText
-                }
+                                text: name
+                                onTriggered: {
 
-                Table {
-                    model: AxesModel {
-                        device: root.device
+                                    deviceTypeRow = index;
+                                    console.log("new deviceTypeRow is " + deviceTypeRow);
+                                }
+
+                                Component.onCompleted: typesToPopulate.children.push(deviceTypeAction)
+                            }
+                        }
                     }
-
-                    Layout.fillWidth: true
-                    Layout.fillHeight: true
                 }
             }
         }
     }
+
 }
