@@ -439,6 +439,7 @@ int Positioner::move(const QVariantList &moves)
         if (!toIndices.contains(move.from)) {
             m_proxyToSource.remove(move.from);
         }
+
         updateMaps(move.to, move.sourceRow);
 
         const QModelIndex &fromIdx = index(move.from, 0);
