@@ -132,7 +132,7 @@ FocusScope {
                 boundsBehavior: Flickable.StopAtBounds
                 snapMode: ListView.SnapToItem
                 spacing: 0
-                keyNavigationWraps: (dialog != null)
+                keyNavigationEnabled: false
 
                 delegate: ItemListDelegate {
                     onFullTextWidthChanged: {
@@ -205,6 +205,7 @@ FocusScope {
                     if (currentItem.isSeparator) {
                         listView.decrementCurrentIndex();
                     }
+                    listView.currentItem.forceActiveFocus()
 
                     showChildDialogs = true;
                 } else if (event.key === Qt.Key_Down) {
@@ -222,6 +223,7 @@ FocusScope {
                     if (currentItem.isSeparator) {
                         listView.incrementCurrentIndex();
                     }
+                    listView.currentItem.forceActiveFocus()
 
                     showChildDialogs = true;
                 } else if ((event.key === Qt.Key_Right || event.key === Qt.Key_Return || event.key === Qt.Key_Enter) && itemList.childDialog != null) {
@@ -238,7 +240,7 @@ FocusScope {
                     kicker.expanded = false;
                 } else if (event.key === Qt.Key_Tab) {
                     //do nothing, and skip appending text
-                } else if (event.text !== "") {
+                } else if (event.text !== "" && event.key !== Qt.Key_Return && event.key !== Qt.Key_Enter) {
                     if (/[\x00-\x1F\x7F]/.test(event.text)) {
                         // We still want to focus it
                         appendSearchText("");
