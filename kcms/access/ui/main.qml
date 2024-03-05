@@ -43,6 +43,11 @@ KCM.SimpleKCM {
             icon: "audio-input-microphone",
             title: i18nc("System mouse navigation", "Screen Reader"),
             defaultnessKey: "screenReaderIsDefaults"
+        },
+        {
+            icon: "cursor-arrow",
+            title: i18nc("Shake cursor to find it", "Shake Cursor"),
+            defaultnessKey: "shakeCursorIsDefaults"
         }
     ]
 
@@ -125,6 +130,10 @@ KCM.SimpleKCM {
 
             }
             ScreenReader {
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+            }
+            ShakeCursor {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
             }
