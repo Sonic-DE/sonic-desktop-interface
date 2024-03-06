@@ -13,7 +13,8 @@ import org.kde.kirigami as Kirigami
 Kirigami.FormLayout {
     QQC2.CheckBox {
         Kirigami.FormData.label: i18n("Shake cursor to find it:")
-        text: i18nc("Enable shake cursor", "Enable")
+        Kirigami.FormData.label: i18nc("@label", "Shake cursor to find it:")
+        text: i18nc("@option check, Enable shake cursor effect", "Enable")
 
         KCM.SettingStateBinding {
             configObject: kcm.shakeCursorSettings
