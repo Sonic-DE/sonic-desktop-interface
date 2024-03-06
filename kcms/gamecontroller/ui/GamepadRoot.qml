@@ -34,7 +34,8 @@ Item {
         id: svgitem
 
         imagePath: svgPath
-        size: Qt.size(image.width, image.height)
+        size.width: root.width
+        size.height: root.height
     }
 
     ColorOverlay {
@@ -48,8 +49,8 @@ Item {
         id: image
 
         visible: false
-        width: parent.width
-        height: Math.round(width * (naturalSize.height / naturalSize.width))
+        width: root.width
+        height: root.height
 
         svg: svgitem
         elementId: "base"
