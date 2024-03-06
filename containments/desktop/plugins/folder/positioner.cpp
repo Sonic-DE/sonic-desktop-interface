@@ -366,7 +366,7 @@ int Positioner::move(const QVariantList &moves)
 
     for (int i = 0; i < moves.count(); ++i) {
         const int isFrom = (i % 2 == 0);
-        const int v = moves[i].toInt();
+        int v = moves[i].toInt();
 
         if (isFrom) {
             if (m_proxyToSource.contains(v)) {
@@ -374,9 +374,13 @@ int Positioner::move(const QVariantList &moves)
             } else {
                 sourceRows.append(-1);
             }
+            fromIndices.append(v);
+        } else {
+            while (toIndices.contains(v)) {
+                ++v;
+            }
+            toIndices.append(v);
         }
-
-        (isFrom ? fromIndices : toIndices).append(v);
     }
 
     const int oldCount = rowCount();
