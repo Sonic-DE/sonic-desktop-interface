@@ -376,7 +376,8 @@ int Positioner::move(const QVariantList &moves)
             }
             fromIndices.append(v);
         } else {
-            while (toIndices.contains(v)) {
+            // if the to position is taken by something different than ourself, take a new to position
+            while (toIndices.contains(v) && moves[i - 1].toInt() != v) {
                 ++v;
             }
             toIndices.append(v);
