@@ -106,7 +106,6 @@ void PositionerTest::tst_move()
 
     ensureFolderModelReady();
     m_positioner->move(moves);
-
     for (int i = 0; i < m_positioner->rowCount(); i++) {
         QCOMPARE(m_positioner->map(i), result[i]);
     }
