@@ -7,6 +7,7 @@
 #pragma once
 
 #include <QAbstractItemModel>
+#include <qqmlregistration.h>
 
 class FolderModel;
 
@@ -15,6 +16,7 @@ class QTimer;
 class Positioner : public QAbstractItemModel
 {
     Q_OBJECT
+    QML_ELEMENT
 
     Q_PROPERTY(bool enabled READ enabled WRITE setEnabled NOTIFY enabledChanged)
     Q_PROPERTY(FolderModel *folderModel READ folderModel WRITE setFolderModel NOTIFY folderModelChanged)
