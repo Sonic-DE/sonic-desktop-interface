@@ -8,10 +8,13 @@
 #pragma once
 
 #include <PlasmaQuick/Dialog>
+#include <qqmlregistration.h>
 
 class SubDialog : public PlasmaQuick::Dialog
 {
     Q_OBJECT
+
+    QML_ELEMENT
 
 public:
     explicit SubDialog(QQuickItem *parent = nullptr);
@@ -19,5 +22,5 @@ public:
 
     Q_INVOKABLE QRect availableScreenRectForItem(QQuickItem *item) const;
 
-    QPoint popupPosition(QQuickItem *item, const QSize &size) override;
+    QPoint popupPosition(QQuickItem *i, const QSize &size) override;
 };
