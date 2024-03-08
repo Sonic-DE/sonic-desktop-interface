@@ -22,13 +22,27 @@ const int kShortPollTime = 100;
 // 2 seconds while we don't have any devices
 const int kLongPollTime = 2000;
 
+static bool initialized = false;
+
 DeviceModel::DeviceModel()
 {
     m_timer = new QTimer(this);
     connect(m_timer, &QTimer::timeout, this, &DeviceModel::poll);
     // Only poll once per 2 seconds until we have a device
     m_timer->start(kLongPollTime);
-    poll();
+
+    // Also call it once after we have initialized in case
+    // there are already controllers.
+    QTimer::singleShot(kShortPollTime, this, &DeviceModel::poll);
+}
+
+DeviceModel::~DeviceModel()
+{
+    if (initialized) {
+        qCDebug(KCM_GAMECONTROLLER) << "Calling SDL_Quit";
+        SDL_Quit();
+        initialized = false;
+    }
 }
 
 Gamepad *DeviceModel::device(int index) const
@@ -63,6 +77,13 @@ QVariant DeviceModel::data(const QModelIndex &index, int role) const
 
 void DeviceModel::poll()
 {
+    qCDebug(KCM_GAMECONTROLLER) << "poll called";
+    if (!initialized) {
+        qCDebug(KCM_GAMECONTROLLER) << "Calling SDL_Init";
+        SDL_Init(SDL_INIT_GAMECONTROLLER);
+        initialized = true;
+    }
+
     SDL_Event event{};
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
