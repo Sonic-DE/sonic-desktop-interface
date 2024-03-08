@@ -1405,6 +1405,9 @@ bool FolderModel::isDir(const QModelIndex &index, const KDirModel *dirModel) con
         }
 
         const QUrl url(file.readUrl());
+        if (!url.isValid()) {
+            return false;
+        }
 
         // Check if we already have a running StatJob for this URL.
         if (m_isDirJobs.contains(item.url())) {
