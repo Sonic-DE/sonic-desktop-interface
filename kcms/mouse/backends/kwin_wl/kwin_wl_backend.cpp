@@ -19,6 +19,8 @@
 #include <QKeySequence>
 #include <QStringList>
 
+#include <memory> // std::unique_ptr
+
 #include "logging.h"
 
 KWinWaylandBackend::KWinWaylandBackend(QObject *parent)
@@ -46,6 +48,8 @@ KWinWaylandBackend::KWinWaylandBackend(QObject *parent)
                                           QStringLiteral("deviceRemoved"),
                                           this,
                                           SLOT(onDeviceRemoved(QString)));
+
+    connect(this, &KWinWaylandBackend::buttonMappingChanged, this, &InputBackend::needsSaveChanged);
 }
 
 KWinWaylandBackend::~KWinWaylandBackend()
@@ -87,6 +91,7 @@ void KWinWaylandBackend::findDevices()
                 return;
             }
             m_devices.append(dev);
+            connect(dev, &KWinWaylandDevice::needsSaveChanged, this, &KWinWaylandBackend::needsSaveChanged);
             qCDebug(KCM_MOUSE).nospace() << "Device found: " << dev->name() << " (" << dev->sysName() << ")";
         }
     }
@@ -137,10 +142,10 @@ bool KWinWaylandBackend::getDefaultConfig()
     });
 }
 
-bool KWinWaylandBackend::isChangedConfig() const
+bool KWinWaylandBackend::isSaveNeeded() const
 {
     return m_buttonMapping != m_loadedButtonMapping || std::any_of(m_devices.constBegin(), m_devices.constEnd(), [](QObject *t) {
-               return static_cast<KWinWaylandDevice *>(t)->isChangedConfig();
+               return static_cast<KWinWaylandDevice *>(t)->isSaveNeeded();
            });
 }
 
@@ -185,28 +190,41 @@ void KWinWaylandBackend::onDeviceAdded(QString sysName)
         }
 
         m_devices.append(dev);
+        connect(dev, &KWinWaylandDevice::needsSaveChanged, this, &InputBackend::needsSaveChanged);
         qCDebug(KCM_MOUSE).nospace() << "Device connected: " << dev->name() << " (" << dev->sysName() << ")";
+
         Q_EMIT deviceAdded(true);
         Q_EMIT devicesChanged();
+
+        if (dev->isSaveNeeded()) {
+            Q_EMIT needsSaveChanged();
+        }
     }
 }
 
 void KWinWaylandBackend::onDeviceRemoved(QString sysName)
 {
-    QList<QObject *>::const_iterator it = std::find_if(m_devices.constBegin(), m_devices.constEnd(), [sysName](QObject *t) {
+    auto it = std::find_if(m_devices.constBegin(), m_devices.constEnd(), [sysName](QObject *t) {
         return static_cast<KWinWaylandDevice *>(t)->sysName() == sysName;
     });
     if (it == m_devices.cend()) {
         return;
     }
+    int index = it - m_devices.cbegin();
 
-    KWinWaylandDevice *dev = static_cast<KWinWaylandDevice *>(*it);
+    // delete at the end of the function, after change signals have been fired
+    std::unique_ptr<KWinWaylandDevice> dev(static_cast<KWinWaylandDevice *>(m_devices.takeAt(index)));
+
+    bool deviceNeededSave = dev->isSaveNeeded();
+    disconnect(dev.get(), nullptr, this, nullptr);
     qCDebug(KCM_MOUSE).nospace() << "Device disconnected: " << dev->name() << " (" << dev->sysName() << ")";
 
-    int index = it - m_devices.cbegin();
-    m_devices.removeAt(index);
     Q_EMIT deviceRemoved(index);
     Q_EMIT devicesChanged();
+
+    if (deviceNeededSave) {
+        Q_EMIT needsSaveChanged();
+    }
 }
 
 #include "moc_kwin_wl_backend.cpp"
