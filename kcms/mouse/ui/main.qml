@@ -27,7 +27,6 @@ Kirigami.ApplicationItem {
             : -1
     )
     property QtObject device: deviceIndex >= 0 ? backend.inputDevices[deviceIndex] : null
-    signal changeSignal()
 
     enabled: device !== null
 
@@ -74,7 +73,6 @@ Kirigami.ApplicationItem {
                 onToggled: {
                     if (device) {
                         device.enabled = checked
-                        root.changeSignal()
                     }
                 }
 
@@ -93,7 +91,6 @@ Kirigami.ApplicationItem {
                 onToggled: {
                     if (device) {
                         device.leftHanded = checked
-                        root.changeSignal()
                     }
                 }
 
@@ -113,8 +110,6 @@ Kirigami.ApplicationItem {
                     onToggled: {
                         if (device) {
                             device.middleEmulation = checked
-                            root.changeSignal()
-                        }
                     }
 
                     QQC2.ToolTip.delay: 1000
@@ -140,7 +135,6 @@ Kirigami.ApplicationItem {
                 function onAccelSpeedChanged(val) {
                     if ((val / 1000) != device.pointerAcceleration) {
                         device.pointerAcceleration = val / 100
-                        root.changeSignal()
                     }
                 }
 
@@ -216,7 +210,6 @@ Kirigami.ApplicationItem {
                         if (device) {
                             device.pointerAccelerationProfileFlat = accelProfileFlat.checked
                             device.pointerAccelerationProfileAdaptive = accelProfileAdaptive.checked
-                            root.changeSignal()
                         }
                     }
                 }
@@ -255,7 +248,6 @@ Kirigami.ApplicationItem {
                 onToggled: {
                     if (device) {
                         device.naturalScroll = checked
-                        root.changeSignal()
                     }
                 }
 
@@ -310,7 +302,6 @@ Kirigami.ApplicationItem {
                     onMoved: {
                         if (device) {
                             device.scrollFactor = values[value]
-                            root.changeSignal()
                         }
                     }
                 }
@@ -397,7 +388,6 @@ Kirigami.ApplicationItem {
                             const copy = backend.buttonMapping;
                             copy[modelData.buttonName] = keySequence
                             backend.buttonMapping = copy
-                            root.changeSignal()
                         }
                     }
                 }
@@ -449,7 +439,6 @@ Kirigami.ApplicationItem {
                         const copy = backend.buttonMapping;
                         copy[buttonCapture.lastButton.buttonName] = keySequence
                         backend.buttonMapping = copy
-                        root.changeSignal()
                     }
                 }
 
