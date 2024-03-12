@@ -192,7 +192,7 @@ Kicker.DashboardWindow {
             id: containmentInterface
         }
 
-        TextEdit {
+        TextInput {
             id: searchField
 
             width: 0
@@ -212,12 +212,6 @@ Kicker.DashboardWindow {
 
             onSelectionStartChanged: Qt.callLater(searchHeading.updateSelection)
             onSelectionEndChanged: Qt.callLater(searchHeading.updateSelection)
-
-            Keys.onPressed: event => {
-                if (event.key === Qt.Key_Enter || event.key === Qt.Key_Return) {
-                    event.accepted = true;
-                }
-            }
         }
 
         TextEdit {
