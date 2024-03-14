@@ -265,6 +265,13 @@ PlasmoidItem {
         }
     }
 
+    Connections {
+        target: Qt.application
+        function onAboutToQuit() {
+            Plasmoid.configuration.writeConfig(); // Save launcher list
+        }
+    }
+
     Mpris.Mpris2Model {
         id: mpris2Source
     }
