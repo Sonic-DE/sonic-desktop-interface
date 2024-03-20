@@ -422,5 +422,17 @@ ContainmentItem {
             layoutDirection: Qt.application.layoutDirection
         }
     }
+    MouseArea {
+        anchors.fill: parent
+        visible: Plasmoid.corona.editMode && !Plasmoid.userConfiguring
+        hoverEnabled: true
+        onClicked: Plasmoid.internalAction("configure").trigger()
+        Rectangle {
+            anchors.fill: parent
+            color: Kirigami.Theme.highlightColor
+            opacity: 0.1
+            visible: parent.containsMouse
+        }
+    }
 //END UI elements
 }
