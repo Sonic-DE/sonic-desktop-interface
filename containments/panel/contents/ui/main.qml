@@ -433,6 +433,15 @@ ContainmentItem {
             opacity: 0.5
             visible: parent.containsMouse
         }
+        PlasmaCore.ToolTipArea {
+            id: toolTipArea
+            anchors.fill: parent
+            mainText: Plasmoid.internalAction("configure").text
+            icon: "configure"
+        }
+        Accessible.name: Plasmoid.internalAction("configure").text
+        Accessible.description: i18nd("plasma_shell_org.kde.plasma.desktop", "Open Panel configuration ui")
+        Accessible.role: Accessible.Button
     }
 //END UI elements
 }
