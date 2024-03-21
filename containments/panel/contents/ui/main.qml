@@ -430,7 +430,7 @@ ContainmentItem {
         Rectangle {
             anchors.fill: parent
             color: Kirigami.Theme.highlightColor
-            opacity: 0.1
+            opacity: 0.5
             visible: parent.containsMouse
         }
     }
