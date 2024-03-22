@@ -151,8 +151,8 @@ ColumnLayout {
     Item {
         id: thumbnailSourceItem
 
-        Layout.minimumWidth: header.width
-        Layout.preferredHeight: header.width / 2
+        Layout.preferredWidth: toolTipDelegate.tooltipInstanceMaximumWidth
+        Layout.preferredHeight: toolTipDelegate.tooltipInstanceMaximumWidth / 2
 
         clip: true
         visible: toolTipDelegate.isWin
