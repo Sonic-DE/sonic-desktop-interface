@@ -1,7 +1,12 @@
 add_definitions(-DTRANSLATION_DOMAIN=\"org.kde.plasma.emojier\")
 
-ecm_add_qml_module(EmojierDeclarativePlugin URI org.kde.plasma.emoji GENERATE_PLUGIN_SOURCE)
+ecm_add_qml_module(EmojierDeclarativePlugin
+    URI org.kde.plasma.emoji
+    CLASS_NAME EmojierPlugin
+    NO_GENERATE_PLUGIN_SOURCE
+)
 target_sources(EmojierDeclarativePlugin PRIVATE
+    emojierpluginsource.cpp
     emojierplugin.cpp
     emojidict.cpp
     emojicategory.cpp
