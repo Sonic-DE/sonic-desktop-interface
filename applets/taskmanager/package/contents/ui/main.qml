@@ -398,7 +398,7 @@ PlasmoidItem {
         TriangleMouseFilter {
             id: tmf
             filterTimeOut: 300
-            active: false && tasks.toolTipAreaItem && tasks.toolTipAreaItem.toolTipOpen
+            active: tasks.toolTipAreaItem && tasks.toolTipAreaItem.toolTipOpen
             blockFirstEnter: false
 
             edge: {
