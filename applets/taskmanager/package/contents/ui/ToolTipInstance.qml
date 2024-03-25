@@ -232,25 +232,9 @@ ColumnLayout {
             anchors.margins: thumbnailLoader.anchors.margins
 
             active: !toolTipDelegate.isLauncher && !albumArtImage.visible && KWindowSystem.isPlatformWayland && flatIndex !== -1
-            asynchronous: true
+            asynchronous: false
             //In a loader since we might not have PipeWire available yet (WITH_PIPEWIRE could be undefined in plasma-workspace/libtaskmanager/declarative/taskmanagerplugin.cpp)
             source: "PipeWireThumbnail.qml"
-        }
-
-        Loader {
-            active: (pipeWireLoader.item && pipeWireLoader.item.hasThumbnail) || (thumbnailLoader.status === Loader.Ready && !thumbnailSourceItem.isMinimized)
-            asynchronous: true
-            visible: active
-            anchors.fill: pipeWireLoader.active ? pipeWireLoader : thumbnailLoader
-
-            sourceComponent: DropShadow {
-                horizontalOffset: 0
-                verticalOffset: 3
-                radius: 8
-                samples: Math.round(radius * 1.5)
-                color: "Black"
-                source: pipeWireLoader.active ? pipeWireLoader.item : thumbnailLoader.item // source could be undefined when albumArt is available, so put it in a Loader.
-            }
         }
 
         Loader {
