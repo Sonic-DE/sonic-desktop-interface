@@ -24,20 +24,7 @@ Item {
 
     PipeWire.PipeWireSourceItem {
         id: pipeWireSourceItem
-
-        enabled: false // Must be set in pipewiresourceitem.cpp so opacity animation can work
-        visible: waylandItem.nodeId > 0
-        nodeId: waylandItem.nodeId
-
         anchors.fill: parent
-
-        opacity: enabled ? 1 : 0
-
-        Behavior on opacity {
-            OpacityAnimator {
-                duration: Kirigami.Units.shortDuration
-                easing.type: Easing.OutCubic
-            }
-        }
+        nodeId: waylandItem.nodeId
     }
 }
