@@ -61,6 +61,7 @@ KCMUtils.ScrollViewKCM {
             id: delegateItem
             width: pluginSelector.width
             implicitHeight: pluginDelegate.implicitHeight
+            reuseItems: true // delegates are fairly expensive to construct due to their use of ActionToolBar
             // PluginDelegate must either be a direct delegate, or have a model explicitly set
             // "model: model" would just be a binding loop, so we store the model in a property of the
             // direct delegate Item and access it from PluginDelegate
