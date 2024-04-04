@@ -330,32 +330,22 @@ KCM.SimpleKCM {
             Kirigami.FormData.isSection: true
         }
 
-        RowLayout {
-            Kirigami.FormData.label: i18n("Double-click interval:")
+        ColumnLayout {
+            Kirigami.FormData.label: i18n("Double-click speed:")
+            Kirigami.FormData.buddyFor: doubleClickSpeedSlider
+            Kirigami.FormData.labelAlignment: Qt.AlignTop
+            Layout.fillWidth: true
             spacing: Kirigami.Units.smallSpacing
 
-            QQC2.SpinBox {
-                id: spinbox
+            QQC2.Slider {
+                id: doubleClickSpeedSlider
+                Layout.fillWidth: true
                 from: 100
                 to: 2000
                 stepSize: 100
-
-                validator: IntValidator {
-                    bottom: Math.min(spinbox.from, spinbox.to)
-                    top: Math.max(spinbox.from, spinbox.to)
-                }
-
-                textFromValue: (value, locale) => {
-                    return i18np("%1 msec", "%1 msec", value)
-                }
-
-                valueFromText: (text, locale) => {
-                    return Number.fromLocaleString(locale, text.replace(i18n("msec"), ""))
-                }
-
-                onValueModified: kcm.globalsSettings.doubleClickInterval = value
-
-                value: kcm.globalsSettings.doubleClickInterval
+                snapMode: QQC2.Slider.SnapAlways
+                onMoved: kcm.globalsSettings.doubleClickInterval = to - value
+                value: to - kcm.globalsSettings.doubleClickInterval
 
                 KCM.SettingStateBinding {
                     configObject: kcm.globalsSettings
@@ -363,8 +353,64 @@ KCM.SimpleKCM {
                 }
             }
 
-            Kirigami.ContextualHelpButton {
-                toolTipText: i18n("Two clicks within this duration are considered a double-click. Some applications may not honor this setting.")
+            RowLayout {
+                Layout.fillWidth: true
+                spacing: 0
+                QQC2.Label {
+                    text: i18nc("Double click speed", "Slow")
+                    textFormat: Text.PlainText
+                }
+                Item {
+                    Layout.fillWidth: true
+                }
+                QQC2.Label {
+                    text: i18nc("Double click speed", "Fast")
+                    textFormat: Text.PlainText
+                }
+            }
+        }
+
+        RowLayout {
+            Layout.fillWidth: true
+
+            QQC2.Label {
+                Layout.fillWidth: true
+                Layout.preferredWidth: 0
+                Layout.minimumWidth: 0
+                text: i18n("Double-click the folder to test. If it does not change its appearance, choose a slower setting.")
+                textFormat: Text.PlainText
+                wrapMode: Text.WordWrap
+                font: Kirigami.Theme.smallFont
+            }
+
+            QQC2.Frame {
+                Layout.preferredWidth: Kirigami.Units.iconSizes.large
+                Layout.preferredHeight: Kirigami.Units.iconSizes.large
+                Kirigami.Theme.colorSet: Kirigami.Theme.View
+
+                Kirigami.Icon {
+                    id: doubleClickTestIcon
+                    property bool checked: false
+                    anchors.fill: parent
+                    source: checked ? "folder-open" : "folder"
+                }
+
+                MouseArea {
+                    anchors.fill: parent
+                    onPressed: {
+                        if (testDoubleClickTimer.running) {
+                            doubleClickTestIcon.checked = !doubleClickTestIcon.checked
+                            testDoubleClickTimer.stop()
+                        } else {
+                            testDoubleClickTimer.start()
+                        }
+                    }
+                }
+
+                Timer {
+                    id: testDoubleClickTimer
+                    interval: kcm.globalsSettings.doubleClickInterval
+                }
             }
         }
     }
