@@ -10,7 +10,9 @@
 #include "backends/kwin_wl/kwin_wl_backend.h"
 #endif
 #if BUILD_KCM_MOUSE_X11
-#include "backends/x11/x11_backend.h"
+#include "backends/x11/x11_libinput_backend.h"
+#include <X11/Xlib.h>
+#include <libinput-properties.h>
 #endif
 
 #include <logging.h>
@@ -23,7 +25,15 @@ InputBackend *InputBackend::implementation(QObject *parent)
 #if BUILD_KCM_MOUSE_X11
     if (KWindowSystem::isPlatformX11()) {
         qCDebug(KCM_MOUSE) << "Using X11 backend";
-        return X11Backend::implementation(parent);
+
+        Atom testAtom = XInternAtom(QX11Info::display(), LIBINPUT_PROP_ACCEL, True);
+
+        if (testAtom) {
+            qCDebug(KCM_MOUSE) << "Using libinput driver on X11.";
+            return new X11LibinputBackend(parent);
+        }
+
+        return nullptr;
     }
 #endif
 #if BUILD_KCM_MOUSE_KWIN_WAYLAND
