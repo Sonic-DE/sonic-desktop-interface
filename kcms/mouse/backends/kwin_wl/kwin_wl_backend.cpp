@@ -207,4 +207,17 @@ void KWinWaylandBackend::onDeviceRemoved(QString sysName)
     Q_EMIT devicesChanged();
 }
 
+QList<QObject *> KWinWaylandBackend::getDevices() const
+{
+    return m_devices;
+}
+int KWinWaylandBackend::deviceCount() const
+{
+    return m_devices.count();
+}
+QString KWinWaylandBackend::errorString() const
+{
+    return m_errorString;
+}
+
 #include "moc_kwin_wl_backend.cpp"
