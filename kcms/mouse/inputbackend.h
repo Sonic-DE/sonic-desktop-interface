@@ -14,16 +14,6 @@
 #include <QVariantHash>
 #include <memory> // std::unique_ptr
 
-enum class InputBackendMode {
-#if BUILD_KCM_MOUSE_KWIN_WAYLAND
-    KWinWayland = 0,
-#endif
-#if BUILD_KCM_MOUSE_X11
-    XLibinput = 1,
-    XEvdev = 2,
-#endif
-};
-
 class InputBackend : public QObject
 {
     Q_OBJECT
@@ -36,15 +26,9 @@ protected:
         : QObject(parent)
     {
     }
-    InputBackendMode m_mode;
 
 public:
     static InputBackend *implementation(QObject *parent = nullptr);
-
-    InputBackendMode mode()
-    {
-        return m_mode;
-    }
 
     virtual void kcmInit()
     {
