@@ -6,6 +6,7 @@ target_sources(EmojierDeclarativePlugin PRIVATE
     emojidict.cpp
     emojicategory.cpp
 )
+target_link_options(EmojierDeclarativePlugin PRIVATE "LINKER:--dynamic-list-data")
 
 kconfig_add_kcfg_files(EmojierDeclarativePlugin emojiersettings.kcfgc GENERATE_MOC)
 

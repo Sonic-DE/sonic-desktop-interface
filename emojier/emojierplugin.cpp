@@ -202,4 +202,4 @@ void CopyHelperPrivate::copyTextToClipboard(const QString &text)
     clipboard->setText(text, QClipboard::Selection);
 }
 
-#include "emojierplugin.moc"
+#include "moc_emojierplugin.cpp"

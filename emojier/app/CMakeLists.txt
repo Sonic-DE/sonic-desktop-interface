@@ -9,6 +9,7 @@ ecm_target_qml_sources(plasma-emojier SOURCES
 )
 
 target_link_libraries(plasma-emojier PRIVATE Qt::Widgets Qt::Quick KF6::ConfigGui KF6::I18n KF6::CoreAddons KF6::Crash KF6::DBusAddons KF6::WindowSystem Qt::GuiPrivate)
+target_link_options(plasma-emojier PRIVATE "LINKER:--dynamic-list-data")
 
 install(TARGETS plasma-emojier ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 install(FILES org.kde.plasma.emojier.desktop DESTINATION ${KDE_INSTALL_DATADIR}/kglobalaccel)
