@@ -20,6 +20,7 @@ add_subdirectory(desktop)
 add_test(
     NAME emojiertest
     COMMAND selenium-webdriver-at-spi-run ${CMAKE_CURRENT_SOURCE_DIR}/emojiertest.py --failfast
+    WORKING_DIRECTORY "/builds/plasma/plasma-desktop"
 )
 
 add_test(
