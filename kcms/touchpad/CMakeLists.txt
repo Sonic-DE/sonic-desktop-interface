@@ -1,16 +1,10 @@
 # KI18N Translation Domain for this library
 add_definitions(-DTRANSLATION_DOMAIN=\"kcm_touchpad\")
 
-add_subdirectory(icon)
-
-set(TOUCHPAD_SRCS
-    actions.cpp
-    touchpadbackend.cpp
-    logging.cpp
-    touchpadparametersbase.cpp
-)
-
 if (BUILD_KCM_TOUCHPAD_X11)
+    if (NOT XORGLIBINPUT_FOUND)
+        list(APPEND MISSING_DEPS "xorg-libinput")
+    endif()
     if (NOT X11_XCB_FOUND)
         list(APPEND MISSING_DEPS "X11_XCB")
     endif()
@@ -23,44 +17,73 @@ if (BUILD_KCM_TOUCHPAD_X11)
     if (MISSING_DEPS)
         message(FATAL_ERROR "Missing X11 dependencies for kcm_touchpad: ${MISSING_DEPS}. Install dependencies or set CMake option -DBUILD_KCM_TOUCHPAD_X11=OFF.")
     endif()
-    include(backends/x11.cmake)
 endif()
 
-if (BUILD_KCM_TOUCHPAD_KWIN_WAYLAND)
-    include(backends/kwin_wayland.cmake)
-endif()
+add_subdirectory(icon)
 
-qt_add_dbus_interfaces(TOUCHPAD_SRCS
+add_library(touchpad_common STATIC
+    actions.cpp
+    touchpadbackend.cpp
+    logging.cpp
+    touchpadparametersbase.cpp
+)
+set_property(TARGET touchpad_common PROPERTY POSITION_INDEPENDENT_CODE ON)
+
+qt_add_dbus_interfaces(TOUCHPAD_DBUS_SRCS
                         ${CMAKE_CURRENT_BINARY_DIR}/org.kde.touchpad.xml
 )
-
-qt_generate_dbus_interface(kded/kded.h org.kde.touchpad.xml)
-
-kconfig_add_kcfg_files(TOUCHPAD_SRCS kdedsettings.kcfgc)
-kconfig_add_kcfg_files(TOUCHPAD_SRCS touchpadparameters.kcfgc)
-
-add_library(touchpad STATIC ${TOUCHPAD_SRCS} ${backend_SRCS})
-
-set_property(TARGET touchpad PROPERTY POSITION_INDEPENDENT_CODE ON)
-
-target_link_libraries(touchpad
-    PUBLIC
-    Qt::Core
-    KF6::XmlGui
-    PRIVATE
-    ${backend_LIBS}
-    Qt::DBus
-    KF6::ConfigCore
-    KF6::ConfigGui
-    KF6::WindowSystem
-    KF6::I18n
-    KF6::GlobalAccel
-)
-target_link_libraries(touchpad PRIVATE Qt::GuiPrivate)
-
-add_subdirectory(kcm)
-add_subdirectory(kded)
+target_sources(touchpad_common PUBLIC ${TOUCHPAD_DBUS_SRCS})
 
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/org.kde.touchpad.xml
         DESTINATION ${KDE_INSTALL_DBUSINTERFACEDIR}
 )
+
+qt_generate_dbus_interface(kded/kded.h org.kde.touchpad.xml)
+
+kconfig_add_kcfg_files(touchpad_common kdedsettings.kcfgc)
+kconfig_add_kcfg_files(touchpad_common touchpadparameters.kcfgc)
+
+target_link_libraries(touchpad_common
+    PUBLIC
+    Qt::Core
+    KF6::XmlGui
+    PRIVATE
+    KF6::ConfigCore
+    KF6::WindowSystem
+    KF6::I18n
+    KF6::GlobalAccel
+)
+
+add_subdirectory(backends)
+add_subdirectory(kded)
+
+add_library(kcm_touchpad MODULE touchpadconfig.cpp)
+qt_add_resources(kcm_touchpad
+    PREFIX "/"
+    FILES
+        ui/main.qml
+)
+kcmutils_generate_desktop_file(kcm_touchpad)
+
+target_link_libraries(kcm_touchpad
+    PRIVATE
+    Qt::Core
+    Qt::Widgets
+    Qt::Quick
+    Qt::QuickWidgets
+    KF6::CoreAddons
+    KF6::I18n
+    KF6::KCMUtils
+    Plasma::Plasma
+    KF6::WindowSystem
+    touchpad_common
+)
+
+install(TARGETS kcm_touchpad
+        DESTINATION ${KDE_INSTALL_PLUGINDIR}/plasma/kcms/systemsettings
+)
+
+add_custom_command(TARGET kcm_touchpad POST_BUILD
+                   COMMAND ${CMAKE_COMMAND} -E create_symlink "../kcms/systemsettings/kcm_touchpad.so" "kcm_touchpad_init.so")
+
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/kcm_touchpad_init.so DESTINATION ${KDE_INSTALL_PLUGINDIR}/plasma/kcminit)
