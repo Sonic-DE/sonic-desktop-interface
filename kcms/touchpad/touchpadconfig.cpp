@@ -6,7 +6,7 @@
 
 #include "touchpadconfig.h"
 
-#include "../logging.h"
+#include "logging.h"
 #include "touchpadbackend.h"
 #include <config-build-options.h>
 
@@ -64,7 +64,7 @@ TouchpadConfig::TouchpadConfig(QObject *parent, const KPluginMetaData &data)
     qmlRegisterSingletonInstance("org.kde.touchpad.kcm", 1, 0, "TouchpadConfig", this);
 
     m_view->engine()->rootContext()->setContextObject(new KLocalizedContext(m_view->engine()));
-    m_view->setSource(QUrl("qrc:/libinput/touchpad.qml"));
+    m_view->setSource(QUrl("qrc:/ui/main.qml"));
     m_view->resize(QSize(500, 600));
 
     if (m_initError) {
