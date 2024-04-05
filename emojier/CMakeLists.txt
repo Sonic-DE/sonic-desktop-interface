@@ -9,7 +9,7 @@ target_sources(EmojierDeclarativePlugin PRIVATE
 
 kconfig_add_kcfg_files(EmojierDeclarativePlugin emojiersettings.kcfgc GENERATE_MOC)
 
-target_link_libraries(EmojierDeclarativePlugin PRIVATE Qt::Qml Qt::Gui KF6::ConfigGui KF6::I18n)
+target_link_libraries(EmojierDeclarativePlugin PUBLIC gcov PRIVATE Qt::Qml Qt::Gui KF6::ConfigGui KF6::I18n)
 
 ecm_finalize_qml_module(EmojierDeclarativePlugin)
 
