@@ -4,6 +4,8 @@
 # SPDX-License-Identifier: MIT
 
 import unittest
+import os
+import shutil
 
 from appium import webdriver
 from appium.options.common.base import AppiumOptions
@@ -37,6 +39,13 @@ class EmojierTest(unittest.TestCase):
         Make sure to terminate the driver again, lest it dangles.
         """
         cls.driver.quit()
+        for filename in os.listdir(os.getcwd()):
+            if not filename.endswith('.gcda'):
+                continue
+            old_path = os.path.join(os.getcwd(), filename)
+            new_filename = "appium_artifact_" + filename
+            new_path = os.path.join(os.getcwd(), new_filename)
+            shutil.move(old_path, new_path)
 
     def test_0_open(self) -> None:
         """
