@@ -3,11 +3,15 @@
 # SPDX-FileCopyrightText: 2023 Fushan Wen <qydwhotmail@gmail.com>
 # SPDX-License-Identifier: MIT
 
+import os
 import unittest
+from typing import Final
 
 from appium import webdriver
 from appium.options.common.base import AppiumOptions
 from appium.webdriver.common.appiumby import AppiumBy
+
+BIN_PATH: Final = os.path.join(os.getenv("CMAKE_BINARY_DIR", "/usr/bin/"), "plasma-emojier")
 
 
 class EmojierTest(unittest.TestCase):
@@ -20,7 +24,7 @@ class EmojierTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         options = AppiumOptions()
-        options.set_capability("app", f"plasma-emojier")
+        options.set_capability("app", BIN_PATH)
         options.set_capability("timeouts", {'implicit': 10000})
         cls.driver = webdriver.Remote(command_executor='http://127.0.0.1:4723', options=options)
 
@@ -57,4 +61,5 @@ class EmojierTest(unittest.TestCase):
 
 
 if __name__ == '__main__':
+    assert os.path.exists(BIN_PATH)
     unittest.main()
