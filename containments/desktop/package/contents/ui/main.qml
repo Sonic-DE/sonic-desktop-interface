@@ -221,8 +221,8 @@ ContainmentItem {
         Layout.preferredWidth: preferredWidth(false)
         Layout.preferredHeight: preferredHeight(false)
 
-        Layout.maximumWidth: isPopup ? preferredWidth(false) : -1
-        Layout.maximumHeight: isPopup ? preferredHeight(false) : -1
+        Layout.maximumWidth: -1
+        Layout.maximumHeight: -1
 
         preventStealing: true
 
