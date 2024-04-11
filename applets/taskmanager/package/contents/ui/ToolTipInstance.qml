@@ -141,7 +141,7 @@ ColumnLayout {
             visible: isWin
             icon.name: "window-close"
             onClicked: {
-                backend.cancelHighlightWindows();
+                tasks.cancelHighlightWindows();
                 tasksModel.requestClose(submodelIndex);
             }
         }

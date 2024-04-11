@@ -96,13 +96,33 @@ PlasmoidItem {
     property Item dragSource: null
 
     signal requestLayout
-    signal windowsHovered(variant winIds, bool hovered)
-    signal activateWindowView(variant winIds)
 
     onDragSourceChanged: {
         if (dragSource == null) {
             tasksModel.syncLaunchers();
         }
+    }
+
+    function windowsHovered(winIds: var, hovered: bool) {
+        if (!Plasmoid.configuration.highlightWindows) {
+            return;
+        }
+        const msg = {service: "org.kde.KWin.HighlightWindow", path: "/org/kde/KWin/HighlightWindow", iface: "org.kde.KWin.HighlightWindow", member: "highlightWindows", arguments: [hovered ? winIds : []]} as DBus.dbusMessage;
+        return DBus.SessionBus.asyncCall(msg);
+    }
+
+    function cancelHighlightWindows() {
+        const msg = {service: "org.kde.KWin.HighlightWindow", path: "/org/kde/KWin/HighlightWindow", iface: "org.kde.KWin.HighlightWindow", member: "highlightWindows", arguments: [[]]} as DBus.dbusMessage;
+        return DBus.SessionBus.asyncCall(msg);
+    }
+
+    function activateWindowView(winIds: var) {
+        if (!effectWatcher.registered) {
+            return;
+        }
+        cancelHighlightWindows();
+        const msg = {service: "org.kde.KWin.Effect.WindowView1", path: "/org/kde/KWin/Effect/WindowView1", iface: "org.kde.KWin.Effect.WindowView1", member: "activate", arguments: [winIds.map(s => String(s))]} as DBus.dbusMessage;
+        DBus.SessionBus.asyncCall(msg);
     }
 
     function publishIconGeometries(taskItems) {
@@ -219,7 +239,6 @@ PlasmoidItem {
 
     property TaskManagerApplet.Backend backend: TaskManagerApplet.Backend {
         id: backend
-        highlightWindows: Plasmoid.configuration.highlightWindows
 
         onAddLauncher: {
             tasks.addLauncher(url);
@@ -543,8 +562,6 @@ PlasmoidItem {
         TaskTools.taskManagerInstanceCount += 1;
         tasks.requestLayout.connect(layoutTimer.restart);
         tasks.requestLayout.connect(iconGeometryTimer.restart);
-        tasks.windowsHovered.connect(backend.windowsHovered);
-        tasks.activateWindowView.connect(backend.activateWindowView);
     }
 
     Component.onDestruction: {
