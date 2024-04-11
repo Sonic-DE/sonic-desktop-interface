@@ -386,6 +386,7 @@ ContainmentItem {
             property int horizontalDisplacement: dropArea.anchors.leftMargin + dropArea.anchors.rightMargin + (isHorizontal ? currentLayout.toolBoxSize : 0)
             property int verticalDisplacement: dropArea.anchors.topMargin + dropArea.anchors.bottomMargin + (isHorizontal ? 0 : currentLayout.toolBoxSize)
 
+            // This is a placeholder for positioning the actual button that is outside and with an higher z order, in order to always be clickable
             Item {
                 id: addWidgetsButtonPlaceholder
                 visible: addWidgetsButton.visible
