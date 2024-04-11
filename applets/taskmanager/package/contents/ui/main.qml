@@ -96,13 +96,34 @@ PlasmoidItem {
     property Item dragSource: null
 
     signal requestLayout
-    signal windowsHovered(variant winIds, bool hovered)
-    signal activateWindowView(variant winIds)
 
     onDragSourceChanged: {
         if (dragSource == null) {
             tasksModel.syncLaunchers();
         }
+    }
+
+    function windowsHovered(winIds: var, hovered: bool) {
+        if (!Plasmoid.configuration.highlightWindows) {
+            return;
+        }
+        highlightWindow.arguments = hovered ? [winIds] : [[]];
+        highlightWindow.call();
+    }
+
+    function cancelHighlightWindows() {
+        if (highlightWindow.arguments.length > 0) {
+            windowsHovered([[]], false);
+        }
+    }
+
+    function activateWindowView(winIds: var) {
+        if (!effectWatcher.registered) {
+            return;
+        }
+        cancelHighlightWindows();
+        windowView.arguments = [winIds.map(s => String(s))];
+        windowView.call();
     }
 
     function publishIconGeometries(taskItems) {
@@ -219,7 +240,6 @@ PlasmoidItem {
 
     property TaskManagerApplet.Backend backend: TaskManagerApplet.Backend {
         id: backend
-        highlightWindows: Plasmoid.configuration.highlightWindows
 
         onAddLauncher: {
             tasks.addLauncher(url);
@@ -230,6 +250,26 @@ PlasmoidItem {
         id: effectWatcher
         busType: DBus.BusType.Session
         watchedService: "org.kde.KWin.Effect.WindowView1"
+    }
+
+    DBus.DBusMethodCall {
+        id: highlightWindow
+        service: "org.kde.KWin.HighlightWindow"
+        objectPath: "/org/kde/KWin/HighlightWindow"
+        iface: service
+        method: "highlightWindows"
+        inSignature: "(as)"
+        arguments: []
+    }
+
+    DBus.DBusMethodCall {
+        id: windowView
+        service: "org.kde.KWin.Effect.WindowView1"
+        objectPath: "/org/kde/KWin/Effect/WindowView1"
+        iface: service
+        method: "activate"
+        inSignature: "(as)"
+        onError: msg => console.error(msg)
     }
 
     property Component taskInitComponent: Component {
@@ -543,8 +583,6 @@ PlasmoidItem {
         TaskTools.taskManagerInstanceCount += 1;
         tasks.requestLayout.connect(layoutTimer.restart);
         tasks.requestLayout.connect(iconGeometryTimer.restart);
-        tasks.windowsHovered.connect(backend.windowsHovered);
-        tasks.activateWindowView.connect(backend.activateWindowView);
     }
 
     Component.onDestruction: {
