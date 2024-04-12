@@ -157,8 +157,8 @@ void KeyboardDaemon::registerListeners()
     }
     connect(xEventNotifier, &XInputEventNotifier::newPointerDevice, this, &KeyboardDaemon::configureInput);
     connect(xEventNotifier, &XInputEventNotifier::newKeyboardDevice, this, &KeyboardDaemon::configureKeyboard);
-    connect(xEventNotifier, &XEventNotifier::layoutMapChanged, this, &KeyboardDaemon::layoutMapChanged);
-    connect(xEventNotifier, &XEventNotifier::layoutChanged, this, &KeyboardDaemon::layoutChangedSlot);
+    connect(xEventNotifier, &XInputEventNotifier::layoutMapChanged, this, &KeyboardDaemon::layoutMapChanged);
+    connect(xEventNotifier, &XInputEventNotifier::layoutChanged, this, &KeyboardDaemon::layoutChangedSlot);
     xEventNotifier->start();
 }
 
@@ -168,8 +168,8 @@ void KeyboardDaemon::unregisterListeners()
         xEventNotifier->stop();
         disconnect(xEventNotifier, &XInputEventNotifier::newPointerDevice, this, &KeyboardDaemon::configureInput);
         disconnect(xEventNotifier, &XInputEventNotifier::newKeyboardDevice, this, &KeyboardDaemon::configureKeyboard);
-        disconnect(xEventNotifier, &XEventNotifier::layoutChanged, this, &KeyboardDaemon::layoutChangedSlot);
-        disconnect(xEventNotifier, &XEventNotifier::layoutMapChanged, this, &KeyboardDaemon::layoutMapChanged);
+        disconnect(xEventNotifier, &XInputEventNotifier::layoutChanged, this, &KeyboardDaemon::layoutChangedSlot);
+        disconnect(xEventNotifier, &XInputEventNotifier::layoutMapChanged, this, &KeyboardDaemon::layoutMapChanged);
     }
 }
 
