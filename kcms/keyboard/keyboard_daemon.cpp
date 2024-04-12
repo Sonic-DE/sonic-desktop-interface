@@ -157,8 +157,9 @@ void KeyboardDaemon::registerListeners()
     }
     connect(xEventNotifier, &XInputEventNotifier::newPointerDevice, this, &KeyboardDaemon::configureInput);
     connect(xEventNotifier, &XInputEventNotifier::newKeyboardDevice, this, &KeyboardDaemon::configureKeyboard);
-    connect(xEventNotifier, &XEventNotifier::layoutMapChanged, this, &KeyboardDaemon::layoutMapChanged);
     connect(xEventNotifier, &XEventNotifier::layoutChanged, this, &KeyboardDaemon::layoutChangedSlot);
+    connect(xEventNotifier, &XEventNotifier::layoutChangedByXKBShortcut, this, &KeyboardDaemon::layoutChangedByXKBShortcut);
+    connect(xEventNotifier, &XEventNotifier::layoutMapChanged, this, &KeyboardDaemon::layoutMapChanged);
     xEventNotifier->start();
 }
 
@@ -169,6 +170,7 @@ void KeyboardDaemon::unregisterListeners()
         disconnect(xEventNotifier, &XInputEventNotifier::newPointerDevice, this, &KeyboardDaemon::configureInput);
         disconnect(xEventNotifier, &XInputEventNotifier::newKeyboardDevice, this, &KeyboardDaemon::configureKeyboard);
         disconnect(xEventNotifier, &XEventNotifier::layoutChanged, this, &KeyboardDaemon::layoutChangedSlot);
+        disconnect(xEventNotifier, &XEventNotifier::layoutChangedByXKBShortcut, this, &KeyboardDaemon::layoutChangedByXKBShortcut);
         disconnect(xEventNotifier, &XEventNotifier::layoutMapChanged, this, &KeyboardDaemon::layoutMapChanged);
     }
 }
@@ -178,6 +180,16 @@ void KeyboardDaemon::layoutChangedSlot()
     layoutMemory.layoutChanged();
 
     Q_EMIT layoutChanged(getLayout());
+}
+
+void KeyboardDaemon::layoutChangedByXKBShortcut()
+{
+    QDBusMessage msg = QDBusMessage::createMethodCall(QStringLiteral("org.kde.plasmashell"),
+                                                      QStringLiteral("/org/kde/osdService"),
+                                                      QStringLiteral("org.kde.osdService"),
+                                                      QStringLiteral("kbdLayoutChanged"));
+    msg << QStringLiteral("layout switch");
+    QDBusConnection::sessionBus().asyncCall(msg);
 }
 
 void KeyboardDaemon::layoutMapChanged()

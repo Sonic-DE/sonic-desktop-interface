@@ -35,6 +35,7 @@ target_link_libraries(flags_test
                       KF6::WindowSystem
                       XCB::XCB
                       XCB::XKB
+                      XCB::KEYSYMS
                       X11::xkbfile
                       X11::X11
 )
@@ -77,6 +78,7 @@ if( X11_XTest_FOUND )
                          KF6::XmlGui
                          XCB::XCB
                          XCB::XKB
+                         XCB::KEYSYMS
                          X11::xkbfile
                          ${X11_XTest_LIB}
                          X11::X11

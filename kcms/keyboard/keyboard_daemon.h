@@ -41,6 +41,7 @@ private Q_SLOTS:
     void configureKeyboard();
     void configureInput();
     void layoutChangedSlot();
+    void layoutChangedByXKBShortcut();
     void layoutMapChanged();
     bool setLayout(QAction *action);
 

@@ -56,6 +56,7 @@ target_link_libraries(kded_keyboard
     KF6::GuiAddons
     XCB::XCB
     XCB::XKB
+    XCB::KEYSYMS
     X11::X11
     X11::xkbfile
  )
@@ -121,6 +122,7 @@ target_link_libraries(kcm_keyboard_static
     KF6::GuiAddons
     XCB::XCB
     XCB::XKB
+    XCB::KEYSYMS
     X11::X11
     X11::xkbfile
 )
