@@ -36,6 +36,8 @@ KeyboardDaemon::KeyboardDaemon(QObject *parent, const QList<QVariant> &)
     if (!X11Helper::xkbSupported(nullptr))
         return; // TODO: shut down the daemon?
 
+    lastUsedLayouts = QList<uint>();
+
     QDBusConnection dbus = QDBusConnection::sessionBus();
     dbus.registerService(KEYBOARD_DBUS_SERVICE_NAME);
     dbus.registerObject(KEYBOARD_DBUS_OBJECT_PATH, this, QDBusConnection::ExportScriptableSlots | QDBusConnection::ExportScriptableSignals);
@@ -99,7 +101,6 @@ void KeyboardDaemon::registerShortcut()
 
         QAction *toggleLayoutAction = actionCollection->getToggleAction();
         connect(toggleLayoutAction, &QAction::triggered, this, [this]() {
-            setLastUsedLayoutValue(getLayout());
             switchToNextLayout();
 
             LayoutUnit newLayout = X11Helper::getCurrentLayout();
@@ -113,11 +114,10 @@ void KeyboardDaemon::registerShortcut()
 
         QAction *lastUsedLayoutAction = actionCollection->getLastUsedLayoutAction();
         connect(lastUsedLayoutAction, &QAction::triggered, this, [this]() {
-            auto layoutsList = X11Helper::getLayoutsList();
-            if (!lastUsedLayout.has_value() || layoutsList.count() <= *lastUsedLayout) {
+            if (lastUsedLayouts.size() < 2) {
                 switchToPreviousLayout();
             } else {
-                setLayout(*lastUsedLayout);
+                setLayout(lastUsedLayouts.at(lastUsedLayouts.size()-2));
             }
 
             LayoutUnit newLayout = X11Helper::getCurrentLayout();
@@ -176,26 +176,25 @@ void KeyboardDaemon::unregisterListeners()
 void KeyboardDaemon::layoutChangedSlot()
 {
     layoutMemory.layoutChanged();
-
+    updateLastUsedLayouts();
     Q_EMIT layoutChanged(getLayout());
 }
 
 void KeyboardDaemon::layoutMapChanged()
 {
     keyboardConfig->load();
+    updateLastUsedLayouts();
     layoutMemory.layoutMapChanged();
     Q_EMIT layoutListChanged();
 }
 
 void KeyboardDaemon::switchToNextLayout()
 {
-    setLastUsedLayoutValue(getLayout());
     X11Helper::scrollLayouts(1);
 }
 
 void KeyboardDaemon::switchToPreviousLayout()
 {
-    setLastUsedLayoutValue(getLayout());
     X11Helper::scrollLayouts(-1);
 }
 
@@ -212,62 +211,33 @@ bool KeyboardDaemon::setLayout(QAction *action)
 
 bool KeyboardDaemon::setLayout(uint index)
 {
-    if (keyboardConfig->layoutLoopCount() != KeyboardConfig::NO_LOOPING && index >= uint(keyboardConfig->layoutLoopCount())) {
-        QList<LayoutUnit> layouts = X11Helper::getLayoutsList();
-        const uint indexOfLastMainLayoutInConfig = keyboardConfig->layouts.lastIndexOf(layouts.takeLast());
+    QList<LayoutUnit> layouts = X11Helper::getLayoutsList();
+    const int posInCurSett = layouts.lastIndexOf(keyboardConfig->layouts.at(index));
+    if (keyboardConfig->layoutLoopCount() != KeyboardConfig::NO_LOOPING && posInCurSett < 0) {
+        layouts.takeLast();
         const uint indexOfLastMainLayoutInXKB = layouts.size();
-
-        // Re-calculate indexes for layout switching Actions
-        const auto &actions = actionCollection->actions();
-        for (const auto &action : actions) {
-            // clang-format off
-            if (action->data().toUInt() == indexOfLastMainLayoutInXKB) {
-                action->setData(indexOfLastMainLayoutInConfig < index ?
-                                    indexOfLastMainLayoutInConfig + 1 :
-                                    indexOfLastMainLayoutInConfig);
-            } else if (action->data().toUInt() == index) {
-                action->setData(indexOfLastMainLayoutInXKB);
-            } else if (index < indexOfLastMainLayoutInConfig
-                       && index < action->data().toUInt() && action->data().toUInt() <= indexOfLastMainLayoutInConfig) {
-                action->setData(action->data().toUInt() - 1);
-            } else if (indexOfLastMainLayoutInConfig < index
-                       && indexOfLastMainLayoutInConfig < action->data().toUInt() && action->data().toUInt() < index) {
-                action->setData(action->data().toUInt() + 1);
-            }
-            // clang-format on
-        }
-
-        if (index <= indexOfLastMainLayoutInConfig) {
-            // got to a shifted diapason due to previously selected spare layout, so adjusting the index accordingly
-            --index;
-        }
         // spare layout preempts last one in the loop
         layouts.append(keyboardConfig->layouts.at(index));
         XkbHelper::initializeKeyboardLayouts(layouts);
         index = indexOfLastMainLayoutInXKB;
+    } else if (keyboardConfig->layoutLoopCount() != KeyboardConfig::NO_LOOPING && posInCurSett >= 0) {
+        index = posInCurSett;
     }
-    setLastUsedLayoutValue(getLayout());
     return X11Helper::setGroup(index);
 }
 
 uint KeyboardDaemon::getLayout() const
 {
-    return X11Helper::getGroup();
+    QList<LayoutUnit> layouts = X11Helper::getLayoutsList();
+    const int pos = keyboardConfig->layouts.lastIndexOf(layouts.at(X11Helper::getGroup()));
+    return ((pos >= 0) ? pos : 0);
 }
 
 QList<LayoutNames> KeyboardDaemon::getLayoutsList() const
 {
     QList<LayoutNames> ret;
 
-    auto layoutsList = X11Helper::getLayoutsList();
-    if (keyboardConfig->layoutLoopCount() != KeyboardConfig::NO_LOOPING) {
-        // extra layouts list overlaps with the main layouts loop initially by 1 position
-        auto extraLayouts = keyboardConfig->layouts.mid(keyboardConfig->layoutLoopCount() - 1);
-        // spare layout currently placed in the loop is removed from the extra layouts
-        // as it was already "moved" to the last loop position
-        extraLayouts.removeOne(layoutsList.last());
-        layoutsList.append(extraLayouts);
-    }
+    auto layoutsList = keyboardConfig->layouts;
     for (auto &layoutUnit : std::as_const(layoutsList)) {
         QString displayName = layoutUnit.getDisplayName();
         const auto configDefaultLayouts = keyboardConfig->getDefaultLayouts();
@@ -286,12 +256,18 @@ QList<LayoutNames> KeyboardDaemon::getLayoutsList() const
     return ret;
 }
 
-void KeyboardDaemon::setLastUsedLayoutValue(uint newValue)
-{
-    auto layoutsList = X11Helper::getLayoutsList();
-    if (layoutsList.count() > 1) {
-        lastUsedLayout = std::optional<uint>{newValue};
+void KeyboardDaemon::updateLastUsedLayouts() {
+    qCDebug(KCM_KEYBOARD) << "KeyboardDaemon::updateLastUsedLayouts()_1:" << lastUsedLayouts;
+    if (lastUsedLayouts.size() == 0) {
+        lastUsedLayouts.append(0);
     }
+    if (lastUsedLayouts.at(lastUsedLayouts.size() - 1) != getLayout()) {
+        lastUsedLayouts.append(getLayout());
+    }
+    if (lastUsedLayouts.size() > 2) {
+        lastUsedLayouts.removeFirst();
+    }
+    qCWarning(KCM_KEYBOARD) << "KeyboardDaemon::updateLastUsedLayouts()_1:" << lastUsedLayouts;
 }
 
 #include "keyboard_daemon.moc"
