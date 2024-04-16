@@ -5,10 +5,11 @@
 */
 
 import QtQuick 2.15
+import QtQuick.Layouts
 import org.kde.kirigami 2.20 as Kirigami
 import org.kde.plasma.plasmoid 2.0
 
-Grid {
+GridLayout {
     property bool animating: false
 
     layoutDirection: (Plasmoid.configuration.reverseMode && !tasks.vertical)
@@ -17,10 +18,12 @@ Grid {
             : Qt.LeftToRight
         : Qt.application.layoutDirection
 
+    rowSpacing: 0
+    columnSpacing: 0
     rows: tasks.vertical ? -1 : Math.floor(height / children[0].height)
     columns: tasks.vertical ? Math.floor(width / children[0].width) : -1
 
-    move: Transition {
+    /*move: Transition {
         SequentialAnimation {
             PropertyAction { target: taskList; property: "animating"; value: true }
 
@@ -32,5 +35,5 @@ Grid {
 
             PropertyAction { target: taskList; property: "animating"; value: false }
         }
-    }
+    }*/
 }
