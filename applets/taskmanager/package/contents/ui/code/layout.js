@@ -197,6 +197,7 @@ function maximumContextMenuTextWidth() {
 }
 
 function layout(container) {
+    return;
     var item;
     var stripes = calculateStripes();
     var taskCount = tasksModel.count - tasksModel.logicalLauncherCount;
