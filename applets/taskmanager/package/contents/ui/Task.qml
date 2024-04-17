@@ -15,7 +15,7 @@ import org.kde.kirigami 2.20 as Kirigami
 import org.kde.plasma.private.taskmanager 0.1 as TaskManagerApplet
 import org.kde.plasma.plasmoid 2.0
 
-import "code/layout.js" as LayoutManager
+import "code/layoutmetrics.js" as LayoutMetrics
 import "code/tools.js" as TaskTools
 
 PlasmaCore.ToolTipArea {
@@ -25,23 +25,17 @@ PlasmaCore.ToolTipArea {
 
     implicitHeight: 1||tasks.plasmoid.configuration.forceStripes || (tasks.plasmoid.configuration.maxStripes > 1 && width < Kirigami.Units.gridUnit * 10)
         ? Math.max(tasks.height / tasks.plasmoid.configuration.maxStripes,
-                   Math.max(Kirigami.Units.iconSizes.sizeForLabels, Kirigami.Units.iconSizes.medium) + LayoutManager.verticalMargins())
+                   Math.max(Kirigami.Units.iconSizes.sizeForLabels, Kirigami.Units.iconSizes.medium) + LayoutMetrics.verticalMargins())
         : -1
-    visible: true//false
 
     // To achieve a bottom to top layout, the task manager is rotated by 180 degrees(see main.qml).
     // This makes the tasks mirrored, so we mirror them again to fix that.
     rotation: Plasmoid.configuration.reverseMode && Plasmoid.formFactor === PlasmaCore.Types.Vertical ? 180 : 0
-Rectangle {
-    opacity: 0.4
-    radius: 10
-    color: "green"
-    anchors.fill:parent
-}
+
     Layout.fillWidth: true
     Layout.fillHeight: true
-    //Layout.minimumHeight: Kirigami.Units.iconSizes.sizeForLabels + 4
-    Layout.maximumWidth: height + (inPopup || !iconsOnly && !model.IsLauncher ? Kirigami.Units.gridUnit * 12 : 0)
+    Layout.minimumHeight: 0
+    Layout.maximumWidth: height + (inPopup || !iconsOnly && !model.IsLauncher ? Kirigami.Units.gridUnit * 12 : 0) + LayoutMetrics.horizontalMargins()
     LayoutMirroring.enabled: (Qt.application.layoutDirection == Qt.RightToLeft)
     LayoutMirroring.childrenInherit: (Qt.application.layoutDirection == Qt.RightToLeft)
 
@@ -187,7 +181,7 @@ Rectangle {
         hideToolTip();
 
         if (!inPopup && !tasks.vertical
-            && (LayoutManager.calculateStripes() > 1 || !Plasmoid.configuration.separateLaunchers)) {
+            && !Plasmoid.configuration.separateLaunchers) {
             tasks.requestLayout();
         }
     }
@@ -411,10 +405,10 @@ Rectangle {
         anchors {
             fill: parent
 
-            topMargin: (!tasks.vertical && taskList.rows > 1) ? LayoutManager.iconMargin : 0
-            bottomMargin: (!tasks.vertical && taskList.rows > 1) ? LayoutManager.iconMargin : 0
-            leftMargin: ((inPopup || tasks.vertical) && taskList.columns > 1) ? LayoutManager.iconMargin : 0
-            rightMargin: ((inPopup || tasks.vertical) && taskList.columns > 1) ? LayoutManager.iconMargin : 0
+            topMargin: (!tasks.vertical && taskList.rows > 1) ? LayoutMetrics.iconMargin : 0
+            bottomMargin: (!tasks.vertical && taskList.rows > 1) ? LayoutMetrics.iconMargin : 0
+            leftMargin: ((inPopup || tasks.vertical) && taskList.columns > 1) ? LayoutMetrics.iconMargin : 0
+            rightMargin: ((inPopup || tasks.vertical) && taskList.columns > 1) ? LayoutMetrics.iconMargin : 0
         }
 
         imagePath: "widgets/tasks"
@@ -498,7 +492,7 @@ Rectangle {
                 return margin;
             }
 
-            var margins = vert ? LayoutManager.horizontalMargins() : LayoutManager.verticalMargins();
+            var margins = vert ? LayoutMetrics.horizontalMargins() : LayoutMetrics.verticalMargins();
 
             if ((size - margins) < Kirigami.Units.iconSizes.small) {
                 return Math.ceil((margin * (Kirigami.Units.iconSizes.small / size)) / 2);
@@ -553,13 +547,13 @@ Rectangle {
         id: label
 
         visible: (inPopup || !iconsOnly && !model.IsLauncher
-            && (parent.width - iconBox.height - Kirigami.Units.smallSpacing) >= LayoutManager.spaceRequiredToShowText())
+            && (parent.width - iconBox.height - Kirigami.Units.smallSpacing) >= LayoutMetrics.spaceRequiredToShowText())
 
         anchors {
             fill: parent
-            leftMargin: taskFrame.margins.left + iconBox.width + LayoutManager.labelMargin
+            leftMargin: taskFrame.margins.left + iconBox.width + LayoutMetrics.labelMargin
             topMargin: taskFrame.margins.top
-            rightMargin: taskFrame.margins.right + (audioStreamIcon !== null && audioStreamIcon.visible ? (audioStreamIcon.width + LayoutManager.labelMargin) : 0)
+            rightMargin: taskFrame.margins.right + (audioStreamIcon !== null && audioStreamIcon.visible ? (audioStreamIcon.width + LayoutMetrics.labelMargin) : 0)
             bottomMargin: taskFrame.margins.bottom
         }
 

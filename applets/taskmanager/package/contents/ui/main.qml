@@ -21,7 +21,7 @@ import org.kde.taskmanager 0.1 as TaskManager
 import org.kde.plasma.private.taskmanager 0.1 as TaskManagerApplet
 import org.kde.plasma.workspace.dbus as DBus
 
-import "code/layout.js" as LayoutManager
+import "code/layoutmetrics.js" as LayoutMetrics
 import "code/tools.js" as TaskTools
 
 PlasmoidItem {
@@ -32,7 +32,7 @@ PlasmoidItem {
     // This mirrors the tasks as well, so we just rotate them again to fix that (see Task.qml).
     rotation: Plasmoid.configuration.reverseMode && Plasmoid.formFactor === PlasmaCore.Types.Vertical ? 180 : 0
 
-    readonly property bool shouldShirnkToZero: !LayoutManager.logicalTaskCount()
+    readonly property bool shouldShirnkToZero: tasksModel.count === 0
     property bool vertical: Plasmoid.formFactor === PlasmaCore.Types.Vertical
     property bool iconsOnly: Plasmoid.pluginName === "org.kde.plasma.icontasks"
 
@@ -63,13 +63,13 @@ PlasmoidItem {
         if (shouldShirnkToZero) {
             return Kirigami.Units.gridUnit; // For edit mode
         }
-        return tasks.vertical ? 0 : LayoutManager.preferredMinWidth();
+        return tasks.vertical ? 0 : LayoutMetrics.preferredMinWidth();
     }
     Layout.minimumHeight: {
         if (shouldShirnkToZero) {
             return Kirigami.Units.gridUnit; // For edit mode
         }
-        return !tasks.vertical ? 0 : LayoutManager.preferredMinHeight();
+        return !tasks.vertical ? 0 : LayoutMetrics.preferredMinHeight();
     }
 
 //BEGIN TODO: this is not precise enough: launchers are smaller than full tasks
@@ -80,14 +80,14 @@ PlasmoidItem {
         if (tasks.vertical) {
             return Kirigami.Units.gridUnit * 10;
         }
-        return (LayoutManager.logicalTaskCount() * LayoutManager.preferredMaxWidth()) / LayoutManager.calculateStripes();
+        return taskList.Layout.maximumWidth
     }
     Layout.preferredHeight: {
         if (shouldShirnkToZero) {
             return 0.01;
         }
         if (tasks.vertical) {
-            return (LayoutManager.logicalTaskCount() * LayoutManager.preferredMaxHeight()) / LayoutManager.calculateStripes();
+            return taskList.Layout.maximumHeight
         }
         return Kirigami.Units.gridUnit * 2;
     }
@@ -272,17 +272,8 @@ PlasmoidItem {
         id: mpris2Source
     }
 
-    MouseArea {
+    Item {
         anchors.fill: parent
-
-        hoverEnabled: true
-        acceptedButtons: Qt.NoButton
-        onExited: {
-            if (needLayoutRefresh) {
-                LayoutManager.layout(taskRepeater)
-                needLayoutRefresh = false;
-            }
-        }
 
         TaskManager.VirtualDesktopInfo {
             id: virtualDesktopInfo
@@ -437,10 +428,7 @@ PlasmoidItem {
 
             height: taskList.childrenRect.height
             width: taskList.childrenRect.width
-Rectangle {
-    color: "red"
-    anchors.fill:taskList
-}
+
             TaskList {
                 id: taskList
 
@@ -448,8 +436,8 @@ Rectangle {
                     left: parent.left
                     top: parent.top
                 }
-                width: tasks.shouldShirnkToZero ? 0 : Math.min(tasks.width, Layout.maximumWidth)//LayoutManager.layoutWidth()//Math.min(implicitWidth, parent.width)//LayoutManager.layoutWidth()
-                height: tasks.shouldShirnkToZero ? 0 : tasks.height//LayoutManager.layoutHeight()
+                width: tasks.shouldShirnkToZero ? 0 : Math.min(tasks.width, Layout.maximumWidth)
+                height: tasks.shouldShirnkToZero ? 0 : tasks.height
 
                 flow: {
                     if (tasks.vertical) {
@@ -462,21 +450,6 @@ Rectangle {
                     if (!animating) {
                         tasks.publishIconGeometries(children, tasks);
                     }
-                }
-                onWidthChanged: layoutTimer.restart()
-                onHeightChanged: layoutTimer.restart()
-
-                function layout() {
-                    LayoutManager.layout(taskRepeater);
-                }
-
-                Timer {
-                    id: layoutTimer
-
-                    interval: 0
-                    repeat: false
-
-                    onTriggered: taskList.layout()
                 }
 
                 Repeater {
@@ -544,7 +517,6 @@ Rectangle {
 
     Component.onCompleted: {
         TaskTools.taskManagerInstanceCount += 1;
-        tasks.requestLayout.connect(layoutTimer.restart);
         tasks.requestLayout.connect(iconGeometryTimer.restart);
         tasks.windowsHovered.connect(backend.windowsHovered);
         tasks.activateWindowView.connect(backend.activateWindowView);
