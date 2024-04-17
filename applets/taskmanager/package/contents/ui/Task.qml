@@ -23,16 +23,25 @@ PlasmaCore.ToolTipArea {
 
     activeFocusOnTab: true
 
-    height: Math.max(Kirigami.Units.iconSizes.sizeForLabels, Kirigami.Units.iconSizes.medium) + LayoutManager.verticalMargins()
-
+    implicitHeight: 1||tasks.plasmoid.configuration.forceStripes || (tasks.plasmoid.configuration.maxStripes > 1 && width < Kirigami.Units.gridUnit * 10)
+        ? Math.max(tasks.height / tasks.plasmoid.configuration.maxStripes,
+                   Math.max(Kirigami.Units.iconSizes.sizeForLabels, Kirigami.Units.iconSizes.medium) + LayoutManager.verticalMargins())
+        : -1
     visible: true//false
 
     // To achieve a bottom to top layout, the task manager is rotated by 180 degrees(see main.qml).
     // This makes the tasks mirrored, so we mirror them again to fix that.
     rotation: Plasmoid.configuration.reverseMode && Plasmoid.formFactor === PlasmaCore.Types.Vertical ? 180 : 0
-
+Rectangle {
+    opacity: 0.4
+    radius: 10
+    color: "green"
+    anchors.fill:parent
+}
     Layout.fillWidth: true
     Layout.fillHeight: true
+    //Layout.minimumHeight: Kirigami.Units.iconSizes.sizeForLabels + 4
+    Layout.maximumWidth: height + (inPopup || !iconsOnly && !model.IsLauncher ? Kirigami.Units.gridUnit * 12 : 0)
     LayoutMirroring.enabled: (Qt.application.layoutDirection == Qt.RightToLeft)
     LayoutMirroring.childrenInherit: (Qt.application.layoutDirection == Qt.RightToLeft)
 
@@ -72,6 +81,28 @@ PlasmaCore.ToolTipArea {
     interactive: model.IsWindow || mainItem.playerData
     location: Plasmoid.location
     mainItem: model.IsWindow ? openWindowToolTipDelegate : pinnedAppToolTipDelegate
+
+    onXChanged: {
+        if (oldX < 0) {
+            oldX = x;
+            return;
+        }
+        moveAnim.from = oldX - x + translateTransform.x;
+        oldX = x;
+        moveAnim.restart();
+    }
+    property real oldX: -1
+    NumberAnimation {
+        id: moveAnim
+        target: translateTransform
+        properties: "x"
+        to: 0
+        easing.type: Easing.OutQuad
+        duration: Kirigami.Units.longDuration
+    }
+    transform: Translate {
+        id: translateTransform
+    }
 
     Accessible.name: model.display
     Accessible.description: {
