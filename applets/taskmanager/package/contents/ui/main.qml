@@ -435,9 +435,12 @@ PlasmoidItem {
                 top: parent.top
             }
 
-            height: taskList.implicitHeight
-            width: taskList.implicitWidth
-
+            height: taskList.childrenRect.height
+            width: taskList.childrenRect.width
+Rectangle {
+    color: "red"
+    anchors.fill:taskList
+}
             TaskList {
                 id: taskList
 
@@ -445,8 +448,8 @@ PlasmoidItem {
                     left: parent.left
                     top: parent.top
                 }
-                width: tasks.shouldShirnkToZero ? 0 : LayoutManager.layoutWidth()
-                height: tasks.shouldShirnkToZero ? 0 : LayoutManager.layoutHeight()
+                width: tasks.shouldShirnkToZero ? 0 : Math.min(tasks.width, Layout.maximumWidth)//LayoutManager.layoutWidth()//Math.min(implicitWidth, parent.width)//LayoutManager.layoutWidth()
+                height: tasks.shouldShirnkToZero ? 0 : tasks.height//LayoutManager.layoutHeight()
 
                 flow: {
                     if (tasks.vertical) {
