@@ -8,6 +8,7 @@ import QtQuick 2.15
 import QtQuick.Layouts
 import org.kde.kirigami 2.20 as Kirigami
 import org.kde.plasma.plasmoid 2.0
+import "code/layout.js" as LayoutMetrics
 
 GridLayout {
     property bool animating: false
@@ -20,9 +21,12 @@ GridLayout {
 
     rowSpacing: 0
     columnSpacing: 0
-    rows: tasks.vertical ? -1 : Math.floor(height / children[0].implicitHeight)
-    columns: tasks.vertical ? Math.floor(width / children[0].implicitWidth) : -1
-
+    rows: tasks.vertical ? -1 : Math.max(1, Math.floor(tasks.height / children[0].implicitHeight))
+    columns: tasks.vertical
+        ? Math.max(1, Math.floor(tasks.width / children[0].implicitWidth))
+        : (tasks.width/tasksModel.count <= LayoutMetrics.preferredMinWidth()/tasks.plasmoid.configuration.maxStripes ? Math.ceil(tasksModel.count/tasks.plasmoid.configuration.maxStripes) : -1)
+onChildrenChanged:
+    print("AAAAA"+(tasks.width/tasksModel.count)+" "+ LayoutMetrics.preferredMinWidth()/2+" "+columns+" "+children[0].implicitHeight+" "+rows)
     /*move: Transition {
         SequentialAnimation {
             PropertyAction { target: taskList; property: "animating"; value: true }
