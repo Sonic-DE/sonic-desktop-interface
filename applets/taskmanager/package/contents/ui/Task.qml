@@ -26,10 +26,10 @@ PlasmaCore.ToolTipArea {
     implicitHeight: 1||tasks.plasmoid.configuration.forceStripes || (tasks.plasmoid.configuration.maxStripes > 1 && width < Kirigami.Units.gridUnit * 10)
         ? Math.max(tasks.height / tasks.plasmoid.configuration.maxStripes,
                    Math.max(Kirigami.Units.iconSizes.sizeForLabels, Kirigami.Units.iconSizes.medium) + LayoutMetrics.verticalMargins())
-        : -1
+        : 0
     implicitWidth: tasks.vertical
-        ? 200//LayoutMetrics.preferredMaxWidth()
-        : -1
+        ? Math.max(LayoutMetrics.preferredMinWidth(), Math.min(LayoutMetrics.preferredMaxWidth(), tasks.width / tasks.plasmoid.configuration.maxStripes))
+        : 0//model.IsLauncher ? tasks.height / taskList.rows : LayoutMetrics.preferredMinWidth()
 
     // To achieve a bottom to top layout, the task manager is rotated by 180 degrees(see main.qml).
     // This makes the tasks mirrored, so we mirror them again to fix that.
@@ -39,7 +39,7 @@ PlasmaCore.ToolTipArea {
     Layout.fillHeight: true
     Layout.maximumWidth: tasks.vertical
         ? -1
-        : (model.IsLauncher ? LayoutMetrics.launcherWidth() : LayoutMetrics.preferredMaxWidth())
+        : (model.IsLauncher ? tasks.height / taskList.rows : LayoutMetrics.preferredMaxWidth())
     Layout.maximumHeight: tasks.vertical ? LayoutMetrics.preferredMaxHeight() : -1
     LayoutMirroring.enabled: (Qt.application.layoutDirection == Qt.RightToLeft)
     LayoutMirroring.childrenInherit: (Qt.application.layoutDirection == Qt.RightToLeft)
