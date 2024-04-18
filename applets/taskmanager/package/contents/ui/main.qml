@@ -166,7 +166,7 @@ PlasmoidItem {
         groupMode: groupModeEnumValue(Plasmoid.configuration.groupingStrategy)
         groupInline: !Plasmoid.configuration.groupPopups && !tasks.iconsOnly
         groupingWindowTasksThreshold: (Plasmoid.configuration.onlyGroupWhenFull && !tasks.iconsOnly
-            ? LayoutManager.optimumCapacity(width, height) + 1 : -1)
+            ? LayoutMetrics.optimumCapacity(width, height) + 1 : -1)
 
         onLauncherListChanged: {
             Plasmoid.configuration.launchers = launcherList;
@@ -435,12 +435,34 @@ PlasmoidItem {
                     left: parent.left
                     top: parent.top
                 }
-                width: tasks.shouldShirnkToZero
-                    ? 0
-                    : tasks.width//(tasks.vertical ? tasks.width : Math.min(tasks.width, Layout.maximumWidth))
-                height: tasks.shouldShirnkToZero
-                    ? 0
-                    : tasks.height//(tasks.vertical ? Math.min(tasks.height, Layout.maximumHeight) : tasks.height)
+                width: {
+                    if (tasks.shouldShirnkToZero) {
+                        return 0;
+                    } else if (tasks.vertical) {
+                        return tasks.width;
+                    } else {
+                        return Math.min(tasks.width, children.reduce((accumulator, child) => {
+                            if (!isFinite(child.Layout.maximumWidth)) {
+                                return accumulator;
+                            }
+                            return accumulator + child.Layout.maximumWidth
+                        }, 0));
+                    }
+                }
+                height: {
+                    if (tasks.shouldShirnkToZero) {
+                        return 0;
+                    } else if (tasks.vertical) {
+                        return Math.min(tasks.height, children.reduce((accumulator, child) => {
+                            if (!isFinite(child.Layout.maximumHeight)) {
+                                return accumulator;
+                            }
+                            return accumulator + child.Layout.maximumHeight
+                        }, 0));
+                    } else {
+                        return tasks.height;
+                    }
+                }
 
                 flow: {
                     if (tasks.vertical) {
@@ -455,6 +477,12 @@ PlasmoidItem {
                     }
                 }
 
+               /* Item {
+                    id: spacer
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    Layout.preferredWidth: 1
+                }*/
                 Repeater {
                     id: taskRepeater
 
@@ -467,6 +495,10 @@ PlasmoidItem {
                         }
                         taskClosedWithMouseMiddleButton = [];
                     }
+                    /*onCountChanged: {
+                        spacer.parent = taskList.parent;
+                        spacer.parent = taskList
+                    }*/
                 }
             }
         }
