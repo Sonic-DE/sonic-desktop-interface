@@ -29,10 +29,6 @@ function adjustMargin(height, margin) {
     return margin;
 }
 
-function logicalTaskCount() {
-    return tasksModel.count
-}
-
 function maxStripes() {
     var length = tasks.vertical ? tasks.width : tasks.height;
     var minimum = tasks.vertical ? preferredMinWidth() : preferredMinHeight();
@@ -41,7 +37,7 @@ function maxStripes() {
 }
 
 function preferredMinWidth() {
-    var width = launcherWidth();
+    var width = preferredMinLauncherWidth();
 
     if (!tasks.vertical && !tasks.iconsOnly) {
       width +=
@@ -102,7 +98,7 @@ function spaceRequiredToShowText() {
     return Math.round(Kirigami.Units.gridUnit * 1.5);
 }
 
-function launcherWidth() {
+function preferredMinLauncherWidth() {
     var baseWidth = tasks.vertical ? preferredMinHeight() : Math.min(tasks.height, Kirigami.Units.iconSizes.small * 3);
 
     return (baseWidth + horizontalMargins())
@@ -110,6 +106,6 @@ function launcherWidth() {
 }
 
 function maximumContextMenuTextWidth() {
-  return (Kirigami.Units.iconSizes.sizeForLabels * 28);
+    return (Kirigami.Units.iconSizes.sizeForLabels * 28);
 }
 
