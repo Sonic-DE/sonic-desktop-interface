@@ -169,7 +169,6 @@ PlasmoidItem {
             ? LayoutManager.optimumCapacity(width, height) + 1 : -1)
 
         onLauncherListChanged: {
-            layoutTimer.restart();
             Plasmoid.configuration.launchers = launcherList;
         }
 
@@ -428,7 +427,10 @@ PlasmoidItem {
 
             height: taskList.childrenRect.height
             width: taskList.childrenRect.width
-
+Rectangle {
+    anchors.fill: taskList
+    color: "red"
+}
             TaskList {
                 id: taskList
 
@@ -436,8 +438,12 @@ PlasmoidItem {
                     left: parent.left
                     top: parent.top
                 }
-                width: tasks.shouldShirnkToZero ? 0 : Math.min(tasks.width, Layout.maximumWidth)
-                height: tasks.shouldShirnkToZero ? 0 : tasks.height
+                width: tasks.shouldShirnkToZero
+                    ? 0
+                    : (tasks.vertical ? tasks.width : Math.min(tasks.width, Layout.maximumWidth))
+                height: tasks.shouldShirnkToZero
+                    ? 0
+                    : (tasks.vertical ? Math.min(tasks.height, Layout.maximumHeight) : tasks.height)
 
                 flow: {
                     if (tasks.vertical) {
@@ -456,14 +462,11 @@ PlasmoidItem {
                     id: taskRepeater
 
                     delegate: Task {}
-                    onItemAdded: taskList.layout()
                     onItemRemoved: {
                         if (tasks.containsMouse && index != taskRepeater.count &&
                             item.model.WinIdList.length > 0 &&
                             taskClosedWithMouseMiddleButton.indexOf(item.winIdList[0]) > -1) {
                             needLayoutRefresh = true;
-                        } else {
-                            taskList.layout();
                         }
                         taskClosedWithMouseMiddleButton = [];
                     }

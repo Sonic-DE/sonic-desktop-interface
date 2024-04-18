@@ -19,6 +19,16 @@ function verticalMargins() {
     return (taskFrame.margins.top + taskFrame.margins.bottom) * (tasks.vertical ? spacingAdjustment : 1);
 }
 
+function adjustMargin(height, margin) {
+    var available = height - verticalMargins();
+
+    if (available < Kirigami.Units.iconSizes.small) {
+        return Math.floor((margin * (Kirigami.Units.iconSizes.small / available)) / 3);
+    }
+
+    return margin;
+}
+
 function logicalTaskCount() {
     return tasksModel.count
 }
@@ -28,21 +38,6 @@ function maxStripes() {
     var minimum = tasks.vertical ? preferredMinWidth() : preferredMinHeight();
 
     return Math.min(tasks.plasmoid.configuration.maxStripes, Math.max(1, Math.floor(length / minimum)));
-}
-
-function tasksPerStripe() {
-    if (tasks.plasmoid.configuration.forceStripes) {
-        return Math.ceil(logicalTaskCount() / maxStripes());
-    } else {
-        var length = tasks.vertical ? taskList.height : taskList.width;
-        var minimum = tasks.vertical ? preferredMinHeight() : preferredMinWidth();
-
-        return Math.floor(length / minimum);
-    }
-}
-
-function full() {
-    return (maxStripes() == calculateStripes());
 }
 
 function preferredMinWidth() {
@@ -117,5 +112,4 @@ function launcherWidth() {
 function maximumContextMenuTextWidth() {
   return (Kirigami.Units.iconSizes.sizeForLabels * 28);
 }
-
 
