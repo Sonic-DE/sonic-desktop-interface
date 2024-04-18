@@ -21,10 +21,22 @@ GridLayout {
 
     rowSpacing: 0
     columnSpacing: 0
-    rows: tasks.vertical ? -1 : Math.max(1, Math.floor(tasks.height / children[0].implicitHeight))
+    rows: {
+        if (tasks.vertical) {
+            if (tasks.height / tasksModel.count <= LayoutMetrics.preferredMinHeight() / 2) {
+                return Math.ceil(tasksModel.count / tasks.plasmoid.configuration.maxStripes);
+            } else {
+                return -1;
+            }
+        } else {
+            return Math.max(1, Math.floor(tasks.height / children[0].implicitHeight));
+        }
+    }
     columns: tasks.vertical
         ? Math.max(1, Math.floor(tasks.width / children[0].implicitWidth))
-        : (tasks.width/tasksModel.count <= LayoutMetrics.preferredMinWidth()/tasks.plasmoid.configuration.maxStripes ? Math.ceil(tasksModel.count/tasks.plasmoid.configuration.maxStripes) : -1)
+        : (tasks.width / tasksModel.count <= LayoutMetrics.preferredMinWidth() / 2
+            ? Math.ceil(tasksModel.count / tasks.plasmoid.configuration.maxStripes)
+            : -1)
 onChildrenChanged:
     print("AAAAA"+(tasks.width/tasksModel.count)+" "+ LayoutMetrics.preferredMinWidth()/2+" "+columns+" "+children[0].implicitHeight+" "+rows)
     /*move: Transition {
