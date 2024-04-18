@@ -23,17 +23,15 @@ PlasmaCore.ToolTipArea {
 
     activeFocusOnTab: true
 
-    implicitHeight: 1||tasks.plasmoid.configuration.forceStripes || (tasks.plasmoid.configuration.maxStripes > 1 && width < Kirigami.Units.gridUnit * 10)
-        ? Math.max(tasks.height / tasks.plasmoid.configuration.maxStripes,
-                   Math.max(Kirigami.Units.iconSizes.sizeForLabels, Kirigami.Units.iconSizes.medium) + LayoutMetrics.verticalMargins())
-        : 0
-    implicitWidth: tasks.vertical
-        ? Math.max(LayoutMetrics.preferredMinWidth(), Math.min(LayoutMetrics.preferredMaxWidth(), tasks.width / tasks.plasmoid.configuration.maxStripes))
-        : 0//model.IsLauncher ? tasks.height / taskList.rows : LayoutMetrics.preferredMinWidth()
-
     // To achieve a bottom to top layout, the task manager is rotated by 180 degrees(see main.qml).
     // This makes the tasks mirrored, so we mirror them again to fix that.
     rotation: Plasmoid.configuration.reverseMode && Plasmoid.formFactor === PlasmaCore.Types.Vertical ? 180 : 0
+
+    implicitHeight: Math.max(tasks.height / tasks.plasmoid.configuration.maxStripes,
+                             Math.max(Kirigami.Units.iconSizes.sizeForLabels, Kirigami.Units.iconSizes.medium) + LayoutMetrics.verticalMargins())
+    implicitWidth: tasks.vertical
+        ? Math.max(LayoutMetrics.preferredMinWidth(), Math.min(LayoutMetrics.preferredMaxWidth(), tasks.width / tasks.plasmoid.configuration.maxStripes))
+        : 0
 
     Layout.fillWidth: true
     Layout.fillHeight: true
@@ -50,6 +48,7 @@ PlasmaCore.ToolTipArea {
     readonly property int pid: model.AppPid
     readonly property string appName: model.AppName
     readonly property string appId: model.AppId.replace(/\.desktop/, '')
+    readonly property bool isIcon: tasks.iconsOnly || model.IsLauncher
     property bool toolTipOpen: false
     property bool inPopup: false
     property bool isWindow: model.IsWindow
