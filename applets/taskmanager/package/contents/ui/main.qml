@@ -427,10 +427,7 @@ PlasmoidItem {
 
             height: taskList.childrenRect.height
             width: taskList.childrenRect.width
-Rectangle {
-    anchors.fill: taskList
-    color: "red"
-}
+
             TaskList {
                 id: taskList
 
@@ -440,10 +437,10 @@ Rectangle {
                 }
                 width: tasks.shouldShirnkToZero
                     ? 0
-                    : (tasks.vertical ? tasks.width : Math.min(tasks.width, Layout.maximumWidth))
+                    : tasks.width//(tasks.vertical ? tasks.width : Math.min(tasks.width, Layout.maximumWidth))
                 height: tasks.shouldShirnkToZero
                     ? 0
-                    : (tasks.vertical ? Math.min(tasks.height, Layout.maximumHeight) : tasks.height)
+                    : tasks.height//(tasks.vertical ? Math.min(tasks.height, Layout.maximumHeight) : tasks.height)
 
                 flow: {
                     if (tasks.vertical) {
