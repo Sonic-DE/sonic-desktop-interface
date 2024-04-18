@@ -23,40 +23,26 @@ GridLayout {
     columnSpacing: 0
     rows: {
         if (tasks.vertical) {
-            if (tasks.height / tasksModel.count <= LayoutMetrics.preferredMinHeight() / 2) {
-                return Math.ceil(tasksModel.count / tasks.plasmoid.configuration.maxStripes);
+            if (tasks.plasmoid.configuration.maxStripes > 1 && !tasks.plasmoid.configuration.forceStripes) {
+                return Math.max(Math.ceil(tasks.height / LayoutMetrics.preferredMinHeight()),
+                                Math.ceil(tasksModel.count / tasks.plasmoid.configuration.maxStripes));
             } else {
                 return -1;
             }
         } else {
-            return Math.max(1, Math.floor(tasks.height / children[0].implicitHeight));
+            return Math.min(tasks.plasmoid.configuration.maxStripes, Math.max(1, Math.floor(tasks.height / children[0].implicitHeight)));
         }
     }
-    columns: tasks.vertical
-        ? Math.max(1, Math.floor(tasks.width / children[0].implicitWidth))
-        : (tasks.width / tasksModel.count <= LayoutMetrics.preferredMinWidth() / 2
-            ? Math.ceil(tasksModel.count / tasks.plasmoid.configuration.maxStripes)
-            : -1)
-onChildrenChanged:
-    print("AAAAA"+(tasks.width/tasksModel.count)+" "+ LayoutMetrics.preferredMinWidth()/2+" "+columns+" "+children[0].implicitHeight+" "+rows)
-    /*move: Transition {
-        SequentialAnimation {
-            PropertyAction { target: taskList; property: "animating"; value: true }
-
-            NumberAnimation {
-                properties: "x, y"
-                easing.type: Easing.OutQuad
-                duration: Kirigami.Units.longDuration
+    columns: {
+        if (tasks.vertical) {
+            return Math.min(tasks.plasmoid.configuration.maxStripes, Math.max(1, Math.floor(tasks.width / children[0].implicitWidth)));
+        } else {
+            if (tasks.plasmoid.configuration.maxStripes > 1 && !tasks.plasmoid.configuration.forceStripes) {
+                return Math.max(Math.ceil(tasks.width / LayoutMetrics.preferredMinWidth()),
+                                Math.ceil(tasksModel.count / tasks.plasmoid.configuration.maxStripes));
+            } else {
+                return -1;
             }
-
-            PropertyAction { target: taskList; property: "animating"; value: false }
         }
-    }*/
-   /* Item {
-        Layout.fillWidth: true
-        Layout.fillHeight: true
-        Layout.rowSpan: 2//parent.rows
-        Layout.row: 0
-        Layout.column:parent.children.length - 1
-    }*/
+    }
 }
