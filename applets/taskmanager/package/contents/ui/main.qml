@@ -480,12 +480,6 @@ PlasmoidItem {
                     }
                 }
 
-               /* Item {
-                    id: spacer
-                    Layout.fillWidth: true
-                    Layout.fillHeight: true
-                    Layout.preferredWidth: 1
-                }*/
                 Repeater {
                     id: taskRepeater
 
@@ -498,10 +492,6 @@ PlasmoidItem {
                         }
                         taskClosedWithMouseMiddleButton = [];
                     }
-                    /*onCountChanged: {
-                        spacer.parent = taskList.parent;
-                        spacer.parent = taskList
-                    }*/
                 }
             }
         }
