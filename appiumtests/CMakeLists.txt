@@ -27,3 +27,8 @@ add_test(
     COMMAND selenium-webdriver-at-spi-run ${CMAKE_CURRENT_SOURCE_DIR}/kcm_plasmasearch_test.py
 )
 set_tests_properties(kcm_plasmasearch_test PROPERTIES TIMEOUT 120)
+
+add_test(
+    NAME panel_focus_test
+    COMMAND selenium-webdriver-at-spi-run ${CMAKE_CURRENT_SOURCE_DIR}/panel_focus_test.py
+)
