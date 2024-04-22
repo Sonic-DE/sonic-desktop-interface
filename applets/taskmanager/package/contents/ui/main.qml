@@ -320,9 +320,6 @@ PlasmoidItem {
             function onGroupingLauncherUrlBlacklistChanged() {
                 tasksModel.groupingLauncherUrlBlacklist = Plasmoid.configuration.groupingLauncherUrlBlacklist;
             }
-            function onIconSpacingChanged() {
-                taskList.layout();
-            }
         }
 
         Component {
@@ -457,14 +454,14 @@ PlasmoidItem {
                     } else if (tasks.vertical) {
                         return tasks.width;
                     } else {
-                        return Math.min(tasks.width, Layout.maximumWidth);
+                        return Math.min(tasks.width, Layout.maximumWidth/rows);
                     }
                 }
                 height: {
                     if (tasks.shouldShirnkToZero) {
                         return 0;
                     } else if (tasks.vertical) {
-                        return Math.min(tasks.height, Layout.maximumHeight);
+                        return Math.min(tasks.height, Layout.maximumHeight/columns);
                     } else {
                         return tasks.height;
                     }

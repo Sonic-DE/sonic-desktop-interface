@@ -85,18 +85,43 @@ PlasmaCore.ToolTipArea {
             oldX = x;
             return;
         }
-        moveAnim.from = oldX - x + translateTransform.x;
+        moveAnim.x = oldX - x + translateTransform.x;
+        moveAnim.y = translateTransform.y;
         oldX = x;
         moveAnim.restart();
     }
+    onYChanged: {
+        if (oldY < 0) {
+            oldY = y;
+            return;
+        }
+        moveAnim.y = oldY - y + translateTransform.y;
+        moveAnim.x = translateTransform.x;
+        oldY = y;
+        moveAnim.restart();
+    }
     property real oldX: -1
-    NumberAnimation {
+    property real oldY: -1
+    ParallelAnimation {
         id: moveAnim
-        target: translateTransform
-        properties: "x"
-        to: 0
-        easing.type: Easing.OutQuad
-        duration: Kirigami.Units.longDuration
+        property real x
+        property real y
+        NumberAnimation {
+            target: translateTransform
+            properties: "x"
+            from: moveAnim.x
+            to: 0
+            easing.type: Easing.OutQuad
+            duration: Kirigami.Units.longDuration
+        }
+        NumberAnimation {
+            target: translateTransform
+            properties: "y"
+            from: moveAnim.y
+            to: 0
+            easing.type: Easing.OutQuad
+            duration: Kirigami.Units.longDuration
+        }
     }
     transform: Translate {
         id: translateTransform
