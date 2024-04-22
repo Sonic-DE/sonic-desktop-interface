@@ -242,7 +242,7 @@ class DesktopTest(unittest.TestCase):
         message = Gio.DBusMessage.new_method_call("org.kde.kglobalaccel", "/component/plasmashell", "org.kde.kglobalaccel.Component", "invokeShortcut")
         message.set_body(GLib.Variant("(s)", ["activate task manager entry 1"]))
         session_bus.send_message_with_reply_sync(message, Gio.DBusSendMessageFlags.NONE, 1000)
-        wait.until(EC.presence_of_element_located((AppiumBy.NAME, "Launch Discover")))
+        wait.until(EC.presence_of_element_located((AppiumBy.NAME, "Install Software")))
 
     def test_6_sentry_3516_load_layout(self) -> None:
         """
