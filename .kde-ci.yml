@@ -45,6 +45,7 @@ Dependencies:
     'plasma/plasma-workspace': '@same'
     'plasma/powerdevil': '@same'
     'plasma/systemsettings': '@same'
+    'plasma/kactivitymanagerd': '@same'
     'plasma/plasma-activities': '@latest-kf6' # Different branch scheme due to formerly being a Framework
     'plasma/plasma-activities-stats': '@latest-kf6' # Different branch scheme due to formerly being a Framework
     'third-party/packagekit-qt': '@latest'
@@ -61,7 +62,6 @@ RuntimeDependencies:
     'frameworks/kded': '@latest-kf6'
     'frameworks/qqc2-desktop-style': '@latest-kf6'
     'network/kio-extras': '@latest-kf6'
-    'plasma/kactivitymanagerd': '@same'
     'sdk/selenium-webdriver-at-spi': '@latest-kf6'
 
 Options:
