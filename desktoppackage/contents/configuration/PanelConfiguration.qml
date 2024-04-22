@@ -570,6 +570,11 @@ ColumnLayout {
         }
         KeySequenceItem {
             id: button
+
+            Accessible.name: "Focus Shortcut Setter"
+            Accessible.description: "Button to set the shortcut for the panel to gain focus"
+            Accessible.onPressAction: startCapturing()
+
             keySequence: plasmoid.globalShortcut
             onCaptureFinished: {
                 plasmoid.globalShortcut = button.keySequence
