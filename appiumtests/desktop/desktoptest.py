@@ -235,7 +235,7 @@ class DesktopTest(unittest.TestCase):
         session_bus.send_message_with_reply_sync(message, Gio.DBusSendMessageFlags.NONE, 1000)
 
         wait = WebDriverWait(self.driver, 30)
-        wait.until(EC.presence_of_element_located((AppiumBy.NAME, "Software Center")))
+        wait.until(EC.presence_of_element_located((AppiumBy.NAME, "Discover")))
 
         # Activate the first launcher
         # ActionChains(self.driver).key_down(Keys.META).send_keys("1").key_up(Keys.META) # FIXME Meta modifier doesn't work
