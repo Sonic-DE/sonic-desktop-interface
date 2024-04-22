@@ -435,30 +435,36 @@ PlasmoidItem {
                     left: parent.left
                     top: parent.top
                 }
+                Layout.maximumWidth: {
+                    return children.reduce((accumulator, child) => {
+                            if (!isFinite(child.Layout.maximumWidth)) {
+                                return accumulator;
+                            }
+                            return accumulator + child.Layout.maximumWidth
+                        }, 0);
+                }
+                Layout.maximumHeight: {
+                    return children.reduce((accumulator, child) => {
+                            if (!isFinite(child.Layout.maximumHeight)) {
+                                return accumulator;
+                            }
+                            return accumulator + child.Layout.maximumHeight
+                        }, 0);
+                }
                 width: {
                     if (tasks.shouldShirnkToZero) {
                         return 0;
                     } else if (tasks.vertical) {
                         return tasks.width;
                     } else {
-                        return Math.min(tasks.width, children.reduce((accumulator, child) => {
-                            if (!isFinite(child.Layout.maximumWidth)) {
-                                return accumulator;
-                            }
-                            return accumulator + child.Layout.maximumWidth
-                        }, 0));
+                        return Math.min(tasks.width, Layout.maximumWidth);
                     }
                 }
                 height: {
                     if (tasks.shouldShirnkToZero) {
                         return 0;
                     } else if (tasks.vertical) {
-                        return Math.min(tasks.height, children.reduce((accumulator, child) => {
-                            if (!isFinite(child.Layout.maximumHeight)) {
-                                return accumulator;
-                            }
-                            return accumulator + child.Layout.maximumHeight
-                        }, 0));
+                        return Math.min(tasks.height, Layout.maximumHeight);
                     } else {
                         return tasks.height;
                     }
