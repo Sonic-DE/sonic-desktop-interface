@@ -87,8 +87,8 @@ function preferredMaxHeight() {
              Math.min(
                  // Do not allow the preferred icon size to exceed the width of
                  // the vertical task manager.
-                 tasks.width,
-                 tasks.iconsOnly ? tasks.width :
+                 tasks.width / maxStripes(),
+                 tasks.iconsOnly ? tasks.width / maxStripes() :
                     Math.max(
                         Kirigami.Units.iconSizes.sizeForLabels,
                         Kirigami.Units.iconSizes.medium
