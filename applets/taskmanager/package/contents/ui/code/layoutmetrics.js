@@ -83,19 +83,22 @@ function preferredMinHeight() {
 
 function preferredMaxHeight() {
     if (tasks.vertical) {
-      return verticalMargins() +
+        let taskPreferredSize = 0;
+        if (tasks.iconsOnly) {
+            taskPreferredSize = tasks.width / maxStripes();
+        } else {
+            taskPreferredSize = Math.max(Kirigami.Units.iconSizes.sizeForLabels,
+                                         Kirigami.Units.iconSizes.medium);
+        }
+        return verticalMargins() +
              Math.min(
                  // Do not allow the preferred icon size to exceed the width of
                  // the vertical task manager.
                  tasks.width / maxStripes(),
-                 tasks.iconsOnly ? tasks.width / maxStripes() :
-                    Math.max(
-                        Kirigami.Units.iconSizes.sizeForLabels,
-                        Kirigami.Units.iconSizes.medium
-                    )
+                 taskPreferredSize
              );
     } else {
-      return verticalMargins() +
+        return verticalMargins() +
              Math.min(
                  Kirigami.Units.iconSizes.small * 3,
                  Kirigami.Units.iconSizes.sizeForLabels *
