@@ -483,7 +483,9 @@ PlasmoidItem {
                 Repeater {
                     id: taskRepeater
 
-                    delegate: Task {}
+                    delegate: Task {
+                        tasksRoot: tasks
+                    }
                     onItemRemoved: {
                         if (tasks.containsMouse && index != taskRepeater.count &&
                             item.model.WinIdList.length > 0 &&
