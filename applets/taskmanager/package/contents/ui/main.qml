@@ -32,7 +32,7 @@ PlasmoidItem {
     // This mirrors the tasks as well, so we just rotate them again to fix that (see Task.qml).
     rotation: Plasmoid.configuration.reverseMode && Plasmoid.formFactor === PlasmaCore.Types.Vertical ? 180 : 0
 
-    readonly property bool shouldShirnkToZero: tasksModel.count === 0
+    readonly property bool shouldShrinkToZero: tasksModel.count === 0
     property bool vertical: Plasmoid.formFactor === PlasmaCore.Types.Vertical
     property bool iconsOnly: Plasmoid.pluginName === "org.kde.plasma.icontasks"
 
@@ -60,13 +60,13 @@ PlasmoidItem {
     Layout.fillWidth: tasks.vertical ? true : Plasmoid.configuration.fill
     Layout.fillHeight: !tasks.vertical ? true : Plasmoid.configuration.fill
     Layout.minimumWidth: {
-        if (shouldShirnkToZero) {
+        if (shouldShrinkToZero) {
             return Kirigami.Units.gridUnit; // For edit mode
         }
         return tasks.vertical ? 0 : LayoutMetrics.preferredMinWidth();
     }
     Layout.minimumHeight: {
-        if (shouldShirnkToZero) {
+        if (shouldShrinkToZero) {
             return Kirigami.Units.gridUnit; // For edit mode
         }
         return !tasks.vertical ? 0 : LayoutMetrics.preferredMinHeight();
@@ -74,7 +74,7 @@ PlasmoidItem {
 
 //BEGIN TODO: this is not precise enough: launchers are smaller than full tasks
     Layout.preferredWidth: {
-        if (shouldShirnkToZero) {
+        if (shouldShrinkToZero) {
             return 0.01;
         }
         if (tasks.vertical) {
@@ -83,7 +83,7 @@ PlasmoidItem {
         return taskList.Layout.maximumWidth
     }
     Layout.preferredHeight: {
-        if (shouldShirnkToZero) {
+        if (shouldShrinkToZero) {
             return 0.01;
         }
         if (tasks.vertical) {
@@ -449,7 +449,7 @@ PlasmoidItem {
                         }, 0);
                 }
                 width: {
-                    if (tasks.shouldShirnkToZero) {
+                    if (tasks.shouldShrinkToZero) {
                         return 0;
                     } else if (tasks.vertical) {
                         return tasks.width;
@@ -458,7 +458,7 @@ PlasmoidItem {
                     }
                 }
                 height: {
-                    if (tasks.shouldShirnkToZero) {
+                    if (tasks.shouldShrinkToZero) {
                         return 0;
                     } else if (tasks.vertical) {
                         return Math.min(tasks.height, Layout.maximumHeight / columns);
