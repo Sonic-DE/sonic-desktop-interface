@@ -63,6 +63,7 @@ PlasmaCore.ToolTipArea {
     property Item audioStreamIcon: null
     property var audioStreams: []
     property bool delayAudioStreamIndicator: false
+    property bool completed: false
     readonly property bool audioIndicatorsEnabled: Plasmoid.configuration.indicateAudioStreams
     readonly property bool hasAudioStream: audioStreams.length > 0
     readonly property bool playingAudio: hasAudioStream && audioStreams.some(function (item) {
@@ -82,6 +83,9 @@ PlasmaCore.ToolTipArea {
     mainItem: model.IsWindow ? openWindowToolTipDelegate : pinnedAppToolTipDelegate
 
     onXChanged: {
+        if (!completed) {
+            return;
+        }
         if (oldX < 0) {
             oldX = x;
             return;
@@ -92,6 +96,9 @@ PlasmaCore.ToolTipArea {
         moveAnim.restart();
     }
     onYChanged: {
+        if (!completed) {
+            return;
+        }
         if (oldY < 0) {
             oldY = y;
             return;
@@ -101,6 +108,7 @@ PlasmaCore.ToolTipArea {
         oldY = y;
         moveAnim.restart();
     }
+
     property real oldX: -1
     property real oldY: -1
     ParallelAnimation {
@@ -655,5 +663,6 @@ PlasmaCore.ToolTipArea {
         if (!inPopup && !model.IsWindow) {
             taskInitComponent.createObject(task);
         }
+        completed = true;
     }
 }
