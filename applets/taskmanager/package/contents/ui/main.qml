@@ -454,14 +454,14 @@ PlasmoidItem {
                     } else if (tasks.vertical) {
                         return tasks.width;
                     } else {
-                        return Math.min(tasks.width, Layout.maximumWidth/rows);
+                        return Math.min(tasks.width, Layout.maximumWidth / rows);
                     }
                 }
                 height: {
                     if (tasks.shouldShirnkToZero) {
                         return 0;
                     } else if (tasks.vertical) {
-                        return Math.min(tasks.height, Layout.maximumHeight/columns);
+                        return Math.min(tasks.height, Layout.maximumHeight / columns);
                     } else {
                         return tasks.height;
                     }
