@@ -6,6 +6,7 @@
 */
 
 import QtQuick 2.15
+import QtQuick.Effects
 
 import org.kde.plasma.core as PlasmaCore
 import org.kde.kwindowsystem 1.0
@@ -54,6 +55,59 @@ Item {
         } else {
             sidePanelStack.state = "activityManager";
             sidePanelStack.setSource(Qt.resolvedUrl("../activitymanager/ActivityManager.qml"));
+        }
+    }
+
+    Item {
+        id: containmentParent
+        anchors.fill: parent
+        scale: containment.plasmoid.corona.editMode ? 0.9 : 1
+    }
+    MultiEffect {
+        z: 9999
+        source: containment
+        anchors.fill: parent
+        brightness: 0.4
+        saturation: 0.2
+        blurEnabled: true
+        blurMax: 64
+        blur: 1.0
+        visible: scaleAnim.running || containment.plasmoid.corona.editMode
+    }
+    MultiEffect {
+        z: 9999
+        source: containment
+        anchors.fill: parent
+        layer.enabled: true
+        scale: containmentParent.scale
+        Behavior on scale {
+            NumberAnimation {
+                id: scaleAnim
+                duration: Kirigami.Units.longDuration
+                easing.type: Easing.InOutQuad
+            }
+        }
+        layer.smooth: true
+        visible: scaleAnim.running || containment.plasmoid.corona.editMode
+        layer.effect: Kirigami.ShadowedTexture {
+            anchors.fill: parent
+
+            color: "transparent"
+
+            radius: containment.plasmoid.corona.editMode ? Kirigami.Units.cornerRadius * 4 : 0
+            Behavior on radius {
+                NumberAnimation {
+                    id: scaleAnim
+                    duration: Kirigami.Units.longDuration
+                    easing.type: Easing.InOutQuad
+                }
+            }
+
+            shadow {
+                size: Kirigami.Units.gridUnit * 2
+                color: Qt.rgba(0, 0, 0, 0.3)
+                yOffset: 3
+            }
         }
     }
 
@@ -207,10 +261,13 @@ Item {
         }
     }
 
+
     onContainmentChanged: {
         if (containment == null) {
             return;
         }
+
+        containment.parent = containmentParent
 
         if (switchAnim.running) {
             //If the animation was still running, stop it and reset
@@ -251,18 +308,10 @@ Item {
         ScriptAction {
             script: {
                 if (containment) {
-                    containment.anchors.left = undefined;
-                    containment.anchors.top = undefined;
-                    containment.anchors.right = undefined;
-                    containment.anchors.bottom = undefined;
                     containment.z = 1;
                     containment.x = root.width;
                 }
                 if (internal.oldContainment) {
-                    internal.oldContainment.anchors.left = undefined;
-                    internal.oldContainment.anchors.top = undefined;
-                    internal.oldContainment.anchors.right = undefined;
-                    internal.oldContainment.anchors.bottom = undefined;
                     internal.oldContainment.z = 0;
                     internal.oldContainment.x = 0;
                 }
@@ -290,10 +339,6 @@ Item {
                     internal.oldContainment.visible = false;
                 }
                 if (containment) {
-                    containment.anchors.left = root.left;
-                    containment.anchors.top = root.top;
-                    containment.anchors.right = root.right;
-                    containment.anchors.bottom = root.bottom;
                     internal.oldContainment = containment;
                 }
             }
