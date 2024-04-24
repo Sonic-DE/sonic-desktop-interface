@@ -27,28 +27,29 @@ PlasmaCore.ToolTipArea {
     // This makes the tasks mirrored, so we mirror them again to fix that.
     rotation: Plasmoid.configuration.reverseMode && Plasmoid.formFactor === PlasmaCore.Types.Vertical ? 180 : 0
 
-    implicitHeight: Math.max(tasks.height / tasks.plasmoid.configuration.maxStripes,
+    implicitHeight: Math.max(tasksRoot.height / tasksRoot.plasmoid.configuration.maxStripes,
                              Math.max(Kirigami.Units.iconSizes.sizeForLabels, Kirigami.Units.iconSizes.medium) + LayoutMetrics.verticalMargins())
-    implicitWidth: tasks.vertical
-        ? Math.max(LayoutMetrics.preferredMinWidth(), Math.min(LayoutMetrics.preferredMaxWidth(), tasks.width / tasks.plasmoid.configuration.maxStripes))
+    implicitWidth: tasksRoot.vertical
+        ? Math.max(LayoutMetrics.preferredMinWidth(), Math.min(LayoutMetrics.preferredMaxWidth(), tasksRoot.width / tasksRoot.plasmoid.configuration.maxStripes))
         : 0
 
     Layout.fillWidth: true
     Layout.fillHeight: true
-    Layout.maximumWidth: tasks.vertical
+    Layout.maximumWidth: tasksRoot.vertical
         ? -1
-        : (model.IsLauncher ? tasks.height / taskList.rows : LayoutMetrics.preferredMaxWidth())
-    Layout.maximumHeight: tasks.vertical ? LayoutMetrics.preferredMaxHeight() : -1
+        : (model.IsLauncher ? tasksRoot.height / taskList.rows : LayoutMetrics.preferredMaxWidth())
+    Layout.maximumHeight: tasksRoot.vertical ? LayoutMetrics.preferredMaxHeight() : -1
     LayoutMirroring.enabled: (Qt.application.layoutDirection == Qt.RightToLeft)
     LayoutMirroring.childrenInherit: (Qt.application.layoutDirection == Qt.RightToLeft)
 
     required property var model
     required property int index
+    required property Item tasksRoot
 
     readonly property int pid: model.AppPid
     readonly property string appName: model.AppName
     readonly property string appId: model.AppId.replace(/\.desktop/, '')
-    readonly property bool isIcon: tasks.iconsOnly || model.IsLauncher
+    readonly property bool isIcon: tasksRoot.iconsOnly || model.IsLauncher
     property bool toolTipOpen: false
     property bool inPopup: false
     property bool isWindow: model.IsWindow
@@ -73,9 +74,9 @@ PlasmaCore.ToolTipArea {
 
     readonly property bool highlighted: (inPopup && activeFocus) || (!inPopup && containsMouse)
         || (task.contextMenu && task.contextMenu.status === PlasmaExtras.Menu.Open)
-        || (!!tasks.groupDialog && tasks.groupDialog.visualParent === task)
+        || (!!tasksRoot.groupDialog && tasksRoot.groupDialog.visualParent === task)
 
-    active: (Plasmoid.configuration.showToolTips || tasks.toolTipOpenedByClick === task) && !inPopup && !tasks.groupDialog
+    active: (Plasmoid.configuration.showToolTips || tasksRoot.toolTipOpenedByClick === task) && !inPopup && !tasksRoot.groupDialog
     interactive: model.IsWindow || mainItem.playerData
     location: Plasmoid.location
     mainItem: model.IsWindow ? openWindowToolTipDelegate : pinnedAppToolTipDelegate
@@ -170,9 +171,9 @@ PlasmaCore.ToolTipArea {
     onToolTipVisibleChanged: toolTipVisible => {
         task.toolTipOpen = toolTipVisible;
         if (!toolTipVisible) {
-            tasks.toolTipOpenedByClick = null;
+            tasksRoot.toolTipOpenedByClick = null;
         } else {
-            tasks.toolTipAreaItem = task;
+            tasksRoot.toolTipAreaItem = task;
         }
     }
 
@@ -180,7 +181,7 @@ PlasmaCore.ToolTipArea {
         task.forceActiveFocus(Qt.MouseFocusReason);
         task.updateMainItemBindings();
     } else {
-        tasks.toolTipOpenedByClick = null;
+        tasksRoot.toolTipOpenedByClick = null;
     }
 
     onHighlightedChanged: {
@@ -209,9 +210,9 @@ PlasmaCore.ToolTipArea {
     onIndexChanged: {
         hideToolTip();
 
-        if (!inPopup && !tasks.vertical
+        if (!inPopup && !tasksRoot.vertical
             && !Plasmoid.configuration.separateLaunchers) {
-            tasks.requestLayout();
+            tasksRoot.requestLayout();
         }
     }
 
@@ -247,7 +248,7 @@ PlasmaCore.ToolTipArea {
     onAudioIndicatorsEnabledChanged: task.hasAudioStreamChanged()
 
     Keys.onMenuPressed: contextMenuTimer.start()
-    Keys.onReturnPressed: TaskTools.activateTask(modelIndex(), model, event.modifiers, task, Plasmoid, tasks, effectWatcher.registered)
+    Keys.onReturnPressed: TaskTools.activateTask(modelIndex(), model, event.modifiers, task, Plasmoid, tasksRoot, effectWatcher.registered)
     Keys.onEnterPressed: Keys.returnPressed(event);
     Keys.onSpacePressed: Keys.returnPressed(event);
     Keys.onUpPressed: Keys.leftPressed(event)
@@ -270,7 +271,7 @@ PlasmaCore.ToolTipArea {
 
     function showContextMenu(args) {
         task.hideImmediately();
-        contextMenu = tasks.createContextMenu(task, modelIndex(), args);
+        contextMenu = tasksRoot.createContextMenu(task, modelIndex(), args);
         contextMenu.show();
     }
 
@@ -319,7 +320,7 @@ PlasmaCore.ToolTipArea {
 
     // Will also be called in activateTaskAtIndex(index)
     function updateMainItemBindings() {
-        if ((mainItem.parentTask === task && mainItem.rootIndex.row === task.index) || (tasks.toolTipOpenedByClick === null && !task.active) || (tasks.toolTipOpenedByClick !== null && tasks.toolTipOpenedByClick !== task)) {
+        if ((mainItem.parentTask === task && mainItem.rootIndex.row === task.index) || (tasksRoot.toolTipOpenedByClick === null && !task.active) || (tasksRoot.toolTipOpenedByClick !== null && tasksRoot.toolTipOpenedByClick !== task)) {
             return;
         }
 
@@ -346,7 +347,7 @@ PlasmaCore.ToolTipArea {
         mainItem.smartLauncherCount = Qt.binding(() => mainItem.smartLauncherCountVisible ? task.smartLauncherItem.count : 0);
 
         mainItem.blockingUpdates = false;
-        tasks.toolTipAreaItem = task;
+        tasksRoot.toolTipAreaItem = task;
     }
 
     Connections {
@@ -391,7 +392,7 @@ PlasmaCore.ToolTipArea {
             if (Plasmoid.configuration.showToolTips && task.active) {
                 hideToolTip();
             }
-            TaskTools.activateTask(modelIndex(), model, point.modifiers, task, Plasmoid, tasks, effectWatcher.registered);
+            TaskTools.activateTask(modelIndex(), model, point.modifiers, task, Plasmoid, tasksRoot, effectWatcher.registered);
         }
     }
 
@@ -402,7 +403,7 @@ PlasmaCore.ToolTipArea {
                 if (Plasmoid.configuration.middleClickAction === TaskManagerApplet.Backend.NewInstance) {
                     tasksModel.requestNewInstance(modelIndex());
                 } else if (Plasmoid.configuration.middleClickAction === TaskManagerApplet.Backend.Close) {
-                    tasks.taskClosedWithMouseMiddleButton = model.WinIdList.slice()
+                    tasksRoot.taskClosedWithMouseMiddleButton = model.WinIdList.slice()
                     tasksModel.requestClose(modelIndex());
                 } else if (Plasmoid.configuration.middleClickAction === TaskManagerApplet.Backend.ToggleMinimized) {
                     tasksModel.requestToggleMinimized(modelIndex());
@@ -434,10 +435,10 @@ PlasmaCore.ToolTipArea {
         anchors {
             fill: parent
 
-            topMargin: (!tasks.vertical && taskList.rows > 1) ? LayoutMetrics.iconMargin : 0
-            bottomMargin: (!tasks.vertical && taskList.rows > 1) ? LayoutMetrics.iconMargin : 0
-            leftMargin: ((inPopup || tasks.vertical) && taskList.columns > 1) ? LayoutMetrics.iconMargin : 0
-            rightMargin: ((inPopup || tasks.vertical) && taskList.columns > 1) ? LayoutMetrics.iconMargin : 0
+            topMargin: (!tasksRoot.vertical && taskList.rows > 1) ? LayoutMetrics.iconMargin : 0
+            bottomMargin: (!tasksRoot.vertical && taskList.rows > 1) ? LayoutMetrics.iconMargin : 0
+            leftMargin: ((inPopup || tasksRoot.vertical) && taskList.columns > 1) ? LayoutMetrics.iconMargin : 0
+            rightMargin: ((inPopup || tasksRoot.vertical) && taskList.columns > 1) ? LayoutMetrics.iconMargin : 0
         }
 
         imagePath: "widgets/tasks"
@@ -470,7 +471,7 @@ PlasmaCore.ToolTipArea {
                         return;
                     }
                     setRequestedInhibitDnd(true);
-                    tasks.dragSource = task;
+                    tasksRoot.dragSource = task;
                     dragHelper.Drag.imageSource = result.url;
                     dragHelper.Drag.mimeData = {
                         "text/x-orgkdeplasmataskmanager_taskurl": backend.tryDecodeApplicationsUrl(model.LauncherUrlWithoutIcon).toString(),
