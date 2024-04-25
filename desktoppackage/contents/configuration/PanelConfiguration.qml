@@ -458,6 +458,37 @@ ColumnLayout {
                 action: floatingAction
             }
         }
+
+        RowLayout {
+            Layout.fillWidth: true
+            Layout.columnSpan: 3
+            spacing: Kirigami.Units.smallSpacing
+            visible: panel.unsupportedConfiguration
+
+            Kirigami.Icon {
+                source: "data-warning-symbolic"
+                Layout.alignment: Qt.AlignVCenter
+                Layout.preferredWidth: Kirigami.Units.iconSizes.medium
+                Layout.preferredHeight: Kirigami.Units.iconSizes.medium
+            }
+
+            PC3.Label {
+                Layout.alignment: Qt.AlignVCenter
+                Layout.fillWidth: true
+                Layout.preferredWidth: 0
+                text: panel.unsupportedConfigurationDescription
+                wrapMode: Text.Wrap
+            }
+
+            PC3.ToolButton {
+                Layout.alignment: Qt.AlignVCenter
+                text: i18ndc("plasma_shell_org.kde.plasma.desktop", "@action:button Revert an unsupported configuration back to the defaults", "Revert")
+                icon.name: "edit-undo-symbolic"
+                onClicked: {
+                    panel.fixUnsupportedConfiguration();
+                }
+            }
+        }
     }
 
     Instantiator {
