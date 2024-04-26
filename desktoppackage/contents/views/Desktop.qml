@@ -65,12 +65,11 @@ Item {
         anchors {
            // fill: parent
         }
-        property rect rect: containment ? containment.plasmoid.availableScreenRect : Qt.rect(0,0,0,0)
-        x: containment.plasmoid.corona.editMode ? rect.x + rect.width/2 - root.width/2: 0
-        y: containment.plasmoid.corona.editMode ? rect.y + rect.height/2 - root.height/2: 0
+        x: containment.plasmoid.corona.editMode ? editModeRect.x + editModeRect.width/2 - root.width/2: 0
+        y: containment.plasmoid.corona.editMode ? editModeRect.y + editModeRect.height/2 - root.height/2: 0
         width: root.width
         height: root.height
-        property real ratio: Math.min(rect.width/root.width, rect.height/root.height)
+        property real ratio: Math.min(editModeRect.width/root.width, editModeRect.height/root.height)
         scale: containment.plasmoid.corona.editMode ? ratio * 0.9 :1
     }
     MultiEffect {
@@ -83,14 +82,23 @@ Item {
         blur: 1.0
         visible: scaleAnim.running || containment.plasmoid.corona.editMode
     }
-    readonly property rect availableScreenRect: containment ? containment.plasmoid.availableScreenRect : Qt.rect(0,0,0,0)
+    readonly property rect editModeRect: {
+        if (!containment) {
+            return Qt.rect(0,0,0,0);
+        }
+        let screenRect = containment.plasmoid.availableScreenRect;
+        if (sidePanel.visible) {
+            screenRect = Qt.rect(screenRect.x + sidePanel.width, screenRect.y, screenRect.width - sidePanel.width, screenRect.height);
+        }
+        return screenRect;
+    }
     MultiEffect {
         source: containment
         anchors.fill: parent
         layer.enabled: true
         transform: Translate {
-            x: containment.plasmoid.corona.editMode ? (availableScreenRect.x + availableScreenRect.width/2 - availableScreenRect.width/2) * containmentParent.scale : 0
-            y: containment.plasmoid.corona.editMode ? availableScreenRect.y + availableScreenRect.height/2 - availableScreenRect.height/2 : 0
+            x: containment.plasmoid.corona.editMode ? editModeRect.x + editModeRect.width/2 - root.width/2  : 0
+            y: containment.plasmoid.corona.editMode ? editModeRect.y + editModeRect.height/2 - root.height/2 : 0
             Behavior on x {
                 NumberAnimation {
                     duration: Kirigami.Units.longDuration
@@ -105,7 +113,6 @@ Item {
             }
         }
 
-        property real ratio: Math.min(rect.width/root.width, rect.height/root.height)
         scale: containmentParent.scale
         Behavior on scale {
             NumberAnimation {
