@@ -66,14 +66,14 @@ Item {
            // fill: parent
         }
         property rect rect: containment ? containment.plasmoid.availableScreenRect : Qt.rect(0,0,0,0)
-        x: rect.x
-        y: rect.y
-        width: rect.width
-        height: rect.height
-        scale: containment.plasmoid.corona.editMode ? 0.9 : 1
+        x: containment.plasmoid.corona.editMode ? rect.x + rect.width/2 - root.width/2: 0
+        y: containment.plasmoid.corona.editMode ? rect.y + rect.height/2 - root.height/2: 0
+        width: root.width
+        height: root.height
+        property real ratio: Math.min(rect.width/root.width, rect.height/root.height)
+        scale: containment.plasmoid.corona.editMode ? ratio * 0.9 :1
     }
     MultiEffect {
-        z: 9999
         source: containment
         anchors.fill: parent
         brightness: 0.4
@@ -83,16 +83,29 @@ Item {
         blur: 1.0
         visible: scaleAnim.running || containment.plasmoid.corona.editMode
     }
+    readonly property rect availableScreenRect: containment ? containment.plasmoid.availableScreenRect : Qt.rect(0,0,0,0)
     MultiEffect {
-        z: 9999
         source: containment
-        //anchors.fill: parent
-        property rect rect: containment ? containment.plasmoid.availableScreenRect : Qt.rect(0,0,0,0)
-        x: rect.x
-        y: rect.y
-        width: rect.width
-        height: rect.height
+        anchors.fill: parent
         layer.enabled: true
+        transform: Translate {
+            x: containment.plasmoid.corona.editMode ? (availableScreenRect.x + availableScreenRect.width/2 - availableScreenRect.width/2) * containmentParent.scale : 0
+            y: containment.plasmoid.corona.editMode ? availableScreenRect.y + availableScreenRect.height/2 - availableScreenRect.height/2 : 0
+            Behavior on x {
+                NumberAnimation {
+                    duration: Kirigami.Units.longDuration
+                    easing.type: Easing.InOutQuad
+                }
+            }
+            Behavior on y {
+                NumberAnimation {
+                    duration: Kirigami.Units.longDuration
+                    easing.type: Easing.InOutQuad
+                }
+            }
+        }
+
+        property real ratio: Math.min(rect.width/root.width, rect.height/root.height)
         scale: containmentParent.scale
         Behavior on scale {
             NumberAnimation {
@@ -104,7 +117,12 @@ Item {
         layer.smooth: true
         visible: scaleAnim.running || containment.plasmoid.corona.editMode
         layer.effect: Kirigami.ShadowedTexture {
-            anchors.fill: parent
+            id: shadowedDesktopPreview
+            //anchors.fill: parent
+
+           // scale: ratio * 0.9
+            width: root.width //* ratio * 0.9
+            height: root.height// * ratio * 0.9
 
             color: "transparent"
 
