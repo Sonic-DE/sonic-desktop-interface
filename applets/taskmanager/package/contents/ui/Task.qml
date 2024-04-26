@@ -28,7 +28,7 @@ PlasmaCore.ToolTipArea {
     rotation: Plasmoid.configuration.reverseMode && Plasmoid.formFactor === PlasmaCore.Types.Vertical ? 180 : 0
 
     implicitHeight: Math.max(tasksRoot.height / tasksRoot.plasmoid.configuration.maxStripes,
-                             Math.max(Kirigami.Units.iconSizes.sizeForLabels, Kirigami.Units.iconSizes.medium) + LayoutMetrics.verticalMargins())
+                             LayoutMetrics.preferredMinHeight())
     implicitWidth: tasksRoot.vertical
         ? Math.max(LayoutMetrics.preferredMinWidth(), Math.min(LayoutMetrics.preferredMaxWidth(), tasksRoot.width / tasksRoot.plasmoid.configuration.maxStripes))
         : 0
