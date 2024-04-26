@@ -60,7 +60,11 @@ Item {
     }
 
 
-    Item {
+    MouseArea {
+        anchors.fill:parent
+        onClicked: containment.plasmoid.corona.editMode = false
+    }
+    MouseArea {
         id: containmentParent
         anchors {
            // fill: parent
