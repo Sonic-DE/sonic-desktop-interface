@@ -7,6 +7,7 @@
 
 import QtQuick 2.15
 import QtQuick.Effects
+import QtQuick.Controls
 
 import org.kde.plasma.core as PlasmaCore
 import org.kde.kwindowsystem 1.0
@@ -58,9 +59,17 @@ Item {
         }
     }
 
+
     Item {
         id: containmentParent
-        anchors.fill: parent
+        anchors {
+           // fill: parent
+        }
+        property rect rect: containment ? containment.plasmoid.availableScreenRect : Qt.rect(0,0,0,0)
+        x: rect.x
+        y: rect.y
+        width: rect.width
+        height: rect.height
         scale: containment.plasmoid.corona.editMode ? 0.9 : 1
     }
     MultiEffect {
@@ -77,7 +86,12 @@ Item {
     MultiEffect {
         z: 9999
         source: containment
-        anchors.fill: parent
+        //anchors.fill: parent
+        property rect rect: containment ? containment.plasmoid.availableScreenRect : Qt.rect(0,0,0,0)
+        x: rect.x
+        y: rect.y
+        width: rect.width
+        height: rect.height
         layer.enabled: true
         scale: containmentParent.scale
         Behavior on scale {
