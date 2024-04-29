@@ -7,9 +7,10 @@
 
 import QtQuick 2.15
 import QtQuick.Effects
-import QtQuick.Controls
+import QtQuick.Layouts
 
 import org.kde.plasma.core as PlasmaCore
+import org.kde.plasma.components as PC
 import org.kde.kwindowsystem 1.0
 import org.kde.plasma.activityswitcher as ActivitySwitcher
 import "../activitymanager"
@@ -64,13 +65,14 @@ Item {
         anchors.fill:parent
         onClicked: containment.plasmoid.corona.editMode = false
     }
+
     MouseArea {
         id: containmentParent
         anchors {
            // fill: parent
         }
         x: containment.plasmoid.corona.editMode ? editModeRect.x + editModeRect.width/2 - root.width/2: 0
-        y: containment.plasmoid.corona.editMode ? editModeRect.y + editModeRect.height/2 - root.height/2: 0
+        y: containment.plasmoid.corona.editMode ? editModeRect.y + editModeRect.height/2 - root.height/2 : 0
         width: root.width
         height: root.height
         property real ratio: Math.min(editModeRect.width/root.width, editModeRect.height/root.height)
@@ -86,6 +88,95 @@ Item {
         blur: 1.0
         visible: scaleAnim.running || containment.plasmoid.corona.editMode
     }
+    Rectangle {
+        id: toolbar
+        anchors {
+            horizontalCenter: containmentParent.horizontalCenter
+        }
+        color: Kirigami.Theme.backgroundColor
+        width: containmentParent.width * containmentParent.scale
+        Behavior on width {
+            NumberAnimation {
+                duration: Kirigami.Units.longDuration
+                easing.type: Easing.InOutQuad
+            }
+        }
+        height: 64
+        radius: Kirigami.Units.cornerRadius
+        y: parent.height/2 - (containmentParent.height * containmentParent.scale) / 2 - height
+        Behavior on y {
+            NumberAnimation {
+                duration: Kirigami.Units.longDuration
+                easing.type: Easing.InOutQuad
+            }
+        }
+
+        Binding {
+            target: containment.toolBox
+            property: "visible"
+            value: false
+        }
+        RowLayout {
+            anchors {
+                left: parent.left
+                top: parent.top
+                right: parent.right
+                margins: Kirigami.Units.smallSpacing
+            }
+            PC.ToolButton {
+                icon.name: "list-add"
+                text: "Add Widgets"
+                onClicked: containment.plasmoid.internalAction("add widgets").trigger()
+            }
+            PC.ToolButton {
+                icon.name: "list-add"
+                text: "Add Panel"
+            }
+            PC.ToolButton {
+                icon.name: "user-desktop"
+                text: "Desktop And Wallpaper"
+            }
+            PC.ToolButton {
+                icon.name: "preferences-desktop-theme-global"
+                text: "Global Themes"
+            }
+            PC.ToolButton {
+                icon.name: "monitor-symbolic"
+                text: "Display Configuration"
+            }
+            Item {
+                Layout.fillWidth: true
+            }
+            PC.ToolButton {
+                icon.name: "window-close"
+                text: "Exit Edit Mode"
+                onClicked: containment.plasmoid.corona.editMode = false
+            }
+        }
+    }
+ /*   Rectangle {
+        color: "red"
+        x: editModeRect.x
+        y: editModeRect.y
+        width: editModeRect.width
+        height: editModeRect.height
+        radius: 10
+        ColumnLayout {
+            anchors.centerIn: parent
+            width: root.width * containmentParent.ratio * 0.9
+            height: root.height * containmentParent.ratio* 0.9 + 36
+            spacing: 0
+            Rectangle {
+                Layout.fillWidth: true
+                Layout.preferredHeight: 36
+            }
+            Rectangle {
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                color: "green"
+            }
+        }
+    }*/
     readonly property rect editModeRect: {
         if (!containment) {
             return Qt.rect(0,0,0,0);
