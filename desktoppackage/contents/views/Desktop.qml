@@ -72,7 +72,7 @@ Item {
            // fill: parent
         }
         x: containment.plasmoid.corona.editMode ? editModeRect.x + editModeRect.width/2 - root.width/2: 0
-        y: containment.plasmoid.corona.editMode ? editModeRect.y + editModeRect.height/2 - root.height/2 : 0
+        y: containment.plasmoid.corona.editMode ? editModeRect.y + editModeRect.height/2 - root.height/2 + 32 : 0
         width: root.width
         height: root.height
         property real ratio: Math.min(editModeRect.width/root.width, editModeRect.height/root.height)
@@ -103,7 +103,8 @@ Item {
         }
         height: 64
         radius: Kirigami.Units.cornerRadius
-        y: parent.height/2 - (containmentParent.height * containmentParent.scale) / 2 - height
+        y: parent.height/2 - (containmentParent.height * containmentParent.scale) / 2 - height + 32
+        visible: containment.plasmoid.corona.editMode
         Behavior on y {
             NumberAnimation {
                 duration: Kirigami.Units.longDuration
@@ -193,7 +194,7 @@ Item {
         layer.enabled: true
         transform: Translate {
             x: containment.plasmoid.corona.editMode ? editModeRect.x + editModeRect.width/2 - root.width/2  : 0
-            y: containment.plasmoid.corona.editMode ? editModeRect.y + editModeRect.height/2 - root.height/2 : 0
+            y: containment.plasmoid.corona.editMode ? editModeRect.y + editModeRect.height/2 - root.height/2 +32: 0
             Behavior on x {
                 NumberAnimation {
                     duration: Kirigami.Units.longDuration
