@@ -21,6 +21,8 @@ GridLayout {
 
     rowSpacing: 0
     columnSpacing: 0
+    property int animationsRunning: 0
+    onAnimationsRunningChanged: animating = animationsRunning > 0
     rows: {
         if (tasks.vertical) {
             if (tasks.plasmoid.configuration.maxStripes > 1 && !tasks.plasmoid.configuration.forceStripes) {
