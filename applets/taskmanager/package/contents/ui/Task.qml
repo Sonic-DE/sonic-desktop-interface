@@ -111,25 +111,37 @@ PlasmaCore.ToolTipArea {
 
     property real oldX: -1
     property real oldY: -1
-    ParallelAnimation {
+    SequentialAnimation {
         id: moveAnim
         property real x
         property real y
-        NumberAnimation {
-            target: translateTransform
-            properties: "x"
-            from: moveAnim.x
-            to: 0
-            easing.type: Easing.OutQuad
-            duration: Kirigami.Units.longDuration
+        PropertyAction {
+            target: task.parent
+            property: "animationsRunning"
+            value: task.parent.animationsRunning + 1
         }
-        NumberAnimation {
-            target: translateTransform
-            properties: "y"
-            from: moveAnim.y
-            to: 0
-            easing.type: Easing.OutQuad
-            duration: Kirigami.Units.longDuration
+        ParallelAnimation {
+            NumberAnimation {
+                target: translateTransform
+                properties: "x"
+                from: moveAnim.x
+                to: 0
+                easing.type: Easing.OutQuad
+                duration: Kirigami.Units.longDuration
+            }
+            NumberAnimation {
+                target: translateTransform
+                properties: "y"
+                from: moveAnim.y
+                to: 0
+                easing.type: Easing.OutQuad
+                duration: Kirigami.Units.longDuration
+            }
+        }
+        PropertyAction {
+            target: task.parent
+            property: "animationsRunning"
+            value: task.parent.animationsRunning - 1
         }
     }
     transform: Translate {
@@ -664,5 +676,10 @@ PlasmaCore.ToolTipArea {
             taskInitComponent.createObject(task);
         }
         completed = true;
+    }
+    Component.onDestruction: {
+        if (moveAnim.running) {
+            task.parent.animationsRunning -= 1;
+        }
     }
 }
