@@ -20,7 +20,7 @@ function verticalMargins() {
 }
 
 function adjustMargin(height, margin) {
-    var available = height - verticalMargins();
+    const available = height - verticalMargins();
 
     if (available < Kirigami.Units.iconSizes.small) {
         return Math.floor((margin * (Kirigami.Units.iconSizes.small / available)) / 3);
@@ -47,14 +47,14 @@ function logicalTaskCount() {
         return tasksModel.count
     }
 
-    var count = (tasksModel.count - tasksModel.logicalLauncherCount) + launcherLayoutTasks();
+    const count = (tasksModel.count - tasksModel.logicalLauncherCount) + launcherLayoutTasks();
 
     return Math.max(tasksModel.count ? 1 : 0, count);
 }
 
 function maxStripes() {
-    var length = tasks.vertical ? tasks.width : tasks.height;
-    var minimum = tasks.vertical ? preferredMinWidth() : preferredMinHeight();
+    const length = tasks.vertical ? tasks.width : tasks.height;
+    const minimum = tasks.vertical ? preferredMinWidth() : preferredMinHeight();
 
     return Math.min(tasks.plasmoid.configuration.maxStripes, Math.max(1, Math.floor(length / minimum)));
 }
@@ -63,15 +63,15 @@ function tasksPerStripe() {
     if (tasks.plasmoid.configuration.forceStripes) {
         return Math.ceil(logicalTaskCount() / maxStripes());
     } else {
-        var length = tasks.vertical ? taskList.height : taskList.width;
-        var minimum = tasks.vertical ? preferredMinHeight() : preferredMinWidth();
+        const length = tasks.vertical ? taskList.height : taskList.width;
+        const minimum = tasks.vertical ? preferredMinHeight() : preferredMinWidth();
 
         return Math.floor(length / minimum);
     }
 }
 
 function calculateStripes() {
-    var stripes = tasks.plasmoid.configuration.forceStripes ? tasks.plasmoid.configuration.maxStripes : Math.min(tasks.plasmoid.configuration.maxStripes, Math.ceil(logicalTaskCount() / tasksPerStripe()));
+    const stripes = tasks.plasmoid.configuration.forceStripes ? tasks.plasmoid.configuration.maxStripes : Math.min(tasks.plasmoid.configuration.maxStripes, Math.ceil(logicalTaskCount() / tasksPerStripe()));
 
     return Math.min(stripes, maxStripes());
 }
@@ -81,8 +81,8 @@ function full() {
 }
 
 function optimumCapacity(width, height) {
-    var length = tasks.vertical ? height : width;
-    var maximum = tasks.vertical ? preferredMaxHeight() : preferredMaxWidth();
+    const length = tasks.vertical ? height : width;
+    const maximum = tasks.vertical ? preferredMaxHeight() : preferredMaxWidth();
 
     if (!tasks.vertical) {
         //  Fit more tasks in this case, that is possible to cut text, before combining tasks.
@@ -109,7 +109,7 @@ function layoutHeight() {
 }
 
 function preferredMinWidth() {
-    var width = launcherWidth();
+    let width = launcherWidth();
 
     if (!tasks.vertical && !tasks.iconsOnly) {
       width +=
@@ -151,15 +151,14 @@ function preferredMaxHeight() {
                  tasks.iconsOnly ? tasks.width :
                     Math.max(
                         Kirigami.Units.iconSizes.sizeForLabels,
-                        Kirigami.Units.iconSizes.medium
+                        Kirigami.Units.iconSizes.medium,
                     )
              );
     } else {
       return verticalMargins() +
-             Math.min(
-                 Kirigami.Units.iconSizes.small * 3,
-                 Kirigami.Units.iconSizes.sizeForLabels *
-                     3);
+            Math.min(
+                Kirigami.Units.iconSizes.small * 3,
+                Kirigami.Units.iconSizes.sizeForLabels * 3);
     }
 }
 
@@ -195,7 +194,7 @@ function taskHeight() {
 }
 
 function launcherWidth() {
-    var baseWidth = tasks.vertical ? preferredMinHeight() : Math.min(tasks.height, Kirigami.Units.iconSizes.small * 3);
+    const baseWidth = tasks.vertical ? preferredMinHeight() : Math.min(tasks.height, Kirigami.Units.iconSizes.small * 3);
 
     return (baseWidth + horizontalMargins())
         - (adjustMargin(baseWidth, taskFrame.margins.top) + adjustMargin(baseWidth, taskFrame.margins.bottom));
@@ -206,23 +205,22 @@ function maximumContextMenuTextWidth() {
 }
 
 function layout(container) {
-    var item;
-    var stripes = calculateStripes();
-    var taskCount = tasksModel.count - tasksModel.logicalLauncherCount;
-    var width = taskWidth();
-    var adjustedWidth = width;
-    var height = taskHeight();
+    const stripes = calculateStripes();
+    const taskCount = tasksModel.count - tasksModel.logicalLauncherCount;
+    let width = taskWidth();
+    let adjustedWidth = width;
+    const height = taskHeight();
 
     if (!tasks.vertical && stripes == 1 && taskCount)
     {
-        var shrink = ((tasksModel.count - tasksModel.logicalLauncherCount) * preferredMaxWidth())
+        const shrink = ((tasksModel.count - tasksModel.logicalLauncherCount) * preferredMaxWidth())
             + (tasksModel.logicalLauncherCount * launcherWidth()) > taskList.width;
         width = Math.min(shrink ? width + Math.floor(launcherLayoutWidthDiff() / taskCount) : width,
             preferredMaxWidth());
     }
 
-    for (var i = 0; i < container.count; ++i) {
-        item = container.itemAt(i);
+    for (let i = 0; i < container.count; ++i) {
+        const item = container.itemAt(i);
 
         if (!item) {
             continue;
