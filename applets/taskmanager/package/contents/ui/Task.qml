@@ -115,10 +115,12 @@ PlasmaCore.ToolTipArea {
         id: moveAnim
         property real x
         property real y
-        PropertyAction {
-            target: task.parent
-            property: "animationsRunning"
-            value: task.parent.animationsRunning + 1
+        onRunningChanged: {
+            if (running) {
+                ++task.parent.animationsRunning;
+            } else {
+                --task.parent.animationsRunning;
+            }
         }
         ParallelAnimation {
             NumberAnimation {
@@ -137,11 +139,6 @@ PlasmaCore.ToolTipArea {
                 easing.type: Easing.OutQuad
                 duration: Kirigami.Units.longDuration
             }
-        }
-        PropertyAction {
-            target: task.parent
-            property: "animationsRunning"
-            value: task.parent.animationsRunning - 1
         }
     }
     transform: Translate {
