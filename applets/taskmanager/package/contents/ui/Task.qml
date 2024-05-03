@@ -30,9 +30,6 @@ PlasmaCore.ToolTipArea {
     // This makes the tasks mirrored, so we mirror them again to fix that.
     rotation: Plasmoid.configuration.reverseMode && Plasmoid.formFactor === PlasmaCore.Types.Vertical ? 180 : 0
 
-    LayoutMirroring.enabled: (Qt.application.layoutDirection == Qt.RightToLeft)
-    LayoutMirroring.childrenInherit: (Qt.application.layoutDirection == Qt.RightToLeft)
-
     required property var model
     required property int index
 
