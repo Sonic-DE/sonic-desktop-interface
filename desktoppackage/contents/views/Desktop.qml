@@ -17,8 +17,6 @@ import "../activitymanager"
 import "../explorer"
 import org.kde.kirigami 2.20 as Kirigami
 
-import org.kde.kcmutils as KCM
-
 Item {
     id: root
 
@@ -62,198 +60,6 @@ Item {
         }
     }
 
-
-    MouseArea {
-        anchors.fill:parent
-        onClicked: containment.plasmoid.corona.editMode = false
-    }
-
-    MouseArea {
-        id: containmentParent
-        anchors.centerIn: editModeUi
-        width: root.width
-        height: root.height
-        property real ratio: Math.min(editModeRect.width/root.width, editModeRect.height/root.height)
-        scale: containment.plasmoid.corona.editMode ? ratio * 0.9 : 1
-    }
-
-    MultiEffect {
-        source: containment
-        anchors.fill: parent
-        brightness: 0.4
-        saturation: 0.2
-        blurEnabled: true
-        blurMax: 64
-        blur: 1.0
-        visible: scaleAnim.running || containment.plasmoid.corona.editMode
-    }
-
-    Item {
-        id: editModeUi
-        visible: containment.plasmoid.corona.editMode || xAnim.running
-        x: containment.plasmoid.corona.editMode ? editModeRect.x + editModeRect.width/2 - zoomedWidth/2 : 0
-        y: containment.plasmoid.corona.editMode ? editModeRect.y + editModeRect.height/2 - zoomedHeight/2 + toolBar.height/2 : 0
-        width: containment.plasmoid.corona.editMode ? zoomedWidth : root.width
-        height: containment.plasmoid.corona.editMode ? zoomedHeight : root.height
-        property real zoomedWidth: root.width * containmentParent.ratio * 0.9
-        property real zoomedHeight: root.height * containmentParent.ratio * 0.9
-
-        Kirigami.ShadowedRectangle {
-            color: Kirigami.Theme.backgroundColor
-            width: parent.width
-            height: 100
-            y: -36
-
-            radius: containment.plasmoid.corona.editMode ? Kirigami.Units.cornerRadius * 3 : 0
-            Behavior on radius {
-                NumberAnimation {
-                    duration: Kirigami.Units.longDuration
-                    easing.type: Easing.InOutQuad
-                }
-            }
-
-            shadow {
-                size: Kirigami.Units.gridUnit * 2
-                color: Qt.rgba(0, 0, 0, 0.3)
-                yOffset: 3
-            }
-            RowLayout {
-                id: toolBar
-                anchors {
-                    left: parent.left
-                    top: parent.top
-                    right: parent.right
-                    margins: Kirigami.Units.smallSpacing
-                }
-                PC.ToolButton {
-                    id: addWidgetButton
-                    property QtObject qAction: containment.plasmoid.internalAction("add widgets")
-                    text: qAction.text
-                    icon.name: "list-add"
-                    onClicked: qAction.trigger()
-                }
-
-                PC.ToolButton {
-                    id: addPanelButton
-                    height: addWidgetButton.height
-                    property QtObject qAction: containment.plasmoid.corona.action("add panel")
-                    text: qAction.text
-                    icon.name: "list-add"
-                    Accessible.role: Accessible.ButtonMenu
-                    onClicked: containment.plasmoid.corona.showAddPanelContextMenu(mapToGlobal(0, height))
-                }
-
-                PC.ToolButton {
-                    id: configureButton
-                    property QtObject qAction: containment.plasmoid.internalAction("configure")
-                    text: qAction.text
-                    icon.name: "preferences-desktop-wallpaper"
-                    onClicked: qAction.trigger()
-                }
-
-                PC.ToolButton {
-                    id: themeButton
-                    text: i18nd("plasma_shell_org.kde.plasma.desktop", "Global Themes")
-                    icon.name: "preferences-desktop-theme-global"
-                    onClicked: KCM.KCMLauncher.openSystemSettings("kcm_lookandfeel")
-                }
-
-                PC.ToolButton {
-                    id: displaySettingsButton
-                    text: i18nd("plasma_shell_org.kde.plasma.desktop", "Display Configuration")
-                    icon.name: "preferences-desktop-display"
-                    onClicked: KCM.KCMLauncher.openSystemSettings("kcm_kscreen")
-                }
-
-                PC.ToolButton {
-                    id: manageContainmentsButton
-                    property QtObject qAction: containment.plasmoid.corona.action("manage-containments")
-                    text: qAction.text
-                    visible: qAction.visible
-                    icon.name: "preferences-system-windows-effect-fadedesktop"
-                    onClicked: qAction.trigger()
-                }
-
-                Item {
-                    Layout.fillWidth: true
-                }
-
-                PC.ToolButton {
-                    id: menuButton
-
-                    height: addWidgetButton.height
-                    visible: Kirigami.Settings.hasTransientTouchInput || Kirigami.Settings.tabletMode
-
-                    icon.name: "overflow-menu"
-                    text: i18ndc("plasma_shell_org.kde.plasma.desktop", "@action:button", "More")
-
-                    onClicked: {
-                        containment.openContextMenu(mapToGlobal(0, height));
-                    }
-                }
-                PC.ToolButton {
-                    icon.name: "window-close"
-                    text: i18nd("plasma_shell_org.kde.plasma.desktop", "Exit Edit Mode")
-                    onClicked: containment.plasmoid.corona.editMode = false
-                }
-            }
-        }
-
-        Behavior on x {
-            NumberAnimation {
-                id: xAnim
-                duration: Kirigami.Units.longDuration
-                easing.type: Easing.InOutQuad
-            }
-        }
-        Behavior on y {
-            NumberAnimation {
-                duration: Kirigami.Units.longDuration
-                easing.type: Easing.InOutQuad
-            }
-        }
-        Behavior on width {
-            NumberAnimation {
-                duration: Kirigami.Units.longDuration
-                easing.type: Easing.InOutQuad
-            }
-        }
-        Behavior on height {
-            NumberAnimation {
-                duration: Kirigami.Units.longDuration
-                easing.type: Easing.InOutQuad
-            }
-        }
-
-        MultiEffect {
-            anchors.fill: parent
-            source: containment
-            layer.enabled: true
-            layer.smooth: true
-            layer.effect: Kirigami.ShadowedTexture {
-                width: root.width
-                height: root.height
-
-                color: "transparent"
-
-                radius: containment.plasmoid.corona.editMode ? Kirigami.Units.cornerRadius * 3 : 0
-                Behavior on radius {
-                    NumberAnimation {
-                        id: scaleAnim
-                        duration: Kirigami.Units.longDuration
-                        easing.type: Easing.InOutQuad
-                    }
-                }
-
-                shadow {
-                    size: Kirigami.Units.gridUnit * 2
-                    color: Qt.rgba(0, 0, 0, 0.3)
-                    yOffset: 3
-                }
-            }
-        }
-    }
-
     readonly property rect editModeRect: {
         if (!containment) {
             return Qt.rect(0,0,0,0);
@@ -263,6 +69,34 @@ Item {
             screenRect = Qt.rect(screenRect.x + sidePanel.width, screenRect.y, screenRect.width - sidePanel.width, screenRect.height);
         }
         return screenRect;
+    }
+
+    MouseArea {
+        anchors.fill: parent
+        onClicked: containment.plasmoid.corona.editMode = false
+    }
+
+    MouseArea {
+        id: containmentParent
+        x: editModeLoader.active ? editModeLoader.item.centerX - width / 2 : 0
+        y: editModeLoader.active ? editModeLoader.item.centerY - height / 2 : 0
+        width: root.width
+        height: root.height
+        property real ratio: Math.min(editModeRect.width/root.width, editModeRect.height/root.height) * 0.9
+        scale: containment?.plasmoid.corona.editMode ? ratio : 1
+    }
+
+    Loader {
+        id: editModeLoader
+        anchors.fill: parent
+        sourceComponent: DesktopEditMode {}
+        active: containment?.plasmoid.corona.editMode || editModeUiTimer.running
+        Timer {
+            id: editModeUiTimer
+            property bool editMode: containment?.plasmoid.corona.editMode || false
+            onEditModeChanged: restart()
+            interval: Kirigami.Units.longDuration
+        }
     }
 
     Loader {
