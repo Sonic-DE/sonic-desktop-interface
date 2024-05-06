@@ -24,14 +24,18 @@ Item {
         open = Qt.binding(() => {return containment.plasmoid.corona.editMode})
     }
 
+    // Those 2 elements have the same parameters as the overview effect
     MultiEffect {
         source: containment
         anchors.fill: parent
-        brightness: 0.4
-        saturation: 0.2
         blurEnabled: true
         blurMax: 64
         blur: 1.0
+    }
+    Rectangle {
+        anchors.fill: parent
+        color: Kirigami.Theme.backgroundColor
+        opacity: 0.7
     }
 
     Item {
