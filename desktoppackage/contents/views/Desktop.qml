@@ -68,16 +68,13 @@ Item {
 
     MouseArea {
         id: containmentParent
-        anchors {
-           // fill: parent
-        }
-        x: containment.plasmoid.corona.editMode ? editModeRect.x + editModeRect.width/2 - root.width/2: 0
-        y: containment.plasmoid.corona.editMode ? editModeRect.y + editModeRect.height/2 - root.height/2 + 32 : 0
+        anchors.centerIn: editModeUi
         width: root.width
         height: root.height
         property real ratio: Math.min(editModeRect.width/root.width, editModeRect.height/root.height)
-        scale: containment.plasmoid.corona.editMode ? ratio * 0.9 :1
+        scale: containment.plasmoid.corona.editMode ? ratio * 0.9 : 1
     }
+
     MultiEffect {
         source: containment
         anchors.fill: parent
@@ -88,96 +85,131 @@ Item {
         blur: 1.0
         visible: scaleAnim.running || containment.plasmoid.corona.editMode
     }
-    Rectangle {
-        id: toolbar
-        anchors {
-            horizontalCenter: containmentParent.horizontalCenter
+
+    Item {
+        id: editModeUi
+        visible: containment.plasmoid.corona.editMode || xAnim.running
+        x: containment.plasmoid.corona.editMode ? editModeRect.x + editModeRect.width/2 - zoomedWidth/2 : 0
+        y: containment.plasmoid.corona.editMode ? editModeRect.y + editModeRect.height/2 - zoomedHeight/2 + toolBar.height/2 : 0
+        width: containment.plasmoid.corona.editMode ? zoomedWidth : root.width
+        height: containment.plasmoid.corona.editMode ? zoomedHeight : root.height
+        property real zoomedWidth: root.width * containmentParent.ratio * 0.9
+        property real zoomedHeight: root.height * containmentParent.ratio * 0.9
+
+        Kirigami.ShadowedRectangle {
+            color: Kirigami.Theme.backgroundColor
+            width: parent.width
+            height: 100
+            y: -36
+
+            radius: containment.plasmoid.corona.editMode ? Kirigami.Units.cornerRadius * 3 : 0
+            Behavior on radius {
+                NumberAnimation {
+                    duration: Kirigami.Units.longDuration
+                    easing.type: Easing.InOutQuad
+                }
+            }
+
+            shadow {
+                size: Kirigami.Units.gridUnit * 2
+                color: Qt.rgba(0, 0, 0, 0.3)
+                yOffset: 3
+            }
+            RowLayout {
+                id: toolBar
+                anchors {
+                    left: parent.left
+                    top: parent.top
+                    right: parent.right
+                    margins: Kirigami.Units.smallSpacing
+                }
+                PC.ToolButton {
+                    icon.name: "list-add"
+                    text: "Add Widgets"
+                    onClicked: containment.plasmoid.internalAction("add widgets").trigger()
+                }
+                PC.ToolButton {
+                    icon.name: "list-add"
+                    text: "Add Panel"
+                }
+                PC.ToolButton {
+                    icon.name: "user-desktop"
+                    text: "Desktop And Wallpaper"
+                }
+                PC.ToolButton {
+                    icon.name: "preferences-desktop-theme-global"
+                    text: "Global Themes"
+                }
+                PC.ToolButton {
+                    icon.name: "monitor-symbolic"
+                    text: "Display Configuration"
+                }
+                Item {
+                    Layout.fillWidth: true
+                }
+                PC.ToolButton {
+                    icon.name: "window-close"
+                    text: "Exit Edit Mode"
+                    onClicked: containment.plasmoid.corona.editMode = false
+                }
+            }
         }
-        color: Kirigami.Theme.backgroundColor
-        width: containmentParent.width * containmentParent.scale
-        Behavior on width {
+
+        Behavior on x {
             NumberAnimation {
+                id: xAnim
                 duration: Kirigami.Units.longDuration
                 easing.type: Easing.InOutQuad
             }
         }
-        height: 64
-        radius: Kirigami.Units.cornerRadius
-        y: parent.height/2 - (containmentParent.height * containmentParent.scale) / 2 - height + 32
-        visible: containment.plasmoid.corona.editMode
         Behavior on y {
             NumberAnimation {
                 duration: Kirigami.Units.longDuration
                 easing.type: Easing.InOutQuad
             }
         }
-
-        Binding {
-            target: containment.toolBox
-            property: "visible"
-            value: false
+        Behavior on width {
+            NumberAnimation {
+                duration: Kirigami.Units.longDuration
+                easing.type: Easing.InOutQuad
+            }
         }
-        RowLayout {
-            anchors {
-                left: parent.left
-                top: parent.top
-                right: parent.right
-                margins: Kirigami.Units.smallSpacing
+        Behavior on height {
+            NumberAnimation {
+                duration: Kirigami.Units.longDuration
+                easing.type: Easing.InOutQuad
             }
-            PC.ToolButton {
-                icon.name: "list-add"
-                text: "Add Widgets"
-                onClicked: containment.plasmoid.internalAction("add widgets").trigger()
-            }
-            PC.ToolButton {
-                icon.name: "list-add"
-                text: "Add Panel"
-            }
-            PC.ToolButton {
-                icon.name: "user-desktop"
-                text: "Desktop And Wallpaper"
-            }
-            PC.ToolButton {
-                icon.name: "preferences-desktop-theme-global"
-                text: "Global Themes"
-            }
-            PC.ToolButton {
-                icon.name: "monitor-symbolic"
-                text: "Display Configuration"
-            }
-            Item {
-                Layout.fillWidth: true
-            }
-            PC.ToolButton {
-                icon.name: "window-close"
-                text: "Exit Edit Mode"
-                onClicked: containment.plasmoid.corona.editMode = false
+        }
+
+        MultiEffect {
+            anchors.fill: parent
+            source: containment
+            layer.enabled: true
+            layer.smooth: true
+            layer.effect: Kirigami.ShadowedTexture {
+                width: root.width
+                height: root.height
+
+                color: "transparent"
+
+                radius: containment.plasmoid.corona.editMode ? Kirigami.Units.cornerRadius * 3 : 0
+                Behavior on radius {
+                    NumberAnimation {
+                        id: scaleAnim
+                        duration: Kirigami.Units.longDuration
+                        easing.type: Easing.InOutQuad
+                    }
+                }
+
+                shadow {
+                    size: Kirigami.Units.gridUnit * 2
+                    color: Qt.rgba(0, 0, 0, 0.3)
+                    yOffset: 3
+                }
             }
         }
     }
- /*   Rectangle {
-        color: "red"
-        x: editModeRect.x
-        y: editModeRect.y
-        width: editModeRect.width
-        height: editModeRect.height
-        radius: 10
-        ColumnLayout {
-            anchors.centerIn: parent
-            width: root.width * containmentParent.ratio * 0.9
-            height: root.height * containmentParent.ratio* 0.9 + 36
-            spacing: 0
-            Rectangle {
-                Layout.fillWidth: true
-                Layout.preferredHeight: 36
-            }
-            Rectangle {
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-                color: "green"
-            }
-        }
-    }*/
+
     readonly property rect editModeRect: {
         if (!containment) {
             return Qt.rect(0,0,0,0);
@@ -188,7 +220,7 @@ Item {
         }
         return screenRect;
     }
-    MultiEffect {
+    MultiEffect {opacity: 0
         source: containment
         anchors.fill: parent
         layer.enabled: true
@@ -229,7 +261,7 @@ Item {
 
             color: "transparent"
 
-            radius: containment.plasmoid.corona.editMode ? Kirigami.Units.cornerRadius * 4 : 0
+            radius: containment.plasmoid.corona.editMode ? Kirigami.Units.cornerRadius * 3 : 0
             Behavior on radius {
                 NumberAnimation {
                     id: scaleAnim
