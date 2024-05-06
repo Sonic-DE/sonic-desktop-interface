@@ -46,9 +46,10 @@ int main(int argc, char *argv[])
 
     QCommandLineParser parser;
     parser.addPositionalArgument(QStringLiteral("command"), i18nc("@info:shell", "Command to execute: install or uninstall."));
-    parser.addPositionalArgument(QStringLiteral("path"), i18nc("@info:shell", "Path to archive."));
-    QCommandLineOption noConfirm(QStringLiteral("no-confirm"), i18nc("@info:shell", "Do not show a visual confirmation dialog"));
+    parser.addPositionalArgument(QStringLiteral("path"), i18nc("@info:shell", "Path to archive or extraced folder."));
+    QCommandLineOption noConfirm(QStringLiteral("no-confirm"), i18nc("@info:shell", "Do not show a visual confirmation dialog."));
     parser.addOption(noConfirm);
+    parser.addHelpOption();
     parser.process(app);
 
     const QStringList args = parser.positionalArguments();
@@ -57,7 +58,7 @@ int main(int argc, char *argv[])
         return 1;
     }
     if (args.size() == 1) {
-        qWarning() << "Path to archive is required";
+        qWarning() << "Path to archive/extracted folder is required";
         return 1;
     }
 
