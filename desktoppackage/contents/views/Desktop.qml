@@ -17,6 +17,8 @@ import "../activitymanager"
 import "../explorer"
 import org.kde.kirigami 2.20 as Kirigami
 
+import org.kde.kcmutils as KCM
+
 Item {
     id: root
 
@@ -124,32 +126,74 @@ Item {
                     margins: Kirigami.Units.smallSpacing
                 }
                 PC.ToolButton {
+                    id: addWidgetButton
+                    property QtObject qAction: containment.plasmoid.internalAction("add widgets")
+                    text: qAction.text
                     icon.name: "list-add"
-                    text: "Add Widgets"
-                    onClicked: containment.plasmoid.internalAction("add widgets").trigger()
+                    onClicked: qAction.trigger()
                 }
+
                 PC.ToolButton {
+                    id: addPanelButton
+                    height: addWidgetButton.height
+                    property QtObject qAction: containment.plasmoid.corona.action("add panel")
+                    text: qAction.text
                     icon.name: "list-add"
-                    text: "Add Panel"
+                    Accessible.role: Accessible.ButtonMenu
+                    onClicked: containment.plasmoid.corona.showAddPanelContextMenu(mapToGlobal(0, height))
                 }
+
                 PC.ToolButton {
-                    icon.name: "user-desktop"
-                    text: "Desktop And Wallpaper"
+                    id: configureButton
+                    property QtObject qAction: containment.plasmoid.internalAction("configure")
+                    text: qAction.text
+                    icon.name: "preferences-desktop-wallpaper"
+                    onClicked: qAction.trigger()
                 }
+
                 PC.ToolButton {
+                    id: themeButton
+                    text: i18nd("plasma_shell_org.kde.plasma.desktop", "Global Themes")
                     icon.name: "preferences-desktop-theme-global"
-                    text: "Global Themes"
+                    onClicked: KCM.KCMLauncher.openSystemSettings("kcm_lookandfeel")
                 }
+
                 PC.ToolButton {
-                    icon.name: "monitor-symbolic"
-                    text: "Display Configuration"
+                    id: displaySettingsButton
+                    text: i18nd("plasma_shell_org.kde.plasma.desktop", "Display Configuration")
+                    icon.name: "preferences-desktop-display"
+                    onClicked: KCM.KCMLauncher.openSystemSettings("kcm_kscreen")
                 }
+
+                PC.ToolButton {
+                    id: manageContainmentsButton
+                    property QtObject qAction: containment.plasmoid.corona.action("manage-containments")
+                    text: qAction.text
+                    visible: qAction.visible
+                    icon.name: "preferences-system-windows-effect-fadedesktop"
+                    onClicked: qAction.trigger()
+                }
+
                 Item {
                     Layout.fillWidth: true
                 }
+
+                PC.ToolButton {
+                    id: menuButton
+
+                    height: addWidgetButton.height
+                    visible: Kirigami.Settings.hasTransientTouchInput || Kirigami.Settings.tabletMode
+
+                    icon.name: "overflow-menu"
+                    text: i18ndc("plasma_shell_org.kde.plasma.desktop", "@action:button", "More")
+
+                    onClicked: {
+                        containment.openContextMenu(mapToGlobal(0, height));
+                    }
+                }
                 PC.ToolButton {
                     icon.name: "window-close"
-                    text: "Exit Edit Mode"
+                    text: i18nd("plasma_shell_org.kde.plasma.desktop", "Exit Edit Mode")
                     onClicked: containment.plasmoid.corona.editMode = false
                 }
             }
@@ -219,63 +263,6 @@ Item {
             screenRect = Qt.rect(screenRect.x + sidePanel.width, screenRect.y, screenRect.width - sidePanel.width, screenRect.height);
         }
         return screenRect;
-    }
-    MultiEffect {opacity: 0
-        source: containment
-        anchors.fill: parent
-        layer.enabled: true
-        transform: Translate {
-            x: containment.plasmoid.corona.editMode ? editModeRect.x + editModeRect.width/2 - root.width/2  : 0
-            y: containment.plasmoid.corona.editMode ? editModeRect.y + editModeRect.height/2 - root.height/2 +32: 0
-            Behavior on x {
-                NumberAnimation {
-                    duration: Kirigami.Units.longDuration
-                    easing.type: Easing.InOutQuad
-                }
-            }
-            Behavior on y {
-                NumberAnimation {
-                    duration: Kirigami.Units.longDuration
-                    easing.type: Easing.InOutQuad
-                }
-            }
-        }
-
-        scale: containmentParent.scale
-        Behavior on scale {
-            NumberAnimation {
-                id: scaleAnim
-                duration: Kirigami.Units.longDuration
-                easing.type: Easing.InOutQuad
-            }
-        }
-        layer.smooth: true
-        visible: scaleAnim.running || containment.plasmoid.corona.editMode
-        layer.effect: Kirigami.ShadowedTexture {
-            id: shadowedDesktopPreview
-            //anchors.fill: parent
-
-           // scale: ratio * 0.9
-            width: root.width //* ratio * 0.9
-            height: root.height// * ratio * 0.9
-
-            color: "transparent"
-
-            radius: containment.plasmoid.corona.editMode ? Kirigami.Units.cornerRadius * 3 : 0
-            Behavior on radius {
-                NumberAnimation {
-                    id: scaleAnim
-                    duration: Kirigami.Units.longDuration
-                    easing.type: Easing.InOutQuad
-                }
-            }
-
-            shadow {
-                size: Kirigami.Units.gridUnit * 2
-                color: Qt.rgba(0, 0, 0, 0.3)
-                yOffset: 3
-            }
-        }
     }
 
     Loader {
