@@ -524,8 +524,8 @@ PlasmaCore.ToolTipArea {
             top: parent.top
             topMargin: adjustMargin(false, parent.height, taskFrame.margins.top)
         }
-
-        width: height
+property real pollo: task.parent.minimumWidth
+        width: task.parent.minimumWidth
         height: (parent.height - adjustMargin(false, parent.height, taskFrame.margins.top)
             - adjustMargin(false, parent.height, taskFrame.margins.bottom))
 
@@ -575,7 +575,7 @@ PlasmaCore.ToolTipArea {
                 PropertyChanges {
                     target: iconBox
                     anchors.leftMargin: 0
-                    width: parent.width - adjustMargin(true, task.width, taskFrame.margins.left)
+                    width: task.parent.minimumWidth - adjustMargin(true, task.width, taskFrame.margins.left)
                                         - adjustMargin(true, task.width, taskFrame.margins.right)
                 }
             }
