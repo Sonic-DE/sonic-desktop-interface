@@ -60,11 +60,20 @@ Item {
         }
     }
 
+
     readonly property rect editModeRect: {
         if (!containment) {
             return Qt.rect(0,0,0,0);
         }
         let screenRect = containment.plasmoid.availableScreenRect;
+
+        if (desktop.panelConfigRect.x > width / 2) {
+            screenRect = Qt.rect(screenRect.x, screenRect.y, desktop.panelConfigRect.x - screenRect.x, screenRect.height);
+        } else {
+            const diff = Math.max(0, desktop.panelConfigRect.x + desktop.panelConfigRect.width - screenRect.x);
+            screenRect = Qt.rect(Math.max(screenRect.x, desktop.panelConfigRect.x + desktop.panelConfigRect.width), screenRect.y, screenRect.width - diff, screenRect.height);
+        }
+
         if (sidePanel.visible) {
             screenRect = Qt.rect(screenRect.x + sidePanel.width, screenRect.y, screenRect.width - sidePanel.width, screenRect.height);
         }
