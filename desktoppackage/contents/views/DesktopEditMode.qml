@@ -51,8 +51,8 @@ Item {
         Kirigami.ShadowedRectangle {
             color: Kirigami.Theme.backgroundColor
             width: parent.width
-            height: 100
-            y: -36
+            height: parent.height + toolBar.height + Kirigami.Units.smallSpacing * 2
+            y: - toolBar.height - Kirigami.Units.smallSpacing * 2
 
             radius: open ? Kirigami.Units.cornerRadius : 0
             Behavior on radius {
@@ -75,61 +75,61 @@ Item {
                     right: parent.right
                     margins: Kirigami.Units.smallSpacing
                 }
-                PC.ToolButton {
-                    id: addWidgetButton
-                    property QtObject qAction: containment?.plasmoid.internalAction("add widgets") || null
-                    text: qAction?.text
-                    icon.name: "list-add"
-                    onClicked: qAction.trigger()
-                }
-
-                PC.ToolButton {
-                    id: addPanelButton
-                    height: addWidgetButton.height
-                    property QtObject qAction: containment?.plasmoid.corona.action("add panel") || null
-                    text: qAction?.text
-                    icon.name: "list-add"
-                    Accessible.role: Accessible.ButtonMenu
-                    onClicked: containment.plasmoid.corona.showAddPanelContextMenu(mapToGlobal(0, height))
-                }
-
-                PC.ToolButton {
-                    id: configureButton
-                    property QtObject qAction: containment?.plasmoid.internalAction("configure") || null
-                    text: qAction?.text
-                    icon.name: "preferences-desktop-wallpaper"
-                    onClicked: qAction.trigger()
-                }
-
-                PC.ToolButton {
-                    id: themeButton
-                    text: i18nd("plasma_shell_org.kde.plasma.desktop", "Global Themes")
-                    icon.name: "preferences-desktop-theme-global"
-                    onClicked: KCM.KCMLauncher.openSystemSettings("kcm_lookandfeel")
-                }
-
-                PC.ToolButton {
-                    id: displaySettingsButton
-                    text: i18nd("plasma_shell_org.kde.plasma.desktop", "Display Configuration")
-                    icon.name: "preferences-desktop-display"
-                    onClicked: KCM.KCMLauncher.openSystemSettings("kcm_kscreen")
-                }
-
-                PC.ToolButton {
-                    id: manageContainmentsButton
-                    property QtObject qAction: containment?.plasmoid.corona.action("manage-containments") || null
-                    text: qAction?.text
-                    visible: qAction?.visible || false
-                    icon.name: "preferences-system-windows-effect-fadedesktop"
-                    onClicked: qAction.trigger()
-                }
-
-                Item {
+                Flow {
                     Layout.fillWidth: true
+                    Layout.minimumHeight: implicitHeight
+                    PC.ToolButton {
+                        id: addWidgetButton
+                        property QtObject qAction: containment?.plasmoid.internalAction("add widgets") || null
+                        text: qAction?.text
+                        icon.name: "list-add"
+                        onClicked: qAction.trigger()
+                    }
+
+                    PC.ToolButton {
+                        id: addPanelButton
+                        height: addWidgetButton.height
+                        property QtObject qAction: containment?.plasmoid.corona.action("add panel") || null
+                        text: qAction?.text
+                        icon.name: "list-add"
+                        Accessible.role: Accessible.ButtonMenu
+                        onClicked: containment.plasmoid.corona.showAddPanelContextMenu(mapToGlobal(0, height))
+                    }
+
+                    PC.ToolButton {
+                        id: configureButton
+                        property QtObject qAction: containment?.plasmoid.internalAction("configure") || null
+                        text: qAction?.text
+                        icon.name: "preferences-desktop-wallpaper"
+                        onClicked: qAction.trigger()
+                    }
+
+                    PC.ToolButton {
+                        id: themeButton
+                        text: i18nd("plasma_shell_org.kde.plasma.desktop", "Global Themes")
+                        icon.name: "preferences-desktop-theme-global"
+                        onClicked: KCM.KCMLauncher.openSystemSettings("kcm_lookandfeel")
+                    }
+
+                    PC.ToolButton {
+                        id: displaySettingsButton
+                        text: i18nd("plasma_shell_org.kde.plasma.desktop", "Display Configuration")
+                        icon.name: "preferences-desktop-display"
+                        onClicked: KCM.KCMLauncher.openSystemSettings("kcm_kscreen")
+                    }
+
+                    PC.ToolButton {
+                        id: manageContainmentsButton
+                        property QtObject qAction: containment?.plasmoid.corona.action("manage-containments") || null
+                        text: qAction?.text
+                        visible: qAction?.visible || false
+                        icon.name: "preferences-system-windows-effect-fadedesktop"
+                        onClicked: qAction.trigger()
+                    }
                 }
 
                 PC.ToolButton {
-                    id: menuButton
+                    Layout.alignment: Qt.AlignTop
 
                     visible: Kirigami.Settings.hasTransientTouchInput || Kirigami.Settings.tabletMode
 
@@ -141,6 +141,7 @@ Item {
                     }
                 }
                 PC.ToolButton {
+                    Layout.alignment: Qt.AlignTop
                     icon.name: "window-close"
                     text: i18nd("plasma_shell_org.kde.plasma.desktop", "Exit Edit Mode")
                     onClicked: containment.plasmoid.corona.editMode = false
@@ -191,12 +192,6 @@ Item {
                         duration: Kirigami.Units.longDuration
                         easing.type: Easing.InOutQuad
                     }
-                }
-
-                shadow {
-                    size: Kirigami.Units.gridUnit * 2
-                    color: Qt.rgba(0, 0, 0, 0.3)
-                    yOffset: 3
                 }
             }
         }
