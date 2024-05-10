@@ -67,7 +67,7 @@ Item {
         }
         let screenRect = containment.plasmoid.availableScreenRect;
 
-        if (desktop.panelConfigRect.x > width / 2) {
+        if (desktop.panelConfigRect.x > width - (desktop.panelConfigRect.x + desktop.panelConfigRect.width)) {
             screenRect = Qt.rect(screenRect.x, screenRect.y, desktop.panelConfigRect.x - screenRect.x, screenRect.height);
         } else {
             const diff = Math.max(0, desktop.panelConfigRect.x + desktop.panelConfigRect.width - screenRect.x);
