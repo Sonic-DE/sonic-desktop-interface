@@ -91,8 +91,9 @@ Item {
         y: editModeLoader.active ? editModeLoader.item.centerY - height / 2 : 0
         width: root.width
         height: root.height
-        property real ratio: Math.min(editModeRect.width/root.width, editModeRect.height/root.height) * 0.9
-        scale: containment?.plasmoid.corona.editMode ? ratio : 1
+        readonly property real extraScale: desktop.panelConfigRect.width > 0 || sidePanel.visible ? 0.95 : 0.9
+        property real scaleFactor: Math.min(editModeRect.width/root.width, editModeRect.height/root.height) * extraScale
+        scale: containment?.plasmoid.corona.editMode ? scaleFactor : 1
     }
 
     Loader {
