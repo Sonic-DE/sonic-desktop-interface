@@ -45,8 +45,8 @@ Item {
         y: open ? editModeRect.y + editModeRect.height/2 - zoomedHeight/2 + toolBar.height/2 : 0
         width: open ? zoomedWidth : root.width
         height: open ? zoomedHeight : root.height
-        property real zoomedWidth: root.width * containmentParent.ratio
-        property real zoomedHeight: root.height * containmentParent.ratio
+        property real zoomedWidth: root.width * containmentParent.scaleFactor
+        property real zoomedHeight: root.height * containmentParent.scaleFactor
 
         Kirigami.ShadowedRectangle {
             color: Kirigami.Theme.backgroundColor
