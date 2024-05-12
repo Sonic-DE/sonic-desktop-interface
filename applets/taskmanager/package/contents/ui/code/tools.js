@@ -204,6 +204,14 @@ function taskPrefixHovered(prefix, location) {
     ];
 }
 
+function taskPrefixPressed(prefix, location) {
+    return [
+        ...taskPrefix((prefix || "launcher") + "-pressed", location),
+        ...prefix ? taskPrefix("pressed", location) : [],
+        ...taskPrefixHovered(prefix, location)
+    ];
+}
+
 function createGroupDialog(visualParent, tasks) {
     if (!visualParent) {
         return;

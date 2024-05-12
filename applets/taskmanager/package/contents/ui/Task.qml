@@ -402,6 +402,7 @@ PlasmaCore.ToolTipArea {
     }
 
     TapHandler {
+        id: mainTapHandler
         acceptedButtons: Qt.LeftButton
         onTapped: {
             if (Plasmoid.configuration.showToolTips && task.active) {
@@ -412,6 +413,7 @@ PlasmaCore.ToolTipArea {
     }
 
     TapHandler {
+        id: miscTapHandler
         acceptedButtons: Qt.MiddleButton | Qt.BackButton | Qt.ForwardButton
         onTapped: (eventPoint, button) => {
             if (button === Qt.MiddleButton) {
@@ -457,9 +459,18 @@ PlasmaCore.ToolTipArea {
         }
 
         imagePath: "widgets/tasks"
+        property bool isPressed: (mainTapHandler.pressed || miscTapHandler.pressed) && Plasmoid.configuration.taskHoverEffect
         property bool isHovered: task.highlighted && Plasmoid.configuration.taskHoverEffect
         property string basePrefix: "normal"
-        prefix: isHovered ? TaskTools.taskPrefixHovered(basePrefix, Plasmoid.location) : TaskTools.taskPrefix(basePrefix, Plasmoid.location)
+        prefix: {
+            if (isPressed) {
+                TaskTools.taskPrefixPressed(basePrefix, Plasmoid.location);
+            } else if (isHovered) {
+                TaskTools.taskPrefixHovered(basePrefix, Plasmoid.location);
+            } else {
+                TaskTools.taskPrefix(basePrefix, Plasmoid.location);
+            }
+        }
 
         // Avoid repositioning delegate item after dragFinished
         DragHandler {
