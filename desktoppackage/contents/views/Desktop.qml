@@ -66,12 +66,15 @@ Item {
             return Qt.rect(0,0,0,0);
         }
         let screenRect = containment.plasmoid.availableScreenRect;
+        let panelConfigRect = desktop.configuredPanel?.relativeConfigRect || Qt.rect(0,0,0,0);
 
-        if (desktop.panelConfigRect.x > width - (desktop.panelConfigRect.x + desktop.panelConfigRect.width)) {
-            screenRect = Qt.rect(screenRect.x, screenRect.y, desktop.panelConfigRect.x - screenRect.x, screenRect.height);
+        if (panelConfigRect.width <= 0) {
+            ; // Do nothing
+        } else if (panelConfigRect.x > width - (panelConfigRect.x + panelConfigRect.width)) {
+            screenRect = Qt.rect(screenRect.x, screenRect.y, panelConfigRect.x - screenRect.x, screenRect.height);
         } else {
-            const diff = Math.max(0, desktop.panelConfigRect.x + desktop.panelConfigRect.width - screenRect.x);
-            screenRect = Qt.rect(Math.max(screenRect.x, desktop.panelConfigRect.x + desktop.panelConfigRect.width), screenRect.y, screenRect.width - diff, screenRect.height);
+            const diff = Math.max(0, panelConfigRect.x + panelConfigRect.width - screenRect.x);
+            screenRect = Qt.rect(Math.max(screenRect.x, panelConfigRect.x + panelConfigRect.width), screenRect.y, screenRect.width - diff, screenRect.height);
         }
 
         if (sidePanel.visible) {
@@ -91,7 +94,7 @@ Item {
         y: editModeLoader.active ? editModeLoader.item.centerY - height / 2 : 0
         width: root.width
         height: root.height
-        readonly property real extraScale: desktop.panelConfigRect.width > 0 || sidePanel.visible ? 0.95 : 0.9
+        readonly property real extraScale: desktop.configuredPanel || sidePanel.visible ? 0.95 : 0.9
         property real scaleFactor: Math.min(editModeRect.width/root.width, editModeRect.height/root.height) * extraScale
         scale: containment?.plasmoid.corona.editMode ? scaleFactor : 1
     }
