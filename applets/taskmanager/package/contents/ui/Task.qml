@@ -34,7 +34,7 @@ PlasmaCore.ToolTipArea {
         : 0
 
     Layout.fillWidth: true
-    Layout.fillHeight: true
+    Layout.fillHeight: !inPopup
     Layout.maximumWidth: tasksRoot.vertical
         ? -1
         : ((model.IsLauncher && !tasks.iconsOnly) ? tasksRoot.height / taskList.rows : LayoutMetrics.preferredMaxWidth())
@@ -527,8 +527,8 @@ TaskManagerApplet.SmartLauncherItem { }
             topMargin: adjustMargin(false, parent.height, taskFrame.margins.top)
         }
 
-        width: Math.min(task.parent?.minimumWidth ?? 0, tasks.height)
-        height: (parent.height - adjustMargin(false, parent.height, taskFrame.margins.top)
+        width: task.inPopup ? Math.max(Kirigami.Units.iconSizes.sizeForLabels, Kirigami.Units.iconSizes.medium) : Math.min(task.parent?.minimumWidth ?? 0, tasks.height)
+        height: task.inPopup ? width : (parent.height - adjustMargin(false, parent.height, taskFrame.margins.top)
                  - adjustMargin(false, parent.height, taskFrame.margins.bottom))
 
         asynchronous: true
