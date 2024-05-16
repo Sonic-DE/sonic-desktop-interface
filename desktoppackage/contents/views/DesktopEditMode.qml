@@ -51,8 +51,8 @@ Item {
         Kirigami.ShadowedRectangle {
             color: Kirigami.Theme.backgroundColor
             width: parent.width
-            height: parent.height + toolBar.height + Kirigami.Units.smallSpacing * 2
-            y: - toolBar.height - Kirigami.Units.smallSpacing * 2
+            height: parent.height + toolBar.height + Kirigami.Units.largeSpacing
+            y: - toolBar.height - Kirigami.Units.largeSpacing
 
             radius: open ? Kirigami.Units.cornerRadius : 0
             Behavior on radius {
