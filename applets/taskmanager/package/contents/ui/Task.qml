@@ -27,7 +27,9 @@ PlasmaCore.ToolTipArea {
     // This makes the tasks mirrored, so we mirror them again to fix that.
     rotation: Plasmoid.configuration.reverseMode && Plasmoid.formFactor === PlasmaCore.Types.Vertical ? 180 : 0
 
-    implicitHeight: Math.max(tasksRoot.height / tasksRoot.plasmoid.configuration.maxStripes,
+    implicitHeight: inPopup
+                    ? LayoutMetrics.preferredHeightInPopup()
+                    : Math.max(tasksRoot.height / tasksRoot.plasmoid.configuration.maxStripes,
                              LayoutMetrics.preferredMinHeight())
     implicitWidth: tasksRoot.vertical
         ? Math.max(LayoutMetrics.preferredMinWidth(), Math.min(LayoutMetrics.preferredMaxWidth(), tasksRoot.width / tasksRoot.plasmoid.configuration.maxStripes))
