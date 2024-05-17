@@ -66,7 +66,12 @@ Item {
             return Qt.rect(0,0,0,0);
         }
         let screenRect = containment.plasmoid.availableScreenRect;
-        let panelConfigRect = desktop.configuredPanel?.relativeConfigRect || Qt.rect(0,0,0,0);
+        let panelConfigRect = Qt.rect(0,0,0,0);
+
+        if (containment.plasmoid.corona.configuredPanel
+            && containment.plasmoid.corona.configuredPanel.screenToFollow === desktop.screenToFollow) {
+            panelConfigRect = containment.plasmoid.corona.configuredPanel.relativeConfigRect;
+        }
 
         if (panelConfigRect.width <= 0) {
             ; // Do nothing
