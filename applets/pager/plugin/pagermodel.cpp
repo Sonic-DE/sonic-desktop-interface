@@ -45,7 +45,8 @@ public:
 
     PagerType pagerType = VirtualDesktops;
     bool enabled = false;
-    bool showDesktop = false;
+    // 0: none, 1: show desktop, 2: show overview
+    int actionOnClick = 0;
 
     bool showOnlyCurrentScreen = false;
     QRect screenGeometry;
@@ -271,17 +272,17 @@ bool PagerModel::shouldShowPager() const
     return (d->pagerType == VirtualDesktops) ? d->virtualDesktopInfo->numberOfDesktops() > 1 : d->activityInfo->numberOfRunningActivities() > 1;
 }
 
-bool PagerModel::showDesktop() const
+bool PagerModel::actionOnClick() const
 {
-    return d->showDesktop;
+    return d->actionOnClick;
 }
 
-void PagerModel::setShowDesktop(bool show)
+void PagerModel::setActionOnClick(int action)
 {
-    if (d->showDesktop != show) {
-        d->showDesktop = show;
+    if (d->actionOnClick != action) {
+        d->actionOnClick = action;
 
-        Q_EMIT showDesktopChanged();
+        Q_EMIT actionOnClickChanged();
     }
 }
 
@@ -476,11 +477,19 @@ void PagerModel::moveWindow(const QModelIndex &index,
 void PagerModel::changePage(int page)
 {
     if (currentPage() == page) {
-        if (d->showDesktop) {
+        if (d->actionOnClick == 1) {
             QDBusConnection::sessionBus().asyncCall(QDBusMessage::createMethodCall(QLatin1String("org.kde.plasmashell"),
                                                                                    QLatin1String("/PlasmaShell"),
                                                                                    QLatin1String("org.kde.PlasmaShell"),
                                                                                    QLatin1String("toggleDashboard")));
+        } else if (d->actionOnClick == 2) {
+            // HACK this seems to be the only D-Bus interface for opening the Overview
+            QDBusMessage message = QDBusMessage::createMethodCall(QLatin1String("org.kde.kglobalaccel"),
+                                                                  QLatin1String("/component/kwin"),
+                                                                  QLatin1String("org.kde.kglobalaccel.Component"),
+                                                                  QLatin1String("invokeShortcut"));
+            message.setArguments({QStringLiteral("Overview")});
+            QDBusConnection::sessionBus().asyncCall(message);
         }
     } else {
         if (d->pagerType == VirtualDesktops) {

@@ -29,7 +29,7 @@ class PagerModel : public QAbstractListModel, public QQmlParserStatus
     Q_PROPERTY(PagerType pagerType READ pagerType WRITE setPagerType NOTIFY pagerTypeChanged)
     Q_PROPERTY(bool enabled READ enabled WRITE setEnabled NOTIFY enabledChanged)
     Q_PROPERTY(bool shouldShowPager READ shouldShowPager NOTIFY shouldShowPagerChanged)
-    Q_PROPERTY(bool showDesktop READ showDesktop WRITE setShowDesktop NOTIFY showDesktopChanged)
+    Q_PROPERTY(int actionOnClick READ actionOnClick WRITE setActionOnClick NOTIFY actionOnClickChanged)
     Q_PROPERTY(bool showOnlyCurrentScreen READ showOnlyCurrentScreen WRITE setShowOnlyCurrentScreen NOTIFY showOnlyCurrentScreenChanged)
     Q_PROPERTY(QRect screenGeometry READ screenGeometry WRITE setScreenGeometry NOTIFY screenGeometryChanged)
     Q_PROPERTY(int currentPage READ currentPage NOTIFY currentPageChanged)
@@ -65,8 +65,8 @@ public:
 
     bool shouldShowPager() const;
 
-    bool showDesktop() const;
-    void setShowDesktop(bool show);
+    bool actionOnClick() const;
+    void setActionOnClick(int action);
 
     bool showOnlyCurrentScreen() const;
     void setShowOnlyCurrentScreen(bool show);
@@ -103,7 +103,7 @@ Q_SIGNALS:
     void pagerTypeChanged() const;
     void enabledChanged() const;
     void shouldShowPagerChanged() const;
-    void showDesktopChanged() const;
+    void actionOnClickChanged() const;
     void showOnlyCurrentScreenChanged() const;
     void screenGeometryChanged() const;
     void currentPageChanged() const;

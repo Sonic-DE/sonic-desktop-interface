@@ -146,7 +146,7 @@ PlasmoidItem {
 
         enabled: root.visible
 
-        showDesktop: (Plasmoid.configuration.currentDesktopSelected === 1)
+        actionOnClick: Plasmoid.configuration.currentDesktopSelected
 
         showOnlyCurrentScreen: Plasmoid.configuration.showOnlyCurrentScreen
         screenGeometry: Plasmoid.containment.screenGeometry

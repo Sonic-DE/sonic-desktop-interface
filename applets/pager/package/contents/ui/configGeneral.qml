@@ -123,5 +123,13 @@ KCM.SimpleKCM {
             checked: cfg_currentDesktopSelected === 1
             onToggled: if (checked) cfg_currentDesktopSelected = 1;
         }
+
+        QQC2.RadioButton {
+            id: showsOverviewRadio
+            QQC2.ButtonGroup.group: currentDesktopSelectedGroup
+            text: i18n("Shows the overview")
+            checked: cfg_currentDesktopSelected === 2
+            onToggled: if (checked) cfg_currentDesktopSelected = 2;
+        }
     }
 }
