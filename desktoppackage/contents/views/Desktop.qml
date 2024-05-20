@@ -68,9 +68,9 @@ Item {
         let screenRect = containment.plasmoid.availableScreenRect;
         let panelConfigRect = Qt.rect(0,0,0,0);
 
-        if (containment.plasmoid.corona.configuredPanel
-            && containment.plasmoid.corona.configuredPanel.screenToFollow === desktop.screenToFollow) {
-            panelConfigRect = containment.plasmoid.corona.configuredPanel.relativeConfigRect;
+        if (containment.plasmoid.corona.panelBeingConfigured
+            && containment.plasmoid.corona.panelBeingConfigured.screenToFollow === desktop.screenToFollow) {
+            panelConfigRect = containment.plasmoid.corona.panelBeingConfigured.relativeConfigRect;
         }
 
         if (panelConfigRect.width <= 0) {
