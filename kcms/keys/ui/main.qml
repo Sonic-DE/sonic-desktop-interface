@@ -469,7 +469,7 @@ KCM.AbstractKCM {
 
         title: i18n("Import Shortcut Scheme")
 
-        width: Math.max(root.width / 2, Kirigami.Units.gridUnit * 24)
+        width: Math.max(Math.round(root.width / 2), Kirigami.Units.gridUnit * 24)
 
         ColumnLayout {
             spacing: Kirigami.Units.smallSpacing
