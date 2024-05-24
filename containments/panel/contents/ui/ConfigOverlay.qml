@@ -22,8 +22,32 @@ MouseArea {
     z: 1000
     hoverEnabled: true
 
+    Rectangle {
+        color: "red"
+        width: 100
+        height: 100
+    }
+
     property Item currentApplet
+    property int draggedItemIndex
     property real startDragOffset: 0.0
+
+    Drag.dragType: Drag.Automatic
+    Drag.active: false
+    Drag.supportedActions: Qt.MoveAction
+    Drag.mimeData: {
+        "text/x-plasmoidservicename": configurationArea.currentApplet?.applet.plasmoid.pluginName
+    }
+    Drag.onDragFinished: dropEvent => {
+        if (dropEvent == Qt.MoveAction) {
+            currentApplet.applet.plasmoid.internalAction("remove").trigger()
+        } else {
+            appletsModel.insert(configurationArea.draggedItemIndex - 1, {applet: currentApplet.applet});
+        }
+        currentApplet.destroy()
+        root.dragAndDropping = false
+        root.layoutManager.save()
+    }
 
     onPositionChanged: mouse => {
         if (pressed) {
@@ -34,17 +58,12 @@ MouseArea {
             var padding = Kirigami.Units.gridUnit * 5;
             if (currentApplet && (mouse.x < -padding || mouse.y < -padding ||
                 mouse.x > width + padding || mouse.y > height + padding)) {
-                var newCont = root.containmentItemAt(mouse.x, mouse.y);
-
-                if (newCont && newCont !== plasmoid) {
-                    var newPos = newCont.mapFromApplet(currentApplet.applet.plasmoid, mouse.x, mouse.y);
-                    var applet = currentApplet.applet;
-                    appletsModel.remove(placeHolder.parent.index);
-                    currentApplet.destroy();
-                    applet.anchors.fill = undefined
-                    newCont.plasmoid.addApplet(applet.plasmoid, Qt.rect(newPos.x, newPos.y, applet.width, applet.height));
-                    return;
-                }
+                configurationArea.currentApplet.grabToImage(result => {
+                    configurationArea.Drag.imageSource = result.url
+                    appletsModel.remove(placeHolder.parent.index)
+                    currentApplet.visible = false
+                    configurationArea.Drag.active = true
+                })
             }
             if (Plasmoid.formFactor === PlasmaCore.Types.Vertical && currentApplet) {
                 currentApplet.y = mouse.y - startDragOffset;
@@ -110,6 +129,7 @@ MouseArea {
                                                                      y: item.y, z: 900,
                                                                      width: item.width, height: item.height, index: -1})
         placeHolder.parent.dragging = currentApplet
+        configurationArea.draggedItemIndex = item.index
         appletsModel.remove(item.index)
         root.dragAndDropping = true
 
