@@ -95,6 +95,8 @@ PlasmoidItem {
         }
     }
 
+    Plasmoid.onActivated: fullRepresentationItem.keyboardLayout.switchToNextLayout()
+
     function actionTriggered(actionName) {
         const layoutIndex = parseInt(actionName);
         if (!isNaN(layoutIndex)) {
