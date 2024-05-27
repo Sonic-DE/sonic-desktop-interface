@@ -67,11 +67,8 @@ KCM.SimpleKCM {
         loading = false
     }
 
-
-    headerPaddingEnabled: false // Let the InlineMessage touch the edges
     header: Kirigami.InlineMessage {
         id: inlineMessage
-        position: Kirigami.InlineMessage.Position.Header
     }
 
     Connections {
@@ -381,11 +378,11 @@ KCM.SimpleKCM {
 
                 textFromValue: function(value, locale) {
                     locale.numberOptions = Locale.OmitGroupSeparator;
-                    return Number(value).toLocaleString(locale, 'f', 0)+" ‰"
+                    return Number(value / 10).toLocaleString(locale, 'f', 1)+" %"
                 }
 
                 valueFromText: function(text, locale) {
-                    return Number.fromLocaleString(locale, text.replace(" ‰", ""))
+                    return Number.fromLocaleString(locale, text.replace(" %", "")) * 10
                 }
             }
         }
