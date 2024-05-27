@@ -51,13 +51,6 @@ PlasmoidItem {
                 Plasmoid.contextualActions.splice(Plasmoid.contextualActions.indexOf(object), 1)
             }
         }
-        Connections {
-            target: switcher.keyboardLayout
-
-            function onLayoutChanged() {
-                root.Plasmoid.activated();
-            }
-        }
 
         Connections {
             target: root
