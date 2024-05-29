@@ -91,6 +91,7 @@ KCMMouse::KCMMouse(QObject *parent, const KPluginMetaData &data, [[maybe_unused]
     if (m_initError) {
         setMessage(Message::error(m_inputBackend->errorString()));
     } else {
+        connect(m_inputBackend.get(), &InputBackend::needsSaveChanged, this, &KCMMouse::checkForChanges);
         connect(m_inputBackend.get(), &InputBackend::deviceAdded, this, &KCMMouse::onDeviceAdded);
         connect(m_inputBackend.get(), &InputBackend::deviceRemoved, this, &KCMMouse::onDeviceRemoved);
     }
@@ -174,8 +175,6 @@ void KCMMouse::defaults()
     if (!m_inputBackend->defaults()) {
         setMessage(Message::error(i18n("Error while loading default values. Failed to set some options to their default values.")));
     }
-
-    setNeedsSave(m_inputBackend->isSaveNeeded());
 }
 
 void KCMMouse::checkForChanges()
@@ -213,8 +212,6 @@ void KCMMouse::onDeviceRemoved(int index)
     if (m_currentDeviceIndex >= index) {
         setCurrentDeviceIndex(index - 1);
     }
-
-    setNeedsSave(m_inputBackend->isSaveNeeded());
 }
 
 void KCMMouse::setMessage(const Message &message)
