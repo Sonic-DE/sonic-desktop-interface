@@ -27,7 +27,7 @@ public:
 
     bool getDefaultConfig();
     bool applyConfig();
-    bool isChangedConfig() const;
+    bool isSaveNeeded() const;
 
     //
     // general
@@ -203,6 +203,9 @@ private:
             , changedSignalFunction(changedSignal)
             , device(device)
         {
+            if (changedSignalFunction) {
+                QObject::connect(device, changedSignalFunction, device, &InputDevice::needsSaveChanged);
+            }
         }
 
         void set(T newVal)
