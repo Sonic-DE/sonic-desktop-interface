@@ -53,7 +53,7 @@ public:
         return false;
     }
 
-    virtual bool isChangedConfig() const
+    virtual bool isSaveNeeded() const
     {
         return false;
     }
@@ -94,6 +94,8 @@ public:
     }
 
 Q_SIGNALS:
+    void needsSaveChanged();
+
     void inputDevicesChanged();
     void deviceAdded(bool success);
     void deviceRemoved(int index);
