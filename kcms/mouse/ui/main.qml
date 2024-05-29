@@ -71,7 +71,6 @@ KCMUtils.SimpleKCM {
             onToggled: {
                 if (root.device) {
                     root.device.enabled = checked
-                    root.KCMUtils.ConfigModule.checkForChanges();
                 }
             }
 
@@ -90,7 +89,6 @@ KCMUtils.SimpleKCM {
             onToggled: {
                 if (root.device) {
                     root.device.leftHanded = checked
-                    root.KCMUtils.ConfigModule.checkForChanges();
                 }
             }
 
@@ -110,7 +108,6 @@ KCMUtils.SimpleKCM {
                 onToggled: {
                     if (root.device) {
                         root.device.middleEmulation = checked
-                        root.KCMUtils.ConfigModule.checkForChanges();
                     }
                 }
 
@@ -140,7 +137,6 @@ KCMUtils.SimpleKCM {
             function onAccelSpeedChanged(value: int): void {
                 if (root.device && (value / 1000) !== root.device.pointerAcceleration) {
                     root.device.pointerAcceleration = value / 100
-                    root.KCMUtils.ConfigModule.checkForChanges();
                 }
             }
 
@@ -219,7 +215,6 @@ KCMUtils.SimpleKCM {
                     if (root.device) {
                         root.device.pointerAccelerationProfileFlat = accelProfileFlat.checked
                         root.device.pointerAccelerationProfileAdaptive = accelProfileAdaptive.checked
-                        root.KCMUtils.ConfigModule.checkForChanges();
                     }
                 }
             }
@@ -260,7 +255,6 @@ KCMUtils.SimpleKCM {
             onToggled: {
                 if (root.device) {
                     root.device.naturalScroll = checked
-                    root.KCMUtils.ConfigModule.checkForChanges();
                 }
             }
 
@@ -315,7 +309,6 @@ KCMUtils.SimpleKCM {
                 onMoved: {
                     if (root.device) {
                         root.device.scrollFactor = values[value]
-                        root.KCMUtils.ConfigModule.checkForChanges();
                     }
                 }
             }

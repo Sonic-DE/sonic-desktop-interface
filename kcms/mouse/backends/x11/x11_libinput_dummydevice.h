@@ -211,6 +211,7 @@ private:
                 val = newVal;
                 if (changedSignalFunction) {
                     (device->*changedSignalFunction)();
+                    Q_EMIT device->needsSaveChanged();
                 }
             }
         }
@@ -220,6 +221,7 @@ private:
                 val = p.val;
                 if (changedSignalFunction) {
                     (device->*changedSignalFunction)();
+                    Q_EMIT device->needsSaveChanged();
                 }
             }
         }
