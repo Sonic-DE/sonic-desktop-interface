@@ -67,11 +67,8 @@ KCM.SimpleKCM {
         loading = false
     }
 
-
-    headerPaddingEnabled: false // Let the InlineMessage touch the edges
     header: Kirigami.InlineMessage {
         id: inlineMessage
-        position: Kirigami.InlineMessage.Position.Header
     }
 
     Connections {
@@ -271,17 +268,17 @@ KCM.SimpleKCM {
                 // check slider
                 if (val !== accelSpeedSlider.accelSpeedValue) {
                     accelSpeedSlider.accelSpeedValue = val
-                    accelSpeedSlider.value = Math.round(6 + (val / 100) / 0.2)
+                    accelSpeedSlider.value = accelSpeedSlider.getClosestSliderPosition(val)
                 }
 
                 // check spinbox
                 if (val !== accelSpeedSpinbox.value) {
-                    accelSpeedSpinbox.value = val
+                    accelSpeedSpinbox.value = val + 1000
                 }
 
                 // check libinput accelspeed
-                if ((val / 100) !== touchpad.pointerAcceleration) {
-                    touchpad.pointerAcceleration = val / 100
+                if ((val / 1000) !== touchpad.pointerAcceleration) {
+                    touchpad.pointerAcceleration = val / 1000
                     root.changeSignal()
                 }
             }
@@ -293,7 +290,37 @@ KCM.SimpleKCM {
                 from: 1
                 to: 11
                 stepSize: 1
-                property int accelSpeedValue: 0 // [-100, 100]
+                property int accelSpeedValue: 0 // [-1000, 1000]
+
+                // Values for non linear slider positions
+                property var accelSpeedSliderPositions: {
+                    1: -937,
+                    2: -875,
+                    3: -750,
+                    4: -500,
+                    5: -250,
+                    6: 0,
+                    7: 200,
+                    8: 400,
+                    9: 600,
+                    10: 800,
+                    11: 1000
+                };
+
+                // Find slider position closest to the value
+                function getClosestSliderPosition(val) {
+                    var closestSliderPosition;
+                    for (var position in accelSpeedSliderPositions) {
+                        var diff = Math.abs(accelSpeedSliderPositions[position] - accelSpeedValue)
+                        if (
+                            closestSliderPosition === undefined
+                            || (diff < Math.abs(accelSpeedSliderPositions[closestSliderPosition] - accelSpeedValue))
+                        ) {
+                            closestSliderPosition = position;
+                        }
+                    }
+                    return closestSliderPosition;
+                }
 
                 function load() {
                     enabled = touchpad.supportsPointerAcceleration
@@ -301,16 +328,16 @@ KCM.SimpleKCM {
                         return
                     }
 
-                    accelSpeedValue = Math.round(touchpad.pointerAcceleration * 100)
+                    accelSpeedValue = Math.round(touchpad.pointerAcceleration * 1000)
 
-                    // convert libinput pointer acceleration range [-1, 1] to slider range [1, 11]
-                    value = Math.round(6 + touchpad.pointerAcceleration / 0.2)
+                    // convert libinput pointer acceleration range [-1, 1] to closest slider range [1, 11]
+                    value = getClosestSliderPosition(accelSpeedValue);
                 }
 
                 onValueChanged: {
                     if (touchpad != undefined && enabled && !root.loading) {
-                        // convert slider range [1, 11] to accelSpeedValue range [-100, 100]
-                        accelSpeedValue = Math.round(((value - 6) * 0.2) * 100)
+                        // convert slider range [1, 11] to accelSpeedValue range [-1000, 1000]
+                        accelSpeedValue = accelSpeedSliderPositions[value]
 
                         accelSpeed.onAccelSpeedChanged(accelSpeedValue)
                     }
@@ -320,11 +347,11 @@ KCM.SimpleKCM {
             QQC2.SpinBox {
                 id: accelSpeedSpinbox
 
-                Layout.minimumWidth: Kirigami.Units.gridUnit * 4
+                Layout.minimumWidth: Kirigami.Units.gridUnit * 5
 
-                from: -100
-                to: 100
-                stepSize: 1
+                from: 0
+                to: 2000
+                stepSize: 100
                 editable: true
 
                 validator: DoubleValidator {
@@ -338,23 +365,24 @@ KCM.SimpleKCM {
                         return
                     }
 
-                    // if existing configuration or another application set a value with more than 2 decimals
-                    // we reduce the precision to 2
-                    value = Math.round(touchpad.pointerAcceleration * 100)
+                    // if existing configuration or another application set a value with more than 3 decimals
+                    // we reduce the precision to 3
+                    value = Math.round(1000 + touchpad.pointerAcceleration * 1000)
                 }
 
                 onValueChanged: {
                     if (touchpad != undefined && enabled && !root.loading) {
-                        accelSpeed.onAccelSpeedChanged(value)
+                        accelSpeed.onAccelSpeedChanged(value - 1000)
                     }
                 }
 
-                textFromValue: function(val, locale) {
-                    return Number(val / 100).toLocaleString(locale, "f", 2)
+                textFromValue: function(value, locale) {
+                    locale.numberOptions = Locale.OmitGroupSeparator;
+                    return Number(value / 10).toLocaleString(locale, 'f', 1)+" %"
                 }
 
                 valueFromText: function(text, locale) {
-                    return Number.fromLocaleString(locale, text) * 100
+                    return Number.fromLocaleString(locale, text.replace(" %", "")) * 10
                 }
             }
         }

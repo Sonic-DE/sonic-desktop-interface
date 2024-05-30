@@ -156,10 +156,21 @@ Kirigami.ApplicationItem {
                 Layout.fillWidth: true
 
                 spacing: Kirigami.Units.smallSpacing
+                function onAccelSpeedChanged(val) {
+                    // check slider
+                    if (val !== accelSpeedSlider.accelSpeedValue) {
+                        accelSpeedSlider.accelSpeedValue = val
+                        accelSpeedSlider.value = accelSpeedSlider.getClosestSliderPosition(val)
+                    }
 
-                function onAccelSpeedChanged(value: int): void {
-                    if (root.device && (value / 1000) !== root.device.pointerAcceleration) {
-                        root.device.pointerAcceleration = value / 100
+                    // check spinbox
+                    if (val !== accelSpeedSpinbox.value) {
+                        accelSpeedSpinbox.value = val + 1000
+                    }
+
+                    // check libinput accelspeed
+                    if ((val / 1000) !== device.pointerAcceleration) {
+                        device.pointerAcceleration = val / 1000
                         root.changeSignal()
                     }
                 }
@@ -171,15 +182,48 @@ Kirigami.ApplicationItem {
                     from: 1
                     to: 11
                     stepSize: 1
-                    enabled: root.device?.supportsPointerAcceleration ?? false
+                    enabled: device?.supportsPointerAcceleration ?? false
+                    property int accelSpeedValue // [-1000, 1000]
 
-                    // convert libinput pointer acceleration range [-1, 1] to slider range [1, 11]
-                    value: enabled && root.device ? Math.round(6 + root.device.pointerAcceleration / 0.2) : 0
+                    // Values for non linear slider positions
+                    property var accelSpeedSliderPositions: {
+                        1: -937,
+                        2: -875,
+                        3: -750,
+                        4: -500,
+                        5: -250,
+                        6: 0,
+                        7: 200,
+                        8: 400,
+                        9: 600,
+                        10: 800,
+                        11: 1000
+                    };
 
-                    onMoved: {
-                        if (root.device) {
-                            // convert slider range [1, 11] to accelSpeedValue range [-100, 100]
-                            const accelSpeedValue = Math.round(((value - 6) * 0.2) * 100)
+                    // Find slider position closest to the value
+                    function getClosestSliderPosition(val) {
+                        var closestSliderPosition;
+                        for (var position in accelSpeedSliderPositions) {
+                            var diff = Math.abs(accelSpeedSliderPositions[position] - accelSpeedValue)
+                            if (
+                                closestSliderPosition === undefined
+                                || (diff < Math.abs(accelSpeedSliderPositions[closestSliderPosition] - accelSpeedValue))
+                            ) {
+                                closestSliderPosition = position;
+                            }
+                        }
+                        return closestSliderPosition;
+                    }
+
+                    accelSpeedValue: enabled ? Math.round(root.device.pointerAcceleration * 1000) : 0
+                    // convert libinput pointer acceleration range [-1, 1] to closest slider range [1, 11]
+                    value: getClosestSliderPosition(accelSpeedValue)
+
+                    onValueChanged: {
+                        if (device != undefined && enabled && !root.loading) {
+                            // convert slider range [1, 11] to accelSpeedValue range [-1000, 1000]
+                            accelSpeedValue = accelSpeedSliderPositions[value]
+
                             accelSpeed.onAccelSpeedChanged(accelSpeedValue)
                         }
                     }
@@ -189,39 +233,32 @@ Kirigami.ApplicationItem {
                     id: accelSpeedSpinbox
                     Layout.minimumWidth: Kirigami.Units.gridUnit * 5
 
-                    from: -100
-                    to: 100
-                    stepSize: 1
+                    from: 0
+                    to: 2000
+                    stepSize: 100
                     editable: true
                     enabled: root.device?.supportsPointerAcceleration ?? false
 
-                    // if existing configuration or another application set a value with more than 2 decimals
-                    // we reduce the precision to 2
-                    value: enabled && root.device ? Math.round(root.device.pointerAcceleration * 100) : 0
+                    value: enabled ? Math.round(1000 + device.pointerAcceleration * 1000) : 0
 
                     validator: DoubleValidator {
                         bottom: accelSpeedSpinbox.from
                         top: accelSpeedSpinbox.to
                     }
 
-                    onValueModified: {
-                        if (root.device) {
-                            accelSpeed.onAccelSpeedChanged(value)
-                            // Keyboard input breaks SpinBox value bindings with current Qt.
-                            // Restore the binding so clicking "Reset" will update it correctly.
-                            value = Qt.binding(() => accelSpeedSpinbox.enabled && root.device
-                                ? Math.round(root.device.pointerAcceleration * 100)
-                                : 0
-                            );
+                    onValueChanged: {
+                        if (root.device != undefined && enabled && !root.loading) {
+                            accelSpeed.onAccelSpeedChanged(value - 1000)
                         }
                     }
 
-                    textFromValue: function(val, locale) {
-                        return Number(val / 100).toLocaleString(locale, "f", 2)
+                    textFromValue: function(value, locale) {
+                        locale.numberOptions = Locale.OmitGroupSeparator;
+                        return Number(value / 10).toLocaleString(locale, 'f', 1)+" %"
                     }
 
                     valueFromText: function(text, locale) {
-                        return Number.fromLocaleString(locale, text) * 100
+                        return Number.fromLocaleString(locale, text.replace(" %", "")) * 10
                     }
                 }
             }
