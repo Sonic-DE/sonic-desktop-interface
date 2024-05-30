@@ -82,20 +82,6 @@ ContainmentItem {
         return iconName + symbolicSuffix;
     }
 
-    // function updateGridSize() {
-    //     // onIconHeightChanged can be triggered before this component is complete and all the children are created
-    //     console.log("foo", toolBoxSvg.elementSize("left").width)
-    //     if (!toolBoxSvg) {
-    //         return;
-    //     }
-    //
-    //
-    //     appletsLayout.cellWidth = root.iconWidth + toolBoxSvg.elementSize("left").width + toolBoxSvg.elementSize("right").width;
-    //     appletsLayout.cellHeight = root.iconHeight + toolBoxSvg.elementSize("top").height + toolBoxSvg.elementSize("bottom").height;
-    //     appletsLayout.defaultItemWidth = appletsLayout.cellWidth * 6;
-    //     appletsLayout.defaultItemHeight = appletsLayout.cellHeight * 6;
-    // }
-
     function addLauncher(desktopUrl) {
         if (!isFolder) {
             return;
@@ -316,6 +302,8 @@ ContainmentItem {
 
             cellWidth: Kirigami.Units.iconSizes.small
             cellHeight: cellWidth
+            defaultItemWidth: cellWidth * 6
+            defaultItemHeight: cellHeight * 6
 
             eventManagerToFilter: folderViewLayer.item?.view.view ?? null
 
@@ -395,7 +383,6 @@ ContainmentItem {
             }
 
             Plasmoid.setInternalAction("configure", configAction)
-            // updateGridSize();
         }
     }
 }
