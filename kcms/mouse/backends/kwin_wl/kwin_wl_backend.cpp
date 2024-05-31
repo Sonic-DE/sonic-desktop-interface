@@ -137,8 +137,8 @@ bool KWinWaylandBackend::getDefaultConfig()
 
 bool KWinWaylandBackend::isChangedConfig() const
 {
-    return m_buttonMapping != m_loadedButtonMapping || std::ranges::any_of(std::as_const(m_devices), [](KWinWaylandDevice *t) {
-               return t->isChangedConfig();
+    return m_buttonMapping != m_loadedButtonMapping || std::ranges::any_of(std::as_const(m_devices), [](KWinWaylandDevice *device) {
+               return device->isChangedConfig();
            });
 }
 
@@ -157,8 +157,8 @@ void KWinWaylandBackend::setButtonMapping(const QVariantMap &mapping)
 
 void KWinWaylandBackend::onDeviceAdded(QString sysName)
 {
-    if (std::ranges::any_of(std::as_const(m_devices), [sysName](KWinWaylandDevice *t) {
-            return t->sysName() == sysName;
+    if (std::ranges::any_of(std::as_const(m_devices), [sysName](KWinWaylandDevice *device) {
+            return device->sysName() == sysName;
         })) {
         return;
     }
@@ -191,7 +191,7 @@ void KWinWaylandBackend::onDeviceAdded(QString sysName)
 
 void KWinWaylandBackend::onDeviceRemoved(QString sysName)
 {
-    const auto it = std::ranges::find_if(std::as_const(m_devices), [sysName](const auto device) {
+    const auto it = std::ranges::find_if(std::as_const(m_devices), [sysName](KWinWaylandDevice *device) {
         return device->sysName() == sysName;
     });
     if (it == m_devices.cend()) {
