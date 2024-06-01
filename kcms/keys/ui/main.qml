@@ -126,16 +126,15 @@ KCMUtils.AbstractKCM {
         Kirigami.Theme.colorSet: Kirigami.Theme.View
         color: Kirigami.Theme.backgroundColor
 
-        RowLayout  {
+        QQC2.SplitView {
             anchors.fill: parent
             enabled: !errorOccured
-            spacing: 0
 
             QQC2.ScrollView {
                 id: categoryList
 
-                Layout.preferredWidth: Kirigami.Units.gridUnit * 14
-                Layout.fillHeight: true
+                QQC2.SplitView.minimumWidth: Kirigami.Units.gridUnit * 14
+                QQC2.SplitView.preferredWidth: minimumWidth
                 clip: true
 
                 ListView {
@@ -314,16 +313,13 @@ KCMUtils.AbstractKCM {
                 }
             }
 
-            Kirigami.Separator {
-                Layout.fillHeight: true
-            }
-
             QQC2.ScrollView  {
-                enabled: !exportActive
                 id: shortcutsScroll
-                Layout.fillHeight: true
-                Layout.fillWidth: true
+
+                QQC2.SplitView.minimumWidth: Kirigami.Units.gridUnit * 25
+                QQC2.SplitView.fillWidth: true
                 clip: true
+                enabled: !exportActive
 
                 ListView {
                     clip:true
