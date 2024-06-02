@@ -87,7 +87,7 @@ public:
 
     bool supportsMiddleEmulation() const override
     {
-        return m_supportsMiddleEmulation.val;
+        return true;
     }
 
     bool middleEmulationEnabledByDefault() const override
@@ -262,7 +262,6 @@ private:
     // advanced
     Prop<bool> m_leftHanded{this, &X11LibinputDummyDevice::leftHandedChanged, u"XLbInptLeftHanded"_s};
 
-    Prop<bool> m_supportsMiddleEmulation{this};
     Prop<bool> m_middleEmulationEnabledByDefault{this};
     Prop<bool> m_middleEmulation{this, &X11LibinputDummyDevice::middleEmulationChanged, u"XLbInptMiddleEmulation"_s};
 

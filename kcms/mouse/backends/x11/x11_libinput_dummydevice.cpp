@@ -138,7 +138,6 @@ X11LibinputDummyDevice::X11LibinputDummyDevice(QObject *parent, Display *dpy)
     m_pointerAccelerationProfileFlat.atom = XInternAtom(dpy, LIBINPUT_PROP_ACCEL_PROFILE_ENABLED, True);
 
     m_enabled.val = true;
-    m_supportsMiddleEmulation.val = true;
     m_middleEmulationEnabledByDefault.val = false;
 
     m_supportsPointerAcceleration.val = true;
