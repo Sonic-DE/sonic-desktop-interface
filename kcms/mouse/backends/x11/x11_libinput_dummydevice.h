@@ -60,7 +60,7 @@ public:
 
     Qt::MouseButtons supportedButtons() const override
     {
-        return m_supportedButtons.val;
+        return Qt::LeftButton | Qt::MiddleButton | Qt::RightButton;
     }
 
     //
@@ -261,8 +261,6 @@ private:
 
     //
     // advanced
-    Prop<Qt::MouseButtons> m_supportedButtons{this};
-
     Prop<bool> m_supportsLeftHanded{this};
     Prop<bool> m_leftHandedEnabledByDefault{this};
     Prop<bool> m_leftHanded{this, &X11LibinputDummyDevice::leftHandedChanged, u"XLbInptLeftHanded"_s};
