@@ -67,7 +67,7 @@ public:
     // advanced
     bool supportsLeftHanded() const override
     {
-        return m_supportsLeftHanded.val;
+        return true;
     }
 
     bool leftHandedEnabledByDefault() const override
@@ -261,7 +261,6 @@ private:
 
     //
     // advanced
-    Prop<bool> m_supportsLeftHanded{this};
     Prop<bool> m_leftHandedEnabledByDefault{this};
     Prop<bool> m_leftHanded{this, &X11LibinputDummyDevice::leftHandedChanged, u"XLbInptLeftHanded"_s};
 
