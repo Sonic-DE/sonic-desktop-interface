@@ -45,7 +45,7 @@ public:
 
     bool supportsDisableEvents() const override
     {
-        return m_supportsDisableEvents.val;
+        return false;
     }
 
     void setEnabled(bool enabled) override
@@ -256,7 +256,6 @@ private:
 
     //
     // general
-    Prop<bool> m_supportsDisableEvents{this};
     Prop<bool> m_enabled{this, &X11LibinputDummyDevice::enabledChanged};
 
     //
