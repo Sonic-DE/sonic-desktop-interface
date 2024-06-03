@@ -15,6 +15,7 @@
 #include <QDBusConnection>
 #include <QDBusMessage>
 #include <QDateTime>
+#include <QElapsedTimer>
 #include <QGuiApplication>
 #include <QRasterWindow>
 
@@ -39,12 +40,11 @@ static const char *s_action_name_previous_activity = "previous activity";
 
 namespace
 {
-bool areModifiersPressed(const QKeySequence &seq)
+bool areModifiersPressed(Qt::KeyboardModifiers mod)
 {
-    if (seq.isEmpty()) {
+    if (mod == Qt::NoModifier) {
         return false;
     }
-    int mod = seq[seq.count() - 1] & Qt::KeyboardModifierMask;
     auto activeMods = qGuiApp->queryKeyboardModifiers();
     return activeMods & mod;
 }
@@ -52,7 +52,7 @@ bool areModifiersPressed(const QKeySequence &seq)
 bool isReverseTab(const QKeySequence &prevAction)
 {
     if (prevAction == QKeySequence(Qt::ShiftModifier | Qt::Key_Tab)) {
-        return areModifiersPressed(Qt::SHIFT);
+        return areModifiersPressed(Qt::ShiftModifier);
     } else {
         return false;
     }
@@ -174,11 +174,6 @@ SwitcherBackend::SwitcherBackend(QObject *parent)
                      Qt::META | Qt::SHIFT | Qt::Key_A,
                      &SwitcherBackend::keybdSwitchToPreviousActivity);
 
-    connect(this, &SwitcherBackend::shouldShowSwitcherChanged, m_runningActivitiesModel, &SortedActivitiesModel::setInhibitUpdates);
-
-    m_modKeyPollingTimer.setInterval(100);
-    connect(&m_modKeyPollingTimer, &QTimer::timeout, this, &SwitcherBackend::showActivitySwitcherIfNeeded);
-
     m_dropModeHider.setInterval(500);
     m_dropModeHider.setSingleShot(true);
     connect(&m_dropModeHider, &QTimer::timeout, this, [this] {
@@ -230,44 +225,133 @@ void SwitcherBackend::switchToActivity(Direction direction)
 
 void SwitcherBackend::keybdSwitchedToAnotherActivity()
 {
-    m_lastInvokedAction = dynamic_cast<QAction *>(sender());
-    if (KWindowSystem::isPlatformWayland() && !qGuiApp->focusWindow() && !m_inputWindow) {
-        // create a new Window so the compositor sends us modifier info
+    if (m_currentModKeyTracker) {
+        return;
+    }
+
+    // Keep activity switcher open if this action's modifiers remain pressed
+    Qt::KeyboardModifiers trackedActionModifiers = Qt::NoModifier;
+    auto shortcut = sender() ? m_actionShortcut.value(sender()->objectName()) : QKeySequence();
+    if (!shortcut.isEmpty()) {
+        trackedActionModifiers = shortcut[shortcut.count() - 1].keyboardModifiers();
+    }
+
+    m_currentModKeyTracker = new SwitcherBackendModKeyTracker(this, trackedActionModifiers);
+
+    QElapsedTimer timer;
+    timer.start();
+
+    if (m_runningActivitiesModel->rowCount() > 1) {
+        // Only show once the initial switch has been completed, not cause a switch back
+        connect(&m_activities,
+                &KActivities::Consumer::currentActivityChanged,
+                m_currentModKeyTracker,
+                [this, tracker = m_currentModKeyTracker, timer = std::move(timer)] {
+                    int remaining = SwitcherBackendModKeyTracker::ActivitySwitcherShowDelay - timer.elapsed();
+                    m_currentModKeyTracker->showActivitySwitcherIfNeededAfterMsec(remaining);
+                });
+
+        // Stop tracking if the current activity never changes (or simply takes too long)
+        m_currentModKeyTracker->destroyIfNotQueriedWithinMsec(SwitcherBackendModKeyTracker::CurrentActivityChangedTimeout);
+    } else {
+        m_currentModKeyTracker->showActivitySwitcherIfNeededAfterMsec(SwitcherBackendModKeyTracker::ActivitySwitcherShowDelay);
+    }
+}
+
+//
+// intermission: SwitcherBackendModKeyTracker - show switcher as long as e.g. Meta is pressed after Meta+A
+
+SwitcherBackendModKeyTracker::SwitcherBackendModKeyTracker(SwitcherBackend *parent, Qt::KeyboardModifiers trackedActionModifiers)
+    : QObject(parent)
+    , m_parent(parent)
+    , m_trackedActionModifiers(trackedActionModifiers)
+
+{
+    // Inhibit updates now, to guard against early execution of setCurrentActivity() while
+    // queryModifiersAndUpdateShouldShowSwitcher() might trigger a little later.
+    // Any destruction of this object goes through updateShouldShowSwitcherWithModifiersPressed()
+    // which will un-inhibit updates again if necessary, timeouts ensure this happens eventually.
+    m_parent->m_runningActivitiesModel->setInhibitUpdates(true);
+
+    m_modKeyPollingTimer.setInterval(ModKeyPollingInterval);
+    connect(&m_modKeyPollingTimer, &QTimer::timeout, this, &SwitcherBackendModKeyTracker::showActivitySwitcherIfNeededAsap);
+}
+
+SwitcherBackendModKeyTracker::~SwitcherBackendModKeyTracker()
+{
+    m_modKeyPollingTimer.stop();
+    delete m_inputWindow;
+}
+
+void SwitcherBackendModKeyTracker::destroyIfNotQueriedWithinMsec(int msec)
+{
+    QTimer::singleShot(msec, this, [this, timeoutId = m_timeoutId] {
+        if (timeoutId < m_timeoutId) {
+            // timeout avoided
+            return;
+        }
+        m_parent->updateShouldShowSwitcherWithModifiersPressed(false);
+    });
+}
+
+void SwitcherBackendModKeyTracker::showActivitySwitcherIfNeededAfterMsec(int delayInMsec)
+{
+    int actualDelay = qMax(delayInMsec - m_previousInputWindowSetupDelayMsec, 0);
+    QTimer::singleShot(actualDelay, this, &SwitcherBackendModKeyTracker::showActivitySwitcherIfNeededAsap);
+}
+
+void SwitcherBackendModKeyTracker::showActivitySwitcherIfNeededAsap()
+{
+    if (KWindowSystem::isPlatformWayland() && !qGuiApp->focusWindow()) {
+        if (m_inputWindow) {
+            // we've already created an input window but it isn't active (yet),
+            // either it'll become active and query modifiers or we'll hit a timeout and destroy
+            return;
+        }
+
+        QElapsedTimer timer;
+        timer.start();
+
+        // create and (try to) focus a new Window so the compositor sends us modifier info
         m_inputWindow = new QRasterWindow();
         m_inputWindow->setGeometry(0, 0, 1, 1);
-        // Only show once the initial switch has been completed, not cause a switch back
-        connect(&m_activities, &KActivities::Consumer::currentActivityChanged, m_inputWindow, [this] {
-            m_inputWindow->show();
-            m_inputWindow->update();
+        m_inputWindow->show();
+        m_inputWindow->update();
+
+        connect(m_inputWindow, &QWindow::activeChanged, this, [this, timer = std::move(timer)] {
+            if (m_inputWindow->isActive()) {
+                m_previousInputWindowSetupDelayMsec = timer.elapsed();
+                // TODO: We really should NOT do this by polling
+                m_modKeyPollingTimer.start();
+                queryModifiersAndUpdateShouldShowSwitcher();
+            } else {
+                // give it another try with a new window next time, until we hit timeout
+                m_inputWindow->deleteLater();
+                m_inputWindow = nullptr;
+            }
         });
-        connect(m_inputWindow, &QWindow::activeChanged, this, [this] {
-            showActivitySwitcherIfNeeded();
-        });
+
+        destroyIfNotQueriedWithinMsec(InputWindowActivationTimeout);
     } else {
-        QTimer::singleShot(100, this, &SwitcherBackend::showActivitySwitcherIfNeeded);
+        m_modKeyPollingTimer.start();
+        queryModifiersAndUpdateShouldShowSwitcher();
     }
 }
 
-void SwitcherBackend::showActivitySwitcherIfNeeded()
+void SwitcherBackendModKeyTracker::queryModifiersAndUpdateShouldShowSwitcher()
 {
-    if (!m_lastInvokedAction || m_dropModeActive) {
-        return;
+    m_timeoutId++;
+
+    bool modifiersStillPressed = areModifiersPressed(m_trackedActionModifiers);
+    if (!modifiersStillPressed) {
+        m_trackedActionModifiers = Qt::NoModifier;
     }
 
-    auto actionName = m_lastInvokedAction->objectName();
-
-    if (!m_actionShortcut.contains(actionName)) {
-        return;
-    }
-
-    if (!areModifiersPressed(m_actionShortcut[actionName])) {
-        m_lastInvokedAction = nullptr;
-        setShouldShowSwitcher(false);
-        return;
-    }
-
-    setShouldShowSwitcher(true);
+    m_parent->updateShouldShowSwitcherWithModifiersPressed(modifiersStillPressed);
 }
+
+// end SwitcherBackendModKeyTracker, back to SwitcherBackend
+//
 
 void SwitcherBackend::init()
 {
@@ -276,15 +360,16 @@ void SwitcherBackend::init()
 
 void SwitcherBackend::onCurrentActivityChanged(const QString &id)
 {
-    if (m_shouldShowSwitcher) {
-        // If we are showing the switcher because the user is
-        // pressing Meta+Tab, we are not ready to commit the
-        // activity change to memory
-        return;
-    }
-
     if (m_previousActivity == id)
         return;
+
+    if (m_runningActivitiesModel->inhibitUpdates()) {
+        // If we are showing the switcher (or considering to) because
+        // the user is pressing Meta+A, we are not ready to commit the
+        // activity change to memory
+        KActivities::Info activity(id);
+        return;
+    }
 
     // Safe, we have a long-lived Consumer object
     KActivities::Info activity(id);
@@ -303,12 +388,21 @@ void SwitcherBackend::onCurrentActivityChanged(const QString &id)
     if (!m_previousActivity.isEmpty()) {
         // When leaving an activity, say goodbye and fondly remember
         // the last time we saw it
-        times.writeEntry(m_previousActivity, now);
+        times.writeEntry(m_previousActivity, now - 1);
     }
 
     times.sync();
 
     m_previousActivity = id;
+}
+
+void SwitcherBackend::updateShouldShowSwitcherWithModifiersPressed(bool modifiersPressed)
+{
+    if (!modifiersPressed) {
+        delete m_currentModKeyTracker;
+        m_currentModKeyTracker = nullptr;
+    }
+    setShouldShowSwitcher(modifiersPressed || m_dropModeActive);
 }
 
 bool SwitcherBackend::shouldShowSwitcher() const
@@ -318,22 +412,13 @@ bool SwitcherBackend::shouldShowSwitcher() const
 
 void SwitcherBackend::setShouldShowSwitcher(bool shouldShowSwitcher)
 {
-    if (m_inputWindow) {
-        delete m_inputWindow;
-        m_inputWindow = nullptr;
-    }
-
     if (m_shouldShowSwitcher == shouldShowSwitcher)
         return;
 
     m_shouldShowSwitcher = shouldShowSwitcher;
+    m_runningActivitiesModel->setInhibitUpdates(m_shouldShowSwitcher);
 
-    if (m_shouldShowSwitcher) {
-        // TODO: We really should NOT do this by polling
-        m_modKeyPollingTimer.start();
-    } else {
-        m_modKeyPollingTimer.stop();
-
+    if (!m_shouldShowSwitcher) {
         // We might have an unprocessed onCurrentActivityChanged
         onCurrentActivityChanged(m_activities.currentActivity());
     }

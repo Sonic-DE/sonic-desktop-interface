@@ -34,6 +34,8 @@ namespace KIO
 class PreviewJob;
 }
 
+class SwitcherBackendModKeyTracker;
+
 class SwitcherBackend : public QObject
 {
     Q_OBJECT
@@ -91,22 +93,54 @@ private Q_SLOTS:
     void keybdSwitchToPreviousActivity();
     void keybdSwitchedToAnotherActivity();
 
-    void showActivitySwitcherIfNeeded();
+    void updateShouldShowSwitcherWithModifiersPressed(bool modifiersPressed);
 
     void onCurrentActivityChanged(const QString &id);
 
 private:
+    friend class SwitcherBackendModKeyTracker;
+
     QHash<QString, QKeySequence> m_actionShortcut;
-    QAction *m_lastInvokedAction = nullptr;
-    QRasterWindow *m_inputWindow = nullptr;
+    SwitcherBackendModKeyTracker *m_currentModKeyTracker = nullptr;
     KActivities::Controller m_activities;
-    bool m_shouldShowSwitcher;
-    QTimer m_modKeyPollingTimer;
     QString m_previousActivity;
+    bool m_shouldShowSwitcher;
 
     bool m_dropModeActive;
     QTimer m_dropModeHider;
 
     SortedActivitiesModel *m_runningActivitiesModel = nullptr;
     SortedActivitiesModel *m_stoppedActivitiesModel = nullptr;
+};
+
+class SwitcherBackendModKeyTracker : public QObject
+{
+    Q_OBJECT
+
+public:
+    static const int ActivitySwitcherShowDelay = 100;
+    static const int ModKeyPollingInterval = 100;
+    static const int CurrentActivityChangedTimeout = 2000;
+    static const int InputWindowActivationTimeout = 1000;
+
+public:
+    SwitcherBackendModKeyTracker(SwitcherBackend *parent, Qt::KeyboardModifiers trackedActionModifiers);
+    ~SwitcherBackendModKeyTracker() override;
+
+    void destroyIfNotQueriedWithinMsec(int msec);
+    void showActivitySwitcherIfNeededAfterMsec(int delayInMsec);
+
+private Q_SLOTS:
+    void showActivitySwitcherIfNeededAsap();
+
+private:
+    void queryModifiersAndUpdateShouldShowSwitcher();
+
+private:
+    SwitcherBackend *m_parent;
+    Qt::KeyboardModifiers m_trackedActionModifiers;
+    QTimer m_modKeyPollingTimer;
+    QRasterWindow *m_inputWindow = nullptr;
+    qint64 m_timeoutId = 0;
+    int m_previousInputWindowSetupDelayMsec = 0;
 };
