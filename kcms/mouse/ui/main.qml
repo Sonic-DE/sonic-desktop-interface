@@ -49,8 +49,17 @@ KCMUtils.SimpleKCM {
         }
     }
 
-    header: Message {
-        message: root.KCMUtils.ConfigModule.message
+    header: ColumnLayout {
+        spacing: 0
+        Message {
+            Layout.fillWidth: true
+            message: root.KCMUtils.ConfigModule.saveLoadMessage
+        }
+        Message {
+            Layout.fillWidth: true
+            message: root.KCMUtils.ConfigModule.hotplugMessage
+            showCloseButton: true
+        }
     }
 
     Kirigami.FormLayout {
