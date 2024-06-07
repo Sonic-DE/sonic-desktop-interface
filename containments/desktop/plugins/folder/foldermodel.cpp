@@ -1895,7 +1895,6 @@ void FolderModel::openContextMenu(QQuickItem *visualParent, Qt::KeyboardModifier
         menu->windowHandle()->setTransientParent(visualParent->window());
     }
 
-    menu->popup(m_menuPosition);
     connect(menu, &QMenu::aboutToHide, this, [this, menu]() {
         menu->deleteLater();
 
@@ -1903,6 +1902,7 @@ void FolderModel::openContextMenu(QQuickItem *visualParent, Qt::KeyboardModifier
         if (RemoveAction *removeAction = qobject_cast<RemoveAction *>(m_actionCollection.action(QStringLiteral("remove"))))
             QCoreApplication::instance()->removeEventFilter(removeAction);
     });
+    menu->popup(m_menuPosition);
 }
 
 void FolderModel::openPropertiesDialog()
