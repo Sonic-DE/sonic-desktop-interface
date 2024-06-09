@@ -7,7 +7,7 @@
 import QtQuick 2.15
 import QtQuick.Layouts 1.1
 import QtQuick.Controls 2.3 as QQC2
-import org.kde.kirigami 2.19 as Kirigami
+import org.kde.kirigami 2.20 as Kirigami
 import org.kde.plasma.tablet.kcm 1.1
 import org.kde.kcmutils
 import org.kde.kquickcontrols 2.0
@@ -122,12 +122,19 @@ SimpleKCM {
                 parent.device.orientation = orientationsModel.orientationAt(currentIndex)
             }
         }
-        QQC2.CheckBox {
-            Kirigami.FormData.label: i18nd("kcm_tablet", "Left handed mode:")
-            enabled: parent.device && parent.device.supportsLeftHanded
-            checked: parent.device && parent.device.leftHanded
-            onCheckedChanged: {
-                parent.device.leftHanded = checked
+        RowLayout {
+            Kirigami.FormData.label: i18nd("kcm_tablet", "Left-handed mode:")
+            Kirigami.FormData.buddyFor: leftHandedCheckbox
+            spacing: 0
+
+            QQC2.CheckBox {
+                id: leftHandedCheckbox
+                enabled: form.device && form.device.supportsLeftHanded
+                checked: form.device && form.device.leftHanded
+                onCheckedChanged: form.device.leftHanded = checked
+            }
+            Kirigami.ContextualHelpButton {
+                toolTipText: xi18nc("@info", "Tells the device to to accommodate left-handed users. Effects will vary by device, but often it reverses the pad buttonsʼ functionality so the tablet can be used upside-down.")
             }
         }
         QQC2.ComboBox {
