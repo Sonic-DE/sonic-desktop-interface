@@ -134,9 +134,9 @@ class OutputsFittingModel : public QStandardItemModel
 public:
     OutputsFittingModel()
     {
-        appendRow(new QStandardItem(i18n("Fit to Output")));
-        appendRow(new QStandardItem(i18n("Fit Output in tablet")));
-        appendRow(new QStandardItem(i18n("Custom size")));
+        appendRow(new QStandardItem(i18n("Fit to Screen")));
+        appendRow(new QStandardItem(i18n("Fit Screen in Tablet (Force Proportions)")));
+        appendRow(new QStandardItem(i18n("Map to Portion of Screen")));
 
         setItemRoleNames({{Qt::DisplayRole, "display"}});
     }
