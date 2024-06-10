@@ -1,20 +1,28 @@
 #!/usr/bin/env python3
 
-# SPDX-FileCopyrightText: 2023 Fushan Wen <qydwhotmail@gmail.com>
+# SPDX-FileCopyrightText: 2024 Niccolò Venerandi <niccolo@venerandi.com>
 # SPDX-License-Identifier: MIT
 
+import functools
+import os
+import pathlib
+import stat
+import subprocess
+import sys
+import time
 import unittest
-from time import sleep
 from typing import Final
 
 from appium import webdriver
 from appium.options.common.base import AppiumOptions
 from appium.webdriver.common.appiumby import AppiumBy
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support.ui import WebDriverWait
-import selenium.webdriver.support.expected_conditions as EC
-from selenium.webdriver import ActionChains
+from appium.webdriver.webelement import WebElement
 from gi.repository import Gio, GLib
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
+from desktoptest import start_plasmashell
 
 class PanelFocusTest(unittest.TestCase):
     """
@@ -22,17 +30,20 @@ class PanelFocusTest(unittest.TestCase):
     """
 
     driver: webdriver.Remote
+    kactivitymanagerd: subprocess.Popen | None = None
+    kded: subprocess.Popen | None = None
+    plasmashell: subprocess.Popen | None = None
 
     @classmethod
     def setUpClass(cls) -> None:
         """
-        Opens the KCM and initialize the webdriver
+        Initializes the webdriver
         """
+        cls.kactivitymanagerd, cls.kded, cls.plasmashell = start_plasmashell()
         options = AppiumOptions()
-        options.set_capability("app", "plasmashell")
-        options.set_capability("timeouts", {'implicit': 10000})
+        options.set_capability("app", "Root")
+        options.set_capability("timeouts", {'implicit': 30000})
         cls.driver = webdriver.Remote(command_executor='http://127.0.0.1:4723', options=options)
-        cls.driver.implicitly_wait = 20
 
     def tearDown(self) -> None:
         """
