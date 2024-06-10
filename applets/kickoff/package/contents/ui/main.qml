@@ -26,6 +26,9 @@ import "code/tools.js" as Tools
 PlasmoidItem {
     id: kickoff
 
+    width: Kirigami.Units.iconSizes.huge
+    height: Kirigami.Units.iconSizes.huge
+
     // The properties are defined here instead of the singleton because each
     // instance of Kickoff requires different instances of these properties
 
@@ -167,8 +170,8 @@ PlasmoidItem {
 
     Plasmoid.icon: Plasmoid.configuration.icon
 
-    switchWidth: fullRepresentationItem ? fullRepresentationItem.Layout.minimumWidth : -1
-    switchHeight: fullRepresentationItem ? fullRepresentationItem.Layout.minimumHeight : -1
+    switchWidth: fullRepresentationItem ? fullRepresentationItem.Layout.minimumWidth : Kirigami.Units.gridUnit * 10
+    switchHeight: fullRepresentationItem ? fullRepresentationItem.Layout.minimumHeight : Kirigami.Units.gridUnit * 10
 
     preferredRepresentation: compactRepresentation
 
