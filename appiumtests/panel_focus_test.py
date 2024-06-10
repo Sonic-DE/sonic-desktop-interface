@@ -3,36 +3,117 @@
 # SPDX-FileCopyrightText: 2023 Fushan Wen <qydwhotmail@gmail.com>
 # SPDX-License-Identifier: MIT
 
+import functools
+import os
+import pathlib
+import stat
+import subprocess
+import sys
+import time
 import unittest
-from time import sleep
 from typing import Final
 
 from appium import webdriver
 from appium.options.common.base import AppiumOptions
 from appium.webdriver.common.appiumby import AppiumBy
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support.ui import WebDriverWait
-import selenium.webdriver.support.expected_conditions as EC
-from selenium.webdriver import ActionChains
+from appium.webdriver.webelement import WebElement
 from gi.repository import Gio, GLib
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
+
+KACTIVITYMANAGERD_PATH: Final = os.environ.get("KACTIVITYMANAGERD_PATH", os.path.join(pathlib.Path.home(), "kde/usr/lib64/libexec/kactivitymanagerd"))
+KACTIVITYMANAGERD_SERVICE_NAME: Final = "org.kde.ActivityManager"
+KDE_VERSION: Final = 6
+
+def name_has_owner(session_bus: Gio.DBusConnection, name: str) -> bool:
+    """
+    Whether the given name is available on session bus
+    """
+    message: Gio.DBusMessage = Gio.DBusMessage.new_method_call("org.freedesktop.DBus", "/", "org.freedesktop.DBus", "NameHasOwner")
+    message.set_body(GLib.Variant("(s)", [name]))
+    reply, _ = session_bus.send_message_with_reply_sync(message, Gio.DBusSendMessageFlags.NONE, 1000)
+    return reply and reply.get_signature() == 'b' and reply.get_body().get_child_value(0).get_boolean()
+
+
+def start_kactivitymanagerd() -> subprocess.Popen | None:
+    session_bus: Gio.DBusConnection = Gio.bus_get_sync(Gio.BusType.SESSION)
+    kactivitymanagerd = None
+    if not name_has_owner(session_bus, KACTIVITYMANAGERD_SERVICE_NAME):
+        kactivitymanagerd = subprocess.Popen([KACTIVITYMANAGERD_PATH], stdout=sys.stderr, stderr=sys.stderr)
+        kactivitymanagerd_started: bool = False
+        for _ in range(10):
+            if name_has_owner(session_bus, KACTIVITYMANAGERD_SERVICE_NAME):
+                kactivitymanagerd_started = True
+                break
+            print("waiting for kactivitymanagerd to appear on the DBus session")
+            time.sleep(1)
+        assert kactivitymanagerd_started
+
+    return kactivitymanagerd
+
+
+def start_kded() -> subprocess.Popen | None:
+    session_bus: Gio.DBusConnection = Gio.bus_get_sync(Gio.BusType.SESSION)
+    kded = None
+    if not name_has_owner(session_bus, f"org.kde.kded{KDE_VERSION}"):
+        kded = subprocess.Popen([f"kded{KDE_VERSION}"], stdout=sys.stderr, stderr=sys.stderr)
+        kded_started: bool = False
+        for _ in range(10):
+            if name_has_owner(session_bus, f"org.kde.kded{KDE_VERSION}"):
+                kded_started = True
+                break
+            print(f"waiting for kded{KDE_VERSION} to appear on the dbus session")
+            time.sleep(1)
+        assert kded_started
+
+    return kded
+
+
+def start_plasmashell() -> tuple:
+    """
+    Launches plashashell and returns the subprocess instances
+    """
+    kactivitymanagerd = start_kactivitymanagerd()
+    kded = start_kded()
+    plasmashell = subprocess.Popen(["plasmashell", "-p", "org.kde.plasma.desktop", "--no-respawn"], stdout=sys.stderr, stderr=sys.stderr)
+
+    return (kactivitymanagerd, kded, plasmashell)
 
 class PanelFocusTest(unittest.TestCase):
     """
     Tests for panel focus
     """
 
-    driver: webdriver.Remote
+    """driver: webdriver.Remote
 
     @classmethod
     def setUpClass(cls) -> None:
-        """
+        ""
         Opens the KCM and initialize the webdriver
-        """
+        ""
         options = AppiumOptions()
         options.set_capability("app", "plasmashell")
         options.set_capability("timeouts", {'implicit': 10000})
         cls.driver = webdriver.Remote(command_executor='http://127.0.0.1:4723', options=options)
-        cls.driver.implicitly_wait = 20
+        cls.driver.implicitly_wait = 20"""
+
+    driver: webdriver.Remote
+    kactivitymanagerd: subprocess.Popen | None = None
+    kded: subprocess.Popen | None = None
+    plasmashell: subprocess.Popen | None = None
+
+    @classmethod
+    def setUpClass(cls) -> None:
+        """
+        Initializes the webdriver
+        """
+        cls.kactivitymanagerd, cls.kded, cls.plasmashell = start_plasmashell()
+        options = AppiumOptions()
+        options.set_capability("app", "Root")
+        options.set_capability("timeouts", {'implicit': 30000})
+        cls.driver = webdriver.Remote(command_executor='http://127.0.0.1:4723', options=options)
 
     def tearDown(self) -> None:
         """
