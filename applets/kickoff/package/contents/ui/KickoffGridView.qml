@@ -97,7 +97,7 @@ EmptyPage {
         } else {
             return 0
         }
-        width: Math.min(parent.width, Math.floor((parent.width - leftMargin - rightMargin - (kickoff.mayHaveGridWithScrollBar ? verticalScrollBar.implicitWidth : 0)) / cellWidth) * cellWidth + leftMargin + rightMargin)
+        width: parent.width + ((leftMargin + rightMargin)/2)
 
         Accessible.description: i18n("Grid with %1 rows, %2 columns", rows, columns) // can't use i18np here
 
