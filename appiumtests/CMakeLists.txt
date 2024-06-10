@@ -32,3 +32,4 @@ add_test(
     NAME panel_focus_test
     COMMAND selenium-webdriver-at-spi-run ${CMAKE_CURRENT_SOURCE_DIR}/panel_focus_test.py
 )
+set_tests_properties(panel_focus_test PROPERTIES TIMEOUT 300 ENVIRONMENT "KACTIVITYMANAGERD_PATH=${KDE_INSTALL_FULL_LIBEXECDIR}/kactivitymanagerd")
