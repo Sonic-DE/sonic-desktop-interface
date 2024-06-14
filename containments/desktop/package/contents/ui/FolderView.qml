@@ -28,7 +28,6 @@ FocusScope {
     property alias view: gridView
     property alias isRootView: gridView.isRootView
     property alias currentIndex: gridView.currentIndex
-    property alias dropHighlight: dropHighlighter.dropHighlight
     property alias url: dir.url
     property alias status: dir.status
     property alias perStripe: positioner.perStripe

@@ -8,8 +8,6 @@ import org.kde.kirigami as Kirigami
 Item {
     id: highlighter
 
-    property bool dropHighlight: true
-
     property QtObject folderModel
     property QtObject positioner
 
@@ -20,12 +18,6 @@ Item {
     }
 
     function handleDragMove(event, pos): void {
-        if (folderModel.dragging) {
-            if (!main.dropHighlight) {
-                return;
-            }
-        }
-
         let urls = Array(...event.mimeData.urls);
         urls.sort((first, second) => {
             return positioner.indexForUrl(first) - positioner.indexForUrl(second);
