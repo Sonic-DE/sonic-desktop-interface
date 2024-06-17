@@ -241,7 +241,12 @@ FolderModel::FolderModel(QObject *parent)
             if (it != m_dropTargetPositions.end()) {
                 const auto pos = it.value();
                 m_dropTargetPositions.erase(it);
-                Q_EMIT move(pos.x(), pos.y(), {url});
+
+                // deferred to allow positioner to also handle the rowsInserted
+                // we're dealing with URLs here so it's safe
+                QMetaObject::invokeMethod(this, [this, pos, url]() {
+                    Q_EMIT move(pos.x(), pos.y(), {url});
+                });
             }
         }
     });
