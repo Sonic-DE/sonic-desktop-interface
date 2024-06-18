@@ -175,6 +175,9 @@ ColumnLayout {
                 checkable: true
 
                 function moveTo(newLocation: int, associatedWindow = null) {
+                    var oldAlignment = panel.alignment;
+                    // Use center alignment when moving to avoid Plasmashell crashing BUG:488174
+                    panel.alignment = Qt.AlignCenter;
                     if (!setPositionButton.checked) {
                         return;
                     }
@@ -183,6 +186,7 @@ ColumnLayout {
                         panel.screenToFollow = dialogRoot.panelConfiguration.screenFromWindow(associatedWindow);
                     }
                     setPositionButton.checked = false;
+                    panel.alignment = oldAlignment;
                 }
 
                 Keys.onLeftPressed: moveTo(PlasmaCore.Types.LeftEdge)
