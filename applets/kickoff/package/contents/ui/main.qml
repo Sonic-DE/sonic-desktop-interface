@@ -295,7 +295,7 @@ PlasmoidItem {
                 Layout.rightMargin: Kirigami.Units.smallSpacing
 
                 text: Plasmoid.configuration.menuLabel
-                textFormat: Text.PlainText
+                textFormat: Text.AutoText
                 horizontalAlignment: Text.AlignLeft
                 verticalAlignment: Text.AlignVCenter
                 wrapMode: Text.NoWrap
