@@ -349,13 +349,11 @@ ContainmentItem {
                         // First go out of applet edit mode, get rid of the config overlay, release mouse grabs in preparation of applet reparenting
                         cancelEdit();
                         appletsLayout.hidePlaceHolder();
-                        let imageSize = Qt.size(appletContainer.width, appletContainer.height)
                         appletContainer.grabToImage(result => {
                             appletContainer.Drag.imageSource = result.url
                             appletContainer.visible = false
-                            appletContainer.Drag.hotSpot = Qt.point(imageSize.width / 2, imageSize.height / 2)
                             appletContainer.Drag.active = true
-                        }, imageSize)
+                        })
                     }
                 }
 
