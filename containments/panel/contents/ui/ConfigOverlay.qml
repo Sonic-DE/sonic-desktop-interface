@@ -33,9 +33,8 @@ MouseArea {
         "text/x-plasmoidinstanceid": Plasmoid.containment.id+':'+configurationArea.currentApplet?.applet.plasmoid.id
     }
     Drag.onDragFinished: dropEvent => {
-        if (dropEvent == Qt.MoveAction) {
+        if (dropEvent != Qt.MoveAction) {
             //currentApplet.applet.plasmoid.internalAction("remove").trigger()
-        } else {
             appletsModel.insert(configurationArea.draggedItemIndex - 1, {applet: currentApplet.applet});
         }
         currentApplet.destroy()
@@ -44,7 +43,6 @@ MouseArea {
     }
 
     onPositionChanged: mouse => {
-        console.log('----->',Plasmoid.containment.id, configurationArea.currentApplet?.applet.plasmoid.id)
         if (pressed) {
 
             // If the object has been dragged outside of the panel and there's
