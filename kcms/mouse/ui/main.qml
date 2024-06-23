@@ -122,8 +122,12 @@ KCMUtils.SimpleKCM {
 
         RowLayout {
             spacing: Kirigami.Units.smallSpacing
+            Layout.fillWidth: true
+
             QQC2.CheckBox {
                 id: middleEmulation
+                Layout.fillWidth: true
+                Layout.maximumWidth: formLayout.width - Kirigami.Units.smallSpacing - contextualHelpButton.implicitWidth
                 text: i18nd("kcmmouse", "Press left and right buttons for middle-click")
                 enabled: root.device?.supportsMiddleEmulation ?? false
                 checked: enabled && (root.device?.middleEmulation ?? false)
@@ -141,6 +145,7 @@ KCMUtils.SimpleKCM {
             }
 
             Kirigami.ContextualHelpButton {
+                id: contextualHelpButton
                 toolTipText: i18nd("kcmmouse", "Activating this setting increases mouse click latency by 50ms. The extra delay is needed to correctly detect simultaneous left and right mouse clicks.")
             }
         }
