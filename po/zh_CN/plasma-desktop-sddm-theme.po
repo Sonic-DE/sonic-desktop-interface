@@ -20,59 +20,59 @@ msgstr ""
 
 #: KeyboardButton.qml:19
 msgid "Keyboard Layout: %1"
-msgstr ""
+msgstr "键盘布局：%1"
 
 #: Login.qml:85
 msgid "Username"
-msgstr ""
+msgstr "用户名"
 
 #: Login.qml:102
 msgid "Password"
-msgstr ""
+msgstr "密码"
 
 #: Login.qml:144 Login.qml:150
 msgid "Log In"
-msgstr ""
+msgstr "登录"
 
 #: Main.qml:195
 msgid "Caps Lock is on"
-msgstr ""
+msgstr "大写锁定处于打开状态"
 
 #: Main.qml:207 Main.qml:351
 msgctxt "Suspend to RAM"
 msgid "Sleep"
-msgstr ""
+msgstr "睡眠"
 
 #: Main.qml:214 Main.qml:358
 msgid "Restart"
-msgstr ""
+msgstr "重启"
 
 #: Main.qml:221 Main.qml:365
 msgid "Shut Down"
-msgstr ""
+msgstr "关机"
 
 #: Main.qml:228
 msgctxt "For switching to a username and password prompt"
 msgid "Other…"
-msgstr ""
+msgstr "其他…"
 
 #: Main.qml:337
 msgid "Type in Username and Password"
-msgstr ""
+msgstr "输入用户名和密码"
 
 #: Main.qml:372
 msgid "List Users"
-msgstr ""
+msgstr "列出用户"
 
 #: Main.qml:447
 msgctxt "Button to show/hide virtual keyboard"
 msgid "Virtual Keyboard"
-msgstr ""
+msgstr "虚拟键盘"
 
 #: Main.qml:514
 msgid "Login Failed"
-msgstr ""
+msgstr "登录失败"
 
 #: SessionButton.qml:18
 msgid "Desktop Session: %1"
-msgstr ""
+msgstr "桌面会话：%1"
