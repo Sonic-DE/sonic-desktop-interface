@@ -52,7 +52,6 @@ Item {
             graceLockTimer.restart();
             notificationRemoveTimer.restart();
             rejectPasswordAnimation.start();
-            lockScreenUi.hadPrompt = false;
         }
 
         function onSucceeded() {
