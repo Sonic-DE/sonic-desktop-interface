@@ -45,13 +45,13 @@ Item {
         y: open ? editModeRect.y + editModeRect.height/2 - zoomedHeight/2 + toolBar.height/2 : 0
         width: open ? zoomedWidth : root.width
         height: open ? zoomedHeight : root.height
-        property real zoomedWidth: root.width * containmentParent.scaleFactor
-        property real zoomedHeight: root.height * containmentParent.scaleFactor
+        property real zoomedWidth: Math.round(root.width * containmentParent.scaleFactor)
+        property real zoomedHeight: Math.round(root.height * containmentParent.scaleFactor)
 
         Kirigami.ShadowedRectangle {
             color: Kirigami.Theme.backgroundColor
-            width: parent.width
-            height: parent.height + toolBar.height + Kirigami.Units.largeSpacing
+            width: Math.round(parent.width)
+            height: Math.round(parent.height + toolBar.height + Kirigami.Units.largeSpacing)
             y: - toolBar.height - Kirigami.Units.largeSpacing
 
             radius: open ? Kirigami.Units.cornerRadius : 0
