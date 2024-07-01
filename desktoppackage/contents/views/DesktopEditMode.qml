@@ -41,8 +41,8 @@ Item {
     Item {
         id: editModeUi
         visible: open || xAnim.running
-        x: open ? editModeRect.x + editModeRect.width/2 - zoomedWidth/2 : 0
-        y: open ? editModeRect.y + editModeRect.height/2 - zoomedHeight/2 + toolBar.height/2 : 0
+        x: Math.round(open ? editModeRect.x + editModeRect.width/2 - zoomedWidth/2 : 0)
+        y: Math.round(open ? editModeRect.y + editModeRect.height/2 - zoomedHeight/2 + toolBar.height/2 : 0)
         width: open ? zoomedWidth : root.width
         height: open ? zoomedHeight : root.height
         property real zoomedWidth: Math.round(root.width * containmentParent.scaleFactor)
