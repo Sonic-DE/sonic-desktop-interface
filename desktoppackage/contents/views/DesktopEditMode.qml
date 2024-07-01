@@ -18,6 +18,8 @@ import org.kde.kcmutils as KCM
 Item {
     property real centerX: Math.round(editModeUi.x + editModeUi.width/2)
     property real centerY: Math.round(editModeUi.y + editModeUi.height/2)
+    property real roundedRootWidth: Math.round(root.width)
+    property real roundedRootHeight: Math.round(root.height)
 
     property bool open: false
     Component.onCompleted: {
@@ -43,8 +45,8 @@ Item {
         visible: open || xAnim.running
         x: Math.round(open ? editModeRect.x + editModeRect.width/2 - zoomedWidth/2 : 0)
         y: Math.round(open ? editModeRect.y + editModeRect.height/2 - zoomedHeight/2 + toolBar.height/2 : 0)
-        width: open ? zoomedWidth : root.width
-        height: open ? zoomedHeight : root.height
+        width: open ? zoomedWidth : roundedRootWidth
+        height: open ? zoomedHeight : roundedRootHeight
         property real zoomedWidth: Math.round(root.width * containmentParent.scaleFactor)
         property real zoomedHeight: Math.round(root.height * containmentParent.scaleFactor)
 
@@ -183,9 +185,8 @@ Item {
             layer.enabled: true
             layer.smooth: true
             layer.effect: Kirigami.ShadowedTexture {
-                width: root.width
-                height: root.height
-
+                width: roundedRootWidth
+                height: roundedRootHeight
                 color: "transparent"
 
                 radius: open ? Kirigami.Units.cornerRadius : 0
