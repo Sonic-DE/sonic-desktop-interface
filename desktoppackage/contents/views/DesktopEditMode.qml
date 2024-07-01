@@ -16,8 +16,8 @@ import org.kde.kirigami 2.20 as Kirigami
 import org.kde.kcmutils as KCM
 
 Item {
-    property real centerX: editModeUi.x + editModeUi.width/2
-    property real centerY: editModeUi.y + editModeUi.height/2
+    property real centerX: Math.round(editModeUi.x + editModeUi.width/2)
+    property real centerY: Math.round(editModeUi.y + editModeUi.height/2)
 
     property bool open: false
     Component.onCompleted: {
