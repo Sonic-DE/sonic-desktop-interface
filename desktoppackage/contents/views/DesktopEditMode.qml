@@ -43,15 +43,15 @@ Item {
         visible: open || xAnim.running
         x: open ? editModeRect.x + editModeRect.width/2 - zoomedWidth/2 : 0
         y: open ? editModeRect.y + editModeRect.height/2 - zoomedHeight/2 + toolBar.height/2 : 0
-        width: open ? zoomedWidth : root.width
-        height: open ? zoomedHeight : root.height
+        width: Math.round( open ? zoomedWidth : root.width)
+        height: Math.round(open ? zoomedHeight : root.height)
         property real zoomedWidth: root.width * containmentParent.scaleFactor
         property real zoomedHeight: root.height * containmentParent.scaleFactor
 
         Kirigami.ShadowedRectangle {
             color: Kirigami.Theme.backgroundColor
-            width: parent.width
-            height: parent.height + toolBar.height + Kirigami.Units.largeSpacing
+            width: Math.round(parent.width)
+            height: Math.round(parent.height + toolBar.height + Kirigami.Units.largeSpacing)
             y: - toolBar.height - Kirigami.Units.largeSpacing
 
             radius: open ? Kirigami.Units.cornerRadius : 0
@@ -183,8 +183,8 @@ Item {
             layer.enabled: true
             layer.smooth: true
             layer.effect: Kirigami.ShadowedTexture {
-                width: root.width
-                height: root.height
+                width: Math.round(root.width)
+                height: Math.round(root.height)
 
                 color: "transparent"
 
