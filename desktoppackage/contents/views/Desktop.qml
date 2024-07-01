@@ -20,6 +20,9 @@ import org.kde.kirigami as Kirigami
 Item {
     id: root
 
+    width: Math.round(root.width)
+    height: Math.round(root.height)
+
     property Item containment
 
     property QtObject widgetExplorer
