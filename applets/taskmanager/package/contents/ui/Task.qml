@@ -614,7 +614,9 @@ TaskManagerApplet.SmartLauncherItem { }
         verticalAlignment: Text.AlignVCenter
         maximumLineCount: Plasmoid.configuration.maxTextLines || undefined
 
-        Accessible.ignored: true
+        //Accessible.ignored: true
+        Accessible.ignored: !visible
+        Accessible.name: parent.Accessible.name + "-labelhint"
 
         // use State to avoid unnecessary re-evaluation when the label is invisible
         states: State {
@@ -626,6 +628,12 @@ TaskManagerApplet.SmartLauncherItem { }
                 text: model.display
             }
         }
+    }
+
+    Rectangle {
+        color: "transparent"
+        anchors.fill: label
+        visible: label.visible
     }
 
     states: [
