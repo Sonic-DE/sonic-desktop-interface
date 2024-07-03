@@ -137,7 +137,7 @@ Item {
         }
     }
 
-    // This value is read from panelview.cpp and disables shadow for floating panels, as they'd be detached from the panel
+    // This value is read from panelview.cpp which needs it to decide which border should be enabled
     property real topShadowMargin: -floatingTranslucentItem.y
     property real leftShadowMargin: -floatingTranslucentItem.x
     property real rightShadowMargin: -(width - floatingTranslucentItem.width - floatingTranslucentItem.x)
