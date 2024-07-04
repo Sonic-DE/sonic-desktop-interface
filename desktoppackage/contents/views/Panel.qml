@@ -40,31 +40,40 @@ Item {
         imagePath: "widgets/panel-background"
     }
 
-    // NOTE: Many of the properties in this file are accessed directly in C++ PanelView!
-    // If you change these, make sure to also correct the related code in panelview.cpp.
-
-    readonly property bool topEdge: containment?.plasmoid?.location === PlasmaCore.Types.TopEdge
-    readonly property bool leftEdge: containment?.plasmoid?.location === PlasmaCore.Types.LeftEdge
     readonly property bool rightEdge: containment?.plasmoid?.location === PlasmaCore.Types.RightEdge
     readonly property bool bottomEdge: containment?.plasmoid?.location === PlasmaCore.Types.BottomEdge
-
-    readonly property int topPadding: Math.round(Math.min(thickPanelSvg.fixedMargins.top + Kirigami.Units.smallSpacing, spacingAtMinSize));
-    readonly property int bottomPadding: Math.round(Math.min(thickPanelSvg.fixedMargins.bottom + Kirigami.Units.smallSpacing, spacingAtMinSize));
-    readonly property int leftPadding: Math.round(Math.min(thickPanelSvg.fixedMargins.left + Kirigami.Units.smallSpacing, spacingAtMinSize));
-    readonly property int rightPadding: Math.round(Math.min(thickPanelSvg.fixedMargins.right + Kirigami.Units.smallSpacing, spacingAtMinSize));
-
-    readonly property int fixedBottomFloatingPadding: floating && (floatingPrefix ? floatingPanelSvg.fixedMargins.bottom : 8)
-    readonly property int fixedLeftFloatingPadding: floating && (floatingPrefix ? floatingPanelSvg.fixedMargins.left   : 8)
-    readonly property int fixedRightFloatingPadding: floating && (floatingPrefix ? floatingPanelSvg.fixedMargins.right  : 8)
-    readonly property int fixedTopFloatingPadding: floating && (floatingPrefix ? floatingPanelSvg.fixedMargins.top    : 8)
 
     readonly property int bottomFloatingPadding: Math.round(fixedBottomFloatingPadding * floatingness)
     readonly property int leftFloatingPadding: Math.round(fixedLeftFloatingPadding * floatingness)
     readonly property int rightFloatingPadding: Math.round(fixedRightFloatingPadding * floatingness)
     readonly property int topFloatingPadding: Math.round(fixedTopFloatingPadding * floatingness)
 
+
+    // NOTE: Many of the properties in this file are accessed directly in C++ PanelView!
+    // If you change these, make sure to also correct the related code in panelview.cpp.
+    readonly property int fixedBottomFloatingPadding: floating && (floatingPrefix ? floatingPanelSvg.fixedMargins.bottom : 8)
+    readonly property int fixedLeftFloatingPadding: floating && (floatingPrefix ? floatingPanelSvg.fixedMargins.left   : 8)
+    readonly property int fixedRightFloatingPadding: floating && (floatingPrefix ? floatingPanelSvg.fixedMargins.right  : 8)
+    readonly property int fixedTopFloatingPadding: floating && (floatingPrefix ? floatingPanelSvg.fixedMargins.top    : 8)
+
+    readonly property int topPadding: Math.round(Math.min(thickPanelSvg.fixedMargins.top + Kirigami.Units.smallSpacing, spacingAtMinSize));
+    readonly property int bottomPadding: Math.round(Math.min(thickPanelSvg.fixedMargins.bottom + Kirigami.Units.smallSpacing, spacingAtMinSize));
+    readonly property int leftPadding: Math.round(Math.min(thickPanelSvg.fixedMargins.left + Kirigami.Units.smallSpacing, spacingAtMinSize));
+    readonly property int rightPadding: Math.round(Math.min(thickPanelSvg.fixedMargins.right + Kirigami.Units.smallSpacing, spacingAtMinSize));
+
     readonly property int minPanelHeight: translucentItem.minimumDrawingHeight
     readonly property int minPanelWidth: translucentItem.minimumDrawingWidth
+
+    // This value is read from panelview.cpp which needs it to decide which border should be enabled
+    property real topShadowMargin: -floatingTranslucentItem.y
+    property real leftShadowMargin: -floatingTranslucentItem.x
+    property real rightShadowMargin: -(width - floatingTranslucentItem.width - floatingTranslucentItem.x)
+    property real bottomShadowMargin: -(height - floatingTranslucentItem.height - floatingTranslucentItem.y)
+
+    property var panelMask: floatingness === 0 ? (panelOpacity === 1 ? opaqueItem.mask : translucentItem.mask) : (panelOpacity === 1 ? floatingOpaqueItem.mask : floatingTranslucentItem.mask)
+
+    // The point is read from panelview.cpp and is used as an offset for the mask
+    readonly property point floatingTranslucentItemOffset: Qt.point(floatingTranslucentItem.x, floatingTranslucentItem.y)
 
     TaskManager.VirtualDesktopInfo {
         id: virtualDesktopInfo
@@ -136,17 +145,6 @@ Item {
             easing.type: Easing.OutCubic
         }
     }
-
-    // This value is read from panelview.cpp which needs it to decide which border should be enabled
-    property real topShadowMargin: -floatingTranslucentItem.y
-    property real leftShadowMargin: -floatingTranslucentItem.x
-    property real rightShadowMargin: -(width - floatingTranslucentItem.width - floatingTranslucentItem.x)
-    property real bottomShadowMargin: -(height - floatingTranslucentItem.height - floatingTranslucentItem.y)
-
-    property var panelMask: floatingness === 0 ? (panelOpacity === 1 ? opaqueItem.mask : translucentItem.mask) : (panelOpacity === 1 ? floatingOpaqueItem.mask : floatingTranslucentItem.mask)
-
-    // The point is read from panelview.cpp and is used as an offset for the mask
-    readonly property point floatingTranslucentItemOffset: Qt.point(floatingTranslucentItem.x, floatingTranslucentItem.y)
 
     KSvg.FrameSvgItem {
         id: translucentItem
