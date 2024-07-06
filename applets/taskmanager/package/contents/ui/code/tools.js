@@ -52,18 +52,18 @@ function activateNextPrevTask(anchor, next, wheelSkipMinimized, tasks) {
         return;
     }
 
-    let target = taskIndexList[0];
+    let target = 0;
 
     for (let i = 0; i < taskIndexList.length; ++i) {
         if (taskIndexList[i] === activeTaskIndex)
         {
             if (next && i < (taskIndexList.length - 1)) {
-                target = taskIndexList[i + 1];
+                target = i + 1;
             } else if (!next) {
                 if (i) {
-                    target = taskIndexList[i - 1];
+                    target = i - 1;
                 } else {
-                    target = taskIndexList[taskIndexList.length - 1];
+                    target = taskIndexList.length - 1;
                 }
             }
 
@@ -71,7 +71,7 @@ function activateNextPrevTask(anchor, next, wheelSkipMinimized, tasks) {
         }
     }
 
-    tasks.tasksModel.requestActivate(target);
+    tasks.tasksModel.requestActivate(taskIndexList[target]);
 }
 
 function activateTask(index, model, modifiers, task, plasmoid, tasks, windowViewAvailable) {
