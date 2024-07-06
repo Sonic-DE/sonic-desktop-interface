@@ -52,7 +52,7 @@ function activateNextPrevTask(anchor, next, wheelSkipMinimized, tasks) {
         return;
     }
 
-    let target = 0;
+    let target = taskIndexList.length - 1;
 
     for (let i = 0; i < taskIndexList.length; ++i) {
         if (taskIndexList[i] === activeTaskIndex)
@@ -60,11 +60,7 @@ function activateNextPrevTask(anchor, next, wheelSkipMinimized, tasks) {
             if (next && i < (taskIndexList.length - 1)) {
                 target = i + 1;
             } else if (!next) {
-                if (i) {
-                    target = i - 1;
-                } else {
-                    target = taskIndexList.length - 1;
-                }
+                target = i ? i - 1 : 0
             }
 
             break;
