@@ -15,6 +15,8 @@
 #include <QScreen>
 #include <QStandardItemModel>
 
+#include <tabletsmodel.h>
+
 K_PLUGIN_FACTORY_WITH_JSON(TabletFactory, "kcm_tablet.json", registerPlugin<Tablet>();)
 
 class OrientationsModel : public QStandardItemModel
@@ -215,6 +217,10 @@ void Tablet::load()
 
     m_unsavedMappings.clear();
     Q_EMIT settingsRestored();
+
+    auto model = new TabletsModel;
+
+    qWarning() << "tablets" << model->rowCount({}) << model->data(model->index(0), Qt::DisplayRole);
 }
 
 void Tablet::save()
