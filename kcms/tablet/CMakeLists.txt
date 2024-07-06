@@ -28,6 +28,7 @@ target_sources(kcm_tablet PRIVATE
     kcmtablet.cpp
     tabletevents.cpp
     calibrationtool.cpp
+    tabletsmodel.cpp
 )
 
 target_link_libraries(kcm_tablet PRIVATE
@@ -43,6 +44,7 @@ target_link_libraries(kcm_tablet PRIVATE
     kwindevices
     Canberra::Canberra
     LayerShellQt::Interface
+    PkgConfig::LIBWACOM
 )
 if (Qt${QT_MAJOR_VERSION}_VERSION VERSION_LESS "6.5.0")
     target_link_libraries(kcm_tablet PRIVATE Qt::GuiPrivate)
