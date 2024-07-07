@@ -16,7 +16,6 @@ import org.kde.plasma.tablet.kcm
 QQC2.ApplicationWindow {
     id: root
 
-    required property var tabletEvents
     property bool toolDown: false
 
     minimumWidth: 400
@@ -24,51 +23,8 @@ QQC2.ApplicationWindow {
 
     title: i18ndc("kcm_tablet", "@title", "Tablet Tester")
 
-    function insideDrawingSquare(local_x: real, local_y: real): bool {
-        return local_x >= 0 &&
-                local_y >= 0 &&
-                local_x <= drawingSquare.width &&
-                local_y <= drawingSquare.height;
-    }
-
     function scrollLogToBottom(): void {
         logScrollView.QQC2.ScrollBar.vertical.position = 1.0 - logScrollView.QQC2.ScrollBar.vertical.size;
-    }
-
-    Connections {
-        target: tabletEvents
-
-        function onToolDown(hardware_serial_hi: int, hardware_serial_lo: int, window_x: real, window_y: real): void {
-            const local = drawingSquare.mapFromItem(container, window_x, window_y);
-
-            if (insideDrawingSquare(local.x, local.y)) {
-                root.toolDown = true;
-                penPath.path = [];
-
-                penLogText.append(i18nd("kcm_tablet", "Stylus press X=%1 Y=%2", local.x, local.y));
-                scrollLogToBottom();
-            }
-        }
-
-        function onToolUp(hardware_serial_hi: int, hardware_serial_lo: int, window_x: real, window_y: real): void {
-            const local = drawingSquare.mapFromItem(container, window_x, window_y);
-
-            root.toolDown = false;
-
-            penLogText.append(i18nd("kcm_tablet", "Stylus release X=%1 Y=%2", local.x, local.y));
-            scrollLogToBottom();
-        }
-
-        function onToolMotion(hardware_serial_hi: int, hardware_serial_lo: int, window_x: real, window_y: real): void {
-            const local = drawingSquare.mapFromItem(container, window_x, window_y);
-
-            if (insideDrawingSquare(local.x, local.y) && root.toolDown) {
-                penPath.path.push(local);
-
-                penLogText.append(i18nd("kcm_tablet", "Stylus move X=%1 Y=%2", local.x, local.y));
-                scrollLogToBottom();
-            }
-        }
     }
 
     Item {
@@ -170,6 +126,35 @@ QQC2.ApplicationWindow {
                         fillColor: "transparent"
                         PathPolyline {
                             id: penPath
+                        }
+                    }
+                }
+
+                PointHandler {
+                    onPointChanged: {
+                        // If it's reset, don't add it
+                        if (point.position.x === 0 && point.position.y === 0) {
+                            return;
+                        }
+
+                        penPath.path.push(point.position);
+
+                        penLogText.append(i18nd("kcm_tablet", "Stylus move X=%1 Y=%2", point.position.x, point.position.y));
+                        scrollLogToBottom();
+                    }
+
+                    onActiveChanged: {
+                        if (active) {
+                            root.toolDown = true;
+                            penPath.path = [];
+
+                            penLogText.append(i18nd("kcm_tablet", "Stylus press X=%1 Y=%2", point.position.x, point.position.y));
+                            scrollLogToBottom();
+                        } else {
+                            root.toolDown = false;
+
+                            penLogText.append(i18nd("kcm_tablet", "Stylus release X=%1 Y=%2", point.position.x, point.position.y));
+                            scrollLogToBottom();
                         }
                     }
                 }

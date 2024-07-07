@@ -44,7 +44,7 @@ SimpleKCM {
             onTriggered: {
                 const component = Qt.createComponent("Tester.qml");
                 if (component.status === Component.Ready) {
-                    const window = component.createObject(root, {tabletEvents});
+                    const window = component.createObject(root);
                     window.showNormal();
                     window.closing.connect((close) => {
                         root.testerWindowOpen = false;
