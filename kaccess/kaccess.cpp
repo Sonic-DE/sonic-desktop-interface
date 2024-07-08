@@ -12,6 +12,8 @@
 
 #include <QAction>
 #include <QApplication>
+#include <QDBusConnection>
+#include <QDBusMessage>
 #include <QDialog>
 #include <QDialogButtonBox>
 #include <QFile>
@@ -134,8 +136,6 @@ KAccessApp::KAccessApp()
         m_error = true;
         return;
     }
-    _activeWindow = KX11Extras::activeWindow();
-    connect(KX11Extras::self(), &KX11Extras::activeWindowChanged, this, &KAccessApp::activeWindowChanged);
 
     initMasks();
     XkbStateRec state_return;
@@ -419,17 +419,6 @@ bool KAccessApp::nativeEventFilter(const QByteArray &eventType, void *message, q
     return false;
 }
 
-void VisualBell::paintEvent(QPaintEvent *event)
-{
-    QWidget::paintEvent(event);
-    QTimer::singleShot(_pause, this, &QWidget::hide);
-}
-
-void KAccessApp::activeWindowChanged(WId wid)
-{
-    _activeWindow = wid;
-}
-
 void KAccessApp::xkbStateNotify()
 {
     XkbStateRec state_return;
@@ -471,48 +460,16 @@ void KAccessApp::xkbBellNotify(xcb_xkb_bell_notify_event_t *event)
 
     // flash the visible bell
     if (m_bellSettings.visibleBell()) {
-        // create overlay widget
-        if (!overlay)
-            overlay = new VisualBell(m_bellSettings.visibleBellPause());
+        QDBusMessage msg = QDBusMessage::createMethodCall(QStringLiteral("org.kde.KWin"),
+                                                          QStringLiteral("/org/kde/KWin/Effect/VisualBell1"),
+                                                          QStringLiteral("org.kde.KWin.Effect.VisualBell1"),
+                                                          QStringLiteral("toggleScreen"));
 
-        WId id = _activeWindow;
+        QDBusConnection::sessionBus().call(msg);
 
-        NETRect frame, window;
-        NETWinInfo net(QX11Info::connection(), id, QX11Info::appRootWindow(), NET::Properties(), NET::Properties2());
-
-        net.kdeGeometry(frame, window);
-
-        overlay->setGeometry(window.pos.x, window.pos.y, window.size.width, window.size.height);
-
-        if (m_bellSettings.invertScreen()) {
-            QPixmap screen = QGuiApplication::primaryScreen()->grabWindow(id, 0, 0, window.size.width, window.size.height);
-
-            // is this the best way to invert a pixmap?
-            
-            //    QPixmap invert(window.size.width, window.size.height);
-            QPalette pal = overlay->palette();
-            {
-                QImage i = screen.toImage();
-                i.invertPixels();
-                pal.setBrush(overlay->backgroundRole(), QBrush(QPixmap::fromImage(std::move(i))));
-            }
-            overlay->setPalette(pal);
-            /*
-                  QPainter p(&invert);
-                  p.setRasterOp(QPainter::NotCopyROP);
-                  p.drawPixmap(0, 0, screen);
-                  overlay->setBackgroundPixmap(invert);
-            */
-        } else {
-            QPalette pal = overlay->palette();
-            pal.setColor(overlay->backgroundRole(), m_bellSettings.visibleBellColor());
-            overlay->setPalette(pal);
-        }
-
-        // flash the overlay widget
-        overlay->raise();
-        overlay->show();
-        QCoreApplication::sendPostedEvents();
+        QTimer::singleShot(m_bellSettings.visibleBellPause(), this, [msg] {
+            QDBusConnection::sessionBus().call(msg);
+        });
     }
 
     // ask canberra to ring a nice bell
