@@ -293,19 +293,19 @@ void Tablet::defaults()
     Q_EMIT settingsRestored();
 }
 
-void Tablet::assignPadButtonMapping(const QString &deviceName, uint button, const QKeySequence &keySequence)
+void Tablet::assignPadButtonMapping(const QString &deviceName, uint button, const KInputSequence &keySequence)
 {
     m_unsavedMappings["Tablet"][deviceName][button] = keySequence;
     Q_EMIT settingsRestored();
 }
 
-void Tablet::assignToolButtonMapping(const QString &deviceName, uint button, const QKeySequence &keySequence)
+void Tablet::assignToolButtonMapping(const QString &deviceName, uint button, const KInputSequence &keySequence)
 {
     m_unsavedMappings["TabletTool"][deviceName][button] = keySequence;
     Q_EMIT settingsRestored();
 }
 
-QKeySequence Tablet::padButtonMapping(const QString &deviceName, uint button) const
+KInputSequence Tablet::padButtonMapping(const QString &deviceName, uint button) const
 {
     if (deviceName.isEmpty()) {
         return {};
@@ -321,10 +321,10 @@ QKeySequence Tablet::padButtonMapping(const QString &deviceName, uint button) co
     if (sequence.size() != 2) {
         return {};
     }
-    return QKeySequence(sequence.constLast());
+    return KInputSequence(sequence.constLast());
 }
 
-QKeySequence Tablet::toolButtonMapping(const QString &deviceName, uint button) const
+KInputSequence Tablet::toolButtonMapping(const QString &deviceName, uint button) const
 {
     if (deviceName.isEmpty()) {
         return {};
@@ -340,7 +340,7 @@ QKeySequence Tablet::toolButtonMapping(const QString &deviceName, uint button) c
     if (sequence.size() != 2) {
         return {};
     }
-    return QKeySequence(sequence.constLast());
+    return KInputSequence(sequence.constLast());
 }
 
 DevicesModel *Tablet::toolsModel() const

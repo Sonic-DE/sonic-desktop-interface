@@ -299,11 +299,11 @@ SimpleKCM {
                     }
                 }
 
-                keySequence: kcm.toolButtonMapping(form.device.name, modelData.value)
+                inputSequence: kcm.toolButtonMapping(form.device.name, modelData.value)
                 Connections {
                     target: kcm
                     function onSettingsRestored() {
-                        seq.keySequence = kcm.toolButtonMapping(form.device.name, modelData.value)
+                        seq.inputSequence = kcm.toolButtonMapping(form.device.name, modelData.value)
                     }
                 }
 
@@ -312,9 +312,10 @@ SimpleKCM {
                 modifierOnlyAllowed: true
                 multiKeyShortcutsAllowed: false
                 checkForConflictsAgainst: ShortcutType.None
+                extraInputAllowed: true
 
                 onCaptureFinished: {
-                    kcm.assignToolButtonMapping(form.device.name, modelData.value, keySequence)
+                    kcm.assignToolButtonMapping(form.device.name, modelData.value, inputSequence)
                 }
             }
         }
@@ -414,7 +415,7 @@ SimpleKCM {
                     }
                 }
 
-                keySequence: kcm.padButtonMapping(form.padDevice.name, modelData)
+                inputSequence: kcm.padButtonMapping(form.padDevice.name, modelData)
                 Connections {
                     target: kcm
                     function onSettingsRestored() {
@@ -427,9 +428,10 @@ SimpleKCM {
                 modifierOnlyAllowed: true
                 multiKeyShortcutsAllowed: false
                 checkForConflictsAgainst: ShortcutType.None
+                extraInputAllowed: true
 
                 onCaptureFinished: {
-                    kcm.assignPadButtonMapping(form.padDevice.name, modelData, keySequence)
+                    kcm.assignPadButtonMapping(form.padDevice.name, modelData, inputSequence)
                 }
             }
         }
