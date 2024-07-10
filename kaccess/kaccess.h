@@ -28,8 +28,6 @@
 #include <fixx11h.h>
 
 class KComboBox;
-struct ca_context;
-struct ca_proplist;
 
 class KAccessApp : public QObject, public QAbstractNativeEventFilter
 {
@@ -79,10 +77,6 @@ private:
     int xkb_opcode;
     unsigned int features;
     unsigned int requestedFeatures;
-
-    QWidget *overlay;
-
-    ca_context *m_caContext = nullptr;
 
     QDialog *dialog;
     QLabel *featuresLabel;
