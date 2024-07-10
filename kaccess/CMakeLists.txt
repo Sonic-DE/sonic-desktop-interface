@@ -18,7 +18,6 @@ target_link_libraries(kaccess
     KF6::WindowSystem
     KF6::DBusAddons
     X11::X11
-    Canberra::Canberra
 )
 target_link_libraries(kaccess Qt::GuiPrivate)
 
