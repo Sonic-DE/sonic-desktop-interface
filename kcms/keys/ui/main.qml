@@ -5,18 +5,18 @@
 */
 
 import QtCore
-import QtQuick
-import QtQuick.Dialogs
-import QtQuick.Layouts
-import QtQuick.Controls as QQC2
-import QtQml
 import QtQml.Models
+import QtQuick
+import QtQuick.Controls as QQC2
+import QtQuick.Dialogs as QtDialogs
+import QtQuick.Layouts
 
+import org.kde.kcmutils as KCMUtils
 import org.kde.kirigami as Kirigami
-import org.kde.kcmutils as KCM
+import org.kde.kirigami.platform as Platform
 import org.kde.private.kcms.keys as Private
 
-KCM.AbstractKCM {
+KCMUtils.AbstractKCM {
     id: root
     implicitWidth: Kirigami.Units.gridUnit * 44
     implicitHeight: Kirigami.Units.gridUnit * 33
@@ -42,11 +42,12 @@ KCM.AbstractKCM {
             icon.name: "document-import-symbolic"
             text: i18nc("@action: button Import shortcut scheme", "Import…")
             onTriggered: importSheet.open()
-        }, Kirigami.Action {
+        },
+        Kirigami.Action {
             icon.name: exportActive ? "dialog-cancel-symbolic" : "document-export-symbolic"
             text: exportActive
-                  ? i18nc("@action:button", "Cancel Export")
-                  : i18nc("@action:button Export shortcut scheme", "Export…")
+                ? i18nc("@action:button", "Cancel Export")
+                : i18nc("@action:button Export shortcut scheme", "Export…")
             onTriggered: {
                 if (exportActive) {
                     exportActive = false
@@ -127,16 +128,15 @@ KCM.AbstractKCM {
         Kirigami.Theme.colorSet: Kirigami.Theme.View
         color: Kirigami.Theme.backgroundColor
 
-        RowLayout  {
+        QQC2.SplitView {
             anchors.fill: parent
             enabled: !errorOccured
-            spacing: 0
 
             QQC2.ScrollView {
                 id: categoryList
 
-                Layout.preferredWidth: Kirigami.Units.gridUnit * 14
-                Layout.fillHeight: true
+                QQC2.SplitView.minimumWidth: Kirigami.Units.gridUnit * 14
+                QQC2.SplitView.preferredWidth: QQC2.SplitView.minimumWidth
                 clip: true
 
                 ListView {
@@ -192,6 +192,10 @@ KCM.AbstractKCM {
                         onClicked: ListView.view.currentIndex = index
                         highlighted: ListView.isCurrentItem
 
+                        QQC2.ToolTip.text: text
+                        QQC2.ToolTip.visible: (Platform.Settings.tabletMode ? down : hovered) && label.truncated
+                        QQC2.ToolTip.delay: Platform.Units.toolTipDelay
+
                         contentItem: RowLayout {
                             spacing: Kirigami.Units.smallSpacing
                             Kirigami.IconTitleSubtitle {
@@ -216,9 +220,9 @@ KCM.AbstractKCM {
                                 implicitWidth: implicitHeight
 
                                 visible: model.section === Private.ComponentType.Command
-                                         && !exportActive
-                                         && !model.pendingDeletion
-                                         && (componentDelegate.hovered || componentDelegate.ListView.isCurrentItem)
+                                    && !exportActive
+                                    && !model.pendingDeletion
+                                    && (componentDelegate.hovered || componentDelegate.ListView.isCurrentItem)
                                 icon.name: "edit-rename"
                                 onClicked: {
                                     addCommandDialog.editing = true;
@@ -228,9 +232,10 @@ KCM.AbstractKCM {
                                     addCommandDialog.commandListItemDelegate = componentDelegate;
                                     addCommandDialog.open();
                                 }
-                                QQC2.ToolTip {
-                                    text: i18nc("@tooltip:button %1 is the text of a custom command", "Edit command for %1", model.display)
-                                }
+
+                                QQC2.ToolTip.text: i18nc("@tooltip:button %1 is the text of a custom command", "Edit command for %1", model.display)
+                                QQC2.ToolTip.visible: Platform.Settings.tabletMode ? down : hovered
+                                QQC2.ToolTip.delay: Platform.Units.toolTipDelay
                             }
                             QQC2.Button {
                                 id: deleteButton
@@ -239,14 +244,15 @@ KCM.AbstractKCM {
                                 implicitWidth: implicitHeight
 
                                 visible: model.section !== Private.ComponentType.CommonAction
-                                         && !exportActive
-                                         && !model.pendingDeletion
-                                         && (componentDelegate.hovered || componentDelegate.ListView.isCurrentItem)
+                                    && !exportActive
+                                    && !model.pendingDeletion
+                                    && (componentDelegate.hovered || componentDelegate.ListView.isCurrentItem)
                                 icon.name: "edit-delete"
                                 onClicked: model.pendingDeletion = true
-                                QQC2.ToolTip {
-                                    text: i18n("Remove all shortcuts for %1", model.display)
-                                }
+
+                                QQC2.ToolTip.text: i18n("Remove all shortcuts for %1", model.display)
+                                QQC2.ToolTip.visible: Platform.Settings.tabletMode ? down : hovered
+                                QQC2.ToolTip.delay: Platform.Units.toolTipDelay
                             }
                             QQC2.Button {
                                 implicitHeight: label.implicitHeight
@@ -255,9 +261,11 @@ KCM.AbstractKCM {
                                 visible: !exportActive && model.pendingDeletion
                                 icon.name: "edit-undo"
                                 onClicked: model.pendingDeletion = false
-                                QQC2.ToolTip {
-                                    text: i18n("Undo deletion")
-                                }
+
+                                QQC2.ToolTip.text: i18n("Undo deletion")
+                                QQC2.ToolTip.visible: Platform.Settings.tabletMode ? down : hovered
+                                QQC2.ToolTip.delay: Platform.Units.toolTipDelay
+
                             }
                             Rectangle {
                                 id: defaultIndicator
@@ -292,7 +300,7 @@ KCM.AbstractKCM {
                             Connections {
                                 enabled: exportActive
                                 target: kcm.shortcutsModel
-                                function onDataChanged (topLeft, bottomRight, roles) {
+                                function onDataChanged(topLeft, bottomRight, roles) {
                                     const startIndex = kcm.shortcutsModel.index(0, 0)
                                     const indices = kcm.shortcutsModel.match(startIndex, Private.BaseModel.SectionRole, section, -1, Qt.MatchExactly)
                                     sectionCheckbox.checked = indices.reduce((acc, index) => acc && kcm.shortcutsModel.data(index, Private.BaseModel.CheckedRole), true)
@@ -315,24 +323,23 @@ KCM.AbstractKCM {
                 }
             }
 
-            Kirigami.Separator {
-                Layout.fillHeight: true
-            }
-
             QQC2.ScrollView  {
-                enabled: !exportActive
                 id: shortcutsScroll
-                Layout.fillHeight: true
-                Layout.fillWidth: true
+
+                QQC2.SplitView.minimumWidth: Kirigami.Units.gridUnit * 20
+                QQC2.SplitView.fillWidth: true
                 clip: true
+                enabled: !exportActive
 
                 ListView {
-                    clip:true
                     id: shortcutsList
+
                     property int selectedIndex: -1
+
+                    clip: true
                     model: DelegateModel {
                         id: dm
-                        model: rootIndex.valid ?  kcm.filteredModel : undefined
+                        model: rootIndex.valid ? kcm.filteredModel : undefined
                         delegate: ShortcutActionDelegate {
                             showExpandButton: shortcutsList.count > 1
                         }
@@ -342,7 +349,7 @@ KCM.AbstractKCM {
                     Kirigami.PlaceholderMessage {
                         anchors.centerIn: parent
                         width: parent.width - (Kirigami.Units.largeSpacing * 4)
-                        visible: components.currentIndex == -1
+                        visible: components.currentIndex === -1
                         text: i18n("Select an item from the list to view its shortcuts here")
                     }
                 }
@@ -354,19 +361,19 @@ KCM.AbstractKCM {
         id: shortcutSchemeFileDialogLoader
         active: false
         property bool save
-        sourceComponent: FileDialog {
+        sourceComponent: QtDialogs.FileDialog {
             title: save ? i18n("Export Shortcut Scheme") : i18n("Import Shortcut Scheme")
             currentFolder: StandardPaths.standardLocations(StandardPaths.HomeLocation)[0]
-            nameFilters: [ i18nc("Template for file dialog","Shortcut Scheme (*.kksrc)") ]
+            nameFilters: [ i18nc("Template for file dialog", "Shortcut Scheme (*.kksrc)") ]
             defaultSuffix: ".kksrc"
-            fileMode: shortcutSchemeFileDialogLoader.save ? FileDialog.SaveFile : FileDialog.OpenFile
+            fileMode: shortcutSchemeFileDialogLoader.save ? QtDialogs.FileDialog.SaveFile : QtDialogs.FileDialog.OpenFile
             Component.onCompleted: open()
             onAccepted: {
                 if (save) {
                     kcm.writeScheme(selectedFile)
                 } else {
-                    var schemes = schemeBox.model
-                    schemes.splice(schemes.length - 1, 0, {name: kcm.urlFilename(selectedFile), url: selectedFile})
+                    const schemes = schemeBox.model
+                    schemes.splice(schemes.length - 1, 0, { name: kcm.urlFilename(selectedFile), url: selectedFile })
                     schemeBox.model = schemes
                     schemeBox.currentIndex = schemes.length - 2
                 }
@@ -379,9 +386,9 @@ KCM.AbstractKCM {
     Kirigami.PromptDialog {
         id: addCommandDialog
         property bool editing: false
-        property string componentName: ""
-        property string oldExec: ""
-        property Item commandListItemDelegate: null
+        property string componentName
+        property string oldExec
+        property Item commandListItemDelegate
 
         width: Math.max(root.width / 2, Kirigami.Units.gridUnit * 24)
 
@@ -403,7 +410,8 @@ KCM.AbstractKCM {
             }
         }
 
-        property Kirigami.Action addCommandAction: Kirigami.Action {
+        customFooterActions: Kirigami.Action {
+            id: addCommandAction
             text: addCommandDialog.editing ? i18n("Save") : i18n("Add")
             icon.name: addCommandDialog.editing ? "dialog-ok" : "list-add"
             enabled: cmdField.length > 0
@@ -423,8 +431,6 @@ KCM.AbstractKCM {
 
         standardButtons: Kirigami.Dialog.Cancel
 
-        customFooterActions: [addCommandAction]
-
         ColumnLayout {
             spacing: Kirigami.Units.smallSpacing
 
@@ -440,7 +446,7 @@ KCM.AbstractKCM {
                     id: cmdField
                     Layout.fillWidth: true
                     font.family: "monospace"
-                    onAccepted: addCommandDialog.addCommandAction.triggered()
+                    onAccepted: addCommandAction.triggered()
                 }
                 QQC2.Button {
                     icon.name: "document-open"
@@ -456,10 +462,10 @@ KCM.AbstractKCM {
     Loader {
         id: openScriptFileDialogLoader
         active: false
-        sourceComponent: FileDialog {
+        sourceComponent: QtDialogs.FileDialog {
             title: i18nc("@title:window", "Choose Script File")
             currentFolder: StandardPaths.standardLocations(StandardPaths.HomeLocation)[0]
-            nameFilters: [ i18nc("Template for file dialog","Script file (*.*sh)") ]
+            nameFilters: [ i18nc("Template for file dialog", "Script file (*.*sh)") ]
             Component.onCompleted: open()
             onAccepted: {
                 cmdField.text = selectedFile
@@ -493,20 +499,25 @@ KCM.AbstractKCM {
                 Layout.leftMargin: Kirigami.Units.largeSpacing
                 Layout.rightMargin: Kirigami.Units.largeSpacing
 
-                readonly property bool customSchemeSelected: currentIndex == count - 1
-                property string url: ""
+                readonly property bool customSchemeSelected: currentIndex === count - 1
+                property string url
+
                 currentIndex: count - 1
                 textRole: "name"
-                onActivated: url = model[index]["url"]
+
+                onActivated: index => {
+                    url = model[index].url;
+                }
+
                 Component.onCompleted: {
-                    var defaultSchemes = kcm.defaultSchemes()
-                    defaultSchemes.push({name: i18n("Custom Scheme"), url: "unused"})
+                    const defaultSchemes = kcm.defaultSchemes()
+                    defaultSchemes.push({ name: i18n("Custom Scheme"), url: "unused" })
                     model = defaultSchemes
                 }
             }
         }
 
-         customFooterActions: [
+        customFooterActions: [
              Kirigami.Action {
                 text: schemeBox.customSchemeSelected ? i18n("Select File…") : i18n("Import")
                 onTriggered: {
@@ -514,7 +525,7 @@ KCM.AbstractKCM {
                         shortcutSchemeFileDialogLoader.save = false;
                         shortcutSchemeFileDialogLoader.active = true;
                     } else {
-                        kcm.loadScheme(schemeBox.model[schemeBox.currentIndex]["url"])
+                        kcm.loadScheme(schemeBox.model[schemeBox.currentIndex].url)
                         importSheet.close()
                     }
                 }
@@ -522,4 +533,3 @@ KCM.AbstractKCM {
         ]
     }
 }
-
