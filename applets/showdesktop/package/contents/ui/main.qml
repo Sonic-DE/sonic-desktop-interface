@@ -27,15 +27,6 @@ PlasmoidItem {
 
     Plasmoid.backgroundHints: PlasmaCore.Types.NoBackground
 
-    Layout.minimumWidth: Kirigami.Units.iconSizes.medium
-    Layout.minimumHeight: Kirigami.Units.iconSizes.medium
-
-    Layout.maximumWidth: Layout.minimumWidth
-    Layout.maximumHeight: Layout.minimumHeight
-
-    Layout.preferredWidth: Layout.minimumWidth
-    Layout.preferredHeight: Layout.minimumHeight
-
     readonly property bool inPanel: [PlasmaCore.Types.TopEdge, PlasmaCore.Types.RightEdge, PlasmaCore.Types.BottomEdge, PlasmaCore.Types.LeftEdge]
             .includes(Plasmoid.location)
 

@@ -247,8 +247,8 @@ ContainmentItem {
                 Layout.minimumWidth: root.isHorizontal ? findPositive(applet?.Layout.minimumWidth, availHeight) : availWidth
                 Layout.minimumHeight: !root.isHorizontal ? findPositive(applet?.Layout.minimumHeight, availWidth) : availHeight
 
-                Layout.preferredWidth: root.isHorizontal ? findPositive(applet?.Layout.preferredWidth, Layout.minimumWidth) : availWidth
-                Layout.preferredHeight: !root.isHorizontal ? findPositive(applet?.Layout.preferredHeight, Layout.minimumHeight) : availHeight
+                Layout.preferredWidth: root.isHorizontal ? findPositive(applet?.Layout.preferredWidth, Math.max(Layout.minimumWidth, root.height)) : availWidth
+                Layout.preferredHeight: !root.isHorizontal ? findPositive(applet?.Layout.preferredHeight, Math.max(Layout.minimumHeight, root.width)) : availHeight
 
                 Layout.maximumWidth: root.isHorizontal ? (wantsToFillWidth ? findPositive(applet?.Layout.maximumWidth, root.width) : Math.min(applet?.Layout.maximumWidth, Layout.preferredWidth)) : availWidth
                 Layout.maximumHeight: !root.isHorizontal ? (wantsToFillHeight ? findPositive(applet?.Layout.maximumHeight, root.height) : Math.min(applet?.Layout.maximumHeight, Layout.preferredHeight)) : availHeight
