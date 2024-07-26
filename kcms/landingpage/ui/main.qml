@@ -21,6 +21,17 @@ KCM.SimpleKCM {
     implicitWidth: Kirigami.Units.gridUnit * 44
     implicitHeight: Kirigami.Units.gridUnit * 33
 
+    component MoreKcmButton : MostUsedIcon {
+        required property string storageId
+
+        readonly property QtObject kcmAction: kcm.kcmAction(storageId)
+
+        kcmIcon: kcmAction?.icon ?? ""
+        kcmName: kcmAction?.text ?? ""
+        onClicked: kcmAction.trigger()
+        visible: kcmAction !== null
+    }
+
     Kirigami.FormLayout {
         width: parent.width
 
@@ -75,21 +86,17 @@ KCM.SimpleKCM {
             spacing: Kirigami.Units.smallSpacing
             Kirigami.FormData.label: i18nc("@title:group translate as short as possible", "More appearance settings:")
 
-            MostUsedIcon {
+            MoreKcmButton {
                 id: wallpaperKCMButton
                 Layout.fillWidth: true
                 Layout.preferredWidth: 50 // 50% of the available width
-                kcmIcon: "preferences-desktop-wallpaper"
-                kcmName: i18nc("@action:button as in, 'this will take you to the Wallpaper KCM'", "Wallpaper")
-                onClicked: kcm.openKCM("kcm_wallpaper")
+                storageId: "kcm_wallpaper"
             }
 
-            MostUsedIcon {
+            MoreKcmButton {
                 Layout.fillWidth: true
                 Layout.preferredWidth: 50 // 50% of the available width
-                kcmIcon: "preferences-desktop-theme-global"
-                kcmName: i18nc("@action:button as in, 'this will take you to the first KCM in the Colors & Themes group'", "Colors & Themes")
-                onClicked: kcm.openKCM("kcm_lookandfeel")
+                storageId: "kcm_lookandfeel"
             }
         }
 
@@ -214,13 +221,10 @@ KCM.SimpleKCM {
             Kirigami.FormData.isSection: false
         }
 
-
-        MostUsedIcon {
+        MoreKcmButton {
             Kirigami.FormData.label: i18nc("@title:group translate as short as possible", "More behavior settings:")
             Layout.preferredWidth: wallpaperKCMButton.width
-            kcmName: i18nc("@action:button as in, 'this will take you to the General Behavior KCM'", "General Behavior")
-            kcmIcon: "preferences-desktop"
-            onClicked: kcm.openKCM("kcm_workspace")
+            storageId: "kcm_workspace"
         }
 
         Kirigami.Separator {
