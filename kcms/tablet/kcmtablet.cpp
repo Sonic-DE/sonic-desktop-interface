@@ -154,20 +154,6 @@ public:
     }
 };
 
-/// This model lists the different ways the tablet will fit onto its output
-class OutputsFittingModel : public QStandardItemModel
-{
-public:
-    OutputsFittingModel()
-    {
-        appendRow(new QStandardItem(i18n("Fit to Screen")));
-        appendRow(new QStandardItem(i18n("Keep Aspect Ratio and Fit Within Screen")));
-        appendRow(new QStandardItem(i18n("Map to Portion of Screen")));
-
-        setItemRoleNames({{Qt::DisplayRole, "display"}});
-    }
-};
-
 // QMatrix4x4 over DBus is needed for writing calibration matrices
 QDBusArgument &operator<<(QDBusArgument &argument, const QMatrix4x4 &matrix)
 {
@@ -324,7 +310,6 @@ Tablet::Tablet(QObject *parent, const KPluginMetaData &metaData)
 
     qmlRegisterType<OutputsModel>("org.kde.plasma.tablet.kcm", 1, 0, "OutputsModel");
     qmlRegisterType<OrientationsModel>("org.kde.plasma.tablet.kcm", 1, 0, "OrientationsModel");
-    qmlRegisterType<OutputsFittingModel>("org.kde.plasma.tablet.kcm", 1, 1, "OutputsFittingModel");
     qmlRegisterType<StylusButtonsModel>("org.kde.plasma.tablet.kcm", 1, 1, "StylusButtonsModel");
     qmlRegisterType<TabletEvents>("org.kde.plasma.tablet.kcm", 1, 1, "TabletEvents");
     qmlRegisterAnonymousType<InputDevice>("org.kde.plasma.tablet.kcm", 1);
