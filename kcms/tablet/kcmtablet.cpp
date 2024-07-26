@@ -160,7 +160,7 @@ class OutputsFittingModel : public QStandardItemModel
 public:
     OutputsFittingModel()
     {
-        appendRow(new QStandardItem(i18n("Fit to Screen")));
+        appendRow(new QStandardItem(i18n("Stretch to Fill Screen")));
         appendRow(new QStandardItem(i18n("Keep Aspect Ratio and Fit Within Screen")));
         appendRow(new QStandardItem(i18n("Map to Portion of Screen")));
 
