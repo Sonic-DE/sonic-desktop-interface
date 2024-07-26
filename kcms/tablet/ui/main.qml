@@ -489,6 +489,16 @@ SimpleKCM {
         }
 
         property QtObject padDevice: null
+        onPadDeviceChanged: refreshPadButtons()
+
+        function refreshPadButtons(): void {
+            if (form.padDevice !== null) {
+                buttonsRepeater.model = tabletEvents.getButtons(form.padDevice.sysName);
+            } else {
+                buttonsRepeater.model = null;
+            }
+        }
+
         QQC2.ComboBox {
             Kirigami.FormData.label: i18ndc("kcm_tablet", "@label:listbox The pad we are configuring", "Pad:")
             model: kcm.padsModel
@@ -509,17 +519,19 @@ SimpleKCM {
 
             anchors.fill: parent
 
-            onPadButtonsChanged: {
+            onPadButtonsChanged: path => {
+                if (form.padDevice === null) {
+                    return;
+                }
                 if (!path.endsWith(form.padDevice.sysName)) {
                     return;
                 }
-                buttonsRepeater.model = buttonCount
+                form.refreshPadButtons();
             }
         }
 
         Repeater {
             id: buttonsRepeater
-            model: tabletEvents.padButtons
 
             delegate: ActionBinding {
                 id: seq
