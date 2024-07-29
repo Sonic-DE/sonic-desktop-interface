@@ -1,3 +1,8 @@
+/*
+ *  SPDX-FileCopyrightText: 2024 Evgeny Chesnokov <echesnokov@astralinux.ru>
+ *
+ *  SPDX-License-Identifier: LGPL-2.0-or-later
+ */
 
 import QtQuick
 import QtQml
