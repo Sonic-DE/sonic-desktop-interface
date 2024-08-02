@@ -53,7 +53,7 @@ public:                                                                         
     SD_P(short, angle)
 
     Q_PROPERTY(Shape *shape MEMBER shape CONSTANT)
-    Q_PROPERTY(QColor color MEMBER color CONSTANT)
+    Q_PROPERTY(QColor color READ color CONSTANT)
     // Whether this shape is an outline only. If it is not it's solid/filled.
     Q_PROPERTY(bool outlineOnly MEMBER outlineOnly CONSTANT)
 
@@ -61,8 +61,12 @@ public:
     ShapeDoodad(XkbDoodadPtr doodad_, XkbDescPtr xkb_, QObject *parent = nullptr);
 
     Shape *shape = nullptr;
-    QColor color;
     bool outlineOnly = false;
+
+    QColor color() const
+    {
+        return colorFromIndex(doodad->shape.color_ndx);
+    };
 };
 
 class TextDoodad : public Doodad
@@ -85,10 +89,18 @@ public:                                                                         
     TD_P(short, height)
     TD_P(QString, text)
     TD_P(QString, font)
+
+    Q_PROPERTY(QColor color READ color CONSTANT)
+
 public:
     TextDoodad(XkbDoodadPtr doodad_, XkbDescPtr xkb_, QObject *parent = nullptr);
 
     Shape *shape = nullptr;
+
+    QColor color() const
+    {
+        return colorFromIndex(doodad->text.color_ndx);
+    };
 };
 
 // NB: This is technically kind of like a shape doodad, but in reality
@@ -117,11 +129,22 @@ public:                                                                         
 
     Q_PROPERTY(Shape *shape MEMBER shape CONSTANT)
     Q_PROPERTY(bool on MEMBER on NOTIFY onChanged)
+    Q_PROPERTY(QColor onColor READ onColor CONSTANT)
+    Q_PROPERTY(QColor offColor READ offColor CONSTANT)
 public:
     IndicatorDoodad(XkbDoodadPtr doodad_, XkbDescPtr xkb_, QObject *parent = nullptr);
 
     Shape *shape = nullptr;
     bool on = false;
+
+    QColor onColor() const
+    {
+        return colorFromIndex(doodad->indicator.on_color_ndx);
+    };
+    QColor offColor() const
+    {
+        return colorFromIndex(doodad->indicator.off_color_ndx);
+    };
 
 Q_SIGNALS:
     void onChanged();
