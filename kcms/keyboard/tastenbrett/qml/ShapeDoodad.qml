@@ -21,5 +21,5 @@ ShapeCanvas {
     rotation: doodad.angle
 
     strokeSyle: disabledPalette.shadow
-    fillStyle: doodad.outlineOnly ? null : disabledPalette.button
+    fillStyle: doodad.outlineOnly ? null : doodad.color || disabledPalette.button
 }

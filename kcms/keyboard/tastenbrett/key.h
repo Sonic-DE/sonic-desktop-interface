@@ -8,6 +8,8 @@
 
 #include "xkbobject.h"
 
+#include <QColor>
+
 class Shape;
 
 // This is a fairly opinionated model of a key cap. We assume there won't
@@ -60,6 +62,9 @@ public:                                                                         
     Q_PROPERTY(KeyCap *cap MEMBER cap CONSTANT)
     Q_PROPERTY(bool pressed MEMBER pressed NOTIFY pressedChanged)
 
+    Q_PROPERTY(QColor color READ color CONSTANT)
+    Q_PROPERTY(QColor textColor READ textColor CONSTANT)
+
     constexpr static uint INVALID_KEYCODE = static_cast<uint>(-1);
 
 public:
@@ -73,6 +78,15 @@ public:
     quint32 nativeScanCode = INVALID_KEYCODE;
     KeyCap *cap = nullptr;
     bool pressed = false;
+
+    QColor color() const
+    {
+        return colorFromIndex(key->color_ndx);
+    };
+    QColor textColor() const
+    {
+        return colorFromName(xkb->geom->label_color->spec);
+    };
 
 Q_SIGNALS:
     void pressedChanged();
