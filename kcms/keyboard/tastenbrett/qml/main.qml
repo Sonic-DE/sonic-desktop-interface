@@ -102,6 +102,7 @@ Window {
                     Key {
                         id: keyItem
                         key: root.key
+                        strokeSyle: activePalette.shadow
                     }
                 }
 
