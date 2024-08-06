@@ -20,6 +20,6 @@ ShapeCanvas {
     // "accidentally".
     rotation: doodad.angle
 
-    strokeSyle: disabledPalette.shadow
-    fillStyle: doodad.outlineOnly ? null : doodad.color || disabledPalette.button
+    strokeSyle: doodad.outlineOnly ? doodad.color : "transparent"
+    fillStyle: doodad.outlineOnly ? null : doodad.color
 }

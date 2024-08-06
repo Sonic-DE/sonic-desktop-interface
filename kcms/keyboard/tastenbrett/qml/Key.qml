@@ -15,7 +15,7 @@ ShapeCanvas {
     property color labelColor: key.pressed ? activePalette.highlightedText : key.textColor || activePalette.buttonText
 
     shape: key ? key.shape : null
-    strokeSyle: activePalette.shadow
+    strokeSyle: "transparent"
     fillStyle: keyColor
 
     onKeyColorChanged: requestPaint()
