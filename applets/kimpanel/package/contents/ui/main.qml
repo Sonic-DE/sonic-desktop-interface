@@ -100,7 +100,7 @@ PlasmoidItem {
 
                 activeFocusOnTab: true
 
-                Keys.onPressed: {
+                Keys.onPressed: event => {
                     switch (event.key) {
                     case Qt.Key_Space:
                     case Qt.Key_Enter:
@@ -186,7 +186,7 @@ PlasmoidItem {
 
     ActionMenu {
         id: actionMenu
-        onActionClicked: {
+        onActionClicked: actionId => {
             helper.triggerProperty(actionId);
         }
     }
