@@ -47,6 +47,14 @@ Kirigami.FormLayout {
 
         value: kcm.keyboardFiltersSettings.slowKeysDelay
         onValueModified: kcm.keyboardFiltersSettings.slowKeysDelay = value
+
+        textFromValue: function(value, locale) {
+            return i18np("%1 ms", "%1 ms", value)
+        }
+
+        valueFromText: (text, locale) => {
+            return Number.fromLocaleString(locale, text.replace(i18nc("short for milliseconds, needs to account for singular and plural", "ms"), ""))
+        }
     }
     Item {
         Kirigami.FormData.isSection: true
@@ -132,6 +140,14 @@ Kirigami.FormLayout {
 
         value: kcm.keyboardFiltersSettings.bounceKeysDelay
         onValueModified: kcm.keyboardFiltersSettings.bounceKeysDelay = value
+
+        textFromValue: function(value, locale) {
+            return i18np("%1 ms", "%1 ms", value)
+        }
+
+        valueFromText: (text, locale) => {
+            return Number.fromLocaleString(locale, text.replace(i18nc("short for milliseconds, needs to account for singular and plural", "ms"), ""))
+        }
     }
 
     QQC2.CheckBox {

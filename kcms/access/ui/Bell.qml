@@ -159,5 +159,13 @@ Kirigami.FormLayout {
 
         value: kcm.bellSettings.visibleBellPause
         onValueModified: kcm.bellSettings.visibleBellPause = value
+
+        textFromValue: function(value, locale) {
+            return i18np("%1 ms", "%1 ms", value)
+        }
+
+        valueFromText: (text, locale) => {
+            return Number.fromLocaleString(locale, text.replace(i18nc("short for milliseconds, needs to account for singular and plural", "ms"), ""))
+        }
     }
 }
