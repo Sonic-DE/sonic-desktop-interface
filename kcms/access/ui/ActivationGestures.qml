@@ -25,8 +25,10 @@ Kirigami.FormLayout {
         onToggled: kcm.activationGesturesSettings.gestures = checked
     }
 
+    RowLayout {
+        spacing: Kirigami.Units.smallSpacing
         QQC2.CheckBox {
-            text: i18n("Turn sticky keys and slow keys off after inactivity:")
+            text: i18nc("@option:check", "Disable sticky and slow keys after:")
 
             KCM.SettingStateBinding {
                 configObject: kcm.activationGesturesSettings
@@ -65,6 +67,7 @@ Kirigami.FormLayout {
             value: kcm.activationGesturesSettings.accessXTimeoutDelay
             onValueChanged: kcm.activationGesturesSettings.accessXTimeoutDelay = value
         }
+    }
 
     QQC2.CheckBox {
         Kirigami.FormData.label: i18n("When a gesture is used:")
