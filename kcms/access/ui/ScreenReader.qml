@@ -44,8 +44,10 @@ Kirigami.FormLayout {
             screenReaderInstalled = kcm.orcaInstalled()
         }
     }
-    Kirigami.InlineMessage {
-        text: i18n("The Orca Screen Reader is not installed. Please install it before trying to use this feature, then log out or reboot.")
+    Kirigami.PlaceholderMessage {
+        icon.name: "preferences-desktop-text-to-speech"
+        text: i18n("The Orca Screen Reader is not installed.")
+        explanation: i18n("Please install it before trying to use this feature, then log out or reboot.")
         visible: !screenReaderInstalled
         type: Kirigami.MessageType.Warning
         Layout.fillWidth: true
