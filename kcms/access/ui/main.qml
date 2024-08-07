@@ -153,8 +153,15 @@ KCM.AbstractKCM {
                     KeyboardFilters {}
                     MouseNavigation {}
                     ActivationGestures {}
-                    ScreenReader {}
+                    ScreenReader { id: screenReaderPage }
                     ShakeCursor {}
+                }
+                Kirigami.PlaceholderMessage {
+                    anchors.centerIn: parent
+                    icon.name: "preferences-desktop-text-to-speech"
+                    text: i18n("The Orca Screen Reader is not installed")
+                    explanation: i18n("Please install it, then close and reopen this window")
+                    visible: !screenReaderPage.screenReaderInstalled && screenReaderPage.visible
                 }
             }
         }
