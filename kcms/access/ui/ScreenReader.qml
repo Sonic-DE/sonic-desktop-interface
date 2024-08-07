@@ -22,12 +22,14 @@ Kirigami.FormLayout {
             settingName: "Enabled"
         }
 
+        visible: screenReaderInstalled
         checked: kcm.screenReaderSettings.enabled
         onToggled: kcm.screenReaderSettings.enabled = checked
     }
     QQC2.Button {
         text: i18n("Launch Orca Screen Reader Configuration…")
 
+        visible: screenReaderInstalled
         enabled: !kcm.screenReaderSettings.isImmutable("Enabled") && screenReaderInstalled
 
         onClicked: kcm.launchOrcaConfiguration()
