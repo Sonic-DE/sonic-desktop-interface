@@ -12,31 +12,43 @@ import org.kde.kcmutils as KCM
 import org.kde.kirigami as Kirigami
 
 Kirigami.FormLayout {
-    QQC2.CheckBox {
-        Kirigami.FormData.label: i18n("Sticky keys:")
-        Layout.fillWidth: true
-        text: i18nc("Enable sticky keys", "Enable")
+    RowLayout {
+        Kirigami.FormData.label: i18nc("@option:check", "Sticky keys:")
+        Kirigami.FormData.buddyFor: stickyKeysEnable
+        QQC2.CheckBox {
+            id: stickyKeysEnable
+            Layout.fillWidth: true
+            text: i18nc("@option:check Enable sticky keys", "Enable")
 
-        KCM.SettingStateBinding {
-            configObject: kcm.keyboardSettings
-            settingName: "StickyKeys"
+            KCM.SettingStateBinding {
+                configObject: kcm.keyboardSettings
+                settingName: "StickyKeys"
+            }
+
+            checked: kcm.keyboardSettings.stickyKeys
+            onToggled: kcm.keyboardSettings.stickyKeys = checked
         }
-
-        checked: kcm.keyboardSettings.stickyKeys
-        onToggled: kcm.keyboardSettings.stickyKeys = checked
+        Kirigami.ContextualHelpButton {
+            toolTipText: i18nc("@info:tooltip", "Modifier keys like Ctrl, Shift, Alt and the Meta/Super/Windows key act as though they “stick in place” and no longer need to be held down when typing a keyboard shortcut.")
+        }
     }
-    QQC2.CheckBox {
-        Layout.fillWidth: true
-        text: i18nc("Lock sticky keys", "Lock")
+    RowLayout {
+        QQC2.CheckBox {
+            Layout.fillWidth: true
+            text: i18nc("@option:check", "Lock sticky keys")
 
-        KCM.SettingStateBinding {
-            configObject: kcm.keyboardSettings
-            settingName: "StickyKeysLatch"
-            extraEnabledConditions: kcm.keyboardSettings.stickyKeys
+            KCM.SettingStateBinding {
+                configObject: kcm.keyboardSettings
+                settingName: "StickyKeysLatch"
+                extraEnabledConditions: kcm.keyboardSettings.stickyKeys
+            }
+
+            checked: kcm.keyboardSettings.stickyKeysLatch
+            onToggled: kcm.keyboardSettings.stickyKeysLatch = checked
         }
-
-        checked: kcm.keyboardSettings.stickyKeysLatch
-        onToggled: kcm.keyboardSettings.stickyKeysLatch = checked
+        Kirigami.ContextualHelpButton {
+            toolTipText: i18nc("@info:tooltip", "Once locked, the “sticky” state of modifier keys will not be disabled until a keyboard shortcut is finished or until a non-modifier key is pressed.")
+        }
     }
     QQC2.CheckBox {
         id: stickyKeysAutoOff
@@ -70,21 +82,28 @@ Kirigami.FormLayout {
         Kirigami.FormData.isSection: true
     }
 
-    QQC2.CheckBox {
-        Kirigami.FormData.label: i18n("Feedback:")
-        Layout.fillWidth: true
-        text: i18n("Ring system bell when locking keys are toggled")
+    RowLayout{
+        Kirigami.FormData.label: i18nc("@option:check Feedback options:", "Feedback:")
+        Kirigami.FormData.buddyFor: toggleKeysBeep
+        QQC2.CheckBox {
+            id: toggleKeysBeep
+            Layout.fillWidth: true
+            text: i18nc("@option:check", "Ring system bell when locking keys are used")
 
-        KCM.SettingStateBinding {
-            configObject: kcm.keyboardSettings
-            settingName: "ToggleKeysBeep"
+            KCM.SettingStateBinding {
+                configObject: kcm.keyboardSettings
+                settingName: "ToggleKeysBeep"
+            }
+
+            checked: kcm.keyboardSettings.toggleKeysBeep
+            onToggled: kcm.keyboardSettings.toggleKeysBeep = checked
         }
-
-        checked: kcm.keyboardSettings.toggleKeysBeep
-        onToggled: kcm.keyboardSettings.toggleKeysBeep = checked
+        Kirigami.ContextualHelpButton {
+            toolTipText: i18nc("@info:tooltip", "The locking keys are Caps Lock, Num Lock, and Scroll Lock.")
+        }
     }
     QQC2.CheckBox {
-        text: i18n("Show notification when modifier or locking keys are used")
+        text: i18nc("@option:check", "Show notification when modifier or locking keys are used")
         Layout.fillWidth: true
 
         KCM.SettingStateBinding {
@@ -96,7 +115,7 @@ Kirigami.FormLayout {
         onToggled: kcm.keyboardSettings.keyboardNotifyModifiers = checked
     }
     QQC2.Button {
-        text: i18n("Configure Notifications…")
+        text: i18nc("@action:button", "Configure Notifications…")
         icon.name: "preferences-desktop-notification"
 
         onClicked: kcm.configureKNotify()
