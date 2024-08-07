@@ -32,6 +32,7 @@ Item {
         anchors.top: parent.top
         anchors.right: parent.right
         text: key.cap.topRight
+        opacity: 0.4
     }
     KeyCapLabel {
         id: bottomLeft
@@ -50,5 +51,6 @@ Item {
         anchors.bottom: parent.bottom
         anchors.right: parent.right
         text: key.cap.bottomRight
+        opacity: 0.4
     }
 }
