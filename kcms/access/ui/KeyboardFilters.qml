@@ -26,9 +26,15 @@ Kirigami.FormLayout {
 
             checked: kcm.keyboardFiltersSettings.slowKeys
             onToggled: kcm.keyboardFiltersSettings.slowKeys = checked
+
+            Accessible.role: Accessible.CheckBox
+            Accessible.name: i18n("Enable slow keys")
         }
         Kirigami.ContextualHelpButton {
             toolTipText: i18n("For a key to be accepted, it has to be held until the set amount of time. Useful if you accidentally type more than one key at a time or have difficulty pressing the key you want the first time.")
+
+            Accessible.role: Accessible.HelpBalloon
+            Accessible.name: toolTipText
         }
     }
 
@@ -49,6 +55,9 @@ Kirigami.FormLayout {
         value: kcm.keyboardFiltersSettings.slowKeysDelay
         onValueModified: kcm.keyboardFiltersSettings.slowKeysDelay = value
         textFromValue: function(value) { return value + " ms" }
+
+        Accessible.role: Accessible.SpinBox
+        Accessible.name: i18n("Slow keys delay")
     }
     Item {
         Kirigami.FormData.isSection: true
@@ -67,6 +76,9 @@ Kirigami.FormLayout {
 
         checked: kcm.keyboardFiltersSettings.slowKeysPressBeep
         onToggled: kcm.keyboardFiltersSettings.slowKeysPressBeep = checked
+
+        Accessible.role: Accessible.CheckBox
+        Accessible.name: i18n("Ring the system bell when a key is pressed")
     }
     QQC2.CheckBox {
         id: slowKeysAcceptBeep
@@ -81,6 +93,9 @@ Kirigami.FormLayout {
 
         checked: kcm.keyboardFiltersSettings.slowKeysAcceptBeep
         onToggled: kcm.keyboardFiltersSettings.slowKeysAcceptBeep = checked
+
+        Accessible.role: Accessible.CheckBox
+        Accessible.name: i18n("Ring the system bell when a key is accepted")
     }
     QQC2.CheckBox {
         id: slowKeysRejectBeep
@@ -95,6 +110,9 @@ Kirigami.FormLayout {
 
         checked: kcm.keyboardFiltersSettings.slowKeysRejectBeep
         onToggled: kcm.keyboardFiltersSettings.slowKeysRejectBeep = checked
+
+        Accessible.role: Accessible.CheckBox
+        Accessible.name: i18n("Ring the system bell when a key is rejected")
     }
     Item {
         Kirigami.FormData.isSection: true
@@ -113,9 +131,15 @@ Kirigami.FormLayout {
 
             checked: kcm.keyboardFiltersSettings.bounceKeys
             onToggled: kcm.keyboardFiltersSettings.bounceKeys = checked
+
+            Accessible.role: Accessible.CheckBox
+            Accessible.name: i18n("Enable bounce keys")
         }
         Kirigami.ContextualHelpButton {
             toolTipText: i18n("Ignore rapid, repeated keypresses of the same key. Useful if you have hand tremors that cause you to press a key multiple times when you only intend to press once.")
+
+            Accessible.role: Accessible.Button
+            Accessible.name: toolTipText
         }
     }
 
@@ -136,6 +160,9 @@ Kirigami.FormLayout {
         value: kcm.keyboardFiltersSettings.bounceKeysDelay
         onValueModified: kcm.keyboardFiltersSettings.bounceKeysDelay = value
         textFromValue: function(value) { return value + " ms" }
+
+        Accessible.role: Accessible.SpinBox
+        Accessible.name: i18n("Bounce keys delay")
     }
 
     QQC2.CheckBox {
@@ -151,5 +178,8 @@ Kirigami.FormLayout {
 
         checked: kcm.keyboardFiltersSettings.bounceKeysRejectBeep
         onToggled: kcm.keyboardFiltersSettings.bounceKeysRejectBeep = checked
+
+        Accessible.role: Accessible.CheckBox
+        Accessible.name: text
     }
 }
