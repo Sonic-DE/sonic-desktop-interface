@@ -25,9 +25,14 @@ Kirigami.FormLayout {
 
             checked: kcm.keyboardSettings.stickyKeys
             onToggled: kcm.keyboardSettings.stickyKeys = checked
+
+            Accessible.role: Accessible.CheckBox
+            Accessible.name: i18n("Enable sticky keys")
         }
         Kirigami.ContextualHelpButton {
             toolTipText: i18n("Modifier keys like Ctrl, Shift, Alt and the Meta/Super/Windows key act as though they \"stick in place\" and no longer need to be held down when typing a keyboard shortcut.")
+            Accessible.role: Accessible.Button
+            Accessible.name: toolTipText
         }
     }
     RowLayout {
@@ -46,6 +51,8 @@ Kirigami.FormLayout {
         }
         Kirigami.ContextualHelpButton {
             toolTipText: i18n("Once locked, the \"sticky\" state of modifier keys will not be disabled until a keyboard shortcut is finished or until a non-modifier key is pressed.")
+            Accessible.role: Accessible.Button
+            Accessible.name: toolTipText
         }
     }
     QQC2.CheckBox {
@@ -61,6 +68,9 @@ Kirigami.FormLayout {
 
         checked: kcm.keyboardSettings.stickyKeysAutoOff
         onToggled: kcm.keyboardSettings.stickyKeysAutoOff = checked
+
+        Accessible.role: Accessible.CheckBox
+        Accessible.name: text
     }
     QQC2.CheckBox {
         Layout.fillWidth: true
@@ -74,6 +84,9 @@ Kirigami.FormLayout {
 
         checked: kcm.keyboardSettings.stickyKeysBeep
         onToggled: kcm.keyboardSettings.stickyKeysBeep = checked
+
+        Accessible.role: Accessible.CheckBox
+        Accessible.name: text
     }
 
     Item {
@@ -96,6 +109,8 @@ Kirigami.FormLayout {
         }
         Kirigami.ContextualHelpButton {
             toolTipText: i18n("The locking keys are Caps Lock, Num Lock, and Scroll Lock.")
+            Accessible.role: Accessible.Button
+            Accessible.name: toolTipText
         }
     }
     QQC2.CheckBox {
@@ -109,11 +124,18 @@ Kirigami.FormLayout {
 
         checked: kcm.keyboardSettings.keyboardNotifyModifiers
         onToggled: kcm.keyboardSettings.keyboardNotifyModifiers = checked
+
+        Accessible.role: Accessible.CheckBox
+        Accessible.name: text
     }
     QQC2.Button {
         text: i18n("Configure Notifications…")
         icon.name: "preferences-desktop-notification"
 
         onClicked: kcm.configureKNotify()
+
+        Accessible.role: Accessible.Button
+        Accessible.name: text
+        Accessible.description: i18n("Opens a new dialog to configure notifications for most accessibility features.")
     }
 }
