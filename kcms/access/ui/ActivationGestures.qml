@@ -107,7 +107,7 @@ Kirigami.FormLayout {
         onToggled: kcm.activationGesturesSettings.gestureConfirmation = checked
     }
     QQC2.CheckBox {
-        text: i18n("Ring the System Bell")
+        text: i18n("Ring the system bell")
 
         KCM.SettingStateBinding {
             configObject: kcm.activationGesturesSettings
