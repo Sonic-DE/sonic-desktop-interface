@@ -11,23 +11,29 @@ import org.kde.kcmutils as KCM
 import org.kde.kirigami as Kirigami
 
 Kirigami.FormLayout {
-    QQC2.CheckBox {
-        id: mouseKeys
+    RowLayout {
+        Kirigami.FormData.label:  i18nc("@option:check", "Use number pad to move cursor:")
+        Kirigami.FormData.buddyFor: mouseKeys
+        QQC2.CheckBox {
+            id: mouseKeys
 
-        Kirigami.FormData.label:  i18n("Use number pad to move cursor:")
-        text: i18n("Enable")
+            text: i18nc("@option:check Enable mouse navigation", "Enable")
 
-        KCM.SettingStateBinding {
-            configObject: kcm.mouseSettings
-            settingName: "MouseKeys"
+            KCM.SettingStateBinding {
+                configObject: kcm.mouseSettings
+                settingName: "MouseKeys"
+            }
+
+            checked: kcm.mouseSettings.mouseKeys
+            onToggled: kcm.mouseSettings.mouseKeys = checked
         }
-
-        checked: kcm.mouseSettings.mouseKeys
-        onToggled: kcm.mouseSettings.mouseKeys = checked
+        Kirigami.ContextualHelpButton {
+            toolTipText: i18nc("@info:tooltip", "The numpad key 5 functions as a mouse click. The keys 2, 4, 6, and 8 allow for cardinal movement (down, left, right, and up). The keys 1, 3, 7, and 9 allow for diagonal movement.")
+        }
     }
 
     QQC2.SpinBox {
-        Kirigami.FormData.label: i18n("Acceleration delay:")
+        Kirigami.FormData.label: i18nc("@label:spinbox", "Acceleration delay:")
 
         from: 1
         to: 490
@@ -49,7 +55,7 @@ Kirigami.FormLayout {
         }
     }
     QQC2.SpinBox {
-        Kirigami.FormData.label: i18n("Repeat interval:")
+        Kirigami.FormData.label: i18nc("@label:spinbox", "Repeat interval:")
 
         from: 1
         to: 130
@@ -71,7 +77,7 @@ Kirigami.FormLayout {
         }
     }
     QQC2.SpinBox {
-        Kirigami.FormData.label: i18n("Acceleration time:")
+        Kirigami.FormData.label: i18nc("@label:spinbox", "Acceleration time:")
 
         from: 1
         to: 100
@@ -93,7 +99,7 @@ Kirigami.FormLayout {
         }
     }
     QQC2.SpinBox {
-        Kirigami.FormData.label:  i18n("Maximum speed:")
+        Kirigami.FormData.label:  i18nc("@label:spinbox", "Maximum speed:")
 
         from: 1
         to: 100
@@ -115,7 +121,7 @@ Kirigami.FormLayout {
         }
     }
     QQC2.SpinBox {
-        Kirigami.FormData.label: i18n("Pointer acceleration:")
+        Kirigami.FormData.label: i18nc("@label:spinbox", "Pointer acceleration:")
 
         from: -1000
         to: 5000
