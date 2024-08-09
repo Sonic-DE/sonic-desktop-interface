@@ -26,7 +26,7 @@ KCM.AbstractKCM {
     property var elements: [
         {
             icon: "notifications",
-            title: i18nc("System Bell", "Bell"),
+            title: i18nc("@title Category name in sidebar", "System Bell"),
             defaultnessKey: "bellIsDefaults"
         },
         {
