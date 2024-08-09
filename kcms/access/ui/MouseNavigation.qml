@@ -8,22 +8,27 @@ import QtQuick 2.6
 import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12 as QQC2
 import org.kde.kcmutils as KCM
-import org.kde.kirigami 2.3 as Kirigami
+import org.kde.kirigami 2.20 as Kirigami
 
 Kirigami.FormLayout {
-    QQC2.CheckBox {
-        id: mouseKeys
-
+    RowLayout {
         Kirigami.FormData.label:  i18n("Use number pad to move cursor:")
-        text: i18n("Enable")
+        QQC2.CheckBox {
+            id: mouseKeys
 
-        KCM.SettingStateBinding {
-            configObject: kcm.mouseSettings
-            settingName: "MouseKeys"
+            text: i18n("Enable")
+
+            KCM.SettingStateBinding {
+                configObject: kcm.mouseSettings
+                settingName: "MouseKeys"
+            }
+
+            checked: kcm.mouseSettings.mouseKeys
+            onToggled: kcm.mouseSettings.mouseKeys = checked
         }
-
-        checked: kcm.mouseSettings.mouseKeys
-        onToggled: kcm.mouseSettings.mouseKeys = checked
+        Kirigami.ContextualHelpButton {
+            toolTipText: i18n("The numpad key 5 functions as a mouse click. The keys 2, 4, 6, and 8 allow for cardinal movement (down, left, right, and up). The keys 1, 3, 7, and 9 allow for diagonal movement.")
+        }
     }
 
     QQC2.SpinBox {
