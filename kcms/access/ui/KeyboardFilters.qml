@@ -12,23 +12,25 @@ import org.kde.kcmutils as KCM
 import org.kde.kirigami as Kirigami
 
 Kirigami.FormLayout {
-    QQC2.CheckBox {
-        id: slowKeys
-
+    RowLayout {
         Kirigami.FormData.label: i18n("Slow keys:")
-        text: i18nc("Enable slow keys", "Enable")
-        
-        QQC2.ToolTip {
-            text: i18n("For a key to be accepted, it has to be held until the set amount of time")
-        }
+        Kirigami.FormData.buddyFor: slowKeys
+        QQC2.CheckBox {
+            id: slowKeys
 
-        KCM.SettingStateBinding {
-            configObject: kcm.keyboardFiltersSettings
-            settingName: "SlowKeys"
-        }
+            text: i18nc("Enable slow keys", "Enable")
 
-        checked: kcm.keyboardFiltersSettings.slowKeys
-        onToggled: kcm.keyboardFiltersSettings.slowKeys = checked
+            KCM.SettingStateBinding {
+                configObject: kcm.keyboardFiltersSettings
+                settingName: "SlowKeys"
+            }
+
+            checked: kcm.keyboardFiltersSettings.slowKeys
+            onToggled: kcm.keyboardFiltersSettings.slowKeys = checked
+        }
+        Kirigami.ContextualHelpButton {
+            toolTipText: i18n("For a key to be accepted, it has to be held until the set amount of time. Useful if you accidentally type more than one key at a time or have difficulty pressing the key you want the first time.")
+        }
     }
 
     QQC2.SpinBox {
@@ -105,23 +107,25 @@ Kirigami.FormLayout {
     Item {
         Kirigami.FormData.isSection: true
     }
-    QQC2.CheckBox {
-        id: bounceKeys
-
+    RowLayout {
         Kirigami.FormData.label: i18n("Bounce keys:")
-        text: i18nc("Bounce keys enable", "Enable");
+        Kirigami.FormData.buddyFor: bounceKeys
+        QQC2.CheckBox {
+            id: bounceKeys
 
-        QQC2.ToolTip {
-            text: i18n("Ignore rapid, repeated keypresses of the same key")
+            text: i18nc("Bounce keys enable", "Enable");
+
+            KCM.SettingStateBinding {
+                configObject: kcm.keyboardFiltersSettings
+                settingName: "BounceKeys"
+            }
+
+            checked: kcm.keyboardFiltersSettings.bounceKeys
+            onToggled: kcm.keyboardFiltersSettings.bounceKeys = checked
         }
-
-        KCM.SettingStateBinding {
-            configObject: kcm.keyboardFiltersSettings
-            settingName: "BounceKeys"
+        Kirigami.ContextualHelpButton {
+            toolTipText: i18n("Ignore rapid, repeated keypresses of the same key. Useful if you have hand tremors that cause you to press a key multiple times when you only intend to press once.")
         }
-
-        checked: kcm.keyboardFiltersSettings.bounceKeys
-        onToggled: kcm.keyboardFiltersSettings.bounceKeys = checked
     }
 
     QQC2.SpinBox {
