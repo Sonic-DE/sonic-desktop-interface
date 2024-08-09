@@ -25,9 +25,14 @@ Kirigami.FormLayout {
 
             checked: kcm.mouseSettings.mouseKeys
             onToggled: kcm.mouseSettings.mouseKeys = checked
+
+            Accessible.role: Accessible.CheckBox
+            Accessible.name: i18n("Use the number pad to move the cursor")
         }
         Kirigami.ContextualHelpButton {
             toolTipText: i18n("The numpad key 5 functions as a mouse click. The keys 2, 4, 6, and 8 allow for cardinal movement (down, left, right, and up). The keys 1, 3, 7, and 9 allow for diagonal movement.")
+            Accessible.role: Accessible.Button
+            Accessible.name: i18n("The numpad key 5 functions as a mouse click. The keys 2, 4, 6, and 8, allow for cardinal movement, down, left, right, and up. The keys 1, 3, 7, and 9, allow for diagonal movement.")
         }
     }
 
@@ -45,6 +50,9 @@ Kirigami.FormLayout {
         value: kcm.mouseSettings.accelerationDelay
         onValueChanged: kcm.mouseSettings.accelerationDelay = value
         textFromValue: function(value) { return value + " ms" }
+
+        Accessible.role: Accessible.SpinBox
+        Accessible.name: i18n("Acceleration delay")
     }
     QQC2.SpinBox {
         Kirigami.FormData.label: i18n("Repeat interval:")
@@ -60,6 +68,9 @@ Kirigami.FormLayout {
         value: kcm.mouseSettings.repetitionInterval
         onValueChanged: kcm.mouseSettings.repetitionInterval = value
         textFromValue: function(value) { return value + " ms" }
+
+        Accessible.role: Accessible.SpinBox
+        Accessible.name: i18n("Key repeat interval")
     }
     QQC2.SpinBox {
         Kirigami.FormData.label: i18n("Acceleration time:")
@@ -75,6 +86,9 @@ Kirigami.FormLayout {
         value: kcm.mouseSettings.accelerationTime
         onValueChanged: kcm.mouseSettings.accelerationTime = value
         textFromValue: function(value) { return value + " ms" }
+
+        Accessible.role: Accessible.SpinBox
+        Accessible.name: i18n("Acceleration time")
     }
     QQC2.SpinBox {
         Kirigami.FormData.label:  i18n("Maximum speed:")
@@ -90,6 +104,9 @@ Kirigami.FormLayout {
         value: kcm.mouseSettings.maxSpeed
         onValueChanged: kcm.mouseSettings.maxSpeed = value
         textFromValue: function(value) { return value + " ms" }
+
+        Accessible.role: Accessible.SpinBox
+        Accessible.name: i18n("Maximum speed")
     }
     QQC2.SpinBox {
         Kirigami.FormData.label: i18n("Pointer acceleration:")
@@ -105,5 +122,8 @@ Kirigami.FormLayout {
         value: kcm.mouseSettings.profileCurve
         onValueChanged: kcm.mouseSettings.profileCurve = value
         textFromValue: function(value) { return value + " ms" }
+
+        Accessible.role: Accessible.SpinBox
+        Accessible.name: i18n("Pointer acceleration")
     }
 }
