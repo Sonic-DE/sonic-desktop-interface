@@ -34,7 +34,8 @@ Kirigami.FormLayout {
             toolTipText: i18n("For a key to be accepted, it has to be held until the set amount of time. Useful if you accidentally type more than one key at a time or have difficulty pressing the key you want the first time.")
 
             Accessible.role: Accessible.HelpBalloon
-            Accessible.name: toolTipText
+            Accessible.name: i18n("Information about slow keys.")
+            Accessible.description: toolTipText
         }
     }
 
@@ -138,8 +139,9 @@ Kirigami.FormLayout {
         Kirigami.ContextualHelpButton {
             toolTipText: i18n("Ignore rapid, repeated keypresses of the same key. Useful if you have hand tremors that cause you to press a key multiple times when you only intend to press once.")
 
-            Accessible.role: Accessible.Button
-            Accessible.name: toolTipText
+            Accessible.role: Accessible.HelpBalloon
+            Accessible.name: i18n("Information about bounce keys.")
+            Accessible.description: toolTipText
         }
     }
 

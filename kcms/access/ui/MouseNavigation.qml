@@ -31,8 +31,9 @@ Kirigami.FormLayout {
         }
         Kirigami.ContextualHelpButton {
             toolTipText: i18n("The numpad key 5 functions as a mouse click. The keys 2, 4, 6, and 8 allow for cardinal movement (down, left, right, and up). The keys 1, 3, 7, and 9 allow for diagonal movement.")
-            Accessible.role: Accessible.Button
-            Accessible.name: i18n("The numpad key 5 functions as a mouse click. The keys 2, 4, 6, and 8, allow for cardinal movement, down, left, right, and up. The keys 1, 3, 7, and 9, allow for diagonal movement.")
+            Accessible.role: Accessible.HelpBalloon
+            Accessible.name: i18n("Information about mouse navigation using numpad keys.")
+            Accessible.description: i18n("The numpad key 5 functions as a mouse click. The keys 2, 4, 6, and 8, allow for cardinal movement, down, left, right, and up. The keys 1, 3, 7, and 9, allow for diagonal movement.")
         }
     }
 
