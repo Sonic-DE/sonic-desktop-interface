@@ -4,13 +4,13 @@
     SPDX-License-Identifier: GPL-2.0-only OR GPL-3.0-only OR LicenseRef-KDE-Accepted-GPL
 */
 
-import QtQuick 2.6
-import QtQuick.Layouts 1.1
-import QtQuick.Controls 2.12 as QQC2
-import QtQuick.Dialogs 6.3 as Dialogs
+import QtQuick
+import QtQuick.Layouts
+import QtQuick.Controls as QQC2
+import QtQuick.Dialogs as Dialogs
 import org.kde.kcmutils as KCM
-import org.kde.kquickcontrols 2.0 as KQuickAddons
-import org.kde.kirigami 2.3 as Kirigami
+import org.kde.kquickcontrols as KQuickAddons
+import org.kde.kirigami as Kirigami
 
 Kirigami.FormLayout {
 
