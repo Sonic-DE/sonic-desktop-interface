@@ -13,6 +13,7 @@ import org.kde.kirigami as Kirigami
 
 Kirigami.FormLayout {
     RowLayout {
+        spacing: Kirigami.Units.smallSpacing
         Kirigami.FormData.label: i18n("Sticky keys:")
         QQC2.CheckBox {
             Layout.fillWidth: true
@@ -31,6 +32,7 @@ Kirigami.FormLayout {
         }
     }
     RowLayout {
+        spacing: Kirigami.Units.smallSpacing
         QQC2.CheckBox {
             Layout.fillWidth: true
             text: i18n("Lock sticky keys")
@@ -81,6 +83,7 @@ Kirigami.FormLayout {
     }
 
     RowLayout{
+        spacing: Kirigami.Units.smallSpacing
         QQC2.CheckBox {
             Kirigami.FormData.label: i18n("Feedback:")
             Layout.fillWidth: true
