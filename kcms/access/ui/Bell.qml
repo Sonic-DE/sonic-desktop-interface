@@ -39,7 +39,7 @@ Kirigami.FormLayout {
     }
     QQC2.Label {
         Layout.fillWidth: true
-        text: systemBell.Accessible.description
+        text: i18nc("@label", "Emits a sound whenever certain keys are pressed")
         leftPadding: systemBell.indicator.width
         textFormat: Text.PlainText
         elide: Text.ElideRight
@@ -110,7 +110,7 @@ Kirigami.FormLayout {
     }
     QQC2.Label {
         Layout.fillWidth: true
-        text: visibleBell.Accessible.description
+        text: i18nc("@label", "Flashes the screen whenever certain keys are pressed")
         leftPadding: visibleBell.indicator.width
         textFormat: Text.PlainText
         elide: Text.ElideRight
