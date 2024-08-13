@@ -28,7 +28,7 @@ Kirigami.FormLayout {
             onToggled: kcm.keyboardSettings.stickyKeys = checked
         }
         Kirigami.ContextualHelpButton {
-            toolTipText: i18n("Modifier keys like Ctrl, Shift, Alt and the Meta/Super/Windows key act as though they \"stick in place\" and no longer need to be held down when typing a keyboard shortcut.")
+            toolTipText: i18n("Modifier keys like Ctrl, Shift, Alt and the Meta/Super/Windows key act as though they “stick in place” and no longer need to be held down when typing a keyboard shortcut.")
         }
     }
     RowLayout {
@@ -47,7 +47,7 @@ Kirigami.FormLayout {
             onToggled: kcm.keyboardSettings.stickyKeysLatch = checked
         }
         Kirigami.ContextualHelpButton {
-            toolTipText: i18n("Once locked, the \"sticky\" state of modifier keys will not be disabled until a keyboard shortcut is finished or until a non-modifier key is pressed.")
+            toolTipText: i18n("Once locked, the “sticky” state of modifier keys will not be disabled until a keyboard shortcut is finished or until a non-modifier key is pressed.")
         }
     }
     QQC2.CheckBox {
