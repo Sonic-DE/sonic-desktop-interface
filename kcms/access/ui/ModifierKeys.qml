@@ -13,6 +13,7 @@ import org.kde.kirigami as Kirigami
 
 Kirigami.FormLayout {
     RowLayout {
+        spacing: Kirigami.Units.smallSpacing
         Kirigami.FormData.label: i18nc("@option:check", "Sticky keys:")
         Kirigami.FormData.buddyFor: stickyKeysEnable
         QQC2.CheckBox {
@@ -83,6 +84,7 @@ Kirigami.FormLayout {
     }
 
     RowLayout{
+        spacing: Kirigami.Units.smallSpacing
         Kirigami.FormData.label: i18nc("@option:check Feedback options:", "Feedback:")
         Kirigami.FormData.buddyFor: toggleKeysBeep
         QQC2.CheckBox {

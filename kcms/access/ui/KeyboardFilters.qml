@@ -13,6 +13,7 @@ import org.kde.kirigami as Kirigami
 
 Kirigami.FormLayout {
     RowLayout {
+        spacing: Kirigami.Units.smallSpacing
         Kirigami.FormData.label: i18n("Slow keys:")
         Kirigami.FormData.buddyFor: slowKeys
         QQC2.CheckBox {
@@ -108,6 +109,7 @@ Kirigami.FormLayout {
         Kirigami.FormData.isSection: true
     }
     RowLayout {
+        spacing: Kirigami.Units.smallSpacing
         Kirigami.FormData.label: i18n("Bounce keys:")
         Kirigami.FormData.buddyFor: bounceKeys
         QQC2.CheckBox {
