@@ -132,6 +132,7 @@ Kirigami.FormLayout {
         onToggled: kcm.bellSettings.invertScreen = checked
     }
     RowLayout {
+        spacing: Kirigami.Units.smallSpacing
         enabled: kcm.bellSettings.visibleBell
 
         QQC2.RadioButton {
