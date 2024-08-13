@@ -12,7 +12,6 @@ import org.kde.kirigami as Kirigami
 
 Kirigami.FormLayout {
 
-    QQC2.ButtonGroup { id: gesturesGroup }
     QQC2.CheckBox {
         id: activationGestures
         Kirigami.FormData.label: i18n("Activation gestures:")
@@ -27,7 +26,6 @@ Kirigami.FormLayout {
         onToggled: kcm.activationGesturesSettings.gestures = checked
     }
     QQC2.Label {
-        QQC2.ButtonGroup.group: gesturesGroup
         leftPadding: activationGestures.indicator.width
         text: i18n("Press Shift 5 times to enable Sticky Keys")
         textFormat: Text.PlainText
@@ -35,7 +33,6 @@ Kirigami.FormLayout {
         font: Kirigami.Theme.smallFont
     }
     QQC2.Label {
-        QQC2.ButtonGroup.group: gesturesGroup
         leftPadding: activationGestures.indicator.width
         text: i18n("Hold Shift for 8 seconds to enable Slow Keys")
         textFormat: Text.PlainText
