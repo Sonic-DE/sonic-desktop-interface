@@ -12,6 +12,7 @@ import org.kde.kirigami as Kirigami
 
 Kirigami.FormLayout {
     RowLayout {
+        spacing: Kirigami.Units.smallSpacing
         Kirigami.FormData.label:  i18n("Use number pad to move cursor:")
         Kirigami.FormData.buddyFor: mouseKeys
         QQC2.CheckBox {
