@@ -41,6 +41,7 @@ Kirigami.FormLayout {
     }
 
     RowLayout {
+        spacing: Kirigami.Units.smallSpacing
         QQC2.CheckBox {
             text: i18nc("Disable activation gestures after", "Disable after")
 
