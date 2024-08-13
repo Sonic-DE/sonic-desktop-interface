@@ -29,14 +29,6 @@ Kirigami.FormLayout {
     QQC2.Label {
         QQC2.ButtonGroup.group: gesturesGroup
         leftPadding: activationGestures.indicator.width
-        text: i18n("Press Shift + Num Lock to enable Mouse Navigation")
-        textFormat: Text.PlainText
-        elide: Text.ElideRight
-        font: Kirigami.Theme.smallFont
-    }
-    QQC2.Label {
-        QQC2.ButtonGroup.group: gesturesGroup
-        leftPadding: activationGestures.indicator.width
         text: i18n("Press Shift 5 times to enable Sticky Keys")
         textFormat: Text.PlainText
         elide: Text.ElideRight
