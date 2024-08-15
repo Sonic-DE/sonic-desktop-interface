@@ -354,6 +354,16 @@ MouseArea {
                         configurationArea.currentApplet.applet.plasmoid.configuration.length = value
                     }
                 }
+
+                PlasmaComponents3.Switch {
+                    text: "Flexible size"
+                    visible: configurationArea.currentApplet?.applet.plasmoid.pluginName === "org.kde.plasma.panelspacer"
+                    checked: configurationArea.currentApplet.applet.plasmoid.configuration.expanding
+                    onCheckedChanged: configurationArea.currentApplet.applet.plasmoid.configuration.expanding = checked
+                    Layout.fillWidth: true
+                    Layout.bottomMargin: Kirigami.Units.smallSpacing
+                }
+
             }
         }
     }
