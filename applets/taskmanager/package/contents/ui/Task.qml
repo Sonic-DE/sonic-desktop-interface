@@ -385,6 +385,7 @@ PlasmaCore.ToolTipArea {
         id: menuTapHandler
         acceptedButtons: Qt.LeftButton
         acceptedDevices: PointerDevice.TouchScreen | PointerDevice.Stylus
+        gesturePolicy: TapHandler.ReleaseWithinBounds
         onLongPressed: {
             // When we're a launcher, there's no window controls, so we can show all
             // places without the menu getting super huge.
