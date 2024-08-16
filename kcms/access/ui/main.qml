@@ -146,7 +146,6 @@ KCM.AbstractKCM {
                 StackLayout {
                     id: stackView
                     width: contentScroll.width
-                    height: contentScroll.height
                     currentIndex: listView.currentIndex
 
                     Bell {}

@@ -12,6 +12,8 @@ import org.kde.kirigami as Kirigami
 
 Item {
     property var screenReaderInstalled : null
+    Layout.preferredWidth: contentScroll.width
+    Layout.preferredHeight: contentScroll.height
     Kirigami.PlaceholderMessage {
         anchors.centerIn: parent
         icon.name: "preferences-desktop-text-to-speech"
