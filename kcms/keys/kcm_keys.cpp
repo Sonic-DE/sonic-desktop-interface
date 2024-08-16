@@ -180,6 +180,7 @@ void KCMKeys::loadScheme(const QUrl &url)
         } else {
             // we dont have this command yet, add it
             const QString newId = addCommand(exec, true);
+            KConfigGroup newGroup(&commandsGroup, newId);
         }
     }
 
