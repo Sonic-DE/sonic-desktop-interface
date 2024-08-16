@@ -10,49 +10,38 @@ import QtQuick.Controls as QQC2
 import org.kde.kcmutils as KCM
 import org.kde.kirigami as Kirigami
 
-Item {
+Kirigami.FormLayout {
     property var screenReaderInstalled : null
-    Layout.preferredWidth: contentScroll.width
-    Layout.preferredHeight: contentScroll.height
-    Kirigami.PlaceholderMessage {
-        anchors.centerIn: parent
-        icon.name: "preferences-desktop-text-to-speech"
-        text: i18n("The Orca Screen Reader is not installed")
-        explanation: i18n("Please install it, then close and reopen this window")
-        visible: !screenReaderInstalled
+
+    QQC2.CheckBox {
+        id: enableScreenReader
+        text: i18n("Enable Screen Reader")
+
+        KCM.SettingStateBinding {
+            configObject: kcm.screenReaderSettings
+            settingName: "Enabled"
+        }
+
+        visible: screenReaderInstalled
+        checked: kcm.screenReaderSettings.enabled
+        onToggled: kcm.screenReaderSettings.enabled = checked
     }
-    Kirigami.FormLayout {
-        anchors.fill: parent
-        QQC2.CheckBox {
-            id: enableScreenReader
-            text: i18n("Enable Screen Reader")
+    QQC2.Button {
+        text: i18n("Launch Orca Screen Reader Configuration…")
 
-            KCM.SettingStateBinding {
-                configObject: kcm.screenReaderSettings
-                settingName: "Enabled"
-            }
+        visible: screenReaderInstalled
+        enabled: !kcm.screenReaderSettings.isImmutable("Enabled") && screenReaderInstalled
 
-            visible: screenReaderInstalled
-            checked: kcm.screenReaderSettings.enabled
-            onToggled: kcm.screenReaderSettings.enabled = checked
-        }
-        QQC2.Button {
-            text: i18n("Launch Orca Screen Reader Configuration…")
+        onClicked: kcm.launchOrcaConfiguration()
+    }
+    QQC2.Label {
+        text: kcm.orcaLaunchFeedback
+        textFormat: Text.PlainText
+    }
 
-            visible: screenReaderInstalled
-            enabled: !kcm.screenReaderSettings.isImmutable("Enabled") && screenReaderInstalled
-
-            onClicked: kcm.launchOrcaConfiguration()
-        }
-        QQC2.Label {
-            text: kcm.orcaLaunchFeedback
-            textFormat: Text.PlainText
-        }
-
-        onVisibleChanged: {
-            if (visible === true && screenReaderInstalled === null) {
-                screenReaderInstalled = kcm.orcaInstalled()
-            }
+    onVisibleChanged: {
+        if (visible === true && screenReaderInstalled === null) {
+            screenReaderInstalled = kcm.orcaInstalled()
         }
     }
 }
