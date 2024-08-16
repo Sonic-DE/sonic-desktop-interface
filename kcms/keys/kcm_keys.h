@@ -9,6 +9,7 @@
 #include <QKeySequence>
 #include <QObject>
 
+#include <KConfigGroup>
 #include <KQuickConfigModule>
 
 class FilteredShortcutsModel;
@@ -58,6 +59,7 @@ Q_SIGNALS:
 private:
     void setError(const QString &errorMessage);
     QModelIndex conflictingIndex(const QKeySequence &keySequence);
+    void migrateGroup(KConfigGroup &parentGroup, const QString &savedComponent, const QString &newGroup);
 
     QString m_lastError;
     FilteredShortcutsModel *m_filteredModel;

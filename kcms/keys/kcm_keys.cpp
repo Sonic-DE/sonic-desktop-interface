@@ -169,29 +169,27 @@ void KCMKeys::loadScheme(const QUrl &url)
         const auto match = m_globalAccelModel->match(m_globalAccelModel->index(0, 0), Qt::DisplayRole, exec, 1, Qt::MatchExactly);
         if (match.count() && match.back().data(BaseModel::SectionRole).value<ComponentType>() == Command) {
             const QString component = match.back().data(BaseModel::ComponentRole).toString();
-            if (component == savedComponent) {
-                qCDebug(KCMKEYS) << "Already have command" << exec << "id" << savedComponent;
-            } else {
-                qCDebug(KCMKEYS) << "Have command" << exec << "at" << component << "moving from" << savedComponent;
-                KConfigGroup newGroup(&commandsGroup, component);
-                commandsGroup.group(savedComponent).copyTo(&newGroup);
-                commandsGroup.deleteGroup(savedComponent);
-            }
+            migrateGroup(commandsGroup, savedComponent, component);
         } else {
             // we dont have this command yet, add it
             const QString newId = addCommand(exec, true);
-            if (newId == savedComponent) {
-                qCDebug(KCMKEYS) << "Already have command" << exec << "id" << savedComponent;
-            } else {
-                qCDebug(KCMKEYS) << "Have command" << exec << "at" << newId << "moving from" << savedComponent;
-                KConfigGroup newGroup(&commandsGroup, newId);
-                commandsGroup.group(savedComponent).copyTo(&newGroup);
-                commandsGroup.deleteGroup(savedComponent);
-            }
+            migrateGroup(commandsGroup, savedComponent, newId);
         }
     }
 
     m_globalAccelModel->importConfig(copy);
+}
+
+void KCMKeys::migrateGroup(KConfigGroup &parentGroup, const QString &savedComponent, const QString &newGroup)
+{
+    if (newGroup == savedComponent) {
+        qCDebug(KCMKEYS) << "Already have command id " << savedComponent;
+    } else {
+        qCDebug(KCMKEYS) << "Have command at" << newGroup << "moving from" << savedComponent;
+        KConfigGroup n(&parentGroup, newGroup);
+        parentGroup.group(savedComponent).copyTo(&n);
+        parentGroup.deleteGroup(savedComponent);
+    }
 }
 
 QVariantList KCMKeys::defaultSchemes() const
