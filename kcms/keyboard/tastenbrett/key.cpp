@@ -145,9 +145,6 @@ static QString keySymToString(KeySym keysym)
 
     if (str.isEmpty()) {
         str = XKeysymToString(keysym);
-        // X11 keys can be of the form "Control_L".
-        // Split them so they are easier on the eyes.
-        str = str.replace('_', ' ');
     }
 
     if (deadMap.contains(keysym)) {
