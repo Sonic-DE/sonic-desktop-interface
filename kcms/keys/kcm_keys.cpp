@@ -155,6 +155,17 @@ void KCMKeys::loadScheme(const QUrl &url)
     KConfig file(url.toLocalFile(), KConfig::SimpleConfig);
     m_standardShortcutsModel->importConfig(file);
 
+    auto migrateGroup = [](KConfigGroup &parentGroup, const QString &oldGroup, const QString &newGroup) {
+        if (newGroup == oldGroup) {
+            qCDebug(KCMKEYS) << "Already have command id " << oldGroup;
+        } else {
+            qCDebug(KCMKEYS) << "Have command at" << newGroup << "moving from" << oldGroup;
+            KConfigGroup n(&parentGroup, newGroup);
+            parentGroup.group(oldGroup).copyTo(&n);
+            parentGroup.deleteGroup(oldGroup);
+        }
+    };
+
     KConfig copy(QString(), KConfig::SimpleConfig);
     file.copyTo(QString(), &copy);
     KConfigGroup commandsGroup(&copy, QStringLiteral("Custom Commands"));
@@ -178,18 +189,6 @@ void KCMKeys::loadScheme(const QUrl &url)
     }
 
     m_globalAccelModel->importConfig(copy);
-}
-
-void KCMKeys::migrateGroup(KConfigGroup &parentGroup, const QString &oldGroup, const QString &newGroup)
-{
-    if (newGroup == oldGroup) {
-        qCDebug(KCMKEYS) << "Already have command id " << oldGroup;
-    } else {
-        qCDebug(KCMKEYS) << "Have command at" << newGroup << "moving from" << oldGroup;
-        KConfigGroup n(&parentGroup, newGroup);
-        parentGroup.group(oldGroup).copyTo(&n);
-        parentGroup.deleteGroup(oldGroup);
-    }
 }
 
 QVariantList KCMKeys::defaultSchemes() const
