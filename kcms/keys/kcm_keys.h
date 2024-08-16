@@ -59,7 +59,6 @@ Q_SIGNALS:
 private:
     void setError(const QString &errorMessage);
     QModelIndex conflictingIndex(const QKeySequence &keySequence);
-    void migrateGroup(KConfigGroup &parentGroup, const QString &oldGroup, const QString &newGroup);
 
     QString m_lastError;
     FilteredShortcutsModel *m_filteredModel;
