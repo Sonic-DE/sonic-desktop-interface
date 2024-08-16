@@ -165,7 +165,7 @@ void KCMKeys::loadScheme(const QUrl &url)
     for (const auto &savedComponent : commandsGroup.groupList()) {
         const KConfigGroup command = commandsGroup.group(savedComponent);
         const QString exec = command.readEntry(QStringLiteral("Exec"));
-        // Name is Exec (for now, there's a pending MR for customized names)
+        // Name is Exec
         const auto match = m_globalAccelModel->match(m_globalAccelModel->index(0, 0), Qt::DisplayRole, exec, 1, Qt::MatchExactly);
         if (match.count() && match.back().data(BaseModel::SectionRole).value<ComponentType>() == Command) {
             const QString component = match.back().data(BaseModel::ComponentRole).toString();
