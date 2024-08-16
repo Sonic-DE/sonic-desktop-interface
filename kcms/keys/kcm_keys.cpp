@@ -180,6 +180,14 @@ void KCMKeys::loadScheme(const QUrl &url)
         } else {
             // we dont have this command yet, add it
             const QString newId = addCommand(exec, true);
+            if (newId == savedComponent) {
+                qCDebug(KCMKEYS) << "Already have command" << exec << "id" << savedComponent;
+            } else {
+                qCDebug(KCMKEYS) << "Have command" << exec << "at" << newId << "moving from" << savedComponent;
+                KConfigGroup newGroup(&commandsGroup, newId);
+                commandsGroup.group(savedComponent).copyTo(&newGroup);
+                commandsGroup.deleteGroup(savedComponent);
+            }
         }
     }
 
