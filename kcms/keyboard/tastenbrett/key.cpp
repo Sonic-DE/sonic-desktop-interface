@@ -168,6 +168,13 @@ static QString keySymToString(KeySym keysym)
         str.replace('_', ' ');
     }
 
+    // Hide some prefixes
+    for (const auto prefix : {QLatin1String("ISO "), QLatin1String("KP ")}) {
+        if (str.startsWith(prefix)) {
+            str = str.mid(prefix.length());
+        }
+    }
+
     return str;
 }
 
