@@ -294,7 +294,7 @@ void GlobalAccelModel::importConfig(const KConfigBase &config)
     }
 }
 
-void GlobalAccelModel::addApplication(const QString &desktopFileName, const QString &displayName)
+void GlobalAccelModel::addApplication(const QString &desktopFileName, const QString &displayName, const bool &waitForFinish)
 {
     if (desktopFileName.isEmpty()) {
         qCWarning(KCMKEYS()) << "Tried to add empty application" << displayName;
@@ -352,7 +352,13 @@ void GlobalAccelModel::addApplication(const QString &desktopFileName, const QStr
             m_components.insert(pos, c);
             endInsertRows();
         });
+        if (waitForFinish) {
+            infoWatcher->waitForFinished();
+        }
     });
+    if (waitForFinish) {
+        watcher->waitForFinished();
+    }
 }
 
 void GlobalAccelModel::removeComponent(const Component &component)
