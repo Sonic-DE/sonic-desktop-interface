@@ -40,7 +40,7 @@ public:
     Q_INVOKABLE QVariantList defaultSchemes() const;
 
     Q_INVOKABLE void addApplication(QQuickItem *ctx);
-    Q_INVOKABLE QString addCommand(const QString &exec, const bool &waitForFinish = false);
+    Q_INVOKABLE void addCommand(const QString &exec, const bool &waitForFinish = false);
     Q_INVOKABLE QString editCommand(const QString &componentName, const QString &newExec);
     Q_INVOKABLE QString quoteUrl(const QUrl &url);
 

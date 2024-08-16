@@ -179,7 +179,7 @@ void KCMKeys::loadScheme(const QUrl &url)
             }
         } else {
             // we dont have this command yet, add it
-            const QString newId = addCommand(exec, true);
+            addCommand(exec, true);
         }
     }
 
@@ -227,7 +227,7 @@ void KCMKeys::addApplication(QQuickItem *ctx)
     });
 }
 
-QString KCMKeys::addCommand(const QString &exec, const bool &waitForFinish)
+void KCMKeys::addCommand(const QString &exec, const bool &waitForFinish)
 {
     // escape %'s in the exec with %%
     QString escapedExec = exec;
@@ -274,8 +274,6 @@ QString KCMKeys::addCommand(const QString &exec, const bool &waitForFinish)
     cg.sync();
 
     m_globalAccelModel->addApplication(newPath, name, waitForFinish);
-
-    return menuId;
 }
 
 QString KCMKeys::editCommand(const QString &componentName, const QString &newExec)
