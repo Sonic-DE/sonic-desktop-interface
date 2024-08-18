@@ -45,7 +45,7 @@ KCMUtils.AbstractKCM {
         },
         {
             icon: "input-caps-on",
-            title: i18n("Activation Gestures"),
+            title: i18n("Activation Shortcuts"),
             defaultnessKey: "activationGesturesIsDefaults"
         },
         {
@@ -152,7 +152,7 @@ KCMUtils.AbstractKCM {
                     ModifierKeys {}
                     KeyboardFilters {}
                     MouseNavigation {}
-                    ActivationGestures {}
+                    ActivationShortcuts {}
                     ScreenReader {}
                     ShakeCursor {}
                 }
