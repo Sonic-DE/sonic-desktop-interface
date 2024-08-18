@@ -7,7 +7,7 @@
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls as QQC2
-import org.kde.kcmutils as KCM
+import org.kde.kcmutils as KCMUtils
 import org.kde.kirigami as Kirigami
 
 Kirigami.FormLayout {
@@ -19,7 +19,7 @@ Kirigami.FormLayout {
 
             text: i18n("Enable")
 
-            KCM.SettingStateBinding {
+            KCMUtils.SettingStateBinding {
                 configObject: kcm.mouseSettings
                 settingName: "MouseKeys"
             }
@@ -38,7 +38,7 @@ Kirigami.FormLayout {
         from: 1
         to: 490
 
-        KCM.SettingStateBinding {
+        KCMUtils.SettingStateBinding {
             configObject: kcm.mouseSettings
             settingName: "AccelerationDelay"
         }
@@ -60,7 +60,7 @@ Kirigami.FormLayout {
         from: 1
         to: 130
 
-        KCM.SettingStateBinding {
+        KCMUtils.SettingStateBinding {
             configObject: kcm.mouseSettings
             settingName: "RepetitionInterval"
         }
@@ -82,7 +82,7 @@ Kirigami.FormLayout {
         from: 1
         to: 100
 
-        KCM.SettingStateBinding {
+        KCMUtils.SettingStateBinding {
             configObject: kcm.mouseSettings
             settingName: "AccelerationTime"
         }
@@ -104,7 +104,7 @@ Kirigami.FormLayout {
         from: 1
         to: 100
 
-        KCM.SettingStateBinding {
+        KCMUtils.SettingStateBinding {
             configObject: kcm.mouseSettings
             settingName: "MaxSpeed"
         }
@@ -126,7 +126,7 @@ Kirigami.FormLayout {
         from: -1000
         to: 5000
 
-        KCM.SettingStateBinding {
+        KCMUtils.SettingStateBinding {
             configObject: kcm.mouseSettings
             settingName: "ProfileCurve"
         }
