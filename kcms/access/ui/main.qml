@@ -10,12 +10,12 @@ import QtQuick.Window
 import QtQuick.Controls as QQC2
 import org.kde.kirigami as Kirigami
 import org.kde.kirigami.delegates as KD
-import org.kde.kcmutils as KCM
+import org.kde.kcmutils as KCMUtils
 import org.kde.kwindowsystem
 
 pragma ComponentBehavior: Bound
 
-KCM.AbstractKCM {
+KCMUtils.AbstractKCM {
     id: root
 
     implicitWidth: Kirigami.Units.gridUnit * 45
