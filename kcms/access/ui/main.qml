@@ -3,6 +3,7 @@
 
     SPDX-License-Identifier: GPL-2.0-only OR GPL-3.0-only OR LicenseRef-KDE-Accepted-GPL
 */
+pragma ComponentBehavior: Bound
 
 import QtQuick
 import QtQuick.Layouts
@@ -12,8 +13,6 @@ import org.kde.kirigami as Kirigami
 import org.kde.kirigami.delegates as KD
 import org.kde.kcmutils as KCMUtils
 import org.kde.kwindowsystem
-
-pragma ComponentBehavior: Bound
 
 KCMUtils.AbstractKCM {
     id: root
