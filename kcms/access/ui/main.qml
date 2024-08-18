@@ -89,7 +89,7 @@ KCMUtils.AbstractKCM {
 
                     width: listView.width
 
-                    highlighted: listView.currentIndex == index
+                    highlighted: listView.currentIndex === index
 
                     icon.name: modelData.icon
                     text: modelData.title
