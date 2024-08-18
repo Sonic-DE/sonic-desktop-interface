@@ -82,10 +82,10 @@ KCMUtils.AbstractKCM {
                 model: root.elements
 
                 delegate: QQC2.ItemDelegate {
+                    id: baseDelegate
+
                     required property int index
                     required property var modelData
-
-                    id: baseDelegate
 
                     width: listView.width
 
