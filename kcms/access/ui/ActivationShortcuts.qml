@@ -13,9 +13,9 @@ import org.kde.kirigami as Kirigami
 Kirigami.FormLayout {
 
     QQC2.CheckBox {
-        id: activationGestures
-        Kirigami.FormData.label: i18nc("@option:check", "Activation gestures:")
-        text: i18nc("Enable activation gestures", "Enable")
+        id: activationShortcuts
+        Kirigami.FormData.label: i18nc("@option:check", "Activation shortcuts:")
+        text: i18nc("Enable activation shortcuts", "Enable")
 
         KCMUtils.SettingStateBinding {
             configObject: kcm.activationGesturesSettings
@@ -26,14 +26,14 @@ Kirigami.FormLayout {
         onToggled: kcm.activationGesturesSettings.gestures = checked
     }
     QQC2.Label {
-        leftPadding: activationGestures.indicator.width
+        leftPadding: activationShortcuts.indicator.width
         text: i18nc("@label", "Press Shift 5 times to enable Sticky Keys")
         textFormat: Text.PlainText
         elide: Text.ElideRight
         font: Kirigami.Theme.smallFont
     }
     QQC2.Label {
-        leftPadding: activationGestures.indicator.width
+        leftPadding: activationShortcuts.indicator.width
         text: i18nc("@label", "Hold Shift for 8 seconds to enable Slow Keys")
         textFormat: Text.PlainText
         elide: Text.ElideRight
@@ -85,7 +85,7 @@ Kirigami.FormLayout {
     }
 
     QQC2.CheckBox {
-        Kirigami.FormData.label: i18n("When a gesture is used:")
+        Kirigami.FormData.label: i18n("When a shortcut is used:")
         text: i18n("Display a confirmation dialog")
 
         KCMUtils.SettingStateBinding {
