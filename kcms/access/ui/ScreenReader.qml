@@ -7,7 +7,7 @@
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls as QQC2
-import org.kde.kcmutils as KCM
+import org.kde.kcmutils as KCMUtils
 import org.kde.kirigami as Kirigami
 
 
@@ -26,7 +26,7 @@ Item {
             id: enableScreenReader
             text: i18nc("@option:check", "Enable Screen Reader")
 
-            KCM.SettingStateBinding {
+            KCMUtils.SettingStateBinding {
                 configObject: kcm.screenReaderSettings
                 settingName: "Enabled"
             }

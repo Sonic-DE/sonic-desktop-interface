@@ -7,7 +7,7 @@
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls as QQC2
-import org.kde.kcmutils as KCM
+import org.kde.kcmutils as KCMUtils
 
 import org.kde.kirigami as Kirigami
 
@@ -21,7 +21,7 @@ Kirigami.FormLayout {
             Layout.fillWidth: true
             text: i18nc("@option:check Enable sticky keys", "Enable")
 
-            KCM.SettingStateBinding {
+            KCMUtils.SettingStateBinding {
                 configObject: kcm.keyboardSettings
                 settingName: "StickyKeys"
             }
@@ -38,7 +38,7 @@ Kirigami.FormLayout {
             Layout.fillWidth: true
             text: i18nc("@option:check", "Lock sticky keys")
 
-            KCM.SettingStateBinding {
+            KCMUtils.SettingStateBinding {
                 configObject: kcm.keyboardSettings
                 settingName: "StickyKeysLatch"
                 extraEnabledConditions: kcm.keyboardSettings.stickyKeys
@@ -56,7 +56,7 @@ Kirigami.FormLayout {
         Layout.fillWidth: true
         text: i18n("Disable when two keys are held down")
 
-        KCM.SettingStateBinding {
+        KCMUtils.SettingStateBinding {
             configObject: kcm.keyboardSettings
             settingName: "StickyKeysAutoOff"
             extraEnabledConditions: kcm.keyboardSettings.stickyKeys
@@ -69,7 +69,7 @@ Kirigami.FormLayout {
         Layout.fillWidth: true
         text: i18n("Ring system bell when modifier keys are used")
 
-        KCM.SettingStateBinding {
+        KCMUtils.SettingStateBinding {
             configObject: kcm.keyboardSettings
             settingName: "StickyKeysBeep"
             extraEnabledConditions: kcm.keyboardSettings.stickyKeys
@@ -92,7 +92,7 @@ Kirigami.FormLayout {
             Layout.fillWidth: true
             text: i18nc("@option:check", "Ring system bell when locking keys are used")
 
-            KCM.SettingStateBinding {
+            KCMUtils.SettingStateBinding {
                 configObject: kcm.keyboardSettings
                 settingName: "ToggleKeysBeep"
             }
@@ -108,7 +108,7 @@ Kirigami.FormLayout {
         text: i18nc("@option:check", "Show notification when modifier or locking keys are used")
         Layout.fillWidth: true
 
-        KCM.SettingStateBinding {
+        KCMUtils.SettingStateBinding {
             configObject: kcm.keyboardSettings
             settingName: "KeyboardNotifyModifiers"
         }

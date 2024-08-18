@@ -7,7 +7,7 @@
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls as QQC2
-import org.kde.kcmutils as KCM
+import org.kde.kcmutils as KCMUtils
 import org.kde.kirigami as Kirigami
 
 Kirigami.FormLayout {
@@ -17,7 +17,7 @@ Kirigami.FormLayout {
         Kirigami.FormData.label: i18nc("@option:check", "Activation gestures:")
         text: i18nc("Enable activation gestures", "Enable")
 
-        KCM.SettingStateBinding {
+        KCMUtils.SettingStateBinding {
             configObject: kcm.activationGesturesSettings
             settingName: "Gestures"
         }
@@ -45,7 +45,7 @@ Kirigami.FormLayout {
         QQC2.CheckBox {
             text: i18nc("@option:check", "Disable sticky and slow keys after:")
 
-            KCM.SettingStateBinding {
+            KCMUtils.SettingStateBinding {
                 configObject: kcm.activationGesturesSettings
                 settingName: "AccessXTimeout"
             }
@@ -57,7 +57,7 @@ Kirigami.FormLayout {
         QQC2.SpinBox {
             id: spinbox
 
-            KCM.SettingStateBinding {
+            KCMUtils.SettingStateBinding {
                 configObject: kcm.activationGesturesSettings
                 settingName: "AccessXTimeoutDelay"
                 extraEnabledConditions: kcm.activationGesturesSettings.accessXTimeout
@@ -88,7 +88,7 @@ Kirigami.FormLayout {
         Kirigami.FormData.label: i18n("When a gesture is used:")
         text: i18n("Display a confirmation dialog")
 
-        KCM.SettingStateBinding {
+        KCMUtils.SettingStateBinding {
             configObject: kcm.activationGesturesSettings
             settingName: "GestureConfirmation"
         }
@@ -99,7 +99,7 @@ Kirigami.FormLayout {
     QQC2.CheckBox {
         text: i18n("Ring the system bell")
 
-        KCM.SettingStateBinding {
+        KCMUtils.SettingStateBinding {
             configObject: kcm.activationGesturesSettings
             settingName: "AccessXBeep"
         }
@@ -110,7 +110,7 @@ Kirigami.FormLayout {
     QQC2.CheckBox {
         text: i18n("Show a notification")
 
-        KCM.SettingStateBinding {
+        KCMUtils.SettingStateBinding {
             configObject: kcm.activationGesturesSettings
             settingName: "KeyboardNotifyAccess"
         }
