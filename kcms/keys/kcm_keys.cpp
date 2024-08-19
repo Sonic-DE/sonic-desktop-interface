@@ -173,6 +173,12 @@ void KCMKeys::loadScheme(const QUrl &url)
     // - check if the command already exists
     // - if yes, and its the same component, there is nothing to do
     // - otherwise need to add command and/or migrate config
+    connect(m_globalAccelModel, &GlobalAccelModel::applicationAdded, this, [this, url]() {
+        // Now that components have been added, we can reimport the file to add the shortcuts to
+        // entries that were still being added during an async operation in addCommand()
+        KConfig file(url.toLocalFile(), KConfig::SimpleConfig);
+        m_globalAccelModel->importConfig(file);
+    });
     for (const auto &savedComponent : commandsGroup.groupList()) {
         const KConfigGroup command = commandsGroup.group(savedComponent);
         const QString exec = command.readEntry(QStringLiteral("Exec"));
