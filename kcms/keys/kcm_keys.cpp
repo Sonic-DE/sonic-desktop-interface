@@ -144,6 +144,7 @@ void KCMKeys::writeScheme(const QUrl &url)
         if (componentIndex.data(BaseModel::SectionRole).value<ComponentType>() == Command && componentIndex.data(BaseModel::CheckedRole).toBool()) {
             const QString component = componentIndex.data(BaseModel::ComponentRole).toString();
             group.group(component).writeEntry(QStringLiteral("Exec"), KDesktopFile(component).desktopGroup().readEntry("Exec"));
+            group.group(component).writeEntry(QStringLiteral("Name"), KDesktopFile(component).desktopGroup().readEntry("Name"));
         }
     }
     file.sync();
@@ -182,14 +183,14 @@ void KCMKeys::loadScheme(const QUrl &url)
     for (const auto &savedComponent : commandsGroup.groupList()) {
         const KConfigGroup command = commandsGroup.group(savedComponent);
         const QString exec = command.readEntry(QStringLiteral("Exec"));
-        // Name is Exec
+        const QString name = command.readEntry(QStringLiteral("Name"));
         const auto match = m_globalAccelModel->match(m_globalAccelModel->index(0, 0), Qt::DisplayRole, exec, 1, Qt::MatchExactly);
         if (match.count() && match.back().data(BaseModel::SectionRole).value<ComponentType>() == Command) {
             const QString component = match.back().data(BaseModel::ComponentRole).toString();
             migrateGroup(commandsGroup, savedComponent, component);
         } else {
             // we dont have this command yet, add it
-            const QString newId = addCommand(exec);
+            const QString newId = addCommand(exec, name);
             migrateGroup(commandsGroup, savedComponent, newId);
         }
     }
@@ -250,7 +251,7 @@ QString KCMKeys::getCommand(const QString component) const
     return cg.readEntry("Exec");
 }
 
-void KCMKeys::addCommand(const QString &exec, const QString &name)
+QString KCMKeys::addCommand(const QString &exec, const QString &name)
 {
     // escape %'s in the exec with %%
     QString escapedExec = exec;
@@ -297,6 +298,8 @@ void KCMKeys::addCommand(const QString &exec, const QString &name)
     cg.sync();
 
     m_globalAccelModel->addApplication(newPath, exeName);
+
+    return menuId;
 }
 
 QString KCMKeys::editCommand(const QString &componentName, const QString &name, const QString &newExec)
