@@ -183,7 +183,7 @@ void KCMKeys::loadScheme(const QUrl &url)
             migrateGroup(commandsGroup, savedComponent, component);
         } else {
             // we dont have this command yet, add it
-            const QString newId = addCommand(exec, true);
+            const QString newId = addCommand(exec);
             migrateGroup(commandsGroup, savedComponent, newId);
         }
     }
@@ -232,7 +232,7 @@ void KCMKeys::addApplication(QQuickItem *ctx)
     });
 }
 
-QString KCMKeys::addCommand(const QString &exec, const bool &waitForFinish)
+QString KCMKeys::addCommand(const QString &exec)
 {
     // escape %'s in the exec with %%
     QString escapedExec = exec;
@@ -278,7 +278,7 @@ QString KCMKeys::addCommand(const QString &exec, const bool &waitForFinish)
     cg.writeEntry("X-KDE-GlobalAccel-CommandShortcut", true);
     cg.sync();
 
-    m_globalAccelModel->addApplication(newPath, name, waitForFinish);
+    m_globalAccelModel->addApplication(newPath, name);
 
     return menuId;
 }
