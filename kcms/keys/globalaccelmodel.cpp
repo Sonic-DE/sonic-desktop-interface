@@ -351,10 +351,9 @@ void GlobalAccelModel::addApplication(const QString &desktopFileName, const QStr
             auto c = loadComponent(infoReply.value());
             m_components.insert(pos, c);
             endInsertRows();
+            Q_EMIT applicationAdded(c);
         });
-        infoWatcher->waitForFinished();
     });
-    watcher->waitForFinished();
 }
 
 void GlobalAccelModel::removeComponent(const Component &component)
