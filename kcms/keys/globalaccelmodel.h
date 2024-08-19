@@ -27,7 +27,7 @@ public:
 
     QVariant data(const QModelIndex &index, int role) const override;
 
-    void addApplication(const QString &desktopFileName, const QString &displayName, const bool &waitForFinish = false);
+    void addApplication(const QString &desktopFileName, const QString &displayName);
 
     void exportToConfig(const KConfigBase &config) override;
     void importConfig(const KConfigBase &config) override;

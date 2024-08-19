@@ -183,7 +183,7 @@ void KCMKeys::loadScheme(const QUrl &url)
             migrateGroup(commandsGroup, savedComponent, component);
         } else {
             // we dont have this command yet, add it
-            const QString newId = addCommand(exec, true);
+            const QString newId = addCommand(exec);
             migrateGroup(commandsGroup, savedComponent, newId);
         }
     }
