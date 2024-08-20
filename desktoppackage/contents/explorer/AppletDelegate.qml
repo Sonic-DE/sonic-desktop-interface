@@ -62,6 +62,7 @@ Item {
 
         DragHandler {
             id: dragHandler
+            acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad
             enabled: !delegate.pendingUninstall && model.isSupported
 
             onActiveChanged: if (active) {
@@ -77,6 +78,28 @@ Item {
                 parent.Drag.imageSource = "";
             }
         }
+
+
+        DragHandler {
+            id: touchDragHandler
+            acceptedDevices: PointerDevice.Stylus | PointerDevice.TouchScreen
+            enabled: dragHandler.enabled
+            yAxis.enabled: false
+
+            onActiveChanged: if (active) {
+                iconContainer.grabToImage(function(result) {
+                    if (!touchDragHandler.active) {
+                        return;
+                    }
+                    parent.Drag.imageSource = result.url;
+                    parent.Drag.active = touchDragHandler.active;
+                }, Qt.size(Kirigami.Units.iconSizes.huge, Kirigami.Units.iconSizes.huge));
+            } else {
+                parent.Drag.active = false;
+                parent.Drag.imageSource = "";
+            }
+        }
+
     }
 
     ColumnLayout {
@@ -188,7 +211,7 @@ Item {
                 PlasmaComponents.ToolTip.text: delegate.pendingUninstall ? i18nd("plasma_shell_org.kde.plasma.desktop", "Undo uninstall")
                                                     : i18nd("plasma_shell_org.kde.plasma.desktop", "Uninstall widget")
                 flat: false
-                visible: model.local && delegate.GridView.isCurrentItem && !dragHandler.active
+                visible: model.local && delegate.GridView.isCurrentItem && !dragHandler.active && !touchDragHandler.active
 
                 onHoveredChanged: {
                     if (hovered) {
