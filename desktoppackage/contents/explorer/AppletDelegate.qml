@@ -216,6 +216,31 @@ Item {
                     }
                 }
             }
+
+            PlasmaComponents.ToolButton {
+                id: removeInstancesButton
+                anchors {
+                    top: parent.top
+                    right: uninstallButton.visible ? uninstallButton.left : parent.right
+                    rightMargin: uninstallButton.visible ? Kirigami.Units.smallSpacing : 0
+                }
+                icon.name: "edit-clear-all"
+                // we don't really "undo" anything but we'll pretend to the user that we do
+                PlasmaComponents.ToolTip.delay: Kirigami.Units.toolTipDelay
+                PlasmaComponents.ToolTip.visible: hovered
+                PlasmaComponents.ToolTip.text: i18nd("plasma_shell_org.kde.plasma.desktop", "Remove all instances of this widget")
+                flat: false
+                visible: running && delegate.GridView.isCurrentItem && !dragHandler.active && !touchDragHandler.active
+
+                onHoveredChanged: {
+                    if (hovered) {
+                        // hovering the uninstall button triggers onExited of the main mousearea
+                        delegate.GridView.view.currentIndex = index
+                    }
+                }
+
+                onClicked: widgetExplorer.removeAllInstances(pluginName)
+            }
         }
         Kirigami.Heading {
             id: heading
