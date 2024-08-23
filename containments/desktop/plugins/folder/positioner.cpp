@@ -925,8 +925,6 @@ void Positioner::applyPositions()
     endResetModel();
 
     m_deferApplyPositions = false;
-
-    m_updatePositionsTimer->start();
 }
 
 void Positioner::flushPendingChanges()
