@@ -149,20 +149,22 @@ Kirigami.ScrollablePage {
         currentIndex: -1
         reuseItems: true
 
-        delegate: QQC2.Label {
+        delegate: QQC2.ItemDelegate {
             id: emojiLabel
-
             width: emojiView.cellWidth
             height: emojiView.cellHeight
 
-            font.pointSize: 25
-            font.family: 'emoji' // Avoid monochrome fonts like DejaVu Sans
-            fontSizeMode: model.display.length > 5 ? Text.Fit : Text.FixedSize
-            minimumPointSize: 10
-            text: model.display
-            textFormat: Text.PlainText
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
+            highlighted: GridView.isCurrentItem
+            contentItem: QQC2.Label {
+                font.pointSize: 25
+                font.family: 'emoji' // Avoid monochrome fonts like DejaVu Sans
+                fontSizeMode: model.display.length > 5 ? Text.Fit : Text.FixedSize
+                minimumPointSize: 10
+                text: model.display
+                textFormat: Text.PlainText
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+            }
 
             Accessible.name: model.toolTip
             Accessible.onPressAction: tapHandler.action()
@@ -176,13 +178,6 @@ Kirigami.ScrollablePage {
 
             Keys.onMenuPressed: event => contextMenuHandler.action()
             Keys.onReturnPressed: event => tapHandler.action()
-
-            background: Rectangle {
-                color: "transparent"
-                border.color: parent.focus ? Kirigami.Theme.highlightColor : "transparent"
-                border.width: Kirigami.Units.smallSpacing
-                radius: Kirigami.Units.cornerRadius
-            }
 
             HoverHandler {
                 id: hoverHandler
