@@ -162,6 +162,7 @@ Kirigami.ScrollablePage {
             text: model.display
             textFormat: Text.PlainText
             horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
 
             Accessible.name: model.toolTip
             Accessible.onPressAction: tapHandler.action()
@@ -175,6 +176,13 @@ Kirigami.ScrollablePage {
 
             Keys.onMenuPressed: event => contextMenuHandler.action()
             Keys.onReturnPressed: event => tapHandler.action()
+
+            background: Rectangle {
+                color: "transparent"
+                border.color: parent.focus ? Kirigami.Theme.highlightColor : "transparent"
+                border.width: Kirigami.Units.smallSpacing
+                radius: Kirigami.Units.cornerRadius
+            }
 
             HoverHandler {
                 id: hoverHandler
