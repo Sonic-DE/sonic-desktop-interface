@@ -112,14 +112,6 @@ Kirigami.FormLayout {
 
         value: kcm.mouseSettings.maxSpeed
         onValueChanged: kcm.mouseSettings.maxSpeed = value
-
-        textFromValue: function(value, locale) {
-            return i18np("%1 ms", "%1 ms", value)
-        }
-
-        valueFromText: (text, locale) => {
-            return Number.fromLocaleString(locale, text.replace(i18nc("short for milliseconds, needs to account for singular and plural", "ms"), ""))
-        }
     }
     QQC2.SpinBox {
         Kirigami.FormData.label: i18nc("@label:spinbox", "Pointer acceleration:")
@@ -135,12 +127,5 @@ Kirigami.FormLayout {
         value: kcm.mouseSettings.profileCurve
         onValueChanged: kcm.mouseSettings.profileCurve = value
 
-        textFromValue: function(value, locale) {
-            return i18np("%1 ms", "%1 ms", value)
-        }
-
-        valueFromText: (text, locale) => {
-            return Number.fromLocaleString(locale, text.replace(i18nc("short for milliseconds, needs to account for singular and plural", "ms"), ""))
-        }
     }
 }
