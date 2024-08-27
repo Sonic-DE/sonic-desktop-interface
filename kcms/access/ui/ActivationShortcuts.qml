@@ -76,7 +76,7 @@ Kirigami.FormLayout {
             }
 
             valueFromText: (text, locale) => {
-                return Number.fromLocaleString(locale, text.replace(i18n("min"), ""))
+                return Number.fromLocaleString(locale, text.replace(i18ncp("short for minute(s)", "min", "min"), ""))
             }
 
             value: kcm.activationGesturesSettings.accessXTimeoutDelay

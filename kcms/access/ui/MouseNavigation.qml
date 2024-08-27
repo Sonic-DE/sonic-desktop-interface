@@ -52,7 +52,7 @@ Kirigami.FormLayout {
         }
 
         valueFromText: (text, locale) => {
-            return Number.fromLocaleString(locale, text.replace(i18nc("short for milliseconds, needs to account for singular and plural", "ms"), ""))
+            return Number.fromLocaleString(locale, text.replace(i18ncp("short for millisecond(s)", "ms", "ms"), ""))
         }
     }
     QQC2.SpinBox {
@@ -74,7 +74,7 @@ Kirigami.FormLayout {
         }
 
         valueFromText: (text, locale) => {
-            return Number.fromLocaleString(locale, text.replace(i18nc("short for milliseconds, needs to account for singular and plural", "ms"), ""))
+            return Number.fromLocaleString(locale, text.replace(i18ncp("short for millisecond(s)", "ms", "ms"), ""))
         }
     }
     QQC2.SpinBox {
@@ -96,7 +96,7 @@ Kirigami.FormLayout {
         }
 
         valueFromText: (text, locale) => {
-            return Number.fromLocaleString(locale, text.replace(i18nc("short for milliseconds, needs to account for singular and plural", "ms"), ""))
+            return Number.fromLocaleString(locale, text.replace(i18ncp("short for millisecond(s)", "ms", "ms"), ""))
         }
     }
     QQC2.SpinBox {
