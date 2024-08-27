@@ -30,7 +30,7 @@ Kirigami.FormLayout {
             onToggled: kcm.keyboardSettings.stickyKeys = checked
         }
         Kirigami.ContextualHelpButton {
-            toolTipText: i18nc("@info:tooltip", "Modifier keys like Ctrl, Shift, Alt and the Meta/Super/Windows key act as though they “stick in place” and no longer need to be held down when typing a keyboard shortcut.")
+            toolTipText: i18nc("@info:tooltip", "Modifier keys like Ctrl, Shift, Alt, and the Meta/Super/Windows key act as though they “stick in place” and no longer need to be held down when typing a keyboard shortcut.")
         }
     }
     RowLayout {
