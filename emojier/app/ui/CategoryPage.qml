@@ -173,9 +173,6 @@ Kirigami.ScrollablePage {
             QQC2.ToolTip.text: model.toolTip
             QQC2.ToolTip.visible: hoverHandler.hovered
 
-            opacity: hoverHandler.hovered ? 0.7 : 1
-            scale: tapHandler.pressed ? 0.6 : 1
-
             Keys.onMenuPressed: event => contextMenuHandler.action()
             Keys.onReturnPressed: event => tapHandler.action()
 
@@ -207,18 +204,6 @@ Kirigami.ScrollablePage {
                     menu.popup();
                 }
                 onTapped: (eventPoint, button) => action()
-            }
-
-            Behavior on opacity {
-                OpacityAnimator {
-                    duration: Kirigami.Units.longDuration
-                }
-            }
-
-            Behavior on scale {
-                NumberAnimation {
-                    duration: Kirigami.Units.longDuration
-                }
             }
         }
 
