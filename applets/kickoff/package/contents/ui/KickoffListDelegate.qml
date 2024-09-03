@@ -81,7 +81,11 @@ AbstractKickoffItemDelegate {
                     }
                     return implicitHeight;
                 }
-                text: root.text
+                text: (Plasmoid.configuration.appNameFormat === AbstractKickoffItemDelegate.AppNameFormat.GenericNameOnly ||
+                       Plasmoid.configuration.appNameFormat === AbstractKickoffItemDelegate.AppNameFormat.GenericNameAndName) &&
+                        root.description.length > 0
+                        ? root.description
+                        : root.text
                 textFormat: Text.PlainText
                 elide: Text.ElideRight
                 verticalAlignment: Text.AlignVCenter
@@ -94,9 +98,12 @@ AbstractKickoffItemDelegate {
                 Layout.fillWidth: true
                 // Don't want to show descriptions for apps in the category list, because
                 // there's not enough room for them with the category list item height
-                visible: text.length > 0 && text !== root.text && !root.isCategoryListItem
+                // Also don't display if it's configured to show only name or only descriotion
+                visible: text.length > 0 && text !== label.text && !root.isCategoryListItem && Plasmoid.configuration.appNameFormat > 1
                 enabled: false
-                text: root.description
+                text: Plasmoid.configuration.appNameFormat === AbstractKickoffItemDelegate.AppNameFormat.GenericNameAndName
+                        ? root.text
+                        : root.description
                 textFormat: Text.PlainText
                 font: Kirigami.Theme.smallFont
                 elide: Text.ElideRight
