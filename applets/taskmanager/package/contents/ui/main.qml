@@ -332,7 +332,7 @@ PlasmoidItem {
 
             Drag.dragType: Drag.Automatic
             Drag.supportedActions: Qt.CopyAction | Qt.MoveAction | Qt.LinkAction
-            Drag.onDragFinished: dropAction => {
+            Drag.onDragFinished: dropAction => {print("DRAGFINISHED")
                 tasks.dragSource = null;
             }
         }
