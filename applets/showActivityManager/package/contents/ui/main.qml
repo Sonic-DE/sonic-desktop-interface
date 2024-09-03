@@ -44,8 +44,8 @@ PlasmoidItem {
         id: dropArea
         anchors.fill: parent
 
-        onDragEnter: ActivitySwitcher.Backend.setDropMode(true)
-        onDragLeave: ActivitySwitcher.Backend.setDropMode(false)
+        onDragEnter: event => ActivitySwitcher.Backend.setDropMode(true)
+        onDragLeave: event => ActivitySwitcher.Backend.setDropMode(false)
 
         Activities.ActivityInfo {
             id: currentActivity
@@ -57,13 +57,17 @@ PlasmoidItem {
 
             activeFocusOnTab: true
 
-            Keys.onPressed: {
+            Keys.onPressed: event => {
                 switch (event.key) {
                 case Qt.Key_Space:
                 case Qt.Key_Enter:
                 case Qt.Key_Return:
                 case Qt.Key_Select:
                     Plasmoid.activated();
+                    event.accepted = true;
+                    break;
+                default:
+                    event.accepted = false;
                     break;
                 }
             }

@@ -95,17 +95,21 @@ Item {
         anchors.fill: parent
         hoverEnabled: enabled
         enabled: Plasmoid.containment.corona.editMode || Plasmoid.userConfiguring
-        onClicked: {
+        onClicked: mouse => {
             main.Plasmoid.internalAction("configure").trigger()
         }
         activeFocusOnTab: true
-        Keys.onPressed: {
+        Keys.onPressed: event => {
             switch (event.key) {
             case Qt.Key_Space:
             case Qt.Key_Enter:
             case Qt.Key_Return:
             case Qt.Key_Select:
                 main.Plasmoid.internalAction("configure").trigger();
+                event.accepted = true;
+                break;
+            default:
+                event.accepted = false;
                 break;
             }
         }

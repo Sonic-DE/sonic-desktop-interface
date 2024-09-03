@@ -100,16 +100,21 @@ PlasmoidItem {
 
                 activeFocusOnTab: true
 
-                Keys.onPressed: {
+                Keys.onPressed: event => {
                     switch (event.key) {
                     case Qt.Key_Space:
                     case Qt.Key_Enter:
                     case Qt.Key_Return:
                     case Qt.Key_Select:
                         statusIcon.triggered(Qt.LeftButton);
+                        event.accepted = true;
                         break;
                     case Qt.Key_Menu:
                         statusIcon.triggered(Qt.RightButton);
+                        event.accepted = true;
+                        break;
+                    default:
+                        event.accepted = false;
                         break;
                     }
                 }
@@ -129,7 +134,7 @@ PlasmoidItem {
                     icon: model.icon
                     hint: model.hint
 
-                    onTriggered: {
+                    onTriggered: button => {
                         if (button === Qt.LeftButton) {
                             if (model.key === 'kimpanel-placeholder') {
                                 return;
@@ -186,7 +191,7 @@ PlasmoidItem {
 
     ActionMenu {
         id: actionMenu
-        onActionClicked: {
+        onActionClicked: actionId => {
             helper.triggerProperty(actionId);
         }
     }
