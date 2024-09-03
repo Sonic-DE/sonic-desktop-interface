@@ -16,6 +16,7 @@ import QtQuick
 import QtQuick.Layouts
 import org.kde.plasma.components as PC3
 import org.kde.kirigami as Kirigami
+import org.kde.plasma.plasmoid
 
 AbstractKickoffItemDelegate {
     id: root
@@ -53,7 +54,11 @@ AbstractKickoffItemDelegate {
             Layout.fillWidth: true
             Layout.preferredHeight: label.lineCount === 1 ? label.implicitHeight * 2 : label.implicitHeight
 
-            text: root.text
+            text: (Plasmoid.configuration.appNameFormat === AbstractKickoffItemDelegate.AppNameFormat.GenericNameOnly ||
+                   Plasmoid.configuration.appNameFormat === AbstractKickoffItemDelegate.AppNameFormat.GenericNameAndName) &&
+                   root.description.length > 0
+                    ? root.description
+                    : root.text
             textFormat: Text.PlainText
             elide: Text.ElideRight
             horizontalAlignment: Text.AlignHCenter
