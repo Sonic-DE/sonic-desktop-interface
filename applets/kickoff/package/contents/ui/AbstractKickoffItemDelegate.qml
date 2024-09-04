@@ -104,7 +104,7 @@ T.ItemDelegate {
     enabled: !isSeparator && !model.disabled
     hoverEnabled: false
 
-    text: model.compactName//model.name ?? model.displayWrapped ?? model.compactName
+    text: model.name ?? model.displayWrapped ?? model.compactName ?? model.display
     Accessible.role: Accessible.ListItem
     Accessible.description: root.description !== root.text ? root.description : ""
     Accessible.onPressAction: {
