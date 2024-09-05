@@ -81,11 +81,7 @@ AbstractKickoffItemDelegate {
                     }
                     return implicitHeight;
                 }
-                text: (Plasmoid.configuration.appNameFormat === AbstractKickoffItemDelegate.AppNameFormat.GenericNameOnly ||
-                       Plasmoid.configuration.appNameFormat === AbstractKickoffItemDelegate.AppNameFormat.GenericNameAndName) &&
-                        root.description.length > 0
-                        ? root.description
-                        : root.text
+                text: root.text
                 textFormat: Text.PlainText
                 elide: Text.ElideRight
                 verticalAlignment: Text.AlignVCenter
@@ -101,9 +97,7 @@ AbstractKickoffItemDelegate {
                 // Also don't display if it's configured to show only name or only descriotion
                 visible: text.length > 0 && text !== label.text && !root.isCategoryListItem && Plasmoid.configuration.appNameFormat > 1
                 enabled: false
-                text: Plasmoid.configuration.appNameFormat === AbstractKickoffItemDelegate.AppNameFormat.GenericNameAndName
-                        ? root.text
-                        : root.description
+                text: root.description
                 textFormat: Text.PlainText
                 font: Kirigami.Theme.smallFont
                 elide: Text.ElideRight
