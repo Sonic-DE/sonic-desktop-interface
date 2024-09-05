@@ -104,7 +104,7 @@ T.ItemDelegate {
     enabled: !isSeparator && !model.disabled
     hoverEnabled: false
 
-    text: model.name ?? model.displayWrapped ?? model.compactName ?? model.display
+    text: model.compactNameWrapped ?? model.compactName ?? model.displayWrapped ?? model.display
     Accessible.role: Accessible.ListItem
     Accessible.description: root.description !== root.text ? root.description : ""
     Accessible.onPressAction: {
@@ -224,9 +224,6 @@ T.ItemDelegate {
             return model.display
             return `${text} (${description})`
         } else if (root.descriptionTruncated || !root.descriptionVisible) {
-            return Plasmoid.configuration.appNameFormat === AbstractKickoffItemDelegate.AppNameFormat.GenericNameAndName
-                    ? root.text
-                    : root.description
             return description
         }
         return ""
