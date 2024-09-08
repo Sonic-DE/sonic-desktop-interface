@@ -31,11 +31,10 @@ PlasmoidItem {
         / ((pagerModel.pagerItemSize.height * pagerItemGrid.effectiveRows)
         + ((pagerItemGrid.effectiveRows * pagerItemGrid.spacing) - pagerItemGrid.spacing)))
 
-    Layout.minimumWidth: !root.vertical ? Math.floor(height * aspectRatio) : 1
-    Layout.minimumHeight: root.vertical ? Math.floor(width / aspectRatio) : 1
-
-    Layout.maximumWidth: !root.vertical ? Math.floor(height * aspectRatio) : Infinity
-    Layout.maximumHeight: root.vertical ? Math.floor(width / aspectRatio) : Infinity
+    Layout.minimumWidth: !root.vertical ? pagerItemGrid.width : 1
+    Layout.minimumHeight: root.vertical ? pagerItemGrid.height : 1
+    Layout.maximumWidth: !root.vertical ? pagerItemGrid.width : Infinity
+    Layout.maximumHeight: root.vertical ? pagerItemGrid.height : Infinity
 
     Plasmoid.status: pagerModel.shouldShowPager ? PlasmaCore.Types.ActiveStatus : PlasmaCore.Types.HiddenStatus
 
@@ -170,36 +169,12 @@ PlasmoidItem {
             // which it otherwise will not do.
             pagerModel.refresh();
         }
-    }
 
-    Component {
-        id: desktopLabelComponent
-
-        PlasmaComponents3.Label {
-            required property int index
-            required property var model
-            required property KSvg.FrameSvgItem desktopFrame
-
-            anchors {
-                fill: parent
-                topMargin: desktopFrame.margins.top
-                leftMargin: desktopFrame.margins.left
-                rightMargin: desktopFrame.margins.right
-                bottomMargin: desktopFrame.margins.bottom
-            }
-
-            text: Plasmoid.configuration.displayedText ? model.display : index + 1
-            textFormat: Text.PlainText
-
-            wrapMode: Text.NoWrap
-            elide: Text.ElideRight
-
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
-
-            font.pixelSize: Math.min(height, Kirigami.Theme.defaultFont.pixelSize)
-
-            z: 9999 // The label goes above everything
+        function onShowWindowOutlinesChanged() {
+            // Seems to be required for re-layouting to work properly when
+            // disabling window outlines, which should cause the sizes to
+            // adapt to the labels instead of the screen size.
+            pagerModel.refresh();
         }
     }
 
@@ -241,11 +216,22 @@ PlasmoidItem {
         dragTimer.restart();
     }
 
-    Grid {
+    GridLayout {
         id: pagerItemGrid
 
-        anchors.centerIn: parent
-        spacing: 1
+        anchors {
+            top:    !root.vertical ? parent.top : undefined
+            bottom: !root.vertical ? parent.bottom : undefined
+            left:    root.vertical ? parent.left : undefined
+            right:   root.vertical ? parent.right : undefined
+        }
+        Layout.fillWidth: root.vertical
+        Layout.fillHeight: !root.vertical
+
+        readonly property int spacing: 1
+        columnSpacing: spacing
+        rowSpacing: spacing
+
         rows: effectiveRows
         columns: effectiveColumns
 
@@ -315,6 +301,9 @@ PlasmoidItem {
 
             model: pagerModel
 
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+
             PlasmaCore.ToolTipArea {
                 id: desktop
 
@@ -374,8 +363,12 @@ PlasmoidItem {
                     subText = text
                 }
 
-                width: pagerItemGrid.columnWidth
-                height: pagerItemGrid.rowHeight
+                // Layout.minimumWidth: 0
+                // Layout.preferredWidth: pagerItemGrid.columnWidth
+                Layout.preferredWidth: !Plasmoid.configuration.showWindowOutlines ? label.implicitWidth + 2 * Kirigami.Units.smallSpacing : pagerItemGrid.columnWidth
+                Layout.preferredHeight: !Plasmoid.configuration.showWindowOutlines ? label.implicitHeight + 2 * Kirigami.Units.smallSpacing : pagerItemGrid.rowHeight
+                Layout.fillWidth: true
+                Layout.fillHeight: true
 
                 // These states match the set of SVG prefixes for the "widgets/pager" below.
                 state: {
@@ -576,10 +569,31 @@ PlasmoidItem {
                     }
                 }
 
-                Component.onCompleted: {
-                    if (Plasmoid.configuration.displayedText < 2) {
-                        desktopLabelComponent.createObject(desktop, { index, model, desktopFrame });
+                PlasmaComponents3.Label {
+                    id: label
+
+                    visible: Plasmoid.configuration.displayedText < 2
+
+                    anchors {
+                        fill: parent
+                        topMargin: desktopFrame.margins.top
+                        leftMargin: desktopFrame.margins.left
+                        rightMargin: desktopFrame.margins.right
+                        bottomMargin: desktopFrame.margins.bottom
                     }
+
+                    text: Plasmoid.configuration.displayedText == 2 ? "" : Plasmoid.configuration.displayedText ? model.display : index + 1
+                    textFormat: Text.PlainText
+
+                    wrapMode: Text.NoWrap
+                    elide: Text.ElideRight
+
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+
+                    font.pixelSize: Math.min(height, Kirigami.Theme.defaultFont.pixelSize)
+
+                    z: 9999 // The label goes above everything
                 }
 
                 onContainsMouseChanged: updateSubTextIfNeeded()
