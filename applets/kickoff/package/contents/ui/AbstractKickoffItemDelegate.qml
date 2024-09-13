@@ -222,7 +222,6 @@ T.ItemDelegate {
     PC3.ToolTip.text: {
         if (root.labelTruncated && root.descriptionTruncated) {
             return model.display
-            return `${text} (${description})`
         } else if (root.descriptionTruncated || !root.descriptionVisible) {
             return description
         }
