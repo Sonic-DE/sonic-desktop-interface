@@ -11,7 +11,11 @@ from typing import Final
 
 from appium import webdriver
 from appium.options.common.base import AppiumOptions
+from appium.webdriver.applicationstate import ApplicationState
 from appium.webdriver.common.appiumby import AppiumBy
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import WebDriverWait
 
 sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir, "desktop"))
 from desktoptest import start_kactivitymanagerd
@@ -26,6 +30,7 @@ class KickoffTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.kactivitymanagerd = start_kactivitymanagerd()
+        subprocess.check_call(["kbuildsycoca6"], stdout=sys.stderr, stderr=sys.stderr)
 
         options = AppiumOptions()
         options.set_capability("environ", {
@@ -42,6 +47,11 @@ class KickoffTests(unittest.TestCase):
             self.kactivitymanagerd.terminate()
             self.kactivitymanagerd.wait()
 
+    def setUp(self) -> None:
+        ActionChains(self.driver).send_keys(Keys.ESCAPE).perform()
+        self.driver.find_element(by=AppiumBy.CLASS_NAME, value="[push button | Application Launcher]").click()
+        self.driver.find_element(by=AppiumBy.CLASS_NAME, value="[list item | All Applications]")
+
     def tearDown(self) -> None:
         """
         Take screenshot when the current test fails
@@ -49,13 +59,16 @@ class KickoffTests(unittest.TestCase):
         if not self._outcome.result.wasSuccessful():
             self.driver.get_screenshot_as_file(f"failed_test_shot_{WIDGET_ID}_#{self.id()}.png")
 
-    def test_0_open(self) -> None:
-        self.driver.find_element(by=AppiumBy.CLASS_NAME, value="[push button | Application Launcher]").click()
-        self.driver.find_element(by=AppiumBy.CLASS_NAME, value="[list item | All Applications]")
-
-    def test_1_search(self) -> None:
+    def test_1_search_calculator(self) -> None:
         self.driver.find_element(by=AppiumBy.NAME, value="Search").send_keys("12345+67890")
         self.driver.find_element(by=AppiumBy.CLASS_NAME, value="[list item | 80235]")
+
+    def test_2_search_app(self) -> None:
+        # Emoji Selector is the only actual application we install from workspace :|
+        self.driver.find_element(by=AppiumBy.NAME, value="Search").send_keys("Emoji Selector")
+        self.driver.find_element(by=AppiumBy.CLASS_NAME, value="[list item | Emoji Selector]").click()
+        WebDriverWait(self.driver, 10).until(lambda _: self.driver.query_app_state('org.kde.plasma.emojier.desktop') == ApplicationState.RUNNING_IN_FOREGROUND)
+        self.driver.terminate_app("org.kde.plasma.emojier.desktop")
 
 
 if __name__ == '__main__':
