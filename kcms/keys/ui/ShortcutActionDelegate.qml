@@ -51,6 +51,7 @@ QQC2.ItemDelegate {
                 Kirigami.Heading {
                     id: displayLabel
                     text: i18nc("%1 is the name action that is triggered by the key sequences following after :", "%1:", model.display)
+                    elide: Text.ElideMiddle
                     textFormat: Text.PlainText
                     level: 5
                 }
