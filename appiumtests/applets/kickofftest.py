@@ -75,6 +75,56 @@ class KickoffTests(unittest.TestCase):
         time.sleep(1)
         subprocess.check_call([f"kquitapp{KDE_VERSION}", "plasma.emojier"])
 
+    def test_3_keyboard_navigation(self) -> None:
+        focused_elements = self.driver.find_elements(by=AppiumBy.XPATH, value="//list_item[contains(@states, 'focused')]")
+        self.assertEqual(len(focused_elements), 1)
+        first_favorite = focused_elements[0].id
+        self.assertIn("KickoffGridDelegate", focused_elements[0].get_attribute('accessibility-id'))
+
+        # Go right to second favorite
+        ActionChains(self.driver).send_keys(Keys.RIGHT).perform()
+        focused_elements = self.driver.find_elements(by=AppiumBy.XPATH, value="//list_item[contains(@states, 'focused')]")
+        self.assertEqual(len(focused_elements), 1)
+        self.assertNotEqual(first_favorite, focused_elements[0].id)
+
+        # Go left to first favorite again
+        ActionChains(self.driver).send_keys(Keys.LEFT).perform()
+        focused_elements = self.driver.find_elements(by=AppiumBy.XPATH, value="//list_item[contains(@states, 'focused')]")
+        self.assertEqual(len(focused_elements), 1)
+        self.assertEqual(first_favorite, focused_elements[0].id)
+
+        # Go further left to the category list
+        ActionChains(self.driver).key_down(Keys.SHIFT).send_keys(Keys.TAB).key_up(Keys.ALT).perform()
+        focused_elements = self.driver.find_elements(by=AppiumBy.XPATH, value="//list_item[contains(@states, 'focused')]")
+        self.assertEqual(len(focused_elements), 1)
+        self.assertNotEqual(first_favorite, focused_elements[0].id)
+        favorites_category = focused_elements[0].id
+
+        # Go down to the 'all apps' category
+        ActionChains(self.driver).send_keys(Keys.DOWN).perform()
+        focused_elements = self.driver.find_elements(by=AppiumBy.XPATH, value="//list_item[contains(@states, 'focused')]")
+        self.assertEqual(len(focused_elements), 1)
+        self.assertNotEqual(favorites_category, focused_elements[0].id)
+
+        # Go right to the first all app. This must not be a grid delegate anymore (favorites are griddelegates)
+        ActionChains(self.driver).send_keys(Keys.RIGHT).perform()
+        focused_elements = self.driver.find_elements(by=AppiumBy.XPATH, value="//list_item[contains(@states, 'focused')]")
+        self.assertEqual(len(focused_elements), 1)
+        self.assertNotEqual(favorites_category, focused_elements[0].id)
+        self.assertNotEqual(first_favorite, focused_elements[0].id)
+        self.assertNotIn("KickoffGridDelegate", focused_elements[0].get_attribute('accessibility-id'))
+        first_all_app = focused_elements[0].id
+
+        # Go down to second all app
+        ActionChains(self.driver).send_keys(Keys.DOWN).perform()
+        focused_elements = self.driver.find_elements(by=AppiumBy.XPATH, value="//list_item[contains(@states, 'focused')]")
+        self.assertEqual(len(focused_elements), 1)
+        self.assertNotEqual(first_all_app, focused_elements[0].id)
+
+        # Hitting Tab should get us to the "menu bar" at the bottom
+        ActionChains(self.driver).send_keys(Keys.TAB).perform()
+        self.assertEqual(True, self.driver.find_element(by=AppiumBy.NAME, value="Applications").is_selected())
+
 
 if __name__ == '__main__':
     unittest.main()
