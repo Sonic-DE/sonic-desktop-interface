@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Kontact
+Exec=xterm
+Type=Application
+Icon=kontact
+GenericName=Personal Information Manager
+StartupNotify=true
+Categories=Qt;KDE;Office;
+SingleMainWindow=true
+Version=1.5

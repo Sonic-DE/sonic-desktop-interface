@@ -1,0 +1,17 @@
+[Desktop Entry]
+Name=Discover
+MimeType=application/x-rpm;application/vnd.flatpak;application/vnd.flatpak.repo;application/vnd.flatpak.ref;
+Exec=xterm
+Icon=plasmadiscover
+Type=Application
+NoDisplay=false
+Actions=Updates;
+SingleMainWindow=true
+GenericName=Software Center
+Categories=Qt;KDE;System;PackageManager;
+Keywords=program;software;store;repository;package;add;install;uninstall;remove;update;apps;applications;games;flatpak;snap;addons;add-ons;firmware;
+
+[Desktop Action Updates]
+Name=See Available Updates
+Icon=update-low
+Exec=xterm

@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Dolphin
+Exec=xterm
+Icon=org.kde.dolphin
+Type=Application
+Categories=Qt;KDE;System;FileTools;FileManager;
+GenericName=File Manager
+MimeType=inode/directory;
+Keywords=files;file management;file browsing;samba;network shares;Explorer;Finder;
+StartupWMClass=dolphin

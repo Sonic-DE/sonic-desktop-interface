@@ -1,0 +1,12 @@
+[Desktop Entry]
+Exec=xterm
+Icon=preferences-system
+Type=Application
+SingleMainWindow=true
+StartupNotify=true
+OnlyShowIn=KDE;
+GenericName=System Settings
+Name=System Settings
+Comment=Configuration tools for your computer
+Categories=Qt;KDE;Settings;
+Keywords=systemsettings
