@@ -79,6 +79,7 @@ class KickoffTests(unittest.TestCase):
         subprocess.check_call([f"kquitapp{KDE_VERSION}", "plasma.emojier"])
 
     def test_3_keyboard_navigation(self) -> None:
+        print(self.driver.page_source, file=sys.stderr)
         focused_elements = self.driver.find_elements(by=AppiumBy.XPATH, value="//list_item[contains(@states, 'focused')]")
         self.assertEqual(len(focused_elements), 1)
         first_favorite = focused_elements[0].id
