@@ -50,6 +50,8 @@ QQC2.ItemDelegate {
                 spacing: Kirigami.Units.smallSpacing
                 Kirigami.Heading {
                     id: displayLabel
+                    Layout.maximumWidth: parent.width - keySequenceList.width - expandButton.width
+                    Layout.fillWidth: true
                     text: i18nc("%1 is the name action that is triggered by the key sequences following after :", "%1:", model.display)
                     wrapMode: Text.Wrap
                     textFormat: Text.PlainText
@@ -57,8 +59,6 @@ QQC2.ItemDelegate {
                 }
                 QQC2.Label {
                     id: keySequenceList
-                    Layout.fillWidth: true
-
                     color: {
                         if (root.selected) {
                             return Kirigami.Theme.highlightedTextColor;
