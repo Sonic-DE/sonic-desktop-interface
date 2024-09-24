@@ -30,9 +30,10 @@ KCM.SimpleKCM {
         property var componentChooser
         Layout.fillWidth: true
         visible: componentChooser.unsupportedMimeTypes.length > 0 || componentChooser.mimeTypesNotAssociated.length > 0
+        type: Kirigami.MessageType.Warning
         text: i18nc("@info:status", "This application may not be able to open all file types.");
         actions: Kirigami.Action {
-            text: i18nc("@action:button", "See Details")
+            text: i18nc("@action:button", "View Details")
             onTriggered: {
                 overlay.componentChooser = componentChooser
                 overlay.open()
