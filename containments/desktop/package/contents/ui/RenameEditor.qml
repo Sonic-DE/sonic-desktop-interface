@@ -29,6 +29,9 @@ PlasmaComponents.ScrollView {
         }
     }
 
+    // We use QQC2.TextArea here to allow context menu to appear,
+    // since PlasmaComponents.TextArea does not have a context menu
+    // BUG:427292
     QQC2.TextArea {
         id: editor
 
