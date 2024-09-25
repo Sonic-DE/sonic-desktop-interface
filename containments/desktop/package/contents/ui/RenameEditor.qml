@@ -43,6 +43,8 @@ PlasmaComponents.ScrollView {
 
         rightPadding: root.PlasmaComponents.ScrollBar.vertical.visible ? root.PlasmaComponents.ScrollBar.vertical.width : 0
 
+        Kirigami.SpellCheck.enabled: false
+
         property Item targetItem: null
 
         Binding {
