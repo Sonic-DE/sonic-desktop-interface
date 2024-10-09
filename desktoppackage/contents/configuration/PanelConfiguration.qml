@@ -261,7 +261,6 @@ ColumnLayout {
                 id: alignmentBox
                 property int previewIndex: highlightedIndex > -1 ? highlightedIndex : currentIndex
                 Layout.alignment: Qt.AlignHCenter
-                Layout.minimumWidth: alignmentRepresentation.width
                 model: [
                     dialogRoot.vertical ? i18nd("plasma_shell_org.kde.plasma.desktop", "Top") : i18nd("plasma_shell_org.kde.plasma.desktop", "Left"),
                     i18nd("plasma_shell_org.kde.plasma.desktop", "Center"),
@@ -305,7 +304,6 @@ ColumnLayout {
                 id: widthBox
                 property int previewIndex: highlightedIndex > -1 ? highlightedIndex : currentIndex
                 Layout.alignment: Qt.AlignHCenter
-                Layout.minimumWidth: lengthRepresentation.width
                 model: [
                     dialogRoot.vertical ? i18nd("plasma_shell_org.kde.plasma.desktop", "Fill height") : i18nd("plasma_shell_org.kde.plasma.desktop", "Fill width"),
                     i18nd("plasma_shell_org.kde.plasma.desktop", "Fit content"),
@@ -354,7 +352,6 @@ ColumnLayout {
                     i18nd("plasma_shell_org.kde.plasma.desktop", "Windows Go Below"),
                 ]
                 Layout.alignment: Qt.AlignHCenter
-                Layout.minimumWidth: visibilityRepresentation.width
                 currentIndex: {
                     switch (panel.visibilityMode) {
                         case Panel.Global.AutoHide:
