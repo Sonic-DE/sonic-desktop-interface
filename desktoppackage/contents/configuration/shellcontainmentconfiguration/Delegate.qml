@@ -66,14 +66,14 @@ QQC2.Control {
                     z: state === "floating" ? 0 : 1
                     visible: !model.isDestroyed
 
-                    HoverHandler {
-                        cursorShape: Qt.OpenHandCursor
+                    /*HoverHandler {
+                        //cursorShape: Qt.OpenHandCursor
                     }
                     DragHandler {
                         id: dragHandler
                         property QQC2.Control targetDelegate
 
-                        cursorShape: Qt.ClosedHandCursor
+                        //cursorShape: Qt.ClosedHandCursor
                         onActiveChanged: {
                             if (active) {
                                 delegate.z = 1;
@@ -110,7 +110,7 @@ QQC2.Control {
                                 targetDelegate.containsDrag = true;
                             }
                         }
-                    }
+                    }*/
                     SequentialAnimation {
                         id: resetAnim
                         property var targetDelegatePos: dragHandler.targetDelegate

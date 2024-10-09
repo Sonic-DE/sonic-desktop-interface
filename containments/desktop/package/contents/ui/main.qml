@@ -318,10 +318,9 @@ ContainmentItem {
 
                 onAppletChanged: {
                     applet.visible = true
-                    console.log(applet.visible)
                 }
 
-                Drag.dragType: Drag.Automatic
+                /*Drag.dragType: Drag.Automatic
                 Drag.active: false
                 Drag.supportedActions: Qt.MoveAction
                 Drag.mimeData: {
@@ -355,7 +354,7 @@ ContainmentItem {
                             appletContainer.Drag.active = true
                         })
                     }
-                }
+                }*/
 
                 ShortDropBehavior on x { }
                 ShortDropBehavior on y { }
