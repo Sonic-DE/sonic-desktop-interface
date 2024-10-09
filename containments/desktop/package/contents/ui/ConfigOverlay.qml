@@ -181,7 +181,7 @@ ContainmentLayoutManager.ConfigOverlayWithHandles {
 
             ActionButton {
                 icon.name: "show-background"
-                toolTip: checked ? i18n("Hide Background") : i18n("Show Background")
+                toolTip: checked ? "Lol Hide Background" : i18n("Show Background")
                 visible: (applet.plasmoid.backgroundHints & PlasmaCore.Types.ConfigurableBackground)
                 checked: applet.plasmoid.effectiveBackgroundHints & PlasmaCore.Types.StandardBackground || applet.plasmoid.effectiveBackgroundHints & PlasmaCore.Types.TranslucentBackground
                 checkable: true
@@ -202,12 +202,12 @@ ContainmentLayoutManager.ConfigOverlayWithHandles {
                 }
             }
 
-            MouseArea {
+            /*MouseArea {
                 drag.target: overlay.itemContainer
                 Layout.minimumHeight: Kirigami.Units.gridUnit * 3
                 Layout.fillHeight: true
                 Layout.fillWidth: true
-                cursorShape: containsPress ? Qt.DragMoveCursor : Qt.OpenHandCursor
+                //cursorShape: containsPress ? Qt.DragMoveCursor : Qt.OpenHandCursor
                 hoverEnabled: true
                 onPressed: mouse => {
                     appletsLayout.releaseSpace(overlay.itemContainer);
@@ -224,7 +224,7 @@ ContainmentLayoutManager.ConfigOverlayWithHandles {
                     appletsLayout.hidePlaceHolder();
                     appletsLayout.positionItem(overlay.itemContainer);
                 }
-            }
+            }*/
 
             ActionButton {
                 id: closeButton
