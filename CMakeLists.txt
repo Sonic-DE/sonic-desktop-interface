@@ -151,6 +151,12 @@ set_package_properties(Wayland PROPERTIES
     PURPOSE "Required for building Tablet input KCM"
 )
 
+find_package(LayerShellQt ${PROJECT_DEP_VERSION})
+set_package_properties(LayerShellQt PROPERTIES
+        TYPE REQUIRED
+        PURPOSE "Required for building Tablet input KCM"
+)
+
 find_package(SDL2 2.0.16)
 set_package_properties(SDL2 PROPERTIES
         TYPE OPTIONAL

@@ -12,6 +12,7 @@ import QtQuick.Controls as QQC2
 
 import org.kde.kirigami as Kirigami
 import org.kde.plasma.tablet.kcm
+import org.kde.layershell as LayerShell
 
 QQC2.ApplicationWindow {
     id: root
@@ -24,6 +25,8 @@ QQC2.ApplicationWindow {
             tool.setCalibrationMatrix(device, matrix);
         }
     }
+    LayerShell.Window.layer: LayerShell.Window.LayerTop
+    LayerShell.Window.exclusionZone: -1
 
     property real currentPenToolX: -1
     property real currentPenToolY: -1
