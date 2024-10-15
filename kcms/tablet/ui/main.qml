@@ -535,6 +535,7 @@ SimpleKCM {
                 property bool buttonPressed: false
 
                 name: i18ndc("kcm_tablet", "@info Meant to be inserted into an existing sentence like 'configuring pad button 0'", "pad button %1", modelData + 1)
+                supportsPenButton: false
 
                 Connections {
                     target: tabletEvents
@@ -567,5 +568,7 @@ SimpleKCM {
 
     ActionDialog {
         id: actionDialog
+
+        parent: root.QQC2.Overlay.overlay
     }
 }
