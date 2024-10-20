@@ -152,12 +152,19 @@ PlasmaExtras.Menu {
                 var elided = false;
                 textMetrics.text = Qt.binding(() => item.action.text);
 
+                var previousText;
                 while (textMetrics.width > maximumWidth) {
-                    item.action.text = item.action.text.slice(0, -1);
+                    previousText = item.action.text;
+                    item.action.text = item.action.text.slice(0, item.action.text.length / 2);
                     elided = true;
                 }
-
                 if (elided) {
+                    item.action.text = previousText;
+                    textMetrics.text = Qt.binding(() => item.action.text);
+
+                    while (textMetrics.width > maximumWidth) {
+                        item.action.text = item.action.text.slice(0, -1);
+                    }
                     item.action.text += "…";
                 }
 
