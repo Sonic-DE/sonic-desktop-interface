@@ -23,6 +23,7 @@ KCMUtils.ScrollViewKCM {
         Kirigami.Action {
             icon.name: "configure"
             text: i18n("Configure KRunner…")
+            Accessible.name: text // https://bugreports.qt.io/browse/QTBUG-130360
             onTriggered: kcm.showKRunnerKCM()
         },
         NewStuff.Action {
