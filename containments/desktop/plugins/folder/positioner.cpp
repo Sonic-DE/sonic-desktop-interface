@@ -508,7 +508,7 @@ void Positioner::sourceStatusChanged()
         applyPositions();
     }
 
-    if (m_deferMovePositions.count() && m_folderModel->status() != FolderModel::Listing) {
+    if (m_deferMovePositions.count() > 0 && m_folderModel->status() != FolderModel::Listing) {
         move(m_deferMovePositions);
         m_deferMovePositions.clear();
     }
