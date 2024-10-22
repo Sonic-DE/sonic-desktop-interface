@@ -462,7 +462,6 @@ void Backend::handleRecentDocumentAction() const
     if (desktopPath.isEmpty() || url.isEmpty()) {
         auto query = UsedResources | Agent(agent) | Type::any() | Activity::current();
 
-        qWarning() << "Forgetting resources" << query;
         KAStats::forgetResources(query);
 
         return;
