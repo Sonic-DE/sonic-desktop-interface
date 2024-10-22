@@ -493,12 +493,11 @@ void Positioner::updatePositions()
             positions.append(QString::number(qMax(0, it.key() / m_perStripe)));
             positions.append(QString::number(qMax(0, it.key() % m_perStripe)));
         }
-    }
+        if (positions != m_positions) {
+            m_positions = positions;
 
-    if (positions != m_positions) {
-        m_positions = positions;
-
-        Q_EMIT positionsChanged();
+            Q_EMIT positionsChanged();
+        }
     }
 }
 
