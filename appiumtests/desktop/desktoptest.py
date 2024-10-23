@@ -24,7 +24,6 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
-CMAKE_BINARY_DIR: Final = os.environ.get("CMAKE_BINARY_DIR", os.path.join(pathlib.Path.home(), "kde/build/plasma-desktop/bin"))
 KACTIVITYMANAGERD_PATH: Final = os.environ.get("KACTIVITYMANAGERD_PATH", os.path.join(pathlib.Path.home(), "kde/usr/lib64/libexec/kactivitymanagerd"))
 KACTIVITYMANAGERD_SERVICE_NAME: Final = "org.kde.ActivityManager"
 KDE_VERSION: Final = 6
@@ -80,7 +79,9 @@ def start_plasmashell() -> tuple:
     """
     kactivitymanagerd = start_kactivitymanagerd()
     kded = start_kded()
-    plasmashell = subprocess.Popen(["plasmashell", "-p", "org.kde.plasma.desktop", "--no-respawn"], stdout=sys.stderr, stderr=sys.stderr)
+    eng_env = os.environ.copy()
+    eng_env["LC_ALL"] = "en_US.UTF-8"
+    plasmashell = subprocess.Popen(["plasmashell", "-p", "org.kde.plasma.desktop", "--no-respawn"], stdout=sys.stderr, stderr=sys.stderr, env=eng_env)
 
     return (kactivitymanagerd, kded, plasmashell)
 
