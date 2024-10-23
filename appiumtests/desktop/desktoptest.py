@@ -154,7 +154,7 @@ class DesktopTest(unittest.TestCase):
         @see https://invent.kde.org/plasma/plasma-integration/-/merge_requests/117
         """
         self._open_containment_config_dialog()
-        self.driver.find_element(AppiumBy.NAME, "Add…").click()
+        self.driver.find_element(AppiumBy.NAME, "Add Wallpaper Image…").click()
         wait = WebDriverWait(self.driver, 30)
         title_element: WebElement = wait.until(EC.presence_of_element_located((AppiumBy.NAME, "Open Image")))
 
