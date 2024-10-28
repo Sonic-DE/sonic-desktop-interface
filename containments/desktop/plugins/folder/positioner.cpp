@@ -10,6 +10,9 @@
 #include <cstdlib>
 #include <span>
 
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QJsonObject>
 #include <QTimer>
 
 Positioner::Positioner(QObject *parent)
@@ -49,10 +52,6 @@ void Positioner::setEnabled(bool enabled)
         endResetModel();
 
         Q_EMIT enabledChanged();
-
-        if (!enabled) {
-            m_updatePositionsTimer->start();
-        }
     }
 }
 
@@ -496,6 +495,7 @@ void Positioner::updatePositions()
         if (positions != m_positions) {
             m_positions = positions;
 
+            qWarning() << "Positioner::updatePositions emits positionsChanged";
             Q_EMIT positionsChanged();
         }
     }
@@ -925,7 +925,7 @@ void Positioner::applyPositions()
 
     m_deferApplyPositions = false;
 
-    m_updatePositionsTimer->start();
+    // m_updatePositionsTimer->start();
 }
 
 void Positioner::flushPendingChanges()
@@ -943,6 +943,51 @@ void Positioner::flushPendingChanges()
     }
 
     m_pendingChanges.clear();
+}
+
+Plasma::Applet *Positioner::applet() const
+{
+    return m_applet;
+}
+
+void Positioner::setApplet(Plasma::Applet *applet)
+{
+    if (m_applet != applet) {
+        Q_ASSERT(!m_applet);
+        m_applet = applet;
+    }
+}
+
+QStringList Positioner::loadPositionsConfig()
+{
+    QStringList positions;
+    if (m_applet) {
+        auto doc = QJsonDocument::fromJson(m_applet->config().group(QStringLiteral("General")).readEntry(QStringLiteral("positions")).toUtf8());
+        qWarning() << "Loaded json: " << doc.toJson(QJsonDocument::Compact);
+        positions = doc[m_resolution].toString().split(QStringLiteral(","));
+    }
+    return positions;
+}
+
+void Positioner::savePositionsConfig(QStringList positions)
+{
+    if (m_applet) {
+        QJsonObject root;
+        root[m_resolution] = positions.join(QStringLiteral(","));
+        m_applet->config().group(QStringLiteral("General")).writeEntry(QStringLiteral("positions"), QJsonDocument(root).toJson(QJsonDocument::Compact));
+        qWarning() << "Saved json: " << QJsonDocument(root).toJson(QJsonDocument::Compact);
+    }
+}
+
+QString Positioner::resolution() const
+{
+    return m_resolution;
+}
+void Positioner::setResolution(const QString &resolution)
+{
+    if (m_resolution != resolution) {
+        m_resolution = resolution;
+    }
 }
 
 void Positioner::connectSignals(FolderModel *model)
