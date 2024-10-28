@@ -6,6 +6,7 @@
 
 #pragma once
 
+#include <Plasma/Applet>
 #include <QAbstractItemModel>
 
 #include "folderplugin_private_export.h"
@@ -18,10 +19,12 @@ class FOLDERPLUGIN_TESTS_EXPORT Positioner : public QAbstractItemModel
 {
     Q_OBJECT
 
+    Q_PROPERTY(Plasma::Applet *applet READ applet WRITE setApplet NOTIFY appletChanged)
     Q_PROPERTY(bool enabled READ enabled WRITE setEnabled NOTIFY enabledChanged)
     Q_PROPERTY(FolderModel *folderModel READ folderModel WRITE setFolderModel NOTIFY folderModelChanged)
     Q_PROPERTY(int perStripe READ perStripe WRITE setPerStripe NOTIFY perStripeChanged)
     Q_PROPERTY(QStringList positions READ positions WRITE setPositions NOTIFY positionsChanged)
+    Q_PROPERTY(QString resolution READ resolution WRITE setResolution NOTIFY resolutionChanged)
 
 public:
     explicit Positioner(QObject *parent = nullptr);
@@ -39,6 +42,9 @@ public:
     QStringList positions() const;
     void setPositions(const QStringList &positions);
 
+    QString resolution() const;
+    void setResolution(const QString &resolution);
+
     Q_INVOKABLE int map(int row) const;
 
     Q_INVOKABLE int nearestItem(int currentIndex, Qt::ArrowType direction);
@@ -49,6 +55,9 @@ public:
     Q_INVOKABLE void setRangeSelected(int anchor, int to);
 
     Q_INVOKABLE void reset();
+
+    Q_INVOKABLE QStringList loadPositionsConfig();
+    Q_INVOKABLE void savePositionsConfig(QStringList positions);
 
     /**
      * Performs the move operation in the underlying model.
@@ -72,6 +81,9 @@ public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     int columnCount(const QModelIndex &parent = QModelIndex()) const override;
 
+    Plasma::Applet *applet() const;
+    void setApplet(Plasma::Applet *applet);
+
 #ifdef BUILD_TESTING
     QHash<int, int> proxyToSourceMapping() const
     {
@@ -88,6 +100,8 @@ Q_SIGNALS:
     void folderModelChanged() const;
     void perStripeChanged() const;
     void positionsChanged() const;
+    void appletChanged() const;
+    void resolutionChanged() const;
 
 private Q_SLOTS:
     void updatePositions();
@@ -131,4 +145,8 @@ private:
     QHash<int, int> m_proxyToSource;
     QHash<int, int> m_sourceToProxy;
     bool m_beginInsertRowsCalled = false; // used to sync the amount of begin/endInsertRows calls
+
+    QString m_resolution;
+
+    Plasma::Applet *m_applet = nullptr;
 };
