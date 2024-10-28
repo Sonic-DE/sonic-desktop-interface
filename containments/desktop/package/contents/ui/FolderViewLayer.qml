@@ -165,34 +165,13 @@ FocusScope {
         }
     }
 
-    function getPositions() {
-        let allPositions;
-        try {
-            allPositions = JSON.parse(Plasmoid.configuration.positions);
-        } catch (err) {
-            allPositions = {};
-            allPositions[resolution] = Plasmoid.configuration.positions;
-        }
-        return allPositions[resolution] || "";
-    }
-
-    function savePositions(positions) {
-        let allPositions;
-        try {
-            allPositions = JSON.parse(Plasmoid.configuration.positions);
-        } catch (err) {
-            allPositions = {};
-        }
-        allPositions[resolution] = positions;
-        Plasmoid.configuration.positions = JSON.stringify(allPositions, Object.keys(allPositions).sort());
-    }
 
     Connections {
         target: Plasmoid.containment
         // Load the icon positions when geometry changes, so we dont use positions from wrong geometry
         // BUG:493569
         function onScreenGeometryChanged(): void {
-            folderView.positions = getPositions();
+            folderView.positions = folderView.positioner.loadPositionsConfig();
         }
     }
 
@@ -240,6 +219,8 @@ FocusScope {
 
         focus: true
         isRootView: true
+        positionerApplet: Plasmoid
+        positionerResolution: folderViewLayerComponent.resolution
 
         url: Plasmoid.configuration.url
         locked: (Plasmoid.configuration.locked || !isContainment || lockedByKiosk)
@@ -260,18 +241,21 @@ FocusScope {
         }
 
         onPerStripeChanged: {
-            folderView.positions = getPositions();
+            folderView.positions = folderView.positioner.loadPositionsConfig();
         }
 
         Timer {
             id: saveTimer
             interval: Kirigami.Units.humanMoment
-            onTriggered: savePositions(folderView.positions)
+            onTriggered: {
+                folderView.positioner.savePositionsConfig(folderView.positions);
+                //savePositions(folderView.positions)
+            }
         }
 
         Component.onCompleted: {
             folderView.sortMode = Plasmoid.configuration.sortMode;
-            folderView.positions = getPositions();
+            folderView.positions = folderView.positioner.loadPositionsConfig();
         }
     }
 
