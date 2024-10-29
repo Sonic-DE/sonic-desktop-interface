@@ -57,7 +57,7 @@ public:
     Q_INVOKABLE void reset();
 
     Q_INVOKABLE QStringList loadPositionsConfig();
-    Q_INVOKABLE void savePositionsConfig(const QStringList pos);
+    Q_INVOKABLE void savePositionsConfig();
 
     /**
      * Performs the move operation in the underlying model.
