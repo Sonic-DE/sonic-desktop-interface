@@ -110,7 +110,7 @@ QStringList Positioner::positions() const
 
 void Positioner::setPositions(const QStringList &positions)
 {
-    if (m_positions != positions) {
+    if (m_positions != positions && m_folderModel->screenUsed()) {
         m_positions = positions;
 
         Q_EMIT positionsChanged();
@@ -492,7 +492,7 @@ void Positioner::updatePositions()
             positions.append(QString::number(qMax(0, it.key() / m_perStripe)));
             positions.append(QString::number(qMax(0, it.key() % m_perStripe)));
         }
-        if (positions != m_positions) {
+        if (positions != m_positions && m_folderModel->screenUsed()) {
             m_positions = positions;
 
             qWarning() << "Positioner::updatePositions emits positionsChanged";
@@ -958,24 +958,25 @@ void Positioner::setApplet(Plasma::Applet *applet)
     }
 }
 
-QStringList Positioner::loadPositionsConfig()
+void Positioner::loadPositionsConfig()
 {
-    QStringList positions;
-    if (m_applet) {
-        auto doc = QJsonDocument::fromJson(m_applet->config().group(QStringLiteral("General")).readEntry(QStringLiteral("positions")).toUtf8());
-        qWarning() << "Loaded json: " << doc.toJson(QJsonDocument::Compact);
-        positions = doc[m_resolution].toString().split(QStringLiteral(","));
+
+    if (m_applet && m_folderModel->screenUsed()) {
+        const QJsonDocument doc = QJsonDocument::fromJson(m_applet->config().group(QStringLiteral("General")).readEntry(QStringLiteral("positions")).toUtf8());
+        qWarning() << "Loaded json: " << doc[m_resolution].toVariant().toStringList();
+        setPositions(doc[m_resolution].toVariant().toStringList());
     }
-    return positions;
 }
 
-void Positioner::savePositionsConfig(QStringList positions)
+void Positioner::savePositionsConfig(const QStringList pos)
 {
-    if (m_applet) {
+    if (m_applet && m_folderModel->screenUsed()) {
         QJsonObject root;
-        root[m_resolution] = positions.join(QStringLiteral(","));
-        m_applet->config().group(QStringLiteral("General")).writeEntry(QStringLiteral("positions"), QJsonDocument(root).toJson(QJsonDocument::Compact));
-        qWarning() << "Saved json: " << QJsonDocument(root).toJson(QJsonDocument::Compact);
+        root[m_resolution] = QJsonArray::fromStringList(pos);
+        const QByteArray data = QJsonDocument(root).toJson(QJsonDocument::Compact);
+        qWarning() << "Saved json: " << data;
+        m_applet->config().group(QStringLiteral("General")).writeEntry(QStringLiteral("positions"), data);
+        setPositions(pos);
     }
 }
 
