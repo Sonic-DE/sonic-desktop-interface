@@ -241,6 +241,7 @@ public:
     Q_INVOKABLE void undo();
     Q_INVOKABLE void refresh();
     Q_INVOKABLE void createFolder();
+    Q_INVOKABLE bool screenUsed();
 
     void setScreen(int screen);
 
