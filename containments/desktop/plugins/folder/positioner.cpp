@@ -958,16 +958,14 @@ void Positioner::setApplet(Plasma::Applet *applet)
     }
 }
 
-QStringList Positioner::loadPositionsConfig()
+void Positioner::loadPositionsConfig()
 {
-
     if (m_applet && m_folderModel->screenUsed()) {
         const QJsonDocument doc = QJsonDocument::fromJson(m_applet->config().group(QStringLiteral("General")).readEntry(QStringLiteral("positions")).toUtf8());
         QStringList positions = doc[m_resolution].toVariant().toStringList();
         qWarning() << "Loaded json: " << positions;
-        return positions;
+        setPositions(positions);
     }
-    return QStringList();
 }
 
 void Positioner::savePositionsConfig()
