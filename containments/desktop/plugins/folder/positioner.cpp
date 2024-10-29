@@ -970,14 +970,16 @@ QStringList Positioner::loadPositionsConfig()
     return QStringList();
 }
 
-void Positioner::savePositionsConfig(const QStringList pos)
+void Positioner::savePositionsConfig()
 {
     if (m_applet && m_folderModel->screenUsed()) {
         QJsonObject root;
-        root[m_resolution] = QJsonArray::fromStringList(pos);
+        root[m_resolution] = QJsonArray::fromStringList(positions());
         const QByteArray data = QJsonDocument(root).toJson(QJsonDocument::Compact);
-        qWarning() << "Saved json: " << data;
         m_applet->config().group(QStringLiteral("General")).writeEntry(QStringLiteral("positions"), data);
+        m_applet->config().sync();
+        qWarning() << "Saved json: "
+                   << QJsonDocument::fromJson(m_applet->config().group(QStringLiteral("General")).readEntry(QStringLiteral("positions")).toUtf8());
     }
 }
 
