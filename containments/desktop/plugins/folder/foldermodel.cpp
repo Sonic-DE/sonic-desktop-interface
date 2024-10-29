@@ -756,6 +756,10 @@ void FolderModel::setScreen(int screen)
     Q_EMIT screenChanged();
 }
 
+bool FolderModel::screenUsed() {
+    return m_screenUsed;
+}
+
 KFileItem FolderModel::rootItem() const
 {
     return m_dirModel->dirLister()->rootItem();
