@@ -496,7 +496,6 @@ void Positioner::updatePositions()
             m_positions = positions;
 
             if (!m_skipSave) {
-                qWarning() << "Positioner::updatePositions emits positionsChanged";
                 Q_EMIT positionsChanged();
             }
         }
@@ -704,7 +703,6 @@ void Positioner::sourceRowsInserted(const QModelIndex &parent, int first, int la
     // Don't generate new positions data if we're waiting for listing to
     // complete to apply initial positions.
     if (!m_deferApplyPositions && m_folderModel->screenUsed()) {
-        qWarning() << "Positioner::sourceRowsInserted";
         updatePositions();
     }
     m_skipSave = false;
@@ -736,7 +734,6 @@ void Positioner::sourceRowsRemoved(const QModelIndex &parent, int first, int las
     flushPendingChanges();
 
     if (m_folderModel->screenUsed()) {
-        qWarning() << "Positioner::sourceRowsRemoved";
         updatePositions();
     }
     m_skipSave = false;
@@ -981,7 +978,6 @@ void Positioner::loadPositionsConfig()
     if (m_applet && m_folderModel->screenUsed()) {
         const QJsonDocument doc = QJsonDocument::fromJson(m_applet->config().group(QStringLiteral("General")).readEntry(QStringLiteral("positions")).toUtf8());
         QStringList positions = doc[m_resolution].toVariant().toStringList();
-        qWarning() << "Loaded json: " << positions;
         setPositions(positions);
     }
 }
@@ -994,8 +990,6 @@ void Positioner::savePositionsConfig()
         const QByteArray data = QJsonDocument(root).toJson(QJsonDocument::Compact);
         m_applet->config().group(QStringLiteral("General")).writeEntry(QStringLiteral("positions"), data);
         m_applet->config().sync();
-        qWarning() << "Saved json: "
-                   << QJsonDocument::fromJson(m_applet->config().group(QStringLiteral("General")).readEntry(QStringLiteral("positions")).toUtf8());
     }
 }
 
