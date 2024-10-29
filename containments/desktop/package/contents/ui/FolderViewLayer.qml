@@ -239,7 +239,7 @@ FocusScope {
             id: saveTimer
             interval: Kirigami.Units.humanMoment
             onTriggered: {
-                folderView.positioner.savePositionsConfig(folderView.positions);
+                folderView.positioner.savePositionsConfig();
                 //savePositions(folderView.positions)
             }
         }
