@@ -1001,6 +1001,7 @@ void Positioner::setResolution(const QString &resolution)
 {
     if (m_resolution != resolution) {
         m_resolution = resolution;
+        loadPositionsConfig();
     }
 }
 
