@@ -692,7 +692,7 @@ void Positioner::sourceRowsInserted(const QModelIndex &parent, int first, int la
     // Don't generate new positions data if we're waiting for listing to
     // complete to apply initial positions.
     if (!m_deferApplyPositions && screenInUse()) {
-        updatePositions();
+        m_updatePositionsTimer->start();
     }
     m_skipSave = false;
 }
@@ -723,7 +723,7 @@ void Positioner::sourceRowsRemoved(const QModelIndex &parent, int first, int las
     flushPendingChanges();
 
     if (screenInUse()) {
-        updatePositions();
+        m_updatePositionsTimer->start();
     }
     m_skipSave = false;
 }
@@ -933,6 +933,7 @@ void Positioner::applyPositions()
 
     m_deferApplyPositions = false;
 
+    m_updatePositionsTimer->start();
     m_skipSave = false;
 }
 
