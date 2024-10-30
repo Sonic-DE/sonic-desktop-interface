@@ -77,6 +77,8 @@ void PositionerTest::tst_positions()
 {
     QFETCH(int, perStripe);
     m_positioner->setPerStripe(perStripe);
+    // We need to update positions manually here due to possible lack of screen
+    m_positioner->updatePositions();
     checkPositions(perStripe);
 }
 

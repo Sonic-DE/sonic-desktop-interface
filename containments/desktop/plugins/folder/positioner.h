@@ -83,6 +83,7 @@ public:
     void setApplet(Plasma::Applet *applet);
 
     bool screenInUse();
+    void updatePositions();
 
 #ifdef BUILD_TESTING
     QHash<int, int> proxyToSourceMapping() const
@@ -103,7 +104,6 @@ Q_SIGNALS:
     void resolutionChanged() const;
 
 private Q_SLOTS:
-    void updatePositions();
     void sourceStatusChanged();
     void sourceDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight, const QList<int> &roles);
     void sourceModelAboutToBeReset();
