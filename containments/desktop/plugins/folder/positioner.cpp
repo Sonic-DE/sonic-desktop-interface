@@ -92,12 +92,12 @@ int Positioner::perStripe() const
 
 void Positioner::setPerStripe(int perStripe)
 {
-    if (m_perStripe != perStripe) {
+    if (m_perStripe != perStripe && perStripe > 0) {
         m_perStripe = perStripe;
 
         Q_EMIT perStripeChanged();
 
-        if (m_enabled && perStripe > 0 && !m_proxyToSource.isEmpty()) {
+        if (m_enabled && screenInUse()) {
             applyPositions();
         }
     }
@@ -325,6 +325,7 @@ void Positioner::reset()
     endResetModel();
 
     m_positions = QStringList();
+    updatePositions();
     m_savePositionsTimer->start();
 }
 
@@ -458,7 +459,7 @@ void Positioner::updatePositions()
     QStringList positions;
 
     if (m_enabled && screenInUse()) {
-        positions.append(QString::number((1 + ((rowCount() - 1) / m_perStripe))));
+        positions.append(QString::number(1 + ((rowCount() - 1) / m_perStripe)));
         positions.append(QString::number(m_perStripe));
 
         QHashIterator<int, int> it(m_proxyToSource);
@@ -476,7 +477,7 @@ void Positioner::updatePositions()
             positions.append(QString::number(qMax(0, it.key() / m_perStripe)));
             positions.append(QString::number(qMax(0, it.key() % m_perStripe)));
         }
-        if (positions != m_positions && screenInUse()) {
+        if (positions != m_positions) {
             m_positions = positions;
 
             if (!m_skipSave) {
