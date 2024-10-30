@@ -974,7 +974,7 @@ bool Positioner::screenInUse()
     return m_folderModel->screenUsed();
 }
 
-void Positioner::loadPositionsConfig()
+void Positioner::loadAndApplyPositionsConfig()
 {
     m_skipSave = true;
     if (m_applet && screenInUse()) {
@@ -1015,7 +1015,7 @@ void Positioner::setResolution(const QString &resolution)
 {
     if (m_resolution != resolution) {
         m_resolution = resolution;
-        loadPositionsConfig();
+        loadAndApplyPositionsConfig();
     }
 }
 
