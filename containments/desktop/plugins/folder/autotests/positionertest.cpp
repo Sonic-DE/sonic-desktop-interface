@@ -77,6 +77,8 @@ void PositionerTest::tst_positions()
 {
     QFETCH(int, perStripe);
     m_positioner->setPerStripe(perStripe);
+    // We need to update positions manually here due to possible lack of screen
+    m_positioner->updatePositions();
     checkPositions(perStripe);
 }
 
@@ -144,6 +146,7 @@ void PositionerTest::tst_reset()
     ensureFolderModelReady();
     m_positioner->move({0, 10});
     m_positioner->reset();
+    m_positioner->updatePositions();
     checkPositions(3);
 
     for (int i = 0; i < m_positioner->rowCount(); i++) {
