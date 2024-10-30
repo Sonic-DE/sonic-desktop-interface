@@ -119,6 +119,7 @@ Rectangle {
 
                 const config = Plasmoid.configuration; // type: KConfigPropertyMap
 
+                /*
                 const props = {
                     "title": item.name
                 };
@@ -126,8 +127,16 @@ Rectangle {
                 config.keys().forEach(key => {
                     props["cfg_" + key] = config[key];
                 });
+                */
 
-                pushReplace(item.source, props);
+                pushReplace(item.source, { "title": item.name });
+
+                config.keys().forEach(key => {
+                    // TODO: Is check necessary to suppress errors?
+                    if ("cfg_" + key in app.currentConfigPage) {
+                        app.currentConfigPage["cfg_" + key] = config[key];
+                    }
+                });
             }
 
         } else if (item.kcm) {
