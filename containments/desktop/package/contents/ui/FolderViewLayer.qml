@@ -237,7 +237,6 @@ FocusScope {
 
         Component.onCompleted: {
             folderView.sortMode = Plasmoid.configuration.sortMode;
-            folderView.positioner.loadAndApplyPositionsConfig();
         }
     }
 
