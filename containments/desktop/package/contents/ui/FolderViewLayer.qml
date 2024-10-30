@@ -235,20 +235,8 @@ FocusScope {
             Plasmoid.configuration.sortMode = sortMode;
         }
 
-        onPositionsChanged: {
-            saveTimer.restart()
-        }
-
         onPerStripeChanged: {
             folderView.positioner.loadPositionsConfig();
-        }
-
-        Timer {
-            id: saveTimer
-            interval: Kirigami.Units.humanMoment
-            onTriggered: {
-                folderView.positioner.savePositionsConfig();
-            }
         }
 
         Component.onCompleted: {

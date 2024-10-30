@@ -23,10 +23,15 @@ Positioner::Positioner(QObject *parent)
     , m_ignoreNextTransaction(false)
     , m_deferApplyPositions(false)
     , m_updatePositionsTimer(new QTimer(this))
+    , m_savePositionsTimer(new QTimer(this))
 {
     m_updatePositionsTimer->setSingleShot(true);
     m_updatePositionsTimer->setInterval(0);
     connect(m_updatePositionsTimer, &QTimer::timeout, this, &Positioner::updatePositions);
+
+    m_savePositionsTimer->setSingleShot(true);
+    m_savePositionsTimer->setInterval(500);
+    connect(m_savePositionsTimer, &QTimer::timeout, this, &Positioner::savePositionsConfig);
 }
 
 Positioner::~Positioner()
@@ -112,8 +117,6 @@ void Positioner::setPositions(const QStringList &positions)
 {
     if (m_positions != positions && screenInUse()) {
         m_positions = positions;
-
-        Q_EMIT positionsChanged();
 
         // Defer applying positions until listing completes.
         if (m_folderModel->status() == FolderModel::Listing) {
@@ -341,7 +344,7 @@ void Positioner::reset()
     endResetModel();
 
     m_positions = QStringList();
-    Q_EMIT positionsChanged();
+    m_savePositionsTimer->start();
 }
 
 int Positioner::move(const QVariantList &moves)
@@ -496,7 +499,7 @@ void Positioner::updatePositions()
             m_positions = positions;
 
             if (!m_skipSave) {
-                Q_EMIT positionsChanged();
+                m_savePositionsTimer->start();
             }
         }
     }
@@ -816,6 +819,10 @@ void Positioner::applyPositions()
 {
     // Do not allow saving during this operation
     m_skipSave = true;
+
+    if (!screenInUse()) {
+        return;
+    }
     // We were called while the source model is listing. Defer applying positions
     // until listing completes.
     if (m_folderModel->status() == FolderModel::Listing) {
@@ -983,21 +990,25 @@ bool Positioner::screenInUse()
 
 void Positioner::loadPositionsConfig()
 {
+    m_skipSave = true;
     if (m_applet && screenInUse()) {
         const QJsonDocument doc = QJsonDocument::fromJson(m_applet->config().group(QStringLiteral("General")).readEntry(QStringLiteral("positions")).toUtf8());
         QStringList positions = doc[m_resolution].toVariant().toStringList();
         setPositions(positions);
     }
+    m_skipSave = false;
 }
 
 void Positioner::savePositionsConfig()
 {
     if (m_applet && screenInUse() && !m_skipSave) {
+        m_skipSave = true;
         QJsonObject root;
         root[m_resolution] = QJsonArray::fromStringList(positions());
         const QByteArray data = QJsonDocument(root).toJson(QJsonDocument::Compact);
         m_applet->config().group(QStringLiteral("General")).writeEntry(QStringLiteral("positions"), data);
         m_applet->config().sync();
+        m_skipSave = false;
     }
 }
 
