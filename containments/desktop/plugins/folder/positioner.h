@@ -54,8 +54,8 @@ public:
 
     Q_INVOKABLE void reset();
 
-    Q_INVOKABLE void loadPositionsConfig();
-    Q_INVOKABLE void savePositionsConfig();
+    Q_INVOKABLE void loadAndApplyPositionsConfig();
+    void savePositionsConfig();
 
     /**
      * Performs the move operation in the underlying model.
