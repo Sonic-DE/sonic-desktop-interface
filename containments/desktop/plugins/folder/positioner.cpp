@@ -533,10 +533,6 @@ void Positioner::sourceModelReset()
 
 void Positioner::sourceRowsAboutToBeInserted(const QModelIndex &parent, int start, int end)
 {
-    // Skip saving since if there is no screen, this is action is not by user
-    if (!screenInUse()) {
-        m_skipSave = true;
-    }
     if (m_enabled) {
         // Don't insert yet if we're waiting for listing to complete to apply
         // initial positions;
@@ -610,9 +606,6 @@ void Positioner::sourceRowsAboutToBeMoved(const QModelIndex &sourceParent,
 void Positioner::sourceRowsAboutToBeRemoved(const QModelIndex &parent, int first, int last)
 {
     // Skip saving since if there is no screen, this is action is not by user
-    if (!screenInUse()) {
-        m_skipSave = true;
-    }
     if (m_enabled) {
         int oldLast = lastRow();
 
@@ -799,9 +792,6 @@ int Positioner::firstFreeRow() const
 
 void Positioner::applyPositions()
 {
-    // Do not allow saving during this operation
-    m_skipSave = true;
-
     if (!screenInUse()) {
         return;
     }
@@ -824,6 +814,8 @@ void Positioner::applyPositions()
         return;
     }
 
+    // Do not allow saving during this operation
+    m_skipSave = true;
     beginResetModel();
 
     m_proxyToSource.clear();
@@ -994,13 +986,11 @@ void Positioner::loadAndApplyPositionsConfig()
 void Positioner::savePositionsConfig()
 {
     if (m_applet && screenInUse() && !m_skipSave) {
-        m_skipSave = true;
         QJsonObject root;
         root[m_resolution] = QJsonArray::fromStringList(m_positions);
         const QByteArray data = QJsonDocument(root).toJson(QJsonDocument::Compact);
         m_applet->config().group(QStringLiteral("General")).writeEntry(QStringLiteral("positions"), data);
         m_applet->config().sync();
-        m_skipSave = false;
     }
 }
 
