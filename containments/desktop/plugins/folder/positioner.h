@@ -23,7 +23,6 @@ class FOLDERPLUGIN_TESTS_EXPORT Positioner : public QAbstractItemModel
     Q_PROPERTY(bool enabled READ enabled WRITE setEnabled NOTIFY enabledChanged)
     Q_PROPERTY(FolderModel *folderModel READ folderModel WRITE setFolderModel NOTIFY folderModelChanged)
     Q_PROPERTY(int perStripe READ perStripe WRITE setPerStripe NOTIFY perStripeChanged)
-    Q_PROPERTY(QStringList positions READ positions WRITE setPositions NOTIFY positionsChanged)
     Q_PROPERTY(QString resolution READ resolution WRITE setResolution NOTIFY resolutionChanged)
 
 public:
@@ -101,7 +100,6 @@ Q_SIGNALS:
     void enabledChanged() const;
     void folderModelChanged() const;
     void perStripeChanged() const;
-    void positionsChanged() const;
     void appletChanged() const;
     void resolutionChanged() const;
 
@@ -143,6 +141,7 @@ private:
     bool m_deferApplyPositions;
     QVariantList m_deferMovePositions;
     QTimer *const m_updatePositionsTimer;
+    QTimer *const m_savePositionsTimer;
 
     QHash<int, int> m_proxyToSource;
     QHash<int, int> m_sourceToProxy;

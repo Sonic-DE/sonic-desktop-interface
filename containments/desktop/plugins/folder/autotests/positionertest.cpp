@@ -144,9 +144,7 @@ void PositionerTest::tst_reset()
     ensureFolderModelReady();
     m_positioner->move({0, 10});
     m_positioner->reset();
-    QSignalSpy s(m_positioner, &Positioner::positionsChanged);
-    s.wait(500);
-    QCOMPARE(s.count(), 1);
+
     checkPositions(3);
 
     for (int i = 0; i < m_positioner->rowCount(); i++) {
@@ -291,9 +289,6 @@ void PositionerTest::tst_proxyMapping()
 void PositionerTest::checkPositions(int perStripe)
 {
     ensureFolderModelReady();
-
-    QSignalSpy s(m_positioner, &Positioner::positionsChanged);
-    s.wait();
 
     const auto positions = m_positioner->positions();
     struct Pos {
