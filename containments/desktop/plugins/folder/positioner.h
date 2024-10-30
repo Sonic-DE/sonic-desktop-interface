@@ -139,7 +139,6 @@ private:
     QStringList m_positions;
     bool m_deferApplyPositions;
     QVariantList m_deferMovePositions;
-    QTimer *const m_updatePositionsTimer;
     QTimer *const m_savePositionsTimer;
 
     QHash<int, int> m_proxyToSource;
