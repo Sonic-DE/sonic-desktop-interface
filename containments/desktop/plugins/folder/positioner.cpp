@@ -110,7 +110,7 @@ QStringList Positioner::positions() const
 
 void Positioner::setPositions(const QStringList &positions)
 {
-    if (m_positions != positions && m_folderModel->screenUsed()) {
+    if (m_positions != positions && screenInUse()) {
         m_positions = positions;
 
         Q_EMIT positionsChanged();
@@ -473,7 +473,7 @@ void Positioner::updatePositions()
 {
     QStringList positions;
 
-    if (m_enabled && m_folderModel->screenUsed()) {
+    if (m_enabled && screenInUse()) {
         positions.append(QString::number((1 + ((rowCount() - 1) / m_perStripe))));
         positions.append(QString::number(m_perStripe));
 
@@ -492,7 +492,7 @@ void Positioner::updatePositions()
             positions.append(QString::number(qMax(0, it.key() / m_perStripe)));
             positions.append(QString::number(qMax(0, it.key() % m_perStripe)));
         }
-        if (positions != m_positions && m_folderModel->screenUsed()) {
+        if (positions != m_positions && screenInUse()) {
             m_positions = positions;
 
             if (!m_skipSave) {
@@ -549,7 +549,7 @@ void Positioner::sourceModelReset()
 void Positioner::sourceRowsAboutToBeInserted(const QModelIndex &parent, int start, int end)
 {
     // Skip saving since if there is no screen, this is action is not by user
-    if (!m_folderModel->screenUsed()) {
+    if (!screenInUse()) {
         m_skipSave = true;
     }
     if (m_enabled) {
@@ -625,7 +625,7 @@ void Positioner::sourceRowsAboutToBeMoved(const QModelIndex &sourceParent,
 void Positioner::sourceRowsAboutToBeRemoved(const QModelIndex &parent, int first, int last)
 {
     // Skip saving since if there is no screen, this is action is not by user
-    if (!m_folderModel->screenUsed()) {
+    if (!screenInUse()) {
         m_skipSave = true;
     }
     if (m_enabled) {
@@ -702,7 +702,7 @@ void Positioner::sourceRowsInserted(const QModelIndex &parent, int first, int la
 
     // Don't generate new positions data if we're waiting for listing to
     // complete to apply initial positions.
-    if (!m_deferApplyPositions && m_folderModel->screenUsed()) {
+    if (!m_deferApplyPositions && screenInUse()) {
         updatePositions();
     }
     m_skipSave = false;
@@ -733,7 +733,7 @@ void Positioner::sourceRowsRemoved(const QModelIndex &parent, int first, int las
 
     flushPendingChanges();
 
-    if (m_folderModel->screenUsed()) {
+    if (screenInUse()) {
         updatePositions();
     }
     m_skipSave = false;
@@ -973,9 +973,17 @@ void Positioner::setApplet(Plasma::Applet *applet)
     }
 }
 
+bool Positioner::screenInUse()
+{
+    if (!m_folderModel) {
+        return false;
+    }
+    return m_folderModel->screenUsed();
+}
+
 void Positioner::loadPositionsConfig()
 {
-    if (m_applet && m_folderModel->screenUsed()) {
+    if (m_applet && screenInUse()) {
         const QJsonDocument doc = QJsonDocument::fromJson(m_applet->config().group(QStringLiteral("General")).readEntry(QStringLiteral("positions")).toUtf8());
         QStringList positions = doc[m_resolution].toVariant().toStringList();
         setPositions(positions);
@@ -984,7 +992,7 @@ void Positioner::loadPositionsConfig()
 
 void Positioner::savePositionsConfig()
 {
-    if (m_applet && m_folderModel->screenUsed() && !m_skipSave) {
+    if (m_applet && screenInUse() && !m_skipSave) {
         QJsonObject root;
         root[m_resolution] = QJsonArray::fromStringList(positions());
         const QByteArray data = QJsonDocument(root).toJson(QJsonDocument::Compact);
