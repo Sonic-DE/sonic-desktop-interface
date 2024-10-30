@@ -473,7 +473,7 @@ void Positioner::updatePositions()
 {
     QStringList positions;
 
-    if (m_enabled && !m_proxyToSource.isEmpty() && m_perStripe > 0 && m_folderModel->screenUsed()) {
+    if (m_enabled && m_folderModel->screenUsed()) {
         positions.append(QString::number((1 + ((rowCount() - 1) / m_perStripe))));
         positions.append(QString::number(m_perStripe));
 
