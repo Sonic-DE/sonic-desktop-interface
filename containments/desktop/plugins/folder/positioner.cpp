@@ -22,13 +22,8 @@ Positioner::Positioner(QObject *parent)
     , m_perStripe(0)
     , m_ignoreNextTransaction(false)
     , m_deferApplyPositions(false)
-    , m_updatePositionsTimer(new QTimer(this))
     , m_savePositionsTimer(new QTimer(this))
 {
-    m_updatePositionsTimer->setSingleShot(true);
-    m_updatePositionsTimer->setInterval(0);
-    connect(m_updatePositionsTimer, &QTimer::timeout, this, &Positioner::updatePositions);
-
     m_savePositionsTimer->setSingleShot(true);
     m_savePositionsTimer->setInterval(500);
     connect(m_savePositionsTimer, &QTimer::timeout, this, &Positioner::savePositionsConfig);
@@ -453,7 +448,7 @@ int Positioner::move(const QVariantList &moves)
 
     m_folderModel->updateSelection(sourceRows, true);
 
-    m_updatePositionsTimer->start();
+    updatePositions();
 
     return toIndices.constFirst();
 }
@@ -692,7 +687,7 @@ void Positioner::sourceRowsInserted(const QModelIndex &parent, int first, int la
     // Don't generate new positions data if we're waiting for listing to
     // complete to apply initial positions.
     if (!m_deferApplyPositions && screenInUse()) {
-        m_updatePositionsTimer->start();
+        updatePositions();
     }
     m_skipSave = false;
 }
@@ -723,7 +718,7 @@ void Positioner::sourceRowsRemoved(const QModelIndex &parent, int first, int las
     flushPendingChanges();
 
     if (screenInUse()) {
-        m_updatePositionsTimer->start();
+        updatePositions();
     }
     m_skipSave = false;
 }
@@ -933,7 +928,7 @@ void Positioner::applyPositions()
 
     m_deferApplyPositions = false;
 
-    m_updatePositionsTimer->start();
+    updatePositions();
     m_skipSave = false;
 }
 
