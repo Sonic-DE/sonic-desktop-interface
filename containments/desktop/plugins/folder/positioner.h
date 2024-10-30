@@ -38,8 +38,7 @@ public:
     int perStripe() const;
     void setPerStripe(int perStripe);
 
-    QStringList positions() const;
-    void setPositions(const QStringList &positions);
+    QStringList positions() const; // Used in unit tests
 
     QString resolution() const;
     void setResolution(const QString &resolution);
