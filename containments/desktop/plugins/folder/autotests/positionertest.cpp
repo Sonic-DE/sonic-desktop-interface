@@ -144,7 +144,6 @@ void PositionerTest::tst_reset()
     ensureFolderModelReady();
     m_positioner->move({0, 10});
     m_positioner->reset();
-
     checkPositions(3);
 
     for (int i = 0; i < m_positioner->rowCount(); i++) {

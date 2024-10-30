@@ -113,20 +113,6 @@ QStringList Positioner::positions() const
     return m_positions;
 }
 
-void Positioner::setPositions(const QStringList &positions)
-{
-    if (m_positions != positions && screenInUse()) {
-        m_positions = positions;
-
-        // Defer applying positions until listing completes.
-        if (m_folderModel->status() == FolderModel::Listing) {
-            m_deferApplyPositions = true;
-        } else {
-            applyPositions();
-        }
-    }
-}
-
 int Positioner::map(int row) const
 {
     if (m_enabled && m_folderModel) {
@@ -994,7 +980,16 @@ void Positioner::loadPositionsConfig()
     if (m_applet && screenInUse()) {
         const QJsonDocument doc = QJsonDocument::fromJson(m_applet->config().group(QStringLiteral("General")).readEntry(QStringLiteral("positions")).toUtf8());
         QStringList positions = doc[m_resolution].toVariant().toStringList();
-        setPositions(positions);
+        if (m_positions != positions && screenInUse()) {
+            m_positions = positions;
+
+            // Defer applying positions until listing completes.
+            if (m_folderModel->status() == FolderModel::Listing) {
+                m_deferApplyPositions = true;
+            } else {
+                applyPositions();
+            }
+        }
     }
     m_skipSave = false;
 }
@@ -1004,7 +999,7 @@ void Positioner::savePositionsConfig()
     if (m_applet && screenInUse() && !m_skipSave) {
         m_skipSave = true;
         QJsonObject root;
-        root[m_resolution] = QJsonArray::fromStringList(positions());
+        root[m_resolution] = QJsonArray::fromStringList(m_positions);
         const QByteArray data = QJsonDocument(root).toJson(QJsonDocument::Compact);
         m_applet->config().group(QStringLiteral("General")).writeEntry(QStringLiteral("positions"), data);
         m_applet->config().sync();
