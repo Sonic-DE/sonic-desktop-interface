@@ -974,21 +974,20 @@ bool Positioner::screenInUse()
     return m_folderModel->screenUsed();
 }
 
+void Positioner::loadAndApplyPositions()
+{
+    loadPositionsConfig();
+    applyPositions();
+}
+
 void Positioner::loadPositionsConfig()
 {
     m_skipSave = true;
     if (m_applet && screenInUse()) {
         const QJsonDocument doc = QJsonDocument::fromJson(m_applet->config().group(QStringLiteral("General")).readEntry(QStringLiteral("positions")).toUtf8());
         QStringList positions = doc[m_resolution].toVariant().toStringList();
-        if (m_positions != positions && screenInUse()) {
+        if (m_positions != positions) {
             m_positions = positions;
-
-            // Defer applying positions until listing completes.
-            if (m_folderModel->status() == FolderModel::Listing) {
-                m_deferApplyPositions = true;
-            } else {
-                applyPositions();
-            }
         }
     }
     m_skipSave = false;

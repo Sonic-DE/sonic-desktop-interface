@@ -54,8 +54,7 @@ public:
 
     Q_INVOKABLE void reset();
 
-    Q_INVOKABLE void loadPositionsConfig();
-    Q_INVOKABLE void savePositionsConfig();
+    Q_INVOKABLE void loadAndApplyPositions();
 
     /**
      * Performs the move operation in the underlying model.
@@ -83,6 +82,8 @@ public:
     void setApplet(Plasma::Applet *applet);
 
     bool screenInUse();
+    void loadPositionsConfig();
+    void savePositionsConfig();
 
 #ifdef BUILD_TESTING
     QHash<int, int> proxyToSourceMapping() const
