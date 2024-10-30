@@ -149,5 +149,5 @@ private:
     QString m_resolution;
 
     Plasma::Applet *m_applet = nullptr;
-    bool m_skipSave; // skip saving if the action is not by user
+    bool m_skipSave = false; // skip saving if the action is not by user
 };
