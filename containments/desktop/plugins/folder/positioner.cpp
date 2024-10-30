@@ -967,7 +967,10 @@ void Positioner::loadAndApplyPositionsConfig()
 {
     m_skipSave = true;
     if (m_applet && screenInUse()) {
-        const QJsonDocument doc = QJsonDocument::fromJson(m_applet->config().group(QStringLiteral("General")).readEntry(QStringLiteral("positions")).toUtf8());
+        // The old configuration has commas with escape characters, so clean up those from the config
+        auto confdata =
+            m_applet->config().group(QStringLiteral("General")).readEntry(QStringLiteral("positions")).replace(QStringLiteral("\\,"), QStringLiteral(","));
+        const QJsonDocument doc = QJsonDocument::fromJson(confdata.toUtf8());
         QStringList positions = doc[m_resolution].toVariant().toStringList();
         if (m_positions != positions && screenInUse()) {
             m_positions = positions;
