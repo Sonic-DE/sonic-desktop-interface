@@ -31,7 +31,6 @@ FocusScope {
     property alias url: dir.url
     property alias status: dir.status
     property alias perStripe: positioner.perStripe
-    property alias positions: positioner.positions
     property alias positioner: positioner
     property alias positionerApplet: positioner.applet
     property alias positionerResolution: positioner.resolution
