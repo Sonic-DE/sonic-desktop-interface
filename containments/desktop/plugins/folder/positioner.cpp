@@ -994,7 +994,12 @@ void Positioner::loadAndApplyPositionsConfig()
         QStringList positions = doc[m_resolution].toVariant().toStringList();
         if (m_positions != positions && screenInUse()) {
             m_positions = positions;
-
+            // In case our row and m_perStripe values are out of sync, update them here
+            // The can get out of sync due to qml and c++ both handling them
+            // If we have the first two values of positions, we have the perStripe value
+            if (m_positions.length() >= 2) {
+                m_perStripe = m_positions[1].toInt();
+            }
             // Defer applying positions until listing completes.
             if (m_folderModel->status() == FolderModel::Listing) {
                 m_deferApplyPositions = true;
@@ -1028,21 +1033,18 @@ void Positioner::savePositionsConfig()
     }
 }
 
-QString Positioner::resolution() const
-{
-    return m_resolution;
-}
-void Positioner::setResolution(const QString &resolution)
-{
-    if (m_resolution != resolution) {
-        m_resolution = resolution;
-        loadAndApplyPositionsConfig();
-    }
-}
-
 void Positioner::onScreenGeometryChanged()
 {
-    loadAndApplyPositionsConfig();
+    if (m_folderModel) {
+        QString resolution = QStringLiteral("%1x%2").arg(QString::number(floor(m_folderModel->screenGeometry().width())),
+                                                         QString::number(floor(m_folderModel->screenGeometry().height())));
+        if (resolution != QStringLiteral("0x0")) {
+            if (m_resolution != resolution) {
+                m_resolution = resolution;
+            }
+        }
+        loadAndApplyPositionsConfig();
+    }
 }
 
 void Positioner::connectSignals(FolderModel *model)
