@@ -23,7 +23,6 @@ class FOLDERPLUGIN_TESTS_EXPORT Positioner : public QAbstractItemModel
     Q_PROPERTY(bool enabled READ enabled WRITE setEnabled NOTIFY enabledChanged)
     Q_PROPERTY(FolderModel *folderModel READ folderModel WRITE setFolderModel NOTIFY folderModelChanged)
     Q_PROPERTY(int perStripe READ perStripe WRITE setPerStripe NOTIFY perStripeChanged)
-    Q_PROPERTY(QString resolution READ resolution WRITE setResolution NOTIFY resolutionChanged)
 
 public:
     explicit Positioner(QObject *parent = nullptr);
@@ -39,9 +38,6 @@ public:
     void setPerStripe(int perStripe);
 
     QStringList positions() const; // Used in unit tests
-
-    QString resolution() const;
-    void setResolution(const QString &resolution);
 
     Q_INVOKABLE int map(int row) const;
 
@@ -102,7 +98,6 @@ Q_SIGNALS:
     void folderModelChanged() const;
     void perStripeChanged() const;
     void appletChanged() const;
-    void resolutionChanged() const;
 
 private Q_SLOTS:
     void onScreenGeometryChanged();
