@@ -27,6 +27,7 @@ Positioner::Positioner(QObject *parent)
     m_savePositionsTimer->setSingleShot(true);
     m_savePositionsTimer->setInterval(500);
     connect(m_savePositionsTimer, &QTimer::timeout, this, &Positioner::savePositionsConfig);
+    loadAndApplyPositionsConfig();
 }
 
 Positioner::~Positioner()
@@ -1028,6 +1029,13 @@ void Positioner::setResolution(const QString &resolution)
     }
 }
 
+void Positioner::onScreenGeometryChanged()
+{
+    m_skipSave = true;
+    loadAndApplyPositionsConfig();
+    m_skipSave = false;
+}
+
 void Positioner::connectSignals(FolderModel *model)
 {
     connect(model, &QAbstractItemModel::dataChanged, this, &Positioner::sourceDataChanged, Qt::UniqueConnection);
@@ -1042,6 +1050,7 @@ void Positioner::connectSignals(FolderModel *model)
     connect(m_folderModel, &FolderModel::urlChanged, this, &Positioner::reset, Qt::UniqueConnection);
     connect(m_folderModel, &FolderModel::statusChanged, this, &Positioner::sourceStatusChanged, Qt::UniqueConnection);
     connect(m_folderModel, &FolderModel::itemRenamed, this, &Positioner::updatePositionsList, Qt::UniqueConnection);
+    connect(m_folderModel, &FolderModel::screenGeometryChanged, this, &Positioner::onScreenGeometryChanged, Qt::UniqueConnection);
 }
 
 void Positioner::disconnectSignals(FolderModel *model)
@@ -1058,4 +1067,5 @@ void Positioner::disconnectSignals(FolderModel *model)
     disconnect(m_folderModel, &FolderModel::urlChanged, this, &Positioner::reset);
     disconnect(m_folderModel, &FolderModel::statusChanged, this, &Positioner::sourceStatusChanged);
     disconnect(m_folderModel, &FolderModel::itemRenamed, this, &Positioner::updatePositionsList);
+    disconnect(m_folderModel, &FolderModel::screenGeometryChanged, this, &Positioner::onScreenGeometryChanged);
 }

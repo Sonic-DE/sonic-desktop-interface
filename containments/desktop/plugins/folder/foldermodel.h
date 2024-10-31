@@ -275,6 +275,7 @@ Q_SIGNALS:
     void selectionChanged() const;
     void showHiddenFilesChanged() const;
     void itemRenamed() const;
+    void screenGeometryChanged();
 
 protected:
     bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const override;
