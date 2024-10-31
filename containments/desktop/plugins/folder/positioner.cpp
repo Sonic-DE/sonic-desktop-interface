@@ -98,7 +98,7 @@ void Positioner::setPerStripe(int perStripe)
         Q_EMIT perStripeChanged();
 
         if (m_enabled && screenInUse()) {
-            applyPositions();
+            convertFolderModelData();
         }
     }
 }
@@ -325,7 +325,7 @@ void Positioner::reset()
     endResetModel();
 
     m_positions = QStringList();
-    updatePositions();
+    updatePositionsList();
     m_savePositionsTimer->start();
 }
 
@@ -449,12 +449,12 @@ int Positioner::move(const QVariantList &moves)
 
     m_folderModel->updateSelection(sourceRows, true);
 
-    updatePositions();
+    updatePositionsList();
 
     return toIndices.constFirst();
 }
 
-void Positioner::updatePositions()
+void Positioner::updatePositionsList()
 {
     QStringList positions;
 
@@ -490,7 +490,7 @@ void Positioner::updatePositions()
 void Positioner::sourceStatusChanged()
 {
     if (m_deferApplyPositions && m_folderModel->status() != FolderModel::Listing) {
-        applyPositions();
+        convertFolderModelData();
     }
 
     if (m_deferMovePositions.count() > 0 && m_folderModel->status() != FolderModel::Listing) {
@@ -695,7 +695,7 @@ void Positioner::sourceRowsInserted(const QModelIndex &parent, int first, int la
     // Don't generate new positions data if we're waiting for listing to
     // complete to apply initial positions.
     if (!m_deferApplyPositions && screenInUse()) {
-        updatePositions();
+        updatePositionsList();
     }
     m_skipSave = false;
 }
@@ -731,7 +731,7 @@ void Positioner::sourceRowsRemoved(const QModelIndex &parent, int first, int las
     flushPendingChanges();
 
     if (screenInUse()) {
-        updatePositions();
+        updatePositionsList();
     }
     m_skipSave = false;
 }
@@ -809,7 +809,7 @@ int Positioner::firstFreeRow() const
     return -1;
 }
 
-void Positioner::applyPositions()
+void Positioner::convertFolderModelData()
 {
     if (!screenInUse()) {
         return;
@@ -940,7 +940,7 @@ void Positioner::applyPositions()
 
     m_deferApplyPositions = false;
 
-    updatePositions();
+    updatePositionsList();
     m_skipSave = false;
 }
 
@@ -998,7 +998,7 @@ void Positioner::loadAndApplyPositionsConfig()
             if (m_folderModel->status() == FolderModel::Listing) {
                 m_deferApplyPositions = true;
             } else {
-                applyPositions();
+                convertFolderModelData();
             }
         }
     }
@@ -1041,7 +1041,7 @@ void Positioner::connectSignals(FolderModel *model)
     connect(model, &QAbstractItemModel::layoutChanged, this, &Positioner::sourceLayoutChanged, Qt::UniqueConnection);
     connect(m_folderModel, &FolderModel::urlChanged, this, &Positioner::reset, Qt::UniqueConnection);
     connect(m_folderModel, &FolderModel::statusChanged, this, &Positioner::sourceStatusChanged, Qt::UniqueConnection);
-    connect(m_folderModel, &FolderModel::itemRenamed, this, &Positioner::updatePositions, Qt::UniqueConnection);
+    connect(m_folderModel, &FolderModel::itemRenamed, this, &Positioner::updatePositionsList, Qt::UniqueConnection);
 }
 
 void Positioner::disconnectSignals(FolderModel *model)
@@ -1057,5 +1057,5 @@ void Positioner::disconnectSignals(FolderModel *model)
     disconnect(model, &QAbstractItemModel::layoutChanged, this, &Positioner::sourceLayoutChanged);
     disconnect(m_folderModel, &FolderModel::urlChanged, this, &Positioner::reset);
     disconnect(m_folderModel, &FolderModel::statusChanged, this, &Positioner::sourceStatusChanged);
-    disconnect(m_folderModel, &FolderModel::itemRenamed, this, &Positioner::updatePositions);
+    disconnect(m_folderModel, &FolderModel::itemRenamed, this, &Positioner::updatePositionsList);
 }
