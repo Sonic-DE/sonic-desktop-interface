@@ -166,17 +166,6 @@ FocusScope {
     }
 
     Connections {
-        target: Plasmoid.containment
-        // Load the icon positions when geometry changes, so we dont use positions from wrong geometry
-        // BUG:493569
-        function onScreenGeometryChanged(): void {
-            if (folderViewLayerComponent.Window.window !== null) {
-                folderView.positioner.loadAndApplyPositionsConfig();
-            }
-        }
-    }
-
-    Connections {
         target: Plasmoid.configuration
 
         function onArrangementChanged() {
@@ -239,7 +228,6 @@ FocusScope {
 
         Component.onCompleted: {
             folderView.sortMode = Plasmoid.configuration.sortMode;
-            folderView.positioner.loadAndApplyPositionsConfig();
         }
     }
 
