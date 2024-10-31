@@ -1009,8 +1009,19 @@ void Positioner::loadAndApplyPositionsConfig()
 void Positioner::savePositionsConfig()
 {
     if (m_applet && screenInUse() && !m_skipSave) {
+        auto confdata =
+            m_applet->config().group(QStringLiteral("General")).readEntry(QStringLiteral("positions")).replace(QStringLiteral("\\,"), QStringLiteral(","));
+        auto doc = QJsonDocument::fromJson(confdata.toUtf8());
         QJsonObject root;
-        root[m_resolution] = QJsonArray::fromStringList(m_positions);
+        // Iterate over the old data
+        for (const auto &item : doc.toVariant().toMap().asKeyValueRange()) {
+            if (item.first != m_resolution) {
+                root.insert(item.first, QJsonValue::fromVariant(item.second));
+            }
+        }
+        // Append our new item
+        root.insert(m_resolution, QJsonArray::fromStringList(m_positions));
+
         const QByteArray data = QJsonDocument(root).toJson(QJsonDocument::Compact);
         m_applet->config().group(QStringLiteral("General")).writeEntry(QStringLiteral("positions"), data);
         m_applet->config().sync();
