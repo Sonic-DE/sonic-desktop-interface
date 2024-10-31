@@ -83,7 +83,8 @@ public:
     void setApplet(Plasma::Applet *applet);
 
     bool screenInUse();
-    void updatePositions();
+    // Turns proxyToSource data into positions QStringList
+    void updatePositionsList();
 
 #ifdef BUILD_TESTING
     QHash<int, int> proxyToSourceMapping() const
@@ -123,7 +124,8 @@ private:
     int firstRow() const;
     int lastRow() const;
     int firstFreeRow() const;
-    void applyPositions();
+    // Converts data from folderModel to proxy data
+    void convertFolderModelData();
     void flushPendingChanges();
     void connectSignals(FolderModel *model);
     void disconnectSignals(FolderModel *model);
