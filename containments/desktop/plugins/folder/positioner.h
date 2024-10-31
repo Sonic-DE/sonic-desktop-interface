@@ -105,6 +105,7 @@ Q_SIGNALS:
     void resolutionChanged() const;
 
 private Q_SLOTS:
+    void onScreenGeometryChanged();
     void sourceStatusChanged();
     void sourceDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight, const QList<int> &roles);
     void sourceModelAboutToBeReset();
