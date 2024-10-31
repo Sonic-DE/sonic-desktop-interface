@@ -30,8 +30,6 @@ FocusScope {
     property alias overflowing: folderView.overflowing
     property alias flow: folderView.flow
 
-    property string resolution: Math.round(root.screenGeometry.width) + "x" + Math.round(root.screenGeometry.height)
-
     readonly property bool lockedByKiosk: !KAuthorized.authorize("editable_desktop_icons")
 
     focus: true
@@ -210,7 +208,6 @@ FocusScope {
         focus: true
         isRootView: true
         positionerApplet: Plasmoid
-        positionerResolution: folderViewLayerComponent.resolution
 
         url: Plasmoid.configuration.url
         locked: (Plasmoid.configuration.locked || !isContainment || lockedByKiosk)
