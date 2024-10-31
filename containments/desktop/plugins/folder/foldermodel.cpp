@@ -745,6 +745,7 @@ void FolderModel::setFilterMimeTypes(const QStringList &mimeList)
 void FolderModel::setScreen(int screen)
 {
     m_screenUsed = (screen != -1);
+    Q_EMIT screenUsedChanged();
 
     if (!m_screenUsed || m_screen == screen)
         return;
@@ -2099,6 +2100,17 @@ void FolderModel::setApplet(Plasma::Applet *applet)
 
         Q_EMIT appletChanged();
     }
+}
+
+QRectF FolderModel::screenGeometry()
+{
+    if (m_applet) {
+        Plasma::Containment *containment = m_applet->containment();
+        if (containment) {
+            return containment->screenGeometry();
+        }
+    }
+    return QRectF();
 }
 
 bool FolderModel::showHiddenFiles() const
