@@ -170,7 +170,9 @@ FocusScope {
         // Load the icon positions when geometry changes, so we dont use positions from wrong geometry
         // BUG:493569
         function onScreenGeometryChanged(): void {
-            folderView.positioner.loadAndApplyPositionsConfig();
+            if (folderViewLayerComponent.Window.window !== null) {
+                folderView.positioner.loadAndApplyPositionsConfig();
+            }
         }
     }
 
