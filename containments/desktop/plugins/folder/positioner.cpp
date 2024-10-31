@@ -667,6 +667,10 @@ void Positioner::sourceRowsInserted(const QModelIndex &parent, int first, int la
     Q_UNUSED(first)
     Q_UNUSED(last)
 
+    if (!screenInUse()) {
+        m_skipSave = true;
+    }
+
     if (!m_ignoreNextTransaction) {
         if (m_beginInsertRowsCalled) {
             endInsertRows();
@@ -702,6 +706,10 @@ void Positioner::sourceRowsRemoved(const QModelIndex &parent, int first, int las
     Q_UNUSED(parent)
     Q_UNUSED(first)
     Q_UNUSED(last)
+
+    if (!screenInUse()) {
+        m_skipSave = true;
+    }
 
     if (!m_ignoreNextTransaction) {
         Q_EMIT endRemoveRows();
