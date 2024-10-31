@@ -33,7 +33,6 @@ FocusScope {
     property alias perStripe: positioner.perStripe
     property alias positioner: positioner
     property alias positionerApplet: positioner.applet
-    property alias positionerResolution: positioner.resolution
     property alias errorString: dir.errorString
     property alias dragging: dir.dragging
     property alias dragInProgressAnywhere: dir.dragInProgressAnywhere
