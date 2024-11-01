@@ -1038,7 +1038,7 @@ void Positioner::savePositionsConfig()
 
         const QByteArray data = QJsonDocument(root).toJson(QJsonDocument::Compact);
         m_applet->config().group(QStringLiteral("General")).writeEntry(QStringLiteral("positions"), data);
-        m_applet->config().sync();
+        Q_EMIT m_applet->configNeedsSaving();
     }
 }
 
