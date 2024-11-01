@@ -98,7 +98,7 @@ Q_SIGNALS:
     void appletChanged() const;
 
 private Q_SLOTS:
-    void onScreenGeometryChanged();
+    void updateResolution();
     void sourceStatusChanged();
     void sourceDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight, const QList<int> &roles);
     void sourceModelAboutToBeReset();
