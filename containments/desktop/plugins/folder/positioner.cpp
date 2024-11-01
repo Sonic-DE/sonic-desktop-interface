@@ -22,11 +22,7 @@ Positioner::Positioner(QObject *parent)
     , m_perStripe(0)
     , m_ignoreNextTransaction(false)
     , m_deferApplyPositions(false)
-    , m_savePositionsTimer(new QTimer(this))
 {
-    m_savePositionsTimer->setSingleShot(true);
-    m_savePositionsTimer->setInterval(500);
-    connect(m_savePositionsTimer, &QTimer::timeout, this, &Positioner::savePositionsConfig);
     loadAndApplyPositionsConfig();
 }
 
@@ -101,6 +97,7 @@ void Positioner::setPerStripe(int perStripe)
         if (m_enabled && screenInUse() && perStripe > 0 && !m_proxyToSource.isEmpty()) {
             convertFolderModelData();
             updatePositionsList();
+            savePositionsConfig();
         }
     }
 }
@@ -333,7 +330,7 @@ void Positioner::reset()
 
     m_positions = QStringList();
     updatePositionsList();
-    m_savePositionsTimer->start();
+    savePositionsConfig();
 }
 
 int Positioner::move(const QVariantList &moves)
@@ -457,6 +454,7 @@ int Positioner::move(const QVariantList &moves)
     m_folderModel->updateSelection(sourceRows, true);
 
     updatePositionsList();
+    savePositionsConfig();
 
     return toIndices.constFirst();
 }
@@ -486,10 +484,6 @@ void Positioner::updatePositionsList()
         }
         if (positions != m_positions) {
             m_positions = positions;
-
-            if (!m_skipSave) {
-                m_savePositionsTimer->start();
-            }
         }
     }
 }
@@ -501,9 +495,13 @@ void Positioner::sourceStatusChanged()
         updatePositionsList();
     }
 
+    // When deferring moves, skip saving, since this action is not by user:
+    // the moves happened during listing, so we should not save them
     if (m_deferMovePositions.count() > 0 && m_folderModel->status() != FolderModel::Listing) {
+        m_skipSave = true;
         move(m_deferMovePositions);
         m_deferMovePositions.clear();
+        m_skipSave = false;
     }
 }
 
@@ -516,7 +514,6 @@ void Positioner::sourceDataChanged(const QModelIndex &topLeft, const QModelIndex
         for (int i = start; i <= end; ++i) {
             if (m_sourceToProxy.contains(i)) {
                 const QModelIndex &idx = index(m_sourceToProxy.value(i), 0);
-
                 Q_EMIT dataChanged(idx, idx);
             }
         }
