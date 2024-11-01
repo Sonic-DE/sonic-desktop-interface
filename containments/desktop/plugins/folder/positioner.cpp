@@ -292,12 +292,12 @@ QVariant Positioner::data(const QModelIndex &index, int role) const
 
 int Positioner::rowCount(const QModelIndex &parent) const
 {
+    // In case we dont have screen enabled, use the lastRow of our
+    // positioners model instead of overriding it with folder rowCount
+    if (!screenInUse()) {
+        return lastRow() + 1;
+    }
     if (m_folderModel) {
-        // In case we dont have screen enabled, use the lastRow of our
-        // positioners model instead of overriding it with folder rowCount
-        if (!m_folderModel->screenUsed()) {
-            return lastRow() + 1;
-        }
         if (m_enabled) {
             if (parent.isValid()) {
                 return 0;
@@ -983,7 +983,7 @@ void Positioner::setApplet(Plasma::Applet *applet)
     }
 }
 
-bool Positioner::screenInUse()
+bool Positioner::screenInUse() const
 {
     if (!m_folderModel) {
         return false;

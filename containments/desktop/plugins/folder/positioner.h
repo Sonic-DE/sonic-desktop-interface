@@ -78,7 +78,7 @@ public:
     Plasma::Applet *applet() const;
     void setApplet(Plasma::Applet *applet);
 
-    bool screenInUse();
+    bool screenInUse() const;
 
 #ifdef BUILD_TESTING
     QHash<int, int> proxyToSourceMapping() const
