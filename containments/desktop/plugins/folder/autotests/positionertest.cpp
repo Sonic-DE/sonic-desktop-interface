@@ -76,6 +76,11 @@ void PositionerTest::tst_positions_data()
 void PositionerTest::tst_positions()
 {
     QFETCH(int, perStripe);
+    QVERIFY(m_positioner->screenInUse());
+    auto sm = ScreenMapper::instance();
+    qWarning() << "m_folderModel->screenGeometry() " << m_folderModel->screenGeometry();
+    qWarning() << "ScreenMapper::screenMapping " << sm->screenMapping();
+
     m_positioner->setPerStripe(perStripe);
     // We need to update positions manually here due to possible lack of screen
     m_positioner->updatePositionsList();
