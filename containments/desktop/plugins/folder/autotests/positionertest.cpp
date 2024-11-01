@@ -76,8 +76,13 @@ void PositionerTest::tst_positions_data()
 void PositionerTest::tst_positions()
 {
     QFETCH(int, perStripe);
+    QVERIFY(m_positioner->screenInUse());
     m_positioner->setPerStripe(perStripe);
-    // We need to update positions manually here due to possible lack of screen
+    // Due to not having m_applet and no config, we have to
+    // emulate config handling manually here
+    m_positioner->setEnabled(false);
+    m_positioner->setPerStripe(perStripe);
+    m_positioner->setEnabled(true);
     m_positioner->updatePositionsList();
     checkPositions(perStripe);
 }
