@@ -8,6 +8,7 @@
 #pragma once
 
 #include <Plasma/Applet>
+#include <QJsonDocument>
 #include <QObject>
 
 class QTemporaryDir;
@@ -38,10 +39,12 @@ private Q_SLOTS:
     void tst_changeEnabledStatus();
     void tst_changePerStripe();
     void tst_proxyMapping();
+    void tst_config();
 
 private:
     void checkPositions(int perStripe);
     void ensureFolderModelReady();
+    QJsonDocument getCurrentConfig();
 
     QString m_currentActivity;
     Positioner *m_positioner;
