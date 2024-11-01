@@ -978,6 +978,8 @@ void Positioner::setApplet(Plasma::Applet *applet)
     if (m_applet != applet) {
         Q_ASSERT(!m_applet);
         m_applet = applet;
+
+        Q_EMIT appletChanged();
     }
 }
 
