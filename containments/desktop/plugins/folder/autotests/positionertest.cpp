@@ -43,12 +43,14 @@ void PositionerTest::cleanupTestCase()
 
 void PositionerTest::init()
 {
+    m_applet = new Plasma::Applet(this, KPluginMetaData(), QVariantList{});
     m_folderModel = new FolderModel(this);
     m_folderModel->classBegin();
     m_folderModel->setScreen(0);
     m_folderModel->setUsedByContainment(true);
     m_folderModel->componentComplete();
     m_positioner = new Positioner(this);
+    m_positioner->setApplet(m_applet);
     m_positioner->setEnabled(true);
     m_positioner->setFolderModel(m_folderModel);
     m_positioner->setPerStripe(3);
@@ -76,9 +78,17 @@ void PositionerTest::tst_positions_data()
 void PositionerTest::tst_positions()
 {
     QFETCH(int, perStripe);
+    QVERIFY(m_positioner->screenInUse());
+
+    // When setting resetting the perStripe between tests,
+    // we need to set the positioner disabled, otherwise
+    // we append to the previous list of files in the foldermodel
+    m_positioner->setEnabled(false);
     m_positioner->setPerStripe(perStripe);
-    // We need to update positions manually here due to possible lack of screen
+    m_positioner->setEnabled(true);
     m_positioner->updatePositionsList();
+    m_positioner->savePositionsConfig();
+    m_positioner->loadAndApplyPositionsConfig();
     checkPositions(perStripe);
 }
 
