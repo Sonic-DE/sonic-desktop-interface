@@ -79,8 +79,6 @@ public:
     void setApplet(Plasma::Applet *applet);
 
     bool screenInUse();
-    // Turns proxyToSource data into positions QStringList
-    void updatePositionsList();
 
 #ifdef BUILD_TESTING
     QHash<int, int> proxyToSourceMapping() const
@@ -122,6 +120,8 @@ private:
     int firstFreeRow() const;
     // Converts data from folderModel to proxy data
     void convertFolderModelData();
+    // Turns proxyToSource data into positions QStringList
+    void updatePositionsList();
     void flushPendingChanges();
     void connectSignals(FolderModel *model);
     void disconnectSignals(FolderModel *model);
@@ -147,4 +147,6 @@ private:
 
     Plasma::Applet *m_applet = nullptr;
     bool m_skipSave = false; // skip saving if the action is not by user
+
+    friend class PositionerTest;
 };
