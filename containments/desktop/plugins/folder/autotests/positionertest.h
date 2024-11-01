@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include <Plasma/Applet>
 #include <QObject>
 
 class QTemporaryDir;
@@ -46,4 +47,5 @@ private:
     Positioner *m_positioner;
     FolderModel *m_folderModel;
     QTemporaryDir *m_folderDir;
+    Plasma::Applet *m_applet = nullptr;
 };
