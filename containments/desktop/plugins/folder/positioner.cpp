@@ -98,8 +98,9 @@ void Positioner::setPerStripe(int perStripe)
 
         Q_EMIT perStripeChanged();
 
-        if (m_enabled && screenInUse()) {
+        if (m_enabled && screenInUse() && perStripe > 0 && !m_proxyToSource.isEmpty()) {
             convertFolderModelData();
+            updatePositionsList();
         }
     }
 }
@@ -292,6 +293,11 @@ QVariant Positioner::data(const QModelIndex &index, int role) const
 int Positioner::rowCount(const QModelIndex &parent) const
 {
     if (m_folderModel) {
+        // In case we dont have screen enabled, use the lastRow of our
+        // positioners model instead of overriding it with folder rowCount
+        if (!m_folderModel->screenUsed()) {
+            return lastRow() + 1;
+        }
         if (m_enabled) {
             if (parent.isValid()) {
                 return 0;
@@ -492,6 +498,7 @@ void Positioner::sourceStatusChanged()
 {
     if (m_deferApplyPositions && m_folderModel->status() != FolderModel::Listing) {
         convertFolderModelData();
+        updatePositionsList();
     }
 
     if (m_deferMovePositions.count() > 0 && m_folderModel->status() != FolderModel::Listing) {
@@ -941,7 +948,6 @@ void Positioner::convertFolderModelData()
 
     m_deferApplyPositions = false;
 
-    updatePositionsList();
     m_skipSave = false;
 }
 
@@ -1005,6 +1011,7 @@ void Positioner::loadAndApplyPositionsConfig()
                 m_deferApplyPositions = true;
             } else {
                 convertFolderModelData();
+                updatePositionsList();
             }
         }
     }
