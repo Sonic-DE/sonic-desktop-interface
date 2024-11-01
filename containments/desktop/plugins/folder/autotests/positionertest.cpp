@@ -7,6 +7,7 @@
 
 #include "positionertest.h"
 
+#include <QJsonDocument>
 #include <QSignalSpy>
 #include <QTemporaryDir>
 #include <QTest>
@@ -21,6 +22,8 @@ static const QLatin1String desktop(QLatin1String("Desktop"));
 
 void PositionerTest::initTestCase()
 {
+    m_applet = new Plasma::Applet(this, KPluginMetaData(), QVariantList{});
+
     m_currentActivity = QStringLiteral("00000000-0000-0000-0000-000000000000");
     m_folderDir = new QTemporaryDir();
 
@@ -43,13 +46,13 @@ void PositionerTest::cleanupTestCase()
 
 void PositionerTest::init()
 {
-    m_applet = new Plasma::Applet(this, KPluginMetaData(), QVariantList{});
     m_folderModel = new FolderModel(this);
     m_folderModel->classBegin();
     m_folderModel->setScreen(0);
     m_folderModel->setUsedByContainment(true);
     m_folderModel->componentComplete();
     m_positioner = new Positioner(this);
+    m_positioner->m_resolution = QStringLiteral("1920x1080");
     m_positioner->setApplet(m_applet);
     m_positioner->setEnabled(true);
     m_positioner->setFolderModel(m_folderModel);
@@ -81,8 +84,6 @@ void PositionerTest::tst_positions()
     QVERIFY(m_positioner->screenInUse());
 
     m_positioner->setPerStripe(perStripe);
-    m_positioner->savePositionsConfig();
-    m_positioner->loadAndApplyPositionsConfig();
     checkPositions(perStripe);
 }
 
@@ -291,6 +292,30 @@ void PositionerTest::tst_proxyMapping()
     verifyMapping(secondPositioner.sourceToProxyMapping(), expectedSource2ProxyScreen1);
 }
 
+void PositionerTest::tst_config()
+{
+    QVERIFY(m_positioner->screenInUse());
+    m_positioner->savePositionsConfig();
+    auto baselineConfig = getCurrentConfig();
+    m_positioner->m_skipSave = true;
+    m_positioner->setPerStripe(5);
+    m_positioner->m_skipSave = false;
+    // The config should be identical since we did not allow saving
+    QCOMPARE(baselineConfig, getCurrentConfig());
+    m_positioner->setPerStripe(4);
+    auto saveAllowedConfig = getCurrentConfig();
+    QCOMPARE_NE(baselineConfig, getCurrentConfig());
+}
+
+QJsonDocument PositionerTest::getCurrentConfig()
+{
+    return QJsonDocument::fromJson(m_applet->config()
+                                       .group(QStringLiteral("General"))
+                                       .readEntry(QStringLiteral("positions"))
+                                       .replace(QStringLiteral("\\,"), QStringLiteral(","))
+                                       .toUtf8());
+}
+
 void PositionerTest::checkPositions(int perStripe)
 {
     ensureFolderModelReady();
@@ -301,9 +326,8 @@ void PositionerTest::checkPositions(int perStripe)
         int x;
         int y;
     };
-    const auto fileCount = m_folderModel->rowCount();
     QHash<QString, Pos> posHash;
-    QCOMPARE(positions[0].toInt(), 1 + ((fileCount - 1) / perStripe)); // rows
+    QCOMPARE(positions[0].toInt(), 1 + ((m_positioner->rowCount() - 1) / perStripe)); // rows
     QCOMPARE(positions[1].toInt(), perStripe); // columns
     for (int i = 2; i < positions.length() - 2; i += 3) {
         posHash[positions[i]] = {positions[i + 1].toInt(), positions[i + 2].toInt()};
@@ -311,7 +335,8 @@ void PositionerTest::checkPositions(int perStripe)
 
     int row = 0;
     int col = 0;
-    for (int i = 0; i < fileCount; i++) {
+
+    for (int i = 0; i < m_folderModel->rowCount(); i++) {
         const auto index = m_folderModel->index(i, 0);
         const auto url = index.data(FolderModel::UrlRole).toString();
         const Pos pos = posHash[url];
