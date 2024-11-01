@@ -80,13 +80,7 @@ void PositionerTest::tst_positions()
     QFETCH(int, perStripe);
     QVERIFY(m_positioner->screenInUse());
 
-    // When setting resetting the perStripe between tests,
-    // we need to set the positioner disabled, otherwise
-    // we append to the previous list of files in the foldermodel
-    m_positioner->setEnabled(false);
     m_positioner->setPerStripe(perStripe);
-    m_positioner->setEnabled(true);
-    m_positioner->updatePositionsList();
     m_positioner->savePositionsConfig();
     m_positioner->loadAndApplyPositionsConfig();
     checkPositions(perStripe);
@@ -300,6 +294,7 @@ void PositionerTest::tst_proxyMapping()
 void PositionerTest::checkPositions(int perStripe)
 {
     ensureFolderModelReady();
+    QCOMPARE(perStripe, m_positioner->perStripe());
 
     const auto positions = m_positioner->positions();
     struct Pos {
