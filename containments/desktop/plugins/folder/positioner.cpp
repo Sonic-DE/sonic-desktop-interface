@@ -1038,10 +1038,8 @@ void Positioner::onScreenGeometryChanged()
     if (m_folderModel) {
         QString resolution = QStringLiteral("%1x%2").arg(QString::number(floor(m_folderModel->screenGeometry().width())),
                                                          QString::number(floor(m_folderModel->screenGeometry().height())));
-        if (resolution != QStringLiteral("0x0")) {
-            if (m_resolution != resolution) {
-                m_resolution = resolution;
-            }
+        if (m_resolution != resolution) {
+            m_resolution = resolution;
         }
         loadAndApplyPositionsConfig();
     }
