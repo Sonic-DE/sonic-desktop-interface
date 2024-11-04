@@ -384,6 +384,30 @@ void PositionerTest::tst_insertFile()
     QCOMPARE_NE(baselineConfig, getCurrentConfig());
 }
 
+void PositionerTest::tst_dontSaveWithoutScreen()
+{
+    ensureFolderModelReady();
+    QSignalSpy folderRowRemoved(m_folderModel, &FolderModel::rowsRemoved);
+    auto baselineConfig = getCurrentConfig();
+
+    // set screen off
+    m_folderModel->setScreen(-1);
+    QVERIFY(!m_positioner->screenInUse());
+
+    // Remove NEWFILE.txt that we added in previous test
+    QDir dir(m_folderDir->path());
+    dir.cd(desktop);
+    QVERIFY(dir.entryList().contains(QStringLiteral("NEWFILE.txt")));
+    dir.remove(QStringLiteral("%1/NEWFILE.txt").arg(dir.path()));
+    dir.refresh();
+    m_folderModel->refresh();
+    QVERIFY(!dir.entryList().contains(QStringLiteral("NEWFILE.txt")));
+    QVERIFY(folderRowRemoved.wait());
+
+    // Removing a row should not save without a screen, so config should be equal
+    QCOMPARE(baselineConfig, getCurrentConfig());
+}
+
 // Test utilities
 
 QJsonDocument PositionerTest::getCurrentConfig()
