@@ -19,7 +19,7 @@
 QTEST_MAIN(PositionerTest)
 
 static const QLatin1String desktop(QLatin1String("Desktop"));
-static const QLatin1String resolution(QLatin1String("1920x1080"));
+static const QLatin1String defaultResolution(QLatin1String("1920x1080"));
 
 void PositionerTest::initTestCase()
 {
@@ -53,7 +53,7 @@ void PositionerTest::init()
     m_folderModel->setUsedByContainment(true);
     m_folderModel->componentComplete();
     m_positioner = new Positioner(this);
-    m_positioner->m_resolution = resolution;
+    m_positioner->m_resolution = defaultResolution;
     m_positioner->setApplet(m_applet);
     m_positioner->setEnabled(true);
     m_positioner->setFolderModel(m_folderModel);
@@ -86,7 +86,7 @@ void PositionerTest::tst_positions()
     m_positioner->setPerStripe(perStripe);
     // Ignore config with this test to see if positions propagate as expected
     m_positioner->updatePositionsList();
-    checkPositions(perStripe, false);
+    checkDefaultPositions(perStripe);
 }
 
 void PositionerTest::tst_map()
@@ -154,7 +154,7 @@ void PositionerTest::tst_reset()
     m_positioner->move({0, 10});
     m_positioner->reset();
     // Check that positions are placed in their default positions
-    checkPositions(3, false);
+    checkDefaultPositions(3);
 
     for (int i = 0; i < m_positioner->rowCount(); i++) {
         QCOMPARE(m_positioner->map(i), i);
@@ -295,29 +295,47 @@ void PositionerTest::tst_proxyMapping()
     verifyMapping(secondPositioner.sourceToProxyMapping(), expectedSource2ProxyScreen1);
 }
 
-void PositionerTest::tst_config()
+void PositionerTest::tst_configSaveLoad()
 {
     QVERIFY(m_positioner->screenInUse());
     // During init, the stripe is set to 3
     m_positioner->savePositionsConfig();
+    m_positioner->loadAndApplyPositionsConfig();
     auto baselineConfig = getCurrentConfig();
 
-    // set stripe to 5, try saving with the skipSave flag, so it shouldnt save
-    m_positioner->m_skipSave = true;
+    // set stripe to 5
     m_positioner->setPerStripe(5);
     m_positioner->updatePositionsList();
+    m_positioner->m_skipSave = true;
+    // try saving with the skipSave flag, so it shouldnt save
     m_positioner->savePositionsConfig();
     m_positioner->m_skipSave = false;
     // The config should be identical since we did not allow saving
+    m_positioner->loadAndApplyPositionsConfig();
     QCOMPARE(baselineConfig, getCurrentConfig());
 
     // Set stripe to 4, the config should be different
     m_positioner->setPerStripe(4);
     m_positioner->updatePositionsList();
     m_positioner->savePositionsConfig();
+    m_positioner->loadAndApplyPositionsConfig();
     QCOMPARE_NE(baselineConfig, getCurrentConfig());
-    checkPositions(4, true);
 }
+
+void PositionerTest::tst_changeResolution()
+{
+    QVERIFY(m_positioner->screenInUse());
+    // During init, the stripe is set to 3
+    m_positioner->savePositionsConfig();
+    m_positioner->loadAndApplyPositionsConfig();
+    auto baselineConfig = getCurrentConfig();
+
+    changeResolution(QStringLiteral("800x600"));
+    // Configuration should not be saved after resolution change, so its identical to baseline
+    QCOMPARE(baselineConfig, getCurrentConfig());
+}
+
+// Test utilities
 
 QJsonDocument PositionerTest::getCurrentConfig()
 {
@@ -338,42 +356,30 @@ QHash<QString, Pos> PositionerTest::getPositionHash(QStringList positions)
     return posHash;
 }
 
-void PositionerTest::checkPositions(int perStripe, bool useConfig)
+void PositionerTest::checkDefaultPositions(int perStripe)
 {
     ensureFolderModelReady();
     QCOMPARE(perStripe, m_positioner->perStripe());
     QCOMPARE(m_positioner->positions()[0].toInt(), 1 + ((m_positioner->rowCount() - 1) / perStripe)); // rows
     QCOMPARE(m_positioner->positions()[1].toInt(), perStripe); // columns
     const auto currentPositions = getPositionHash(m_positioner->positions());
+    // Checking default positions ignores configuration completely
+    // instead, it compares that the default values match, since the
+    // for-loop it runs is same as creating default positions in positioner code.
+    // For comparing configurations and their positions, you can just compare the JSON data.
 
-    if (useConfig) {
-        auto conf = getCurrentConfig();
-        auto positionList = conf[resolution].toVariant().toStringList();
-        const auto configPositions = getPositionHash(positionList);
-
-        for (const auto configPos : configPositions.asKeyValueRange()) {
-            // Make sure same file exists
-            QVERIFY(currentPositions.contains(configPos.first));
-            // Compare file positions are same
-            QCOMPARE(currentPositions[configPos.first].x, configPos.second.x);
-            QCOMPARE(currentPositions[configPos.first].y, configPos.second.y);
-        }
-    } else {
-        // This block is for testing the default position placement
-        int row = 0;
-        int col = 0;
-
-        for (int i = 0; i < m_folderModel->rowCount(); i++) {
-            const auto index = m_folderModel->index(i, 0);
-            const auto url = index.data(FolderModel::UrlRole).toString();
-            const Pos pos = currentPositions[url];
-            QCOMPARE(pos.x, row);
-            QCOMPARE(pos.y, col);
-            col++;
-            if (col == perStripe) {
-                row++;
-                col = 0;
-            }
+    int col = 0;
+    int row = 0;
+    for (int i = 0; i < m_folderModel->rowCount(); i++) {
+        const auto index = m_folderModel->index(i, 0);
+        const auto url = index.data(FolderModel::UrlRole).toString();
+        const Pos pos = currentPositions[url];
+        QCOMPARE(pos.x, row);
+        QCOMPARE(pos.y, col);
+        col++;
+        if (col == perStripe) {
+            row++;
+            col = 0;
         }
     }
 }
@@ -384,4 +390,12 @@ void PositionerTest::ensureFolderModelReady()
         QSignalSpy folderModelReadySpy(m_folderModel, &FolderModel::statusChanged);
         QVERIFY(folderModelReadySpy.wait());
     }
+}
+
+void PositionerTest::changeResolution(QString resolution)
+{
+    // Identical to updateResolution, except we input the resolution manually
+    // instead of reading a screen
+    m_positioner->m_resolution = resolution;
+    m_positioner->loadAndApplyPositionsConfig();
 }
