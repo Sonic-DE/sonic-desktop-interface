@@ -698,7 +698,11 @@ void Positioner::sourceRowsInserted(const QModelIndex &parent, int first, int la
     // Don't generate new positions data if we're waiting for listing to
     // complete to apply initial positions.
     if (!m_deferApplyPositions && screenInUse()) {
+        // Load current config
+        loadAndApplyPositionsConfig();
+        // Update positions to append the missing items
         updatePositionsList();
+        // Save new config
         savePositionsConfig();
     }
     m_skipSave = false;
@@ -735,7 +739,11 @@ void Positioner::sourceRowsRemoved(const QModelIndex &parent, int first, int las
     flushPendingChanges();
 
     if (screenInUse()) {
+        // Load current config
+        loadAndApplyPositionsConfig();
+        // Update positions to append the missing items
         updatePositionsList();
+        // Save new config
         savePositionsConfig();
     }
     m_skipSave = false;
@@ -999,21 +1007,15 @@ void Positioner::loadAndApplyPositionsConfig()
             m_applet->config().group(QStringLiteral("General")).readEntry(QStringLiteral("positions")).replace(QStringLiteral("\\,"), QStringLiteral(","));
         const QJsonDocument doc = QJsonDocument::fromJson(confdata.toUtf8());
         QStringList positions = doc[m_resolution].toVariant().toStringList();
-        if (m_positions != positions && screenInUse()) {
-            m_positions = positions;
-            // In case our row and m_perStripe values are out of sync, update them here
-            // The can get out of sync due to qml and c++ both handling them
-            // If we have the first two values of positions, we have the perStripe value
-            if (m_positions.length() >= 2) {
-                m_perStripe = m_positions[1].toInt();
-            }
-            // Defer applying positions until listing completes.
-            if (m_folderModel->status() == FolderModel::Listing) {
-                m_deferApplyPositions = true;
-            } else {
-                convertFolderModelData();
-            }
+        m_positions = positions;
+        // In case our row and m_perStripe values are out of sync, update them here
+        // The can get out of sync due to qml and c++ both handling them
+        // If we have the first two values of positions, we have the perStripe value
+        if (m_positions.length() >= 2) {
+            m_perStripe = m_positions[1].toInt();
         }
+        // Defer applying positions until listing completes.
+        convertFolderModelData();
     }
     m_skipSave = false;
 }
@@ -1074,7 +1076,7 @@ void Positioner::connectSignals(FolderModel *model)
     connect(m_folderModel, &FolderModel::urlChanged, this, &Positioner::reset, Qt::UniqueConnection);
     connect(m_folderModel, &FolderModel::statusChanged, this, &Positioner::sourceStatusChanged, Qt::UniqueConnection);
     connect(m_folderModel, &FolderModel::itemRenamed, this, &Positioner::onItemRenamed, Qt::UniqueConnection);
-    connect(m_folderModel, &FolderModel::screenGeometryChanged, this, &Positioner::updateResolution, Qt::UniqueConnection);
+    connect(m_folderModel, &FolderModel::screenChanged, this, &Positioner::updateResolution, Qt::UniqueConnection);
 }
 
 void Positioner::disconnectSignals(FolderModel *model)
@@ -1091,5 +1093,5 @@ void Positioner::disconnectSignals(FolderModel *model)
     disconnect(m_folderModel, &FolderModel::urlChanged, this, &Positioner::reset);
     disconnect(m_folderModel, &FolderModel::statusChanged, this, &Positioner::sourceStatusChanged);
     disconnect(m_folderModel, &FolderModel::itemRenamed, this, &Positioner::onItemRenamed);
-    disconnect(m_folderModel, &FolderModel::screenGeometryChanged, this, &Positioner::updateResolution);
+    disconnect(m_folderModel, &FolderModel::screenChanged, this, &Positioner::updateResolution);
 }
