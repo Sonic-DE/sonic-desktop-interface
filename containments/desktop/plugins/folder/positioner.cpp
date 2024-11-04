@@ -699,6 +699,7 @@ void Positioner::sourceRowsInserted(const QModelIndex &parent, int first, int la
     // complete to apply initial positions.
     if (!m_deferApplyPositions && screenInUse()) {
         updatePositionsList();
+        savePositionsConfig();
     }
     m_skipSave = false;
 }
@@ -735,6 +736,7 @@ void Positioner::sourceRowsRemoved(const QModelIndex &parent, int first, int las
 
     if (screenInUse()) {
         updatePositionsList();
+        savePositionsConfig();
     }
     m_skipSave = false;
 }
