@@ -98,6 +98,7 @@ public:
         IsDirRole,
         IsLinkRole,
         IsHiddenRole,
+        IsFoundRole,
         UrlRole,
         LinkDestinationUrl,
         SizeRole,
@@ -206,6 +207,7 @@ public:
     Q_INVOKABLE void clearSelection();
     Q_INVOKABLE void pinSelection();
     Q_INVOKABLE void unpinSelection();
+    Q_INVOKABLE void selectFound();
 
     Q_INVOKABLE void addItemDragImage(int row, int x, int y, int width, int height, const QVariant &image);
     Q_INVOKABLE void clearDragImages();
@@ -216,6 +218,8 @@ public:
     Q_INVOKABLE void dropCwd(QObject *dropEvent);
 
     Q_INVOKABLE bool isBlank(int row) const;
+
+    Q_INVOKABLE void search(const QRegularExpression &regExp);
 
     Q_INVOKABLE QAction *action(const QString &name) const;
     QObject *newMenu() const;
@@ -319,6 +323,7 @@ private:
     QItemSelectionModel *m_selectionModel;
     QItemSelection m_pinnedSelection;
     QModelIndexList m_dragIndexes;
+    QModelIndexList m_foundIndexes;
     QHash<int, DragImage *> m_dragImages;
     QPoint m_dragHotSpotScrollOffset;
     bool m_urlChangedWhileDragging;

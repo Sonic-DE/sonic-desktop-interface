@@ -21,6 +21,7 @@ set(folderplugin_SRCS
     subdialog.cpp
     viewpropertiesmenu.cpp
     wheelinterceptor.cpp
+    searchdialog.cpp
     shortcut.cpp
     screenmapper.cpp
     removeaction.cpp
