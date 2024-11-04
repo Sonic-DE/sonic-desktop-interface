@@ -1013,6 +1013,7 @@ void Positioner::loadAndApplyPositionsConfig()
         // If we have the first two values of positions, we have the perStripe value
         if (m_positions.length() >= 2) {
             m_perStripe = m_positions[1].toInt();
+            Q_EMIT perStripeChanged();
         }
         // Defer applying positions until listing completes.
         convertFolderModelData();
@@ -1076,7 +1077,7 @@ void Positioner::connectSignals(FolderModel *model)
     connect(m_folderModel, &FolderModel::urlChanged, this, &Positioner::reset, Qt::UniqueConnection);
     connect(m_folderModel, &FolderModel::statusChanged, this, &Positioner::sourceStatusChanged, Qt::UniqueConnection);
     connect(m_folderModel, &FolderModel::itemRenamed, this, &Positioner::onItemRenamed, Qt::UniqueConnection);
-    connect(m_folderModel, &FolderModel::screenChanged, this, &Positioner::updateResolution, Qt::UniqueConnection);
+    connect(m_folderModel, &FolderModel::screenGeometryChanged, this, &Positioner::updateResolution, Qt::UniqueConnection);
 }
 
 void Positioner::disconnectSignals(FolderModel *model)
@@ -1093,5 +1094,5 @@ void Positioner::disconnectSignals(FolderModel *model)
     disconnect(m_folderModel, &FolderModel::urlChanged, this, &Positioner::reset);
     disconnect(m_folderModel, &FolderModel::statusChanged, this, &Positioner::sourceStatusChanged);
     disconnect(m_folderModel, &FolderModel::itemRenamed, this, &Positioner::onItemRenamed);
-    disconnect(m_folderModel, &FolderModel::screenChanged, this, &Positioner::updateResolution);
+    disconnect(m_folderModel, &FolderModel::screenGeometryChanged, this, &Positioner::updateResolution);
 }
