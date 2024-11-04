@@ -114,10 +114,13 @@ void PositionerTest::tst_move()
     QFETCH(QList<int>, result);
 
     ensureFolderModelReady();
+    auto baselineConfig = getCurrentConfig();
     m_positioner->move(moves);
     for (int i = 0; i < m_positioner->rowCount(); i++) {
         QCOMPARE(m_positioner->map(i), result[i]);
     }
+    // Configuration should be saved during move, so they shouldn't be equal
+    QCOMPARE_NE(baselineConfig, getCurrentConfig());
 }
 
 void PositionerTest::tst_nearestitem_data()
@@ -333,6 +336,22 @@ void PositionerTest::tst_changeResolution()
     changeResolution(QStringLiteral("800x600"));
     // Configuration should not be saved after resolution change, so its identical to baseline
     QCOMPARE(baselineConfig, getCurrentConfig());
+}
+
+void PositionerTest::tst_renameFile()
+{
+    ensureFolderModelReady();
+    QSignalSpy itemRenamedSpy(m_folderModel, &FolderModel::itemRenamed);
+    QVERIFY(m_positioner->screenInUse());
+    // setup baseline
+    m_positioner->savePositionsConfig();
+    m_positioner->loadAndApplyPositionsConfig();
+    auto baselineConfig = getCurrentConfig();
+
+    m_folderModel->rename(1, QStringLiteral("NEWNAME.txt"));
+    QVERIFY(itemRenamedSpy.wait());
+    // Renaming should save the config, so baseline and current should be not equal
+    QCOMPARE_NE(baselineConfig, getCurrentConfig());
 }
 
 // Test utilities
