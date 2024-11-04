@@ -95,8 +95,8 @@ void Positioner::setPerStripe(int perStripe)
 
         Q_EMIT perStripeChanged();
 
-        if (m_enabled && screenInUse() && !m_proxyToSource.isEmpty()) {
-            convertFolderModelData();
+        if (m_enabled && screenInUse() && !m_proxyToSource.isEmpty() && m_folderModel->status() == FolderModel::Ready) {
+            loadAndApplyPositionsConfig();
         }
     }
 }
@@ -1007,15 +1007,17 @@ void Positioner::loadAndApplyPositionsConfig()
             m_applet->config().group(QStringLiteral("General")).readEntry(QStringLiteral("positions")).replace(QStringLiteral("\\,"), QStringLiteral(","));
         const QJsonDocument doc = QJsonDocument::fromJson(confdata.toUtf8());
         QStringList positions = doc[m_resolution].toVariant().toStringList();
-        m_positions = positions;
-        // In case our row and m_perStripe values are out of sync, update them here
-        // The can get out of sync due to qml and c++ both handling them
-        // If we have the first two values of positions, we have the perStripe value
-        if (m_positions.length() >= 2) {
-            m_perStripe = m_positions[1].toInt();
+        if (m_positions != positions) {
+            m_positions = positions;
+            // In case our row and m_perStripe values are out of sync, update them here
+            // The can get out of sync due to qml and c++ both handling them
+            // If we have the first two values of positions, we have the perStripe value
+            if (m_positions.length() >= 2) {
+                m_perStripe = m_positions[1].toInt();
+            }
+            // Defer applying positions until listing completes.
+            convertFolderModelData();
         }
-        // Defer applying positions until listing completes.
-        convertFolderModelData();
     }
     m_skipSave = false;
 }
@@ -1044,14 +1046,22 @@ void Positioner::savePositionsConfig()
 
 void Positioner::updateResolution()
 {
-    if (m_folderModel) {
+    if (m_folderModel && screenInUse()) {
         QString resolution = QStringLiteral("%1x%2").arg(QString::number(floor(m_folderModel->screenGeometry().width())),
                                                          QString::number(floor(m_folderModel->screenGeometry().height())));
         if (resolution != QStringLiteral("0x0")) {
             if (m_resolution != resolution) {
                 m_resolution = resolution;
+                loadAndApplyPositionsConfig();
+                updatePositionsList();
             }
         }
+    }
+}
+
+void Positioner::onScreenChanged()
+{
+    if (m_folderModel && screenInUse()) {
         loadAndApplyPositionsConfig();
     }
 }
@@ -1076,7 +1086,8 @@ void Positioner::connectSignals(FolderModel *model)
     connect(m_folderModel, &FolderModel::urlChanged, this, &Positioner::reset, Qt::UniqueConnection);
     connect(m_folderModel, &FolderModel::statusChanged, this, &Positioner::sourceStatusChanged, Qt::UniqueConnection);
     connect(m_folderModel, &FolderModel::itemRenamed, this, &Positioner::onItemRenamed, Qt::UniqueConnection);
-    connect(m_folderModel, &FolderModel::screenChanged, this, &Positioner::updateResolution, Qt::UniqueConnection);
+    connect(m_folderModel, &FolderModel::screenGeometryChanged, this, &Positioner::updateResolution, Qt::UniqueConnection);
+    connect(m_folderModel, &FolderModel::screenChanged, this, &Positioner::onScreenChanged, Qt::UniqueConnection);
 }
 
 void Positioner::disconnectSignals(FolderModel *model)
@@ -1093,5 +1104,6 @@ void Positioner::disconnectSignals(FolderModel *model)
     disconnect(m_folderModel, &FolderModel::urlChanged, this, &Positioner::reset);
     disconnect(m_folderModel, &FolderModel::statusChanged, this, &Positioner::sourceStatusChanged);
     disconnect(m_folderModel, &FolderModel::itemRenamed, this, &Positioner::onItemRenamed);
-    disconnect(m_folderModel, &FolderModel::screenChanged, this, &Positioner::updateResolution);
+    disconnect(m_folderModel, &FolderModel::screenGeometryChanged, this, &Positioner::updateResolution);
+    disconnect(m_folderModel, &FolderModel::screenChanged, this, &Positioner::onScreenChanged);
 }

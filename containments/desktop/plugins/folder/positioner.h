@@ -112,6 +112,7 @@ private Q_SLOTS:
     void sourceRowsRemoved(const QModelIndex &parent, int first, int last);
     void sourceLayoutChanged(const QList<QPersistentModelIndex> &parents, QAbstractItemModel::LayoutChangeHint hint);
     void onItemRenamed();
+    void onScreenChanged();
 
 private:
     void initMaps(int size = -1);
