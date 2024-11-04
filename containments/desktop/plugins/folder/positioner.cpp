@@ -1007,17 +1007,20 @@ void Positioner::loadAndApplyPositionsConfig()
             m_applet->config().group(QStringLiteral("General")).readEntry(QStringLiteral("positions")).replace(QStringLiteral("\\,"), QStringLiteral(","));
         const QJsonDocument doc = QJsonDocument::fromJson(confdata.toUtf8());
         QStringList positions = doc[m_resolution].toVariant().toStringList();
-        if (m_positions != positions) {
-            m_positions = positions;
-            // In case our row and m_perStripe values are out of sync, update them here
-            // The can get out of sync due to qml and c++ both handling them
-            // If we have the first two values of positions, we have the perStripe value
-            if (m_positions.length() >= 2) {
-                m_perStripe = m_positions[1].toInt();
-            }
-            // Defer applying positions until listing completes.
-            convertFolderModelData();
+        if (positions.isEmpty()) {
+            // If there are no positions for the resolution, reset the view
+            reset();
+            return;
         }
+        m_positions = positions;
+        // In case our row and m_perStripe values are out of sync, update them here
+        // The can get out of sync due to qml and c++ both handling them
+        // If we have the first two values of positions, we have the perStripe value
+        if (m_positions.length() >= 2) {
+            m_perStripe = m_positions[1].toInt();
+        }
+        // Defer applying positions until listing completes.
+        convertFolderModelData();
     }
     m_skipSave = false;
 }
