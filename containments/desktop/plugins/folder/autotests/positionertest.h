@@ -43,13 +43,15 @@ private Q_SLOTS:
     void tst_changeEnabledStatus();
     void tst_changePerStripe();
     void tst_proxyMapping();
-    void tst_config();
+    void tst_configSaveLoad();
+    void tst_changeResolution();
 
 private:
-    void checkPositions(int perStripe, bool useConfig);
+    void checkDefaultPositions(int perStripe);
     void ensureFolderModelReady();
     QJsonDocument getCurrentConfig();
     QHash<QString, Pos> getPositionHash(QStringList positions);
+    void changeResolution(QString resolution);
 
     QString m_currentActivity;
     Positioner *m_positioner;
