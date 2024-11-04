@@ -46,6 +46,7 @@ private Q_SLOTS:
     void tst_configSaveLoad();
     void tst_changeResolution();
     void tst_renameFile();
+    void tst_insertFile();
 
 private:
     void checkDefaultPositions(int perStripe);
