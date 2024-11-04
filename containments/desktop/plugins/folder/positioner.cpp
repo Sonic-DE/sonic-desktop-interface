@@ -92,16 +92,11 @@ void Positioner::setPerStripe(int perStripe)
 {
     if (m_perStripe != perStripe && perStripe > 0) {
         m_perStripe = perStripe;
-        // convertFolderModelData will reset m_skipSave
-        bool skipSaving = m_skipSave;
 
         Q_EMIT perStripeChanged();
 
         if (m_enabled && screenInUse() && !m_proxyToSource.isEmpty()) {
             convertFolderModelData();
-            if (!skipSaving) {
-                savePositionsConfig();
-            }
         }
     }
 }
