@@ -23,7 +23,6 @@ Positioner::Positioner(QObject *parent)
     , m_ignoreNextTransaction(false)
     , m_deferApplyPositions(false)
 {
-    loadAndApplyPositionsConfig();
 }
 
 Positioner::~Positioner()
@@ -71,7 +70,6 @@ void Positioner::setFolderModel(QObject *folderModel)
         if (m_folderModel) {
             connectSignals(m_folderModel);
             updateResolution();
-
             if (m_enabled) {
                 initMaps();
             }
@@ -697,7 +695,7 @@ void Positioner::sourceRowsInserted(const QModelIndex &parent, int first, int la
 
     // Don't generate new positions data if we're waiting for listing to
     // complete to apply initial positions.
-    if (!m_deferApplyPositions && screenInUse()) {
+    if (!m_deferApplyPositions && screenInUse() && m_folderModel->status() == FolderModel::Ready) {
         // Load current config
         loadAndApplyPositionsConfig();
         // Update positions to append the missing items
@@ -738,7 +736,7 @@ void Positioner::sourceRowsRemoved(const QModelIndex &parent, int first, int las
 
     flushPendingChanges();
 
-    if (screenInUse()) {
+    if (screenInUse() && m_folderModel->status() == FolderModel::Ready) {
         // Load current config
         loadAndApplyPositionsConfig();
         // Update positions to append the missing items
@@ -1001,18 +999,22 @@ bool Positioner::screenInUse() const
 void Positioner::loadAndApplyPositionsConfig()
 {
     m_skipSave = true;
-    if (m_applet && screenInUse()) {
+    if (m_applet && screenInUse() && !m_resolution.isEmpty()) {
         // The old configuration has commas with escape characters, so clean up those from the config
-        auto confdata =
-            m_applet->config().group(QStringLiteral("General")).readEntry(QStringLiteral("positions")).replace(QStringLiteral("\\,"), QStringLiteral(","));
+        auto confdata = loadConfigData();
+        if (confdata.isEmpty()) {
+            return;
+        }
         const QJsonDocument doc = QJsonDocument::fromJson(confdata.toUtf8());
         QStringList positions = doc[m_resolution].toVariant().toStringList();
+
         m_positions = positions;
         // In case our row and m_perStripe values are out of sync, update them here
         // The can get out of sync due to qml and c++ both handling them
         // If we have the first two values of positions, we have the perStripe value
         if (m_positions.length() >= 2) {
             m_perStripe = m_positions[1].toInt();
+            Q_EMIT perStripeChanged();
         }
         // Defer applying positions until listing completes.
         convertFolderModelData();
@@ -1023,8 +1025,10 @@ void Positioner::loadAndApplyPositionsConfig()
 void Positioner::savePositionsConfig()
 {
     if (m_applet && screenInUse() && !m_skipSave) {
-        auto confdata =
-            m_applet->config().group(QStringLiteral("General")).readEntry(QStringLiteral("positions")).replace(QStringLiteral("\\,"), QStringLiteral(","));
+        auto confdata = loadConfigData();
+        if (confdata.isEmpty()) {
+            return;
+        }
         auto doc = QJsonDocument::fromJson(confdata.toUtf8());
         QJsonObject root;
         // Iterate over the old data
@@ -1050,10 +1054,36 @@ void Positioner::updateResolution()
         if (resolution != QStringLiteral("0x0")) {
             if (m_resolution != resolution) {
                 m_resolution = resolution;
+                if (configurationHasResolution(m_resolution)) {
+                    loadAndApplyPositionsConfig();
+                }
+                // If we have no resolution, we should reset so the icons are not accidentally hidden
+                else {
+                    reset();
+                }
             }
         }
-        loadAndApplyPositionsConfig();
     }
+}
+
+bool Positioner::configurationHasResolution(QString resolution)
+{
+    auto confdata = loadConfigData();
+    if (confdata.isEmpty()) {
+        return false;
+    }
+    const QJsonDocument doc = QJsonDocument::fromJson(confdata.toUtf8());
+    return doc.object().contains(resolution);
+}
+
+QString Positioner::loadConfigData()
+{
+    QString confdata;
+    if (m_applet) {
+        confdata =
+            m_applet->config().group(QStringLiteral("General")).readEntry(QStringLiteral("positions")).replace(QStringLiteral("\\,"), QStringLiteral(","));
+    }
+    return confdata;
 }
 
 void Positioner::onItemRenamed()
@@ -1076,7 +1106,7 @@ void Positioner::connectSignals(FolderModel *model)
     connect(m_folderModel, &FolderModel::urlChanged, this, &Positioner::reset, Qt::UniqueConnection);
     connect(m_folderModel, &FolderModel::statusChanged, this, &Positioner::sourceStatusChanged, Qt::UniqueConnection);
     connect(m_folderModel, &FolderModel::itemRenamed, this, &Positioner::onItemRenamed, Qt::UniqueConnection);
-    connect(m_folderModel, &FolderModel::screenChanged, this, &Positioner::updateResolution, Qt::UniqueConnection);
+    connect(m_folderModel, &FolderModel::screenGeometryChanged, this, &Positioner::updateResolution, Qt::UniqueConnection);
 }
 
 void Positioner::disconnectSignals(FolderModel *model)
@@ -1093,5 +1123,5 @@ void Positioner::disconnectSignals(FolderModel *model)
     disconnect(m_folderModel, &FolderModel::urlChanged, this, &Positioner::reset);
     disconnect(m_folderModel, &FolderModel::statusChanged, this, &Positioner::sourceStatusChanged);
     disconnect(m_folderModel, &FolderModel::itemRenamed, this, &Positioner::onItemRenamed);
-    disconnect(m_folderModel, &FolderModel::screenChanged, this, &Positioner::updateResolution);
+    disconnect(m_folderModel, &FolderModel::screenGeometryChanged, this, &Positioner::updateResolution);
 }
