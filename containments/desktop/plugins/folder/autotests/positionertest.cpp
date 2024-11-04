@@ -101,17 +101,19 @@ void PositionerTest::tst_move_data()
 {
     QTest::addColumn<QVariantList>("moves");
     QTest::addColumn<QList<int>>("result");
-    QTest::newRow("First to last") << QVariantList({0, 10}) << QList<int>({-1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0});
-    QTest::newRow("First to after last") << QVariantList({0, 11}) << QList<int>({-1, 1, 2, 3, 4, 5, 6, 7, 8, 9, -1, 0});
-    QTest::newRow("Switch 2nd with 3rd ") << QVariantList({1, 2, 2, 1}) << QList<int>({0, 2, 1, 3, 4, 5, 6, 7, 8, 9});
-    QTest::newRow("Switch 2nd with 2nd ") << QVariantList({1, 1, 1, 1}) << QList<int>({0, 1, 2, 3, 4, 5, 6, 7, 8, 9});
-    QTest::newRow("2nd to last") << QVariantList({2, 10}) << QList<int>({0, 1, -1, 3, 4, 5, 6, 7, 8, 9, 2});
+    QTest::addColumn<bool>("configChanged");
+    QTest::newRow("First to last") << QVariantList({0, 10}) << QList<int>({-1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0}) << true;
+    QTest::newRow("First to after last") << QVariantList({0, 11}) << QList<int>({-1, 1, 2, 3, 4, 5, 6, 7, 8, 9, -1, 0}) << true;
+    QTest::newRow("Switch 2nd with 3rd ") << QVariantList({1, 2, 2, 1}) << QList<int>({0, 2, 1, 3, 4, 5, 6, 7, 8, 9}) << true;
+    QTest::newRow("Switch 2nd with 2nd ") << QVariantList({1, 1, 1, 1}) << QList<int>({0, 1, 2, 3, 4, 5, 6, 7, 8, 9}) << false;
+    QTest::newRow("2nd to last") << QVariantList({2, 10}) << QList<int>({0, 1, -1, 3, 4, 5, 6, 7, 8, 9, 2}) << true;
 }
 
 void PositionerTest::tst_move()
 {
     QFETCH(QVariantList, moves);
     QFETCH(QList<int>, result);
+    QFETCH(bool, configChanged);
 
     ensureFolderModelReady();
     auto baselineConfig = getCurrentConfig();
@@ -120,7 +122,12 @@ void PositionerTest::tst_move()
         QCOMPARE(m_positioner->map(i), result[i]);
     }
     // Configuration should be saved during move, so they shouldn't be equal
-    QCOMPARE_NE(baselineConfig, getCurrentConfig());
+    if (configChanged) {
+        QCOMPARE_NE(baselineConfig, getCurrentConfig());
+    } else {
+        // If our movement doesnt change anything, config is equal
+        QCOMPARE(baselineConfig, getCurrentConfig());
+    }
 }
 
 void PositionerTest::tst_nearestitem_data()
@@ -351,6 +358,29 @@ void PositionerTest::tst_renameFile()
     m_folderModel->rename(1, QStringLiteral("NEWNAME.txt"));
     QVERIFY(itemRenamedSpy.wait());
     // Renaming should save the config, so baseline and current should be not equal
+    QCOMPARE_NE(baselineConfig, getCurrentConfig());
+}
+
+void PositionerTest::tst_insertFile()
+{
+    ensureFolderModelReady();
+    QSignalSpy itemInsertedSpy(m_positioner, &Positioner::rowsInserted);
+    QVERIFY(m_positioner->screenInUse());
+    // setup baseline
+    m_positioner->savePositionsConfig();
+    m_positioner->loadAndApplyPositionsConfig();
+    auto baselineConfig = getCurrentConfig();
+
+    // Add new file
+    QDir dir(m_folderDir->path());
+    dir.cd(desktop);
+    QFile f;
+    f.setFileName(QStringLiteral("%1/NEWFILE.txt").arg(dir.path()));
+    f.open(QFile::WriteOnly);
+    f.close();
+
+    QVERIFY(itemInsertedSpy.wait());
+    // adding new item should save the config, so baseline and current should be not equal
     QCOMPARE_NE(baselineConfig, getCurrentConfig());
 }
 
