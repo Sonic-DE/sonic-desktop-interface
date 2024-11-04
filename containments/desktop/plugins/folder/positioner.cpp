@@ -99,7 +99,6 @@ void Positioner::setPerStripe(int perStripe)
 
         if (m_enabled && screenInUse() && !m_proxyToSource.isEmpty()) {
             convertFolderModelData();
-            updatePositionsList();
             if (!skipSaving) {
                 savePositionsConfig();
             }
@@ -497,7 +496,6 @@ void Positioner::sourceStatusChanged()
 {
     if (m_deferApplyPositions && m_folderModel->status() != FolderModel::Listing) {
         convertFolderModelData();
-        updatePositionsList();
     }
 
     // When deferring moves, skip saving, since this action is not by user:
@@ -950,6 +948,8 @@ void Positioner::convertFolderModelData()
 
     m_deferApplyPositions = false;
 
+    updatePositionsList();
+
     m_skipSave = false;
 }
 
@@ -1015,7 +1015,6 @@ void Positioner::loadAndApplyPositionsConfig()
                 m_deferApplyPositions = true;
             } else {
                 convertFolderModelData();
-                updatePositionsList();
             }
         }
     }
