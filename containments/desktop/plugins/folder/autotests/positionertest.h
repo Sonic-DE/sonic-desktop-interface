@@ -14,6 +14,10 @@
 class QTemporaryDir;
 class FolderModel;
 class Positioner;
+struct Pos {
+    int x;
+    int y;
+};
 
 class PositionerTest : public QObject
 {
@@ -42,9 +46,10 @@ private Q_SLOTS:
     void tst_config();
 
 private:
-    void checkPositions(int perStripe);
+    void checkPositions(int perStripe, bool useConfig);
     void ensureFolderModelReady();
     QJsonDocument getCurrentConfig();
+    QHash<QString, Pos> getPositionHash(QStringList positions);
 
     QString m_currentActivity;
     Positioner *m_positioner;
