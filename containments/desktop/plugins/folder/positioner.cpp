@@ -975,9 +975,6 @@ void Positioner::loadAndApplyPositionsConfig()
     if (m_applet && screenInUse() && !m_resolution.isEmpty()) {
         // The old configuration has commas with escape characters, so clean up those from the config
         auto confdata = loadConfigData();
-        if (confdata.isEmpty()) {
-            return;
-        }
         const QJsonDocument doc = QJsonDocument::fromJson(confdata.toUtf8());
         QStringList positions = doc[m_resolution].toVariant().toStringList();
 
@@ -999,9 +996,6 @@ void Positioner::savePositionsConfig()
 {
     if (m_applet && screenInUse() && !m_skipSave) {
         auto confdata = loadConfigData();
-        if (confdata.isEmpty()) {
-            return;
-        }
         auto doc = QJsonDocument::fromJson(confdata.toUtf8());
         QJsonObject root;
         // Iterate over the old data
