@@ -529,10 +529,6 @@ void Positioner::sourceModelReset()
 
 void Positioner::sourceRowsAboutToBeInserted(const QModelIndex &parent, int start, int end)
 {
-    // Skip saving since if there is no screen, this is action is not by user
-    if (!screenInUse()) {
-        m_skipSave = true;
-    }
     if (m_enabled) {
         // Don't insert yet if we're waiting for listing to complete to apply
         // initial positions;
@@ -592,7 +588,6 @@ void Positioner::sourceRowsAboutToBeInserted(const QModelIndex &parent, int star
         beginInsertRows(parent, start, end);
         m_beginInsertRowsCalled = true;
     }
-    m_skipSave = false;
 }
 
 void Positioner::sourceRowsAboutToBeMoved(const QModelIndex &sourceParent,
@@ -606,10 +601,6 @@ void Positioner::sourceRowsAboutToBeMoved(const QModelIndex &sourceParent,
 
 void Positioner::sourceRowsAboutToBeRemoved(const QModelIndex &parent, int first, int last)
 {
-    // Skip saving since if there is no screen, this is action is not by user
-    if (!screenInUse()) {
-        m_skipSave = true;
-    }
     if (m_enabled) {
         int oldLast = lastRow();
 
@@ -656,7 +647,6 @@ void Positioner::sourceRowsAboutToBeRemoved(const QModelIndex &parent, int first
     } else {
         beginRemoveRows(parent, first, last);
     }
-    m_skipSave = false;
 }
 
 void Positioner::sourceLayoutAboutToBeChanged(const QList<QPersistentModelIndex> &parents, QAbstractItemModel::LayoutChangeHint hint)
@@ -671,11 +661,6 @@ void Positioner::sourceRowsInserted(const QModelIndex &parent, int first, int la
     Q_UNUSED(parent)
     Q_UNUSED(first)
     Q_UNUSED(last)
-
-    // Skip saving since if there is no screen, this is action is not by user
-    if (!screenInUse()) {
-        m_skipSave = true;
-    }
 
     if (!m_ignoreNextTransaction) {
         if (m_beginInsertRowsCalled) {
@@ -698,7 +683,6 @@ void Positioner::sourceRowsInserted(const QModelIndex &parent, int first, int la
         // Save new config
         savePositionsConfig();
     }
-    m_skipSave = false;
 }
 
 void Positioner::sourceRowsMoved(const QModelIndex &sourceParent, int sourceStart, int sourceEnd, const QModelIndex &destinationParent, int destinationRow)
@@ -718,11 +702,6 @@ void Positioner::sourceRowsRemoved(const QModelIndex &parent, int first, int las
     Q_UNUSED(first)
     Q_UNUSED(last)
 
-    // Skip saving since if there is no screen, this is action is not by user
-    if (!screenInUse()) {
-        m_skipSave = true;
-    }
-
     if (!m_ignoreNextTransaction) {
         Q_EMIT endRemoveRows();
     } else {
@@ -739,7 +718,6 @@ void Positioner::sourceRowsRemoved(const QModelIndex &parent, int first, int las
         // Save new config
         savePositionsConfig();
     }
-    m_skipSave = false;
 }
 
 void Positioner::sourceLayoutChanged(const QList<QPersistentModelIndex> &parents, QAbstractItemModel::LayoutChangeHint hint)
