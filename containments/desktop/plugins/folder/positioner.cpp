@@ -286,11 +286,6 @@ QVariant Positioner::data(const QModelIndex &index, int role) const
 
 int Positioner::rowCount(const QModelIndex &parent) const
 {
-    // In case we dont have screen enabled, use the lastRow of our
-    // positioners model instead of overriding it with folder rowCount
-    if (!screenInUse()) {
-        return lastRow() + 1;
-    }
     if (m_folderModel) {
         if (m_enabled) {
             if (parent.isValid()) {
