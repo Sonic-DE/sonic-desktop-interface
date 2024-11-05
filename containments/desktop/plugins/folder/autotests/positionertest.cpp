@@ -84,8 +84,10 @@ void PositionerTest::tst_positions()
     QFETCH(int, perStripe);
     QVERIFY(m_positioner->screenInUse());
     m_positioner->setPerStripe(perStripe);
+    qWarning() << "Positioner enabled: " << m_positioner->enabled();
+    qWarning() << "positioner screenInUse: " << m_positioner->screenInUse();
     // Ignore config with this test to see if positions propagate as expected
-    m_positioner->updatePositionsList();
+    //m_positioner->updatePositionsList();
     checkDefaultPositions(perStripe);
 }
 
