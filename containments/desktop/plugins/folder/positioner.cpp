@@ -675,7 +675,7 @@ void Positioner::sourceRowsInserted(const QModelIndex &parent, int first, int la
 
     // Don't generate new positions data if we're waiting for listing to
     // complete to apply initial positions.
-    if (!m_deferApplyPositions && screenInUse() && m_folderModel->status() == FolderModel::Ready) {
+    if (!m_deferApplyPositions && screenInUse()) {
         // Load current config
         loadAndApplyPositionsConfig();
         // Update positions to append the missing items
@@ -710,7 +710,7 @@ void Positioner::sourceRowsRemoved(const QModelIndex &parent, int first, int las
 
     flushPendingChanges();
 
-    if (screenInUse() && m_folderModel->status() == FolderModel::Ready) {
+    if (screenInUse()) {
         // Load current config
         loadAndApplyPositionsConfig();
         // Update positions to append the missing items
