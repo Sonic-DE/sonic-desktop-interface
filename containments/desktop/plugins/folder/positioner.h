@@ -63,7 +63,7 @@ public:
      * @return The lowest index that was moved. Used to
      *         determine the first selected item.
      */
-    Q_INVOKABLE int move(const QVariantList &moves);
+    Q_INVOKABLE int move(const QVariantList &moves, bool save = true);
 
     QHash<int, QByteArray> roleNames() const override;
 
@@ -149,7 +149,6 @@ private:
     QString m_resolution;
 
     Plasma::Applet *m_applet = nullptr;
-    bool m_skipSave = false; // skip saving if the action is not by user
 
     friend class PositionerTest;
 };
