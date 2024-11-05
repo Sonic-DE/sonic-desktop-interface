@@ -50,7 +50,7 @@ public:
 
     Q_INVOKABLE void reset();
 
-    Q_INVOKABLE void loadAndApplyPositionsConfig();
+    void loadAndApplyPositionsConfig();
     void savePositionsConfig();
 
     /**
