@@ -30,8 +30,8 @@ private Q_SLOTS:
     void init();
     void cleanup();
 
-    void tst_positions_data();
-    void tst_positions();
+    void tst_default_positions_data();
+    void tst_default_positions();
     void tst_map();
     void tst_move_data();
     void tst_move();
