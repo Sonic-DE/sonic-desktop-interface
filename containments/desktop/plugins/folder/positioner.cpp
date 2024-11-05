@@ -90,9 +90,10 @@ void Positioner::setPerStripe(int perStripe)
 {
     if (m_perStripe != perStripe && perStripe > 0) {
         m_perStripe = perStripe;
-
+        // Make sure we have the correct resolution and positions
+        // loaded before changing the stripe, so we modify the right positions
+        updateResolution();
         Q_EMIT perStripeChanged();
-
         if (m_enabled && screenInUse() && !m_proxyToSource.isEmpty()) {
             convertFolderModelData();
         }
