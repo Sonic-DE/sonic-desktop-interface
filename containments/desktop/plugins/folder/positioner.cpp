@@ -805,17 +805,6 @@ void Positioner::convertFolderModelData()
         return;
     }
 
-    if (m_positions.size() < 5) {
-        // We were waiting for listing to complete before proxying source rows,
-        // but we don't have positions to apply. Reset to populate.
-        if (m_deferApplyPositions) {
-            m_deferApplyPositions = false;
-            reset();
-        }
-
-        return;
-    }
-
     // Do not allow saving during this operation
     beginResetModel();
 
