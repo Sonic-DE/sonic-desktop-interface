@@ -83,9 +83,12 @@ void PositionerTest::tst_positions()
 {
     QFETCH(int, perStripe);
     QVERIFY(m_positioner->screenInUse());
+    m_positioner->m_positions = QStringList();
     m_positioner->setPerStripe(perStripe);
-    // Ignore config with this test to see if positions propagate as expected
     m_positioner->updatePositionsList();
+    qWarning() << "Positioner enabled: " << m_positioner->enabled();
+    qWarning() << "positioner screenInUse: " << m_positioner->screenInUse();
+    // Ignore config with this test to see if positions are as expected
     checkDefaultPositions(perStripe);
 }
 
@@ -429,7 +432,7 @@ void PositionerTest::checkDefaultPositions(int perStripe)
 {
     ensureFolderModelReady();
     QCOMPARE(perStripe, m_positioner->perStripe());
-    QCOMPARE(m_positioner->positions()[0].toInt(), 1 + ((m_folderModel->rowCount() - 1) / perStripe)); // rows
+    QCOMPARE(m_positioner->positions()[0].toInt(), 1 + ((m_positioner->rowCount() - 1) / perStripe)); // rows
     QCOMPARE(m_positioner->positions()[1].toInt(), perStripe); // columns
     const auto currentPositions = getPositionHash(m_positioner->positions());
     // Checking default positions ignores configuration completely
@@ -439,9 +442,14 @@ void PositionerTest::checkDefaultPositions(int perStripe)
 
     int col = 0;
     int row = 0;
-    for (int i = 0; i < m_folderModel->rowCount(); i++) {
+    for (int i = 0; i < m_positioner->rowCount(); i++) {
         const auto index = m_folderModel->index(i, 0);
         const auto url = index.data(FolderModel::UrlRole).toString();
+        // Skip empty fields which can occur in m_positioner but not in m_folderModel rows
+        if (url.isEmpty()) {
+            continue;
+        }
+        qWarning() << url << "(" << currentPositions[url].x << currentPositions[url].y << ") (" << row << col << ")";
         const Pos pos = currentPositions[url];
         QCOMPARE(pos.x, row);
         QCOMPARE(pos.y, col);
