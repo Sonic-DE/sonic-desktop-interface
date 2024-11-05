@@ -676,13 +676,13 @@ void Positioner::sourceRowsInserted(const QModelIndex &parent, int first, int la
     // Don't generate new positions data if we're waiting for listing to
     // complete to apply initial positions.
     if (!m_deferApplyPositions && screenInUse()) {
-        // Load current config
-        loadAndApplyPositionsConfig();
-        // Update positions to append the missing items
-        updatePositionsList();
-        // Save new config
-        savePositionsConfig();
+        convertFolderModelData();
     }
+    connect(m_folderModel,
+            &FolderModel::listingCompleted,
+            this,
+            &Positioner::onListingCompleted,
+            static_cast<Qt::ConnectionType>(Qt::UniqueConnection | Qt::SingleShotConnection));
 }
 
 void Positioner::sourceRowsMoved(const QModelIndex &sourceParent, int sourceStart, int sourceEnd, const QModelIndex &destinationParent, int destinationRow)
@@ -711,13 +711,13 @@ void Positioner::sourceRowsRemoved(const QModelIndex &parent, int first, int las
     flushPendingChanges();
 
     if (screenInUse()) {
-        // Load current config
-        loadAndApplyPositionsConfig();
-        // Update positions to append the missing items
-        updatePositionsList();
-        // Save new config
-        savePositionsConfig();
+        convertFolderModelData();
     }
+    connect(m_folderModel,
+            &FolderModel::listingCompleted,
+            this,
+            &Positioner::onListingCompleted,
+            static_cast<Qt::ConnectionType>(Qt::UniqueConnection | Qt::SingleShotConnection));
 }
 
 void Positioner::sourceLayoutChanged(const QList<QPersistentModelIndex> &parents, QAbstractItemModel::LayoutChangeHint hint)
@@ -1057,6 +1057,18 @@ void Positioner::onItemRenamed()
 {
     updatePositionsList();
     savePositionsConfig();
+}
+
+void Positioner::onListingCompleted()
+{
+    if (screenInUse()) {
+        // Load current config
+        loadAndApplyPositionsConfig();
+        // Update positions to append the missing items
+        updatePositionsList();
+        // Save new config
+        savePositionsConfig();
+    }
 }
 
 void Positioner::connectSignals(FolderModel *model)
