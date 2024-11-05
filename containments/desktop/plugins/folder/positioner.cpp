@@ -326,7 +326,7 @@ void Positioner::reset()
     savePositionsConfig();
 }
 
-int Positioner::move(const QVariantList &moves)
+int Positioner::move(const QVariantList &moves, bool save)
 {
     struct RowMove {
         int from;
@@ -447,7 +447,9 @@ int Positioner::move(const QVariantList &moves)
     m_folderModel->updateSelection(sourceRows, true);
 
     updatePositionsList();
-    savePositionsConfig();
+    if (save) {
+        savePositionsConfig();
+    }
 
     return toIndices.constFirst();
 }
@@ -490,10 +492,8 @@ void Positioner::sourceStatusChanged()
     // When deferring moves, skip saving, since this action is not by user:
     // the moves happened during listing, so we should not save them
     if (m_deferMovePositions.count() > 0 && m_folderModel->status() != FolderModel::Listing) {
-        m_skipSave = true;
-        move(m_deferMovePositions);
+        move(m_deferMovePositions, false);
         m_deferMovePositions.clear();
-        m_skipSave = false;
     }
 }
 
@@ -817,7 +817,6 @@ void Positioner::convertFolderModelData()
     }
 
     // Do not allow saving during this operation
-    m_skipSave = true;
     beginResetModel();
 
     m_proxyToSource.clear();
@@ -924,8 +923,6 @@ void Positioner::convertFolderModelData()
     m_deferApplyPositions = false;
 
     updatePositionsList();
-
-    m_skipSave = false;
 }
 
 void Positioner::flushPendingChanges()
@@ -970,7 +967,6 @@ bool Positioner::screenInUse() const
 
 void Positioner::loadAndApplyPositionsConfig()
 {
-    m_skipSave = true;
     if (m_applet && screenInUse() && !m_resolution.isEmpty()) {
         // The old configuration has commas with escape characters, so clean up those from the config
         auto confdata = loadConfigData();
@@ -988,12 +984,11 @@ void Positioner::loadAndApplyPositionsConfig()
         // Defer applying positions until listing completes.
         convertFolderModelData();
     }
-    m_skipSave = false;
 }
 
 void Positioner::savePositionsConfig()
 {
-    if (m_applet && screenInUse() && !m_skipSave) {
+    if (m_applet && screenInUse()) {
         auto confdata = loadConfigData();
         auto doc = QJsonDocument::fromJson(confdata.toUtf8());
         QJsonObject root;
@@ -1058,6 +1053,9 @@ void Positioner::onItemRenamed()
     savePositionsConfig();
 }
 
+// Save positions only when listing is done, so we
+// do not save them during they're being moved due to
+// geometry changes
 void Positioner::onListingCompleted()
 {
     if (screenInUse()) {

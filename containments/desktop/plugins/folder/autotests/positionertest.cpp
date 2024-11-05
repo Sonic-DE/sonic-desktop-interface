@@ -316,10 +316,6 @@ void PositionerTest::tst_configSaveLoad()
     // set stripe to 5
     m_positioner->setPerStripe(5);
     m_positioner->updatePositionsList();
-    m_positioner->m_skipSave = true;
-    // try saving with the skipSave flag, so it shouldnt save
-    m_positioner->savePositionsConfig();
-    m_positioner->m_skipSave = false;
     // The config should be identical since we did not allow saving
     m_positioner->loadAndApplyPositionsConfig();
     QCOMPARE(baselineConfig, getCurrentConfig());
