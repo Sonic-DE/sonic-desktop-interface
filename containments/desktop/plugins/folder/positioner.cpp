@@ -680,8 +680,7 @@ void Positioner::sourceRowsInserted(const QModelIndex &parent, int first, int la
         loadAndApplyPositionsConfig();
         // Update positions to append the missing items
         updatePositionsList();
-        // Save new config
-        savePositionsConfig();
+        connect(m_folderModel, &FolderModel::listingCompleted, this, &Positioner::onListingCompleted, Qt::SingleShotConnection);
     }
 }
 
@@ -715,8 +714,7 @@ void Positioner::sourceRowsRemoved(const QModelIndex &parent, int first, int las
         loadAndApplyPositionsConfig();
         // Update positions to append the missing items
         updatePositionsList();
-        // Save new config
-        savePositionsConfig();
+        connect(m_folderModel, &FolderModel::listingCompleted, this, &Positioner::onListingCompleted, Qt::SingleShotConnection);
     }
 }
 
@@ -1057,6 +1055,14 @@ void Positioner::onItemRenamed()
 {
     updatePositionsList();
     savePositionsConfig();
+}
+
+void Positioner::onListingCompleted()
+{
+    if (screenInUse()) {
+        // Save new config
+        savePositionsConfig();
+    }
 }
 
 void Positioner::connectSignals(FolderModel *model)
