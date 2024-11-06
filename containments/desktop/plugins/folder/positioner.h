@@ -137,8 +137,8 @@ private:
     void flushPendingChanges();
     void connectSignals(FolderModel *model);
     void disconnectSignals(FolderModel *model);
-    bool configurationHasResolution(QString resolution);
-    QString loadConfigData();
+    bool configurationHasResolution(const QString &resolution) const;
+    QString loadConfigData() const;
 
     bool m_enabled;
     FolderModel *m_folderModel;

@@ -1025,7 +1025,7 @@ void Positioner::updateResolution()
     }
 }
 
-bool Positioner::configurationHasResolution(QString resolution)
+bool Positioner::configurationHasResolution(const QString &resolution) const
 {
     auto confdata = loadConfigData();
     if (confdata.isEmpty()) {
@@ -1035,7 +1035,7 @@ bool Positioner::configurationHasResolution(QString resolution)
     return doc.object().contains(resolution);
 }
 
-QString Positioner::loadConfigData()
+QString Positioner::loadConfigData() const
 {
     QString confdata;
     if (m_applet) {
