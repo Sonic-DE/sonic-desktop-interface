@@ -96,6 +96,10 @@ void Positioner::setPerStripe(int perStripe)
         Q_EMIT perStripeChanged();
         if (m_enabled && screenInUse() && !m_proxyToSource.isEmpty()) {
             convertFolderModelData();
+            // If no longer defering positions, update them
+            if (!m_deferApplyPositions) {
+                updatePositionsList();
+            }
         }
     }
 }
@@ -487,6 +491,10 @@ void Positioner::sourceStatusChanged()
 {
     if (m_deferApplyPositions && m_folderModel->status() != FolderModel::Listing) {
         convertFolderModelData();
+        // If no longer defering positions, update them
+        if (!m_deferApplyPositions) {
+            updatePositionsList();
+        }
     }
 
     // When deferring moves, skip saving, since this action is not by user:
@@ -712,7 +720,9 @@ void Positioner::sourceRowsRemoved(const QModelIndex &parent, int first, int las
     if (screenInUse()) {
         // Load current config
         loadAndApplyPositionsConfig();
-        // Update positions to append the missing items
+        // Update positions to remove the missing items
+        // We do not wait for defer here since we want this to happen instantly
+        // due to this being user action
         updatePositionsList();
     }
 }
@@ -908,8 +918,6 @@ void Positioner::convertFolderModelData()
     endResetModel();
 
     m_deferApplyPositions = false;
-
-    updatePositionsList();
 }
 
 void Positioner::flushPendingChanges()
@@ -970,6 +978,9 @@ void Positioner::loadAndApplyPositionsConfig()
         }
         // Defer applying positions until listing completes.
         convertFolderModelData();
+        if (!m_deferApplyPositions) {
+            updatePositionsList();
+        }
     }
 }
 
