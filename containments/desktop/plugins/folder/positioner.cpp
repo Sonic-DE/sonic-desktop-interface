@@ -1012,13 +1012,9 @@ void Positioner::updateResolution()
                 m_resolution = resolution;
                 if (configurationHasResolution(m_resolution)) {
                     loadAndApplyPositionsConfig();
-                    if (!m_deferApplyPositions) {
-                        updatePositionsList();
-                    }
                 }
-                // If we have no resolution, we should reset so the icons are not accidentally hidden
-                else {
-                    reset();
+                if (!m_deferApplyPositions) {
+                    updatePositionsList();
                 }
             }
         }
