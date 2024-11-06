@@ -52,9 +52,8 @@ public:
 
     /**
      * Loads the position configuration from a config file,
-     * calls convertFolderModelData to convert it to
-     * proxyData, then if there are no deferred moves it
-     * will also call updatePositionsList
+     * then calls convertFolderModelData to convert it to
+     * proxyData which can be used later by updatePositions
      */
     void loadAndApplyPositionsConfig();
 
