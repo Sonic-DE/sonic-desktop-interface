@@ -681,7 +681,6 @@ void Positioner::sourceRowsInserted(const QModelIndex &parent, int first, int la
         loadAndApplyPositionsConfig();
         // Update positions to append the missing items
         updatePositionsList();
-        connect(m_folderModel, &FolderModel::listingCompleted, this, &Positioner::onListingCompleted, Qt::SingleShotConnection);
     }
 }
 
@@ -715,7 +714,6 @@ void Positioner::sourceRowsRemoved(const QModelIndex &parent, int first, int las
         loadAndApplyPositionsConfig();
         // Update positions to append the missing items
         updatePositionsList();
-        connect(m_folderModel, &FolderModel::listingCompleted, this, &Positioner::onListingCompleted, Qt::SingleShotConnection);
     }
 }
 
@@ -1068,6 +1066,7 @@ void Positioner::connectSignals(FolderModel *model)
     connect(m_folderModel, &FolderModel::statusChanged, this, &Positioner::sourceStatusChanged, Qt::UniqueConnection);
     connect(m_folderModel, &FolderModel::itemRenamed, this, &Positioner::onItemRenamed, Qt::UniqueConnection);
     connect(m_folderModel, &FolderModel::screenGeometryChanged, this, &Positioner::updateResolution, Qt::UniqueConnection);
+    connect(m_folderModel, &FolderModel::listingCompleted, this, &Positioner::onListingCompleted, Qt::UniqueConnection);
 }
 
 void Positioner::disconnectSignals(FolderModel *model)
@@ -1085,4 +1084,5 @@ void Positioner::disconnectSignals(FolderModel *model)
     disconnect(m_folderModel, &FolderModel::statusChanged, this, &Positioner::sourceStatusChanged);
     disconnect(m_folderModel, &FolderModel::itemRenamed, this, &Positioner::onItemRenamed);
     disconnect(m_folderModel, &FolderModel::screenGeometryChanged, this, &Positioner::updateResolution);
+    disconnect(m_folderModel, &FolderModel::listingCompleted, this, &Positioner::onListingCompleted);
 }
