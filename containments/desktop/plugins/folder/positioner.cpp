@@ -978,9 +978,6 @@ void Positioner::loadAndApplyPositionsConfig()
         }
         // Defer applying positions until listing completes.
         convertFolderModelData();
-        if (!m_deferApplyPositions) {
-            updatePositionsList();
-        }
     }
 }
 
@@ -1015,6 +1012,9 @@ void Positioner::updateResolution()
                 m_resolution = resolution;
                 if (configurationHasResolution(m_resolution)) {
                     loadAndApplyPositionsConfig();
+                    if (!m_deferApplyPositions) {
+                        updatePositionsList();
+                    }
                 }
                 // If we have no resolution, we should reset so the icons are not accidentally hidden
                 else {
@@ -1057,7 +1057,6 @@ void Positioner::onItemRenamed()
 void Positioner::onListingCompleted()
 {
     if (screenInUse()) {
-        // Save new config
         savePositionsConfig();
     }
 }
