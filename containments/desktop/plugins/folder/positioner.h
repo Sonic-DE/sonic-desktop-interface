@@ -50,7 +50,17 @@ public:
 
     Q_INVOKABLE void reset();
 
+    /**
+     * Loads the position configuration from a config file,
+     * calls convertFolderModelData to convert it to
+     * proxyData, then if there are no deferred moves it
+     * will also call updatePositionsList
+     */
     void loadAndApplyPositionsConfig();
+
+    /**
+     * Saves the positions in m_positions to a configuration file
+     */
     void savePositionsConfig();
 
     /**
