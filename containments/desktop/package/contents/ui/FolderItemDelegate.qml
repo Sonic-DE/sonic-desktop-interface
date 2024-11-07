@@ -34,6 +34,7 @@ Item {
     property Item hoverArea:       loader.item ? loader.item.hoverArea      : null
     property Item frame:           loader.item ? loader.item.frame          : null
     property Item toolTip:         loader.item ? loader.item.toolTip        : null
+    property bool hovered: false
     Accessible.name: name
     Accessible.role: Accessible.Canvas
 
@@ -88,7 +89,7 @@ Item {
             property bool blank: model.blank
             property bool selected: model.blank ? false : model.selected
             property bool isDir: model.blank ? false : model.isDir
-            property bool hovered: (main.GridView.view.hoveredItem === main)
+            property bool hovered: main.hovered
             property QtObject popupDialog: null
             property Item iconArea: icon
             property Item label: label
@@ -97,8 +98,8 @@ Item {
             property Item hoverArea: toolTip
             property Item frame: frameLoader
             property Item toolTip: toolTip
-            property Item selectionButton: null
-            property Item popupButton: null
+            property Item selectionButton: selectionButtonComponent.createObject(actions)
+            property Item popupButton: model.isDir ? popupButtonComponent.createObject(actions) : null
 
             readonly property bool iconAndLabelsShouldlookSelected: impl.hovered
 
@@ -126,7 +127,7 @@ Item {
             onHoveredChanged: {
                 if (hovered) {
                     if (Plasmoid.configuration.selectionMarkers && Qt.styleHints.singleClickActivation) {
-                        selectionButton = selectionButtonComponent.createObject(actions);
+                        selectionButton.visible = true;
                     }
 
                     if (model.isDir) {
@@ -135,7 +136,7 @@ Item {
                         }
 
                         if (Plasmoid.configuration.popups && !root.useListViewMode) {
-                            popupButton = popupButtonComponent.createObject(actions);
+                            popupButton.visible = true;
                         }
                     }
                 } else if (!hovered) {
@@ -143,14 +144,9 @@ Item {
                         closePopup();
                     }
 
-                    if (selectionButton) {
-                        selectionButton.destroy();
-                        selectionButton = null;
-                    }
-
+                    selectionButton.visible = false;
                     if (popupButton) {
-                        popupButton.destroy();
-                        popupButton = null;
+                        popupButton.visible = false;
                     }
                 }
             }
@@ -185,8 +181,6 @@ Item {
                                 toolTip.subText = model.type;
                             }
                         }
-
-                        main.GridView.view.hoveredItem = main;
                     }
                 }
 
@@ -469,6 +463,10 @@ Item {
             }
 
             Component.onCompleted: {
+                selectionButton.visible = false;
+                if (popupButton) {
+                    popupButton.visible = false;
+                }
                 if (Plasmoid.isContainment && main.GridView.view.isRootView && root.GraphicsInfo.api === GraphicsInfo.OpenGL) {
                     frameLoader.iconShadow = iconShadowComponent.createObject(frameLoader);
                 }

@@ -451,19 +451,26 @@ FocusScope {
             gridView.ctrlPressed = (mouse.modifiers & Qt.ControlModifier);
             gridView.shiftPressed = (mouse.modifiers & Qt.ShiftModifier);
 
-            var cPos = mapToItem(gridView.contentItem, mouse.x, mouse.y);
-            var item = gridView.itemAt(cPos.x, cPos.y);
+            var item = gridView.itemAt(mouse.x, mouse.y);
             var leftEdge = Math.min(gridView.contentX, gridView.originX);
 
             if (!item || item.blank) {
                 if (gridView.hoveredItem && !root.containsDrag && (!dialog || !dialog.containsDrag) && !gridView.hoveredItem.popupDialog) {
+                    gridView.hoveredItem.hovered = false;
                     gridView.hoveredItem = null;
                 }
             } else {
                 var fPos = mapToItem(item.frame, mouse.x, mouse.y);
 
                 if (fPos.x < 0 || fPos.y < 0 || fPos.x > item.frame.width || fPos.y > item.frame.height) {
-                    gridView.hoveredItem = null;
+                    if (gridView.hoveredItem) {
+                        gridView.hoveredItem.hovered = false;
+                        gridView.hoveredItem = null;
+                    }
+                }
+                else {
+                    gridView.hoveredItem = item;
+                    gridView.hoveredItem.hovered = true;
                 }
             }
 
@@ -481,22 +488,22 @@ FocusScope {
             if (main.rubberBand) {
                 var rB = main.rubberBand;
 
-                if (cPos.x < cPress.x) {
-                    rB.x = Math.max(leftEdge, cPos.x);
+                if (mouse.x < cPress.x) {
+                    rB.x = Math.max(leftEdge, mouse.x);
                     rB.width = Math.abs(rB.x - cPress.x);
                 } else {
                     rB.x = cPress.x;
                     var ceil = Math.max(gridView.width, gridView.contentItem.width) + leftEdge;
-                    rB.width = Math.min(ceil - rB.x, Math.abs(rB.x - cPos.x));
+                    rB.width = Math.min(ceil - rB.x, Math.abs(rB.x - mouse.x));
                 }
 
-                if (cPos.y < cPress.y) {
-                    rB.y = Math.max(0, cPos.y);
+                if (mouse.y < cPress.y) {
+                    rB.y = Math.max(0, mouse.y);
                     rB.height = Math.abs(rB.y - cPress.y);
                 } else {
                     rB.y = cPress.y;
                     var ceil = Math.max(gridView.height, gridView.contentItem.height);
-                    rB.height = Math.min(ceil - rB.y, Math.abs(rB.y - cPos.y));
+                    rB.height = Math.min(ceil - rB.y, Math.abs(rB.y - mouse.y));
                 }
 
                 // Ensure rubberband is at least 1px in size or else it will become
