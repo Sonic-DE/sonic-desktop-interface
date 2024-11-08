@@ -105,7 +105,7 @@ Item {
             property Item hoverArea: toolTip
             property Item frame: frameLoader
             property Item toolTip: toolTip
-            property Item selectionButton: null
+            property Item selectionButton: selectionButtonComponent.createObject(actions)
             property Item popupButton: null
 
             readonly property bool iconAndLabelsShouldlookSelected: impl.hovered
@@ -124,7 +124,7 @@ Item {
             onHoveredChanged: {
                 if (hovered) {
                     if (Plasmoid.configuration.selectionMarkers && Qt.styleHints.singleClickActivation) {
-                        selectionButton = selectionButtonComponent.createObject(actions);
+                        selectionButton.visible = true;
                     }
 
                     if (model.isDir) {
@@ -141,10 +141,7 @@ Item {
                         closePopup();
                     }
 
-                    if (selectionButton) {
-                        selectionButton.destroy();
-                        selectionButton = null;
-                    }
+                    selectionButton.visible = false;
 
                     if (popupButton) {
                         popupButton.destroy();
@@ -467,6 +464,7 @@ Item {
             }
 
             Component.onCompleted: {
+                selectionButton.visible = false;
                 if (Plasmoid.isContainment && main.GridView.view.isRootView && root.GraphicsInfo.api === GraphicsInfo.OpenGL) {
                     frameLoader.iconShadow = iconShadowComponent.createObject(frameLoader);
                 }
