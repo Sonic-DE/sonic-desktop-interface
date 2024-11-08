@@ -200,7 +200,6 @@ Kicker.DashboardWindow {
 
             function clear() {
                 text = "";
-                searchHeading.placeholderText = "Type to search…";
                 searchHeading.cursorVisible = false
             }
 
@@ -210,8 +209,6 @@ Kicker.DashboardWindow {
 
         TextEdit {
             id: searchHeading
-
-            property string placeholderText: "Type to search…"
 
             anchors {
                 horizontalCenter: parent.horizontalCenter
@@ -228,14 +225,13 @@ Kicker.DashboardWindow {
 
             color: "white"
 
-            text: root.searching ? i18n("Searching for '%1'", searchField.text) : i18nc("@info:placeholder as in, 'start typing to initiate a search'", placeholderText)
+            text: root.searching ? i18n("Searching for '%1'", searchField.text) : i18nc("@info:placeholder as in, 'start typing to initiate a search'", "Type to search…")
 
-            cursorPosition: root.searching ? text.length-1 : placeholderText.length-1
+            cursorPosition: root.searching ? text.length-1 : 0
 
             MouseArea{
                 anchors.fill: parent
                 onClicked:{
-                    parent.placeholderText = "Searching for ''"
                     parent.cursorVisible = true
                 }
             }
@@ -269,7 +265,6 @@ Kicker.DashboardWindow {
 
             onClicked: {
                 searchField.clear();
-                searchHeading.placeholderText = "Type to search…";
             }
 
             Keys.onPressed: event => {
