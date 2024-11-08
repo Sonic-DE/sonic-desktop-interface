@@ -235,7 +235,7 @@ Kicker.DashboardWindow {
             MouseArea{
                 anchors.fill: parent
                 onClicked:{
-                    parent.placeholderText = "Searching for ''"
+                    parent.placeholderText = i18n("Searching for ''")
                     parent.cursorVisible = true
                 }
             }
