@@ -33,6 +33,7 @@ class InputDevice : public QObject
     Q_PROPERTY(QRectF outputArea READ outputArea WRITE setOutputArea NOTIFY outputAreaChanged)
     Q_PROPERTY(bool mapToWorkspace READ isMapToWorkspace WRITE setMapToWorkspace NOTIFY mapToWorkspaceChanged)
     Q_PROPERTY(QString pressureCurve READ pressureCurve WRITE setPressureCurve NOTIFY pressureCurveChanged)
+    Q_PROPERTY(quint32 padButtonCount READ padButtonCount CONSTANT)
 
 public:
     InputDevice(const QString &dbusName, QObject *parent);
@@ -128,6 +129,11 @@ public:
         return m_pressureCurve.value();
     }
     void setPressureCurve(const QString &curve);
+
+    quint32 padButtonCount() const
+    {
+        return m_padButtonCount.value();
+    }
 
 Q_SIGNALS:
     void needsSaveChanged();
@@ -263,6 +269,8 @@ private:
 
     Prop<QString> m_pressureCurve =
         Prop<QString>(this, "pressureCurve", &OrgKdeKWinInputDeviceInterface::defaultPressureCurve, nullptr, &InputDevice::pressureCurveChanged);
+
+    Prop<quint32> m_padButtonCount = Prop<quint32>(this, "padButtonCount");
 
     std::unique_ptr<OrgKdeKWinInputDeviceInterface> m_iface;
 };
