@@ -18,6 +18,7 @@ QQC2.Button {
 
     property inputSequence inputSequence
     property string name
+    property bool supportsPenButton: true
 
     signal gotInputSequence(sequence: inputSequence)
 
@@ -29,6 +30,8 @@ QQC2.Button {
                 return "input-keyboard-symbolic";
             case InputSequence.Mouse:
                 return "input-mouse-symbolic";
+            case InputSequence.Pen:
+                return "tool_pen-symbolic";
             case InputSequence.ApplicationDefined:
                 return "applications-all-symbolic";
         }
@@ -48,6 +51,7 @@ QQC2.Button {
     onClicked: {
         actionDialog.name = name;
         actionDialog.inputSequence = inputSequence;
+        actionDialog.supportsPenButton = supportsPenButton;
         actionDialog.closed.connect(clearSignals);
         actionDialog.gotInputSequence.connect(moveUpSequence);
         actionDialog.open();

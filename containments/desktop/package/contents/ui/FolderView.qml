@@ -14,7 +14,7 @@ import org.kde.kirigami 2.20 as Kirigami
 import org.kde.plasma.components 3.0 as PlasmaComponents
 import org.kde.kquickcontrolsaddons 2.0
 
-import org.kde.private.desktopcontainment.folder 0.1 as Folder
+import org.kde.private.desktopcontainment.folder as Folder
 import "code/FolderTools.js" as FolderTools
 
 FocusScope {
@@ -31,7 +31,7 @@ FocusScope {
     property alias url: dir.url
     property alias status: dir.status
     property alias perStripe: positioner.perStripe
-    property alias positions: positioner.positions
+    property alias positionerApplet: positioner.applet
     property alias errorString: dir.errorString
     property alias dragging: dir.dragging
     property alias dragInProgressAnywhere: dir.dragInProgressAnywhere

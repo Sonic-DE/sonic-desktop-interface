@@ -9,25 +9,28 @@
 #pragma once
 
 #include <QFileSystemWatcher>
+#include <QAction>
 #include <QImage>
 #include <QItemSelection>
+#include <QMimeData>
 #include <QPointer>
 #include <QQmlParserStatus>
+#include <QQuickItem>
 #include <QRegularExpression>
 #include <QSet>
 #include <QSortFilterProxyModel>
 #include <QStringList>
+#include <qqmlregistration.h>
 
 #include <KAbstractViewAdapter>
 #include <KActionCollection>
 #include <KDirLister>
 #include <KFilePreviewGenerator>
+#include <KIO/DropJob>
 
 #include <KNewFileMenu>
 
 #include <Plasma/Applet>
-
-#include "folderplugin_private_export.h"
 
 class QDrag;
 class QItemSelectionModel;
@@ -42,7 +45,6 @@ class KJob;
 
 namespace KIO
 {
-class DropJob;
 class StatJob;
 }
 
@@ -63,9 +65,10 @@ private:
     void handleJobError(KIO::Job *job);
 };
 
-class FOLDERPLUGIN_TESTS_EXPORT FolderModel : public QSortFilterProxyModel, public QQmlParserStatus
+class FolderModel : public QSortFilterProxyModel, public QQmlParserStatus
 {
     Q_OBJECT
+    QML_ELEMENT
     Q_INTERFACES(QQmlParserStatus)
 
     Q_PROPERTY(QString url READ url WRITE setUrl NOTIFY urlChanged)
@@ -242,7 +245,11 @@ public:
     Q_INVOKABLE void refresh();
     Q_INVOKABLE void createFolder();
 
+    bool screenUsed();
+
     void setScreen(int screen);
+
+    QRectF screenGeometry();
 
 Q_SIGNALS:
     void urlChanged() const;
@@ -274,6 +281,7 @@ Q_SIGNALS:
     void selectionChanged() const;
     void showHiddenFilesChanged() const;
     void itemRenamed() const;
+    void screenGeometryChanged() const;
 
 protected:
     bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const override;

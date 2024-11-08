@@ -261,6 +261,9 @@ pkg_check_modules(IBUS "ibus-1.0>=1.5.0" IMPORTED_TARGET)
 pkg_check_modules(GOBJECT gobject-2.0 IMPORTED_TARGET)
 pkg_check_modules(SCIM scim IMPORTED_TARGET)
 
+# for kcm_tablet
+pkg_check_modules(LIBWACOM libwacom REQUIRED IMPORTED_TARGET)
+
 ecm_setup_version(${PROJECT_VERSION} VARIABLE_PREFIX PLASMA VERSION_HEADER plasma_version.h)
 
 include_directories("${CMAKE_CURRENT_BINARY_DIR}")
@@ -315,7 +318,7 @@ file(GLOB_RECURSE ALL_CLANG_FORMAT_SOURCE_FILES *.cpp *.h)
 kde_clang_format(${ALL_CLANG_FORMAT_SOURCE_FILES})
 kde_configure_git_pre_commit_hook(CHECKS CLANG_FORMAT)
 
-feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES FATAL_ON_MISSING_REQUIRED_PACKAGES)
+feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)
 
 find_package(XdgUserDir)
 set_package_properties(XdgUserDir PROPERTIES

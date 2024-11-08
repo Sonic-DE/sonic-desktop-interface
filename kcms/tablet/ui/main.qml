@@ -299,30 +299,17 @@ SimpleKCM {
         }
 
         Repeater {
-            model: [
-                {
-                    value: 0x14b, // BTN_STYLUS
-                    text: i18nd("kcm_tablet", "Pen button 1:"),
-                    name: i18ndc("kcm_tablet", "@info Meant to be inserted into an existing sentence like 'configuring pen button 1'", "pen button 1")
-                },
-                {
-                    value: 0x14c, // BTN_STYLUS2
-                    text: i18nd("kcm_tablet", "Pen button 2:"),
-                    name: i18ndc("kcm_tablet", "@info Meant to be inserted into an existing sentence like 'configuring pen button 2'", "pen button 2")
-                },
-                {
-                    value: 0x149, // BTN_STYLUS3
-                    text: i18nd("kcm_tablet", "Pen button 3:"),
-                    name: i18ndc("kcm_tablet", "@info Meant to be inserted into an existing sentence like 'configuring pen button 3'", "pen button 3")
-                }
-            ]
+            model: StylusButtonsModel {
+                device: form.device
+                db: kcm.db
+            }
 
             delegate: ActionBinding {
                 id: seq
 
                 required property var modelData
 
-                Kirigami.FormData.label: (buttonPressed ? "<b>" : "") + modelData.text + (buttonPressed ? "</b>" : "")
+                Kirigami.FormData.label: (buttonPressed ? "<b>" : "") + modelData.label + (buttonPressed ? "</b>" : "")
                 property bool buttonPressed: false
 
                 name: modelData.name
@@ -382,6 +369,10 @@ SimpleKCM {
                     Component.onCompleted: reloadSettings()
 
                     function reloadSettings(): void {
+                        if (!form.device) {
+                            return;
+                        }
+
                         const points = kcm.fromSerializedCurve(form.device.pressureCurve);
                         if (points.length === 2) {
                             pressureCurve.controlPoint1 = points[0];
@@ -391,6 +382,10 @@ SimpleKCM {
                     }
 
                     function saveSettings(): void {
+                        if (!form.device) {
+                            return;
+                        }
+
                         form.device.pressureCurve = kcm.toSerializedCurve(pressureCurve.controlPoint1, pressureCurve.controlPoint2);
                     }
 
@@ -535,6 +530,7 @@ SimpleKCM {
                 property bool buttonPressed: false
 
                 name: i18ndc("kcm_tablet", "@info Meant to be inserted into an existing sentence like 'configuring pad button 0'", "pad button %1", modelData + 1)
+                supportsPenButton: false
 
                 Connections {
                     target: tabletEvents

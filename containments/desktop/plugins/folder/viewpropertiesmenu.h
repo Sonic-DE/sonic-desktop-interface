@@ -6,15 +6,17 @@
 
 #pragma once
 
-#include "folderplugin_private_export.h"
 #include <QObject>
+#include <qqmlregistration.h>
+
 class QAction;
 class QActionGroup;
 class QMenu;
 
-class FOLDERPLUGIN_TESTS_EXPORT ViewPropertiesMenu : public QObject
+class ViewPropertiesMenu : public QObject
 {
     Q_OBJECT
+    QML_ELEMENT
 
     Q_PROPERTY(QObject *menu READ menu CONSTANT)
 
