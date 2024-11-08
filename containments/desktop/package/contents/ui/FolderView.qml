@@ -517,7 +517,7 @@ FocusScope {
                 rB.width = Math.max(1, rB.width);
                 rB.height = Math.max(1, rB.height);
 
-                Qt.callLater(gridView.rectangleSelect, rB.x, rB.y, rB.width, rB.height);
+                Qt.callLater(gridView.rectangleSelect, rB.x, rB.y, rB.width, rB.height, main.rubberBand);
 
                 return;
             }
@@ -787,7 +787,7 @@ FocusScope {
                             rB.width = lastCol - rB.x;
                         }
 
-                        gridView.rectangleSelect(rB.x, rB.y, rB.width, rB.height);
+                        Qt.callLater(gridView.rectangleSelect, rB.x, rB.y, rB.width, rB.height, main.rubberBand);
                     }
                 }
 
@@ -822,7 +822,7 @@ FocusScope {
                             rB.height = lastRow - rB.y;
                         }
 
-                        gridView.rectangleSelect(rB.x, rB.y, rB.width, rB.height);
+                        Qt.callLater(gridView.rectangleSelect, rB.x, rB.y, rB.width, rB.height, main.rubberBand);
                     }
                 }
 
@@ -916,7 +916,7 @@ FocusScope {
                     scrollDown = false;
                 }
 
-                function rectangleSelect(x, y, width, height) {
+                function rectangleSelect(x, y, width, height, rubberBand) {
                     var rows = (gridView.flow === GridView.FlowLeftToRight);
                     var axis = rows ? gridView.width : gridView.height;
                     var step = rows ? cellWidth : cellHeight;
@@ -951,7 +951,7 @@ FocusScope {
 
                             // Check if the rubberband intersects this cell first to avoid doing more
                             // expensive work.
-                            if (main.rubberBand.intersects(Qt.rect(itemX + Kirigami.Units.smallSpacing, itemY + Kirigami.Units.smallSpacing,
+                            if (rubberBand.intersects(Qt.rect(itemX + Kirigami.Units.smallSpacing, itemY + Kirigami.Units.smallSpacing,
                                 cWidth, cHeight))) {
                                 var item = gridView.contentItem.childAt(itemX + midWidth, itemY + midHeight);
 
@@ -961,7 +961,7 @@ FocusScope {
                                     var iconRect = Qt.rect(itemX + item.iconArea.x, itemY + item.iconArea.y,
                                         item.iconArea.width, item.iconArea.height);
 
-                                    if (main.rubberBand.intersects(iconRect)) {
+                                    if (rubberBand.intersects(iconRect)) {
                                         indices.push(index);
                                         continue;
                                     }
@@ -969,7 +969,7 @@ FocusScope {
                                     var labelRect = Qt.rect(itemX + item.labelArea.x, itemY + item.labelArea.y,
                                         item.labelArea.width, item.labelArea.height);
 
-                                    if (main.rubberBand.intersects(labelRect)) {
+                                    if (rubberBand.intersects(labelRect)) {
                                         indices.push(index);
                                         continue;
                                     }
