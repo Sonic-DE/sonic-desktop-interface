@@ -112,7 +112,6 @@ Item {
             readonly property bool iconAndLabelsShouldlookSelected: impl.hovered
 
 
-
             Connections {
                 target: model
 
