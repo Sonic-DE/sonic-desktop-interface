@@ -25,6 +25,7 @@ Item {
     property string name:        model.blank ? "" : model.display
     property string nameWrapped: model.blank ? "" : model.displayWrapped
     property bool blank:         model.blank
+    property bool selected:      model.blank ? false : model.selected
     property bool isDir:           loader.item ? loader.item.isDir : false
     property QtObject popupDialog: loader.item ? loader.item.popupDialog    : null
     property Item iconArea:        loader.item ? loader.item.iconArea       : null
@@ -34,6 +35,7 @@ Item {
     property Item hoverArea:       loader.item ? loader.item.hoverArea      : null
     property Item frame:           loader.item ? loader.item.frame          : null
     property Item toolTip:         loader.item ? loader.item.toolTip        : null
+
     Accessible.name: name
     Accessible.role: Accessible.Canvas
 
@@ -77,6 +79,14 @@ Item {
         asynchronous: true
     }
 
+    function updateDragImage() {
+        if (selected && !blank) {
+            loader.grabToImage(result => {
+                dir.addItemDragImage(positioner.map(index), main.x + loader.x, main.y + loader.y, loader.width, loader.height, result.image);
+            });
+        }
+    }
+
     Component {
         id: delegateImplementation
 
@@ -86,7 +96,6 @@ Item {
             anchors.fill: parent
 
             property bool blank: model.blank
-            property bool selected: model.blank ? false : model.selected
             property bool isDir: model.blank ? false : model.isDir
             property bool hovered: (main.GridView.view.hoveredItem === main)
             property QtObject popupDialog: null
@@ -102,16 +111,7 @@ Item {
 
             readonly property bool iconAndLabelsShouldlookSelected: impl.hovered
 
-            // When a drop happens, a new item is created, and is set to selected
-            // grabToImagebefore it gets the final width, making grabToImage fail because it's still 0x0
-            onSelectedChanged: Qt.callLater(updateDragImage)
-            function updateDragImage() {
-                if (selected && !blank) {
-                    frameLoader.grabToImage(result => {
-                        dir.addItemDragImage(positioner.map(index), main.x + frameLoader.x, main.y + frameLoader.y, frameLoader.width, frameLoader.height, result.image);
-                    });
-                }
-            }
+
 
             Connections {
                 target: model
