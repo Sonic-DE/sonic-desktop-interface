@@ -464,8 +464,7 @@ FocusScope {
             gridView.ctrlPressed = (mouse.modifiers & Qt.ControlModifier);
             gridView.shiftPressed = (mouse.modifiers & Qt.ShiftModifier);
 
-            var cPos = mapToItem(gridView.contentItem, mouse.x, mouse.y);
-            var item = gridView.itemAt(cPos.x, cPos.y);
+            var item = gridView.itemAt(mouse.x, mouse.y);
             var leftEdge = Math.min(gridView.contentX, gridView.originX);
 
             if (!item || item.blank) {
@@ -493,6 +492,7 @@ FocusScope {
             // Update rubberband geometry.
             if (main.rubberBand) {
                 var rB = main.rubberBand;
+                var cPos = mapToItem(gridView.contentItem, mouse.x, mouse.y);
 
                 if (cPos.x < cPress.x) {
                     rB.x = Math.max(leftEdge, cPos.x);
@@ -517,7 +517,7 @@ FocusScope {
                 rB.width = Math.max(1, rB.width);
                 rB.height = Math.max(1, rB.height);
 
-                gridView.rectangleSelect(rB.x, rB.y, rB.width, rB.height);
+                Qt.callLater(gridView.rectangleSelect, rB.x, rB.y, rB.width, rB.height);
 
                 return;
             }
