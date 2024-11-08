@@ -91,6 +91,8 @@ FocusScope {
 
     // Create drag images before dragging
     // this should be called explicitly after selections
+    // Due to async operations we can't call this before dragging starts,
+    // but we have to call it after a selection is done
     function generateDragImages() {
         for (var i = 0; i < gridView.count; i++) {
             var item = gridView.itemAtIndex(i);
