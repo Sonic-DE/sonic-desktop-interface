@@ -135,6 +135,21 @@ public:
         return m_padButtonCount.value();
     }
 
+    QString deviceGroup() const
+    {
+        return m_deviceGroup.value();
+    }
+
+    bool tabletPad() const
+    {
+        return m_tabletPad.value();
+    }
+
+    bool tabletTool() const
+    {
+        return m_tabletTool.value();
+    }
+
 Q_SIGNALS:
     void needsSaveChanged();
 
@@ -271,6 +286,10 @@ private:
         Prop<QString>(this, "pressureCurve", &OrgKdeKWinInputDeviceInterface::defaultPressureCurve, nullptr, &InputDevice::pressureCurveChanged);
 
     Prop<quint32> m_padButtonCount = Prop<quint32>(this, "padButtonCount");
+
+    Prop<QString> m_deviceGroup = Prop<QString>(this, "deviceGroupId");
+    Prop<bool> m_tabletPad = Prop<bool>(this, "tabletPad");
+    Prop<bool> m_tabletTool = Prop<bool>(this, "tabletTool");
 
     std::unique_ptr<OrgKdeKWinInputDeviceInterface> m_iface;
 };
