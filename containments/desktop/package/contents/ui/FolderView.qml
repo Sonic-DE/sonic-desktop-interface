@@ -89,6 +89,15 @@ FocusScope {
         dir.linkHere(sourceUrl);
     }
 
+    // Create drag images before dragging
+    // this should be called explicitly after selections
+    function generateDragImages() {
+        for (var i = 0; i < gridView.count; i++) {
+            var item = gridView.itemAtIndex(i);
+            item.updateDragImage();
+        }
+    }
+
     function handleDragMove(x, y) {
         var child = childAt(x, y);
 
@@ -318,6 +327,7 @@ FocusScope {
                 if (!(pos.x <= hoveredItem.actionsOverlay.width && pos.y <= hoveredItem.actionsOverlay.height)) {
                     if (gridView.shiftPressed && gridView.currentIndex !== -1) {
                         positioner.setRangeSelected(gridView.anchorIndex, hoveredItem.index);
+                        main.generateDragImages();
                     } else {
                         // Deselecting everything else when one item is clicked is handled in onReleased in order to distinguish between drag and click
                         if (!gridView.ctrlPressed && !dir.isSelected(positioner.map(hoveredItem.index))) {
@@ -327,8 +337,10 @@ FocusScope {
 
                         if (gridView.ctrlPressed) {
                             dir.toggleSelected(positioner.map(hoveredItem.index));
+                            main.generateDragImages();
                         } else {
                             dir.setSelected(positioner.map(hoveredItem.index));
+                            main.generateDragImages();
                         }
                     }
 
@@ -359,6 +371,7 @@ FocusScope {
                     && (!(gridView.shiftPressed && gridView.currentIndex !== -1) && !gridView.ctrlPressed)) {
                         dir.clearSelection();
                         dir.setSelected(positioner.map(hoveredItem.index));
+                        main.generateDragImages();
                 }
             }
             pressCanceled();
@@ -566,6 +579,7 @@ FocusScope {
                     onFinished: {
                         rubberBand.visible = false;
                         rubberBand.enabled = false;
+                        main.generateDragImages();
                         rubberBand.destroy();
                     }
                 }
@@ -883,9 +897,11 @@ FocusScope {
                 function updateSelection(modifier) {
                     if (modifier & Qt.ShiftModifier) {
                         positioner.setRangeSelected(anchorIndex, currentIndex);
+                        main.generateDragImages();
                     } else {
                         dir.clearSelection();
                         dir.setSelected(positioner.map(currentIndex));
+                        main.generateDragImages();
                         if (currentIndex === -1) {
                             previouslySelectedItemIndex = -1;
                         }
@@ -994,6 +1010,7 @@ FocusScope {
                 Keys.onMenuPressed: event => {
                     if (currentIndex !== -1 && dir.hasSelection() && currentItem) {
                         dir.setSelected(positioner.map(currentIndex));
+                        main.generateDragImages();
                         dir.openContextMenu(currentItem.frame, event.modifiers);
                     } else {
                         // Otherwise let the containment handle it.
@@ -1063,6 +1080,7 @@ FocusScope {
                         dir.refresh();
                     } else if (event.matches(StandardKey.SelectAll)) {
                         positioner.setRangeSelected(0, count - 1);
+                        main.generateDragImages();
                     } else {
                         event.accepted = false;
                     }
@@ -1234,6 +1252,7 @@ FocusScope {
                     goingBack = false;
                     gridView.currentIndex = Math.min(lastPosition.index, gridView.count - 1);
                     setSelected(positioner.map(gridView.currentIndex));
+                    main.generateDragImages();
                     gridView.contentY = lastPosition.yPosition * gridView.contentHeight;
                 }
             }
