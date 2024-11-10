@@ -183,13 +183,13 @@ FolderModel::FolderModel(QObject *parent)
     connect(dirLister, &KCoreDirLister::started, this, std::bind(&FolderModel::setStatus, this, Status::Listing));
 
     void (KCoreDirLister::*myCompletedSignal)() = &KCoreDirLister::completed;
-    QObject::connect(dirLister, myCompletedSignal, this, [this] {
+    QObject::connect(dirLister, myCompletedSignal, this, [this]() {
         setStatus(Status::Ready);
         Q_EMIT listingCompleted();
     });
 
     void (KCoreDirLister::*myCanceledSignal)() = &KCoreDirLister::canceled;
-    QObject::connect(dirLister, myCanceledSignal, this, [this] {
+    QObject::connect(dirLister, myCanceledSignal, this, [this]() {
         setStatus(Status::Canceled);
         Q_EMIT listingCanceled();
     });
@@ -754,7 +754,8 @@ void FolderModel::setScreen(int screen)
     Q_EMIT screenChanged();
 }
 
-bool FolderModel::screenUsed() {
+bool FolderModel::screenUsed()
+{
     return m_screenUsed;
 }
 
