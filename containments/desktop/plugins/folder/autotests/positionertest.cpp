@@ -27,6 +27,7 @@ void PositionerTest::initTestCase()
 
     m_currentActivity = QStringLiteral("00000000-0000-0000-0000-000000000000");
     m_folderDir = new QTemporaryDir();
+    qWarning() << m_folderDir;
 
     QDir dir(m_folderDir->path());
     dir.mkdir(desktop);
