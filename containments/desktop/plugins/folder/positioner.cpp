@@ -802,7 +802,8 @@ int Positioner::firstFreeRow() const
 
 void Positioner::convertFolderModelData()
 {
-    if (!screenInUse()) {
+    // if no screen or position count is 2 or smaller, we have no positions to convert
+    if (!screenInUse() && m_positions.count() <= 2) {
         return;
     }
     // We were called while the source model is listing. Defer applying positions
