@@ -27,9 +27,10 @@ void PositionerTest::initTestCase()
 
     m_currentActivity = QStringLiteral("00000000-0000-0000-0000-000000000000");
     m_folderDir = new QTemporaryDir();
+    qWarning() << "folder path " << m_folderDir->path();
 
     QDir dir(m_folderDir->path());
-    dir.mkdir(desktop);
+    qWarning() << "making dir desktop" << dir.mkdir(desktop);
     dir.cd(desktop);
     dir.mkdir(QStringLiteral("firstDir"));
     QFile f;
@@ -38,6 +39,7 @@ void PositionerTest::initTestCase()
         f.open(QFile::WriteOnly);
         f.close();
     }
+    qWarning() << m_folderDir->path() << "dir entries " << dir.entryInfoList();
 }
 
 void PositionerTest::cleanupTestCase()
@@ -86,9 +88,13 @@ void PositionerTest::tst_default_positions()
     QVERIFY(m_positioner->screenInUse());
     // Since we are not using configs, make sure our positions is clean before test
     m_positioner->reset();
+    m_positioner->m_positions = QStringList();
     m_positioner->setPerStripe(perStripe);
     m_positioner->updatePositionsList();
+    qWarning() << m_positioner->positions();
     checkDefaultPositions(perStripe);
+    m_positioner->reset();
+    m_positioner->m_positions = QStringList();
 }
 
 void PositionerTest::tst_map()
