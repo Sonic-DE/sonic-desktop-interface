@@ -85,7 +85,7 @@ void PositionerTest::tst_default_positions()
     QFETCH(int, perStripe);
     QVERIFY(m_positioner->screenInUse());
     // Since we are not using configs, make sure our positions is clean before test
-    m_positioner->m_positions = QStringList();
+    m_positioner->reset();
     m_positioner->setPerStripe(perStripe);
     m_positioner->updatePositionsList();
     checkDefaultPositions(perStripe);
