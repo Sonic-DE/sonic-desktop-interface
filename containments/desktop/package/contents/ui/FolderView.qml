@@ -151,6 +151,13 @@ FocusScope {
         }
     }
 
+    function generateDragImage() {
+        for (var i = 0; i < gridView.count; i++) {
+            var item = gridView.itemAtIndex(i);
+            item.updateDragImage();
+        }
+    }
+
     Connections {
         target: dir
         function onPopupMenuAboutToShow(dropJob, mimeData, x, y) {
@@ -163,10 +170,7 @@ FocusScope {
         // Due to async operations we can't call this before dragging starts,
         // but we have to call it after a selection is done
         function onSelectionDone() {
-            for (var i = 0; i < gridView.count; i++) {
-                var item = gridView.itemAtIndex(i);
-                item.updateDragImage();
-            }
+            main.generateDragImage();
         }
     }
 
@@ -576,6 +580,9 @@ FocusScope {
                     onFinished: {
                         rubberBand.visible = false;
                         rubberBand.enabled = false;
+                        // We need to explicitly generate an image here
+                        // to make sure we have one before we start dragging
+                        main.generateDragImage();
                         rubberBand.destroy();
                     }
                 }
