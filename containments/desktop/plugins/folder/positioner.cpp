@@ -8,7 +8,6 @@
 #include "foldermodel.h"
 
 #include <cstdlib>
-#include <span>
 
 #include <QJsonArray>
 #include <QJsonDocument>
@@ -819,9 +818,7 @@ void Positioner::convertFolderModelData()
     m_proxyToSource.clear();
     m_sourceToProxy.clear();
 
-    // The assertion makes sure std::span is faster than QList::mid
-    static_assert(!std::is_trivially_copy_assignable_v<decltype(m_positions)::value_type>);
-    const std::span positions{std::next(m_positions.cbegin(), 2), m_positions.cend()};
+    const auto positions = m_positions.mid(2);
 
     if (positions.size() % 3 != 0) {
         return;
@@ -842,7 +839,7 @@ void Positioner::convertFolderModelData()
     int offset = 0;
 
     // Restore positions for items that still fit.
-    for (std::size_t i = 0; i < positions.size() / 3; ++i) {
+    for (auto i = 0; i < positions.size() / 3; ++i) {
         offset = i * 3;
         pos = positions[offset + 2].toInt(&ok);
         if (!ok) {
@@ -874,7 +871,7 @@ void Positioner::convertFolderModelData()
     }
 
     // Find new positions for items that didn't fit.
-    for (std::size_t i = 0; i < positions.size() / 3; ++i) {
+    for (auto i = 0; i < positions.size() / 3; ++i) {
         offset = i * 3;
         pos = positions[offset + 2].toInt(&ok);
         if (!ok) {
