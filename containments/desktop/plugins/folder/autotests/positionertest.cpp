@@ -81,7 +81,7 @@ void PositionerTest::tst_default_positions_data()
 
 void PositionerTest::tst_default_positions()
 {
-    // Ignore config with this test to see if positions are as expected
+    // Ignore config with this test to see if positions are laid out as expected on first run
     QFETCH(int, perStripe);
     QVERIFY(m_positioner->screenInUse());
     // Since we are not using configs, make sure our positions is clean before test
