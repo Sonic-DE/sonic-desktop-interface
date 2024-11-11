@@ -94,7 +94,7 @@ void Positioner::setPerStripe(int perStripe)
         // loaded before changing the stripe, so we modify the right positions
         updateResolution();
         Q_EMIT perStripeChanged();
-        if (m_enabled && screenInUse() && !m_proxyToSource.isEmpty()) {
+        if (m_enabled && screenInUse()) {
             convertFolderModelData();
             // If no longer defering positions, update them
             if (!m_deferApplyPositions) {
