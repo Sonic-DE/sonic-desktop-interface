@@ -27,9 +27,10 @@ void PositionerTest::initTestCase()
 
     m_currentActivity = QStringLiteral("00000000-0000-0000-0000-000000000000");
     m_folderDir = new QTemporaryDir();
+    qWarning() << "folder path " << m_folderDir->path();
 
     QDir dir(m_folderDir->path());
-    dir.mkdir(desktop);
+    qWarning() << "making dir desktop" << dir.mkdir(desktop);
     dir.cd(desktop);
     dir.mkdir(QStringLiteral("firstDir"));
     QFile f;
@@ -38,6 +39,7 @@ void PositionerTest::initTestCase()
         f.open(QFile::WriteOnly);
         f.close();
     }
+    qWarning() << m_folderDir->path() << "dir entries " << dir.entryInfoList();
 }
 
 void PositionerTest::cleanupTestCase()
@@ -59,6 +61,7 @@ void PositionerTest::init()
     m_positioner->setFolderModel(m_folderModel);
     m_positioner->setPerStripe(3);
 
+    qWarning() << "seturl" << m_folderDir->path() + QDir::separator() + desktop;
     m_folderModel->setUrl(m_folderDir->path() + QDir::separator() + desktop);
     QSignalSpy s(m_folderModel, &FolderModel::listingCompleted);
     s.wait(1000);
