@@ -2126,6 +2126,11 @@ void FolderModel::setShowHiddenFiles(bool enable)
     }
 }
 
+QItemSelectionModel *FolderModel::selectionModel() const
+{
+    return m_selectionModel;
+}
+
 void FolderModel::moveSelectedToTrash()
 {
     if (!m_selectionModel->hasSelection()) {

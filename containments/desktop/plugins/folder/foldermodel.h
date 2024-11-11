@@ -93,6 +93,7 @@ class FolderModel : public QSortFilterProxyModel, public QQmlParserStatus
     Q_PROPERTY(QObject *newMenu READ newMenu CONSTANT)
     Q_PROPERTY(Plasma::Applet *applet READ applet WRITE setApplet NOTIFY appletChanged)
     Q_PROPERTY(bool showHiddenFiles READ showHiddenFiles WRITE setShowHiddenFiles NOTIFY showHiddenFilesChanged)
+    Q_PROPERTY(QItemSelectionModel *selectionModel READ selectionModel CONSTANT)
 
 public:
     enum DataRole {
@@ -188,6 +189,8 @@ public:
 
     bool showHiddenFiles() const;
     void setShowHiddenFiles(bool enable);
+
+    QItemSelectionModel *selectionModel() const;
 
     KFileItem rootItem() const;
 
