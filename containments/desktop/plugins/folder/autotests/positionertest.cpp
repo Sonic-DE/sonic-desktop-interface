@@ -86,6 +86,7 @@ void PositionerTest::tst_default_positions()
     QVERIFY(m_positioner->screenInUse());
     // Since we are not using configs, make sure our positions is clean before test
     m_positioner->reset();
+    m_positioner->m_positions = QStringList();
     m_positioner->setPerStripe(perStripe);
     m_positioner->updatePositionsList();
     checkDefaultPositions(perStripe);
@@ -442,8 +443,11 @@ void PositionerTest::checkDefaultPositions(int perStripe)
     int col = 0;
     int row = 0;
     for (int i = 0; i < m_positioner->rowCount(); i++) {
-        const auto index = m_folderModel->index(i, 0);
+        const auto index = m_positioner->index(i, 0);
         const auto url = index.data(FolderModel::UrlRole).toString();
+        if (url.isEmpty()) {
+            continue;
+        }
         const Pos pos = currentPositions[url];
         QCOMPARE(pos.x, row);
         QCOMPARE(pos.y, col);
