@@ -89,6 +89,12 @@ Kirigami.ScrollablePage {
                 recentEmojiModel.clearHistory();
             }
         }
+
+        QQC2.Switch {
+            text: i18nc("option:check", "Close after picking emoji")
+            checked: CopyHelper.quitOnCopy
+            onToggled: CopyHelper.quitOnCopy = checked;
+        }
     }
 
     Shortcut {

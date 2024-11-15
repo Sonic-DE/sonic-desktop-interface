@@ -5,6 +5,7 @@
 */
 
 #include "emojierplugin.h"
+#include <QtWidgets/qapplication.h>
 
 #undef signals
 #include "emojidict.h"
@@ -13,6 +14,7 @@
 #include <QGuiApplication>
 #include <QSortFilterProxyModel>
 #include <QStandardPaths>
+#include <QTimer>
 #include <qqml.h>
 
 int AbstractEmojiModel::rowCount(const QModelIndex &parent) const
@@ -200,6 +202,29 @@ void CopyHelperPrivate::copyTextToClipboard(const QString &text)
     QClipboard *clipboard = qGuiApp->clipboard();
     clipboard->setText(text, QClipboard::Clipboard);
     clipboard->setText(text, QClipboard::Selection);
+
+    if (m_settings.quitOnCopy()) {
+        // Need to give Klipper time to cache it in the history
+        QTimer::singleShot(50, [] {
+            QApplication::quit();
+        });
+    }
+}
+
+bool CopyHelperPrivate::quitOnCopy() const
+{
+    return m_settings.quitOnCopy();
+}
+
+void CopyHelperPrivate::setQuitOnCopy(bool quitOnCopy)
+{
+    if (m_settings.quitOnCopy() == quitOnCopy) {
+        return;
+    }
+
+    m_settings.setQuitOnCopy(quitOnCopy);
+    m_settings.save();
+    Q_EMIT quitOnCopyChanged();
 }
 
 #include "emojierplugin.moc"
