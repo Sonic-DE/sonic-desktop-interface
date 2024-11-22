@@ -55,7 +55,7 @@ public:
      * then calls convertFolderModelData to convert it to
      * proxyData which can be used later by updatePositions
      */
-    void loadAndApplyPositionsConfig();
+    void loadAndApplyPositionsConfig(const bool loadPerStripe = true);
 
     /**
      * Saves the positions in m_positions to a configuration file
