@@ -94,7 +94,7 @@ void Positioner::setPerStripe(int perStripe)
         updateResolution();
         Q_EMIT perStripeChanged();
         if (m_enabled && screenInUse()) {
-            convertFolderModelData();
+            loadAndApplyPositionsConfig();
             // If no longer defering positions, update them
             if (!m_deferApplyPositions) {
                 updatePositionsList();
