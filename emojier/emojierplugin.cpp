@@ -12,10 +12,18 @@
 #include "emojiersettings.h"
 #include <QClipboard>
 #include <QGuiApplication>
+#include <QPainter>
+#include <QPalette>
+#include <QPixmap>
+#include <QScreen>
 #include <QSortFilterProxyModel>
 #include <QStandardPaths>
 #include <QTimer>
 #include <qqml.h>
+
+#include <KIconLoader>
+#include <KLocalizedString>
+#include <KNotification>
 
 int AbstractEmojiModel::rowCount(const QModelIndex &parent) const
 {
@@ -204,6 +212,26 @@ void CopyHelperPrivate::copyTextToClipboard(const QString &text)
     clipboard->setText(text, QClipboard::Selection);
 
     if (m_settings.quitOnCopy()) {
+        KNotification *notification = new KNotification(QLatin1String("CopiedToClipboard"));
+        notification->setComponentName(QLatin1String("emojier"));
+        notification->setTitle(i18nc("@title of a system notification", "Emoji copied to clipboard"));
+
+        QScreen *appScreen = qApp->screenAt(qApp->focusWindow()->framePosition());
+        const int standardIconSize = KIconLoader::SizeLarge;
+        const int finalIconSize = qRound(standardIconSize * appScreen->devicePixelRatio());
+        QPixmap pixmap = QPixmap(finalIconSize, finalIconSize);
+        pixmap.fill(Qt::transparent);
+
+        QPainter painter(&pixmap);
+        QFont font = QFont();
+        font.setPixelSize(qRound(finalIconSize * 0.8 /*Don't touch the edges*/));
+        painter.setFont(font);
+        painter.setPen(QApplication::palette().color(QPalette::Normal, QPalette::Text));
+        painter.drawText(pixmap.rect(), Qt::AlignCenter, text);
+
+        notification->setPixmap(pixmap);
+        notification->sendEvent();
+
         // Need to give Klipper time to cache it in the history
         QTimer::singleShot(50, [] {
             QApplication::quit();
