@@ -89,12 +89,6 @@ Kirigami.ScrollablePage {
                 recentEmojiModel.clearHistory();
             }
         }
-
-        QQC2.Switch {
-            text: i18nc("option:check", "Close after picking emoji")
-            checked: CopyHelper.quitOnCopy
-            onToggled: CopyHelper.quitOnCopy = checked;
-        }
     }
 
     Shortcut {
@@ -117,16 +111,14 @@ Kirigami.ScrollablePage {
                 icon.name: "edit-copy"
                 text: i18nc("@item:inmenu", "Copy Character")
                 onClicked: {
-                    CopyHelper.copyTextToClipboard(label.text);
-                    window.showPassiveNotification(i18n("%1 copied to the clipboard", label.text));
+                    CopyHelper.copyToClipboardAndQuit(label.text);
                 }
             }
             QQC2.MenuItem {
                 icon.name: "edit-copy"
                 text: i18nc("@item:inmenu", "Copy Description")
                 onClicked: {
-                    CopyHelper.copyTextToClipboard(label.QQC2.ToolTip.text);
-                    window.showPassiveNotification(i18n("%1 copied to the clipboard", label.QQC2.ToolTip.text));
+                    CopyHelper.copyToClipboardAndQuit(label.QQC2.ToolTip.text);
                 }
             }
         }

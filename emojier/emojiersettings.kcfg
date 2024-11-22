@@ -4,8 +4,5 @@
   <group name="Emojier">
     <entry name="recent" type="StringList"/>
     <entry name="recentDescriptions" type="StringList"/>
-    <entry name="quitOnCopy" type="Bool">
-      <default>true</default>
-    </entry>
   </group>
 </kcfg>

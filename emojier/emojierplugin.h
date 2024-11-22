@@ -105,17 +105,6 @@ class CopyHelperPrivate : public QObject
     QML_ELEMENT
     QML_NAMED_ELEMENT(CopyHelper)
     QML_SINGLETON
-    Q_PROPERTY(bool quitOnCopy READ quitOnCopy WRITE setQuitOnCopy NOTIFY quitOnCopyChanged)
 public:
-    Q_INVOKABLE void copyTextToClipboard(const QString &text);
-
-Q_SIGNALS:
-    bool quitOnCopyChanged();
-
-private:
-    bool quitOnCopy() const;
-    void setQuitOnCopy(bool quitOnCopy);
-
-    bool m_quitOnCopy;
-    EmojierSettings m_settings;
+    Q_INVOKABLE void copyToClipboardAndQuit(const QString &text);
 };

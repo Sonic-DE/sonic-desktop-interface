@@ -205,54 +205,36 @@ bool SearchModelFilter::filterAcceptsRow(int source_row, const QModelIndex &sour
         || !idx.data(AbstractEmojiModel::AnnotationsRole).toStringList().filter(m_search, Qt::CaseInsensitive).isEmpty();
 }
 
-void CopyHelperPrivate::copyTextToClipboard(const QString &text)
+void CopyHelperPrivate::copyToClipboardAndQuit(const QString &text)
 {
     QClipboard *clipboard = qGuiApp->clipboard();
     clipboard->setText(text, QClipboard::Clipboard);
     clipboard->setText(text, QClipboard::Selection);
 
-    if (m_settings.quitOnCopy()) {
-        KNotification *notification = new KNotification(QLatin1String("CopiedToClipboard"));
-        notification->setComponentName(QLatin1String("emojier"));
-        notification->setTitle(i18nc("@title of a system notification", "Emoji copied to clipboard"));
+    KNotification *notification = new KNotification(QLatin1String("CopiedToClipboard"));
+    notification->setComponentName(QLatin1String("emojier"));
+    notification->setTitle(i18nc("@title of a system notification", "Emoji copied to clipboard"));
 
-        QScreen *appScreen = qApp->screenAt(qApp->focusWindow()->framePosition());
-        const int standardIconSize = KIconLoader::SizeLarge;
-        const int finalIconSize = qRound(standardIconSize * appScreen->devicePixelRatio());
-        QPixmap pixmap = QPixmap(finalIconSize, finalIconSize);
-        pixmap.fill(Qt::transparent);
+    QScreen *appScreen = qApp->screenAt(qApp->focusWindow()->framePosition());
+    const int standardIconSize = KIconLoader::SizeLarge;
+    const int finalIconSize = qRound(standardIconSize * appScreen->devicePixelRatio());
+    QPixmap pixmap = QPixmap(finalIconSize, finalIconSize);
+    pixmap.fill(Qt::transparent);
 
-        QPainter painter(&pixmap);
-        QFont font = QFont();
-        font.setPixelSize(qRound(finalIconSize * 0.8 /*Don't touch the edges*/));
-        painter.setFont(font);
-        painter.setPen(QApplication::palette().color(QPalette::Normal, QPalette::Text));
-        painter.drawText(pixmap.rect(), Qt::AlignCenter, text);
+    QPainter painter(&pixmap);
+    QFont font = QFont();
+    font.setPixelSize(qRound(finalIconSize * 0.8 /*Don't touch the edges*/));
+    painter.setFont(font);
+    painter.setPen(QApplication::palette().color(QPalette::Normal, QPalette::Text));
+    painter.drawText(pixmap.rect(), Qt::AlignCenter, text);
 
-        notification->setPixmap(pixmap);
-        notification->sendEvent();
+    notification->setPixmap(pixmap);
+    notification->sendEvent();
 
-        // Need to give Klipper time to cache it in the history
-        QTimer::singleShot(50, [] {
-            QApplication::quit();
-        });
-    }
-}
-
-bool CopyHelperPrivate::quitOnCopy() const
-{
-    return m_settings.quitOnCopy();
-}
-
-void CopyHelperPrivate::setQuitOnCopy(bool quitOnCopy)
-{
-    if (m_settings.quitOnCopy() == quitOnCopy) {
-        return;
-    }
-
-    m_settings.setQuitOnCopy(quitOnCopy);
-    m_settings.save();
-    Q_EMIT quitOnCopyChanged();
+    // Need to give Klipper time to cache it in the history
+    QTimer::singleShot(50, [] {
+        QApplication::quit();
+    });
 }
 
 #include "emojierplugin.moc"
