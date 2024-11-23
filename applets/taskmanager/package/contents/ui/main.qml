@@ -543,11 +543,9 @@ PlasmoidItem {
         if (typeof index !== "number") {
             return;
         }
-        tasksModel.requestNewInstance(index);
-    }
 
-    function resetDragSource() {
-        dragSource = null;
+        const task = taskRepeater.itemAt(index);
+        tasksModel.requestNewInstance(task.modelIndex());
     }
 
     function createContextMenu(rootTask, modelIndex, args = {}) {
