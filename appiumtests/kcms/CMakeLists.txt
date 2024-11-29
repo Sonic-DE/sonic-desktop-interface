@@ -8,6 +8,12 @@ add_test(
 set_tests_properties(kcm_kded_test PROPERTIES TIMEOUT 120 ENVIRONMENT "USE_CUSTOM_BUS=1")
 
 add_test(
+    NAME kcm_keys_test
+    COMMAND selenium-webdriver-at-spi-run ${CMAKE_CURRENT_SOURCE_DIR}/kcm_keys_test.py --failfast
+)
+set_tests_properties(kcm_keys_test PROPERTIES TIMEOUT 120 ENVIRONMENT "USE_CUSTOM_BUS=1")
+
+add_test(
     NAME kcm_plasmasearch_test
     COMMAND selenium-webdriver-at-spi-run ${CMAKE_CURRENT_SOURCE_DIR}/kcm_plasmasearch_test.py
 )
