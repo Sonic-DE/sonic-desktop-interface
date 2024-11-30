@@ -176,9 +176,11 @@ class DesktopTest(unittest.TestCase):
         """
         self._open_containment_config_dialog()
         self.driver.find_element(AppiumBy.NAME, "Add Wallpaper Image…").click()
+        logging.info(self.driver.page_source)
         wait = WebDriverWait(self.driver, 30)
         title_element: WebElement = wait.until(EC.presence_of_element_located((AppiumBy.NAME, "Open Image")))
 
+        ActionChains(self.driver).send_keys(Keys.ESCAPE).perform()
         ActionChains(self.driver).send_keys(Keys.ESCAPE).perform()
         wait.until_not(lambda _: title_element.is_displayed())
 
@@ -373,4 +375,5 @@ class DesktopTest(unittest.TestCase):
 
 if __name__ == '__main__':
     assert subprocess.call(["pidof", "plasmashell"]) != 0, "The test requires plasmashell to quit"
+    logging.getLogger().setLevel(logging.INFO)
     unittest.main()
