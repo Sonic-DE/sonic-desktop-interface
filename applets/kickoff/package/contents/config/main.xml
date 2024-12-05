@@ -65,5 +65,9 @@
             <label>Whether to use a compact display style for list items</label>
             <default>false</default>
         </entry>
+        <entry name="selectCategoryOnHover" type="Bool">
+            <label>Whether to allow selecting category items on hover</label>
+            <default>false</default>
+        </entry>
     </group>
 </kcfg>

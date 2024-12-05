@@ -24,6 +24,7 @@ BasePage {
         delegate: KickoffListDelegate {
             width: view.availableWidth
             isCategoryListItem: true
+            mouseArea.hoverEnabled: Plasmoid.configuration.selectCategoryOnHover
         }
     }
 

@@ -23,6 +23,7 @@ BasePage {
             width: view.availableWidth
             isCategoryListItem: true
             isMultilineText: false
+            mouseArea.hoverEnabled: Plasmoid.configuration.selectCategoryOnHover
         }
     }
 
