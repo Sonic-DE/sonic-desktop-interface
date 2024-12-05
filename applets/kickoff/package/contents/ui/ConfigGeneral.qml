@@ -186,6 +186,12 @@ KCM.SimpleKCM {
             font: Kirigami.Theme.smallFont
         }
 
+        QQC2.CheckBox {
+            id: switchCategoryOnHoverCheckbox
+            text: i18n("Switch sidebar categories when hovering over them")
+            checked: Plasmoid.configuration.switchCategoryOnHover
+        }
+
         QQC2.Button {
             enabled: KConfig.KAuthorized.authorizeControlModule("kcm_plasmasearch")
             icon.name: "settings-configure"
