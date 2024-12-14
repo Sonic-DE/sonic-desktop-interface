@@ -134,6 +134,7 @@ public:
 
     quint32 tabletPadButtonCount() const
     {
+        return 10;
         return m_tabletPadButtonCount.value();
     }
 
