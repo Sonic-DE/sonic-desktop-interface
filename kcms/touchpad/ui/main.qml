@@ -47,6 +47,7 @@ KCM.SimpleKCM {
         loading = true
 
         deviceEnabled.load()
+        disableEventsOnExternalMouse.load()
         dwt.load()
         leftHanded.load()
         middleEmulation.load()
@@ -158,6 +159,27 @@ KCM.SimpleKCM {
             onCheckedChanged: {
                 if (enabled && !root.loading) {
                     touchpad.enabled = checked
+                    root.changeSignal()
+                }
+            }
+        }
+
+        QQC2.CheckBox {
+            id: disableEventsOnExternalMouse
+            text: i18nd("kcm_touchpad", "Disable while an external mouse is plugged in")
+
+            function load() {
+                if (!formLayout.enabled) {
+                    checked = false
+                    return
+                }
+                enabled = touchpad.supportsDisableEventsOnExternalMouse
+                checked = enabled && touchpad.disableEventsOnExternalMouse
+            }
+
+            onCheckedChanged: {
+                if (enabled && !root.loading) {
+                    touchpad.disableEventsOnExternalMouse = checked
                     root.changeSignal()
                 }
             }
