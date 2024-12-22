@@ -31,6 +31,7 @@ class InputDevice : public QObject
     Q_PROPERTY(int orientation READ orientation WRITE setOrientation NOTIFY orientationChanged)
     Q_PROPERTY(QString outputName READ outputName WRITE setOutputName NOTIFY outputNameChanged)
     Q_PROPERTY(QRectF outputArea READ outputArea WRITE setOutputArea NOTIFY outputAreaChanged)
+    Q_PROPERTY(QRectF inputArea READ inputArea WRITE setInputArea NOTIFY inputAreaChanged)
     Q_PROPERTY(bool mapToWorkspace READ isMapToWorkspace WRITE setMapToWorkspace NOTIFY mapToWorkspaceChanged)
     Q_PROPERTY(QString pressureCurve READ pressureCurve WRITE setPressureCurve NOTIFY pressureCurveChanged)
     Q_PROPERTY(bool pressureCurveIsDefault READ pressureCurveIsDefault NOTIFY pressureCurveChanged)
@@ -89,6 +90,12 @@ public:
         return m_outputArea.value();
     }
     void setOutputArea(const QRectF &outputArea);
+
+    QRectF inputArea() const
+    {
+        return m_inputArea.value();
+    }
+    void setInputArea(const QRectF &inputArea);
 
     bool supportsCalibrationMatrix() const
     {
@@ -162,6 +169,7 @@ Q_SIGNALS:
     void enabledChanged();
     void mapToWorkspaceChanged();
     void pressureCurveChanged();
+    void inputAreaChanged();
 
 private:
     template<typename T>
@@ -277,6 +285,11 @@ private:
                                              &OrgKdeKWinInputDeviceInterface::defaultOutputArea,
                                              &OrgKdeKWinInputDeviceInterface::supportsOutputArea,
                                              &InputDevice::outputAreaChanged);
+    Prop<QRectF> m_inputArea = Prop<QRectF>(this,
+                                            "inputArea",
+                                            &OrgKdeKWinInputDeviceInterface::defaultInputArea,
+                                            &OrgKdeKWinInputDeviceInterface::supportsInputArea,
+                                            &InputDevice::inputAreaChanged);
 
     Prop<bool> m_mapToWorkspace =
         Prop<bool>(this, "mapToWorkspace", &OrgKdeKWinInputDeviceInterface::defaultMapToWorkspace, nullptr, &InputDevice::mapToWorkspaceChanged);
