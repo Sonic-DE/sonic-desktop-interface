@@ -28,9 +28,11 @@ Kirigami.FormLayout {
         } else {
             outputAreaCombo.currentIndex = 2;
         }
+        const initialInputArea = root.device.inputArea;
         if (outputsCombo.currentIndex !== 0) {
             mapping.setOutputAreaMode(outputAreaCombo.currentIndex);
             mapping.setOutputArea(initialOutputArea);
+            mapping.setInputArea(initialInputArea);
         }
     }
 
@@ -91,7 +93,7 @@ Kirigami.FormLayout {
                 i18nc("@item:inlistbox Keep aspect ratio and fit within the screen", "Keep Aspect Ratio and Fit"),
                 i18nc("@item:inlistbox Map to portion of the screen", "Map to Portion")]
         onActivated: index => {
-            mapping.changed = true;
+            mapping.outputChanged = true;
             mapping.setOutputAreaMode(index);
         }
         SettingHighlighter {
