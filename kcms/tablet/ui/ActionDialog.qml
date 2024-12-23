@@ -19,6 +19,7 @@ Kirigami.Dialog {
     property inputSequence inputSequence
     property string name
     property bool supportsPenButton
+    property bool supportsRelativeEvents
 
     signal gotInputSequence(sequence: inputSequence)
 
@@ -47,6 +48,11 @@ Kirigami.Dialog {
                 keyboardRadio.checked = true;
                 seq.keySequence = inputSequence.keySequence();
                 break;
+            case InputSequence.RelativeKeyboard:
+                relativeKeyboardRadio.checked = true;
+                upSeq.keySequence = inputSequence.upKeySequence();
+                downSeq.keySequence = inputSequence.downKeySequence();
+                break;
             case InputSequence.Mouse:
                 mouseRadio.checked = true;
                 clickCombo.currentIndex = clickCombo.indexOfValue(inputSequence.mouseButton());
@@ -60,6 +66,9 @@ Kirigami.Dialog {
                 break;
             case InputSequence.Pen:
                 penRadio.checked = true;
+                break;
+            case InputSequence.Scroll:
+                scrollRadio.checked = true;
                 break;
             case InputSequence.ApplicationDefined:
                 applicationRadio.checked = true;
@@ -101,6 +110,7 @@ Kirigami.Dialog {
 
             icon.name: "input-keyboard-symbolic"
             text: i18ndc("kcm_tablet", "@option:radio Set this action to a keyboard type", "Send keyboard key")
+            visible: !actionDialog.supportsRelativeEvents
 
             QQC2.ButtonGroup.group: radioGroup
 
@@ -110,12 +120,29 @@ Kirigami.Dialog {
             }
         }
         QQC2.RadioButton {
-            id: mouseRadio
+            id: relativeKeyboardRadio
 
             readonly property int index: 2
 
+            icon.name: "input-keyboard-symbolic"
+            text: i18ndc("kcm_tablet", "@option:radio Set this action to a up/down keyboard type", "Send keyboard keys")
+            visible: actionDialog.supportsRelativeEvents
+
+            QQC2.ButtonGroup.group: radioGroup
+
+            onToggled: {
+                inputSequence.type = InputSequence.RelativeKeyboard;
+                refreshDialogData();
+            }
+        }
+        QQC2.RadioButton {
+            id: mouseRadio
+
+            readonly property int index: 3
+
             text: i18ndc("kcm_tablet", "@option:radio Set this action to a mouse type", "Send mouse button click")
             icon.name: "input-mouse-symbolic"
+            visible: !actionDialog.supportsRelativeEvents
 
             QQC2.ButtonGroup.group: radioGroup
 
@@ -127,7 +154,7 @@ Kirigami.Dialog {
         QQC2.RadioButton {
             id: penRadio
 
-            readonly property int index: 3
+            readonly property int index: 4
 
             text: i18ndc("kcm_tablet", "@option:radio Set this action to a pen button type", "Send pen button")
             icon.name: "tool_pen-symbolic"
@@ -142,9 +169,26 @@ Kirigami.Dialog {
             }
         }
         QQC2.RadioButton {
+            id: scrollRadio
+
+            readonly property int index: 5
+
+            text: i18ndc("kcm_tablet", "@option:radio Set this action to a scroll wheel type type", "Send scroll wheel")
+            icon.name: "input-mouse-click-middle"
+            visible: actionDialog.supportsRelativeEvents
+            enabled: visible
+
+            QQC2.ButtonGroup.group: radioGroup
+
+            onToggled: {
+                inputSequence.type = InputSequence.Scroll;
+                refreshDialogData();
+            }
+        }
+        QQC2.RadioButton {
             id: disabledRadio
 
-            readonly property int index: 4
+            readonly property int index: 6
 
             icon.name: "action-unavailable-symbolic"
             text: i18ndc("kcm_tablet", "@option:radio Disable this action", "Do nothing")
@@ -183,6 +227,37 @@ Kirigami.Dialog {
                 checkForConflictsAgainst: ShortcutType.None
 
                 onCaptureFinished: actionDialog.inputSequence.setKeySequence(keySequence)
+            }
+            Kirigami.FormLayout {
+                id: relativeKeyboardView
+
+                KeySequenceItem {
+                    id: upSeq
+
+                    showCancelButton: true
+                    modifierlessAllowed: true
+                    modifierOnlyAllowed: true
+                    multiKeyShortcutsAllowed: false
+                    checkForConflictsAgainst: ShortcutType.None
+
+                    onCaptureFinished: actionDialog.inputSequence.setUpKeySequence(keySequence)
+
+                    Kirigami.FormData.label: i18nd("kcm_tablet Keybind to send when dial is turned up", "Up:")
+                }
+
+                KeySequenceItem {
+                    id: downSeq
+
+                    showCancelButton: true
+                    modifierlessAllowed: true
+                    modifierOnlyAllowed: true
+                    multiKeyShortcutsAllowed: false
+                    checkForConflictsAgainst: ShortcutType.None
+
+                    onCaptureFinished: actionDialog.inputSequence.setDownKeySequence(keySequence)
+
+                    Kirigami.FormData.label: i18nd("kcm_tablet Keybind to send when dial is turned down", "Down:")
+                }
             }
             ColumnLayout {
                 id: mouseView
@@ -268,6 +343,15 @@ Kirigami.Dialog {
 
                     onActivated: actionDialog.inputSequence.setPenButton(currentValue)
                 }
+            }
+            QQC2.Label {
+                id: scrollView
+
+                text: i18ndc("kcm_tablet", "@info", "Act like a scroll wheel on a mouse.")
+
+                wrapMode: Text.WordWrap
+
+                Layout.fillWidth: true
             }
             QQC2.Label {
                 id: disabledView
