@@ -20,6 +20,9 @@
 #include <KMessageBox>
 #include <QDesktopServices>
 #include <QIcon>
+#include <qabstractbutton.h>
+#include <qdbusconnection.h>
+#include <qfiledialog.h>
 
 KNetAttach::KNetAttach(QWidget *parent)
     : QWizard(parent)
@@ -34,6 +37,8 @@ KNetAttach::KNetAttach(QWidget *parent)
     connect(_port, &QSpinBox::valueChanged, this, &KNetAttach::updateParametersPageStatus);
     connect(_path, &QLineEdit::textChanged, this, &KNetAttach::updateParametersPageStatus);
     connect(_useEncryption, &QAbstractButton::toggled, this, &KNetAttach::updatePort);
+    connect(_useCustomPublicKey, &QAbstractButton::toggled, this, &KNetAttach::toggleCertChoosingDialogVisibility);
+    connect(_chooseCustomPublicKey, &QAbstractButton::clicked, this, &KNetAttach::openCertChoosingDialog);
     connect(_createIcon, &QAbstractButton::toggled, this, &KNetAttach::updateFinishButtonText);
     connect(this, &QWizard::helpRequested, this, &KNetAttach::slotHelpClicked);
     connect(this, &QWizard::currentIdChanged, this, &KNetAttach::slotPageChanged);
@@ -57,6 +62,33 @@ KNetAttach::KNetAttach(QWidget *parent)
     _encoding->addItems(KCharsets::charsets()->descriptiveEncodingNames());
     const int codecForLocaleIdx = _encoding->findText(QLatin1String("UTF-8"), Qt::MatchContains);
     _encoding->setCurrentIndex(codecForLocaleIdx != -1 ? codecForLocaleIdx : 0);
+}
+
+void KNetAttach::toggleCertChoosingDialogVisibility(bool useCustomCert)
+{
+    _chooseCustomPublicKey->setDisabled(!useCustomCert);
+}
+
+void KNetAttach::openCertChoosingDialog()
+{
+    if (!m_dialog) {
+        m_dialog = new QFileDialog(nullptr, i18n("Select public key"), QStandardPaths::standardLocations(QStandardPaths::HomeLocation).at(0));
+        m_dialog->setFileMode(QFileDialog::ExistingFile);
+        connect(m_dialog, &QDialog::accepted, this, &KNetAttach::acceptCertChoosingDialog);
+    }
+
+    m_dialog->show();
+    m_dialog->raise();
+    m_dialog->activateWindow();
+};
+
+void KNetAttach::acceptCertChoosingDialog()
+{
+    const QList<QUrl> &urls = m_dialog->selectedUrls();
+
+    if (!urls.isEmpty()) {
+        m_certUrl = urls.at(0);
+    }
 }
 
 void KNetAttach::slotPageChanged(int)
@@ -290,6 +322,8 @@ bool KNetAttach::updateForProtocol(const QString &protocol)
         _user->hide();
         _encodingText->hide();
         _encoding->hide();
+        _useCustomPublicKey->hide();
+        _chooseCustomPublicKey->hide();
     } else if (protocol == QLatin1String("Fish")) {
         _useEncryption->hide();
         _portText->show();
@@ -300,6 +334,8 @@ bool KNetAttach::updateForProtocol(const QString &protocol)
         _user->show();
         _encodingText->show();
         _encoding->show();
+        _useCustomPublicKey->show();
+        _chooseCustomPublicKey->show();
     } else if (protocol == QLatin1String("FTP")) {
         _useEncryption->hide();
         _portText->show();
@@ -310,6 +346,8 @@ bool KNetAttach::updateForProtocol(const QString &protocol)
         _user->show();
         _encodingText->show();
         _encoding->show();
+        _useCustomPublicKey->hide();
+        _chooseCustomPublicKey->hide();
     } else if (protocol == QLatin1String("SMB")) {
         _useEncryption->hide();
         _portText->hide();
@@ -320,6 +358,8 @@ bool KNetAttach::updateForProtocol(const QString &protocol)
         _user->hide();
         _encodingText->hide();
         _encoding->hide();
+        _useCustomPublicKey->hide();
+        _chooseCustomPublicKey->hide();
     } else {
         _type = QString();
         return false;

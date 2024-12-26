@@ -8,6 +8,8 @@
 
 #include "ui_knetattach.h"
 
+#include <QFileDialog>
+
 class QUrl;
 
 class KNetAttach : public QWizard, private Ui_KNetAttach
@@ -22,11 +24,16 @@ public Q_SLOTS:
 
 private:
     QString _type;
+    QFileDialog *m_dialog = nullptr;
+    QUrl m_certUrl;
 
+    void openCertChoosingDialog();
+    void toggleCertChoosingDialogVisibility(bool useCustomCert);
     bool doConnectionTest(const QUrl &url);
     bool updateForProtocol(const QString &protocol);
 
 private Q_SLOTS:
+    void acceptCertChoosingDialog();
     void updateParametersPageStatus();
     bool validateCurrentPage() override;
     void updatePort(bool encryption);
