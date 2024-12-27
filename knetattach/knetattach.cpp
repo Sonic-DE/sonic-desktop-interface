@@ -23,6 +23,7 @@
 #include <qabstractbutton.h>
 #include <qdbusconnection.h>
 #include <qfiledialog.h>
+#include <qwizard.h>
 
 KNetAttach::KNetAttach(QWidget *parent)
     : QWizard(parent)
@@ -66,6 +67,10 @@ KNetAttach::KNetAttach(QWidget *parent)
 
 void KNetAttach::toggleCertChoosingDialogVisibility(bool useCustomCert)
 {
+    if (useCustomCert && m_certUrl.isEmpty()) {
+        button(FinishButton)->setEnabled(false);
+    }
+
     _chooseCustomPublicKey->setDisabled(!useCustomCert);
 }
 
