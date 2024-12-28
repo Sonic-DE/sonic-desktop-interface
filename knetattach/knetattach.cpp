@@ -93,6 +93,7 @@ void KNetAttach::acceptCertChoosingDialog()
 
     if (!urls.isEmpty()) {
         m_certUrl = urls.at(0);
+        button(FinishButton)->setEnabled(true);
     }
 }
 
