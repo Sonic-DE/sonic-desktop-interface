@@ -79,6 +79,7 @@ void KNetAttach::openCertChoosingDialog()
     if (!m_dialog) {
         m_dialog = new QFileDialog(nullptr, i18n("Select public key"), QStandardPaths::standardLocations(QStandardPaths::HomeLocation).at(0));
         m_dialog->setFileMode(QFileDialog::ExistingFile);
+        m_dialog->setNameFilter(tr("SSH Key Files (*.pub *.pem);;All Files (*)"));
         connect(m_dialog, &QDialog::accepted, this, &KNetAttach::acceptCertChoosingDialog);
     }
 
@@ -93,6 +94,7 @@ void KNetAttach::acceptCertChoosingDialog()
 
     if (!urls.isEmpty()) {
         m_certUrl = urls.at(0);
+        _chooseCustomPublicKey->setText(m_certUrl.fileName());
         button(FinishButton)->setEnabled(true);
     }
 }
