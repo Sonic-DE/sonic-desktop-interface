@@ -19,11 +19,17 @@
 #include <KJobWidgets>
 #include <KMessageBox>
 #include <QDesktopServices>
+#include <QDir>
 #include <QIcon>
 #include <qabstractbutton.h>
 #include <qdbusconnection.h>
+#include <qfiledevice.h>
 #include <qfiledialog.h>
+#include <qstandardpaths.h>
+#include <qstringliteral.h>
 #include <qwizard.h>
+
+#define CACHE_DIR_POSTFIX QStringLiteral("knetattach")
 
 KNetAttach::KNetAttach(QWidget *parent)
     : QWizard(parent)
@@ -202,6 +208,7 @@ bool KNetAttach::validateCurrentPage()
         button(BackButton)->setEnabled(false);
         button(FinishButton)->setEnabled(false);
         QUrl url;
+        QString fishCertDest;
         if (_type == QLatin1String("WebFolder")) {
             if (_useEncryption->isChecked()) {
                 url.setScheme(QStringLiteral("webdavs"));
@@ -215,6 +222,28 @@ bool KNetAttach::validateCurrentPage()
             cg.writeEntry("Charset", KCharsets::charsets()->encodingForName(_encoding->currentText()));
             url.setScheme(_protocolText->currentText());
             url.setPort(_port->value());
+
+            if (_useCustomPublicKey->isChecked() && m_certUrl.isValid()) {
+                QDir cacheDir(QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + QStringLiteral("/") + CACHE_DIR_POSTFIX);
+                if (!cacheDir.exists()) {
+                    bool ioRes =
+                        cacheDir.mkdir(QStringLiteral("."), QFileDevice::Permissions(QFileDevice::ReadOwner | QFileDevice::WriteOwner | QFileDevice::ExeOwner));
+                    if (!ioRes) {
+                        return false;
+                    }
+
+                    fishCertDest = cacheDir.path() + QStringLiteral("/") + m_certUrl.fileName();
+                    ioRes = QFile::copy(m_certUrl.path(), fishCertDest);
+                    if (!ioRes) {
+                        return false;
+                    }
+
+                    ioRes = QFile::setPermissions(fishCertDest, QFileDevice::Permissions(QFileDevice::ReadOwner | QFileDevice::WriteOwner));
+                    if (!ioRes) {
+                        return false;
+                    }
+                }
+            }
         } else if (_type == QLatin1String("FTP")) {
             url.setScheme(QStringLiteral("ftp"));
             url.setPort(_port->value());
@@ -242,6 +271,10 @@ bool KNetAttach::validateCurrentPage()
         bool success = doConnectionTest(url);
         _folderParameters->setEnabled(true);
         if (!success) {
+            if (_type == QLatin1String("Fish")) {
+                QFile::remove(fishCertDest);
+            }
+
             KMessageBox::error(this, i18n("Unable to connect to server.  Please check your settings and try again."));
             button(BackButton)->setEnabled(true);
             return false;
