@@ -23,13 +23,12 @@
 #include <QIcon>
 #include <qabstractbutton.h>
 #include <qdbusconnection.h>
+#include <qdebug.h>
 #include <qfiledevice.h>
 #include <qfiledialog.h>
 #include <qstandardpaths.h>
 #include <qstringliteral.h>
 #include <qwizard.h>
-
-#define CACHE_DIR_POSTFIX QStringLiteral("knetattach")
 
 KNetAttach::KNetAttach(QWidget *parent)
     : QWizard(parent)
@@ -208,7 +207,7 @@ bool KNetAttach::validateCurrentPage()
         button(BackButton)->setEnabled(false);
         button(FinishButton)->setEnabled(false);
         QUrl url;
-        QString fishCertDest;
+        QString fishConfigEntry;
         if (_type == QLatin1String("WebFolder")) {
             if (_useEncryption->isChecked()) {
                 url.setScheme(QStringLiteral("webdavs"));
@@ -224,24 +223,22 @@ bool KNetAttach::validateCurrentPage()
             url.setPort(_port->value());
 
             if (_useCustomPublicKey->isChecked() && m_certUrl.isValid()) {
-                QDir cacheDir(QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + QStringLiteral("/") + CACHE_DIR_POSTFIX);
-                if (!cacheDir.exists()) {
-                    bool ioRes =
-                        cacheDir.mkdir(QStringLiteral("."), QFileDevice::Permissions(QFileDevice::ReadOwner | QFileDevice::WriteOwner | QFileDevice::ExeOwner));
-                    if (!ioRes) {
-                        return false;
-                    }
+                if (!QFile::setPermissions(m_certUrl.path(), QFileDevice::Permissions(QFileDevice::ReadOwner))) {
+                    return false;
+                }
 
-                    fishCertDest = cacheDir.path() + QStringLiteral("/") + m_certUrl.fileName();
-                    ioRes = QFile::copy(m_certUrl.path(), fishCertDest);
-                    if (!ioRes) {
-                        return false;
-                    }
+                // Create an entry with identity file path in .ssh/config
+                QFile sshConfig(QStandardPaths::writableLocation(QStandardPaths::HomeLocation) + QStringLiteral("/.ssh/config"));
+                if (sshConfig.open(QIODevice::WriteOnly | QIODevice::Text)) {
+                    QTextStream out(&sshConfig);
+                    fishConfigEntry =
+                        "Host " + _host->text() + "\n\tHostName " + _host->text() + "\n\tUser " + _user->text() + "\n\tIdentityFile " + m_certUrl.path() + "\n";
+                    out << fishConfigEntry;
+                    sshConfig.close();
+                }
 
-                    ioRes = QFile::setPermissions(fishCertDest, QFileDevice::Permissions(QFileDevice::ReadOwner | QFileDevice::WriteOwner));
-                    if (!ioRes) {
-                        return false;
-                    }
+                if (!sshConfig.setPermissions(QFileDevice::Permissions(QFileDevice::ReadOwner | QFileDevice::WriteOwner))) {
+                    return false;
                 }
             }
         } else if (_type == QLatin1String("FTP")) {
@@ -271,8 +268,29 @@ bool KNetAttach::validateCurrentPage()
         bool success = doConnectionTest(url);
         _folderParameters->setEnabled(true);
         if (!success) {
+            // Remove the entry from .ssh/config since we couldn't connect
             if (_type == QLatin1String("Fish")) {
-                QFile::remove(fishCertDest);
+                QFile sshConfig(QStandardPaths::writableLocation(QStandardPaths::HomeLocation) + QStringLiteral("/.ssh/config"));
+                if (!sshConfig.open(QIODevice::ReadOnly | QIODevice::Text)) {
+                    return false;
+                }
+
+                QTextStream in(&sshConfig);
+                QString fileContents = in.readAll();
+                sshConfig.close();
+
+                if (!sshConfig.open(QIODevice::WriteOnly | QIODevice::Text)) {
+                    return false;
+                }
+
+                int index = fileContents.indexOf(fishConfigEntry);
+                if (index != -1) {
+                    fileContents.remove(index, fishConfigEntry.length());
+                }
+
+                QTextStream out(&sshConfig);
+                out << fileContents;
+                sshConfig.close();
             }
 
             KMessageBox::error(this, i18n("Unable to connect to server.  Please check your settings and try again."));
