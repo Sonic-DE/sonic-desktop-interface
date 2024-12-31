@@ -22,6 +22,7 @@
 #include <QDir>
 #include <QIcon>
 #include <qabstractbutton.h>
+#include <qcontainerfwd.h>
 #include <qdbusconnection.h>
 #include <qdebug.h>
 #include <qfiledevice.h>
@@ -231,8 +232,8 @@ bool KNetAttach::validateCurrentPage()
                 QFile sshConfig(QStandardPaths::writableLocation(QStandardPaths::HomeLocation) + QStringLiteral("/.ssh/config"));
                 if (sshConfig.open(QIODevice::WriteOnly | QIODevice::Text)) {
                     QTextStream out(&sshConfig);
-                    fishConfigEntry =
-                        "Host " + _host->text() + "\n\tHostName " + _host->text() + "\n\tUser " + _user->text() + "\n\tIdentityFile " + m_certUrl.path() + "\n";
+                    fishConfigEntry = QStringLiteral("Host ") + _host->text() + QStringLiteral("\n\tHostName ") + _host->text() + QStringLiteral("\n\tUser ")
+                        + _user->text() + QStringLiteral("\n\tIdentityFile ") + m_certUrl.path() + QStringLiteral("\n");
                     out << fishConfigEntry;
                     sshConfig.close();
                 }
