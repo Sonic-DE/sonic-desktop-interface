@@ -25,6 +25,8 @@
 #include <qcontainerfwd.h>
 #include <qdbusconnection.h>
 #include <qdebug.h>
+#include <qdialog.h>
+#include <qdialogbuttonbox.h>
 #include <qfiledevice.h>
 #include <qfiledialog.h>
 #include <qstandardpaths.h>
@@ -230,13 +232,75 @@ bool KNetAttach::validateCurrentPage()
 
                 // Create an entry with identity file path in .ssh/config
                 QFile sshConfig(QStandardPaths::writableLocation(QStandardPaths::HomeLocation) + QStringLiteral("/.ssh/config"));
-                if (sshConfig.open(QIODevice::WriteOnly | QIODevice::Text)) {
-                    QTextStream out(&sshConfig);
-                    fishConfigEntry = QStringLiteral("Host ") + _host->text() + QStringLiteral("\n\tUser ") + _user->text()
-                        + QStringLiteral("\n\tIdentityFile ") + m_certUrl.path() + QStringLiteral("\n");
-                    out << fishConfigEntry;
-                    sshConfig.close();
+                if (!sshConfig.open(QIODevice::ReadWrite | QIODevice::Text)) {
+                    return false;
                 }
+
+                QTextStream in(&sshConfig);
+                QStringList trimmedContent;
+                bool entryExists = false;
+                while (!in.atEnd()) {
+                    QString line = in.readLine();
+                    if (line.startsWith(QStringLiteral("Host %1").arg(_host->text()))) {
+                        QStringList possibleDuplicateEntry(line);
+                        QString nextLine;
+                        while (!in.atEnd()) {
+                            nextLine = in.readLine().trimmed();
+                            if (nextLine.startsWith(QStringLiteral("User %1").arg(_user->text()))) {
+                                entryExists = true;
+                            }
+
+                            if (nextLine.startsWith(QStringLiteral("Host "))) {
+                                trimmedContent << line;
+                                break;
+                            }
+
+                            possibleDuplicateEntry.append(nextLine);
+                        }
+
+                        if (!entryExists) {
+                            trimmedContent.append(possibleDuplicateEntry);
+                        }
+                    } else {
+                        trimmedContent << line;
+                    }
+                }
+
+                if (entryExists) {
+                    auto dialog = new QDialog;
+                    const QString title = i18nc("@title:window", "Config entry already exists");
+                    dialog->setWindowTitle(title);
+                    dialog->setWindowModality(Qt::WindowModal);
+                    dialog->setAttribute(Qt::WA_DeleteOnClose);
+
+                    auto *dialogButtons = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, dialog);
+                    dialogButtons->button(QDialogButtonBox::Ok)->setText(i18nc("@action:button", "Overwrite"));
+                    dialogButtons->button(QDialogButtonBox::Cancel)->setText(i18nc("@action:button", "Cancel"));
+                    KMessageBox::createKMessageBox(dialog,
+                                                   dialogButtons,
+                                                   QMessageBox::Warning,
+                                                   QStringLiteral("Config entry for %2:%1 already exists. Overwrite?").arg(_host->text(), _user->text()),
+                                                   {},
+                                                   QString(),
+                                                   nullptr,
+                                                   KMessageBox::NoExec);
+                    int result = dialog->exec();
+                    if (result != QDialogButtonBox::Yes) {
+                        sshConfig.close();
+                        return false;
+                    }
+                }
+
+                sshConfig.resize(0);
+                QTextStream out(&sshConfig);
+                for (const QString &line : trimmedContent) {
+                    out << line << "\n";
+                }
+
+                fishConfigEntry = QStringLiteral("Host ") + _host->text() + QStringLiteral("\n\tUser ") + _user->text() + QStringLiteral("\n\tIdentityFile ")
+                    + m_certUrl.path() + QStringLiteral("\n");
+                out << fishConfigEntry;
+                sshConfig.close();
 
                 if (!sshConfig.setPermissions(QFileDevice::Permissions(QFileDevice::ReadOwner | QFileDevice::WriteOwner))) {
                     return false;
