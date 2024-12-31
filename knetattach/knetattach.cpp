@@ -46,8 +46,8 @@ KNetAttach::KNetAttach(QWidget *parent)
     connect(_port, &QSpinBox::valueChanged, this, &KNetAttach::updateParametersPageStatus);
     connect(_path, &QLineEdit::textChanged, this, &KNetAttach::updateParametersPageStatus);
     connect(_useEncryption, &QAbstractButton::toggled, this, &KNetAttach::updatePort);
-    connect(_useCustomPublicKey, &QAbstractButton::toggled, this, &KNetAttach::toggleCertChoosingDialogVisibility);
-    connect(_chooseCustomPublicKey, &QAbstractButton::clicked, this, &KNetAttach::openCertChoosingDialog);
+    connect(_useCustomKey, &QAbstractButton::toggled, this, &KNetAttach::toggleCertChoosingDialogVisibility);
+    connect(_chooseCustomKey, &QAbstractButton::clicked, this, &KNetAttach::openCertChoosingDialog);
     connect(_createIcon, &QAbstractButton::toggled, this, &KNetAttach::updateFinishButtonText);
     connect(this, &QWizard::helpRequested, this, &KNetAttach::slotHelpClicked);
     connect(this, &QWizard::currentIdChanged, this, &KNetAttach::slotPageChanged);
@@ -75,14 +75,14 @@ KNetAttach::KNetAttach(QWidget *parent)
 
 void KNetAttach::toggleCertChoosingDialogVisibility(bool useCustomCert)
 {
-    _chooseCustomPublicKey->setDisabled(!useCustomCert);
+    _chooseCustomKey->setDisabled(!useCustomCert);
     updateParametersPageStatus();
 }
 
 void KNetAttach::openCertChoosingDialog()
 {
     if (!m_dialog) {
-        m_dialog = new QFileDialog(nullptr, i18n("Select public key"), QStandardPaths::standardLocations(QStandardPaths::HomeLocation).at(0));
+        m_dialog = new QFileDialog(nullptr, i18n("Select key"), QStandardPaths::standardLocations(QStandardPaths::HomeLocation).at(0));
         m_dialog->setFileMode(QFileDialog::ExistingFile);
         m_dialog->setNameFilter(tr("SSH Key Files (*.pub *.pem);;All Files (*)"));
         connect(m_dialog, &QDialog::accepted, this, &KNetAttach::acceptCertChoosingDialog);
@@ -99,7 +99,7 @@ void KNetAttach::acceptCertChoosingDialog()
 
     if (!urls.isEmpty()) {
         m_certUrl = urls.at(0);
-        _chooseCustomPublicKey->setText(m_certUrl.fileName());
+        _chooseCustomKey->setText(m_certUrl.fileName());
     }
 
     updateParametersPageStatus();
@@ -143,7 +143,7 @@ void KNetAttach::updateParametersPageStatus()
 {
     button(FinishButton)
         ->setEnabled(!_host->text().trimmed().isEmpty() && !_path->text().trimmed().isEmpty() && !_connectionName->text().trimmed().isEmpty()
-                     && (!_useCustomPublicKey->isChecked() || m_certUrl.isValid()));
+                     && (!_useCustomKey->isChecked() || m_certUrl.isValid()));
 }
 
 bool KNetAttach::validateCurrentPage()
@@ -225,7 +225,7 @@ bool KNetAttach::validateCurrentPage()
             url.setScheme(_protocolText->currentText());
             url.setPort(_port->value());
 
-            if (_useCustomPublicKey->isChecked() && m_certUrl.isValid()) {
+            if (_useCustomKey->isChecked() && m_certUrl.isValid()) {
                 if (!QFile::setPermissions(m_certUrl.path(), QFileDevice::Permissions(QFileDevice::ReadOwner))) {
                     return false;
                 }
@@ -446,8 +446,8 @@ bool KNetAttach::updateForProtocol(const QString &protocol)
         _user->hide();
         _encodingText->hide();
         _encoding->hide();
-        _useCustomPublicKey->hide();
-        _chooseCustomPublicKey->hide();
+        _useCustomKey->hide();
+        _chooseCustomKey->hide();
     } else if (protocol == QLatin1String("Fish")) {
         _useEncryption->hide();
         _portText->show();
@@ -458,8 +458,8 @@ bool KNetAttach::updateForProtocol(const QString &protocol)
         _user->show();
         _encodingText->show();
         _encoding->show();
-        _useCustomPublicKey->show();
-        _chooseCustomPublicKey->show();
+        _useCustomKey->show();
+        _chooseCustomKey->show();
     } else if (protocol == QLatin1String("FTP")) {
         _useEncryption->hide();
         _portText->show();
@@ -470,8 +470,8 @@ bool KNetAttach::updateForProtocol(const QString &protocol)
         _user->show();
         _encodingText->show();
         _encoding->show();
-        _useCustomPublicKey->hide();
-        _chooseCustomPublicKey->hide();
+        _useCustomKey->hide();
+        _chooseCustomKey->hide();
     } else if (protocol == QLatin1String("SMB")) {
         _useEncryption->hide();
         _portText->hide();
@@ -482,8 +482,8 @@ bool KNetAttach::updateForProtocol(const QString &protocol)
         _user->hide();
         _encodingText->hide();
         _encoding->hide();
-        _useCustomPublicKey->hide();
-        _chooseCustomPublicKey->hide();
+        _useCustomKey->hide();
+        _chooseCustomKey->hide();
     } else {
         _type = QString();
         return false;

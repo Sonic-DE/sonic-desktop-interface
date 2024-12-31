@@ -363,9 +363,9 @@
      </widget>
     </item>
     <item row="11" column="1">
-     <widget class="QCheckBox" name="_useCustomPublicKey">
+     <widget class="QCheckBox" name="_useCustomKey">
       <property name="text">
-       <string>Use custom public key</string>
+       <string>Use custom key</string>
       </property>
       <property name="checked">
        <bool>false</bool>
@@ -373,9 +373,9 @@
      </widget>
     </item>
     <item row="12" column="1">
-     <widget class="QPushButton" name="_chooseCustomPublicKey">
+     <widget class="QPushButton" name="_chooseCustomKey">
       <property name="text">
-       <string>Choose the public key</string>
+       <string>Choose the key</string>
       </property>
       <property name="disabled">
        <bool>true</bool>
