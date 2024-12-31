@@ -73,11 +73,8 @@ KNetAttach::KNetAttach(QWidget *parent)
 
 void KNetAttach::toggleCertChoosingDialogVisibility(bool useCustomCert)
 {
-    if (useCustomCert && m_certUrl.isEmpty()) {
-        button(FinishButton)->setEnabled(false);
-    }
-
     _chooseCustomPublicKey->setDisabled(!useCustomCert);
+    updateParametersPageStatus();
 }
 
 void KNetAttach::openCertChoosingDialog()
@@ -101,8 +98,9 @@ void KNetAttach::acceptCertChoosingDialog()
     if (!urls.isEmpty()) {
         m_certUrl = urls.at(0);
         _chooseCustomPublicKey->setText(m_certUrl.fileName());
-        button(FinishButton)->setEnabled(true);
     }
+
+    updateParametersPageStatus();
 }
 
 void KNetAttach::slotPageChanged(int)
@@ -141,7 +139,9 @@ void KNetAttach::setInformationText(const QString &type)
 
 void KNetAttach::updateParametersPageStatus()
 {
-    button(FinishButton)->setEnabled(!_host->text().trimmed().isEmpty() && !_path->text().trimmed().isEmpty() && !_connectionName->text().trimmed().isEmpty());
+    button(FinishButton)
+        ->setEnabled(!_host->text().trimmed().isEmpty() && !_path->text().trimmed().isEmpty() && !_connectionName->text().trimmed().isEmpty()
+                     && (!_useCustomPublicKey->isChecked() || m_certUrl.isValid()));
 }
 
 bool KNetAttach::validateCurrentPage()
@@ -232,8 +232,8 @@ bool KNetAttach::validateCurrentPage()
                 QFile sshConfig(QStandardPaths::writableLocation(QStandardPaths::HomeLocation) + QStringLiteral("/.ssh/config"));
                 if (sshConfig.open(QIODevice::WriteOnly | QIODevice::Text)) {
                     QTextStream out(&sshConfig);
-                    fishConfigEntry = QStringLiteral("Host ") + _host->text() + QStringLiteral("\n\tHostName ") + _host->text() + QStringLiteral("\n\tUser ")
-                        + _user->text() + QStringLiteral("\n\tIdentityFile ") + m_certUrl.path() + QStringLiteral("\n");
+                    fishConfigEntry = QStringLiteral("Host ") + _host->text() + QStringLiteral("\n\tUser ") + _user->text()
+                        + QStringLiteral("\n\tIdentityFile ") + m_certUrl.path() + QStringLiteral("\n");
                     out << fishConfigEntry;
                     sshConfig.close();
                 }
