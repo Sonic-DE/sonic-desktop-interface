@@ -19,19 +19,10 @@
 #include <KJobWidgets>
 #include <KMessageBox>
 #include <QDesktopServices>
+#include <QDialog>
+#include <QDialogButtonBox>
 #include <QDir>
 #include <QIcon>
-#include <qabstractbutton.h>
-#include <qcontainerfwd.h>
-#include <qdbusconnection.h>
-#include <qdebug.h>
-#include <qdialog.h>
-#include <qdialogbuttonbox.h>
-#include <qfiledevice.h>
-#include <qfiledialog.h>
-#include <qstandardpaths.h>
-#include <qstringliteral.h>
-#include <qwizard.h>
 
 KNetAttach::KNetAttach(QWidget *parent)
     : QWizard(parent)
