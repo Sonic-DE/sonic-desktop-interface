@@ -111,6 +111,25 @@ bool KWinWaylandBackend::isChangedConfig() const
     });
 }
 
+bool KWinWaylandBackend::isTouchpadAvailable()
+{
+    return !m_devices.isEmpty();
+}
+
+bool KWinWaylandBackend::isTouchpadEnabled()
+{
+    return std::any_of(m_devices.constBegin(), m_devices.constEnd(), [](LibinputCommon *t) {
+        return t->isEnabled();
+    });
+}
+
+void KWinWaylandBackend::setTouchpadEnabled(bool enabled)
+{
+    for (LibinputCommon *t : m_devices) {
+        t->setEnabled(enabled);
+    }
+}
+
 void KWinWaylandBackend::onDeviceAdded(QString sysName)
 {
     if (std::any_of(m_devices.constBegin(), m_devices.constEnd(), [sysName](LibinputCommon *t) {

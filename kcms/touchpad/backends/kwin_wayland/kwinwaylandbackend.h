@@ -38,6 +38,10 @@ public:
         return m_devices;
     }
 
+    bool isTouchpadAvailable() override;
+    bool isTouchpadEnabled() override;
+    void setTouchpadEnabled(bool) override;
+
 private Q_SLOTS:
     void onDeviceAdded(QString);
     void onDeviceRemoved(QString);
