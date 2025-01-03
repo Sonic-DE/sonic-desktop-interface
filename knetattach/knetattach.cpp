@@ -75,7 +75,7 @@ void KNetAttach::openCertChoosingDialog()
     if (!m_dialog) {
         m_dialog = new QFileDialog(nullptr, i18n("Select key"), QStandardPaths::standardLocations(QStandardPaths::HomeLocation).at(0));
         m_dialog->setFileMode(QFileDialog::ExistingFile);
-        m_dialog->setNameFilter(tr("SSH Key Files (*.pub *.pem);;All Files (*)"));
+        m_dialog->setNameFilter(i18n("SSH Key Files (*.pub *.pem);;All Files (*)"));
         connect(m_dialog, &QDialog::accepted, this, &KNetAttach::acceptCertChoosingDialog);
     }
 
