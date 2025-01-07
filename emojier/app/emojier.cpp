@@ -106,6 +106,10 @@ int main(int argc, char **argv)
 
     KDBusService *service = new KDBusService(KDBusService::Unique | startup, &app);
 
+    KConfigGroup oldStateGroup = KSharedConfig::openConfig()->group(QStringLiteral("Emojier"));
+    KConfigGroup newStateGroup = KSharedConfig::openStateConfig()->group(QStringLiteral("Emojier"));
+    oldStateGroup.moveValuesTo({"recent", "recentDescriptions"}, newStateGroup);
+
     QQmlApplicationEngine engine;
     new EngineWatcher(&engine);
 
