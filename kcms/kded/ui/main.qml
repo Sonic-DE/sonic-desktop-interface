@@ -160,6 +160,7 @@ KCM.ScrollViewKCM {
             label: {
                 switch (Number(section)) {
                     case Private.KCM.AutostartType: return i18n("Startup Services");
+                    case Private.KCM.ManualType: return i18nc("@title:group", "Disabled-by-default Services");
                     case Private.KCM.OnDemandType: return i18n("Load-on-Demand Services");
                 }
             }
