@@ -47,7 +47,7 @@ QVariant ModulesModel::data(const QModelIndex &index, int role) const
     case TypeRole:
         return item.type;
     case AutoloadEnabledRole:
-        if (item.type == KDEDConfig::AutostartType) {
+        if (item.type == KDEDConfig::AutostartType || item.type == KDEDConfig::ManualType) {
             return item.autoloadEnabled;
         }
         return QVariant();
@@ -74,10 +74,14 @@ bool ModulesModel::representsDefault() const
     bool isDefault = true;
     for (int i = 0; i < m_data.count(); ++i) {
         auto &item = m_data[i];
-        if (item.type != KDEDConfig::AutostartType || item.immutable) {
+        if (item.immutable) {
             continue;
         }
-        isDefault &= item.autoloadEnabled;
+        if (item.type == KDEDConfig::AutostartType) {
+            isDefault &= item.autoloadEnabled;
+        } else if (item.type == KDEDConfig::ManualType) {
+            isDefault &= !item.autoloadEnabled;
+        }
     }
     return isDefault;
 }
@@ -87,7 +91,7 @@ bool ModulesModel::needsSave() const
     bool save = false;
     for (int i = 0; i < m_data.count(); ++i) {
         auto &item = m_data[i];
-        if (item.type != KDEDConfig::AutostartType || item.immutable) {
+        if ((item.type != KDEDConfig::AutostartType && item.type != KDEDConfig::ManualType) || item.immutable) {
             continue;
         }
         save |= item.autoloadEnabled != item.savedAutoloadEnabled;
@@ -105,7 +109,7 @@ bool ModulesModel::setData(const QModelIndex &index, const QVariant &value, int 
 
     auto &item = m_data[index.row()];
 
-    if (item.type != KDEDConfig::AutostartType || item.immutable) {
+    if ((item.type != KDEDConfig::AutostartType && item.type != KDEDConfig::ManualType) || item.immutable) {
         return dirty;
     }
 
@@ -152,6 +156,7 @@ void ModulesModel::load()
     QStringList knownModules;
 
     QList<ModulesModelData> autostartModules;
+    QList<ModulesModelData> manualModules;
     QList<ModulesModelData> onDemandModules;
 
     const auto modules = KPluginMetaData::findPlugins(QStringLiteral("kf6/kded"));
@@ -159,7 +164,8 @@ void ModulesModel::load()
         QString servicePath = module.fileName();
 
         // autoload defaults to false if it is not found
-        const bool autoload = module.value(u"X-KDE-Kded-autoload", false);
+        constexpr QStringView autoloadKey(u"X-KDE-Kded-autoload");
+        const bool autoload = module.value(autoloadKey, false);
 
         // keep estimating dbusModuleName in sync with KDEDModule (kdbusaddons) and kded (kded)
         // currently (KF5) the module name in the D-Bus object path is set by the pluginId
@@ -188,7 +194,8 @@ void ModulesModel::load()
             data.type = KDEDConfig::OnDemandType;
             onDemandModules << data;
         } else {
-            qCWarning(KCM_KDED) << "kcmkded: Module" << module.name() << "from file" << module.fileName() << "not loaded on demand or startup! Skipping.";
+            data.type = KDEDConfig::ManualType;
+            manualModules << std::move(data);
             continue;
         }
     }
@@ -201,9 +208,10 @@ void ModulesModel::load()
     };
 
     std::sort(autostartModules.begin(), autostartModules.end(), sortAlphabetically);
+    std::sort(manualModules.begin(), manualModules.end(), sortAlphabetically);
     std::sort(onDemandModules.begin(), onDemandModules.end(), sortAlphabetically);
 
-    m_data << autostartModules << onDemandModules;
+    m_data << std::move(autostartModules) << std::move(manualModules) << std::move(onDemandModules);
 
     endResetModel();
 }
