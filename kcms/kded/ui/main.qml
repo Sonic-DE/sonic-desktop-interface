@@ -159,7 +159,8 @@ KCM.ScrollViewKCM {
             width: list.width
             label: {
                 switch (Number(section)) {
-                    case Private.KCM.AutostartType: return i18n("Startup Services");
+                    case Private.KCM.AutostartType:
+                    case Private.KCM.ManualType: return i18n("Startup Services");
                     case Private.KCM.OnDemandType: return i18n("Load-on-Demand Services");
                 }
             }
