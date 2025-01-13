@@ -462,7 +462,7 @@ void KAccessApp::xkbBellNotify(xcb_xkb_bell_notify_event_t *event)
                                                       QStringLiteral("org.kde.KWin.Effect.SystemBell1"),
                                                       QStringLiteral("triggerScreen"));
 
-    QDBusConnection::sessionBus().call(msg);
+    QDBusConnection::sessionBus().call(msg, QDBus::NoBlock);
 }
 
 QString mouseKeysShortcut(Display *display)
