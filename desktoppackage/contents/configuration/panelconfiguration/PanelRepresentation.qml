@@ -17,16 +17,22 @@ Item {
 
     property bool isVertical: false
     property bool checked: false
-    property bool windowVisible: false
+    property var mainIconSource: null
+    property int screenHeight: Math.round(screenRect.height / 2)
+
     property bool panelVisible: true
     property bool translucentPanel: false
     property bool sunkenPanel: false
     property bool adaptivePanel: false
     property bool fillAvailable: false
     property int floatingGap: 0
+
+    property bool windowVisible: false
     property int windowZ: 0
-    property var mainIconSource: null
-    property int screenHeight: Math.round(screenRect.height / 2)
+    property bool windowOverPanel: true
+
+    onSunkenPanelChanged: sunkenAnimation.restart()
+    onWindowVisibleChanged: sunkenAnimation.restart()
 
     readonly property bool iconAndLabelsShouldlookSelected: checked || mouseArea.pressed
 
@@ -70,13 +76,57 @@ Item {
 
             RowLayout {
                 anchors.fill: parent
+                z: 1
                 Rectangle {
                     id: panelImage
 
                     implicitWidth: root.isVertical ? Math.round(parent.width / 6) : Math.round(parent.width * (root.fillAvailable ? 1 : 0.8))
                     implicitHeight: root.isVertical ? Math.round(parent.height * (root.fillAvailable ? 1 : 0.8)) : Math.round(parent.height / 4)
                     Layout.alignment: root.alignment
-                    Layout.bottomMargin: root.sunkenPanel * -Math.round(height / 2) + root.floatingGap
+                    Layout.bottomMargin: root.sunkenPanel * -Math.round(height * sunkenValue) + root.floatingGap
+
+                    property real sunkenValue
+                    property bool shouldWindowCoverPanel: false
+
+                    SequentialAnimation on sunkenValue {
+                        id: sunkenAnimation
+                        running: panel.sunkenPanel
+                        loops: Animation.Infinite
+                        ScriptAction {
+                            script: panelImage.shouldWindowCoverPanel = false
+                        }
+                        SmoothedAnimation {
+                            duration: Kirigami.Units.veryLongDuration * 2
+                            velocity: -1
+                            from: 0.9
+                            to: 0
+                        }
+                        PauseAnimation {
+                            duration: Kirigami.Units.veryLongDuration
+                        }
+                        ScriptAction {
+                            script: panelImage.shouldWindowCoverPanel = true
+                        }
+                        PauseAnimation {
+                            duration: Kirigami.Units.veryLongDuration
+                        }
+                        SmoothedAnimation {
+                            duration: Kirigami.Units.veryLongDuration * 2
+                            velocity: -1
+                            from: 0
+                            to: 0.9
+                        }
+                        PauseAnimation {
+                            duration: Kirigami.Units.veryLongDuration * 3
+                        }
+                        ScriptAction {
+                            script: panelImage.shouldWindowCoverPanel = false
+                        }
+                        PauseAnimation {
+                            duration: Kirigami.Units.veryLongDuration
+                        }
+                    }
+
                     color: root.translucentPanel ? screenRect.color : Kirigami.Theme.backgroundColor
                     opacity: root.translucentPanel ? 0.8 : 1.0
                     border.color: "transparent"
@@ -84,7 +134,6 @@ Item {
                     clip: root.adaptivePanel
                     radius: Kirigami.Units.cornerRadius
 
-                    z: 1
 
                     Loader {
                         id: horizontalAdaptivePanelLoader
@@ -137,8 +186,16 @@ Item {
                 color: Kirigami.Theme.highlightColor
                 border.color: "transparent"
 
-                x: root.isVertical ? Math.round(panelImage.x + panelImage.width / 2) : Math.round(screenRect.width / 2 - width / 2) + Kirigami.Units.gridUnit
-                y: root.isVertical ? Math.round(screenRect.height / 2 - height / 2) : Math.round(panelImage.y - height + panelImage.height / 2)
+                x: Math.round(screenRect.width / 2 - width / 2) + Kirigami.Units.gridUnit
+
+                y: screenRect.height - height - (windowOverPanel || panelImage.shouldWindowCoverPanel ? 1/2 : 3/2) * panelImage.height
+
+                Behavior on y {
+                    NumberAnimation {
+                        duration: Kirigami.Units.veryLongDuration * 2
+                    }
+                }
+
                 z: root.windowZ
 
                 Row {

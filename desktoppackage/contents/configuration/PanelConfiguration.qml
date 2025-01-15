@@ -341,8 +341,11 @@ ColumnLayout {
             PanelRepresentation {
                 id: visibilityRepresentation
                 Layout.alignment: Qt.AlignHCenter
-                sunkenPanel: autoHideBox.previewIndex !== 0
+                sunkenPanel: autoHideBox.previewIndex === 1 || autoHideBox.previewIndex === 2
                 onClicked: autoHideBox.popup.visible = true
+                windowVisible: autoHideBox.previewIndex === 2 || autoHideBox.previewIndex == 3
+                windowZ: autoHideBox.previewIndex === 3 ? 0 : 2
+                windowOverPanel: autoHideBox.previewIndex === 3
             }
             PC3.ComboBox {
                 id: autoHideBox
