@@ -17,16 +17,20 @@ Item {
 
     property bool isVertical: false
     property bool checked: false
-    property bool windowVisible: false
+    property var mainIconSource: null
+    property int screenHeight: Math.round(screenRect.height / 2)
+
     property bool panelVisible: true
     property bool translucentPanel: false
     property bool sunkenPanel: false
     property bool adaptivePanel: false
     property bool fillAvailable: false
     property int floatingGap: 0
+
+    property bool windowVisible: false
     property int windowZ: 0
-    property var mainIconSource: null
-    property int screenHeight: Math.round(screenRect.height / 2)
+    property bool windowOverPanel: true
+
 
     readonly property bool iconAndLabelsShouldlookSelected: checked || mouseArea.pressed
 
@@ -70,6 +74,7 @@ Item {
 
             RowLayout {
                 anchors.fill: parent
+                z: 1
                 Rectangle {
                     id: panelImage
 
@@ -84,7 +89,6 @@ Item {
                     clip: root.adaptivePanel
                     radius: Kirigami.Units.cornerRadius
 
-                    z: 1
 
                     Loader {
                         id: horizontalAdaptivePanelLoader
@@ -138,7 +142,7 @@ Item {
                 border.color: "transparent"
 
                 x: root.isVertical ? Math.round(panelImage.x + panelImage.width / 2) : Math.round(screenRect.width / 2 - width / 2) + Kirigami.Units.gridUnit
-                y: root.isVertical ? Math.round(screenRect.height / 2 - height / 2) : Math.round(panelImage.y - height + panelImage.height / 2)
+                y: root.isVertical ? Math.round(screenRect.height / 2 - height / 2) : Math.round(panelImage.y - height + panelImage.height / 2 * (windowOverPanel ? 1 : -0.5))
                 z: root.windowZ
 
                 Row {
