@@ -81,8 +81,6 @@ void MostUsedModel::setResultModel(ResultModel *model)
         if (oldModel != sourceModel()) {
             ignoredKCMs.clear();
             invalidateFilter();
-        } else if (first >= 0 && last >= 0 && first < sourceModel()->rowCount() - 1) {
-            invalidateFilter();
         }
     };
 
@@ -114,17 +112,14 @@ bool MostUsedModel::filterAcceptsRow(int source_row, const QModelIndex &source_p
     };
 
     const QString desktopName = sourceModel()->index(source_row, 0, source_parent).data(ResultModel::ResourceRole).toUrl().path();
+
     if (desktopName.endsWith(QLatin1String(".desktop"))) {
         ignoreKCM(desktopName);
         return false;
     }
 
     KService::Ptr service = KService::serviceByStorageId(desktopName);
-    if (!service) {
-        ignoreKCM(desktopName);
-        return false;
-    }
-    return source_row - ignoredKCMs.size() < 6;
+    return service && (source_row - ignoredKCMs.size() < 6);
 }
 
 QVariant MostUsedModel::data(const QModelIndex &index, int role) const
