@@ -79,6 +79,7 @@ void MostUsedModel::setResultModel(ResultModel *model)
         }
         if (oldModel != sourceModel()) {
             ignoredKCMs.clear();
+            invalidateFilter();
         }
     };
 
@@ -114,6 +115,7 @@ bool MostUsedModel::filterAcceptsRow(int source_row, const QModelIndex &source_p
         ignoreKCM(desktopName);
         return false;
     }
+
     KService::Ptr service = KService::serviceByStorageId(desktopName);
     if (!service) {
         ignoreKCM(desktopName);
