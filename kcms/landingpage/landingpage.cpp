@@ -70,8 +70,7 @@ void MostUsedModel::setResultModel(ResultModel *model)
         return;
     }
 
-    auto updateModel = [this](const QModelIndex &parent, int first, int last) {
-        Q_UNUSED(parent);
+    auto updateModel = [this]() {
         auto oldModel = sourceModel();
         if (m_resultModel->rowCount() >= 6) {
             setSourceModel(m_resultModel);
@@ -80,8 +79,8 @@ void MostUsedModel::setResultModel(ResultModel *model)
         }
         if (oldModel != sourceModel()) {
             ignoredKCMs.clear();
-            invalidateFilter();
         }
+        invalidateFilter();
     };
 
     m_resultModel = model;
@@ -89,7 +88,7 @@ void MostUsedModel::setResultModel(ResultModel *model)
     connect(m_resultModel, &QAbstractItemModel::rowsInserted, this, updateModel);
     connect(m_resultModel, &QAbstractItemModel::rowsRemoved, this, updateModel);
 
-    updateModel(QModelIndex(), -1, -1);
+    updateModel();
 }
 
 QHash<int, QByteArray> MostUsedModel::roleNames() const
