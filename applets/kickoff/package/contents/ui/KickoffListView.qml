@@ -88,6 +88,18 @@ EmptyPage {
         property bool movedWithKeyboard: false
         property bool movedWithWheel: false
 
+        property int pendingIndex: -1
+        onPendingIndexChanged: compressionTimer.restart()
+        Timer {
+            id: compressionTimer
+            // Approximately 60 fps, we could also connect to window frameSwapped
+            // tough might be a bit expensive
+            interval: 16
+            onTriggered: {
+                view.currentIndex = view.pendingIndex;
+            }
+        }
+
         Accessible.role: Accessible.List
 
         implicitWidth: {
