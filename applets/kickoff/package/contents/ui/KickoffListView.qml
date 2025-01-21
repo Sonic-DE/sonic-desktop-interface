@@ -11,6 +11,7 @@
 pragma ComponentBehavior: Bound
 
 import QtQuick
+import QtQuick.Window
 import QtQuick.Templates as T
 
 import org.kde.plasma.plasmoid
@@ -88,14 +89,10 @@ EmptyPage {
         property bool movedWithKeyboard: false
         property bool movedWithWheel: false
 
-        property int pendingIndex: -1
-        onPendingIndexChanged: compressionTimer.restart()
-        Timer {
-            id: compressionTimer
-            // Approximately 60 fps, we could also connect to window frameSwapped
-            // tough might be a bit expensive
-            interval: 16
-            onTriggered: {
+        property int pendingIndex: 0
+        Connections {
+            target: root.Window.window
+            function onFrameSwapped() {
                 view.currentIndex = view.pendingIndex;
             }
         }
