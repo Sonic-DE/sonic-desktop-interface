@@ -36,38 +36,6 @@ typedef union {
 } _xkb_event;
 }
 
-class XEventNotifier : public QObject, public QAbstractNativeEventFilter
-{
-    Q_OBJECT
-
-Q_SIGNALS:
-    void layoutChanged();
-    void layoutMapChanged();
-
-public:
-    XEventNotifier();
-    ~XEventNotifier() override
-    {
-    }
-
-    virtual void start();
-    virtual void stop();
-
-protected:
-    virtual bool processOtherEvents(xcb_generic_event_t *e);
-    virtual bool processXkbEvents(xcb_generic_event_t *e);
-
-    bool nativeEventFilter(const QByteArray &eventType, void *message, qintptr *result) override;
-
-private:
-    int registerForXkbEvents(Display *display);
-    bool isXkbEvent(xcb_generic_event_t *event);
-    bool isGroupSwitchEvent(_xkb_event *event);
-    bool isLayoutSwitchEvent(_xkb_event *event);
-
-    int xkbOpcode;
-};
-
 struct XkbConfig {
     QString keyboardModel;
     QStringList layouts;
@@ -94,42 +62,27 @@ public:
         , m_variant(variant)
     {
     }
-    /*explicit*/ LayoutUnit(const LayoutUnit &other)
-    {
-        operator=(other);
-    }
-
-    LayoutUnit &operator=(const LayoutUnit &other)
-    {
-        if (this != &other) {
-            m_layout = other.m_layout;
-            m_variant = other.m_variant;
-            displayName = other.displayName;
-            shortcut = other.shortcut;
-        }
-        return *this;
-    }
 
     QString getRawDisplayName() const
     {
-        return displayName;
+        return m_displayName;
     }
     QString getDisplayName() const
     {
-        return !displayName.isEmpty() ? displayName : m_layout;
+        return !m_displayName.isEmpty() ? m_displayName : m_layout;
     }
     void setDisplayName(const QString &name)
     {
-        displayName = name;
+        m_displayName = name;
     }
 
     void setShortcut(const QKeySequence &shortcut)
     {
-        this->shortcut = shortcut;
+        this->m_shortcut = shortcut;
     }
     QKeySequence getShortcut() const
     {
-        return shortcut;
+        return m_shortcut;
     }
     QString layout() const
     {
@@ -168,8 +121,8 @@ public:
     QString toString() const;
 
 private:
-    QString displayName;
-    QKeySequence shortcut;
+    QString m_displayName;
+    QKeySequence m_shortcut;
     QString m_layout;
     QString m_variant;
 };
@@ -177,15 +130,6 @@ private:
 struct LayoutSet {
     QList<LayoutUnit> layouts;
     LayoutUnit currentLayout;
-
-    LayoutSet()
-    {
-    }
-
-    LayoutSet(const LayoutSet &other)
-    {
-        operator=(other);
-    }
 
     bool isValid() const
     {
@@ -195,13 +139,6 @@ struct LayoutSet {
     bool operator==(const LayoutSet &currentLayouts) const
     {
         return this->layouts == currentLayouts.layouts && this->currentLayout == currentLayouts.currentLayout;
-    }
-
-    LayoutSet &operator=(const LayoutSet &currentLayouts)
-    {
-        this->layouts = currentLayouts.layouts;
-        this->currentLayout = currentLayouts.currentLayout;
-        return *this;
     }
 
     QString toString() const
