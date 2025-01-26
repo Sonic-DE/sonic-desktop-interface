@@ -21,6 +21,7 @@
 #include "components/componentchooserfilemanager.h"
 #include "components/componentchoosergeo.h"
 #include "components/componentchooserimageviewer.h"
+#include "components/componentchoosermanpages.h"
 #include "components/componentchoosermusicplayer.h"
 #include "components/componentchooserpdfviewer.h"
 #include "components/componentchoosertel.h"
@@ -45,6 +46,7 @@ KcmComponentChooser::KcmComponentChooser(QObject *parent, const KPluginMetaData 
     , m_musicPlayers(new ComponentChooserMusicPlayer(this))
     , m_videoPlayers(new ComponentChooserVideoPlayer(this))
     , m_pdfViewers(new ComponentChooserPdfViewer(this))
+    , m_manViewers(new ComponentChooserManpages(this))
     , m_archiveManagers(new ComponentChooserArchiveManager(this))
 {
     setButtons(Help | Default | Apply);
@@ -60,6 +62,7 @@ KcmComponentChooser::KcmComponentChooser(QObject *parent, const KPluginMetaData 
     connect(musicPlayers(), &ComponentChooser::indexChanged, this, &KcmComponentChooser::settingsChanged);
     connect(videoPlayers(), &ComponentChooser::indexChanged, this, &KcmComponentChooser::settingsChanged);
     connect(pdfViewers(), &ComponentChooser::indexChanged, this, &KcmComponentChooser::settingsChanged);
+    connect(manViewers(), &ComponentChooser::indexChanged, this, &KcmComponentChooser::settingsChanged);
     connect(archiveManagers(), &ComponentChooser::indexChanged, this, &KcmComponentChooser::settingsChanged);
 }
 
@@ -118,6 +121,11 @@ ComponentChooser *KcmComponentChooser::pdfViewers() const
     return m_pdfViewers;
 }
 
+ComponentChooser *KcmComponentChooser::manViewers() const
+{
+    return m_manViewers;
+}
+
 ComponentChooser *KcmComponentChooser::archiveManagers() const
 {
     return m_archiveManagers;
@@ -136,6 +144,7 @@ void KcmComponentChooser::defaults()
     m_musicPlayers->defaults();
     m_videoPlayers->defaults();
     m_pdfViewers->defaults();
+    m_manViewers->defaults();
     m_archiveManagers->defaults();
 }
 
@@ -152,6 +161,7 @@ void KcmComponentChooser::load()
     m_musicPlayers->load();
     m_videoPlayers->load();
     m_pdfViewers->load();
+    m_manViewers->load();
     m_archiveManagers->load();
 }
 
@@ -176,6 +186,7 @@ void KcmComponentChooser::save()
     handleSave(m_musicPlayers);
     handleSave(m_videoPlayers);
     handleSave(m_pdfViewers);
+    handleSave(m_manViewers);
     handleSave(m_archiveManagers);
 
     QDBusMessage message = QDBusMessage::createMethodCall(QStringLiteral("org.kde.klauncher5"),
@@ -196,14 +207,16 @@ bool KcmComponentChooser::isDefaults() const
 {
     return m_browsers->isDefaults() && m_fileManagers->isDefaults() && m_terminalEmulators->isDefaults() && m_emailClients->isDefaults()
         && m_geoUriHandlers->isDefaults() && m_telUriHandlers->isDefaults() && m_textEditors->isDefaults() && m_imageViewers->isDefaults()
-        && m_musicPlayers->isDefaults() && m_videoPlayers->isDefaults() && m_pdfViewers->isDefaults() && m_archiveManagers->isDefaults();
+        && m_musicPlayers->isDefaults() && m_videoPlayers->isDefaults() && m_pdfViewers->isDefaults() && m_archiveManagers->isDefaults()
+        && m_manViewers->isDefaults();
 }
 
 bool KcmComponentChooser::isSaveNeeded() const
 {
     return m_browsers->isSaveNeeded() || m_fileManagers->isSaveNeeded() || m_terminalEmulators->isSaveNeeded() || m_emailClients->isSaveNeeded()
         || m_geoUriHandlers->isSaveNeeded() || m_telUriHandlers->isSaveNeeded() || m_textEditors->isSaveNeeded() || m_imageViewers->isSaveNeeded()
-        || m_musicPlayers->isSaveNeeded() || m_videoPlayers->isSaveNeeded() || m_pdfViewers->isSaveNeeded() || m_archiveManagers->isSaveNeeded();
+        || m_musicPlayers->isSaveNeeded() || m_videoPlayers->isSaveNeeded() || m_pdfViewers->isSaveNeeded() || m_archiveManagers->isSaveNeeded()
+        || m_manViewers->isSaveNeeded();
 }
 
 #include "kcm_componentchooser.moc"

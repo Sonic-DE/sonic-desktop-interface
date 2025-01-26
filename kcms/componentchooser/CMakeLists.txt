@@ -19,6 +19,7 @@ target_sources(kcm_componentchooser PRIVATE
     components/componentchooserarchivemanager.cpp
     components/componentchoosergeo.cpp
     components/componentchoosertel.cpp
+    components/componentchoosermanpages.cpp
 )
 
 kconfig_add_kcfg_files(kcm_componentchooser terminal_settings.kcfgc GENERATE_MOC)
