@@ -13,6 +13,7 @@ import org.kde.plasma.components as PlasmaComponents3
 import org.kde.plasma.plasmoid
 
 FocusScope {
+    id: runnerResults
     width: runnerMatches.width + vertLine.width + vertLine.anchors.leftMargin + runnerMatches.anchors.leftMargin
     height: parent.height
 
@@ -21,6 +22,7 @@ FocusScope {
     property alias currentIndex: runnerMatches.currentIndex
     property alias count: runnerMatches.count
     property alias containsMouse: runnerMatches.containsMouse
+    property alias mainSearchField: runnerMatches.mainSearchField
 
     Accessible.name: header.text
     Accessible.role: Accessible.MenuItem
