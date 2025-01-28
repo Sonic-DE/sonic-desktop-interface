@@ -13,7 +13,6 @@ import org.kde.plasma.components as PlasmaComponents3
 import org.kde.plasma.plasmoid
 
 FocusScope {
-    id: runnerResults
     width: runnerMatches.width + vertLine.width + vertLine.anchors.leftMargin + runnerMatches.anchors.leftMargin
     height: parent.height
 
