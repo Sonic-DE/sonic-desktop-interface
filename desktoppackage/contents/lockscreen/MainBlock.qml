@@ -60,7 +60,7 @@ SessionManagementScreen {
             id: passwordBox
             font.pointSize: Kirigami.Theme.defaultFont.pointSize + 1
             Layout.fillWidth: true
-            text: ScreenLocker.PasswordSingleton.password
+            text: PasswordSync.password
 
             placeholderText: i18nd("plasma_shell_org.kde.plasma.desktop", "Password")
             focus: true
@@ -103,7 +103,7 @@ SessionManagementScreen {
             }
         }
         Binding {
-            target: ScreenLocker.PasswordSingleton
+            target: PasswordSync
             property: "password"
             value: passwordBox.text
         }
