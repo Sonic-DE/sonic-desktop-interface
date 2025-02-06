@@ -23,6 +23,7 @@ QQC2.ApplicationWindow {
         onFinished: matrix => {
             tool.setCalibrationMatrix(device, matrix);
         }
+        onResetFromSaved: root.device.resetCalibrationMatrix()
     }
 
     property real currentPenToolX: -1
@@ -86,13 +87,21 @@ QQC2.ApplicationWindow {
         QQC2.Label {
             horizontalAlignment: Text.AlignHCenter
 
-            text: tool.finishedCalibration
-                ? xi18nc("@info", "Calibration is completed and saved.<nl/><nl/>Refine the calibration further or close the window.")
-                : xi18nc("@info", "Tap the center of each target.<nl/><nl/>Aim for the point where the stylus tip lands, and ignore the cursor position on the screen.")
+            text: {
+                if (tool.state === CalibrationTool.Confirming) {
+                    return xi18nc("@info", "Tap the targets again to confirm the new calibration.<nl/><nl/>Will revert to previous calibration in %1 seconds.", tool.resetSecondsLeft)
+                }
+
+                if (tool.state === CalibrationTool.Testing) {
+                    return xi18nc("@info", "Calibration is completed and saved.<nl/><nl/>Refine the calibration further or close the window.");
+                }
+
+                return i18nc("@info", "Tap the center of each target.");
+            }
         }
 
         QQC2.Button {
-            visible: tool.finishedCalibration
+            visible: tool.state === CalibrationTool.Testing
 
             text: i18nc("@action:button", "Refine Existing Calibration")
             icon.name: "edit-redo"
@@ -103,10 +112,10 @@ QQC2.ApplicationWindow {
         }
 
         QQC2.Button {
-            text: i18nc("@action:button", "Calibrate from Scratch")
+            text: tool.state === CalibrationTool.Confirming ? i18nc("@action:button", "Reset and Try Again") : i18nc("@action:button", "Calibrate from Scratch")
             icon.name: "kt-restore-defaults"
             focus: true
-            visible: tool.finishedCalibration
+            visible: tool.state === CalibrationTool.Confirming || tool.state === CalibrationTool.Testing
 
             onClicked: {
                 tool.restoreDefaults(root.device);
@@ -117,7 +126,7 @@ QQC2.ApplicationWindow {
         }
 
         QQC2.Button {
-            text: tool.finishedCalibration ? i18nc("@action:button", "Close") : i18nc("@action:button", "Cancel")
+            text: tool.state === CalibrationTool.Testing ? i18nc("@action:button", "Close") : i18nc("@action:button", "Cancel")
             icon.name: "dialog-cancel"
 
             onClicked: root.close()
