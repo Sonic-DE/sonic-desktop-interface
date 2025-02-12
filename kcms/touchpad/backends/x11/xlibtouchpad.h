@@ -42,22 +42,6 @@ public:
     {
         return m_deviceId;
     }
-    virtual bool load()
-    {
-        return false;
-    }
-    virtual bool save()
-    {
-        return false;
-    }
-    virtual bool defaults()
-    {
-        return false;
-    }
-    virtual bool isSaveNeeded() const
-    {
-        return false;
-    }
     virtual void setTouchpadOff(int /*touchpadOff*/)
     {
     }
