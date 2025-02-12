@@ -42,10 +42,6 @@ public:
     {
         return m_deviceId;
     }
-    virtual void setTouchpadOff(int /*touchpadOff*/)
-    {
-    }
-    virtual int touchpadOff() = 0;
 
     virtual XcbAtom &touchpadOffAtom() = 0;
 

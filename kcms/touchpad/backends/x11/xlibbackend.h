@@ -42,9 +42,6 @@ public:
         return m_device ? 1 : 0;
     }
 
-    void setTouchpadOff(TouchpadOffState) override;
-    TouchpadOffState getTouchpadOff() override;
-
     bool isTouchpadAvailable() override;
     bool isTouchpadEnabled() override;
     void setTouchpadEnabled(bool) override;
