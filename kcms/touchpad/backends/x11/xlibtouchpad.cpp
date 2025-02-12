@@ -105,23 +105,6 @@ bool XlibTouchpad::setParameter(const Parameter *par, const QVariant &value)
     return true;
 }
 
-void XlibTouchpad::setEnabled(bool enable)
-{
-    PropertyInfo enabled(m_display, m_deviceId, m_enabledAtom.atom(), 0);
-    if (enabled.b && *(enabled.b) != enable) {
-        *(enabled.b) = enable;
-        enabled.set();
-    }
-
-    flush();
-}
-
-bool XlibTouchpad::enabled()
-{
-    PropertyInfo enabled(m_display, m_deviceId, m_enabledAtom.atom(), 0);
-    return enabled.value(0).toBool();
-}
-
 const Parameter *XlibTouchpad::findParameter(const QString &name)
 {
     for (const Parameter *par = m_paramList; par->name; par++) {
