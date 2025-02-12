@@ -81,7 +81,7 @@ XlibBackend::XlibBackend(QObject *parent)
     }
 }
 
-XlibTouchpad *XlibBackend::findTouchpad()
+LibinputTouchpad *XlibBackend::findTouchpad()
 {
     int nDevices = 0;
     std::unique_ptr<XDeviceInfo, DeviceListDeleter> deviceInfo(XListInputDevices(m_display.get(), &nDevices));
@@ -165,6 +165,7 @@ void XlibBackend::setTouchpadEnabled(bool enable)
     }
 
     m_device->setEnabled(enable);
+    m_device->save();
 
     // FIXME? This should not be needed, m_notifications should trigger
     // a propertyChanged signal when we enable/disable the touchpad,
@@ -210,7 +211,8 @@ bool XlibBackend::isTouchpadEnabled()
         return false;
     }
 
-    return m_device->enabled();
+    m_device->load();
+    return m_device->isEnabled();
 }
 
 TouchpadBackend::TouchpadOffState XlibBackend::getTouchpadOff()
@@ -265,9 +267,8 @@ QList<LibinputCommon *> XlibBackend::inputDevices() const
     QList<LibinputCommon *> touchpads;
 
 #if HAVE_XORGLIBINPUT
-    LibinputTouchpad *libinputtouchpad = dynamic_cast<LibinputTouchpad *>(m_device.get());
-    if (libinputtouchpad) {
-        touchpads.push_back(libinputtouchpad);
+    if (m_device) {
+        touchpads.push_back(m_device.get());
     }
 #endif
 
