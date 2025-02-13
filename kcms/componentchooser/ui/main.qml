@@ -48,6 +48,7 @@ KCM.SimpleKCM {
                                                         fileManagerCombo.implicitWidth,
                                                         textEditorCombo.implicitWidth,
                                                         pdfViewerCombo.implicitWidth,
+                                                        manViewerCombo.implicitWidth,
                                                         imageViewerCombo.implicitWidth,
                                                         musicPlayerCombo.implicitWidth,
                                                         videoPlayerCombo.implicitWidth,
@@ -188,6 +189,19 @@ KCM.SimpleKCM {
             componentChooser: kcm.pdfViewers
         }
 
+        ComponentComboBox {
+            id: manViewerCombo
+            Kirigami.FormData.label: i18n("Man/Info viewer:")
+            Layout.preferredWidth: form.longestComboBox
+            component: kcm.manViewers
+
+            KCM.SettingHighlighter {
+                highlight: !kcm.manViewers.isDefaults
+            }
+        }
+        MimeMessage {
+            componentChooser: kcm.manViewers
+        }
 
         Item {
             Kirigami.FormData.label: i18nc("Utilities related application’s category’s name", "Utilities")

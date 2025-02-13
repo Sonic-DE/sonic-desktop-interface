@@ -27,6 +27,7 @@ class KcmComponentChooser : public KQuickManagedConfigModule
     Q_PROPERTY(ComponentChooser *musicPlayers READ musicPlayers CONSTANT)
     Q_PROPERTY(ComponentChooser *videoPlayers READ videoPlayers CONSTANT)
     Q_PROPERTY(ComponentChooser *pdfViewers READ pdfViewers CONSTANT)
+    Q_PROPERTY(ComponentChooser *manViewers READ manViewers CONSTANT)
     Q_PROPERTY(ComponentChooser *archiveManagers READ archiveManagers CONSTANT)
 
 public:
@@ -43,6 +44,7 @@ public:
     ComponentChooser *musicPlayers() const;
     ComponentChooser *videoPlayers() const;
     ComponentChooser *pdfViewers() const;
+    ComponentChooser *manViewers() const;
     ComponentChooser *archiveManagers() const;
 
     void defaults() override;
@@ -63,5 +65,6 @@ private:
     ComponentChooser *m_musicPlayers;
     ComponentChooser *m_videoPlayers;
     ComponentChooser *m_pdfViewers;
+    ComponentChooser *m_manViewers;
     ComponentChooser *m_archiveManagers;
 };
