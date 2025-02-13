@@ -138,10 +138,7 @@ void TouchpadDisabler::updateCurrentState()
     if (!m_backend->isTouchpadAvailable()) {
         return;
     }
-    bool newEnabled = m_backend->isTouchpadEnabled();
-    if (newEnabled != m_touchpadEnabled) {
-        m_touchpadEnabled = newEnabled;
-    }
+    m_touchpadEnabled = m_backend->isTouchpadEnabled();
 }
 
 void TouchpadDisabler::toggle()
