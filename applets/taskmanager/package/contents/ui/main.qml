@@ -101,15 +101,46 @@ PlasmoidItem {
         }
     }
 
-    function windowsHovered(winIds: var, hovered: bool): DBus.DBusPendingReply {
+    Timer {
+        id: windowHighlightTimer
+        property bool highlightActive: false
+        property var winIds: []
+        property bool isHighlightReset: false
+
+        interval: Kirigami.Units.toolTipDelay / 2
+
+        onWinIdsChanged: {
+            isHighlightReset = Array.isArray(winIds) && !winIds.length
+            if ((isHighlightReset && highlightActive) || (!isHighlightReset && !highlightActive)) {
+                start()
+            } else if (highlightActive) { // replacing an active highlight can be immediate
+                stop()
+                triggered()
+            } // we don't need to bother clearing an inactive highlight
+        }
+
+        onTriggered: () => {
+            highlightActive = !isHighlightReset
+            DBus.SessionBus.asyncCall({service: "org.kde.KWin.HighlightWindow", path: "/org/kde/KWin/HighlightWindow", iface: "org.kde.KWin.HighlightWindow", member: "highlightWindows", arguments: [winIds], signature: "(as)"})
+        }
+    }
+
+    function windowsHovered(winIds: var, hovered: bool): void {
         if (!Plasmoid.configuration.highlightWindows) {
             return;
         }
-        return DBus.SessionBus.asyncCall({service: "org.kde.KWin.HighlightWindow", path: "/org/kde/KWin/HighlightWindow", iface: "org.kde.KWin.HighlightWindow", member: "highlightWindows", arguments: [hovered ? winIds : []], signature: "(as)"});
+        let isCurrentWinIds = winIds.every(winId => windowHighlightTimer.winIds.includes(winId)) &&
+            windowHighlightTimer.winIds.every(winId => winIds.includes(winId))
+        if (hovered || isCurrentWinIds) // don't cancel highlight if it's not the currently (scheduled) highlight
+            windowHighlightTimer.winIds = hovered ? winIds : []
     }
 
-    function cancelHighlightWindows(): DBus.DBusPendingReply {
-        return DBus.SessionBus.asyncCall({service: "org.kde.KWin.HighlightWindow", path: "/org/kde/KWin/HighlightWindow", iface: "org.kde.KWin.HighlightWindow", member: "highlightWindows", arguments: [[]], signature: "(as)"});
+    function cancelHighlightWindows(): void {
+        if (windowHighlightTimer.highlightActive) {
+            windowHighlightTimer.winIds = []
+            windowHighlightTimer.stop() // immediately kill the highlight, don't wait for timer'
+            windowHighlightTimer.triggered()
+        }
     }
 
     function activateWindowView(winIds: var): DBus.DBusPendingReply {
