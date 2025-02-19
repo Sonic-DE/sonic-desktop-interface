@@ -109,6 +109,19 @@ Loader {
                     return found
                 }
 
+                property int activeTaskIndex: {
+                    if (parentTask.model.IsActive) {
+                        for (let i = 0; i < model.items.count; i++) {
+                            if (model.items.get(i).model.IsActive) return i
+                        }
+                    }
+                    return -1
+                }
+
+                Component.onCompleted: {
+                    if (parentTask.model.IsActive)
+                        groupToolTipListView.positionViewAtIndex(groupToolTipListView.activeTaskIndex, ListView.Center)
+                }
             }
 
             DelegateModel {
