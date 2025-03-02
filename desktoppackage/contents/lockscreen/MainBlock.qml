@@ -23,6 +23,8 @@ SessionManagementScreen {
     property bool lockScreenUiVisible: false
     property alias showPassword: passwordBox.showPassword
 
+    property bool isLoginOngoing: false
+
     //the y position that should be ensured visible when the on screen keyboard is visible
     property int visibleBoundary: mapFromItem(loginButton, 0, 0).y
     onHeightChanged: visibleBoundary = mapFromItem(loginButton, 0, 0).y + loginButton.height + Kirigami.Units.smallSpacing
@@ -31,6 +33,8 @@ SessionManagementScreen {
      * If username field is visible, it will be taken from that, otherwise from the "name" property of the currentIndex
      */
     signal passwordResult(string password)
+
+    enableStaticContent: !isLoginOngoing
 
     onUserSelected: {
         const nextControl = (passwordBox.visible ? passwordBox : loginButton);
@@ -50,6 +54,8 @@ SessionManagementScreen {
         //
         // See https://bugreports.qt.io/browse/QTBUG-55460
         loginButton.forceActiveFocus();
+        mainStack.enabled = false;
+        sessionManager.isLoginOngoing = true;
         passwordResult(password);
     }
 
@@ -71,7 +77,10 @@ SessionManagementScreen {
             // We need to explicitly disable cursor flashing to avoid unnecessary renders
             cursorVisible: visible
 
-            onAccepted: {
+            onAccepted: function() {
+                if (!loginButton.enabled) {
+                    return;
+                }
                 if (lockScreenUiVisible) {
                     startLogin();
                 }
@@ -109,6 +118,8 @@ SessionManagementScreen {
             Layout.preferredWidth: loginButton.Layout.preferredHeight
 
             icon.name: LayoutMirroring.enabled ? "go-previous" : "go-next"
+
+            enabled: !sessionManager.isLoginOngoing
 
             onClicked: startLogin()
             Keys.onEnterPressed: clicked()

@@ -55,7 +55,14 @@ Item {
 
     RejectPasswordAnimation {
         id: rejectPasswordAnimation
+        property bool hasAnimationRunForLoginAttempt: false // Will help trigger the animation even when PAM is built without fail delays
         target: mainStack
+
+        onFinished: function() {
+            if (mainStack.currentItem?.mainPasswordBox ?? null) {
+                mainStack.currentItem.mainPasswordBox.text = "";
+            }
+        }
     }
 
     MouseArea {
@@ -338,6 +345,9 @@ Item {
 
                 onLoginRequest: {
                     root.notificationMessage = ""
+                    if (mainStack.currentItem && mainStack.currentItem.hasOwnProperty("isLoginOngoing")) {
+                        mainStack.currentItem.isLoginOngoing = true;
+                    }
                     sddm.login(username, password, sessionButton.currentIndex)
                 }
 
@@ -504,24 +514,45 @@ Item {
     Connections {
         target: sddm
         function onLoginFailed() {
-            notificationMessage = i18nd("plasma-desktop-sddm-theme", "Login Failed")
-            footer.enabled = true
-            mainStack.enabled = true
-            userListComponent.userList.opacity = 1
-            rejectPasswordAnimation.start()
+            footer.enabled = true;
+            mainStack.enabled = true;
+            if (mainStack.currentItem && mainStack.currentItem.hasOwnProperty("isLoginOngoing")) {
+                mainStack.currentItem.isLoginOngoing = false;
+            }
+            userListComponent.userList.opacity = 1.0;
+            if (!rejectPasswordAnimation.hasAnimationRunForLoginAttempt) {
+                notificationMessage = i18nd("plasma-desktop-sddm-theme", "Login Failed");
+                rejectPasswordAnimation.start();
+            }
+            rejectPasswordAnimation.hasAnimationRunForLoginAttempt = false;
         }
         function onLoginSucceeded() {
             //note SDDM will kill the greeter at some random point after this
             //there is no certainty any transition will finish, it depends on the time it
             //takes to complete the init
-            mainStack.opacity = 0
-            footer.opacity = 0
+            mainStack.opacity = 0.0;
+            footer.opacity = 0.0;
+            if (mainStack.currentItem && mainStack.currentItem.hasOwnProperty("isLoginOngoing")) {
+                mainStack.currentItem.isLoginOngoing = false;
+            }
+        }
+        function onLoginFailedDelayStarted(/* uint */ uSecDelay) {
+            if (notificationMessage) {
+                notificationMessage = "";
+            }
+            notificationMessage = i18nd("plasma-desktop-sddm-theme", "Login Failed");
+            mainStack.enabled = true;
+            rejectPasswordAnimation.hasAnimationRunForLoginAttempt = true;
+            rejectPasswordAnimation.start();
         }
     }
 
     onNotificationMessageChanged: {
         if (notificationMessage) {
             notificationResetTimer.start();
+        }
+        else {
+            notificationResetTimer.stop();
         }
     }
 

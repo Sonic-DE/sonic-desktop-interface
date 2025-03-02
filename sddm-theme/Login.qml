@@ -23,7 +23,11 @@ SessionManagementScreen {
 
     property real fontSize: Kirigami.Theme.defaultFont.pointSize
 
+    property bool isLoginOngoing: false
+
     signal loginRequest(string username, string password)
+
+    enableStaticContent: !isLoginOngoing
 
     onShowUsernamePromptChanged: {
         if (!showUsernamePrompt) {
@@ -64,6 +68,7 @@ SessionManagementScreen {
         footer.enabled = false
         mainStack.enabled = false
         userListComponent.userList.opacity = 0.5
+        root.isLoginOngoing = true;
 
         // This is partly because it looks nicer, but more importantly it
         // works round a Qt bug that can trigger if the app is closed with a
@@ -78,6 +83,8 @@ SessionManagementScreen {
         id: userNameInput
         font.pointSize: fontSize + 1
         Layout.fillWidth: true
+
+        enabled: !root.isLoginOngoing
 
         text: lastUserName
         visible: showUsernamePrompt
@@ -105,7 +112,10 @@ SessionManagementScreen {
             // Disable reveal password action because SDDM does not have the breeze icon set loaded
             rightActions: []
 
-            onAccepted: {
+            onAccepted: function() {
+                if (!loginButton.enabled) {
+                    return;
+                }
                 if (root.loginScreenUiVisible) {
                     startLogin();
                 }
@@ -132,9 +142,9 @@ SessionManagementScreen {
 
             Connections {
                 target: sddm
-                function onLoginFailed() {
-                    passwordBox.selectAll()
-                    passwordBox.forceActiveFocus()
+                function onLoginFailedDelayStarted() {
+                    passwordBox.selectAll();
+                    passwordBox.forceActiveFocus();
                 }
             }
         }
@@ -146,6 +156,8 @@ SessionManagementScreen {
             Layout.preferredWidth: text.length === 0 ? loginButton.Layout.preferredHeight : -1
 
             icon.name: text.length === 0 ? (root.LayoutMirroring.enabled ? "go-previous" : "go-next") : ""
+
+            enabled: !root.isLoginOngoing
 
             text: root.showUsernamePrompt || userList.currentItem.needsPassword ? "" : i18n("Log In")
             onClicked: startLogin()
