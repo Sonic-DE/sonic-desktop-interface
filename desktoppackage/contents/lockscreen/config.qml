@@ -5,24 +5,48 @@ import org.kde.kirigami 2.12 as Kirigami
 import org.kde.kcmutils as KCM
 
 Kirigami.FormLayout {
-    property alias cfg_alwaysShowClock: alwaysClock.checked
+    id: configForm
+
+    // TODO Plasma 7: Make this an enum.
+    property bool cfg_alwaysShowClock
+    property bool cfg_hideClockWhenIdle
+
     property alias cfg_showMediaControls: showMediaControls.checked
-    property bool cfg_alwaysShowClockDefault: true
     property bool cfg_showMediaControlsDefault: false
 
     twinFormLayouts: parentLayout
 
-    QQC2.CheckBox {
-        id: alwaysClock
+    QQC2.RadioButton {
+        id: clockAlwaysRadio
         Kirigami.FormData.label: i18ndc("plasma_shell_org.kde.plasma.desktop",
                                         "@title: group",
-                                        "Clock:")
-        text: i18ndc("plasma_shell_org.kde.plasma.desktop",
-                     "@option:check",
-                     "Show clock")
+                                        "Show clock:")
+        text: i18ndc("plasma_shell_org.kde.plasma.desktop", "@option:radio Clock always shown", "Always")
+        checked: configForm.cfg_alwaysShowClock && !configForm.cfg_hideClockWhenIdle
+        onToggled: {
+            configForm.cfg_alwaysShowClock = true;
+            configForm.cfg_hideClockWhenIdle = false;
+        }
 
         KCM.SettingHighlighter {
-            highlight: cfg_alwaysShowClockDefault != cfg_alwaysShowClock
+            highlight: !clockAlwaysRadio.checked
+        }
+    }
+
+    QQC2.RadioButton {
+        text: i18ndc("plasma_shell_org.kde.plasma.desktop", "@option:radio Clock shown only while unlock prompt is visible", "On unlocking prompt")
+        checked: configForm.cfg_alwaysShowClock && configForm.cfg_hideClockWhenIdle
+        onToggled: {
+            configForm.cfg_alwaysShowClock = true;
+            configForm.cfg_hideClockWhenIdle = true;
+        }
+    }
+
+    QQC2.RadioButton {
+        text: i18ndc("plasma_shell_org.kde.plasma.desktop", "@option:radio Clock never shown", "Never")
+        checked: !configForm.cfg_alwaysShowClock
+        onToggled: {
+            configForm.cfg_alwaysShowClock = false;
         }
     }
 
