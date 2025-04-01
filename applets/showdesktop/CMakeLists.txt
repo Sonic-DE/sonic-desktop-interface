@@ -8,11 +8,11 @@ ecm_add_qml_module(showdesktopplugin
     GENERATE_PLUGIN_SOURCE
 )
 
-qt_add_dbus_interface(showdesktopplugin org.kde.KWin.xml kwin_interface)
+qt_add_dbus_interface(showdesktop_SRCS org.kde.KWin.xml kwin_interface)
 
 target_sources(showdesktopplugin PRIVATE
     showdesktop.cpp
-    ${showdesktopplugin}
+    ${showdesktop_SRCS}
 )
 
 target_link_libraries(showdesktopplugin PRIVATE
