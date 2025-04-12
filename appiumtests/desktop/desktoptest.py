@@ -226,8 +226,8 @@ class DesktopTest(unittest.TestCase):
 
         wait = WebDriverWait(self.driver, 30)
         self.driver.find_element(AppiumBy.NAME, "Configure Panel…").click()
-        widget_button: WebElement = wait.until(EC.presence_of_element_located((AppiumBy.NAME, "Add Widgets…")))
-        wait.until(EC.presence_of_element_located((AppiumBy.NAME, "Add Spacer")))
+        widget_button: WebElement = wait.until(EC.presence_of_element_located((AppiumBy.NAME, "Add New")))
+        wait.until(EC.presence_of_element_located((AppiumBy.NAME, "Clone Panel")))
 
         actions.send_keys(Keys.ESCAPE).perform()
         wait.until_not(lambda _: widget_button.is_displayed())
