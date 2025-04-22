@@ -133,16 +133,27 @@ Rectangle {
 
             const config = Plasmoid.configuration; // type: KConfigPropertyMap
 
-            const props = {
-                "title": item.name,
-                "includeMargins": item.includeMargins
-            };
+            const props = { "title": item.name }
 
-            config.keys().forEach(key => {
+            // We create a temporary instance to see what properties we need to set
+            // initially or there will be many errors for config pages which do not
+            // include every single cfg_ property. This is wasteful, but we cannot set
+            // the properties after instantiation (with the ability to check whether
+            // they exist) because third-party plasmoids may depend on property change signals.
+            // TODO Plasma 7: Evaluate removing this workaround and cover in plasmoid porting guide
+            const temp = Qt.createComponent(Qt.resolvedUrl(item.source)).createObject(root)
+
+            config.keys().filter(key => "cfg_" + key in temp).forEach(key => {
                 props["cfg_" + key] = config[key];
             });
 
+            temp.destroy()
+
             pushReplace(Qt.resolvedUrl(item.source), props);
+
+            if ("includeMargins" in app.currentConfigPage) {
+                app.currentConfigPage.includeMargins = item.includeMargins
+            }
         } else if (item.kcm) {
             pushReplace(configurationKcmPageComponent, {kcm: item.kcm, internalPage: item.kcm.mainUi});
         } else {
