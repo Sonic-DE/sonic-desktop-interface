@@ -84,7 +84,7 @@ Kirigami.FormLayout {
 
         QQC2.RadioButton {
             id: relativeMode
-            text: i18nc("Mouse mouse, or like using the tablet like a giant touchpad", "Mouse")
+            text: i18nc("Mouse mode, or like using the tablet like a giant touchpad", "Mouse")
             checked: root.device && root.device.relative
             onToggled: root.device.relative = true
             QQC2.ButtonGroup.group: isRelativeGroup
