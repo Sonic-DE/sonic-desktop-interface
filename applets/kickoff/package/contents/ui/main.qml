@@ -363,4 +363,18 @@ PlasmoidItem {
             Plasmoid.activationTogglesExpanded = true
         }
     }
+
+    // Reset the state of FullRepresentation when it is closed. Otherwise
+    // a transition animation back to the default state might run when the
+    // applet expands again, which is visually distracting.
+    onExpandedChanged: {
+        if (!kickoff.expanded) {
+            if (kickoff.searchField) {
+                kickoff.searchField.text = "";
+            }
+            if (kickoff.footer) {
+                kickoff.footer.tabBar.currentIndex = 0;
+            }
+        }
+    }
 } // root
