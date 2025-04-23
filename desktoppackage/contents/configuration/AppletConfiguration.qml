@@ -128,7 +128,21 @@ Rectangle {
         app.isAboutPage = false;
         root.currentSource = item.source
 
-        if (item.source) {
+        if (item.configUiModule && item.configUiComponent) {
+            root.currentSource = item.configUiModule + item.configUiComponent; // Just for the highlight status
+            const config = Plasmoid.configuration; // type: KConfigPropertyMap
+
+            const props = {
+                "title": item.name,
+                "includeMargins": item.includeMargins
+            };
+
+            config.keys().forEach(key => {
+                props["cfg_" + key] = config[key];
+            });
+
+            pushReplace(Qt.createComponent(item.configUiModule, item.configUiComponent), props);
+        } else if (item.source) {
             app.isAboutPage = item.source === Qt.resolvedUrl("AboutPlugin.qml");
 
             const config = Plasmoid.configuration; // type: KConfigPropertyMap
@@ -306,6 +320,8 @@ Rectangle {
                         if (app.pageStack.currentItem) {
                             if (model.kcm && app.pageStack.currentItem.kcm) {
                                 return model.kcm == app.pageStack.currentItem.kcm
+                            } else if (model.configUiModule.length > 0) {
+                                return root.currentSource == (model.configUiModule + model.configUiComponent)
                             } else {
                                 return root.currentSource == model.source
                             }
