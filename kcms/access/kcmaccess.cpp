@@ -13,20 +13,26 @@
 #include <QApplication>
 #include <QDBusConnection>
 #include <QDBusMessage>
+#include <QDialogButtonBox>
 #include <QFileDialog>
 #include <QProcess>
+#include <QPushButton>
 #include <QQuickItem>
 #include <QStandardPaths>
-#include <QWindow>
+#include <QVBoxLayout>
 #include <QValidator>
+#include <QWindow>
 #include <QtGui/private/qtx11extras_p.h>
 
+#include <KActionCollection>
 #include <KConfigGroup>
+#include <KGlobalAccel>
 #include <KKeyServer>
 #include <KLocalizedString>
 #include <KNotifyConfigWidget>
 #include <KPluginFactory>
 #include <KSharedConfig>
+#include <KShortcutsDialog>
 #include <X11/XKBlib.h>
 #include <X11/Xlib.h>
 
@@ -38,6 +44,7 @@
 #include "kcmaccessibilitybell.h"
 #include "kcmaccessibilitycolorblindnesscorrection.h"
 #include "kcmaccessibilitydata.h"
+#include "kcmaccessibilityinvert.h"
 #include "kcmaccessibilitykeyboard.h"
 #include "kcmaccessibilitykeyboardfilters.h"
 #include "kcmaccessibilitymouse.h"
@@ -171,6 +178,7 @@ KAccessConfig::KAccessConfig(QObject *parent, const KPluginMetaData &metaData)
     qmlRegisterAnonymousType<ScreenReaderSettings>("org.kde.plasma.access.kcm", 0);
     qmlRegisterAnonymousType<ShakeCursorSettings>("org.kde.plasma.access.kcm", 0);
     qmlRegisterAnonymousType<ColorblindnessCorrectionSettings>("org.kde.plasma.access.kcm", 0);
+    qmlRegisterAnonymousType<InvertSettings>("org.kde.plasma.access.kcm", 0);
     qmlRegisterType<IntValidatorWithSuffix>("org.kde.plasma.access.kcm", 0, 0, "IntValidatorWithSuffix");
 
     int tryOrcaRun = QProcess::execute(QStringLiteral("orca"), {QStringLiteral("--version")});
@@ -189,6 +197,7 @@ KAccessConfig::KAccessConfig(QObject *parent, const KPluginMetaData &metaData)
             &ColorblindnessCorrectionSettings::configChanged,
             this,
             &KAccessConfig::colorblindnessCorrectionIsDefaultsChanged);
+    connect(m_data->invertSettings(), &InvertSettings::configChanged, this, &KAccessConfig::invertIsDefaultsChanged);
 }
 
 KAccessConfig::~KAccessConfig()
@@ -197,7 +206,72 @@ KAccessConfig::~KAccessConfig()
 
 void KAccessConfig::configureKNotify()
 {
-    KNotifyConfigWidget::configure(QApplication::activeWindow(), QStringLiteral("kaccess"));
+    QWidget *parent = QApplication::activeWindow();
+    const QString appname = QStringLiteral("kaccess");
+
+    QDialog *dialog = new QDialog(parent);
+    dialog->setWindowTitle(i18n("Configure Notifications"));
+
+    KNotifyConfigWidget *w = new KNotifyConfigWidget(dialog);
+
+    QDialogButtonBox *buttonBox = new QDialogButtonBox(dialog);
+    buttonBox->setStandardButtons(QDialogButtonBox::Ok | QDialogButtonBox::Apply | QDialogButtonBox::Cancel);
+    buttonBox->button(QDialogButtonBox::Apply)->setEnabled(false);
+
+    QVBoxLayout *layout = new QVBoxLayout(dialog);
+    layout->addWidget(w);
+    layout->addWidget(buttonBox);
+
+    connect(buttonBox->button(QDialogButtonBox::Apply), SIGNAL(clicked()), w, SLOT(save()));
+    connect(buttonBox->button(QDialogButtonBox::Ok), SIGNAL(clicked()), w, SLOT(save()));
+    connect(w, SIGNAL(changed(bool)), buttonBox->button(QDialogButtonBox::Apply), SLOT(setEnabled(bool)));
+
+    connect(buttonBox, SIGNAL(accepted()), dialog, SLOT(accept()));
+    connect(buttonBox, SIGNAL(rejected()), dialog, SLOT(reject()));
+
+    w->setApplication(appname);
+    dialog->setAttribute(Qt::WA_DeleteOnClose);
+    dialog->winId();
+    dialog->windowHandle()->setTransientParent(QApplication::activeWindow()->windowHandle());
+    dialog->setWindowModality(Qt::WindowModal);
+    dialog->show();
+
+    /*
+    auto *notifyWidget = KNotifyConfigWidget::configure(QApplication::activeWindow(), QStringLiteral("kaccess"));
+    notifyWidget->winId();
+    notifyWidget->windowHandle()->setTransientParent(QApplication::activeWindow()->windowHandle());
+    notifyWidget->setWindowModality(Qt::WindowModal);
+    */
+}
+
+void KAccessConfig::configureInvert()
+{
+    // TODO: Use QDialog here as above for better buttons?
+
+    KShortcutsDialog *dialog = new KShortcutsDialog(KShortcutsEditor::GlobalAction, KShortcutsEditor::LetterShortcutsDisallowed);
+
+    KActionCollection *actionCollection = new KActionCollection(dialog, QStringLiteral("kwin"));
+    actionCollection->setComponentDisplayName(i18n("KWin"));
+
+    QAction *a = actionCollection->addAction(QStringLiteral("Invert"));
+    a->setText(i18n("Toggle Invert Effect"));
+    a->setProperty("isConfigurationAction", true);
+    KGlobalAccel::self()->setDefaultShortcut(a, QList<QKeySequence>() << (Qt::CTRL | Qt::META | Qt::Key_I));
+    KGlobalAccel::self()->setShortcut(a, QList<QKeySequence>() << (Qt::CTRL | Qt::META | Qt::Key_I));
+
+    QAction *b = actionCollection->addAction(QStringLiteral("InvertWindow"));
+    b->setText(i18n("Toggle Invert Effect on Window"));
+    b->setProperty("isConfigurationAction", true);
+    KGlobalAccel::self()->setDefaultShortcut(b, QList<QKeySequence>() << (Qt::CTRL | Qt::META | Qt::Key_U));
+    KGlobalAccel::self()->setShortcut(b, QList<QKeySequence>() << (Qt::CTRL | Qt::META | Qt::Key_U));
+
+    dialog->addCollection(actionCollection);
+    dialog->setAttribute(Qt::WA_DeleteOnClose);
+    dialog->winId();
+    dialog->windowHandle()->setTransientParent(QApplication::activeWindow()->windowHandle());
+    dialog->setWindowModality(Qt::WindowModal);
+
+    dialog->open();
 }
 
 void KAccessConfig::launchOrcaConfiguration()
@@ -230,6 +304,8 @@ void KAccessConfig::save()
         m_data->colorblindnessCorrectionSettings()->findItem(QStringLiteral("ColorblindnessCorrection"))->isSaveNeeded();
     const bool colorblindnessCorrectionSettingsSaveNeeded = m_data->colorblindnessCorrectionSettings()->findItem(QStringLiteral("Mode"))->isSaveNeeded()
         || m_data->colorblindnessCorrectionSettings()->findItem(QStringLiteral("Intensity"))->isSaveNeeded();
+
+    const bool invertSaveNeeded = m_data->invertSettings()->findItem(QStringLiteral("Invert"))->isSaveNeeded();
 
     KQuickManagedConfigModule::save();
 
@@ -279,6 +355,15 @@ void KAccessConfig::save()
                                                                          QStringLiteral("reconfigureEffect"));
         reconfigureMessage.setArguments({QStringLiteral("colorblindnesscorrection")});
         QDBusConnection::sessionBus().call(reconfigureMessage);
+    }
+
+    if (invertSaveNeeded) {
+        QDBusMessage reloadMessage = QDBusMessage::createMethodCall(QStringLiteral("org.kde.KWin"),
+                                                                    QStringLiteral("/Effects"),
+                                                                    QStringLiteral("org.kde.kwin.Effects"),
+                                                                    invertSettings()->invert() ? QStringLiteral("loadEffect") : QStringLiteral("unloadEffect"));
+        reloadMessage.setArguments({QStringLiteral("invert")});
+        QDBusConnection::sessionBus().call(reloadMessage);
     }
 }
 
@@ -342,6 +427,11 @@ ColorblindnessCorrectionSettings *KAccessConfig::colorblindnessCorrectionSetting
     return m_data->colorblindnessCorrectionSettings();
 }
 
+InvertSettings *KAccessConfig::invertSettings() const
+{
+    return m_data->invertSettings();
+}
+
 bool KAccessConfig::bellIsDefaults() const
 {
     return bellSettings()->isDefaults();
@@ -380,6 +470,11 @@ bool KAccessConfig::shakeCursorIsDefaults() const
 bool KAccessConfig::colorblindnessCorrectionIsDefaults() const
 {
     return colorblindnessCorrectionSettings()->isDefaults();
+}
+
+bool KAccessConfig::invertIsDefaults() const
+{
+    return invertSettings()->isDefaults();
 }
 
 #include "kcmaccess.moc"
