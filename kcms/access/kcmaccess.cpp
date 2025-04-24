@@ -47,6 +47,7 @@
 #include "kcmaccessibilitymouse.h"
 #include "kcmaccessibilityscreenreader.h"
 #include "kcmaccessibilityshakecursor.h"
+#include "kcmaccessibilityzoommagnifier.h"
 
 K_PLUGIN_FACTORY_WITH_JSON(KCMAccessFactory, "kcm_access.json", registerPlugin<KAccessConfig>(); registerPlugin<AccessibilityData>();)
 
@@ -176,6 +177,7 @@ KAccessConfig::KAccessConfig(QObject *parent, const KPluginMetaData &metaData)
     qmlRegisterAnonymousType<ShakeCursorSettings>("org.kde.plasma.access.kcm", 0);
     qmlRegisterAnonymousType<ColorblindnessCorrectionSettings>("org.kde.plasma.access.kcm", 0);
     qmlRegisterAnonymousType<InvertSettings>("org.kde.plasma.access.kcm", 0);
+    qmlRegisterAnonymousType<ZoomMagnifierSettings>("org.kde.plasma.access.kcm", 0);
     qmlRegisterType<IntValidatorWithSuffix>("org.kde.plasma.access.kcm", 0, 0, "IntValidatorWithSuffix");
 
     int tryOrcaRun = QProcess::execute(QStringLiteral("orca"), {QStringLiteral("--version")});
@@ -195,6 +197,7 @@ KAccessConfig::KAccessConfig(QObject *parent, const KPluginMetaData &metaData)
             this,
             &KAccessConfig::colorblindnessCorrectionIsDefaultsChanged);
     connect(m_data->invertSettings(), &InvertSettings::configChanged, this, &KAccessConfig::invertIsDefaultsChanged);
+    connect(m_data->zoomMagnifierSettings(), &ZoomMagnifierSettings::configChanged, this, &KAccessConfig::zoomMagnifierIsDefaultsChanged);
 }
 
 KAccessConfig::~KAccessConfig()
@@ -277,6 +280,9 @@ void KAccessConfig::save()
 
     const bool invertSaveNeeded = m_data->invertSettings()->findItem(QStringLiteral("Invert"))->isSaveNeeded();
 
+    const bool zoomMagnifierSaveNeeded = m_data->zoomMagnifierSettings()->findItem(QStringLiteral("Zoom"))->isSaveNeeded()
+        || m_data->zoomMagnifierSettings()->findItem(QStringLiteral("Magnifier"))->isSaveNeeded();
+
     KQuickManagedConfigModule::save();
 
     if (bellSettings()->systemBell() || bellSettings()->customBell() || bellSettings()->visibleBell()) {
@@ -334,6 +340,30 @@ void KAccessConfig::save()
                                                                     invertSettings()->invert() ? QStringLiteral("loadEffect") : QStringLiteral("unloadEffect"));
         reloadMessage.setArguments({QStringLiteral("invert")});
         QDBusConnection::sessionBus().call(reloadMessage);
+    }
+
+    if (zoomMagnifierSaveNeeded) {
+        qDebug() << "Zoom" << zoomMagnifierSettings()->zoom() << "Magnifier" << zoomMagnifierSettings()->magnifier();
+
+        // Unload both effects
+        QDBusMessage reloadMessage = QDBusMessage::createMethodCall(QStringLiteral("org.kde.KWin"),
+                                                                    QStringLiteral("/Effects"),
+                                                                    QStringLiteral("org.kde.kwin.Effects"),
+                                                                    QStringLiteral("unloadEffect"));
+        reloadMessage.setArguments({QStringLiteral("zoom")});
+        QDBusConnection::sessionBus().call(reloadMessage);
+        reloadMessage.setArguments({QStringLiteral("magnifier")});
+        QDBusConnection::sessionBus().call(reloadMessage);
+
+        if (zoomMagnifierSettings()->zoom() || zoomMagnifierSettings()->magnifier()) {
+            // Load the specified effect
+            QDBusMessage reloadMessage = QDBusMessage::createMethodCall(QStringLiteral("org.kde.KWin"),
+                                                                        QStringLiteral("/Effects"),
+                                                                        QStringLiteral("org.kde.kwin.Effects"),
+                                                                        QStringLiteral("loadEffect"));
+            reloadMessage.setArguments({zoomMagnifierSettings()->zoom() ? QStringLiteral("zoom") : QStringLiteral("magnifier")});
+            QDBusConnection::sessionBus().call(reloadMessage);
+        }
     }
 }
 
@@ -402,6 +432,11 @@ InvertSettings *KAccessConfig::invertSettings() const
     return m_data->invertSettings();
 }
 
+ZoomMagnifierSettings *KAccessConfig::zoomMagnifierSettings() const
+{
+    return m_data->zoomMagnifierSettings();
+}
+
 bool KAccessConfig::bellIsDefaults() const
 {
     return bellSettings()->isDefaults();
@@ -445,6 +480,11 @@ bool KAccessConfig::colorblindnessCorrectionIsDefaults() const
 bool KAccessConfig::invertIsDefaults() const
 {
     return invertSettings()->isDefaults();
+}
+
+bool KAccessConfig::zoomMagnifierIsDefaults() const
+{
+    return zoomMagnifierSettings()->isDefaults();
 }
 
 #include "kcmaccess.moc"
