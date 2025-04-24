@@ -307,7 +307,7 @@ Rectangle {
                     onActivated: categories.openCategory(model);
                     highlighted: {
                         if (app.pageStack.currentItem) {
-                            if (model.configUiModule.length > 0) {
+                            if (model.configUiModule && model.configUiComponent) {
                                 return root.currentSource == (model.configUiModule + model.configUiComponent)
                             } else {
                                 return root.currentSource == model.source
