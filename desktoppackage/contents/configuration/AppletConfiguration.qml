@@ -129,7 +129,6 @@ Rectangle {
 
             const props = {
                 "title": item.name,
-                "includeMargins": item.includeMargins
             };
 
             config.keys().forEach(key => {
