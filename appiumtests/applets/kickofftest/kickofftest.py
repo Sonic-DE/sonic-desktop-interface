@@ -49,11 +49,6 @@ class KickoffTests(unittest.TestCase):
             self.kactivitymanagerd.terminate()
             self.kactivitymanagerd.wait()
 
-    def setUp(self) -> None:
-        ActionChains(self.driver).send_keys(Keys.ESCAPE).perform()
-        self.driver.find_element(by=AppiumBy.CLASS_NAME, value="[button | Application Launcher]").click()
-        self.driver.find_element(by=AppiumBy.CLASS_NAME, value="[list item | All Applications]")
-
     def tearDown(self) -> None:
         """
         Take screenshot when the current test fails
@@ -66,16 +61,23 @@ class KickoffTests(unittest.TestCase):
         search_field = self.driver.find_element(by=AppiumBy.NAME, value="Search")
         search_field.send_keys("1")
         search_field.send_keys("2345+67890")
-        self.driver.find_element(by=AppiumBy.CLASS_NAME, value="[list item | 80235]")
+        element = self.driver.find_element(by=AppiumBy.CLASS_NAME, value="[list item | 80235]")
+        search_field.clear()
+        WebDriverWait(self.driver, 5).until_not(lambda _: element.is_displayed())
 
     def test_2_search_app(self) -> None:
         # Emoji Selector is the only actual application we install from workspace :|
-        self.driver.find_element(by=AppiumBy.NAME, value="Search").send_keys("Emoji Selector")
-        self.driver.find_element(by=AppiumBy.CLASS_NAME, value="[list item | Emoji Selector]").click()
+        search_field = self.driver.find_element(by=AppiumBy.NAME, value="Search")
+        search_field.send_keys("Emoji Selector")
+        element = self.driver.find_element(by=AppiumBy.CLASS_NAME, value="[list item | Emoji Selector]")
+        element.click()
         WebDriverWait(self.driver, 5).until(lambda _: name_has_owner(None, "org.kde.plasma.emojier"))
         subprocess.check_call([f"kquitapp{KDE_VERSION}", "plasma.emojier"])
+        search_field.clear()
+        WebDriverWait(self.driver, 5).until_not(lambda _: element.is_displayed())
 
     def test_3_keyboard_navigation(self) -> None:
+        ActionChains(self.driver).send_keys(Keys.DOWN).perform()
         focused_elements = self.driver.find_elements(by=AppiumBy.XPATH, value="//table_cell[contains(@states, 'focused')]")
         self.assertEqual(len(focused_elements), 1)
         first_favorite = focused_elements[0].id
