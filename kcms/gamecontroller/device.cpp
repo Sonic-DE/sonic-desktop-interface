@@ -22,7 +22,7 @@ static QStringList kJoystickTypeNames = {i18n("Unknown"),
                                          i18n("Arcade Pad"),
                                          i18n("Throttle")};
 
-// NOTE: Keep yn sync with SDL_gamecontrollertype from SDL_gamecontroller.h
+// NOTE: Keep in sync with SDL_gamecontrollertype from SDL_gamecontroller.h
 static QStringList kControllerTypeNames = {
     i18n("Unknown"),
     i18n("XBox 360"),
@@ -39,6 +39,40 @@ static QStringList kControllerTypeNames = {
     i18n("Switch Right Joycon"),
     i18n("Switch Paired Joycon"),
 };
+
+// NOTE: Keep in sync with SDL_GameControllerButton from SDL_gamecontroller.h
+static QStringList kButtonNames = {
+    i18n("a button"),
+    i18n("b button"),
+    i18n("x button"),
+    i18n("y button"),
+    i18n("back button"),
+    i18n("guide button"),
+    i18n("start button"),
+    i18n("left stick"),
+    i18n("right stick"),
+    i18n("left shoulder button"),
+    i18n("right shoulder button"),
+    i18n("d-pad up button"),
+    i18n("d-pad down button"),
+    i18n("d-pad left button"),
+    i18n("d-pad right button"),
+    i18n("miscellaneous button"), /* Xbox Series X share button, PS5 microphone button, Nintendo Switch Pro capture button, Amazon Luna microphone button */
+    i18n("paddle button 1"), /* Xbox Elite paddle P1 (upper left, facing the back) */
+    i18n("paddle button 2"), /* Xbox Elite paddle P3 (upper right, facing the back) */
+    i18n("paddle button 3"), /* Xbox Elite paddle P2 (lower left, facing the back) */
+    i18n("paddle button 4"), /* Xbox Elite paddle P4 (lower right, facing the back) */
+    i18n("touchpad button"), /* PS4/PS5 touchpad button */
+};
+
+QString ButtonToButtonName(SDL_GameControllerButton button)
+{
+    if (button > SDL_CONTROLLER_BUTTON_INVALID && button < SDL_CONTROLLER_BUTTON_MAX) {
+        return kButtonNames.at(button);
+    } else {
+        return i18n("Invalid button value");
+    }
+}
 
 Device::Device(int deviceIndex, QObject *parent)
     : QObject(parent)
@@ -64,9 +98,19 @@ bool Device::open()
         m_leftTrigger = SDL_JoystickGetAxis(m_joystick, SDL_CONTROLLER_AXIS_TRIGGERLEFT);
         m_rightTrigger = SDL_JoystickGetAxis(m_joystick, SDL_CONTROLLER_AXIS_TRIGGERRIGHT);
         qCDebug(KCM_GAMECONTROLLER) << "Device" << m_deviceIndex << "is not a gamepad. using as joystick";
+        m_buttonCount = SDL_JoystickNumButtons(m_joystick);
     } else {
         m_leftTrigger = SDL_GameControllerGetAxis(m_controller, SDL_CONTROLLER_AXIS_TRIGGERLEFT);
         m_rightTrigger = SDL_GameControllerGetAxis(m_controller, SDL_CONTROLLER_AXIS_TRIGGERRIGHT);
+
+        // We have a controller, so check which buttons we have
+        for (int i = 0; i < SDL_CONTROLLER_BUTTON_MAX; ++i) {
+            // If we have this button type, add it to our map and increase count.
+            if (SDL_GameControllerHasButton(m_controller, static_cast<SDL_GameControllerButton>(i))) {
+                m_buttonType[m_buttonCount] = i;
+                m_buttonCount++;
+            }
+        }
     }
     return m_joystick != nullptr;
 }
@@ -127,16 +171,24 @@ bool Device::isVirtual() const
 
 int Device::buttonCount() const
 {
-    return SDL_JoystickNumButtons(m_joystick);
+    return m_buttonCount;
 }
 
 bool Device::buttonState(int index) const
 {
     // If we are a game controller, use that api to get button state
     if (m_controller) {
-        return SDL_GameControllerGetButton(m_controller, static_cast<SDL_GameControllerButton>(index)) != 0;
+        return SDL_GameControllerGetButton(m_controller, static_cast<SDL_GameControllerButton>(m_buttonType.value(index))) != 0;
     }
     return SDL_JoystickGetButton(m_joystick, index) != 0;
+}
+
+QString Device::buttonName(int index) const
+{
+    if (m_controller) {
+        return ButtonToButtonName(static_cast<SDL_GameControllerButton>(m_buttonType.value(index)));
+    }
+    return QString::number(index + 1);
 }
 
 int Device::axisCount() const
