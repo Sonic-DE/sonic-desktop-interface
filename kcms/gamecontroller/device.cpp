@@ -64,6 +64,16 @@ bool Device::open()
     m_controller = SDL_GameControllerOpen(m_deviceIndex);
     if (!m_controller) {
         qCDebug(KCM_GAMECONTROLLER) << "Device" << m_deviceIndex << "is not a gamepad. using as joystick";
+        m_buttonCount = SDL_JoystickNumButtons(m_joystick);
+    } else {
+        // We have a controller, so check which buttons we have
+        for (int i = 0; i < SDL_CONTROLLER_BUTTON_MAX; ++i) {
+            // If we have this button type, add it to our map and increase count.
+            if (SDL_GameControllerHasButton(m_controller, static_cast<SDL_GameControllerButton>(i))) {
+                m_buttonType[m_buttonCount] = i;
+                m_buttonCount++;
+            }
+        }
     }
     return m_joystick != nullptr;
 }
@@ -124,16 +134,24 @@ bool Device::isVirtual() const
 
 int Device::buttonCount() const
 {
-    return SDL_JoystickNumButtons(m_joystick);
+    return m_buttonCount;
 }
 
 bool Device::buttonState(int index) const
 {
     // If we are a game controller, use that api to get button state
     if (m_controller) {
-        return SDL_GameControllerGetButton(m_controller, static_cast<SDL_GameControllerButton>(index)) != 0;
+        return SDL_GameControllerGetButton(m_controller, static_cast<SDL_GameControllerButton>(m_buttonType.value(index))) != 0;
     }
     return SDL_JoystickGetButton(m_joystick, index) != 0;
+}
+
+QString Device::buttonName(int index) const
+{
+    if (m_controller) {
+        return QString(SDL_GameControllerGetStringForButton(static_cast<SDL_GameControllerButton>(m_buttonType.value(index))));
+    }
+    return QString::number(index + 1);
 }
 
 int Device::axisCount() const
