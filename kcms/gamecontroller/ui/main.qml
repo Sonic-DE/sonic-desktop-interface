@@ -17,7 +17,6 @@ KCM.SimpleKCM {
     id: root
 
     readonly property var device: deviceCombo.currentValue !== null ? deviceModel.device(deviceCombo.currentValue) : null
-    readonly property var gamepad: deviceCombo.currentValue !== null ? deviceModel.gamepad(deviceCombo.currentValue) : null
 
     Kirigami.PlaceholderMessage {
         icon.name: "input-gamepad"
@@ -85,14 +84,26 @@ KCM.SimpleKCM {
                 Layout.alignment: Qt.AlignTop
 
                 QQC2.Label {
-                    text: i18nc("@label Visual representation of an axis position", "Position:")
+                    text: i18nc("@label Visual representation of an axis position", "Left Position:")
                     textFormat: Text.PlainText
                 }
 
                 PositionWidget {
-                    id: posWidget
+                    id: leftPosWidget
 
-                    device: root.gamepad
+                    device: root.device
+                    leftAxis: true
+                }
+                
+                QQC2.Label {
+                    text: i18nc("@label Visual representation of an axis position", "Right Position:")
+                    textFormat: Text.PlainText
+                }
+
+                PositionWidget {
+                    id: rightPosWidget
+                    device: root.device
+                    leftAxis: false
                 }
             }
 

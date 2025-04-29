@@ -28,7 +28,6 @@ ecm_qt_install_logging_categories(
 target_sources(kcm_gamecontroller PRIVATE
     devicemodel.cpp
     device.cpp
-    gamepad.cpp
     axesmodel.cpp
     axesproxymodel.cpp
     buttonmodel.cpp
@@ -43,5 +42,5 @@ target_link_libraries(kcm_gamecontroller PRIVATE
     KF6::I18n
     Qt6::Quick
     Qt6::QuickWidgets
-    SDL2::SDL2
+    SDL3::SDL3
 )

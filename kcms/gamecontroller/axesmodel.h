@@ -32,7 +32,10 @@ public:
     QVariant headerData(int section, Qt::Orientation orientation, int role) const override;
 
 private Q_SLOTS:
-    void onAxisValueChanged(int index);
+    void onLeftAxisChanged();
+    void onRightAxisChanged();
+    void onLeftTriggerChanged();
+    void onRightTriggerChanged();
 
 private:
     Device *m_device = nullptr;
