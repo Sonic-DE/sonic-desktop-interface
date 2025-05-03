@@ -45,6 +45,7 @@ PlasmoidItem {
         return iconName;
     }
     Plasmoid.status: hasContents ? PlasmaCore.Types.ActiveStatus : PlasmaCore.Types.PassiveStatus
+    Plasmoid.busy: TrashPrivate.Trash.emptying
 
     Plasmoid.onActivated: TrashPrivate.Trash.openTrash()
 
@@ -76,7 +77,7 @@ PlasmoidItem {
         PlasmaCore.Action {
             text: i18nc("@action:inmenu Empty the trash", "Empty")
             icon.name: "trash-empty-symbolic"
-            enabled: hasContents
+            enabled: hasContents && !TrashPrivate.Trash.emptying
             onTriggered: TrashPrivate.Trash.emptyTrash()
         },
         PlasmaCore.Action {
