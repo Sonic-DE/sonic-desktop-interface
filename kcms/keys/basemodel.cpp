@@ -191,7 +191,7 @@ QVariant BaseModel::data(const QModelIndex &index, int role) const
             return i18nc("@item:intable", "Window Management");
         }
         if (component.displayName == QStringLiteral("plasmashell")) {
-            return i18nc("@item:intable", "Plasma Desktop Environment");
+            return i18nc("@item:intable", "Plasma Workspace");
         }
 
         return component.displayName;
