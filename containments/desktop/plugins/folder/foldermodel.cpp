@@ -1398,13 +1398,10 @@ void FolderModel::changeSelection(const QItemSelection &selected, const QItemSel
 
 bool FolderModel::isBlank(int row) const
 {
-    if (row < 0) {
-        return true;
-    }
-
-    // If index is not valid, return true since that spot is blank.
+    // Invalid indexes are blank, since they're not created yet
+    // and will be created when needed.
     const auto idx = index(row, 0);
-    if (!idx.isValid()) {
+    if (row < 0 || !idx.isValid()) {
         return true;
     }
 
