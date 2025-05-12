@@ -355,7 +355,7 @@ Item {
             if (!hasElementPrefix(prefix)) {
                 prefix = "active-tab";
             }
-            return prefix;
+            return ["selected", prefix];
         }
     }
     Item {
