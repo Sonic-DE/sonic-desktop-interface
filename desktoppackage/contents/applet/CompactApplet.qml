@@ -115,7 +115,7 @@ PlasmaCore.ToolTipArea {
             rightMargin: vertical && containerMargins ? -containerMargins('right', returnAllMargins) : 0
         }
         imagePath: "widgets/tabbar"
-        visible: opacity > 0
+        visible: plasmoidItem.expanded
         prefix: {
             let prefix;
             switch (Plasmoid.location) {
