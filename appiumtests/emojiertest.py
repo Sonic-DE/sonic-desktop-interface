@@ -52,16 +52,15 @@ class EmojierTest(unittest.TestCase):
         self.driver.find_element(AppiumBy.NAME, "Recent")
         self.driver.find_element(AppiumBy.NAME, "Clear History")
 
-    # Broken by https://invent.kde.org/plasma/plasma-desktop/-/merge_requests/2637
-    # def test_1_open_category(self) -> None:
-    #     self.driver.find_element(AppiumBy.NAME, "All").click()
-    #     self.driver.find_element(AppiumBy.NAME, "grinning face").click()
-    #     time.sleep(1)
-    #     self.assertEqual(self.driver.get_clipboard_text(), "😀")
-    #
-    # def test_2_recent_usage(self) -> None:
-    #     self.driver.find_element(AppiumBy.NAME, "Recent").click()
-    #     self.driver.find_element(AppiumBy.NAME, "grinning face")
+    def test_1_open_category(self) -> None:
+        self.driver.find_element(AppiumBy.NAME, "All").click()
+        self.driver.find_element(AppiumBy.NAME, "grinning face").click()
+        time.sleep(1)
+        self.assertEqual(self.driver.get_clipboard_text(), "😀")
+
+    def test_2_recent_usage(self) -> None:
+        self.driver.find_element(AppiumBy.NAME, "Recent").click()
+        self.driver.find_element(AppiumBy.NAME, "grinning face")
 
 
 if __name__ == '__main__':
