@@ -42,17 +42,27 @@ Kirigami.ApplicationWindow {
 
     Kirigami.Action {
         id: recentAction
+        visible: recentEmojiModel.count > 0
         checked: window.pageStack.get(0).title === text
         text: i18n("Recent")
 
         icon.name: "document-open-recent-symbolic"
         onTriggered: source => {
             window.pageStack.replace(Qt.resolvedUrl("CategoryPage.qml"), {
+                objectName: "RecentPage",
                 title: text,
                 category: "",
                 model: recentEmojiModel,
-                showClearHistoryButton: true,
+                showClearHistoryButton: Qt.binding(() => {
+                    return recentEmojiModel.count > 0;
+                })
             });
+        }
+
+        onVisibleChanged: {
+            if (!visible && window.pageStack.currentItem?.objectName === "RecentPage") {
+                searchAction.trigger();
+            }
         }
     }
 
@@ -155,7 +165,11 @@ Kirigami.ApplicationWindow {
     }
 
     Component.onCompleted: {
-        recentAction.trigger();
+        if (recentEmojiModel.count > 0) {
+            recentAction.trigger();
+        } else {
+            searchAction.trigger();
+        }
 
         const incubator = drawerComponent.incubateObject(window);
         if (incubator.status !== Component.Ready) {
