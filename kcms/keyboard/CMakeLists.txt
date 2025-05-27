@@ -74,7 +74,6 @@ set( kcm_keyboard_PART_SRCS
     x11_helper.cpp
     xkb_helper.cpp
     xkb_rules.cpp
-    keyboardmodel.cpp
     shortcuthelper.cpp
     xkboptionsmodel.cpp
     layoutmodel.cpp
@@ -142,4 +141,16 @@ endif()
 
 add_dependencies(kcm_keyboard tastenbrett)
 
-add_subdirectory(qml)
+ecm_add_qml_module(kcm_keyboard_declarative
+    URI "org.kde.plasma.private.kcm_keyboard"
+    GENERATE_PLUGIN_SOURCE
+    SOURCES
+        keyboardmodel.cpp
+        types.h
+    DEPENDENCIES
+        QtCore
+)
+
+target_link_libraries(kcm_keyboard_declarative PRIVATE kcm_keyboard_static)
+
+ecm_finalize_qml_module(kcm_keyboard_declarative)
