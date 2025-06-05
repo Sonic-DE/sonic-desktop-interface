@@ -202,7 +202,7 @@ KCMUtils.SimpleKCM {
 
         QQC2.ComboBox {
             id: wheelEnabled
-            Kirigami.FormData.label: i18nc("@label:listbox completes sentence like: … does nothing", "Scrolling behavior:")
+            Kirigami.FormData.label: i18nc("@label:listbox Part of a sentence: 'Scrolling behavior does nothing/cycles through tasks/cycles through the selected task's windows'", "Scrolling behavior:")
             Layout.fillWidth: true
             Layout.minimumWidth: Kirigami.Units.gridUnit * 14
             model: [
