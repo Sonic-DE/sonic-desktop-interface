@@ -7,6 +7,7 @@
 */
 
 #include "landingpage.h"
+#include "splititem.h"
 
 #include <KLocalizedString>
 #include <KPackage/PackageLoader>
@@ -179,6 +180,7 @@ KCMLandingPage::KCMLandingPage(QObject *parent, const KPluginMetaData &metaData)
     qmlRegisterAnonymousType<LandingPageGlobalsSettings>("org.kde.plasma.landingpage.kcm", 0);
     qmlRegisterAnonymousType<MostUsedModel>("org.kde.plasma.landingpage.kcm", 0);
     qmlRegisterAnonymousType<LookAndFeelGroup>("org.kde.plasma.landingpage.kcm", 0);
+    qmlRegisterType<SplitItem>("org.kde.plasma.landingpage.kcm", 1, 0, "SplitView");
 
     setButtons(Apply);
 
