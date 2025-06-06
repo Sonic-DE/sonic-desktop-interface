@@ -15,9 +15,12 @@ layout(binding = 2) uniform sampler2D uSource2;
 
 void main()
 {
+    float f = length(ubuf.tilt * dot(ubuf.tilt, vTexCoord - vec2(0.5, 0.5))) * sign(dot(normalize(vTexCoord - vec2(0.5, 0.5)), ubuf.tilt));
+    float df = length(vec2(dFdx(f), dFdy(f)));
+    float coverage = clamp(0.5 + f / df, 0.0, 1.0);
+
     vec4 p1 = texture(uSource1, vTexCoord);
     vec4 p2 = texture(uSource2, vTexCoord);
 
-    float d = sign(dot(normalize(vTexCoord - vec2(0.5, 0.5)), ubuf.tilt));
-    fragColor = (d < 0 ? p1 : p2) * ubuf.qt_Opacity;
+    fragColor = mix(p1, p2, coverage) * ubuf.qt_Opacity;
 }
