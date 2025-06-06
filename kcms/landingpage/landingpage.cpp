@@ -239,6 +239,11 @@ LookAndFeelGroup *KCMLandingPage::defaultDarkLookAndFeel() const
     return m_defaultDarkLookAndFeel;
 }
 
+QString KCMLandingPage::defaultLookAndFeelPackage() const
+{
+    return m_data->settings()->defaultLookAndFeelPackageValue();
+}
+
 Q_INVOKABLE void KCMLandingPage::openKCM(const QString &kcm)
 {
     QProcess::startDetached(QStringLiteral("systemsettings"), QStringList({kcm}));

@@ -38,29 +38,53 @@ KCMUtils.SimpleKCM {
             QQC2.ButtonGroup { id: themeGroup }
 
             Thumbnail {
+                id: lightLookAndFeelThumbnail
                 imageSource: kcm.defaultLightLookAndFeel.thumbnail
                 text: kcm.defaultLightLookAndFeel.name
-                checked: kcm.globalsSettings.lookAndFeelPackage === kcm.defaultLightLookAndFeel.id
+                checked: !kcm.globalsSettings.automaticDarkLightLookAndFeel && kcm.globalsSettings.lookAndFeelPackage === kcm.defaultLightLookAndFeel.id
                 QQC2.ButtonGroup.group: themeGroup
 
-                onToggled: kcm.globalsSettings.lookAndFeelPackage = kcm.defaultLightLookAndFeel.id
+                onToggled: {
+                    kcm.globalsSettings.automaticDarkLightLookAndFeel = false;
+                    kcm.globalsSettings.lookAndFeelPackage = kcm.defaultLightLookAndFeel.id;
+                }
 
-                KCMUtils.SettingStateBinding {
-                    configObject: kcm.globalsSettings
-                    settingName: "lookAndFeelPackage"
+                KCMUtils.SettingHighlighter {
+                    target: lightLookAndFeelThumbnail
+                    highlight: kcm.globalsSettings.automaticDarkLightLookAndFeel || kcm.globalsSettings.lookAndFeelPackage != kcm.defaultLookAndFeelPackage
                 }
             }
             Thumbnail {
+                id: darkLookAndFeelThumbnail
                 imageSource: kcm.defaultDarkLookAndFeel.thumbnail
                 text: kcm.defaultDarkLookAndFeel.name
-                checked: kcm.globalsSettings.lookAndFeelPackage === kcm.defaultDarkLookAndFeel.id
+                checked: !kcm.globalsSettings.automaticDarkLightLookAndFeel && kcm.globalsSettings.lookAndFeelPackage === kcm.defaultDarkLookAndFeel.id
                 QQC2.ButtonGroup.group: themeGroup
 
-                onToggled: kcm.globalsSettings.lookAndFeelPackage = kcm.defaultDarkLookAndFeel.id
+                onToggled: {
+                    kcm.globalsSettings.automaticDarkLightLookAndFeel = false;
+                    kcm.globalsSettings.lookAndFeelPackage = kcm.defaultDarkLookAndFeel.id;
+                }
 
-                KCMUtils.SettingStateBinding {
-                    configObject: kcm.globalsSettings
-                    settingName: "lookAndFeelPackage"
+                KCMUtils.SettingHighlighter {
+                    target: darkLookAndFeelThumbnail
+                    highlight: kcm.globalsSettings.automaticDarkLightLookAndFeel || kcm.globalsSettings.lookAndFeelPackage != kcm.defaultLookAndFeelPackage
+                }
+            }
+            Thumbnail {
+                id: autoLookAndFeelThumbnail
+                imageSource: kcm.defaultLightLookAndFeel.thumbnail // TODO: Better preview
+                text: i18nc("Switch between dark and light look and feel packages automatically", "Auto")
+                checked: kcm.globalsSettings.automaticDarkLightLookAndFeel
+                QQC2.ButtonGroup.group: themeGroup
+
+                onToggled: {
+                    kcm.globalsSettings.automaticDarkLightLookAndFeel = true;
+                }
+
+                KCMUtils.SettingHighlighter {
+                    target: darkLookAndFeelThumbnail
+                    highlight: kcm.globalsSettings.automaticDarkLightLookAndFeel || kcm.globalsSettings.lookAndFeelPackage != kcm.defaultLookAndFeelPackage
                 }
             }
         }
