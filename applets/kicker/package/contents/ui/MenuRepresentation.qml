@@ -9,6 +9,7 @@ import QtQuick.Layouts
 
 import org.kde.kirigami as Kirigami
 import org.kde.ksvg as KSvg
+import org.kde.plasma.components as PlasmaComponents3
 import org.kde.plasma.core as PlasmaCore
 import org.kde.plasma.extras as PlasmaExtras
 import org.kde.plasma.plasmoid
@@ -21,11 +22,11 @@ FocusScope {
     Layout.minimumWidth: mainRow.width
     Layout.maximumWidth: Layout.minimumWidth
 
-    Layout.minimumHeight: Math.max(((rootModel.count - rootModel.separatorCount) * rootList.itemHeight)
+    Layout.minimumHeight: Math.min(Math.max(((rootModel.count - rootModel.separatorCount) * rootList.itemHeight)
         + (rootModel.separatorCount * rootList.separatorHeight)
         + searchField.height + (2 * Kirigami.Units.smallSpacing), sideBar.margins.top + sideBar.margins.bottom
         + favoriteApps.contentHeight + favoriteSystemActions.contentHeight + sidebarSeparator.height
-        + (4 * Kirigami.Units.smallSpacing))
+        + (4 * Kirigami.Units.smallSpacing)), Math.round(Screen.height * 0.8))
     Layout.maximumHeight: Layout.minimumHeight
 
     function reset() {
@@ -59,7 +60,8 @@ FocusScope {
 
             width: (globalFavorites && systemFavorites
                 && (globalFavorites.count + systemFavorites.count)
-                ? Kirigami.Units.iconSizes.medium + margins.left + margins.right : 0)
+                ? Kirigami.Units.iconSizes.medium + margins.left + margins.right +
+                sideBarAppsScrollView.effectiveScrollBarWidth : 0)
             height: parent.height
 
             imagePath: "widgets/frame"
@@ -67,62 +69,90 @@ FocusScope {
 
             activeFocusOnTab: true
             onActiveFocusChanged: (onTopPanel ? favoriteSystemActions : favoriteApps).forceActiveFocus(Qt.TabFocusReason)
-            KeyNavigation.right: rootList
-            Keys.onPressed: event => {
-                let backArrowKey = (event.key === Qt.Key_Left && Application.layoutDirection === Qt.LeftToRight) ||
-                    (event.key === Qt.Key_Right && Application.layoutDirection === Qt.RightToLeft)
-                let forwardArrowKey = (event.key === Qt.Key_Right && Application.layoutDirection === Qt.LeftToRight) ||
-                    (event.key === Qt.Key_Left && Application.layoutDirection === Qt.RightToLeft)
-
-                if (backArrowKey & runnerColumns.visibleChildren.length > 1) {
-                    const targetList = runnerColumns.visibleChildren[runnerColumns.visibleChildren.length-2]
-                    targetList.currentIndex = 0
-                    targetList.forceActiveFocus(Qt.BacktabFocusReason)
-                    event.accepted = true
-                }
-                if (forwardArrowKey) {
-                    if (runnerColumns.visible) {
-                        runnerColumns.visibleChildren[0].currentIndex = 0
-                        runnerColumns.visibleChildren[0].forceActiveFocus(Qt.TabFocusReason)
-                    } else {
-                        rootList.showChildDialogs = false;
-                        rootList.currentIndex = 0
-                        rootList.forceActiveFocus(Qt.TabFocusReason)
-                        rootList.showChildDialogs = true;
-                    }
-                }
-            }
 
             ColumnLayout {
-                anchors.top: parent.top
-                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.fill: parent
                 height: Math.max(implicitHeight, parent.height)
 
                 LayoutItemProxy {
-                    target: sideBar.onTopPanel ? favoriteSystemActions : favoriteApps
+                    target: sideBar.onTopPanel ? favoriteSystemActions : sideBarAppsScrollView
                 }
                 LayoutItemProxy {
                     target: sidebarSeparator
                 }
                 LayoutItemProxy {
-                    target: sideBar.onTopPanel ? favoriteApps : favoriteSystemActions
+                    target: sideBar.onTopPanel ? sideBarAppsScrollView : favoriteSystemActions
                 }
 
-                SideBarSection {
-                    id: favoriteApps
+                PlasmaComponents3.ScrollView {
+                    id: sideBarAppsScrollView
 
                     Layout.fillHeight: true
 
-                    KeyNavigation.up: favoriteSystemActions.bottomSideBarItem
-                    KeyNavigation.down: favoriteSystemActions
+                    property bool scrollBarVisible
 
-                    model: globalFavorites
+                    Binding on scrollBarVisible {
+                        delayed: true
+                        value: sideBarAppsScrollView.height < sideBarAppsScrollView.contentHeight
+                    }
 
-                    Binding {
-                        target: globalFavorites
-                        property: "iconSize"
-                        value: Kirigami.Units.iconSizes.medium
-                        restoreMode: Binding.RestoreBinding
+                    function ensureVisible(item: Item) {
+                        var actualItemY = item.y
+                        var viewYPosition = (item.height <= contentItem.height)
+                            ? Math.round(actualItemY + item.height / 2 - contentItem.height / 2)
+                            : actualItemY
+                        if (actualItemY < contentItem.contentY) {
+                            contentItem.contentY = Math.max(0, viewYPosition)
+                        } else if ((actualItemY + item.height) > (contentItem.contentY + contentItem.height)) {
+                            contentItem.contentY = Math.min(contentItem.contentHeight - contentItem.height, viewYPosition)
+                        }
+                        contentItem.returnToBounds()
+
+                    }
+
+                    PlasmaComponents3.ScrollBar.horizontal.policy: PlasmaComponents3.ScrollBar.AlwaysOff
+                    PlasmaComponents3.ScrollBar.vertical.visible: scrollBarVisible
+
+                    SideBarSection {
+                        id: favoriteApps
+
+                        KeyNavigation.up: favoriteSystemActions.bottomSideBarItem
+                        KeyNavigation.down: favoriteSystemActions
+
+                        model: globalFavorites
+
+                        Binding {
+                            target: globalFavorites
+                            property: "iconSize"
+                            value: Kirigami.Units.iconSizes.medium
+                            restoreMode: Binding.RestoreBinding
+                        }
+
+                        onItemFocused: item => sideBarAppsScrollView.ensureVisible(item)
+                        Keys.onPressed: event => {
+                            let backArrowKey = (event.key === Qt.Key_Left && Application.layoutDirection === Qt.LeftToRight) ||
+                            (event.key === Qt.Key_Right && Application.layoutDirection === Qt.RightToLeft)
+                            let forwardArrowKey = (event.key === Qt.Key_Right && Application.layoutDirection === Qt.LeftToRight) ||
+                            (event.key === Qt.Key_Left && Application.layoutDirection === Qt.RightToLeft)
+
+                            if (backArrowKey & runnerColumns.visibleChildren.length > 1) {
+                                const targetList = runnerColumns.visibleChildren[runnerColumns.visibleChildren.length-2]
+                                targetList.currentIndex = 0
+                                targetList.forceActiveFocus(Qt.BacktabFocusReason)
+                                event.accepted = true
+                            }
+                            if (forwardArrowKey) {
+                                if (runnerColumns.visible) {
+                                    runnerColumns.visibleChildren[0].currentIndex = 0
+                                    runnerColumns.visibleChildren[0].forceActiveFocus(Qt.TabFocusReason)
+                                } else {
+                                    rootList.showChildDialogs = false;
+                                    rootList.currentIndex = 0
+                                    rootList.forceActiveFocus(Qt.TabFocusReason)
+                                    rootList.showChildDialogs = true;
+                                }
+                            }
+                        }
                     }
                 }
 
@@ -145,6 +175,7 @@ FocusScope {
                     id: favoriteSystemActions
 
                     model: systemFavorites
+                    Keys.onPressed: favoriteApps.Keys.onPressed
                     KeyNavigation.up: favoriteApps.bottomSideBarItem
                     KeyNavigation.down: favoriteApps
                 }

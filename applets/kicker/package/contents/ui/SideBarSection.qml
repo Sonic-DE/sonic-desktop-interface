@@ -12,10 +12,12 @@ import org.kde.kirigami as Kirigami
 DnD.DropArea {
     id: root
 
+    signal itemFocused(Item item)
+
     implicitWidth: Kirigami.Units.iconSizes.medium + Kirigami.Units.smallSpacing * 2
     implicitHeight: contentHeight
 
-    anchors.horizontalCenter: parent.horizontalCenter
+    anchors.left: parent.left
 
     property int contentHeight: model ? (model.count * implicitWidth) + ((model.count - 1) * flow.spacing) : 0
 
@@ -80,6 +82,7 @@ DnD.DropArea {
                         event.accepted = false
                     }
                 }
+                onActiveFocusChanged: if (activeFocus) root.itemFocused(this)
             }
 
             onCountChanged: {
