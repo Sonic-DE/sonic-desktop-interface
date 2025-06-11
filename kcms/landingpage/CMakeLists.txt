@@ -1,7 +1,7 @@
 # KI18N Translation Domain for this library
 add_definitions(-DTRANSLATION_DOMAIN=\"kcm_landingpage\")
 
-kcmutils_add_qml_kcm(kcm_landingpage SOURCES landingpage.cpp landingpagedata.cpp splititem.cpp splitnode.cpp)
+kcmutils_add_qml_kcm(kcm_landingpage SOURCES landingpage.cpp landingpagedata.cpp lookandfeelcrawler.cpp lookandfeelmetadata.cpp splititem.cpp splitnode.cpp)
 
 qt_add_shaders(kcm_landingpage "shaders"
     PRECOMPILE
