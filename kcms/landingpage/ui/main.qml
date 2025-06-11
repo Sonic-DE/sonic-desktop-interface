@@ -39,10 +39,10 @@ KCMUtils.SimpleKCM {
 
             QQC2.ButtonGroup { id: themeGroup }
 
-            Thumbnail {
-                text: kcm.defaultLightLookAndFeel.name
-                checked: !kcm.globalsSettings.automaticDarkLightLookAndFeel && kcm.globalsSettings.lookAndFeelPackage === kcm.defaultLightLookAndFeel.id
-                QQC2.ButtonGroup.group: themeGroup
+            LookAndFeelBox {
+                text: lightLookAndFeelMetaData.name
+                checked: !kcm.globalsSettings.automaticDarkLightLookAndFeel && kcm.globalsSettings.lookAndFeelPackage === kcm.globalsSettings.defaultLightLookAndFeel
+                group: themeGroup
 
                 preview: Image {
                     id: lightLookAndFeelPreview
@@ -50,22 +50,32 @@ KCMUtils.SimpleKCM {
                     asynchronous: true
                     layer.enabled: true
                     sourceSize: Qt.size(width * Screen.devicePixelRatio, height * Screen.devicePixelRatio)
-                    source: kcm.defaultLightLookAndFeel.thumbnail
+                    source: lightLookAndFeelMetaData.preview
                 }
 
                 onToggled: {
                     kcm.globalsSettings.automaticDarkLightLookAndFeel = false;
-                    kcm.globalsSettings.lookAndFeelPackage = kcm.defaultLightLookAndFeel.id;
+                    kcm.globalsSettings.lookAndFeelPackage = kcm.globalsSettings.defaultLightLookAndFeel;
+                }
+
+                onAccepted: (lnfId) => {
+                    kcm.globalsSettings.defaultLightLookAndFeel = lnfId;
                 }
 
                 KCMUtils.SettingHighlighter {
                     highlight: kcm.globalsSettings.automaticDarkLightLookAndFeel || kcm.globalsSettings.lookAndFeelPackage != kcm.defaultLookAndFeelPackage
                 }
+
+                LookAndFeelMetaData {
+                    id: lightLookAndFeelMetaData
+                    packageId: kcm.globalsSettings.defaultLightLookAndFeel
+                }
             }
-            Thumbnail {
-                text: kcm.defaultDarkLookAndFeel.name
-                checked: !kcm.globalsSettings.automaticDarkLightLookAndFeel && kcm.globalsSettings.lookAndFeelPackage === kcm.defaultDarkLookAndFeel.id
-                QQC2.ButtonGroup.group: themeGroup
+
+            LookAndFeelBox {
+                text: darkLookAndFeelMetaData.name
+                checked: !kcm.globalsSettings.automaticDarkLightLookAndFeel && kcm.globalsSettings.lookAndFeelPackage === kcm.globalsSettings.defaultDarkLookAndFeel
+                group: themeGroup
 
                 preview: Image {
                     id: darkLookAndFeelPreview
@@ -73,22 +83,32 @@ KCMUtils.SimpleKCM {
                     asynchronous: true
                     layer.enabled: true
                     sourceSize: Qt.size(width * Screen.devicePixelRatio, height * Screen.devicePixelRatio)
-                    source: kcm.defaultDarkLookAndFeel.thumbnail
+                    source: darkLookAndFeelMetaData.preview
                 }
 
                 onToggled: {
                     kcm.globalsSettings.automaticDarkLightLookAndFeel = false;
-                    kcm.globalsSettings.lookAndFeelPackage = kcm.defaultDarkLookAndFeel.id;
+                    kcm.globalsSettings.lookAndFeelPackage = kcm.globalsSettings.defaultDarkLookAndFeel;
+                }
+
+                onAccepted: (lnfId) => {
+                    kcm.globalsSettings.defaultDarkLookAndFeel = lnfId;
                 }
 
                 KCMUtils.SettingHighlighter {
                     highlight: kcm.globalsSettings.automaticDarkLightLookAndFeel || kcm.globalsSettings.lookAndFeelPackage != kcm.defaultLookAndFeelPackage
                 }
+
+                LookAndFeelMetaData {
+                    id: darkLookAndFeelMetaData
+                    packageId: kcm.globalsSettings.defaultDarkLookAndFeel
+                }
             }
+
             Thumbnail {
                 text: i18nc("Switch between dark and light look and feel packages automatically", "Automatic")
                 checked: kcm.globalsSettings.automaticDarkLightLookAndFeel
-                QQC2.ToolTip.text: i18n('Use "%1" during day and "%2" during night', kcm.defaultLightLookAndFeel.name, kcm.defaultDarkLookAndFeel.name)
+                QQC2.ToolTip.text: i18n('Use "%1" during day and "%2" during night', lightLookAndFeelMetaData.name, darkLookAndFeelMetaData.name)
                 QQC2.ToolTip.visible: autoLookAndFeelHoverHandler.hovered
                 QQC2.ToolTip.delay: Kirigami.Units.toolTipDelay
                 QQC2.ButtonGroup.group: themeGroup

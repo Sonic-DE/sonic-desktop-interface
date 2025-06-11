@@ -7,6 +7,7 @@
 */
 
 #include "landingpage.h"
+#include "lookandfeelmetadata.h"
 #include "splititem.h"
 
 #include <KLocalizedString>
@@ -152,46 +153,19 @@ QVariant MostUsedModel::data(const QModelIndex &index, int role) const
     }
 }
 
-LookAndFeelGroup::LookAndFeelGroup(QObject *parent)
-    : QObject(parent)
-    , m_package(KPackage::PackageLoader::self()->loadPackage(QStringLiteral("Plasma/LookAndFeel")))
-{
-}
-
-QString LookAndFeelGroup::id() const
-{
-    return m_package.metadata().pluginId();
-}
-
-QString LookAndFeelGroup::name() const
-{
-    return m_package.metadata().name();
-}
-
-QUrl LookAndFeelGroup::thumbnail() const
-{
-    return m_package.fileUrl("preview");
-}
-
 KCMLandingPage::KCMLandingPage(QObject *parent, const KPluginMetaData &metaData)
     : KQuickManagedConfigModule(parent, metaData)
     , m_data(new LandingPageData(this))
 {
     qmlRegisterAnonymousType<LandingPageGlobalsSettings>("org.kde.plasma.landingpage.kcm", 0);
     qmlRegisterAnonymousType<MostUsedModel>("org.kde.plasma.landingpage.kcm", 0);
-    qmlRegisterAnonymousType<LookAndFeelGroup>("org.kde.plasma.landingpage.kcm", 0);
     qmlRegisterType<SplitItem>("org.kde.plasma.landingpage.kcm", 1, 0, "SplitView");
+    qmlRegisterType<LookAndFeelMetaData>("org.kde.plasma.landingpage.kcm", 1, 0, "LookAndFeelMetaData");
 
     setButtons(Apply);
 
     m_mostUsedModel = new MostUsedModel(this);
     m_mostUsedModel->setResultModel(new ResultModel(AllResources | Agent(QStringLiteral("org.kde.systemsettings")) | HighScoredFirst | Limit(12), this));
-
-    m_defaultLightLookAndFeel = new LookAndFeelGroup(this);
-    m_defaultDarkLookAndFeel = new LookAndFeelGroup(this);
-
-    m_defaultLightLookAndFeel->m_package.setPath(globalsSettings()->defaultLightLookAndFeel());
-    m_defaultDarkLookAndFeel->m_package.setPath(globalsSettings()->defaultDarkLookAndFeel());
 }
 
 inline void swap(QJsonValueRef v1, QJsonValueRef v2)
@@ -232,16 +206,6 @@ void KCMLandingPage::save()
     }
 }
 
-LookAndFeelGroup *KCMLandingPage::defaultLightLookAndFeel() const
-{
-    return m_defaultLightLookAndFeel;
-}
-
-LookAndFeelGroup *KCMLandingPage::defaultDarkLookAndFeel() const
-{
-    return m_defaultDarkLookAndFeel;
-}
-
 QString KCMLandingPage::defaultLookAndFeelPackage() const
 {
     return m_data->settings()->defaultLookAndFeelPackageValue();
@@ -263,6 +227,25 @@ QAction *KCMLandingPage::kcmAction(const QString &storageId)
         return action;
     }
     return nullptr;
+}
+
+QList<QVariantMap> KCMLandingPage::discoverAvailableLookAndFeelPackages() const
+{
+    const QList<KPluginMetaData> packagesMetaData = KPackage::PackageLoader::self()->listPackages(QStringLiteral("Plasma/LookAndFeel"));
+
+    QList<QVariantMap> lnfs;
+    lnfs.reserve(packagesMetaData.count());
+
+    for (const KPluginMetaData &metadata : packagesMetaData) {
+        KPackage::Package pkg = KPackage::PackageLoader::self()->loadPackage(QStringLiteral("Plasma/LookAndFeel"), metadata.pluginId());
+        lnfs.append({
+            {QStringLiteral("id"), metadata.pluginId()},
+            {QStringLiteral("name"), metadata.name()},
+            {QStringLiteral("preview"), pkg.fileUrl("preview")},
+        });
+    }
+
+    return lnfs;
 }
 
 #include "landingpage.moc"
