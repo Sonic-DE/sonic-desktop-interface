@@ -129,7 +129,7 @@ Item {
             width: Kirigami.Units.iconSizes.enormous
             height: width
             Layout.alignment: Qt.AlignHCenter
-            opacity: delegate.pendingUninstall ? 0.6 : 1
+            opacity: delegate.pendingUninstall ? 0.75 : 1
             Behavior on opacity {
                 OpacityAnimator {
                     duration: Kirigami.Units.longDuration
