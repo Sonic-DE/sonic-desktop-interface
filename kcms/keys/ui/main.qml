@@ -214,7 +214,7 @@ KCM.AbstractKCM {
                                 icon.name: componentDelegate.icon.name
                                 title: componentDelegate.text
                                 Layout.fillWidth: true
-                                opacity: model.pendingDeletion ? 0.5 : 1.0
+                                opacity: model.pendingDeletion ? 0.75 : 1.0
                                 selected: componentDelegate.highlighted || componentDelegate.down
                             }
 
