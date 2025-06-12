@@ -45,14 +45,24 @@ Item {
             if (kind != 0) { // if this is coming from the noninteractive authenticators
                 return;
             }
-            const msg = i18nd("plasma_shell_org.kde.plasma.desktop", "Unlocking failed");
-            lockScreenUi.handleMessage(msg);
-            graceLockTimer.restart();
-            notificationRemoveTimer.restart();
-            rejectPasswordAnimation.start();
+            mainStack.enabled = true;
+            if (mainStack.currentItem && mainStack.currentItem.hasOwnProperty("isLoginOngoing")) {
+                mainStack.currentItem.isLoginOngoing = false;
+            }
+            if (!rejectPasswordAnimation.hasAnimationRunForLoginAttempt) {
+                const msg = i18nd("plasma_shell_org.kde.plasma.desktop", "Unlocking failed");
+                lockScreenUi.handleMessage(msg);
+                notificationRemoveTimer.restart();
+                rejectPasswordAnimation.start();
+            }
+            rejectPasswordAnimation.hasAnimationRunForLoginAttempt = false;
+            authenticator.startAuthenticating();
         }
 
         function onSucceeded() {
+            if (mainStack.currentItem && mainStack.currentItem.hasOwnProperty("isLoginOngoing")) {
+                mainStack.currentItem.isLoginOngoing = false;
+            }
             if (authenticator.hadPrompt) {
                 Qt.quit();
             } else {
@@ -64,6 +74,18 @@ Item {
                 );
                 mainStack.forceActiveFocus();
             }
+        }
+
+        function onLoginFailedDelayStarted(kind, authenticator, uSecDelay) {
+            if (kind !== 0) { // if this is coming from the noninteractive authenticators
+                return;
+            }
+            mainStack.enabled = true;
+            rejectPasswordAnimation.hasAnimationRunForLoginAttempt = true;
+            const msg = i18nd("plasma_shell_org.kde.plasma.desktop", "Unlocking failed");
+            lockScreenUi.handleMessage(msg);
+            notificationRemoveTimer.restart();
+            rejectPasswordAnimation.start();
         }
 
         function onInfoMessageChanged() {
@@ -101,7 +123,13 @@ Item {
 
     RejectPasswordAnimation {
         id: rejectPasswordAnimation
+        property bool hasAnimationRunForLoginAttempt: false // Will help trigger the animation even when PAM is built without fail delays
+
         target: mainBlock
+
+        onFinished: function() {
+            root.clearPassword();
+        }
     }
 
     MouseArea {
@@ -167,14 +195,6 @@ Item {
             id: notificationRemoveTimer
             interval: 3000
             onTriggered: root.notification = ""
-        }
-        Timer {
-            id: graceLockTimer
-            interval: 3000
-            onTriggered: {
-                root.clearPassword();
-                authenticator.startAuthenticating();
-            }
         }
 
         PropertyAnimation {
@@ -257,8 +277,6 @@ Item {
                 lockScreenUiVisible: lockScreenRoot.uiVisible
 
                 showUserList: userList.y + mainStack.y > 0
-
-                enabled: !graceLockTimer.running
 
                 StackView.onStatusChanged: {
                     // prepare for presenting again to the user
