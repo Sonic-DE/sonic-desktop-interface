@@ -17,7 +17,10 @@ Kirigami.ApplicationWindow {
     id: window
 
     minimumWidth: Math.round(minimumHeight * 1.25)
-    minimumHeight: drawer.contentHeight + Kirigami.Units.gridUnit * 2 // TODO: Make accurate
+    // Correct height required for no scrolling — drawer's header's
+    // implicit height is used instead of height, so add the difference
+    minimumHeight: drawer.contentHeight + (drawer.header.height - drawer.header.implicitHeight)
+
     width: Kirigami.Units.gridUnit * 25
     height: Kirigami.Units.gridUnit * 25
 
@@ -126,24 +129,16 @@ Kirigami.ApplicationWindow {
         Instantiator {
             id: instantiator
 
-            property int loadCount: 0
-
             asynchronous: true
             model: emoji.categories
 
-            CategoryAction {
+            delegate: CategoryAction {
                 category: modelData
                 icon.name: drawer.getIcon(category)
             }
 
             onObjectAdded: (index, object) => {
-                if (++loadCount !== model.length) {
-                    return;
-                }
-
-                for (let i = 0; i < count; ++i) {
-                    drawer.actions.push(this.objectAt(i));
-                }
+                drawer.actions.push(object);
             }
         }
     }
