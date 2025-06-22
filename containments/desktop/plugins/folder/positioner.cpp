@@ -295,7 +295,7 @@ int Positioner::rowCount(const QModelIndex &parent) const
             if (parent.isValid()) {
                 return 0;
             } else {
-                return lastRow() + 1;
+                return lastRow();
             }
         } else {
             return m_folderModel->rowCount(parent);
@@ -388,7 +388,7 @@ int Positioner::move(const QVariantList &moves, bool save)
             to = firstFreeRow();
 
             if (to == -1) {
-                to = lastRow() + 1;
+                to = lastRow();
             }
         }
 
@@ -584,7 +584,7 @@ void Positioner::sourceRowsAboutToBeInserted(const QModelIndex &parent, int star
         }
 
         if (rest != -1) {
-            int firstNew = lastRow() + 1;
+            int firstNew = lastRow();
             int remainder = (end - rest);
 
             beginInsertRows(parent, firstNew, firstNew + remainder);
@@ -782,7 +782,7 @@ int Positioner::lastRow() const
     if (!m_proxyToSource.isEmpty()) {
         QList<int> keys(m_proxyToSource.keys());
         std::sort(keys.begin(), keys.end());
-        return keys.last();
+        return keys.last() + 1;
     }
 
     return 0;
@@ -895,7 +895,7 @@ void Positioner::convertFolderModelData()
             index = firstFreeRow();
 
             if (index == -1) {
-                index = lastRow() + 1;
+                index = lastRow();
             }
 
             updateMaps(index, sourceIndex);
@@ -911,7 +911,7 @@ void Positioner::convertFolderModelData()
         index = firstFreeRow();
 
         if (index == -1) {
-            index = lastRow() + 1;
+            index = lastRow();
         }
 
         updateMaps(index, it.value());
