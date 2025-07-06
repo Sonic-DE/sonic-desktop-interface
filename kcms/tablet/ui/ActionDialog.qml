@@ -54,6 +54,7 @@ Kirigami.Dialog {
                 relativeKeyboardRadio.checked = true;
                 upSeq.keySequence = inputSequence.upKeySequence();
                 downSeq.keySequence = inputSequence.downKeySequence();
+                thresholdSlider.value = inputSequence.threshold();
                 break;
             case KCM.InputSequence.Mouse:
                 mouseRadio.checked = true;
@@ -261,6 +262,19 @@ Kirigami.Dialog {
                     onCaptureFinished: actionDialog.inputSequence.setDownKeySequence(keySequence)
 
                     Kirigami.FormData.label: i18nd("kcm_tablet Keybind to send when dial is turned down", "Down:")
+                }
+
+                QQC2.Slider {
+                    id: thresholdSlider
+
+                    from: 5400 // or about 45 degrees
+                    to: 120 // or about 1 degrees
+                    stepSize: 120
+                    snapMode: QQC2.Slider.SnapOnRelease
+
+                    onMoved: actionDialog.inputSequence.setThreshold(value)
+
+                    Kirigami.FormData.label: i18nd("kcm_tablet Speed for how often this dial or ring should emit key events", "Speed:")
                 }
             }
             ColumnLayout {
