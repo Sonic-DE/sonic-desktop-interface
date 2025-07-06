@@ -22,6 +22,59 @@ Kirigami.FormLayout {
     required property KCM.TabletEvents tabletEvents
 
     Repeater {
+        id: ringRepeater
+        model: root.padDevice.tabletPadRingCount
+
+        // TODO: we should make this generic enough for all bindings
+        // TODO: this doesn't take into account mode groups the ring is in
+        delegate: ColumnLayout {
+            spacing: Kirigami.Units.smallSpacing
+
+            Kirigami.FormData.label: i18nd("kcm_tablet", "Pad ring %1:", index + 1)
+
+            Repeater {
+                id: modesRepeater
+
+                required property int index
+
+                model: root.padDevice.numModes[0]
+
+                delegate: ActionBinding {
+                    id: seq
+
+                    required property int index
+
+                    name: i18ndc("kcm_tablet", "@info Meant to be inserted into an existing sentence like 'configuring pad ring 0'", "pad ring %1", modesRepeater.index + 1)
+                    supportsPenButton: false
+                    supportsRelativeEvents: true
+
+                    function refreshInputSequence(): void {
+                        seq.inputSequence = kcm.padRingMapping(root.padDevice.name, modesRepeater.index)
+                    }
+
+                    inputSequence: kcm.padRingMapping(root.padDevice.name, modesRepeater.index)
+                    Connections {
+                        target: kcm
+
+                        function onSettingsRestored() {
+                            refreshInputSequence();
+                        }
+                    }
+
+                    onGotInputSequence: sequence => {
+                        kcm.assignPadRingMapping(root.padDevice.name, modesRepeater.index, sequence)
+                    }
+
+                    SettingHighlighter {
+                        // Currently, application-defined is the default
+                        highlight: seq.inputSequence.type !== KCM.InputSequence.ApplicationDefined
+                    }
+                }
+            }
+        }
+    }
+
+    Repeater {
         id: dialRepeater
         model: root.padDevice.tabletPadDialCount
 
