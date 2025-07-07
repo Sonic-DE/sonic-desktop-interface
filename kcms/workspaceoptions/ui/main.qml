@@ -402,6 +402,7 @@ KCM.SimpleKCM {
             text: xi18nc("@info", "Hold <shortcut>Shift</shortcut> when dropping to show other options.")
             elide: Text.ElideRight
             font: Kirigami.Theme.smallFont
+            wrapMode: Text.WordWrap
         }
 
 
