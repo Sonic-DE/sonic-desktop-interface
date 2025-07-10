@@ -74,8 +74,7 @@ Controller {
             const activities = tasksModel.data(idx, TaskManager.AbstractTasksModel.Activities);
             const desktops = tasksModel.data(idx, TaskManager.AbstractTasksModel.VirtualDesktops);
 
-            print(tasksModel.data(idx), desktops)
-            // activities.length === 0 means on all activities. Same thing for desktops.length === 0 on wayland, wwhile on X11 [-1] means on all desktops
+            // When activities.length === 0 means on all activities. Same thing for desktops.length === 0 on wayland, wwhile on X11 [-1] means on all desktops
             if (!tasksModel.data(idx, TaskManager.AbstractTasksModel.IsHidden) &&
                 (activities.length === 0 || activities.includes(activityInfo.currentActivity)) &&
                 (desktops.length === 0 || desktops[0] === -1 || desktops.includes(virtualDesktopInfo.currentDesktop))
