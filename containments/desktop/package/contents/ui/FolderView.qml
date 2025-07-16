@@ -89,8 +89,9 @@ FocusScope {
         dir.linkHere(sourceUrl);
     }
 
-    function handleDragMove(x, y) {
-        var child = childAt(x, y);
+    function handleDragMove(event, dragPosition) {
+        dropHighlighter.handleDragMove(event, dragPosition);
+        var child = childAt(dragPosition.x, dragPosition.y);
 
         if (child !== null && child === backButton) {
             hoveredItem = null;
@@ -100,7 +101,7 @@ FocusScope {
                 backButton.endDragMove();
             }
 
-            var pos = mapToItem(gridView.contentItem, x, y);
+            var pos = mapToItem(gridView.contentItem, dragPosition.x, dragPosition.y);
             var item = gridView.itemAt(pos.x, pos.y);
 
             if (item && item.isDir) {
@@ -112,6 +113,7 @@ FocusScope {
     }
 
     function endDragMove() {
+        dropHighlighter.reset();
         if (backButton && backButton.active) {
             backButton.endDragMove();
         } else if (hoveredItem && !hoveredItem.popupDialog) {
@@ -148,6 +150,7 @@ FocusScope {
 
         if (listener.dragX === -1 || dragIndex !== dropIndex) {
             dir.drop(target, event, dropItemAt(dropPos), root.isContainment && !Plasmoid.immutable);
+            dropHighlighter.reset();
         }
     }
 
@@ -1235,6 +1238,14 @@ FocusScope {
                 // Note: the trigger amount is intentionally lower than the screen mapping cap. We want to warn ahead of hitting our caps.
                 visible: isRootView && gridView.count > 2048
             }
+        }
+
+        DropHighlighter {
+            id: dropHighlighter
+
+            folderModel: dir
+            positioner: positioner
+            gridView: gridView
         }
 
         Folder.WheelInterceptor {
