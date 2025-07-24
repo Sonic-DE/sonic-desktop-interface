@@ -126,15 +126,7 @@ FocusScope {
             if (item.blank) {
                 return -1;
             }
-
-            var hOffset = Math.abs(Math.min(gridView.contentX, gridView.originX));
-            var hPos = mapToItem(item.hoverArea, pos.x + hOffset, pos.y);
-
-            if ((hPos.x < 0 || hPos.y < 0 || hPos.x > item.hoverArea.width || hPos.y > item.hoverArea.height)) {
-                return -1;
-            } else {
-                return positioner.map(item.index);
-            }
+            return positioner.map(item.index);
         }
 
         return -1;
@@ -154,7 +146,9 @@ FocusScope {
     function generateDragImage() {
         for (var i = 0; i < gridView.count; i++) {
             var item = gridView.itemAtIndex(i);
-            item.updateDragImage();
+            if (item) {
+                item.updateDragImage();
+            }
         }
     }
 
