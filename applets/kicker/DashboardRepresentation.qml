@@ -200,6 +200,7 @@ Kicker.DashboardWindow {
 
             function clear() {
                 text = "";
+                searchHeading.cursorVisible = false
             }
 
             onSelectionStartChanged: Qt.callLater(searchHeading.updateSelection)
@@ -225,6 +226,15 @@ Kicker.DashboardWindow {
             color: "white"
 
             text: root.searching ? i18n("Searching for '%1'", searchField.text) : i18nc("@info:placeholder as in, 'start typing to initiate a search'", "Type to search…")
+
+            cursorPosition: root.searching ? text.length-1 : 0
+
+            MouseArea{
+                anchors.fill: parent
+                onClicked:{
+                    parent.cursorVisible = true
+                }
+            }
 
             function updateSelection() {
                 if (!searchField.selectedText) {
@@ -253,7 +263,9 @@ Kicker.DashboardWindow {
             icon.name: "edit-clear"
             flat: false
 
-            onClicked: searchField.clear();
+            onClicked: {
+                searchField.clear();
+            }
 
             Keys.onPressed: event => {
                 if (event.key === Qt.Key_Tab) {
