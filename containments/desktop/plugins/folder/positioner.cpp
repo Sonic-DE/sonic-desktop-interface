@@ -823,8 +823,10 @@ void Positioner::convertFolderModelData()
     m_proxyToSource.clear();
     m_sourceToProxy.clear();
 
+    // Ignore the first two items, which are for stripes and items per stripe
     const QStringList positions = m_positions.mid(2);
 
+    // Make sure the items per row have 3 items: (filename, row, stripe-pos)
     if (positions.size() % 3 != 0) {
         return;
     }
