@@ -228,6 +228,11 @@ FolderModel::FolderModel(QObject *parent)
 
     connect(this, &QAbstractItemModel::rowsInserted, this, [this](const QModelIndex &parent, int first, int last) {
         for (int i = first; i <= last; ++i) {
+            // If screen is not used, we should just clear the positions and return.
+            if (!screenUsed()) {
+                m_dropTargetPositions.clear();
+                return;
+            }
             const auto idx = index(i, 0, parent);
             const auto url = itemForIndex(idx).url();
             auto it = m_dropTargetPositions.find(url.fileName());
