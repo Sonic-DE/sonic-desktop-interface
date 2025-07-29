@@ -1164,6 +1164,9 @@ void FolderModel::dragSelectedInternal(int x, int y)
         // TODO: Optimize to Q_EMIT contiguous groups.
         Q_EMIT dataChanged(first, last, {BlankRole});
     }
+    // After drag is done, we should clear the dropTargetPositions or they will be
+    // reused during rowsInserted
+    m_dropTargetPositions.clear();
 }
 
 static bool isDropBetweenSharedViews(const QList<QUrl> &urls, const QUrl &folderUrl)
