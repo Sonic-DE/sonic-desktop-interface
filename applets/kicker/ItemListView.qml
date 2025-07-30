@@ -31,9 +31,9 @@ FocusScope {
     property QtObject dialog: null
     property QtObject childDialog: null
     property bool iconsEnabled: false
-    property int itemHeight: Math.ceil((Math.max(Kirigami.Units.iconSizes.sizeForLabels, Kirigami.Units.iconSizes.small)
+    property int itemHeight: Math.ceil((Math.max(Kirigami.Units.iconSizes.sizeForLabels, Kirigami.Units.iconSizes.smallMedium)
         + Math.max(highlightItemSvg.margins.top + highlightItemSvg.margins.bottom,
-        listItemSvg.margins.top + listItemSvg.margins.bottom)) / 2) * 2 + (1 * Kirigami.Units.smallSpacing)
+        listItemSvg.margins.top + listItemSvg.margins.bottom)) / 2) * 2
     property int separatorHeight: model.sorted === true ? 0 : lineMetrics.elementRect.height + (2 * Kirigami.Units.smallSpacing)
 
     property alias currentIndex: listView.currentIndex
