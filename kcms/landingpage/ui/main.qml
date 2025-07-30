@@ -40,8 +40,6 @@ KCMUtils.SimpleKCM {
             QQC2.ButtonGroup { id: themeGroup }
 
             LookAndFeelBox {
-                Accessible.role: Accessible.Pane
-                Accessible.name: i18nc("@info accessible", "Light global theme")
                 text: lightLookAndFeelMetaData.name
                 checked: !kcm.globalsSettings.automaticLookAndFeel && kcm.globalsSettings.lookAndFeelPackage === kcm.globalsSettings.defaultLightLookAndFeel
                 group: themeGroup
@@ -79,8 +77,6 @@ KCMUtils.SimpleKCM {
             }
 
             LookAndFeelBox {
-                Accessible.role: Accessible.Pane
-                Accessible.name: i18nc("@info accessible", "Dark global theme")
                 text: darkLookAndFeelMetaData.name
                 checked: !kcm.globalsSettings.automaticLookAndFeel && kcm.globalsSettings.lookAndFeelPackage === kcm.globalsSettings.defaultDarkLookAndFeel
                 group: themeGroup

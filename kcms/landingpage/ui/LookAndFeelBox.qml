@@ -23,6 +23,11 @@ Column {
     signal toggled()
     signal accepted(id: string)
 
+    Accessible.role: Accessible.RadioButton
+    Accessible.name: text
+    Accessible.onPressAction: radioButton.toggle();
+    Accessible.onToggleAction: radioButton.toggle();
+
     Kirigami.ShadowedRectangle {
         id: delegate
         Kirigami.Theme.inherit: false
@@ -41,10 +46,6 @@ Column {
 
             RadioButton {
                 id: radioButton
-                Accessible.role: Accessible.RadioButton
-                Accessible.name: label.text
-                Accessible.onPressAction: toggle();
-                Accessible.onToggleAction: toggle();
                 ButtonGroup.group: root.group
                 implicitWidth: implicitHeight * 1.6
                 implicitHeight: Kirigami.Units.gridUnit * 5
@@ -82,13 +83,15 @@ Column {
 
             AbstractButton {
                 id: toolButton
-                Accessible.role: Accessible.ButtonMenu
-                Accessible.name: i18nc("@action:button accessible", "Change global theme")
-                Accessible.onPressAction: clicked();
                 implicitWidth: Kirigami.Units.iconSizes.small + leftPadding + rightPadding
                 implicitHeight: Kirigami.Units.gridUnit * 5
                 leftPadding: Kirigami.Units.smallSpacing
                 rightPadding: Kirigami.Units.smallSpacing
+
+                text: i18nc("@action:button", "Change global theme")
+                display: AbstractButton.IconOnly
+
+                Accessible.role: Accessible.ButtonMenu
 
                 contentItem: Kirigami.Icon {
                     source: "arrow-down"
@@ -140,8 +143,6 @@ Column {
 
     Popup {
         id: popup
-        Accessible.role: Accessible.Dialog
-        Accessible.name: i18nc("@title:window accessible", "Change global theme")
         y: delegate.height
         implicitHeight: Math.min(contentItem.implicitHeight + topPadding + bottomPadding, Kirigami.Units.gridUnit * 40)
         focus: true
@@ -154,7 +155,7 @@ Column {
 
             ListView {
                 id: listView
-                Accessible.role: Accessible.List
+                Accessible.role: Accessible.List // TODO: remove once Qt sets this automatically
                 Accessible.name: i18nc("@label accessible", "Global theme")
                 focus: true
                 implicitWidth: radioButton.width
@@ -163,12 +164,9 @@ Column {
                     id: delegate
 
                     readonly property string pluginId: model.packageId
-                    readonly property string name: model.name
                     readonly property string previewUrl: model.preview
 
-                    Accessible.role: Accessible.ListItem
-                    Accessible.name: name
-                    Accessible.onPressAction: clicked();
+                    text: model.name
 
                     width: ListView.view.width
                     contentItem: Column {
@@ -183,7 +181,7 @@ Column {
                         Label {
                             width: parent.width
                             horizontalAlignment: Text.AlignHCenter
-                            text: delegate.name
+                            text: delegate.text
                             textFormat: Text.PlainText
                             elide: Text.ElideRight
                         }
