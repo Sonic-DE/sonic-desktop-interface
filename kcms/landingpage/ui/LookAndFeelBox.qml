@@ -20,6 +20,9 @@ Column {
     property alias text: label.text
     property Component availablePackages
 
+    readonly property int implicitButtonHeight: Kirigami.Units.gridUnit * 5
+    readonly property int implicitButtonWidth: implicitButtonHeight * 1.6
+
     signal toggled()
     signal accepted(id: string)
 
@@ -32,8 +35,8 @@ Column {
         id: delegate
         Kirigami.Theme.inherit: false
         Kirigami.Theme.colorSet: Kirigami.Theme.View
-        implicitWidth: radioButton.implicitWidth + toolButton.implicitWidth
-        implicitHeight: radioButton.implicitHeight
+        implicitWidth: root.implicitButtonWidth + toolButton.implicitWidth
+        implicitHeight: root.implicitButtonHeight
         color: Kirigami.Theme.backgroundColor
         radius: Kirigami.Units.cornerRadius
         shadow.xOffset: 0
@@ -47,8 +50,8 @@ Column {
             RadioButton {
                 id: radioButton
                 ButtonGroup.group: root.group
-                implicitWidth: implicitHeight * 1.6
-                implicitHeight: Kirigami.Units.gridUnit * 5
+                implicitWidth: root.implicitButtonWidth
+                implicitHeight: root.implicitButtonHeight
 
                 background: Item {}
                 indicator: Item {}
@@ -84,7 +87,7 @@ Column {
             AbstractButton {
                 id: toolButton
                 implicitWidth: Kirigami.Units.iconSizes.small + leftPadding + rightPadding
-                implicitHeight: Kirigami.Units.gridUnit * 5
+                implicitHeight: root.implicitButtonHeight
                 leftPadding: Kirigami.Units.smallSpacing
                 rightPadding: Kirigami.Units.smallSpacing
 
