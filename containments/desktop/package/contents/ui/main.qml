@@ -47,15 +47,17 @@ ContainmentItem {
         return 0;
     }
 
-    // Make sure we have the folderViewLayer size loaded before we load panels
+    // When adding panels, sizes change. We want to make sure all panels
+    // are loaded, and when they all are loaded, we tell the folderViewLayer loader
+    // to start loading the folderViewLayer.
     onAvailableScreenRectChanged: {
-        //TODO would be cool if we had a signal that told us how many panels
-        // are still left to create. and then when it reaches 0, we can set the sizes
-        // and fade-in the icons. Could be done in shellcorona createWaitingPanels
-        if (folderViewLayer.ready) {
+        // TODO: is this always desktop? can it be something else?
+        if (!isContainment){
+            return;
+        }
+        if (Plasmoid.containment.corona.panelsToBeLoaded == 0 && !folderViewLayer.ready) {
             // We skip x and y since that is handled by the parent of folderViewLayer
-            folderViewLayer.width = root.availableScreenRect.width;
-            folderViewLayer.height = root.availableScreenRect.height;
+            folderViewLayer.active = true;
         }
     }
 
@@ -375,6 +377,7 @@ ContainmentItem {
             Loader {
                 id: folderViewLayer
 
+                anchors.fill: parent
 
                 property bool ready: status === Loader.Ready
                 property Item view: item?.view ?? null
@@ -382,7 +385,8 @@ ContainmentItem {
 
                 focus: true
 
-                active: isFolder
+                // TODO: again need a solid way to check if this is always desktop
+                active: !root.isContainment && root.isFolder
                 asynchronous: false
 
                 source: "FolderViewLayer.qml"
