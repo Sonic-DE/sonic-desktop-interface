@@ -35,7 +35,7 @@ KCMUtils.SimpleKCM {
             Kirigami.FormData.label: i18n("Theme:")
 
             Layout.alignment: Qt.AlignCenter
-            spacing: Kirigami.Units.gridUnit * 2
+            spacing: Kirigami.Units.largeSpacing
 
             QQC2.ButtonGroup { id: themeGroup }
 

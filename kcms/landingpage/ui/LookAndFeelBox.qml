@@ -144,14 +144,22 @@ Column {
     Popup {
         id: popup
         y: delegate.height
+        x: delegate.width - width
         implicitHeight: Math.min(contentItem.implicitHeight + topPadding + bottomPadding, Kirigami.Units.gridUnit * 40)
         focus: true
         popupType: Popup.Native
+        padding: 1
         contentItem: ScrollView {
             ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
             contentWidth: listView.implicitWidth
             contentHeight: listView.implicitHeight
             focus: true
+
+            background: Rectangle {
+                Kirigami.Theme.inherit: false
+                Kirigami.Theme.colorSet: Kirigami.Theme.View
+                color: Kirigami.Theme.backgroundColor
+            }
 
             ListView {
                 id: listView
