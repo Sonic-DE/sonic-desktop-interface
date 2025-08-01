@@ -174,7 +174,7 @@ KCM.SimpleKCM {
             id: sortMode
             Layout.fillWidth: true
 
-            Kirigami.FormData.label: i18n("Sorting:")
+            Kirigami.FormData.label: i18n("Sort by:")
 
             property int mode
             // FIXME TODO HACK: This maps the combo box list model to the KDirModel::ModelColumns
