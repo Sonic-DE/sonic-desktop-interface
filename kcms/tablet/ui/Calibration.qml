@@ -42,7 +42,7 @@ QQC2.ApplicationWindow {
     HoverHandler {
         cursorShape: Qt.BlankCursor
         acceptedDevices: PointerDevice.Stylus
-        enabled: !tool.finishedCalibration
+        enabled: tool.state !== KCM.CalibrationTool.Testing
     }
 
     Connections {
@@ -71,7 +71,7 @@ QQC2.ApplicationWindow {
                 return;
             }
 
-            if (tool.finishedCalibration) {
+            if (tool.state === KCM.CalibrationTool.Testing) {
                 root.currentPenToolX = x;
                 root.currentPenToolY = y;
             } else {
@@ -95,7 +95,7 @@ QQC2.ApplicationWindow {
 
             text: {
                 if (tool.state === KCM.CalibrationTool.Confirming) {
-                    return xi18nc("@info", "Tap the targets again to confirm the new calibration.<nl/><nl/><b>Will revert to default calibration in %1 seconds.</b>", tool.resetSecondsLeft)
+                    return xi18nc("@info", "Tap the targets again to confirm the new calibration.<nl/><nl/><b>Will revert to default calibration in %1 seconds unless further action is taken.</b>", tool.resetSecondsLeft)
                 }
 
                 if (tool.state === KCM.CalibrationTool.Testing) {
@@ -151,7 +151,7 @@ QQC2.ApplicationWindow {
         HoverHandler {
             cursorShape: Qt.BlankCursor
             acceptedDevices: PointerDevice.Stylus
-            enabled: !tool.finishedCalibration
+            enabled: tool.state !== KCM.CalibrationTool.Testing
         }
 
         down: {
