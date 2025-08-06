@@ -298,15 +298,8 @@ QHash<int, QByteArray> FolderModel::staticRoleNames()
 
 QPoint FolderModel::localMenuPosition() const
 {
-    QScreen *screen = nullptr;
-    for (auto *s : qApp->screens()) {
-        if (s->geometry().contains(m_menuPosition)) {
-            screen = s;
-            break;
-        }
-    }
-    if (screen) {
-        return m_menuPosition - screen->geometry().topLeft();
+    if (m_applet && m_applet->containment()) {
+        return m_menuPosition - m_applet->containment()->availableRelativeScreenRect().toAlignedRect().topLeft();
     }
     return m_menuPosition;
 }
