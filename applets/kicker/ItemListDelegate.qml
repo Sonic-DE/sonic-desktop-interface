@@ -119,7 +119,7 @@ Item {
                 return;
             }
             if (pressX !== -1 && model.url && dragHelper.isDrag(pressX, pressY, mouse.x, mouse.y)) {
-                dragHelper.startDrag(kicker, Kicker.Utils.resolvedFile(model.url), model.decoration);
+                dragHelper.startDrag(kicker, model.url, model.decoration);
                 mousePressed = false;
                 pressX = -1;
                 pressY = -1;

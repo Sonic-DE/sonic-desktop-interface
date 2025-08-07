@@ -151,7 +151,7 @@ T.ItemDelegate {
             kickoff.dragSource.sourceItem = root;
             kickoff.dragSource.Drag.imageSource = result.url;
             kickoff.dragSource.Drag.mimeData = {
-                "text/uri-list" : [Kicker.Utils.resolvedFile(root.url)]
+                "text/uri-list" : [root.url]
             };
             kickoff.dragSource.Drag.active = handler.active;
         });
