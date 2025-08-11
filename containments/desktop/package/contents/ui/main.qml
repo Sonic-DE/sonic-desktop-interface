@@ -55,7 +55,7 @@ ContainmentItem {
         if (!isContainment){
             return;
         }
-        if (Plasmoid.containment.corona.panelsToBeLoaded == 0 && !folderViewLayer.ready) {
+        if (Plasmoid.containment.corona.allPanelsVisible(Plasmoid.containment.screen) && !folderViewLayer.ready) {
             // We skip x and y since that is handled by the parent of folderViewLayer
             folderViewLayer.active = true;
         }
