@@ -385,7 +385,8 @@ ContainmentItem {
 
                 focus: true
 
-                active: isFolder
+                // TODO: again need a solid way to check if this is always desktop
+                active: !root.isContainment && root.isFolder
                 asynchronous: false
 
                 source: "FolderViewLayer.qml"
@@ -394,6 +395,10 @@ ContainmentItem {
                     if (!focus && model) {
                         model.clearSelection();
                     }
+                }
+
+                onActiveChanged: {
+                    console.warn(Plasmoid.containment.screenGeometry);
                 }
 
                 Connections {
