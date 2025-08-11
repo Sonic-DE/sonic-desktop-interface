@@ -1394,4 +1394,10 @@ FocusScope {
             backButton = makeBackButton();
         }
     }
+
+    onActiveFocusChanged: {
+        if (!activeFocus) {
+            dir.clearSelection();
+        }
+    }
 }
