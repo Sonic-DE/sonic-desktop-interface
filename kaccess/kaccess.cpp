@@ -32,7 +32,6 @@
 #include <KConfig>
 #include <KConfigGroup>
 #include <KDBusService>
-#include <KGlobalAccel>
 #include <KKeyServer>
 #include <KLazyLocalizedString>
 #include <KLocalizedString>
@@ -119,9 +118,7 @@ KAccessApp::KAccessApp()
     , m_keyboardSettings(new KeyboardSettings(this))
     , m_keyboardFiltersSettings(new KeyboardFiltersSettings(this))
     , m_mouseSettings(new MouseSettings(this))
-    , m_screenReaderSettings(new ScreenReaderSettings(this))
     , m_kdeglobals(QStringLiteral("kdeglobals"))
-    , toggleScreenReaderAction(new QAction(this))
 {
     m_error = false;
 
@@ -164,7 +161,6 @@ void KAccessApp::newInstance()
     m_keyboardSettings.load();
     m_keyboardFiltersSettings.load();
     m_mouseSettings.load();
-    m_screenReaderSettings.load();
     readSettings();
 }
 
@@ -301,37 +297,6 @@ void KAccessApp::readSettings()
         uint ctrls = XkbStickyKeysMask | XkbSlowKeysMask | XkbBounceKeysMask | XkbMouseKeysMask | XkbAudibleBellMask | XkbControlsNotifyMask;
         uint values = XkbAudibleBellMask;
         XkbSetAutoResetControls(QX11Info::display(), ctrls, &ctrls, &values);
-    }
-
-    setScreenReaderEnabled(m_screenReaderSettings.enabled());
-}
-
-void KAccessApp::toggleScreenReader()
-{
-    KSharedConfig::Ptr _config = KSharedConfig::openConfig();
-    KConfigGroup screenReaderGroup(_config, QStringLiteral("ScreenReader"));
-    bool enabled = !screenReaderGroup.readEntry("Enabled", false);
-    screenReaderGroup.writeEntry("Enabled", enabled);
-    setScreenReaderEnabled(enabled);
-}
-
-void KAccessApp::setScreenReaderEnabled(bool enabled)
-{
-    if (enabled) {
-        QStringList args = {QStringLiteral("set"),
-                            QStringLiteral("org.gnome.desktop.a11y.applications"),
-                            QStringLiteral("screen-reader-enabled"),
-                            QStringLiteral("true")};
-        int ret = QProcess::execute(QStringLiteral("gsettings"), args);
-        if (ret == 0) {
-            qint64 pid = 0;
-            QProcess::startDetached(QStringLiteral("orca"), {QStringLiteral("--replace")}, QString(), &pid);
-            qCDebug(logKAccess) << "Launching Orca, pid:" << pid;
-        }
-    } else {
-        QProcess::startDetached(
-            QStringLiteral("gsettings"),
-            {QStringLiteral("set"), QStringLiteral("org.gnome.desktop.a11y.applications"), QStringLiteral("screen-reader-enabled"), QStringLiteral("false")});
     }
 }
 
