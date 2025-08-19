@@ -141,6 +141,7 @@ MouseArea {
     onCanceled: finishDragOperation()
 
     function finishDragOperation() {
+        console.log('DONE --------------')
         root.dragAndDropping = false
         if (!currentApplet) {
             return;
@@ -268,6 +269,10 @@ MouseArea {
             hoverEnabled: true
             onEntered: hideTimer.stop();
             onExited:  hideTimer.restart();
+
+            Keys.onEscapePressed: {
+                tooltip.close()
+            }
 
             ColumnLayout {
                 id: handleButtons
