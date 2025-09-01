@@ -50,14 +50,6 @@ GlobalAccelModel::GlobalAccelModel(QObject *parent)
     qDBusRegisterMetaType<QList<KGlobalShortcutInfo>>();
 }
 
-QVariant GlobalAccelModel::data(const QModelIndex &index, int role) const
-{
-    if (role == SupportsMultipleKeysRole) {
-        return false;
-    }
-    return BaseModel::data(index, role);
-}
-
 void GlobalAccelModel::load()
 {
     if (!m_globalAccelInterface->isValid()) {
