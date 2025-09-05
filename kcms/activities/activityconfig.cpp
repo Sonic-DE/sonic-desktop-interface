@@ -34,6 +34,7 @@ void ActivityConfig::reset()
     m_name = QString();
     m_description = QString();
     m_iconName = QStringLiteral("activities");
+    m_order = QStringLiteral("-1");
     m_private = false;
     m_shortcut = QKeySequence();
     m_inhibitScreen = false;
@@ -98,6 +99,7 @@ void ActivityConfig::load()
     m_name = activityInfo.name();
     m_description = activityInfo.description();
     m_iconName = activityInfo.icon();
+    m_order = activityInfo.order();
 
     // finding the key shortcut
     const auto shortcuts = KGlobalAccel::self()->globalShortcut(QStringLiteral("ActivityManager"), QStringLiteral("switch-to-activity-%1").arg(m_activityId));
@@ -143,6 +145,7 @@ void ActivityConfig::save()
     m_activities.setActivityName(m_activityId, m_name);
     m_activities.setActivityDescription(m_activityId, m_description);
     m_activities.setActivityIcon(m_activityId, m_iconName);
+    m_activities.setActivityOrder(m_activityId, m_order);
 
     // setting the key shortcut
     QAction action(nullptr);

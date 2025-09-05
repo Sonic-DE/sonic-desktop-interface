@@ -73,6 +73,16 @@ void ActivitiesModule::deleteActivity(const QString &id)
     KActivities::Controller().removeActivity(id);
 }
 
+void ActivitiesModule::setActivityOrder(const QString &id, const QString &order)
+{
+    if (!m_isNewActivityAuthorized) {
+        return;
+    }
+    qDebug() << "kcm act" << id << order;
+
+    KActivities::Controller().setActivityOrder(id, order);
+}
+
 void ActivitiesModule::load()
 {
     if (m_firstArgument.isEmpty()) {

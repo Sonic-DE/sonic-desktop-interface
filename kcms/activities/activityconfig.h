@@ -53,6 +53,7 @@ private:
     QString m_name;
     QString m_description;
     QString m_iconName;
+    QString m_order;
     bool m_private;
     QKeySequence m_shortcut;
     bool m_inhibitScreen = false;
