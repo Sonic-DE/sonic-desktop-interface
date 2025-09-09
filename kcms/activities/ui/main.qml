@@ -71,14 +71,29 @@ KCM.ScrollViewKCM {
 
                 QQC2.ToolButton {
                     visible: kcm.isNewActivityAuthorized
-                    enabled: activitiesList.count > 1
+                    enabled: activitiesList.count > 1 || model.index != 0
                     icon.name: "arrow-up"
                     text: i18nc("@info:tooltip", "Promote %1 activity", model.name)
                     display: QQC2.AbstractButton.IconOnly
                     QQC2.ToolTip.text: text
                     QQC2.ToolTip.visible: hovered
                     onClicked: {
-                        kcm.setActivityOrder(model.id, model.index);
+                        var relativeOrder = model.index + 1;
+                        kcm.setActivityOrder(model.id, relativeOrder);
+                    }
+                }
+
+                QQC2.ToolButton {
+                    visible: kcm.isNewActivityAuthorized
+                    enabled: activitiesList.count > 1 || model.index < activitiesList.count
+                    icon.name: "arrow-down"
+                    text: i18nc("@info:tooltip", "Demote %1 activity", model.name)
+                    display: QQC2.AbstractButton.IconOnly
+                    QQC2.ToolTip.text: text
+                    QQC2.ToolTip.visible: hovered
+                    onClicked: {
+                        var relativeOrder = model.index - 1;
+                        kcm.setActivityOrder(model.id, relativeOrder);
                     }
                 }
 

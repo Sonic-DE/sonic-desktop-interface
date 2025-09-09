@@ -73,12 +73,11 @@ void ActivitiesModule::deleteActivity(const QString &id)
     KActivities::Controller().removeActivity(id);
 }
 
-void ActivitiesModule::setActivityOrder(const QString &id, const QString &order)
+void ActivitiesModule::setActivityOrder(const QString &id, const QString &order) // TODO use int here and then everywhere else
 {
     if (!m_isNewActivityAuthorized) {
         return;
     }
-    qDebug() << "kcm act" << id << order;
 
     KActivities::Controller().setActivityOrder(id, order);
 }
