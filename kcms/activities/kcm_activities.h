@@ -23,7 +23,7 @@ public:
     Q_INVOKABLE void configureActivity(const QString &id);
     Q_INVOKABLE void newActivity();
     Q_INVOKABLE void deleteActivity(const QString &id);
-    Q_INVOKABLE void setActivityOrder(const QString &id, const QString &order);
+    Q_INVOKABLE void setActivityUserSortOrder(const QString &id, const int &userSortOrder);
 
     void load() override;
     void handleArgument(const QString &argument);
