@@ -78,8 +78,7 @@ KCM.ScrollViewKCM {
                     QQC2.ToolTip.text: text
                     QQC2.ToolTip.visible: hovered
                     onClicked: {
-                        var relativeOrder = model.index + 1;
-                        kcm.setActivityOrder(model.id, relativeOrder);
+                        kcm.setActivityUserSortOrder(model.id, model.index + 1);
                     }
                 }
 
@@ -92,8 +91,7 @@ KCM.ScrollViewKCM {
                     QQC2.ToolTip.text: text
                     QQC2.ToolTip.visible: hovered
                     onClicked: {
-                        var relativeOrder = model.index - 1;
-                        kcm.setActivityOrder(model.id, relativeOrder);
+                        kcm.setActivityUserSortOrder(model.id, model.index - 1);
                     }
                 }
 
