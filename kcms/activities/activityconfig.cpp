@@ -34,7 +34,7 @@ void ActivityConfig::reset()
     m_name = QString();
     m_description = QString();
     m_iconName = QStringLiteral("activities");
-    m_userSortOrder = -1; // TODO is this a sane default
+    m_userSortOrder = -1;
     m_private = false;
     m_shortcut = QKeySequence();
     m_inhibitScreen = false;
@@ -99,6 +99,7 @@ void ActivityConfig::load()
     m_name = activityInfo.name();
     m_description = activityInfo.description();
     m_iconName = activityInfo.icon();
+    qDebug() << "#### LOAD set " << activityInfo.name() << activityInfo.userSortOrder();
     m_userSortOrder = activityInfo.userSortOrder();
 
     // finding the key shortcut
@@ -145,6 +146,8 @@ void ActivityConfig::save()
     m_activities.setActivityName(m_activityId, m_name);
     m_activities.setActivityDescription(m_activityId, m_description);
     m_activities.setActivityIcon(m_activityId, m_iconName);
+    qDebug() << "### save " << m_name << m_userSortOrder;
+    // TODO save order here instead derive and set
     m_activities.setActivityUserSortOrder(m_activityId, m_userSortOrder);
 
     // setting the key shortcut

@@ -20,6 +20,7 @@ class ActivityConfig : public QObject
     Q_PROPERTY(QString name MEMBER m_name NOTIFY infoChanged)
     Q_PROPERTY(QString description MEMBER m_description NOTIFY infoChanged)
     Q_PROPERTY(QString iconName MEMBER m_iconName NOTIFY infoChanged)
+    Q_PROPERTY(int userSortOrder MEMBER m_userSortOrder NOTIFY infoChanged)
     Q_PROPERTY(bool isPrivate MEMBER m_private NOTIFY infoChanged)
     Q_PROPERTY(QKeySequence shortcut MEMBER m_shortcut NOTIFY infoChanged)
     Q_PROPERTY(bool isSaveNeeded READ isSaveNeeded NOTIFY infoChanged)
