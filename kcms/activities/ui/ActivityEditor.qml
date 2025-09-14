@@ -17,8 +17,9 @@ import org.kde.kcms.activities
 
 KCM.SimpleKCM {
 
+    property int newActivityModelIndex
     property alias activityId: settings.activityId
-    property int userSortOrder
+    property alias userSortOrder: settings.userSortOrder
 
     title: activityId ? i18nc("@title:window", "Activity Settings for %1", settings.name)
                       : i18nc("@title:window", "Create a New Activity")
@@ -34,12 +35,8 @@ KCM.SimpleKCM {
     Keys.onEscapePressed: kcm.pop();
 
     function saveContents() {
-        console.debug(userSortOrder)
-        console.debug(settings.userSortOrder)
-        if (settings.userSortOrder < 0){
-            console.debug("### qml act edit")
-            console.debug(userSortOrder)
-            settings.userSortOrder = userSortOrder;
+        if (settings.userSortOrder == -1) {
+            settings.userSortOrder = newActivityModelIndex;
         }
         settings.save();
         kcm.pop();

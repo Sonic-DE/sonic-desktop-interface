@@ -99,7 +99,6 @@ void ActivityConfig::load()
     m_name = activityInfo.name();
     m_description = activityInfo.description();
     m_iconName = activityInfo.icon();
-    qDebug() << "#### LOAD set " << activityInfo.name() << activityInfo.userSortOrder();
     m_userSortOrder = activityInfo.userSortOrder();
 
     // finding the key shortcut
