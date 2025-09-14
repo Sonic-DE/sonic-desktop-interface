@@ -51,9 +51,15 @@ KCM.ScrollViewKCM {
                     textFormat: Text.PlainText
                 }
 
+                QQC2.Label {
+                    Layout.fillWidth: true
+                    text: model.userSortOrder
+                    textFormat: Text.PlainText
+                }
+
                 QQC2.ToolButton {
                     visible: kcm.isNewActivityAuthorized
-                    enabled: activitiesList.count > 1 || model.index != 0
+                    enabled: activitiesList.count > 1 && model.index != 0
                     icon.name: "arrow-up"
                     text: i18nc("@info:tooltip", "Promote %1 activity", model.name)
                     display: QQC2.AbstractButton.IconOnly
@@ -66,7 +72,7 @@ KCM.ScrollViewKCM {
 
                 QQC2.ToolButton {
                     visible: kcm.isNewActivityAuthorized
-                    enabled: activitiesList.count > 1 || model.index < activitiesList.count
+                    enabled: activitiesList.count > 1 && model.index < activitiesList.count
                     icon.name: "arrow-down"
                     text: i18nc("@info:tooltip", "Demote %1 activity", model.name)
                     display: QQC2.AbstractButton.IconOnly

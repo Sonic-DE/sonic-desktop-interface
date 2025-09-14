@@ -55,7 +55,12 @@ void ActivitiesModule::configureActivity(const QString &id)
     if (depth() > 1) {
         pop();
     }
-    push(QStringLiteral("ActivityEditor.qml"), QVariantMap{{QStringLiteral("activityId"), id}});
+
+    int newActivitySortOrder = -1;
+    if (id.isEmpty()) {
+        newActivitySortOrder = KActivities::Controller().activities().length();
+    }
+    push(QStringLiteral("ActivityEditor.qml"), QVariantMap{{QStringLiteral("activityId"), id}, {QStringLiteral("userSortOrder"), newActivitySortOrder}});
 }
 
 void ActivitiesModule::newActivity()
