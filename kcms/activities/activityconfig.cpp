@@ -145,8 +145,6 @@ void ActivityConfig::save()
     m_activities.setActivityName(m_activityId, m_name);
     m_activities.setActivityDescription(m_activityId, m_description);
     m_activities.setActivityIcon(m_activityId, m_iconName);
-    qDebug() << "### save " << m_name << m_userSortOrder;
-    // TODO save order here instead derive and set
     m_activities.setActivityUserSortOrder(m_activityId, m_userSortOrder);
 
     // setting the key shortcut
