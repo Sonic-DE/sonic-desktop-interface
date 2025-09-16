@@ -151,6 +151,21 @@ KCM.SimpleKCM {
 
             Kirigami.Heading {
                 Layout.topMargin: column.headingTopSpacing
+                text: i18ndc("plasma_shell_org.kde.plasma.desktop", "@title:group", "Get Help")
+                textFormat: Text.PlainText
+            }
+            Kirigami.UrlButton {
+                Layout.leftMargin: column.dataLeftSpacing
+                textFormat: Text.PlainText
+
+                url: page.metaData.bugReportUrl
+                text: i18nd("plasma_shell_org.kde.plasma.desktop", "Report an issue")
+
+                visible: page.metaData.bugReportUrl.length > 0
+            }
+
+            Kirigami.Heading {
+                Layout.topMargin: column.headingTopSpacing
                 text: i18nd("plasma_shell_org.kde.plasma.desktop", "Copyright")
                 textFormat: Text.PlainText
             }
@@ -226,22 +241,6 @@ KCM.SimpleKCM {
                 Layout.leftMargin: column.dataLeftSpacing
                 model: page.metaData.translators
                 delegate: personDelegate
-            }
-
-            Kirigami.Heading {
-                Layout.topMargin: column.headingTopSpacing
-                text: i18ndc("plasma_shell_org.kde.plasma.desktop", "@title:group", "Get Help")
-                textFormat: Text.PlainText
-            }
-
-            Kirigami.UrlButton {
-                Layout.leftMargin: column.dataLeftSpacing
-                textFormat: Text.PlainText
-
-                url: page.metaData.bugReportUrl
-                text: i18nd("plasma_shell_org.kde.plasma.desktop", "Report an issue")
-
-                visible: page.metaData.bugReportUrl.length > 0
             }
         }
     }
