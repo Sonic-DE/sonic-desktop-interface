@@ -413,7 +413,8 @@ ContainmentItem {
                 id: currentLayout
 
                 property real minimumSize: root.isHorizontal ? Layout.minimumWidth : Layout.minimumHeight
-                property real preferredSize: root.isHorizontal ? implicitWidth : implicitHeight
+
+                property real preferredSize: root.isHorizontal ? Layout.preferredWidth : Layout.preferredHeight
 
                 Repeater {
                     model: appletsModel
