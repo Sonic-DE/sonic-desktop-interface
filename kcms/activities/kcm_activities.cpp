@@ -76,6 +76,15 @@ void ActivitiesModule::deleteActivity(const QString &id)
     KActivities::Controller().removeActivity(id);
 }
 
+void ActivitiesModule::setActivitySortMethodDefault()
+{
+    if (!m_isNewActivityAuthorized) {
+        return;
+    }
+
+    KActivities::Controller().setActivitySortMethodDefault();
+}
+
 void ActivitiesModule::setActivityUserSortOrder(const QString &id, const int &userSortOrder)
 {
     if (!m_isNewActivityAuthorized) {
