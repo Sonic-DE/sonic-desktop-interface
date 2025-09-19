@@ -101,12 +101,20 @@ KCM.ScrollViewKCM {
         }
     }
 
-    actions: Kirigami.Action {
-        visible: kcm.isNewActivityAuthorized
-        text: i18n("Create New…")
-        icon.name: "list-add"
-        onTriggered: kcm.newActivity();
-    }
+    actions: [
+        Kirigami.Action {
+            visible: kcm.isNewActivityAuthorized
+            text: i18n("Create New…")
+            icon.name: "list-add"
+            onTriggered: kcm.newActivity();
+        },
+        Kirigami.Action {
+            visible: kcm.isNewActivityAuthorized
+            text: i18n("Reset Sort")
+            icon.name: "sort-name-symbolic"
+            onTriggered: kcm.setActivitySortMethodDefault();
+        }
+    ]
 
     Kirigami.PromptDialog {
         id: removePrompt
