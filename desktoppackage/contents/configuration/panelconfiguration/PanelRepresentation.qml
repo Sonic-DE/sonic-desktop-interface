@@ -41,6 +41,9 @@ Item {
 
     readonly property bool iconAndLabelsShouldlookSelected: checked || mouseArea.pressed
 
+    LayoutMirroring.enabled: false
+    LayoutMirroring.childrenInherit: true
+
     function maximizeWindow() {
 
         hidePanelLater.stop()
