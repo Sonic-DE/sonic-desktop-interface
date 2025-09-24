@@ -616,6 +616,9 @@ FocusScope {
         }
 
         function clearPressState() {
+            if (!(hoveredItem?.popupDialog?.visible ?? false)) {
+                hoveredItem = null;
+            }
             pressedItem = null;
             pressX = -1;
             pressY = -1;
