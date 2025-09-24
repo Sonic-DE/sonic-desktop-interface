@@ -23,7 +23,12 @@ Item {
     readonly property bool softwareRendering: GraphicsInfo.api === GraphicsInfo.Software
 
     width: list.cellWidth
-    height: list.cellHeight
+    height: {
+        let headingHeight = headingFontMetrics.height * heading.lineHeight * 3
+        let descriptionHeight = descriptionFontMetrics.height * description.lineHeight * 2
+        let paddings = Kirigami.Units.smallSpacing * 4
+        return iconContainer.height + headingHeight + descriptionHeight + paddings
+    }
 
     Accessible.name: i18nc("@action:button accessible only, %1 is widget name", "Add %1", model.name)  + (model.isSupported ? "" : unsupportedTooltip.mainText)
     Accessible.description: (model.isSupported ? "" : model.unsupportedMessage) + model.description + (overlayedBadge.visible ? countLabel.Accessible.name : "")
@@ -300,6 +305,7 @@ Item {
             color: mainLayout.textColor
         }
         PlasmaComponents.Label {
+            id: description
             Layout.fillWidth: true
             // otherwise causes binding loop due to the way the Plasma sets the height
             height: implicitHeight
@@ -311,6 +317,14 @@ Item {
             maximumLineCount: 5 - heading.lineCount
             horizontalAlignment: Text.AlignHCenter
             color: mainLayout.textColor
+        }
+        FontMetrics {
+            id: headingFontMetrics
+            font: heading.font
+        }
+        FontMetrics {
+            id: descriptionFontMetrics
+            font: description.font
         }
     }
 }

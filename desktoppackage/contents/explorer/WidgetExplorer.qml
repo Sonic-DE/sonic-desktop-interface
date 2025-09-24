@@ -314,7 +314,7 @@ PC3.Page {
 
             activeFocusOnTab: true
             cellWidth: Math.floor(effectiveWidth / 3)
-            cellHeight: cellWidth + Kirigami.Units.gridUnit * 4 + Kirigami.Units.smallSpacing * 3
+            cellHeight: list.contentItem.children[0].height
 
             delegate: AppletDelegate {}
             highlight: PlasmaExtras.Highlight {
