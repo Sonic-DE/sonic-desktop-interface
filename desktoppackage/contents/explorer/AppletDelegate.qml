@@ -25,6 +25,12 @@ Item {
     width: list.cellWidth
     height: list.cellHeight
 
+    // The layout height is exposed so that the grid view can
+    // use it to know to se tthe cell height, but we still use
+    // the cell height as the height of the element so that the
+    // highlight has the same heigh for all the AppletDelegates.
+    property real layoutHeight: mainLayout.height + Kirigami.Units.largeSpacing * 2
+
     Accessible.name: i18nc("@action:button accessible only, %1 is widget name", "Add %1", model.name)  + (model.isSupported ? "" : unsupportedTooltip.mainText)
     Accessible.description: (model.isSupported ? "" : model.unsupportedMessage) + model.description + (overlayedBadge.visible ? countLabel.Accessible.name : "")
     Accessible.role: Accessible.Button
