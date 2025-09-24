@@ -300,6 +300,7 @@ Item {
             color: mainLayout.textColor
         }
         PlasmaComponents.Label {
+            id: description
             Layout.fillWidth: true
             // otherwise causes binding loop due to the way the Plasma sets the height
             height: implicitHeight
