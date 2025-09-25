@@ -61,7 +61,7 @@ QQC2.ItemDelegate {
                 }
                 QQC2.Label {
                     id: keySequenceList
-                    Layout.maximumWidth: parent.width - displayLabel.width - expandButton.width
+                    Layout.maximumWidth: parent.width - displayLabel.width - expandButton.width - (topRow.spacing * (topRow.visibleChildren.length - 1))
                     color: {
                         if (root.selected) {
                             return Kirigami.Theme.highlightedTextColor;
