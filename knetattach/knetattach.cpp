@@ -19,6 +19,9 @@
 #include <KJobWidgets>
 #include <KMessageBox>
 #include <QDesktopServices>
+#include <QDialog>
+#include <QDialogButtonBox>
+#include <QDir>
 #include <QIcon>
 
 KNetAttach::KNetAttach(QWidget *parent)
@@ -34,6 +37,8 @@ KNetAttach::KNetAttach(QWidget *parent)
     connect(_port, &QSpinBox::valueChanged, this, &KNetAttach::updateParametersPageStatus);
     connect(_path, &QLineEdit::textChanged, this, &KNetAttach::updateParametersPageStatus);
     connect(_useEncryption, &QAbstractButton::toggled, this, &KNetAttach::updatePort);
+    connect(_useCustomKey, &QAbstractButton::toggled, this, &KNetAttach::toggleCertChoosingDialogVisibility);
+    connect(_chooseCustomKey, &QAbstractButton::clicked, this, &KNetAttach::openCertChoosingDialog);
     connect(_createIcon, &QAbstractButton::toggled, this, &KNetAttach::updateFinishButtonText);
     connect(this, &QWizard::helpRequested, this, &KNetAttach::slotHelpClicked);
     connect(this, &QWizard::currentIdChanged, this, &KNetAttach::slotPageChanged);
@@ -57,6 +62,38 @@ KNetAttach::KNetAttach(QWidget *parent)
     _encoding->addItems(KCharsets::charsets()->descriptiveEncodingNames());
     const int codecForLocaleIdx = _encoding->findText(QLatin1String("UTF-8"), Qt::MatchContains);
     _encoding->setCurrentIndex(codecForLocaleIdx != -1 ? codecForLocaleIdx : 0);
+}
+
+void KNetAttach::toggleCertChoosingDialogVisibility(bool useCustomCert)
+{
+    _chooseCustomKey->setDisabled(!useCustomCert);
+    updateParametersPageStatus();
+}
+
+void KNetAttach::openCertChoosingDialog()
+{
+    if (!m_dialog) {
+        m_dialog = new QFileDialog(nullptr, i18n("Select key"), QStandardPaths::standardLocations(QStandardPaths::HomeLocation).at(0));
+        m_dialog->setFileMode(QFileDialog::ExistingFile);
+        m_dialog->setNameFilter(i18n("SSH Key Files (*.pub *.pem);;All Files (*)"));
+        connect(m_dialog, &QDialog::accepted, this, &KNetAttach::acceptCertChoosingDialog);
+    }
+
+    m_dialog->show();
+    m_dialog->raise();
+    m_dialog->activateWindow();
+};
+
+void KNetAttach::acceptCertChoosingDialog()
+{
+    const QList<QUrl> &urls = m_dialog->selectedUrls();
+
+    if (!urls.isEmpty()) {
+        m_certUrl = urls.at(0);
+        _chooseCustomKey->setText(m_certUrl.fileName());
+    }
+
+    updateParametersPageStatus();
 }
 
 void KNetAttach::slotPageChanged(int)
@@ -95,7 +132,9 @@ void KNetAttach::setInformationText(const QString &type)
 
 void KNetAttach::updateParametersPageStatus()
 {
-    button(FinishButton)->setEnabled(!_host->text().trimmed().isEmpty() && !_path->text().trimmed().isEmpty() && !_connectionName->text().trimmed().isEmpty());
+    button(FinishButton)
+        ->setEnabled(!_host->text().trimmed().isEmpty() && !_path->text().trimmed().isEmpty() && !_connectionName->text().trimmed().isEmpty()
+                     && (!_useCustomKey->isChecked() || m_certUrl.isValid()));
 }
 
 bool KNetAttach::validateCurrentPage()
@@ -162,6 +201,7 @@ bool KNetAttach::validateCurrentPage()
         button(BackButton)->setEnabled(false);
         button(FinishButton)->setEnabled(false);
         QUrl url;
+        QString fishConfigEntry;
         if (_type == QLatin1String("WebFolder")) {
             if (_useEncryption->isChecked()) {
                 url.setScheme(QStringLiteral("webdavs"));
@@ -175,6 +215,88 @@ bool KNetAttach::validateCurrentPage()
             cg.writeEntry("Charset", KCharsets::charsets()->encodingForName(_encoding->currentText()));
             url.setScheme(_protocolText->currentText());
             url.setPort(_port->value());
+
+            if (_useCustomKey->isChecked() && m_certUrl.isValid()) {
+                if (!QFile::setPermissions(m_certUrl.path(), QFileDevice::Permissions(QFileDevice::ReadOwner))) {
+                    return false;
+                }
+
+                // Create an entry with identity file path in .ssh/config
+                QFile sshConfig(QStandardPaths::writableLocation(QStandardPaths::HomeLocation) + QStringLiteral("/.ssh/config"));
+                if (!sshConfig.open(QIODevice::ReadWrite | QIODevice::Text)) {
+                    return false;
+                }
+
+                QTextStream in(&sshConfig);
+                QStringList trimmedContent;
+                bool entryExists = false;
+                while (!in.atEnd()) {
+                    QString line = in.readLine();
+                    if (line.startsWith(QStringLiteral("Host %1").arg(_host->text()))) {
+                        QStringList possibleDuplicateEntry(line);
+                        QString nextLine;
+                        while (!in.atEnd()) {
+                            nextLine = in.readLine().trimmed();
+                            if (nextLine.startsWith(QStringLiteral("User %1").arg(_user->text()))) {
+                                entryExists = true;
+                            }
+
+                            if (nextLine.startsWith(QStringLiteral("Host "))) {
+                                trimmedContent << line;
+                                break;
+                            }
+
+                            possibleDuplicateEntry.append(nextLine);
+                        }
+
+                        if (!entryExists) {
+                            trimmedContent.append(possibleDuplicateEntry);
+                        }
+                    } else {
+                        trimmedContent << line;
+                    }
+                }
+
+                if (entryExists) {
+                    auto dialog = new QDialog;
+                    const QString title = i18nc("@title:window", "Config entry already exists");
+                    dialog->setWindowTitle(title);
+                    dialog->setWindowModality(Qt::WindowModal);
+                    dialog->setAttribute(Qt::WA_DeleteOnClose);
+
+                    auto *dialogButtons = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, dialog);
+                    dialogButtons->button(QDialogButtonBox::Ok)->setText(i18nc("@action:button", "Overwrite"));
+                    dialogButtons->button(QDialogButtonBox::Cancel)->setText(i18nc("@action:button", "Cancel"));
+                    KMessageBox::createKMessageBox(dialog,
+                                                   dialogButtons,
+                                                   QMessageBox::Warning,
+                                                   QStringLiteral("Config entry for %2:%1 already exists. Overwrite?").arg(_host->text(), _user->text()),
+                                                   {},
+                                                   QString(),
+                                                   nullptr,
+                                                   KMessageBox::NoExec);
+                    int result = dialog->exec();
+                    if (result != QDialogButtonBox::Yes) {
+                        sshConfig.close();
+                        return false;
+                    }
+                }
+
+                sshConfig.resize(0);
+                QTextStream out(&sshConfig);
+                for (const QString &line : trimmedContent) {
+                    out << line << "\n";
+                }
+
+                fishConfigEntry = QStringLiteral("Host ") + _host->text() + QStringLiteral("\n\tUser ") + _user->text() + QStringLiteral("\n\tIdentityFile ")
+                    + m_certUrl.path() + QStringLiteral("\n");
+                out << fishConfigEntry;
+                sshConfig.close();
+
+                if (!sshConfig.setPermissions(QFileDevice::Permissions(QFileDevice::ReadOwner | QFileDevice::WriteOwner))) {
+                    return false;
+                }
+            }
         } else if (_type == QLatin1String("FTP")) {
             url.setScheme(QStringLiteral("ftp"));
             url.setPort(_port->value());
@@ -202,6 +324,31 @@ bool KNetAttach::validateCurrentPage()
         bool success = doConnectionTest(url);
         _folderParameters->setEnabled(true);
         if (!success) {
+            // Remove the entry from .ssh/config since we couldn't connect
+            if (_type == QLatin1String("Fish")) {
+                QFile sshConfig(QStandardPaths::writableLocation(QStandardPaths::HomeLocation) + QStringLiteral("/.ssh/config"));
+                if (!sshConfig.open(QIODevice::ReadOnly | QIODevice::Text)) {
+                    return false;
+                }
+
+                QTextStream in(&sshConfig);
+                QString fileContents = in.readAll();
+                sshConfig.close();
+
+                if (!sshConfig.open(QIODevice::WriteOnly | QIODevice::Text)) {
+                    return false;
+                }
+
+                int index = fileContents.indexOf(fishConfigEntry);
+                if (index != -1) {
+                    fileContents.remove(index, fishConfigEntry.length());
+                }
+
+                QTextStream out(&sshConfig);
+                out << fileContents;
+                sshConfig.close();
+            }
+
             KMessageBox::error(this, i18n("Unable to connect to server.  Please check your settings and try again."));
             button(BackButton)->setEnabled(true);
             return false;
@@ -290,6 +437,8 @@ bool KNetAttach::updateForProtocol(const QString &protocol)
         _user->hide();
         _encodingText->hide();
         _encoding->hide();
+        _useCustomKey->hide();
+        _chooseCustomKey->hide();
     } else if (protocol == QLatin1String("Fish")) {
         _useEncryption->hide();
         _portText->show();
@@ -300,6 +449,8 @@ bool KNetAttach::updateForProtocol(const QString &protocol)
         _user->show();
         _encodingText->show();
         _encoding->show();
+        _useCustomKey->show();
+        _chooseCustomKey->show();
     } else if (protocol == QLatin1String("FTP")) {
         _useEncryption->hide();
         _portText->show();
@@ -310,6 +461,8 @@ bool KNetAttach::updateForProtocol(const QString &protocol)
         _user->show();
         _encodingText->show();
         _encoding->show();
+        _useCustomKey->hide();
+        _chooseCustomKey->hide();
     } else if (protocol == QLatin1String("SMB")) {
         _useEncryption->hide();
         _portText->hide();
@@ -320,6 +473,8 @@ bool KNetAttach::updateForProtocol(const QString &protocol)
         _user->hide();
         _encodingText->hide();
         _encoding->hide();
+        _useCustomKey->hide();
+        _chooseCustomKey->hide();
     } else {
         _type = QString();
         return false;
