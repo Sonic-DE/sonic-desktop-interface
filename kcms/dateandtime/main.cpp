@@ -108,7 +108,9 @@ bool KclockModule::timedatedSave()
     auto reply = timedateIface.SetNTP(dtime->ntpEnabled(), true);
     reply.waitForFinished();
     if (reply.isError()) {
-        KMessageBox::error(widget(), i18n("Unable to change NTP settings"));
+        if (reply.error().name() != QDBusError::errorString(QDBusError::AccessDenied)) {
+            KMessageBox::error(widget(), i18n("Unable to change NTP settings"));
+        }
         qWarning() << "Failed to enable NTP" << reply.error().name() << reply.error().message();
         rc = false;
     }
@@ -119,7 +121,9 @@ bool KclockModule::timedatedSave()
         auto reply = timedateIface.SetTime(timeDiff * 1000, true, true);
         reply.waitForFinished();
         if (reply.isError()) {
-            KMessageBox::error(widget(), i18n("Unable to set current time"));
+            if (reply.error().name() != QDBusError::errorString(QDBusError::AccessDenied)) {
+                KMessageBox::error(widget(), i18n("Unable to set current time"));
+            }
             qWarning() << "Failed to set current time" << reply.error().name() << reply.error().message();
             rc = false;
         }
@@ -129,7 +133,9 @@ bool KclockModule::timedatedSave()
         auto reply = timedateIface.SetTimezone(selectedTimeZone, true);
         reply.waitForFinished();
         if (reply.isError()) {
-            KMessageBox::error(widget(), i18n("Unable to set timezone"));
+            if (reply.error().name() != QDBusError::errorString(QDBusError::AccessDenied)) {
+                KMessageBox::error(widget(), i18n("Unable to set timezone"));
+            }
             qWarning() << "Failed to set timezone" << reply.error().name() << reply.error().message();
             rc = false;
         }
