@@ -352,6 +352,10 @@ ContainmentItem {
 
                 onUserDrag: (newPosition, dragCenter) => {
                     const pos = mapToItem(root.parent, dragCenter.x, dragCenter.y);
+                    // User likely touched screen edges, so ignore that.
+                    if (pos.x < 0 || pos.y < 0) {
+                        return;
+                    }
                     const newCont = root.containmentItemAt(pos.x, pos.y);
 
                     if (!newCont || newCont.plasmoid !== Plasmoid) {
