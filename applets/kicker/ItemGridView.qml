@@ -73,6 +73,7 @@ FocusScope {
     }
 
     function tryActivate(row, col) {
+        console.log('vvv', row, col, gridView.model.description)
         if (count) {
             var columns = Math.floor(width / itemGrid.cellWidth);
             var rows = Math.ceil(count / columns);
