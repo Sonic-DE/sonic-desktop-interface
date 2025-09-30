@@ -37,6 +37,24 @@ PlasmaComponents.ScrollView {
         return repeater.itemAt(index).itemGrid;
     }
 
+    function selectFirstElement() {
+        let foundAny = false
+        for (var i = 0; i < repeater.count; i++) {
+            if (subGridAt(i).count > 0) {
+                let grid = subGridAt(i)
+                if (!foundAny) {
+                    grid.currentIndex = 0
+                    if (itemMultiGrid.grabFocus) {
+                        grid.focus = true
+                    }
+                    foundAny = true
+                } else {
+                    grid.currentIndex = -1
+                }
+            }
+        }
+    }
+
     function tryActivate(row, col) { // FIXME TODO: Cleanup messy algo.
         if (flickable.contentY > 0) {
             row = 0;
@@ -160,13 +178,7 @@ PlasmaComponents.ScrollView {
                             }
                         }
 
-                        onCountChanged: {
-                            if (index == 0)
-                                currentIndex = 0;
-                            if (itemMultiGrid.grabFocus && index == 0 && count > 0) {
-                                focus = true;
-                            }
-                        }
+                        onCountChanged: selectFirstElement()
 
                         onCurrentItemChanged: {
                             if (!currentItem) {
