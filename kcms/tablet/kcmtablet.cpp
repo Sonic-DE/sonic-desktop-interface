@@ -331,7 +331,9 @@ void Tablet::refreshNeedsSave()
 
 bool Tablet::isSaveNeeded() const
 {
-    return !m_unsavedMappings.isEmpty() || m_tabletsModel->isSaveNeeded();
+    const auto cfg = KSharedConfig::openConfig("kcminputrc");
+    const KConfigGroup tabletGroup = cfg->group(QStringLiteral("Tablet"));
+    return !m_unsavedMappings.isEmpty() || m_tabletsModel->isSaveNeeded() || tabletGroup.readEntry(QStringLiteral("SyncWithMouse"), false) != m_syncWithMouse;
 }
 
 bool Tablet::isDefaults() const
@@ -355,6 +357,13 @@ void Tablet::load()
 
     m_unsavedMappings.clear();
     Q_EMIT settingsRestored();
+
+    const auto cfg = KSharedConfig::openConfig("kcminputrc");
+    const KConfigGroup tabletGroup = cfg->group(QStringLiteral("Tablet"));
+    m_syncWithMouse = tabletGroup.readEntry(QStringLiteral("SyncWithMouse"), false);
+    Q_EMIT syncWithMouseChanged();
+
+    refreshNeedsSave();
 }
 
 void Tablet::save()
@@ -398,13 +407,20 @@ void Tablet::save()
     }
     generalGroup.sync();
     m_unsavedMappings.clear();
+
+    const auto cfg = KSharedConfig::openConfig("kcminputrc");
+    KConfigGroup tabletGroup = cfg->group(QStringLiteral("Tablet"));
+    tabletGroup.writeEntry(QStringLiteral("SyncWithMouse"), m_syncWithMouse, KConfig::Notify);
+    cfg->sync();
 }
 
 void Tablet::defaults()
 {
     m_tabletsModel->defaults();
     m_unsavedMappings.clear();
+    m_syncWithMouse = false;
     Q_EMIT settingsRestored();
+    Q_EMIT syncWithMouseChanged();
 }
 
 void Tablet::assignPadButtonMapping(const QString &deviceName, uint button, const InputSequence &keySequence)
@@ -529,6 +545,20 @@ QList<QPointF> Tablet::fromSerializedCurve(const QString &curve)
 WacomDeviceDatabase *Tablet::db() const
 {
     return m_db;
+}
+
+bool Tablet::syncWithMouse() const
+{
+    return m_syncWithMouse;
+}
+
+void Tablet::setSyncWithMouse(bool value)
+{
+    if (m_syncWithMouse != value) {
+        m_syncWithMouse = value;
+        Q_EMIT syncWithMouseChanged();
+        refreshNeedsSave();
+    }
 }
 
 TabletsModel *Tablet::tabletsModel() const
