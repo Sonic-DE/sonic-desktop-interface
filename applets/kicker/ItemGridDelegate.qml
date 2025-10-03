@@ -84,7 +84,7 @@ Item {
         elide: Text.ElideMiddle
         wrapMode: Text.Wrap
 
-        color: "white" // FIXME TODO: Respect theming?
+        //color: "white" // FIXME TODO: Respect theming?
 
         text: model?.name ?? model.display ?? ""
         textFormat: Text.PlainText
