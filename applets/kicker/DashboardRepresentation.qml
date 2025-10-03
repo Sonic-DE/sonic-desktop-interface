@@ -45,9 +45,15 @@ Kicker.DashboardWindow {
         }
     }
 
+    property bool inhibitFocus: false
     onActiveChanged: {
         if (!active && visible) {
-            root.toggle();
+            if (inhibitFocus) {
+                root.raise()
+                root.requestActivate()
+            } else {
+                root.toggle()
+            }
         }
     }
 
