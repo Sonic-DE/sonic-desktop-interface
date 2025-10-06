@@ -40,10 +40,6 @@ Folder.SubDialog {
     hideOnWindowDeactivate: (allowClosing && (childDialog === null))
 
     onContainsMouseChanged: {
-        if (!allowClosing) {
-            closeTimer.stop();
-            return;
-        }
         if (containsMouse) {
             closeTimer.stop();
         } else {
@@ -77,7 +73,7 @@ Folder.SubDialog {
             layoutDirection: Qt.LeftToRight
 
             onDragInProgressAnywhereChanged: {
-                if (!dragInProgressAnywhere && !dialog.visible && dialog.allowClosing) {
+                if (!dragInProgressAnywhere && !dialog.visible) {
                     dialog.destroy();
                 }
             }
@@ -115,9 +111,6 @@ Folder.SubDialog {
     ]
 
     function requestDestroy() {
-        if (!allowClosing) {
-            return;
-        }
         if (folderView.dragInProgressAnywhere) {
             visible = false;
         } else {
@@ -126,9 +119,7 @@ Folder.SubDialog {
     }
 
     function delayedDestroy() {
-        if (allowClosing){
-            Qt.callLater(() => itemDialog.destroy());
-        }
+        Qt.callLater(() => itemDialog.destroy());
     }
 
     Component.onDestruction: {
