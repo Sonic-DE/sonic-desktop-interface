@@ -2199,6 +2199,7 @@ void FolderModel::setApplet(Plasma::Applet *applet)
                 setScreen(containment->screen());
                 connect(containment, &Plasma::Containment::screenChanged, this, &FolderModel::setScreen);
                 connect(containment, &Plasma::Containment::screenGeometryChanged, this, &FolderModel::screenGeometryChanged);
+                connect(containment, &Plasma::Containment::availableRelativeScreenRectChanged, this, &FolderModel::availableRelativeScreenRectChanged);
             }
         }
 
