@@ -93,12 +93,17 @@ void Positioner::setPerStripe(int perStripe)
         m_perStripe = perStripe;
         Q_EMIT perStripeChanged();
         if (m_enabled) {
-            if (configurationHasResolution(m_resolution)) {
+            const bool configHasResolution = configurationHasResolution(m_resolution);
+            if (configHasResolution) {
                 loadAndApplyPositionsConfig(SkipPerStripeUpdate);
             }
+
             // If no longer deferring positions, update them
             if (!m_deferApplyPositions) {
                 updatePositionsList();
+                if (!configHasResolution) {
+                    convertFolderModelData();
+                }
             }
         }
     }
