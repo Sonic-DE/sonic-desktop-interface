@@ -93,12 +93,18 @@ void Positioner::setPerStripe(int perStripe)
         m_perStripe = perStripe;
         Q_EMIT perStripeChanged();
         if (m_enabled) {
+            bool skipConversion = true;
             if (configurationHasResolution(m_resolution)) {
                 loadAndApplyPositionsConfig(SkipPerStripeUpdate);
+            } else {
+                skipConversion = false;
             }
             // If no longer deferring positions, update them
             if (!m_deferApplyPositions) {
                 updatePositionsList();
+                if (!skipConversion) {
+                    convertFolderModelData();
+                }
             }
         }
     }
