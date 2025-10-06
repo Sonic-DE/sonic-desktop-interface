@@ -353,6 +353,13 @@ void FolderModel::newFileMenuItemCreated(const QUrl &url)
         m_menuPosition = {};
         m_dropTargetPositionsCleanup->start();
     }
+    setCreatingNewItems(false);
+}
+
+void FolderModel::newFileMenuItemRejected(const QUrl &url)
+{
+    Q_UNUSED(url);
+    setCreatingNewItems(false);
 }
 
 QString FolderModel::url() const
@@ -1776,8 +1783,14 @@ void FolderModel::createActions()
 
     m_newMenu = new KNewFileMenu(this);
     m_newMenu->setModal(false);
+    // Disallow closing the popup when action to open the dialog is triggered
+    connect(m_newMenu, &KNewFileMenu::triggered, this, [this]() {
+        setCreatingNewItems(true);
+    });
     connect(m_newMenu, &KNewFileMenu::directoryCreated, this, &FolderModel::newFileMenuItemCreated);
     connect(m_newMenu, &KNewFileMenu::fileCreated, this, &FolderModel::newFileMenuItemCreated);
+    connect(m_newMenu, &KNewFileMenu::directoryCreationRejected, this, &FolderModel::newFileMenuItemRejected);
+    connect(m_newMenu, &KNewFileMenu::fileCreationRejected, this, &FolderModel::newFileMenuItemRejected);
 
     m_actionCollection.addAction(QStringLiteral("newMenu"), m_newMenu);
 
@@ -2215,6 +2228,19 @@ QRectF FolderModel::screenGeometry()
         }
     }
     return QRectF();
+}
+
+bool FolderModel::creatingNewItems() const
+{
+    return m_creatingNewItems;
+}
+
+void FolderModel::setCreatingNewItems(bool enabled)
+{
+    if (m_creatingNewItems != enabled) {
+        m_creatingNewItems = enabled;
+        Q_EMIT creatingNewItemsChanged();
+    }
 }
 
 bool FolderModel::showHiddenFiles() const
