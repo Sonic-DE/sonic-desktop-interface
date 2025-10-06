@@ -1262,6 +1262,16 @@ FocusScope {
                 }
             }
 
+            onScreenGeometryChanged: {
+                if (!positioner.enabled) {
+                    return;
+                }
+                const rows = (gridView.flow === GridView.FlowLeftToRight);
+                const axis = rows ? gridView.width : gridView.height;
+                const step = rows ? gridView.cellWidth : gridView.cellHeight;
+                positioner.perStripe = Math.floor(axis / step);
+            }
+
             onMove: (x, y, urls) => {
                 if (!positioner.enabled) {
                     return;
