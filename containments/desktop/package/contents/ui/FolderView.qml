@@ -41,6 +41,7 @@ FocusScope {
     property alias filterPattern: dir.filterPattern
     property alias filterMimeTypes: dir.filterMimeTypes
     property alias showHiddenFiles: dir.showHiddenFiles
+    property alias creatingNewItems: dir.creatingNewItems
     property alias flow: gridView.flow
     property alias layoutDirection: gridView.layoutDirection
     property alias cellWidth: gridView.cellWidth
