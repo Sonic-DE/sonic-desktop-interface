@@ -283,6 +283,7 @@ Q_SIGNALS:
     void showHiddenFilesChanged() const;
     void itemRenamed() const;
     void screenGeometryChanged() const;
+    void availableRelativeScreenRectChanged() const;
     void selectionDone();
 
 protected:
