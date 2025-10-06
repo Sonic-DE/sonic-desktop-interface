@@ -37,9 +37,13 @@ Folder.SubDialog {
     property alias url: folderView.url
 
     location: PlasmaCore.Types.Floating
-    hideOnWindowDeactivate: (childDialog === null)
+    hideOnWindowDeactivate: (allowClosing && (childDialog === null))
 
     onContainsMouseChanged: {
+        if (!allowClosing) {
+            closeTimer.stop();
+            return;
+        }
         if (containsMouse) {
             closeTimer.stop();
         } else {
@@ -73,9 +77,12 @@ Folder.SubDialog {
             layoutDirection: Qt.LeftToRight
 
             onDragInProgressAnywhereChanged: {
-                if (!dragInProgressAnywhere && !dialog.visible) {
+                if (!dragInProgressAnywhere && !dialog.visible && dialog.allowClosing) {
                     dialog.destroy();
                 }
+            }
+            onCreatingNewItemsChanged: {
+                dialog.allowClosing = !creatingNewItems;
             }
         }
 
@@ -108,6 +115,9 @@ Folder.SubDialog {
     ]
 
     function requestDestroy() {
+        if (!allowClosing) {
+            return;
+        }
         if (folderView.dragInProgressAnywhere) {
             visible = false;
         } else {
@@ -116,10 +126,13 @@ Folder.SubDialog {
     }
 
     function delayedDestroy() {
-        Qt.callLater(() => itemDialog.destroy());
+        if (allowClosing){
+            Qt.callLater(() => itemDialog.destroy());
+        }
     }
 
     Component.onDestruction: {
         closeTimer.stop();
     }
+
 }
