@@ -17,7 +17,9 @@ import org.kde.plasma.private.kcm_keyboard as KCMKeyboard
 Kirigami.Dialog {
     id: dialog
 
-    title: i18nc("@title:window", "Add Layout")
+    property bool isMobile: false
+
+    title: isMobile ? i18nc("@title:window", "Set Layout") : i18nc("@title:window", "Add Layout")
 
     implicitWidth: Kirigami.Units.gridUnit * 34
     implicitHeight: Kirigami.Units.gridUnit * 26
@@ -38,7 +40,13 @@ Kirigami.Dialog {
         const shortcut = sequenceItem.keySequence;
         const displayName = layout === displayNameField.text ? "" : displayNameField.text
 
-        kcm.userLayoutModel.addLayout(layout, variant, shortcut, displayName)
+        if (!isMobile) {
+            console.log("(NOT mobile) adding Layout " + layout + " " + variant)
+            kcm.userLayoutModel.addLayout(layout, variant, shortcut, displayName)
+        } else {
+            console.log("(mobile) setting Layout " + layout + " " + variant)
+            kcm.userLayoutModel.setSingleLayout(layout, variant, shortcut, displayName)
+        }
     }
 
     KCMKeyboard.LayoutSearchModel {
@@ -138,10 +146,12 @@ Kirigami.Dialog {
 
             QQC2.Label {
                 text: i18nc("@option:textbox", "Shortcut:")
+                visible: !isMobile
             }
 
             KQuickControls.KeySequenceItem {
                 id: sequenceItem
+                visible: !isMobile
             }
         }
     }
