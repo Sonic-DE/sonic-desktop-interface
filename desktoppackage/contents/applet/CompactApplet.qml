@@ -47,6 +47,19 @@ PlasmaCore.ToolTipArea {
             fullRepresentation.anchors.fill = null;
             fullRepresentation.parent = appletParent;
             fullRepresentation.anchors.fill = appletParent;
+
+            // This avoids the content being drawn underneath the
+            // separator between the panel and the applet.
+            if (!separator.visible) return;
+            if (Plasmoid.location === PlasmaCore.Types.TopEdge) {
+                fullRepresentation.anchors.topMargin = separator.height
+            } else if (Plasmoid.location === PlasmaCore.Types.BottomEdge) {
+                fullRepresentation.anchors.bottomMargin = separator.height
+            } else if (Plasmoid.location === PlasmaCore.Types.LeftEdge) {
+                fullRepresentation.anchors.leftMargin = separator.width
+            } else if (Plasmoid.location === PlasmaCore.Types.RightEdge) {
+                fullRepresentation.anchors.rightMargin = separator.width
+            }
         }
     }
 
