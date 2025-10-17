@@ -105,8 +105,6 @@ Flickable {
         width: root.itemsWidth
         spacing: Kirigami.Units.smallSpacing * 2
 
-        // Running activities
-
         Repeater {
             id: activitiesList
 
@@ -126,61 +124,11 @@ Flickable {
                 current      : model.isCurrent
                 hasWindows   : model.hasWindows
                 innerPadding : 2 * Kirigami.Units.smallSpacing
-                stoppable    : activitiesList.count > 1
 
                 onClicked    : {
                     ActivitySwitcher.Backend.setCurrentActivity(model.id);
                 }
             }
-        }
-
-        // Stopped activities
-
-        Item {
-            // spacer
-            width  : parent.width
-            height : Kirigami.Units.gridUnit
-        }
-
-        Kirigami.Heading {
-            id: stoppedActivitiesHeading
-
-            text: i18nd("plasma_shell_org.kde.plasma.desktop", "Stopped activities:")
-            textFormat: Text.PlainText
-            level: 3
-            visible: !root.showSwitcherOnly && stoppedActivitiesList.count > 0
-        }
-
-        Repeater {
-            id: stoppedActivitiesList
-
-            model: root.showSwitcherOnly ? null : ActivitySwitcher.Backend.stoppedActivitiesModel()
-
-            delegate: StoppedActivityItem {
-                id: stoppedActivityItem
-
-                width:  parent.width
-
-                visible      : (root.filterString == "") ||
-                               (title.toLowerCase().indexOf(root.filterString) != -1)
-
-                activityId   : model.id
-                title        : model.name
-                icon         : model.iconSource
-                innerPadding : 2 * Kirigami.Units.smallSpacing
-
-                onClicked: {
-                    ActivitySwitcher.Backend.setCurrentActivity(model.id)
-                }
-            }
-        }
-
-        Item {
-            // spacer
-            width  : parent.width
-            height : Kirigami.Units.gridUnit * 2
-
-            visible: stoppedActivitiesHeading.visible
         }
 
         add: Transition {

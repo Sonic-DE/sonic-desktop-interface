@@ -96,7 +96,7 @@ void Positioner::setPerStripe(int perStripe)
             if (configurationHasResolution(m_resolution)) {
                 loadAndApplyPositionsConfig(SkipPerStripeUpdate);
             }
-            // If no longer defering positions, update them
+            // If no longer deferring positions, update them
             if (!m_deferApplyPositions) {
                 updatePositionsList();
             }
@@ -491,7 +491,7 @@ void Positioner::sourceStatusChanged()
 {
     if (m_deferApplyPositions && m_folderModel->status() != FolderModel::Listing) {
         convertFolderModelData();
-        // If no longer defering positions, update them
+        // If no longer deferring positions, update them
         if (!m_deferApplyPositions) {
             updatePositionsList();
         }
@@ -817,13 +817,6 @@ void Positioner::convertFolderModelData()
 
         return;
     }
-
-    // Do not allow saving during this operation
-    beginResetModel();
-
-    m_proxyToSource.clear();
-    m_sourceToProxy.clear();
-
     // Ignore the first two items, which are for stripes and items per stripe
     const QStringList positions = m_positions.mid(2);
 
@@ -831,6 +824,12 @@ void Positioner::convertFolderModelData()
     if (positions.size() % 3 != 0) {
         return;
     }
+
+    // Do not allow saving during this operation
+    beginResetModel();
+
+    m_proxyToSource.clear();
+    m_sourceToProxy.clear();
 
     QHash<QString, int> sourceIndices;
 

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-08-27 00:45+0000\n"
+"POT-Creation-Date: 2025-10-03 00:45+0000\n"
 "PO-Revision-Date: 2025-08-16 07:28+0200\n"
 "Last-Translator: Łukasz Wojniłowicz <lukasz.wojnilowicz@gmail.com>\n"
 "Language-Team: pl\n"
@@ -18,12 +18,12 @@ msgstr ""
 "|| n%100>=20) ? 1 : 2);\n"
 "X-Generator: Lokalize 25.08.0\n"
 
-#: contents/activitymanager/ActivityItem.qml:204
+#: contents/activitymanager/ActivityItem.qml:203
 #, kde-format
 msgid "Currently being used"
 msgstr "Obecnie używane"
 
-#: contents/activitymanager/ActivityItem.qml:244
+#: contents/activitymanager/ActivityItem.qml:243
 #, kde-format
 msgid ""
 "Move to\n"
@@ -32,7 +32,7 @@ msgstr ""
 "Przenieś do\n"
 "tej aktywności"
 
-#: contents/activitymanager/ActivityItem.qml:274
+#: contents/activitymanager/ActivityItem.qml:273
 #, kde-format
 msgid ""
 "Show also\n"
@@ -41,20 +41,10 @@ msgstr ""
 "Pokaż także\n"
 "w tej aktywności"
 
-#: contents/activitymanager/ActivityItem.qml:336
+#: contents/activitymanager/ActivityItem.qml:335
 #, kde-format
 msgid "Configure"
 msgstr "Ustawienia"
-
-#: contents/activitymanager/ActivityItem.qml:355
-#, kde-format
-msgid "Stop activity"
-msgstr "Zatrzymaj aktywność"
-
-#: contents/activitymanager/ActivityList.qml:148
-#, kde-format
-msgid "Stopped activities:"
-msgstr "Zatrzymane aktywności:"
 
 #: contents/activitymanager/ActivityManager.qml:122
 #, kde-format
@@ -97,58 +87,67 @@ msgstr "Otwórz %1"
 msgid "About"
 msgstr "O programie"
 
-#: contents/configuration/AboutPlugin.qml:50
+#: contents/configuration/AboutPlugin.qml:51
 #, kde-format
 msgid "Send an email to %1"
 msgstr "Wyślij wiadomość do %1"
 
-#: contents/configuration/AboutPlugin.qml:64
+#: contents/configuration/AboutPlugin.qml:65
 #, kde-format
 msgctxt "@info:tooltip %1 url"
 msgid "Open website %1"
 msgstr "Otwórz stronę sieciową %1"
 
-#: contents/configuration/AboutPlugin.qml:142
+#: contents/configuration/AboutPlugin.qml:143
 #, kde-format
 msgctxt "@title:group"
 msgid "Website"
 msgstr "Strona sieciowa"
 
-#: contents/configuration/AboutPlugin.qml:153
+#: contents/configuration/AboutPlugin.qml:154
+#, kde-format
+msgctxt "@title:group"
+msgid "Get Help"
+msgstr ""
+
+#: contents/configuration/AboutPlugin.qml:162
+#, fuzzy, kde-format
+#| msgid "Report a Bug…"
+msgid "Report an issue"
+msgstr "Zgłoś błąd..."
+
+#: contents/configuration/AboutPlugin.qml:169
 #, kde-format
 msgid "Copyright"
 msgstr "Prawa autorskie"
 
-#: contents/configuration/AboutPlugin.qml:170
-#, kde-format
-msgid "License:"
+#: contents/configuration/AboutPlugin.qml:188
+#, fuzzy, kde-format
+#| msgid "License:"
+msgid "License: %1"
 msgstr "Licencja:"
 
-#: contents/configuration/AboutPlugin.qml:175
-#, kde-format
-msgctxt "@info:whatsthis"
-msgid "View license text"
-msgstr "Pokazuje tekst licencji"
+#: contents/configuration/AboutPlugin.qml:194
+#, fuzzy, kde-format
+#| msgid "License:"
+msgctxt "@action:button"
+msgid "Read License"
+msgstr "Licencja:"
 
-#: contents/configuration/AboutPlugin.qml:189
+#: contents/configuration/AboutPlugin.qml:208
 #, kde-format
 msgid "Authors"
 msgstr "Autorzy"
 
-#: contents/configuration/AboutPlugin.qml:202
+#: contents/configuration/AboutPlugin.qml:221
 #, kde-format
 msgid "Credits"
 msgstr "Zasługi"
 
-#: contents/configuration/AboutPlugin.qml:216
+#: contents/configuration/AboutPlugin.qml:235
 #, kde-format
 msgid "Translators"
 msgstr "Tłumacze"
-
-#: contents/configuration/AboutPlugin.qml:235
-#, kde-format
-msgid "Report a Bug…"
-msgstr "Zgłoś błąd..."
 
 #: contents/configuration/AppletConfiguration.qml:90
 #, kde-format
@@ -753,12 +752,12 @@ msgstr[0] "Usuń (%1 element interfejsu)"
 msgstr[1] "Usuń (%1 elementy interfejsu)"
 msgstr[2] "Usuń (%1 elementów interfejsu)"
 
-#: contents/explorer/WidgetExplorer.qml:370
+#: contents/explorer/WidgetExplorer.qml:388
 #, kde-format
 msgid "No widgets matched the search terms"
 msgstr "Żaden z elementów interfejsu nie pasuje do wyszukiwanego wyrażenia"
 
-#: contents/explorer/WidgetExplorer.qml:370
+#: contents/explorer/WidgetExplorer.qml:388
 #, kde-format
 msgid "No widgets available"
 msgstr "Brak elementów interfejsu"
@@ -915,6 +914,16 @@ msgstr "Wyjdź z trybu dostosowywania"
 #, kde-format
 msgid "Panel Focus Indicator"
 msgstr "Wskaźnik bycia na pasku"
+
+#~ msgid "Stopped activities:"
+#~ msgstr "Zatrzymane aktywności:"
+
+#~ msgctxt "@info:whatsthis"
+#~ msgid "View license text"
+#~ msgstr "Pokazuje tekst licencji"
+
+#~ msgid "Stop activity"
+#~ msgstr "Zatrzymaj aktywność"
 
 #~ msgid "Author:"
 #~ msgstr "Autor:"

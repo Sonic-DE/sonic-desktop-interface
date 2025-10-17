@@ -61,7 +61,8 @@ QQC2.ItemDelegate {
                 }
                 QQC2.Label {
                     id: keySequenceList
-                    Layout.maximumWidth: parent.width - displayLabel.width - expandButton.width
+                    Layout.fillWidth: true
+                    Layout.horizontalStretchFactor: 1
                     color: {
                         if (root.selected) {
                             return Kirigami.Theme.highlightedTextColor;
@@ -170,7 +171,7 @@ QQC2.ItemDelegate {
                                 Layout.alignment: Qt.AlignRight
                                 keySequence: modelData
                                 showClearButton: false
-                                modifierOnlyAllowed: true
+                                patterns: ShortcutPattern.ModifierAndKey | ShortcutPattern.Modifier
                                 multiKeyShortcutsAllowed: supportsMultipleKeys
                                 checkForConflictsAgainst: ShortcutType.None
                                 onCaptureFinished: {
@@ -218,7 +219,7 @@ QQC2.ItemDelegate {
                             spacing: Kirigami.Units.smallSpacing
                             KeySequenceItem {
                                 showClearButton: false
-                                modifierOnlyAllowed: true
+                                patterns: ShortcutPattern.Modifier | ShortcutPattern.ModifierAndKey
                                 multiKeyShortcutsAllowed: model.supportsMultipleKeys
                                 checkForConflictsAgainst: ShortcutType.None
                                 onCaptureFinished: {

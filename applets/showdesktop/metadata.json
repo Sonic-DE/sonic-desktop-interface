@@ -1,5 +1,4 @@
 {
-    "KPackageStructure": "Plasma/Applet",
     "KPlugin": {
         "Authors": [
             {
@@ -52,7 +51,6 @@
                 "Name[tr]": "Petri Damstén",
                 "Name[uk]": "Petri Damstén",
                 "Name[vi]": "Petri Damstén",
-                "Name[x-test]": "xxPetri Damsténxx",
                 "Name[zh_CN]": "Petri Damstén",
                 "Name[zh_TW]": "Petri Damstén"
             }
@@ -105,7 +103,6 @@
         "Description[tr]": "Pencereleri uzaklaştırarak masaüstünü geçici olarak gösterir",
         "Description[uk]": "Тимчасово показує стільницю, прибравши вікна",
         "Description[vi]": "Tạm thời hiện bàn làm việc bằng cách di chuyển các cửa sổ đi",
-        "Description[x-test]": "xxTemporarily shows the desktop by moving windows awayxx",
         "Description[zh_CN]": "暂时移开窗口以显示桌面",
         "Description[zh_TW]": "將視窗暫時移到旁邊來暫時顯示桌面",
         "EnabledByDefault": true,
@@ -113,7 +110,6 @@
             "desktop"
         ],
         "Icon": "user-desktop",
-        "Id": "org.kde.plasma.showdesktop",
         "License": "GPL-2.0+",
         "Name": "Peek at Desktop",
         "Name[ar]": "نظرة على سطح المكتب",
@@ -162,7 +158,6 @@
         "Name[tr]": "Masaüstüne Bak",
         "Name[uk]": "Показати стільницю",
         "Name[vi]": "Ngó qua bàn làm việc",
-        "Name[x-test]": "xxPeek at Desktopxx",
         "Name[zh_CN]": "暂时显示桌面",
         "Name[zh_TW]": "看一下桌面",
         "Website": "https://kde.org/plasma-desktop"

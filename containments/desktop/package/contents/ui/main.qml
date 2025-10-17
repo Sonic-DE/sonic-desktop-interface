@@ -71,7 +71,7 @@ ContainmentItem {
 
     // Plasmoid.title is set by a Binding {} in FolderViewLayer
     toolTipSubText: ""
-    Plasmoid.icon: (!Plasmoid.configuration.useCustomIcon && folderViewLayer.ready) ? symbolicizeIconName(folderViewLayer.view.model.iconName) : Plasmoid.configuration.icon
+    Plasmoid.icon: (!Plasmoid.configuration.useCustomIcon && folderViewLayer.ready) ? symbolicizeIconName(folderViewLayer.view?.model.iconName) : Plasmoid.configuration.icon
 
     // We want to do this here rather than in the model because we don't always want
     // symbolic icons everywhere, but we do know that we always want them in this
@@ -127,7 +127,7 @@ ContainmentItem {
 
     onFocusChanged: {
         if (focus && isFolder) {
-            folderViewLayer.item.forceActiveFocus();
+            folderViewLayer.item?.forceActiveFocus();
         }
     }
 
@@ -353,8 +353,12 @@ ContainmentItem {
                 onUserDrag: (newPosition, dragCenter) => {
                     const pos = mapToItem(root.parent, dragCenter.x, dragCenter.y);
                     const newCont = root.containmentItemAt(pos.x, pos.y);
+                    // User likely touched screen edges, so ignore that.
+                    if (!newCont) {
+                        return;
+                    }
 
-                    if (!newCont || newCont.plasmoid !== Plasmoid) {
+                    if (newCont.plasmoid !== Plasmoid) {
                         // First go out of applet edit mode, get rid of the config overlay, release mouse grabs in preparation of applet reparenting
                         cancelEdit();
                         appletsLayout.hidePlaceHolder();

@@ -149,7 +149,7 @@ PlasmaExtras.Menu {
                 var item = newMenuItem(menu);
                 item.action = section["actions"][i];
 
-                textMetrics.text = item.action.text;
+                textMetrics.text = item.action.text.replace("&", "&&");
                 item.action.text = textMetrics.elidedText;
 
                 menu.addMenuItem(item, startNewInstanceItem);
@@ -266,7 +266,7 @@ PlasmaExtras.Menu {
                 menu.visualParent.toggleMuted();
             });
             muteItem.text = i18n("Mute");
-            muteItem.icon = "audio-volume-muted";
+            muteItem.icon = "audio-volume-muted" + (Qt.application.layoutDirection === Qt.RightToLeft ? "-rtl" : "");
             menu.addMenuItem(muteItem, startNewInstanceItem);
 
             menu.addMenuItem(newSeparator(menu), startNewInstanceItem);

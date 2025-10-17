@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma_shell_org.kde.plasma.desktop\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-08-27 00:45+0000\n"
-"PO-Revision-Date: 2025-08-12 14:38+0300\n"
+"POT-Creation-Date: 2025-10-03 00:45+0000\n"
+"PO-Revision-Date: 2025-09-19 08:04+0300\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: צוות התרגום של KDE ישראל\n"
 "Language: he\n"
@@ -18,21 +18,21 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n == 1) ? 0 : ((n == 2) ? 1 : ((n > 10 && "
 "n % 10 == 0) ? 2 : 3));\n"
-"X-Generator: Lokalize 25.04.3\n"
+"X-Generator: Lokalize 25.08.0\n"
 
-#: contents/activitymanager/ActivityItem.qml:204
+#: contents/activitymanager/ActivityItem.qml:203
 #, kde-format
 msgid "Currently being used"
 msgstr "בשימוש כרגע"
 
-#: contents/activitymanager/ActivityItem.qml:244
+#: contents/activitymanager/ActivityItem.qml:243
 #, kde-format
 msgid ""
 "Move to\n"
 "this activity"
 msgstr "מעבר לפעילות הזאת"
 
-#: contents/activitymanager/ActivityItem.qml:274
+#: contents/activitymanager/ActivityItem.qml:273
 #, kde-format
 msgid ""
 "Show also\n"
@@ -41,20 +41,10 @@ msgstr ""
 "להציג גם\n"
 "בפעילות זו"
 
-#: contents/activitymanager/ActivityItem.qml:336
+#: contents/activitymanager/ActivityItem.qml:335
 #, kde-format
 msgid "Configure"
 msgstr "הגדרות"
-
-#: contents/activitymanager/ActivityItem.qml:355
-#, kde-format
-msgid "Stop activity"
-msgstr "עצירת פעילות"
-
-#: contents/activitymanager/ActivityList.qml:148
-#, kde-format
-msgid "Stopped activities:"
-msgstr "פעילויות עצורות:"
 
 #: contents/activitymanager/ActivityManager.qml:122
 #, kde-format
@@ -97,58 +87,64 @@ msgstr "פתיחת %1"
 msgid "About"
 msgstr "על אודות"
 
-#: contents/configuration/AboutPlugin.qml:50
+#: contents/configuration/AboutPlugin.qml:51
 #, kde-format
 msgid "Send an email to %1"
 msgstr "שליחת דוא״ל אל %1"
 
-#: contents/configuration/AboutPlugin.qml:64
+#: contents/configuration/AboutPlugin.qml:65
 #, kde-format
 msgctxt "@info:tooltip %1 url"
 msgid "Open website %1"
 msgstr "פתיחת האתר %1"
 
-#: contents/configuration/AboutPlugin.qml:142
+#: contents/configuration/AboutPlugin.qml:143
 #, kde-format
 msgctxt "@title:group"
 msgid "Website"
 msgstr "אתר"
 
-#: contents/configuration/AboutPlugin.qml:153
+#: contents/configuration/AboutPlugin.qml:154
+#, kde-format
+msgctxt "@title:group"
+msgid "Get Help"
+msgstr "קבלת עזרה"
+
+#: contents/configuration/AboutPlugin.qml:162
+#, kde-format
+msgid "Report an issue"
+msgstr "דיווח על תקלה"
+
+#: contents/configuration/AboutPlugin.qml:169
 #, kde-format
 msgid "Copyright"
 msgstr "זכויות יוצרים"
 
-#: contents/configuration/AboutPlugin.qml:170
+#: contents/configuration/AboutPlugin.qml:188
 #, kde-format
-msgid "License:"
-msgstr "רישיון:"
+msgid "License: %1"
+msgstr "רישיון: %1"
 
-#: contents/configuration/AboutPlugin.qml:175
+#: contents/configuration/AboutPlugin.qml:194
 #, kde-format
-msgctxt "@info:whatsthis"
-msgid "View license text"
-msgstr "הצגת טקסט הרישיון"
+msgctxt "@action:button"
+msgid "Read License"
+msgstr "הצגת הרישיון"
 
-#: contents/configuration/AboutPlugin.qml:189
+#: contents/configuration/AboutPlugin.qml:208
 #, kde-format
 msgid "Authors"
 msgstr "יוצרים"
 
-#: contents/configuration/AboutPlugin.qml:202
+#: contents/configuration/AboutPlugin.qml:221
 #, kde-format
 msgid "Credits"
 msgstr "תודות"
 
-#: contents/configuration/AboutPlugin.qml:216
+#: contents/configuration/AboutPlugin.qml:235
 #, kde-format
 msgid "Translators"
 msgstr "מתרגמים"
-
-#: contents/configuration/AboutPlugin.qml:235
-#, kde-format
-msgid "Report a Bug…"
-msgstr "דיווח על תקלה…"
 
 #: contents/configuration/AppletConfiguration.qml:90
 #, kde-format
@@ -755,12 +751,12 @@ msgstr[1] "הסרה (שני וידג׳טים)"
 msgstr[2] "הסרה (%1 וידג׳טים)"
 msgstr[3] "הסרה (%1 וידג׳טים)"
 
-#: contents/explorer/WidgetExplorer.qml:370
+#: contents/explorer/WidgetExplorer.qml:388
 #, kde-format
 msgid "No widgets matched the search terms"
 msgstr "אף יישומון לא עונה על תנאי החיפוש"
 
-#: contents/explorer/WidgetExplorer.qml:370
+#: contents/explorer/WidgetExplorer.qml:388
 #, kde-format
 msgid "No widgets available"
 msgstr "אין יישומונים זמינים"
@@ -917,6 +913,16 @@ msgstr "יציאה ממצב עריכה"
 #, kde-format
 msgid "Panel Focus Indicator"
 msgstr "מחוון מיקוד לוח"
+
+#~ msgid "Stopped activities:"
+#~ msgstr "פעילויות עצורות:"
+
+#~ msgctxt "@info:whatsthis"
+#~ msgid "View license text"
+#~ msgstr "הצגת טקסט הרישיון"
+
+#~ msgid "Stop activity"
+#~ msgstr "עצירת פעילות"
 
 #~ msgid "Author:"
 #~ msgstr "מחבר:"

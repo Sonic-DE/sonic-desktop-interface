@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: KDE 5\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-08-27 00:45+0000\n"
-"PO-Revision-Date: 2025-08-17 21:58+0400\n"
+"POT-Creation-Date: 2025-10-03 00:45+0000\n"
+"PO-Revision-Date: 2025-09-20 20:23+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
 "Language: ar\n"
@@ -20,12 +20,12 @@ msgstr ""
 "&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
 "X-Generator: Lokalize 23.08.5\n"
 
-#: contents/activitymanager/ActivityItem.qml:204
+#: contents/activitymanager/ActivityItem.qml:203
 #, kde-format
 msgid "Currently being used"
 msgstr "مُستخدم حاليًّا"
 
-#: contents/activitymanager/ActivityItem.qml:244
+#: contents/activitymanager/ActivityItem.qml:243
 #, kde-format
 msgid ""
 "Move to\n"
@@ -34,7 +34,7 @@ msgstr ""
 "انقل إلى\n"
 "هذا النشاط"
 
-#: contents/activitymanager/ActivityItem.qml:274
+#: contents/activitymanager/ActivityItem.qml:273
 #, kde-format
 msgid ""
 "Show also\n"
@@ -43,20 +43,10 @@ msgstr ""
 "أظهر أيضا\n"
 "في هذه النشاط"
 
-#: contents/activitymanager/ActivityItem.qml:336
+#: contents/activitymanager/ActivityItem.qml:335
 #, kde-format
 msgid "Configure"
 msgstr "اضبط"
-
-#: contents/activitymanager/ActivityItem.qml:355
-#, kde-format
-msgid "Stop activity"
-msgstr "أوقف النّشاط"
-
-#: contents/activitymanager/ActivityList.qml:148
-#, kde-format
-msgid "Stopped activities:"
-msgstr "الأنشطة الموقفة:"
 
 #: contents/activitymanager/ActivityManager.qml:122
 #, kde-format
@@ -99,58 +89,64 @@ msgstr "افتح %1"
 msgid "About"
 msgstr "عن"
 
-#: contents/configuration/AboutPlugin.qml:50
+#: contents/configuration/AboutPlugin.qml:51
 #, kde-format
 msgid "Send an email to %1"
 msgstr "أرسِل بريد الإلكتروني إلى %1"
 
-#: contents/configuration/AboutPlugin.qml:64
+#: contents/configuration/AboutPlugin.qml:65
 #, kde-format
 msgctxt "@info:tooltip %1 url"
 msgid "Open website %1"
 msgstr "افتح موقع %1"
 
-#: contents/configuration/AboutPlugin.qml:142
+#: contents/configuration/AboutPlugin.qml:143
 #, kde-format
 msgctxt "@title:group"
 msgid "Website"
 msgstr "موقع الوبّ"
 
-#: contents/configuration/AboutPlugin.qml:153
+#: contents/configuration/AboutPlugin.qml:154
+#, kde-format
+msgctxt "@title:group"
+msgid "Get Help"
+msgstr "احصل على المساعدة"
+
+#: contents/configuration/AboutPlugin.qml:162
+#, kde-format
+msgid "Report an issue"
+msgstr "أبلغ عن مشكلة"
+
+#: contents/configuration/AboutPlugin.qml:169
 #, kde-format
 msgid "Copyright"
 msgstr "حقوق النسخ"
 
-#: contents/configuration/AboutPlugin.qml:170
+#: contents/configuration/AboutPlugin.qml:188
 #, kde-format
-msgid "License:"
-msgstr "الرّخصة:"
+msgid "License: %1"
+msgstr "الترخيص: %1"
 
-#: contents/configuration/AboutPlugin.qml:175
+#: contents/configuration/AboutPlugin.qml:194
 #, kde-format
-msgctxt "@info:whatsthis"
-msgid "View license text"
-msgstr "اعرض نص الترخيص"
+msgctxt "@action:button"
+msgid "Read License"
+msgstr "اقرأ الرّخصة"
 
-#: contents/configuration/AboutPlugin.qml:189
+#: contents/configuration/AboutPlugin.qml:208
 #, kde-format
 msgid "Authors"
 msgstr "المؤلفين"
 
-#: contents/configuration/AboutPlugin.qml:202
+#: contents/configuration/AboutPlugin.qml:221
 #, kde-format
 msgid "Credits"
 msgstr "الإشادات"
 
-#: contents/configuration/AboutPlugin.qml:216
+#: contents/configuration/AboutPlugin.qml:235
 #, kde-format
 msgid "Translators"
 msgstr "المترجمون"
-
-#: contents/configuration/AboutPlugin.qml:235
-#, kde-format
-msgid "Report a Bug…"
-msgstr "بلغ عن علة…"
 
 #: contents/configuration/AppletConfiguration.qml:90
 #, kde-format
@@ -764,12 +760,12 @@ msgstr[3] "أزل تثبيت (%1 أدوات)"
 msgstr[4] "أزل تثبيت (%1 أداة)"
 msgstr[5] "أزل تثبيت (%1 أداة)"
 
-#: contents/explorer/WidgetExplorer.qml:370
+#: contents/explorer/WidgetExplorer.qml:388
 #, kde-format
 msgid "No widgets matched the search terms"
 msgstr "لا توجد أدوات مطابقة لشروط البحث"
 
-#: contents/explorer/WidgetExplorer.qml:370
+#: contents/explorer/WidgetExplorer.qml:388
 #, kde-format
 msgid "No widgets available"
 msgstr "لا تتوفر أدوات"
@@ -926,6 +922,16 @@ msgstr "اخرج من نمط التحرير"
 #, kde-format
 msgid "Panel Focus Indicator"
 msgstr "مؤشر التركيز على اللوحة"
+
+#~ msgid "Stopped activities:"
+#~ msgstr "الأنشطة الموقفة:"
+
+#~ msgctxt "@info:whatsthis"
+#~ msgid "View license text"
+#~ msgstr "اعرض نص الترخيص"
+
+#~ msgid "Stop activity"
+#~ msgstr "أوقف النّشاط"
 
 #~ msgid "Author:"
 #~ msgstr "المؤلّف:"

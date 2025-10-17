@@ -31,6 +31,13 @@ KCMUtils.SimpleKCM {
         hotplugMessage: root.KCMUtils.ConfigModule.hotplugMessage
     }
 
+    Kirigami.ColumnView.onViewChanged: {
+        const view = Kirigami.ColumnView.view
+        if (view) {
+            view.interactive = Qt.binding(() => !newBinding.checked)
+        }
+    }
+
     MouseArea {
         // Deliberately using MouseArea on the page instead of a TapHandler on the button, so we can capture clicks anywhere
         id: buttonCapture
@@ -77,8 +84,7 @@ KCMUtils.SimpleKCM {
 
                     keySequence: root.backend.buttonMapping[modelData.buttonName]
 
-                    modifierlessAllowed: true
-                    modifierOnlyAllowed: true
+                    patterns: KQuickControls.ShortcutPattern.Modifier | KQuickControls.ShortcutPattern.Key | KQuickControls.ShortcutPattern.ModifierAndKey
                     multiKeyShortcutsAllowed: false
                     checkForConflictsAgainst: KQuickControls.ShortcutType.None
 
@@ -130,8 +136,7 @@ KCMUtils.SimpleKCM {
                 id: newKeySequenceItem
                 visible: false
 
-                modifierlessAllowed: true
-                modifierOnlyAllowed: true
+                patterns: KQuickControls.ShortcutPattern.Modifier | KQuickControls.ShortcutPattern.Key | KQuickControls.ShortcutPattern.ModifierAndKey
                 multiKeyShortcutsAllowed: false
                 checkForConflictsAgainst: KQuickControls.ShortcutType.None
 

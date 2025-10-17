@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-08-27 00:45+0000\n"
-"PO-Revision-Date: 2025-08-12 07:19+0200\n"
+"POT-Creation-Date: 2025-10-03 00:45+0000\n"
+"PO-Revision-Date: 2025-09-19 10:15+0200\n"
 "Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
 "Language: sl\n"
@@ -19,14 +19,14 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n"
 "%100==4 ? 3 : 0);\n"
 "Translator: Andrej Mernik <andrejm@ubuntu.si>\n"
-"X-Generator: Poedit 3.6\n"
+"X-Generator: Poedit 3.7\n"
 
-#: contents/activitymanager/ActivityItem.qml:204
+#: contents/activitymanager/ActivityItem.qml:203
 #, kde-format
 msgid "Currently being used"
 msgstr "Je trenutno v uporabi"
 
-#: contents/activitymanager/ActivityItem.qml:244
+#: contents/activitymanager/ActivityItem.qml:243
 #, kde-format
 msgid ""
 "Move to\n"
@@ -35,7 +35,7 @@ msgstr ""
 "Preseli v\n"
 "to dejavnost"
 
-#: contents/activitymanager/ActivityItem.qml:274
+#: contents/activitymanager/ActivityItem.qml:273
 #, kde-format
 msgid ""
 "Show also\n"
@@ -44,20 +44,10 @@ msgstr ""
 "Prikaži tudi\n"
 "v tej dejavnosti"
 
-#: contents/activitymanager/ActivityItem.qml:336
+#: contents/activitymanager/ActivityItem.qml:335
 #, kde-format
 msgid "Configure"
 msgstr "Nastavi"
-
-#: contents/activitymanager/ActivityItem.qml:355
-#, kde-format
-msgid "Stop activity"
-msgstr "Zaustavi dejavnost"
-
-#: contents/activitymanager/ActivityList.qml:148
-#, kde-format
-msgid "Stopped activities:"
-msgstr "Zaustavljene dejavnosti:"
 
 #: contents/activitymanager/ActivityManager.qml:122
 #, kde-format
@@ -100,58 +90,64 @@ msgstr "Odpri %1"
 msgid "About"
 msgstr "O programu"
 
-#: contents/configuration/AboutPlugin.qml:50
+#: contents/configuration/AboutPlugin.qml:51
 #, kde-format
 msgid "Send an email to %1"
 msgstr "Pošlji e-pošto za %1"
 
-#: contents/configuration/AboutPlugin.qml:64
+#: contents/configuration/AboutPlugin.qml:65
 #, kde-format
 msgctxt "@info:tooltip %1 url"
 msgid "Open website %1"
 msgstr "Odpri spletišče %1"
 
-#: contents/configuration/AboutPlugin.qml:142
+#: contents/configuration/AboutPlugin.qml:143
 #, kde-format
 msgctxt "@title:group"
 msgid "Website"
 msgstr "Spletišče"
 
-#: contents/configuration/AboutPlugin.qml:153
+#: contents/configuration/AboutPlugin.qml:154
+#, kde-format
+msgctxt "@title:group"
+msgid "Get Help"
+msgstr "Dobi pomoč"
+
+#: contents/configuration/AboutPlugin.qml:162
+#, kde-format
+msgid "Report an issue"
+msgstr "Poročaj o težavi"
+
+#: contents/configuration/AboutPlugin.qml:169
 #, kde-format
 msgid "Copyright"
 msgstr "Copyright"
 
-#: contents/configuration/AboutPlugin.qml:170
+#: contents/configuration/AboutPlugin.qml:188
 #, kde-format
-msgid "License:"
-msgstr "Licenca:"
+msgid "License: %1"
+msgstr "Licenca: %1"
 
-#: contents/configuration/AboutPlugin.qml:175
+#: contents/configuration/AboutPlugin.qml:194
 #, kde-format
-msgctxt "@info:whatsthis"
-msgid "View license text"
-msgstr "Poglej besedilo dovoljenja"
+msgctxt "@action:button"
+msgid "Read License"
+msgstr "Preberi licenco"
 
-#: contents/configuration/AboutPlugin.qml:189
+#: contents/configuration/AboutPlugin.qml:208
 #, kde-format
 msgid "Authors"
 msgstr "Avtorji"
 
-#: contents/configuration/AboutPlugin.qml:202
+#: contents/configuration/AboutPlugin.qml:221
 #, kde-format
 msgid "Credits"
 msgstr "Zasluge"
 
-#: contents/configuration/AboutPlugin.qml:216
+#: contents/configuration/AboutPlugin.qml:235
 #, kde-format
 msgid "Translators"
 msgstr "Prevajalci"
-
-#: contents/configuration/AboutPlugin.qml:235
-#, kde-format
-msgid "Report a Bug…"
-msgstr "Poročaj o hrošču…"
 
 #: contents/configuration/AppletConfiguration.qml:90
 #, kde-format
@@ -764,12 +760,12 @@ msgstr[1] "Odnamesti (%1gradnik)"
 msgstr[2] "Odnamesti (%1gradnika)"
 msgstr[3] "Odnamesti (%1gradnike)"
 
-#: contents/explorer/WidgetExplorer.qml:370
+#: contents/explorer/WidgetExplorer.qml:388
 #, kde-format
 msgid "No widgets matched the search terms"
 msgstr "Noben gradnik se ne ujema z iskalnimi izrazi"
 
-#: contents/explorer/WidgetExplorer.qml:370
+#: contents/explorer/WidgetExplorer.qml:388
 #, kde-format
 msgid "No widgets available"
 msgstr "Gradnikov ni na voljo"
@@ -926,6 +922,16 @@ msgstr "Izhod iz urejevalnega načina"
 #, kde-format
 msgid "Panel Focus Indicator"
 msgstr "Indikator fokusa plošče"
+
+#~ msgid "Stopped activities:"
+#~ msgstr "Zaustavljene dejavnosti:"
+
+#~ msgctxt "@info:whatsthis"
+#~ msgid "View license text"
+#~ msgstr "Poglej besedilo dovoljenja"
+
+#~ msgid "Stop activity"
+#~ msgstr "Zaustavi dejavnost"
 
 #~ msgid "Author:"
 #~ msgstr "Avtor:"

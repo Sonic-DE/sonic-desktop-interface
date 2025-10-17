@@ -6,23 +6,23 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-desktop\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-08-27 00:45+0000\n"
-"PO-Revision-Date: 2025-05-18 20:57+0530\n"
+"POT-Creation-Date: 2025-10-03 00:45+0000\n"
+"PO-Revision-Date: 2025-09-21 13:26+0530\n"
 "Last-Translator: Kishore G <kishore96@gmail.com>\n"
-"Language-Team: Tamil <kde-i18n-doc@kde.org>\n"
+"Language-Team: Tamil <kde-l10n-ta@kde.org>\n"
 "Language: ta\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 25.04.1\n"
+"X-Generator: Lokalize 25.08.1\n"
 
-#: contents/activitymanager/ActivityItem.qml:204
+#: contents/activitymanager/ActivityItem.qml:203
 #, kde-format
 msgid "Currently being used"
 msgstr "இப்போது பயன்படுத்தப்படுவது"
 
-#: contents/activitymanager/ActivityItem.qml:244
+#: contents/activitymanager/ActivityItem.qml:243
 #, kde-format
 msgid ""
 "Move to\n"
@@ -31,7 +31,7 @@ msgstr ""
 "இந்த செயல்பாட்டிற்கு\n"
 "நகர்த்து"
 
-#: contents/activitymanager/ActivityItem.qml:274
+#: contents/activitymanager/ActivityItem.qml:273
 #, kde-format
 msgid ""
 "Show also\n"
@@ -40,20 +40,10 @@ msgstr ""
 "இந்த செயல்பாட்டிலும்\n"
 "காட்டு"
 
-#: contents/activitymanager/ActivityItem.qml:336
+#: contents/activitymanager/ActivityItem.qml:335
 #, kde-format
 msgid "Configure"
 msgstr "அமை"
-
-#: contents/activitymanager/ActivityItem.qml:355
-#, kde-format
-msgid "Stop activity"
-msgstr "செயல்பாட்டை நிறுத்து"
-
-#: contents/activitymanager/ActivityList.qml:148
-#, kde-format
-msgid "Stopped activities:"
-msgstr "நிறுத்திய செயல்பாட்டுகள்:"
 
 #: contents/activitymanager/ActivityManager.qml:122
 #, kde-format
@@ -96,58 +86,64 @@ msgstr "%1-ஐ திற"
 msgid "About"
 msgstr "பற்றி"
 
-#: contents/configuration/AboutPlugin.qml:50
+#: contents/configuration/AboutPlugin.qml:51
 #, kde-format
 msgid "Send an email to %1"
 msgstr "%1 என்பவருக்கு மின்னஞ்சல் அனுப்பு"
 
-#: contents/configuration/AboutPlugin.qml:64
+#: contents/configuration/AboutPlugin.qml:65
 #, kde-format
 msgctxt "@info:tooltip %1 url"
 msgid "Open website %1"
 msgstr "%1 எனும் இணையதளத்தைத் திற"
 
-#: contents/configuration/AboutPlugin.qml:142
+#: contents/configuration/AboutPlugin.qml:143
 #, kde-format
 msgctxt "@title:group"
 msgid "Website"
-msgstr ""
+msgstr "இணையதளம்"
 
-#: contents/configuration/AboutPlugin.qml:153
+#: contents/configuration/AboutPlugin.qml:154
+#, kde-format
+msgctxt "@title:group"
+msgid "Get Help"
+msgstr "உதவி பெறுவது"
+
+#: contents/configuration/AboutPlugin.qml:162
+#, kde-format
+msgid "Report an issue"
+msgstr "பிழையை தெரிவி"
+
+#: contents/configuration/AboutPlugin.qml:169
 #, kde-format
 msgid "Copyright"
 msgstr "பதிப்புரிமை"
 
-#: contents/configuration/AboutPlugin.qml:170
+#: contents/configuration/AboutPlugin.qml:188
 #, kde-format
-msgid "License:"
-msgstr "உரிமம்:"
+msgid "License: %1"
+msgstr "உரிமம்: %1"
 
-#: contents/configuration/AboutPlugin.qml:175
+#: contents/configuration/AboutPlugin.qml:194
 #, kde-format
-msgctxt "@info:whatsthis"
-msgid "View license text"
-msgstr "உரிமத்தின் உரையைக் காட்டும்"
+msgctxt "@action:button"
+msgid "Read License"
+msgstr "உரிமத்தைக் காட்டு"
 
-#: contents/configuration/AboutPlugin.qml:189
+#: contents/configuration/AboutPlugin.qml:208
 #, kde-format
 msgid "Authors"
 msgstr "இயற்றியவர்கள்"
 
-#: contents/configuration/AboutPlugin.qml:202
+#: contents/configuration/AboutPlugin.qml:221
 #, kde-format
 msgid "Credits"
 msgstr "நன்றி"
 
-#: contents/configuration/AboutPlugin.qml:216
+#: contents/configuration/AboutPlugin.qml:235
 #, kde-format
 msgid "Translators"
 msgstr "மொழிபெயர்ப்பாளர்கள்"
-
-#: contents/configuration/AboutPlugin.qml:235
-#, kde-format
-msgid "Report a Bug…"
-msgstr "பிழையை தெரிவி…"
 
 #: contents/configuration/AppletConfiguration.qml:90
 #, kde-format
@@ -733,12 +729,10 @@ msgid "Close Widget Explorer"
 msgstr "பிளாஸ்மாய்ட் உலாவியை மூடு"
 
 #: contents/explorer/WidgetExplorer.qml:208
-#, fuzzy, kde-format
-#| msgctxt "@label:textbox accessible"
-#| msgid "Search Widgets"
+#, kde-format
 msgctxt "@label:textbox accessible"
 msgid "Search through widgets"
-msgstr "பிளாஸ்மாய்டுகளில் தேடு"
+msgstr "பிளாஸ்மாய்டுகளின் பட்டியலில் தேடு"
 
 #: contents/explorer/WidgetExplorer.qml:237
 #, kde-format
@@ -753,12 +747,12 @@ msgid_plural "Uninstall (%1 Widgets)"
 msgstr[0] "நிறுவல்நீக்கு (%1 பிளாஸ்மாய்ட்)"
 msgstr[1] "நிறுவல் நீக்கு (%1 பிளாஸ்மாய்டுகள்)"
 
-#: contents/explorer/WidgetExplorer.qml:370
+#: contents/explorer/WidgetExplorer.qml:388
 #, kde-format
 msgid "No widgets matched the search terms"
 msgstr "தேடலுக்கு எந்த பிளாஸ்மாய்டும் பொருந்தவில்லை"
 
-#: contents/explorer/WidgetExplorer.qml:370
+#: contents/explorer/WidgetExplorer.qml:388
 #, kde-format
 msgid "No widgets available"
 msgstr "பிளாஸ்மாய்டுகள் ஏதுமில்லை"
@@ -806,9 +800,7 @@ msgid "Never show clock"
 msgstr "கடிகாரத்தை ஒருபோதும் காட்டாதே"
 
 #: contents/lockscreen/config.qml:71
-#, fuzzy, kde-format
-#| msgctxt "@title: group"
-#| msgid "Media controls:"
+#, kde-format
 msgctxt "@title: group UI controls for playback of multimedia content"
 msgid "Media controls:"
 msgstr "ஊடக‍ கட்டுப்படுத்திகள்:"
@@ -917,6 +909,16 @@ msgstr "திருத்தும் பயன்முறையிலிர�
 #, kde-format
 msgid "Panel Focus Indicator"
 msgstr "பலகைக் குவியக்காட்டி"
+
+#~ msgid "Stopped activities:"
+#~ msgstr "நிறுத்திய செயல்பாட்டுகள்:"
+
+#~ msgctxt "@info:whatsthis"
+#~ msgid "View license text"
+#~ msgstr "உரிமத்தின் உரையைக் காட்டும்"
+
+#~ msgid "Stop activity"
+#~ msgstr "செயல்பாட்டை நிறுத்து"
 
 #~ msgid "Author:"
 #~ msgstr "இயற்றியவர்:"

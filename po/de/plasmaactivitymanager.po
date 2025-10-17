@@ -1,13 +1,12 @@
-# Copyright (C) YEAR This_file_is_part_of_KDE
-# This file is distributed under the same license as the PACKAGE package.
-#
-# Frederik Schwarzer <schwarzer@kde.org>, 2016.
-# Burkhard Lück <lueck@hube-lueck.de>, 2016.
+# Copyright (C) 2025 This_file_is_part_of_KDE
+# This file is distributed under the same license as the plasma-desktop package.
+# SPDX-FileCopyrightText: 2016 Frederik Schwarzer <schwarzer@kde.org>
+# SPDX-FileCopyrightText: 2016 Burkhard Lück <lueck@hube-lueck.de>
 msgid ""
 msgstr ""
 "Project-Id-Version: plasmaactivitymanager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2024-09-05 00:41+0000\n"
+"POT-Creation-Date: 2025-10-02 00:44+0000\n"
 "PO-Revision-Date: 2016-04-10 19:54+0100\n"
 "Last-Translator: Frederik Schwarzer <schwarzer@kde.org>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
@@ -64,12 +63,12 @@ msgstr[1] "Vor %1 Minuten verwendet"
 msgid "Used a moment ago"
 msgstr "Vor kurzem verwendet"
 
-#: switcherbackend.cpp:169
+#: switcherbackend.cpp:183
 #, kde-format
 msgid "Walk through activities"
 msgstr "Zwischen Aktivitäten wechseln"
 
-#: switcherbackend.cpp:174
+#: switcherbackend.cpp:188
 #, kde-format
 msgid "Walk through activities (Reverse)"
 msgstr "Zwischen Aktivitäten wechseln (Gegenrichtung)"

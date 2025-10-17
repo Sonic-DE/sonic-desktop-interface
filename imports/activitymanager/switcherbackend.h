@@ -19,6 +19,7 @@
 #include <qqmlregistration.h>
 
 // KDE
+#include <KModifierKeyInfo>
 #include <PlasmaActivities/Controller>
 
 // Local
@@ -61,10 +62,8 @@ public Q_SLOTS:
     void setShouldShowSwitcher(bool shouldShowSwitcher);
 
     QAbstractItemModel *runningActivitiesModel() const;
-    QAbstractItemModel *stoppedActivitiesModel() const;
 
     void setCurrentActivity(const QString &activity);
-    void stopActivity(const QString &activity);
     void removeActivity(const QString &activity);
 
     bool dragContainsWindows(QMimeData *mimeData) const;
@@ -99,7 +98,7 @@ private Q_SLOTS:
 private:
     QHash<QString, QKeySequence> m_actionShortcut;
     QAction *m_lastInvokedAction = nullptr;
-    QRasterWindow *m_inputWindow = nullptr;
+    KModifierKeyInfo m_modifierInfo;
     KActivities::Controller m_activities;
     bool m_shouldShowSwitcher;
     QTimer m_modKeyPollingTimer;
@@ -109,5 +108,4 @@ private:
     QTimer m_dropModeHider;
 
     SortedActivitiesModel *m_runningActivitiesModel = nullptr;
-    SortedActivitiesModel *m_stoppedActivitiesModel = nullptr;
 };

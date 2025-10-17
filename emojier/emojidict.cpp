@@ -33,16 +33,20 @@ void EmojiDict::load(const QString &path)
     // We use a fixed version to keep it binary compatible.
     // Also we do not use advanced data type so it does not matter.
     stream.setVersion(QDataStream::Qt_5_15);
-    // Explicitly set endianess to ensure it's not relevant to architecture.
+    // Explicitly set endianness to ensure it's not relevant to architecture.
     stream.setByteOrder(QDataStream::LittleEndian);
     QList<Emoji> emojis;
     stream >> emojis;
     for (const auto &emoji : emojis) {
         if (auto iter = m_processedEmojis.find(emoji.content); iter != m_processedEmojis.end()) {
-            // Overwrite with new data.
-            m_emojis[iter.value()] = emoji;
+            // Overwrite with new data but keep previous description as fallback.
+            auto &foundEmoji = m_emojis[iter.value()];
+            const QString fallbackDescription = foundEmoji.description;
+            foundEmoji = emoji;
+            foundEmoji.fallbackDescription = fallbackDescription;
         } else {
             m_processedEmojis[emoji.content] = m_emojis.size();
+
             m_emojis.append(emoji);
         }
     }

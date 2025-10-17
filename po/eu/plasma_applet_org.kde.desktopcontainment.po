@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-desktop\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-08-22 00:44+0000\n"
-"PO-Revision-Date: 2025-08-03 00:54+0200\n"
+"POT-Creation-Date: 2025-10-09 00:44+0000\n"
+"PO-Revision-Date: 2025-10-05 19:39+0200\n"
 "Last-Translator: Iñigo Salvador Azurmendi <xalba@ni.eus>\n"
 "Language-Team: Basque <kde-i18n-eu@kde.org>\n"
 "Language: eu\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 25.04.3\n"
+"X-Generator: Lokalize 25.08.1\n"
 
 #: package/contents/config/config.qml:16
 #, kde-format
@@ -28,7 +28,7 @@ msgid "Location"
 msgstr "Kokalekua"
 
 #: package/contents/config/config.qml:23
-#: package/contents/ui/FolderViewLayer.qml:359
+#: package/contents/ui/FolderViewLayer.qml:358
 #, kde-format
 msgid "Icons"
 msgstr "Ikonoak"
@@ -51,7 +51,7 @@ msgstr "Fitxategiak:"
 #: package/contents/ui/ConfigFilter.qml:64
 #, kde-format
 msgid "Show all"
-msgstr "Erakutsi denak"
+msgstr "Erakutsi dena"
 
 #: package/contents/ui/ConfigFilter.qml:64
 #, kde-format
@@ -417,7 +417,7 @@ msgstr "Kendu"
 msgid "Preview Plugins"
 msgstr "Aurreikusteko pluginak"
 
-#: package/contents/ui/FolderView.qml:1218
+#: package/contents/ui/FolderView.qml:1233
 #, kde-format
 msgctxt "@info"
 msgid ""
@@ -428,13 +428,13 @@ msgstr ""
 "errendimendu arazoak eragin litzake. Mesedez, hartu kontuan haietako batzuk "
 "beste nonbaitera mugitzea."
 
-#: package/contents/ui/FolderViewDialog.qml:87
+#: package/contents/ui/FolderViewDialog.qml:90
 #, kde-format
 msgctxt "@info:placeholder"
 msgid "Folder is empty"
 msgstr "Karpeta hutsik dago"
 
-#: package/contents/ui/main.qml:422
+#: package/contents/ui/main.qml:426
 #, kde-format
 msgid "Desktop and Wallpaper"
 msgstr "Mahaigaina eta Horma-papera"
@@ -444,17 +444,17 @@ msgstr "Mahaigaina eta Horma-papera"
 msgid "Select Folder"
 msgstr "Hautatu karpeta"
 
-#: plugins/folder/foldermodel.cpp:519
+#: plugins/folder/foldermodel.cpp:532
 #, kde-format
 msgid "&Refresh Desktop"
 msgstr "F&reskatu mahaigaina"
 
-#: plugins/folder/foldermodel.cpp:519 plugins/folder/foldermodel.cpp:1735
+#: plugins/folder/foldermodel.cpp:532 plugins/folder/foldermodel.cpp:1748
 #, kde-format
 msgid "&Refresh View"
 msgstr "F&reskatu ikuspegia"
 
-#: plugins/folder/foldermodel.cpp:878
+#: plugins/folder/foldermodel.cpp:891
 #, kde-format
 msgctxt ""
 "@title:notifications Here 'link' refers to a symbolic link to another file "
@@ -462,7 +462,7 @@ msgctxt ""
 msgid "Link Target Not Found"
 msgstr "Estekaren jomuga ez da aurkitu"
 
-#: plugins/folder/foldermodel.cpp:880
+#: plugins/folder/foldermodel.cpp:893
 #, kde-kuit-format
 msgctxt "@info Body text of a system notification"
 msgid ""
@@ -472,23 +472,23 @@ msgstr ""
 "<filename>%1</filename> <filename>%2</filename>(e)ra bideratzen du, baina "
 "ezin izan du aurkitu. Akaso mugitu edo ezabatu egin da."
 
-#: plugins/folder/foldermodel.cpp:1744
+#: plugins/folder/foldermodel.cpp:1757
 #, kde-format
 msgid "&Empty Trash"
 msgstr "&Hustu zakarrontzia"
 
-#: plugins/folder/foldermodel.cpp:1747
+#: plugins/folder/foldermodel.cpp:1760
 #, kde-format
 msgctxt "Restore from trash"
 msgid "Restore to Former Location"
 msgstr "Lehengoratu lehengo kokalekura"
 
-#: plugins/folder/foldermodel.cpp:1750
+#: plugins/folder/foldermodel.cpp:1763
 #, kde-format
 msgid "&Open"
 msgstr "&Ireki"
 
-#: plugins/folder/foldermodel.cpp:1754
+#: plugins/folder/foldermodel.cpp:1767
 #, kde-format
 msgctxt ""
 "@action:inmenu open file manager showing the target file or folder that this "
@@ -496,23 +496,23 @@ msgctxt ""
 msgid "Show Target"
 msgstr "Erakutsi jomuga"
 
-#: plugins/folder/foldermodel.cpp:1850
+#: plugins/folder/foldermodel.cpp:1868
 #, kde-format
 msgctxt "@action:inmenu Removes the trash icon on the desktop"
 msgid "Remove Trash Icon"
 msgstr "Kendu zakarrontziaren ikonoa"
 
-#: plugins/folder/foldermodel.cpp:1853
+#: plugins/folder/foldermodel.cpp:1871
 #, kde-format
 msgid "&Move to Trash"
 msgstr "&Bota zakarrontzira"
 
-#: plugins/folder/foldermodel.cpp:1886
+#: plugins/folder/foldermodel.cpp:1904
 #, kde-format
 msgid "&Paste"
 msgstr "&Itsatsi"
 
-#: plugins/folder/foldermodel.cpp:2037
+#: plugins/folder/foldermodel.cpp:2055
 #, kde-format
 msgid "&Properties"
 msgstr "&Propietateak"

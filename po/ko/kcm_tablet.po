@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-desktop\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-08-20 00:45+0000\n"
-"PO-Revision-Date: 2025-07-20 01:38+0200\n"
+"POT-Creation-Date: 2025-09-04 00:44+0000\n"
+"PO-Revision-Date: 2025-10-09 01:17+0200\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
 "Language: ko\n"
@@ -153,8 +153,8 @@ msgstr "펜 단추 %1"
 #: ui/ActionDialog.qml:27
 #, kde-format
 msgctxt "@title Select the action for the tablet dial"
-msgid "Select Dial Action"
-msgstr "다이얼 동작 선택"
+msgid "Select Dial/Ring Action"
+msgstr "다이얼/링 동작 선택"
 
 #: ui/ActionDialog.qml:28
 #, kde-format
@@ -162,61 +162,61 @@ msgctxt "@title Select the action for the tablet button"
 msgid "Select Button Action"
 msgstr "단추 동작 선택"
 
-#: ui/ActionDialog.qml:86
+#: ui/ActionDialog.qml:87
 #, kde-format
 msgctxt "@info %1 is the 'pad button %1' or 'pen button 1/2/3' strings"
 msgid "Choose what action will be taken when rotating %1:"
 msgstr "%1을(를) 돌렸을 때 취할 동작 선택:"
 
-#: ui/ActionDialog.qml:87
+#: ui/ActionDialog.qml:88
 #, kde-format
 msgctxt "@info %1 is the 'pad button %1' or 'pen button 1/2/3' strings"
 msgid "Choose what action will be taken when pressing %1:"
 msgstr "%1을(를) 눌렀을 때 취할 동작 선택:"
 
-#: ui/ActionDialog.qml:101
+#: ui/ActionDialog.qml:102
 #, kde-format
 msgctxt "@option:radio Set this action to an application-defined type"
 msgid "Defer to application"
 msgstr "앱으로 전달"
 
-#: ui/ActionDialog.qml:116
+#: ui/ActionDialog.qml:117
 #, kde-format
 msgctxt "@option:radio Set this action to a keyboard type"
 msgid "Send keyboard key"
 msgstr "키보드 키 입력"
 
-#: ui/ActionDialog.qml:132
+#: ui/ActionDialog.qml:133
 #, kde-format
 msgctxt "@option:radio Set this action to a up/down keyboard type"
 msgid "Send keyboard keys"
 msgstr "키보드 키 입력"
 
-#: ui/ActionDialog.qml:147
+#: ui/ActionDialog.qml:148
 #, kde-format
 msgctxt "@option:radio Set this action to a mouse type"
 msgid "Send mouse button click"
 msgstr "마우스 단추 클릭 입력"
 
-#: ui/ActionDialog.qml:163
+#: ui/ActionDialog.qml:164
 #, kde-format
 msgctxt "@option:radio Set this action to a pen button type"
 msgid "Send pen button"
 msgstr "펜 단추 입력"
 
-#: ui/ActionDialog.qml:180
+#: ui/ActionDialog.qml:181
 #, kde-format
 msgctxt "@option:radio Set this action to a scroll wheel type type"
 msgid "Act as scroll wheel"
 msgstr "스크롤 휠로 작동"
 
-#: ui/ActionDialog.qml:198
+#: ui/ActionDialog.qml:199
 #, kde-format
 msgctxt "@option:radio Disable this action"
 msgid "Do nothing"
 msgstr "아무것도 안 함"
 
-#: ui/ActionDialog.qml:218
+#: ui/ActionDialog.qml:219
 #, kde-format
 msgctxt "@info"
 msgid ""
@@ -226,83 +226,88 @@ msgstr ""
 "이 태블릿 단추는 포커스가 있는 앱으로 전달되며, 앱에서 처리 방식을 결정합니"
 "다."
 
-#: ui/ActionDialog.qml:249
+#: ui/ActionDialog.qml:248
 #, kde-format
 msgid "Up:"
 msgstr "위:"
 
-#: ui/ActionDialog.qml:263
+#: ui/ActionDialog.qml:261
 #, kde-format
 msgid "Down:"
 msgstr "아래:"
 
-#: ui/ActionDialog.qml:277
+#: ui/ActionDialog.qml:274
+#, kde-format
+msgid "Speed:"
+msgstr "속도:"
+
+#: ui/ActionDialog.qml:289
 #, kde-format
 msgctxt "@action:inmenu Left mouse click"
 msgid "Left-click"
 msgstr "왼쪽 클릭"
 
-#: ui/ActionDialog.qml:278
+#: ui/ActionDialog.qml:290
 #, kde-format
 msgctxt "@action:inmenu Middle mouse click"
 msgid "Middle-click"
 msgstr "가운데 클릭"
 
-#: ui/ActionDialog.qml:279
+#: ui/ActionDialog.qml:291
 #, kde-format
 msgctxt "@action:inmenu Right mouse click"
 msgid "Right-click"
 msgstr "오른쪽 클릭"
 
-#: ui/ActionDialog.qml:306
+#: ui/ActionDialog.qml:318
 #, kde-format
 msgctxt "@option:check The ctrl modifier on the keyboard"
 msgid "Ctrl"
 msgstr "Ctrl"
 
-#: ui/ActionDialog.qml:313
+#: ui/ActionDialog.qml:325
 #, kde-format
 msgctxt "@option:check The alt modifier on the keyboard"
 msgid "Alt"
 msgstr "Alt"
 
-#: ui/ActionDialog.qml:320
+#: ui/ActionDialog.qml:332
 #, kde-format
 msgctxt "@option:check The meta modifier on the keyboard"
 msgid "Meta"
 msgstr "Meta"
 
-#: ui/ActionDialog.qml:327
+#: ui/ActionDialog.qml:339
 #, kde-format
 msgctxt "@option:check The shift modifier on the keyboard"
 msgid "Shift"
 msgstr "Shift"
 
-#: ui/ActionDialog.qml:343
+#: ui/ActionDialog.qml:355
 #, kde-format
 msgctxt "@action:inmenu Stylus button"
 msgid "Button 1"
 msgstr "단추 1"
 
-#: ui/ActionDialog.qml:344
+#: ui/ActionDialog.qml:356
 #, kde-format
 msgctxt "@action:inmenu Stylus button"
 msgid "Button 2"
 msgstr "단추 2"
 
-#: ui/ActionDialog.qml:345
+#: ui/ActionDialog.qml:357
 #, kde-format
 msgctxt "@action:inmenu Stylus button"
 msgid "Button 3"
 msgstr "단추 3"
 
-#: ui/ActionDialog.qml:354
+#: ui/ActionDialog.qml:366
 #, kde-format
 msgctxt "@info"
 msgid "Act like a scroll wheel on a mouse."
 msgstr "마우스의 스크롤 휠처럼 작동합니다."
 
-#: ui/ActionDialog.qml:363
+#: ui/ActionDialog.qml:375
 #, kde-format
 msgctxt "@info"
 msgid "This button is disabled and will not do anything."
@@ -315,19 +320,15 @@ msgid "Pen Calibration"
 msgstr "펜 조정"
 
 #: ui/Calibration.qml:98
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info"
-#| msgid ""
-#| "Tap the targets again to confirm the new calibration.<nl/><nl/><b>Will "
-#| "revert to default calibration in %1 seconds.</b>"
+#, kde-kuit-format
 msgctxt "@info"
 msgid ""
 "Tap the targets again to confirm the new calibration.<nl/><nl/><b>Will "
 "revert to default calibration in %1 seconds unless further action is taken.</"
 "b>"
 msgstr ""
-"대상을 다시 탭하여 새 조정을 확인하십시오.<nl/><nl/><b>%1초 후 기존 조정으로 "
-"되돌아갑니다.</b>"
+"대상을 다시 탭하여 새 조정을 확인하십시오.<nl/><nl/><b>추가 작업을 수행하지 "
+"않으면 %1초 후 기존 조정으로 되돌아갑니다.</b>"
 
 #: ui/Calibration.qml:102
 #, kde-kuit-format
@@ -423,52 +424,77 @@ msgstr "%1%,%2% - %3%×%4%"
 msgid "Resize the tablet area"
 msgstr "태블릿 영역 크기 조정"
 
-#: ui/main.qml:39
+#: ui/main.qml:38
 #, kde-format
 msgid "No drawing tablets found"
 msgstr "그래픽 태블릿을 찾을 수 없음"
 
-#: ui/main.qml:40
+#: ui/main.qml:39
 #, kde-format
 msgid "Connect a drawing tablet"
 msgstr "그래픽 태블릿을 연결하십시오"
 
-#: ui/main.qml:48
+#: ui/main.qml:47
 #, kde-format
 msgctxt "Tests tablet functionality like the pen"
 msgid "Test Tablet…"
 msgstr "태블릿 시험…"
 
-#: ui/main.qml:97
+#: ui/main.qml:87
+#, kde-format
+msgctxt "@info"
+msgid ""
+"This device is managed by a user-space driver that you installed. Use that "
+"driver to configure the tablet instead of using the settings here, unless "
+"specifically instructed otherwise."
+msgstr ""
+"이 장치는 별도로 설치한 사용자 공간 드라이버에서 관리되고 있습니다. 특별한 경"
+"우가 아니라면 여기에 있는 설정이 아닌 해당 드라이버 설정에서 태블릿을 설정하"
+"십시오."
+
+#: ui/main.qml:104
 #, kde-format
 msgctxt "@label:listbox The device we are configuring"
 msgid "Device:"
 msgstr "장치:"
 
-#: ui/main.qml:165
+#: ui/main.qml:172
 #, kde-format
 msgctxt "@title:tab"
 msgid "Display"
 msgstr "디스플레이"
 
-#: ui/main.qml:178
+#: ui/main.qml:185
 #, kde-format
 msgctxt "@title:tab"
 msgid "Pen"
 msgstr "펜"
 
-#: ui/main.qml:190
+#: ui/main.qml:197
 #, kde-format
 msgctxt "@title:tab"
 msgid "Pad"
 msgstr "패드"
 
-#: ui/PadTab.qml:33
+#: ui/PadTab.qml:37
+#, kde-format
+msgid "Pad ring %1:"
+msgstr "패드 링 %1:"
+
+#: ui/PadTab.qml:60
+#, kde-format
+msgctxt ""
+"@info Meant to be inserted into an existing sentence like 'configuring pad "
+"ring/dial 0'"
+msgid "pad ring/dial %1"
+msgstr "패드 링/다이얼 %1"
+
+#: ui/PadTab.qml:100
 #, kde-format
 msgid "Pad dial %1:"
 msgstr "패드 다이얼 %1:"
 
-#: ui/PadTab.qml:35
+#: ui/PadTab.qml:102
 #, kde-format
 msgctxt ""
 "@info Meant to be inserted into an existing sentence like 'configuring pad "
@@ -476,12 +502,12 @@ msgctxt ""
 msgid "pad dial %1"
 msgstr "패드 다이얼 %1"
 
-#: ui/PadTab.qml:71
+#: ui/PadTab.qml:138
 #, kde-format
 msgid "Pad button %1:"
 msgstr "패드 단추 %1:"
 
-#: ui/PadTab.qml:74
+#: ui/PadTab.qml:141
 #, kde-format
 msgctxt ""
 "@info Meant to be inserted into an existing sentence like 'configuring pad "
@@ -639,16 +665,14 @@ msgid "Tablet Tester"
 msgstr "태블릿 시험 도구"
 
 #: ui/Tester.qml:48
-#, fuzzy, kde-format
-#| msgid "Stylus press X=%1 Y=%2"
+#, kde-format
 msgctxt ""
 "A tablet stylus was pressed onto the surface X=[x position] Y=[y position]"
 msgid "Stylus press X=%1 Y=%2"
 msgstr "스타일러스 누름 X=%1 Y=%2"
 
 #: ui/Tester.qml:58
-#, fuzzy, kde-format
-#| msgid "Stylus release X=%1 Y=%2"
+#, kde-format
 msgctxt ""
 "A tablet stylus has 'released' or was lifted from the surface X=[x position] "
 "Y=[y position]"
@@ -656,8 +680,7 @@ msgid "Stylus release X=%1 Y=%2"
 msgstr "스타일러스 놓음 X=%1 Y=%2"
 
 #: ui/Tester.qml:68
-#, fuzzy, kde-format
-#| msgid "Stylus move X=%1 Y=%2 P=%3% TX=%4 TY=%5"
+#, kde-format
 msgctxt ""
 "A tablet stylus has moved over the surface X=[x position] Y=[y position] "
 "P=[pressure] TX=[tilt x] TY=[tilt y]"
@@ -665,22 +688,19 @@ msgid "Stylus move X=%1 Y=%2 P=%3% TX=%4 TY=%5"
 msgstr "스타일러스 이동 X=%1 Y=%2 P=%3% TX=%4 TY=%5"
 
 #: ui/Tester.qml:75
-#, fuzzy, kde-format
-#| msgid "Pad button press B=%1"
+#, kde-format
 msgctxt "A tablet pad's button has been pressed B=[the button number]"
 msgid "Pad button press B=%1"
 msgstr "패드 단추 누름 B=%1"
 
 #: ui/Tester.qml:77
-#, fuzzy, kde-format
-#| msgid "Pad button release B=%1"
+#, kde-format
 msgctxt "A tablet pad's button has been released B=[the button number]"
 msgid "Pad button release B=%1"
 msgstr "패드 단추 놓기 B=%1"
 
 #: ui/Tester.qml:83
-#, fuzzy, kde-format
-#| msgid "Pad dial moved V120=%1"
+#, kde-format
 msgctxt ""
 "A tablet pad's dial has moved, V120 here refers to 'Value 120' which is a "
 "technical term that should be kept as is"
@@ -688,12 +708,7 @@ msgid "Pad dial moved V120=%1"
 msgstr "패드 다이얼 이동됨 V120=%1"
 
 #: ui/Tester.qml:219
-#, fuzzy, kde-format
-#| msgid ""
-#| "## Legend:\n"
-#| "# X, Y - event coordinate\n"
-#| "# P - pressure\n"
-#| "# TX,TY - tilt\n"
+#, kde-format
 msgctxt "The tablet tester legend which is shown on start-up"
 msgid ""
 "## Legend:\n"
@@ -707,9 +722,7 @@ msgstr ""
 "# TX,TY - 기울기\n"
 
 #: ui/Tester.qml:225
-#, fuzzy, kde-format
-#| msgctxt "Clear the event log"
-#| msgid "Clear"
+#, kde-format
 msgctxt "Clear the tablet tester event log"
 msgid "Clear"
 msgstr "지우기"

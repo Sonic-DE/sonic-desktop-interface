@@ -3,6 +3,7 @@
 
     SPDX-License-Identifier: GPL-2.0-or-later
 */
+pragma ComponentBehavior: Bound
 
 import QtQuick
 
@@ -16,7 +17,7 @@ FocusScope {
     id: itemList
 
     property real minimumWidth: Kirigami.Units.gridUnit * 14
-    property real maximumWidth: minimumWidth * 2
+    property real maximumWidth: Math.round(minimumWidth * 1.5)
 
     width: minimumWidth
     implicitHeight: listView.contentHeight
@@ -34,7 +35,7 @@ FocusScope {
     property int itemHeight: Math.ceil((Math.max(Kirigami.Units.iconSizes.sizeForLabels, Kirigami.Units.iconSizes.small)
         + Math.max(highlightItemSvg.margins.top + highlightItemSvg.margins.bottom,
         listItemSvg.margins.top + listItemSvg.margins.bottom)) / 2) * 2
-    property int separatorHeight: model.sorted === true ? 0 : lineMetrics.elementRect.height + (2 * Kirigami.Units.smallSpacing)
+    property int separatorHeight: showSeparators ? lineMetrics.elementRect.height + (2 * Kirigami.Units.smallSpacing) : 0
 
     property alias currentIndex: listView.currentIndex
     property alias currentItem: listView.currentItem
@@ -44,7 +45,8 @@ FocusScope {
     property alias count: listView.count
     property alias containsMouse: listener.containsMouse
     property alias resetOnExitDelay: resetIndexTimer.interval
-    property alias mouseMoved: listView.mouseMoved
+    property alias showSeparators: listView.showSeparators
+    property alias hoverEnabled: listView.hoverEnabled
 
     property KSvg.SvgItem lineMetrics: KSvg.SvgItem {
         imagePath: "widgets/line"
@@ -60,7 +62,7 @@ FocusScope {
         repeat: false
 
         onTriggered: {
-            if (!kicker.expanded || model === undefined || currentIndex == -1) {
+            if (!kicker.expanded || itemList.model === undefined || itemList.currentIndex == -1) {
                 return;
             }
 
@@ -73,10 +75,10 @@ FocusScope {
 
             itemList.childDialog = itemListDialogComponent.createObject(itemList,
                                         {
-                                            mainSearchField: mainSearchField,
+                                            mainSearchField: itemList.mainSearchField,
                                             focusParent: itemList,
                                             visualParent: listView.currentItem,
-                                            model: model.modelForRow(listView.currentIndex),
+                                            model: itemList.model.modelForRow(listView.currentIndex),
                                             visible: true
                                         });
             itemList.childDialog.LayoutMirroring.enabled = itemList.LayoutMirroring.enabled
@@ -95,19 +97,19 @@ FocusScope {
     Timer {
         id: resetIndexTimer
 
-        interval: (dialog != null) ? 50 : 150
+        interval: (itemList.dialog != null) ? 50 : 150
         repeat: false
 
         onTriggered: {
-            if (focus && (!itemList.childDialog || !itemList.childDialog.mainItem.containsMouse)) {
-                currentIndex = -1;
+            if (itemList.focus && (!itemList.childDialog || !itemList.childDialog.mainItem.containsMouse)) {
+                itemList.currentIndex = -1;
                 itemList.exited();
             }
         }
     }
 
     Keys.priority: Keys.AfterItem
-    Keys.forwardTo: mainSearchField
+    Keys.forwardTo: [itemList.mainSearchField]
 
     KQuickControlsAddons.MouseEventListener {
         id: listener
@@ -122,8 +124,8 @@ FocusScope {
             if (containsMouse) {
                 resetIndexTimer.stop();
                 itemList.forceActiveFocus();
-            } else if ((!itemList.childDialog || !dialog)
-                && (!currentItem || !currentItem.menu.opened)) {
+            } else if ((!itemList.childDialog || !itemList.dialog)
+                && (!itemList.currentItem || !itemList.currentItem.menu.opened)) {
                 resetIndexTimer.start();
             }
         }
@@ -138,7 +140,8 @@ FocusScope {
 
                 property bool showChildDialogs: true
                 property int eligibleWidth: width
-                property bool mouseMoved: true // child dialogs can activate immediately
+                property bool showSeparators: !model.sorted // separators are mostly useless when sorted
+                property bool hoverEnabled: true
 
                 currentIndex: -1
                 focus: true
@@ -150,7 +153,9 @@ FocusScope {
                 keyNavigationEnabled: false
 
                 delegate: ItemListDelegate {
+                    showSeparators: listView.showSeparators
                     dialogDefaultRight: !itemList.LayoutMirroring.enabled
+                    hoverEnabled: listView.hoverEnabled
                     onFullTextWidthChanged: {
                         if (itemList && fullTextWidth > itemList.width) {
                             itemList.width = Math.min(fullTextWidth, itemList.maximumWidth);
@@ -167,7 +172,7 @@ FocusScope {
                 highlightMoveDuration: 0
 
                 onCountChanged: {
-                    if (currentIndex == 0 && !mainSearchField.activeFocus) {
+                    if (currentIndex == 0 && !itemList.mainSearchField.activeFocus) {
                         currentItem?.forceActiveFocus();
                     } else {
                         currentIndex = -1;
@@ -229,13 +234,13 @@ FocusScope {
                 } else if (event.key === Qt.Key_Up) {
                     event.accepted = true;
 
-                    if (!keyNavigationWraps && currentIndex == 0) {
+                    if (!listView.keyNavigationWraps && listView.currentIndex == 0) {
                         itemList.keyNavigationAtListEnd();
 
                         return;
                     }
 
-                    showChildDialogs = false;
+                    itemList.showChildDialogs = false;
                     listView.decrementCurrentIndex();
 
                     if (listView.currentItem !== null) {
@@ -245,17 +250,17 @@ FocusScope {
                         listView.currentItem.forceActiveFocus();
                     }
 
-                    showChildDialogs = true;
+                    itemList.showChildDialogs = true;
                 } else if (event.key === Qt.Key_Down) {
                     event.accepted = true;
 
-                    if (!keyNavigationWraps && currentIndex == count - 1) {
+                    if (!listView.keyNavigationWraps && listView.currentIndex == listView.count - 1) {
                         itemList.keyNavigationAtListEnd();
 
                         return;
                     }
 
-                    showChildDialogs = false;
+                    itemList.showChildDialogs = false;
                     listView.incrementCurrentIndex();
 
                     if (listView.currentItem !== null) {
@@ -265,21 +270,21 @@ FocusScope {
                         listView.currentItem.forceActiveFocus();
                     }
 
-                    showChildDialogs = true;
-                } else if (backArrowKey && dialog != null) {
-                    dialog.destroy();
+                    itemList.showChildDialogs = true;
+                } else if (backArrowKey && itemList.dialog != null) {
+                    itemList.dialog.destroy();
                 } else if (event.key === Qt.Key_Escape) {
                     kicker.expanded = false;
                 } else if (event.key === Qt.Key_Tab) {
                     //do nothing, and skip appending text
                 } else if (event.text !== "") {
-                    if (mainSearchField) {
-                        mainSearchField.forceActiveFocus();
+                    if (itemList.mainSearchField) {
+                        itemList.mainSearchField.forceActiveFocus();
                     }
                 } else if (backArrowKey) {
-                    navigateLeftRequested();
+                    itemList.navigateLeftRequested();
                 } else if (forwardArrowKey) {
-                    navigateRightRequested();
+                    itemList.navigateRightRequested();
                 }
             }
 

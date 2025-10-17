@@ -19,23 +19,35 @@ Item {
     width: ListView.view.width
 
     // if it's not disabled and is either a leaf node or a node with children
-    enabled: !isSeparator && !model.disabled && (!isParent || (isParent && hasChildren))
+    enabled: !isSeparator && !disabled && (!isParent || (isParent && hasChildren))
 
     signal actionTriggered(string actionId, var actionArgument)
     signal aboutToShowActionMenu(var actionMenu)
 
+    required property int index
+    required property bool isSeparator
+    required property bool hasChildren
+    required property bool isParent
+    required property bool disabled
+    required property bool hasActionList
+    required property string favoriteId
+    required property var /*QVariantList*/ actionList
+    required property url url
+    required property string description
+    required property string decoration
+    required property string display
+
+    property alias pressed: tapHandler.pressed
+    property alias hovered: mouseArea.containsMouse
+    property alias hoverEnabled: mouseArea.hoverEnabled
+
+    readonly property bool iconAndLabelsShouldlookSelected: pressed && !hasChildren
     readonly property real fullTextWidth: Math.ceil(icon.width + label.implicitWidth + arrow.width + row.anchors.leftMargin + row.anchors.rightMargin + row.actualSpacing)
-    property bool isSeparator: (model.isSeparator === true)
-    property bool sorted: (model.sorted === true)
-    property bool hasChildren: (model.hasChildren === true)
-    property bool hasActionList: ((model.favoriteId !== null)
-        || (("hasActionList" in model) && (model.hasActionList === true)))
+
+    property bool showSeparators: true
     property QtObject childDialog: null
     property ActionMenu menu: actionMenu
     property bool dialogDefaultRight: Qt.application.layoutDirection !== Qt.RightToLeft
-    readonly property bool pressed: mouseArea.pressed
-    readonly property bool iconAndLabelsShouldlookSelected: mouseArea.pressed && !hasChildren
-    readonly property alias hovered: mouseArea.containsMouse
 
     Accessible.role: isSeparator ? Accessible.Separator : Accessible.MenuItem
     Accessible.name: label.text
@@ -47,12 +59,12 @@ Item {
     }
 
     onAboutToShowActionMenu: actionMenu => {
-        var actionList = item.hasActionList ? model.actionList : [];
-        Tools.fillActionMenu(i18n, actionMenu, actionList, ListView.view.model.favoritesModel, model.favoriteId);
+        var actionList = item.hasActionList ? item.actionList : [];
+        Tools.fillActionMenu(i18n, actionMenu, actionList, ListView.view.model.favoritesModel, item.favoriteId);
     }
 
     onActionTriggered: (actionId, actionArgument) => {
-        if (Tools.triggerAction(ListView.view.model, model.index, actionId, actionArgument) === true) {
+        if (Tools.triggerAction(ListView.view.model, item.index, actionId, actionArgument) === true) {
             kicker.expanded = false;
         }
     }
@@ -71,72 +83,53 @@ Item {
         }
     }
 
-    MouseArea {
-        id: mouseArea
-
-        anchors {
-            left: parent.left
-            right: parent.right
-            verticalCenter: parent.verticalCenter
-        }
-
-        height: parent.height
-
-        property int mouseCol
-        property bool mousePressed: false
-        property int pressX: -1
-        property int pressY: -1
-
-        hoverEnabled: true
-        acceptedButtons: Qt.LeftButton | Qt.RightButton
-
-        onPressed: mouse => {
-            if (mouse.buttons & Qt.RightButton) {
-                if (item.hasActionList) {
-                    item.openActionMenu(mouseArea, mouse.x, mouse.y);
-                }
-            } else {
-                mousePressed = true;
-                pressX = mouse.x;
-                pressY = mouse.y;
+    DragHandler {
+        target: null
+        onActiveChanged: {
+            if (active && url) {
+                // we need dragHelper and can't use attached Drag; submenus are destroyed too soon and Plasma crashes
+                dragHelper.startDrag(kicker, url, decoration)
             }
         }
+    }
 
-        onReleased: mouse => {
-            if (mousePressed && !item.hasChildren) {
+    TapHandler {
+        id: tapHandler
+        onTapped: {
+            if (!item.hasChildren) {
                 item.ListView.view.model.trigger(index, "", null);
                 kicker.expanded = false;
             }
+        }
+    }
 
-            mousePressed = false;
-            pressX = -1;
-            pressY = -1;
+    MouseArea {
+        id: mouseArea
+
+        anchors.fill: parent
+
+        property int mouseCol
+
+        hoverEnabled: true
+        acceptedButtons: Qt.RightButton
+
+        onPressed: mouse => {
+            if (item.hasActionList) {
+                item.openActionMenu(mouseArea, mouse.x, mouse.y);
+            }
         }
 
         onPositionChanged: mouse => {
-            if (!item.ListView.view.mouseMoved) {
-                item.ListView.view.mouseMoved = true;
-                return;
-            }
-            if (pressX !== -1 && model.url && dragHelper.isDrag(pressX, pressY, mouse.x, mouse.y)) {
-                dragHelper.startDrag(kicker, model.url, model.decoration);
-                mousePressed = false;
-                pressX = -1;
-                pressY = -1;
-
-                return;
-            }
-
             // FIXME: Correct escape angle calc for right screen edge.
             if (justOpenedTimer.running || !item.hasChildren) {
-                item.ListView.view.currentIndex = index;
+                item.ListView.view.currentIndex = item.index;
             } else {
                 mouseCol = mouse.x;
 
-                if (index === item.ListView.view.currentIndex) {
+                if (item.index === item.ListView.view.currentIndex) {
                     updateCurrentItem();
-                } else if ((index === item.ListView.view.currentIndex - 1) && mouse.y < (itemHeight - 6)
-                    || (index === item.ListView.view.currentIndex + 1) && mouse.y > 5) {
+                } else if ((item.index === item.ListView.view.currentIndex - 1) && mouse.y < (itemHeight - 6)
+                    || (item.index === item.ListView.view.currentIndex + 1) && mouse.y > 5) {
 
                     if ((item.childDialog && item.childDialog.facingLeft)
                         ? mouse.x > item.ListView.view.eligibleWidth - 5 : mouse.x < item.ListView.view.eligibleWidth + 5) {
@@ -153,15 +146,12 @@ Item {
 
         onContainsMouseChanged: {
             if (!containsMouse) {
-                mousePressed = false;
-                pressX = -1;
-                pressY = -1;
                 updateCurrentItemTimer.stop();
             }
         }
 
         function updateCurrentItem() {
-            item.ListView.view.currentIndex = index;
+            item.ListView.view.currentIndex = item.index;
             item.ListView.view.eligibleWidth = Math.min(width, mouseCol);
         }
 
@@ -202,13 +192,13 @@ Item {
 
             animated: false
             selected: item.iconAndLabelsShouldlookSelected
-            source: model.decoration
+            source: item.decoration
         }
 
         PlasmaComponents3.Label {
             id: label
 
-            enabled: !isParent || (isParent && item.hasChildren)
+            enabled: !item.isParent || (item.isParent && item.hasChildren)
 
             anchors.verticalCenter: parent.verticalCenter
 
@@ -221,7 +211,7 @@ Item {
             elide: Text.ElideRight
             color: item.iconAndLabelsShouldlookSelected ? Kirigami.Theme.highlightedTextColor : Kirigami.Theme.textColor
 
-            text: model?.display ?? ""
+            text: item.display ?? ""
         }
 
         Kirigami.Icon {
@@ -233,7 +223,7 @@ Item {
             height: width
 
             visible: item.hasChildren
-            opacity: (item.ListView.view.currentIndex === index) ? 1.0 : 0.4
+            opacity: (item.ListView.view.currentIndex === item.index) ? 1.0 : 0.4
             selected: item.iconAndLabelsShouldlookSelected
             source: item.dialogDefaultRight
                 ? "go-next-symbolic"
@@ -262,7 +252,7 @@ Item {
         anchors.verticalCenter: parent.verticalCenter
 
         // Separator positions don't make sense when sorting everything alphabetically
-        active: item.isSeparator && !item.sorted
+        active: item.isSeparator && item.showSeparators
 
         asynchronous: false
         sourceComponent: separatorComponent
@@ -275,7 +265,7 @@ Item {
         } else if ((event.key === Qt.Key_Enter || event.key === Qt.Key_Return) && !item.hasChildren) {
             if (!item.hasChildren) {
                 event.accepted = true;
-                item.ListView.view.model.trigger(index, "", null);
+                item.ListView.view.model.trigger(item.index, "", null);
                 kicker.expanded = false;
             }
         }

@@ -1,13 +1,13 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
 #
-# SPDX-FileCopyrightText: 2010, 2017, 2020, 2021, 2022, 2023, 2024 g.sora <g.sora@tiscali.it>
+# SPDX-FileCopyrightText: 2010, 2017, 2020, 2021, 2022, 2023, 2024, 2025 g.sora <g.sora@tiscali.it>
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-06-25 00:44+0000\n"
-"PO-Revision-Date: 2024-11-29 12:07+0100\n"
+"POT-Creation-Date: 2025-09-25 00:44+0000\n"
+"PO-Revision-Date: 2025-09-02 17:37+0200\n"
 "Last-Translator: giovanni <g.sora@tiscali.it>\n"
 "Language-Team: Interlingua <kde-i18n-doc@kde.org>\n"
 "Language: ia\n"
@@ -20,47 +20,47 @@ msgstr ""
 #: kcmaccess.cpp:127 kcmaccess.cpp:155
 #, kde-format
 msgid "KWin"
-msgstr ""
+msgstr "KWin"
 
 #: kcmaccess.cpp:130
-#, kde-format
+#, fuzzy, kde-format
 msgid "Toggle Invert Effect"
-msgstr ""
+msgstr "Commuta effecto de inverter"
 
 #: kcmaccess.cpp:136
-#, kde-format
+#, fuzzy, kde-format
 msgid "Toggle Invert Effect on Window"
-msgstr ""
+msgstr "Commuta effecto de inverter sur fenestra"
 
 #: kcmaccess.cpp:178
-#, kde-format
+#, fuzzy, kde-format
 msgid "Move Left"
-msgstr ""
+msgstr "Move a sinistra"
 
 #: kcmaccess.cpp:185
-#, kde-format
+#, fuzzy, kde-format
 msgid "Move Right"
-msgstr ""
+msgstr "Move a dextera"
 
 #: kcmaccess.cpp:192
-#, kde-format
+#, fuzzy, kde-format
 msgid "Move Up"
-msgstr ""
+msgstr "Move in alto"
 
 #: kcmaccess.cpp:199
-#, kde-format
+#, fuzzy, kde-format
 msgid "Move Down"
-msgstr ""
+msgstr "Move a basso "
 
 #: kcmaccess.cpp:206
-#, kde-format
+#, fuzzy, kde-format
 msgid "Move Mouse to Focus"
-msgstr ""
+msgstr "Move mus pro focalisar"
 
 #: kcmaccess.cpp:213
-#, kde-format
+#, fuzzy, kde-format
 msgid "Move Mouse to Center"
-msgstr ""
+msgstr "Move mus pro centrar"
 
 #: kcmaccess.cpp:256
 #, kde-format
@@ -480,85 +480,103 @@ msgid_plural "ms"
 msgstr[0] "ms"
 msgstr[1] "ms"
 
-#: ui/ColorblindnessCorrection.qml:22
+#: ui/ColorblindnessCorrection.qml:21
 #, kde-format
-msgctxt "@label"
-msgid "Color blindness correction:"
-msgstr "Correction de cecitate de color:"
+msgctxt "@info"
+msgid ""
+"If you have trouble with certain colors on the screen, these filters can "
+"change them into other colors."
+msgstr ""
 
-#: ui/ColorblindnessCorrection.qml:23
+#: ui/ColorblindnessCorrection.qml:31
 #, kde-format
 msgctxt "@option check, Enable color blindness correction effect"
 msgid "Enable"
 msgstr "Habilita"
 
-#: ui/ColorblindnessCorrection.qml:36
+#: ui/ColorblindnessCorrection.qml:44
 #, kde-format
-msgctxt "@label"
-msgid "Mode:"
-msgstr "Modo:"
+msgctxt ""
+"@label:listbox Difficulty seeing any of the following colors on the screen"
+msgid "Problematic colors:"
+msgstr ""
 
-#: ui/ColorblindnessCorrection.qml:41
-#, kde-format
-msgctxt "@option"
-msgid "Protanopia (red weak)"
-msgstr "Protanopia (rubie debile)"
-
-#: ui/ColorblindnessCorrection.qml:42
+#: ui/ColorblindnessCorrection.qml:49
 #, kde-format
 msgctxt "@option"
-msgid "Deuteranopia (green weak)"
-msgstr "Deuteranopia (verde debile)"
+msgid "Red & purple (Protanopia)"
+msgstr ""
 
-#: ui/ColorblindnessCorrection.qml:43
+#: ui/ColorblindnessCorrection.qml:50
 #, kde-format
 msgctxt "@option"
-msgid "Tritanopia (blue-yellow)"
-msgstr "Tritanopia (blau-jalne)"
+msgid "Green & purple (Deuteranopia)"
+msgstr ""
 
-#: ui/ColorblindnessCorrection.qml:58
+#: ui/ColorblindnessCorrection.qml:51
+#, kde-format
+msgctxt "@option"
+msgid "Yellow, green & purple (Tritanopia)"
+msgstr ""
+
+#: ui/ColorblindnessCorrection.qml:52
+#, kde-format
+msgctxt "@option"
+msgid "All (grayscale mode)"
+msgstr ""
+
+#: ui/ColorblindnessCorrection.qml:67
 #, kde-format
 msgctxt "@label"
 msgid "Intensity:"
 msgstr "Intensitate:"
 
-#: ui/ColorblindnessCorrection.qml:81
+#: ui/ColorblindnessCorrection.qml:90
 #, kde-format
 msgctxt "@label Mild color blindness correction intensity"
 msgid "Mild"
 msgstr "Blande"
 
-#: ui/ColorblindnessCorrection.qml:88
+#: ui/ColorblindnessCorrection.qml:97
 #, kde-format
 msgctxt "@label Intense color blindness correction intensity"
 msgid "Intense"
 msgstr "Intense"
 
-#: ui/ColorblindnessCorrection.qml:111
+#: ui/ColorblindnessCorrection.qml:115
 #, kde-format
-msgid "Red"
-msgstr "Rubie"
+msgctxt "@info"
+msgid "Adjusted colors:"
+msgstr ""
 
-#: ui/ColorblindnessCorrection.qml:112
+#: ui/ColorblindnessCorrection.qml:132
 #, kde-format
-msgid "Green"
+msgid "Reds:"
+msgstr ""
+
+#: ui/ColorblindnessCorrection.qml:133
+#, fuzzy, kde-format
+#| msgid "Green"
+msgid "Greens:"
 msgstr "Verde"
 
-#: ui/ColorblindnessCorrection.qml:113
-#, kde-format
-msgid "Blue"
+#: ui/ColorblindnessCorrection.qml:134
+#, fuzzy, kde-format
+#| msgid "Blue"
+msgid "Blues:"
 msgstr "Blau"
 
-#: ui/ColorblindnessCorrection.qml:114
-#, kde-format
-msgid "Purple"
+#: ui/ColorblindnessCorrection.qml:135
+#, fuzzy, kde-format
+#| msgid "Purple"
+msgid "Purples:"
 msgstr "Purpura"
 
 #: ui/Invert.qml:22
 #, kde-format
 msgctxt "@label"
 msgid "Invert:"
-msgstr ""
+msgstr "Inverte:"
 
 #: ui/Invert.qml:23
 #, fuzzy, kde-format
@@ -574,12 +592,12 @@ msgctxt "@label Hint for invert effect enable button"
 msgid "Use shortcuts to toggle inverting display and window colors"
 msgstr ""
 
-#: ui/Invert.qml:49 ui/ZoomMagnifier.qml:319
+#: ui/Invert.qml:49 ui/ZoomMagnifier.qml:321
 #, fuzzy, kde-format
 #| msgid "Configure Notifications…"
 msgctxt "@action:button"
 msgid "Configure Shortcuts…"
-msgstr "Configura notificationes ..."
+msgstr "Configura Vias Breve"
 
 #: ui/KeyboardFilters.qml:18
 #, kde-format
@@ -715,10 +733,10 @@ msgid "Color Blindness Correction"
 msgstr "Correction de cecitate de color"
 
 #: ui/main.qml:68
-#, kde-format
+#, fuzzy, kde-format
 msgctxt "@title Category name in sidebar, for inverting screen colors"
 msgid "Invert"
-msgstr ""
+msgstr "Inverte"
 
 #: ui/main.qml:73
 #, kde-format
@@ -919,164 +937,187 @@ msgctxt "@label Large cursor size"
 msgid "Large"
 msgstr "Grande (Large)"
 
-#: ui/ZoomMagnifier.qml:21
+#: ui/ZoomMagnifier.qml:22
 #, kde-format
 msgctxt "@label, followed by 'full screen' or 'magnify region'"
 msgid "Zoom:"
-msgstr ""
+msgstr "Zoom: "
 
-#: ui/ZoomMagnifier.qml:23
+#: ui/ZoomMagnifier.qml:24
 #, fuzzy, kde-format
 #| msgctxt "@option:radio Flash screen when a system bell is rung"
 #| msgid "Flash screen"
 msgctxt "@option:check, enable zoom effect, following 'Zoom:'"
 msgid "Full screen"
-msgstr "Schermo a fulgor"
+msgstr "Schermo plen"
 
-#: ui/ZoomMagnifier.qml:52
+#: ui/ZoomMagnifier.qml:53
 #, kde-format
 msgctxt "@label:spinbox"
 msgid "Show pixel grid at zoom level:"
-msgstr ""
+msgstr "Monstra grillia de pixel a nivello de zoom:"
 
-#: ui/ZoomMagnifier.qml:84
+#: ui/ZoomMagnifier.qml:85
 #, kde-format
 msgctxt "@label:listbox"
 msgid "Mouse pointer:"
-msgstr ""
+msgstr "Punctator de mus:"
 
-#: ui/ZoomMagnifier.qml:86
+#: ui/ZoomMagnifier.qml:87
 #, kde-format
 msgctxt "@item:inlistbox"
 msgid "Scale"
-msgstr ""
+msgstr "Scala"
 
-#: ui/ZoomMagnifier.qml:86
-#, kde-format
+#: ui/ZoomMagnifier.qml:87
+#, fuzzy, kde-format
 msgctxt "@item:inlistbox"
 msgid "Keep"
-msgstr ""
+msgstr "Mantene"
 
-#: ui/ZoomMagnifier.qml:86
-#, kde-format
+#: ui/ZoomMagnifier.qml:87
+#, fuzzy, kde-format
 msgctxt "@item:inlistbox"
 msgid "Hide"
-msgstr ""
+msgstr "Cela"
 
-#: ui/ZoomMagnifier.qml:97
+#: ui/ZoomMagnifier.qml:98
 #, kde-format
 msgctxt "@label:listbox"
 msgid "Mouse tracking:"
-msgstr ""
+msgstr "Traciar de Mus:"
 
-#: ui/ZoomMagnifier.qml:99
+#: ui/ZoomMagnifier.qml:100
 #, kde-format
 msgctxt "@item:inlistbox"
 msgid "Proportional"
-msgstr ""
+msgstr "Proportional"
 
-#: ui/ZoomMagnifier.qml:99
+#: ui/ZoomMagnifier.qml:100
 #, kde-format
 msgctxt "@item:inlistbox"
 msgid "Centered"
-msgstr ""
+msgstr "Centrate"
 
-#: ui/ZoomMagnifier.qml:99
-#, kde-format
+#: ui/ZoomMagnifier.qml:100
+#, fuzzy, kde-format
 msgctxt "@item:inlistbox"
 msgid "Push"
-msgstr ""
+msgstr "Preme"
 
-#: ui/ZoomMagnifier.qml:99
+#: ui/ZoomMagnifier.qml:100
 #, fuzzy, kde-format
 #| msgid "Disable After:"
 msgctxt "@item:inlistbox"
 msgid "Disabled"
-msgstr "Dishabilita postea:"
+msgstr "Dishabilitate"
 
-#: ui/ZoomMagnifier.qml:110
+#: ui/ZoomMagnifier.qml:111
 #, kde-format
 msgctxt "@option:check"
 msgid "Enable focus tracking"
-msgstr ""
+msgstr "Activa tracia de foco"
 
-#: ui/ZoomMagnifier.qml:121
+#: ui/ZoomMagnifier.qml:123
 #, kde-format
 msgctxt "@option:check"
 msgid "Enable text caret tracking"
 msgstr ""
 
-#: ui/ZoomMagnifier.qml:132
+#: ui/ZoomMagnifier.qml:134
 #, kde-format
 msgctxt "@label"
 msgid "Scroll gesture modifier keys:"
-msgstr ""
+msgstr "Claves de Modificar de gesto (gesture) de rolar:"
 
-#: ui/ZoomMagnifier.qml:170
+#: ui/ZoomMagnifier.qml:172
 #, kde-format
 msgctxt "@info:tooltip, indicates feature unavailable on X11"
 msgid "Zoom scroll gestures are only available on Wayland."
 msgstr ""
 
-#: ui/ZoomMagnifier.qml:176
+#: ui/ZoomMagnifier.qml:178
 #, fuzzy, kde-format
 #| msgid "Ring system bell when modifier keys are used"
 msgctxt "@label Hint for scroll gestures"
 msgid "Scroll while modifier keys are pressed to zoom"
 msgstr "Sono de campana de systema quando claves de modificator es usate"
 
-#: ui/ZoomMagnifier.qml:188
+#: ui/ZoomMagnifier.qml:190
 #, fuzzy, kde-format
 #| msgid "Magnification"
 msgctxt "@option:check, enable magnify effect, following 'Zoom:'"
 msgid "Magnify region"
 msgstr "Aggrandimento"
 
-#: ui/ZoomMagnifier.qml:215
-#, kde-format
+#: ui/ZoomMagnifier.qml:217
+#, fuzzy, kde-format
 msgctxt "@label:spinbox"
 msgid "Width:"
-msgstr ""
+msgstr "Largessa:"
 
-#: ui/ZoomMagnifier.qml:226 ui/ZoomMagnifier.qml:251
+#: ui/ZoomMagnifier.qml:228 ui/ZoomMagnifier.qml:253
 #, kde-format
 msgctxt "short for pixel(s)"
 msgid "%1 px"
 msgid_plural "%1 px"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%1 px"
+msgstr[1] "%1 px"
 
-#: ui/ZoomMagnifier.qml:227 ui/ZoomMagnifier.qml:252
+#: ui/ZoomMagnifier.qml:229 ui/ZoomMagnifier.qml:254
 #, kde-format
 msgctxt "short for pixel(s)"
 msgid "px"
-msgstr ""
+msgstr "px"
 
-#: ui/ZoomMagnifier.qml:240
-#, kde-format
+#: ui/ZoomMagnifier.qml:242
+#, fuzzy, kde-format
 msgctxt "@label:spinbox"
 msgid "Height:"
-msgstr ""
+msgstr "Altessa:"
 
-#: ui/ZoomMagnifier.qml:269
+#: ui/ZoomMagnifier.qml:271
 #, fuzzy, kde-format
 #| msgid "Disable After:"
 msgctxt "@option:check, disable zoom/magnify effect"
 msgid "Disabled"
-msgstr "Dishabilita postea:"
+msgstr "Dishabilitate"
 
-#: ui/ZoomMagnifier.qml:282
+#: ui/ZoomMagnifier.qml:284
 #, kde-format
 msgctxt "@label:spinbox"
 msgid "Zoom factor:"
-msgstr ""
+msgstr "Factor de zoom:"
 
-#: ui/ZoomMagnifier.qml:329
+#: ui/ZoomMagnifier.qml:331
 #, fuzzy, kde-format
 #| msgid "Use keys to control the mouse"
 msgctxt "@label Hint for zoom/magnify effect usage"
 msgid "Use shortcuts to control zoom"
 msgstr "Usa claves per controlar le mus"
+
+#~ msgctxt "@label"
+#~ msgid "Color blindness correction:"
+#~ msgstr "Correction de cecitate de color:"
+
+#~ msgctxt "@label"
+#~ msgid "Mode:"
+#~ msgstr "Modo:"
+
+#~ msgctxt "@option"
+#~ msgid "Protanopia (red weak)"
+#~ msgstr "Protanopia (rubie debile)"
+
+#~ msgctxt "@option"
+#~ msgid "Deuteranopia (green weak)"
+#~ msgstr "Deuteranopia (verde debile)"
+
+#~ msgctxt "@option"
+#~ msgid "Tritanopia (blue-yellow)"
+#~ msgstr "Tritanopia (blau-jalne)"
+
+#~ msgid "Red"
+#~ msgstr "Rubie"
 
 #~ msgid "AltGraph"
 #~ msgstr "AltGraph"

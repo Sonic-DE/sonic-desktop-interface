@@ -3,13 +3,13 @@
 # SPDX-FileCopyrightText: 2010, 2011, 2014, 2015, 2016, 2018, 2020, 2023, 2024 Vít Pelčák <vit@pelcak.org>
 # Lukáš Tinkl <ltinkl@redhat.com>, 2010.
 # Tomáš Chvátal <tomas.chvatal@gmail.com>, 2013.
-# SPDX-FileCopyrightText: 2024 Vit Pelcak <vit@pelcak.org>
+# SPDX-FileCopyrightText: 2024, 2025 Vit Pelcak <vit@pelcak.org>
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: kcminput\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-05-15 00:44+0000\n"
+"POT-Creation-Date: 2025-09-25 00:44+0000\n"
 "PO-Revision-Date: 2024-10-15 11:01+0200\n"
 "Last-Translator: Vit Pelcak <vit@pelcak.org>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Lokalize 24.08.2\n"
+"X-Generator: Lokalize 25.08.1\n"
 
 #: backends/kwin_wl/kwin_wl_backend.cpp:61
 #, kde-format
@@ -96,37 +96,37 @@ msgctxt "@title"
 msgid "Extra Mouse Buttons"
 msgstr "Extra tlačítka myši"
 
-#: ui/bindings.qml:70
+#: ui/bindings.qml:77
 #, kde-format
 msgctxt "@label for assigning an action to a numbered button"
 msgid "Extra Button %1:"
 msgstr "Extra tlačítko %1:"
 
-#: ui/bindings.qml:100
+#: ui/bindings.qml:106
 #, kde-format
 msgctxt "@action:button"
 msgid "Press the mouse button for which you want to add a key binding"
 msgstr "Stiskněte tlačítko pro které chcete přiřadit klávesovou zkratku..."
 
-#: ui/bindings.qml:102
+#: ui/bindings.qml:108
 #, kde-format
 msgctxt "@action:button, %1 is the translation of 'Extra Button %1' from above"
 msgid "Enter the new key combination for %1"
 msgstr "Zadejte novou kombinaci pro %1"
 
-#: ui/bindings.qml:106
+#: ui/bindings.qml:112
 #, kde-format
 msgctxt "@action:button"
 msgid "Cancel"
 msgstr "Zrušit"
 
-#: ui/bindings.qml:124
+#: ui/bindings.qml:130
 #, kde-format
 msgctxt "@action:button"
 msgid "Press a mouse button"
 msgstr "Stiskněte tlačítko myši"
 
-#: ui/bindings.qml:125
+#: ui/bindings.qml:131
 #, kde-format
 msgctxt "@action:button, Bind a mousebutton to keyboard key(s)"
 msgid "Add Binding…"
@@ -220,10 +220,9 @@ msgid "Invert scroll direction"
 msgstr "Obrátit směr rolování"
 
 #: ui/main.qml:330
-#, fuzzy, kde-format
-#| msgid "Press middle button and move mouse to scroll"
+#, kde-format
 msgid "Hold down middle button and move mouse to scroll"
-msgstr "Stiskněte prostřední tlačítko myši pro rolování"
+msgstr ""
 
 #: ui/main.qml:342
 #, kde-format
@@ -234,22 +233,3 @@ msgid ""
 "device, but is intended primarily as a substitute for scroll wheels on "
 "devices that do not have any."
 msgstr ""
-
-#~ msgid "Accept input through this device."
-#~ msgstr "Povolit vstup skrze toto zařízení."
-
-#~ msgid "Swap left and right buttons."
-#~ msgstr "Prohodit levé a pravé tlačítko."
-
-#~ msgctxt "@info:tooltip"
-#~ msgid ""
-#~ "Pressing the left and right button simultaneously acts as middle-click."
-#~ msgstr ""
-#~ "Kliknutí levým a pravým tlačítkem zároveň bude bráno jako kliknutí "
-#~ "prostředním tlačítkem."
-
-#~ msgid "Touchscreen-like scrolling."
-#~ msgstr "Rolování jako na dotykové obrazovce."
-
-#~ msgid "Scrolling with the mouse while the middle button is pressed."
-#~ msgstr "Rolování myší zatímco je stisknuto prostřední tlačítko."

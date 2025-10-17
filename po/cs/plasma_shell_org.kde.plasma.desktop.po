@@ -1,30 +1,30 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
-# SPDX-FileCopyrightText: 2013, 2014, 2015, 2016, 2017, 2019, 2020, 2021, 2022, 2023, 2024 Vit Pelcak <vit@pelcak.org>
+# SPDX-FileCopyrightText: 2013, 2014, 2015, 2016, 2017, 2019, 2020, 2021, 2022, 2023, 2024, 2025 Vit Pelcak <vit@pelcak.org>
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-08-27 00:45+0000\n"
-"PO-Revision-Date: 2024-10-15 11:00+0200\n"
-"Last-Translator: Vit Pelcak <vit@pelcak.org>\n"
+"POT-Creation-Date: 2025-10-03 00:45+0000\n"
+"PO-Revision-Date: 2025-10-02 09:31+0200\n"
+"Last-Translator: Vit Pelcak <vpelcak@suse.cz>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Lokalize 24.08.2\n"
+"X-Generator: Lokalize 25.08.1\n"
 "X-Language: cs_CZ\n"
 "X-Source-Language: en_US\n"
 
-#: contents/activitymanager/ActivityItem.qml:204
+#: contents/activitymanager/ActivityItem.qml:203
 #, kde-format
 msgid "Currently being used"
 msgstr "V současnosti používaný"
 
-#: contents/activitymanager/ActivityItem.qml:244
+#: contents/activitymanager/ActivityItem.qml:243
 #, kde-format
 msgid ""
 "Move to\n"
@@ -33,7 +33,7 @@ msgstr ""
 "Přesunout\n"
 "do této aktivity"
 
-#: contents/activitymanager/ActivityItem.qml:274
+#: contents/activitymanager/ActivityItem.qml:273
 #, kde-format
 msgid ""
 "Show also\n"
@@ -42,20 +42,10 @@ msgstr ""
 "Zobrazit také\n"
 "v této aktivitě"
 
-#: contents/activitymanager/ActivityItem.qml:336
+#: contents/activitymanager/ActivityItem.qml:335
 #, kde-format
 msgid "Configure"
 msgstr "Nastavit"
-
-#: contents/activitymanager/ActivityItem.qml:355
-#, kde-format
-msgid "Stop activity"
-msgstr "Zastavit aktivitu"
-
-#: contents/activitymanager/ActivityList.qml:148
-#, kde-format
-msgid "Stopped activities:"
-msgstr "Zastavené aktivity:"
 
 #: contents/activitymanager/ActivityManager.qml:122
 #, kde-format
@@ -98,58 +88,64 @@ msgstr "Otevřít %1"
 msgid "About"
 msgstr "O aplikaci"
 
-#: contents/configuration/AboutPlugin.qml:50
+#: contents/configuration/AboutPlugin.qml:51
 #, kde-format
 msgid "Send an email to %1"
 msgstr "Odeslat e-mail %1"
 
-#: contents/configuration/AboutPlugin.qml:64
+#: contents/configuration/AboutPlugin.qml:65
 #, kde-format
 msgctxt "@info:tooltip %1 url"
 msgid "Open website %1"
 msgstr "Otevřít webovou stránku: %1"
 
-#: contents/configuration/AboutPlugin.qml:142
+#: contents/configuration/AboutPlugin.qml:143
 #, kde-format
 msgctxt "@title:group"
 msgid "Website"
+msgstr "Webová stránka"
+
+#: contents/configuration/AboutPlugin.qml:154
+#, kde-format
+msgctxt "@title:group"
+msgid "Get Help"
+msgstr "Získat nápovědu"
+
+#: contents/configuration/AboutPlugin.qml:162
+#, kde-format
+msgid "Report an issue"
 msgstr ""
 
-#: contents/configuration/AboutPlugin.qml:153
+#: contents/configuration/AboutPlugin.qml:169
 #, kde-format
 msgid "Copyright"
 msgstr "Autorská práva"
 
-#: contents/configuration/AboutPlugin.qml:170
+#: contents/configuration/AboutPlugin.qml:188
 #, kde-format
-msgid "License:"
-msgstr "Licence:"
+msgid "License: %1"
+msgstr "Licence: %1"
 
-#: contents/configuration/AboutPlugin.qml:175
+#: contents/configuration/AboutPlugin.qml:194
 #, kde-format
-msgctxt "@info:whatsthis"
-msgid "View license text"
-msgstr "Zobrazit text licence"
+msgctxt "@action:button"
+msgid "Read License"
+msgstr ""
 
-#: contents/configuration/AboutPlugin.qml:189
+#: contents/configuration/AboutPlugin.qml:208
 #, kde-format
 msgid "Authors"
 msgstr "Autoři"
 
-#: contents/configuration/AboutPlugin.qml:202
+#: contents/configuration/AboutPlugin.qml:221
 #, kde-format
 msgid "Credits"
 msgstr "Poděkování"
 
-#: contents/configuration/AboutPlugin.qml:216
+#: contents/configuration/AboutPlugin.qml:235
 #, kde-format
 msgid "Translators"
 msgstr "Překladatelé"
-
-#: contents/configuration/AboutPlugin.qml:235
-#, kde-format
-msgid "Report a Bug…"
-msgstr "Nahlásit chybu…"
 
 #: contents/configuration/AppletConfiguration.qml:90
 #, kde-format
@@ -166,6 +162,7 @@ msgstr "Provést nastavení"
 msgid ""
 "The current page has unsaved changes. Apply the changes or discard them?"
 msgstr ""
+"Současná činnost obsahuje neuložené změny. Přejete si je uložit nebo zahodit?"
 
 #: contents/configuration/AppletConfiguration.qml:401
 #, kde-format
@@ -321,19 +318,19 @@ msgctxt ""
 "@action:button label of button to open a menu that lets you add widgets or "
 "spacers"
 msgid "Add New"
-msgstr ""
+msgstr "Přidat nové"
 
 #: contents/configuration/PanelConfiguration.qml:127
 #, kde-format
 msgctxt "@action:menu add a spacer"
 msgid "Spacer"
-msgstr ""
+msgstr "Mezera"
 
 #: contents/configuration/PanelConfiguration.qml:134
 #, kde-format
 msgctxt "@action:menu add a widget"
 msgid "Widgets…"
-msgstr ""
+msgstr "Widgety…"
 
 #: contents/configuration/PanelConfiguration.qml:163
 #, kde-format
@@ -459,13 +456,13 @@ msgstr "Průhledné"
 #, kde-format
 msgctxt "@title:group Degree of floatingness of panel and applets"
 msgid "Floating"
-msgstr ""
+msgstr "Plovoucí"
 
 #: contents/configuration/PanelConfiguration.qml:517
 #, kde-format
 msgctxt "@item:inlistbox Option to disable floating panels or applets"
 msgid "Disabled"
-msgstr ""
+msgstr "Zakázáno"
 
 #: contents/configuration/PanelConfiguration.qml:518
 #, kde-format
@@ -638,7 +635,7 @@ msgstr "Alternativní widgety"
 #, kde-format
 msgctxt "@action:button accessible only, %1 is widget name"
 msgid "Add %1"
-msgstr ""
+msgstr "Přidat %1"
 
 #: contents/explorer/AppletDelegate.qml:47
 #, kde-format
@@ -664,7 +661,7 @@ msgstr[2] ""
 #, kde-format
 msgctxt " @info:other accessible for badge indicating new widget"
 msgid "Recently installed"
-msgstr ""
+msgstr "Nedávno nainstalované"
 
 #: contents/explorer/AppletDelegate.qml:217
 #, kde-format
@@ -754,12 +751,12 @@ msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 
-#: contents/explorer/WidgetExplorer.qml:370
+#: contents/explorer/WidgetExplorer.qml:388
 #, kde-format
 msgid "No widgets matched the search terms"
 msgstr "Vyhledávacím kritériím neodpovídá žádný widget"
 
-#: contents/explorer/WidgetExplorer.qml:370
+#: contents/explorer/WidgetExplorer.qml:388
 #, kde-format
 msgid "No widgets available"
 msgstr "Nejsou dostupné žádné widgety"
@@ -768,13 +765,13 @@ msgstr "Nejsou dostupné žádné widgety"
 #, kde-format
 msgctxt "@title: group"
 msgid "Show clock:"
-msgstr ""
+msgstr "Ukázat hodiny:"
 
 #: contents/lockscreen/config.qml:25
 #, kde-format
 msgctxt "@option:radio Clock always shown"
 msgid "Always"
-msgstr ""
+msgstr "Vždy"
 
 #: contents/lockscreen/config.qml:26
 #, kde-format
@@ -798,7 +795,7 @@ msgstr ""
 #, kde-format
 msgctxt "@option:radio Clock never shown"
 msgid "Never"
-msgstr ""
+msgstr "Nikdy"
 
 #: contents/lockscreen/config.qml:56
 #, kde-format
@@ -807,9 +804,7 @@ msgid "Never show clock"
 msgstr ""
 
 #: contents/lockscreen/config.qml:71
-#, fuzzy, kde-format
-#| msgctxt "@title: group"
-#| msgid "Media controls:"
+#, kde-format
 msgctxt "@title: group UI controls for playback of multimedia content"
 msgid "Media controls:"
 msgstr "Ovládání médií:"
@@ -833,12 +828,12 @@ msgstr "CapsLock je zapnut"
 #: contents/lockscreen/LockScreenUi.qml:295
 #, kde-format
 msgid "Slee&p"
-msgstr ""
+msgstr "&Uspat"
 
 #: contents/lockscreen/LockScreenUi.qml:301
 #, kde-format
 msgid "&Hibernate"
-msgstr ""
+msgstr "&Hibernovat"
 
 #: contents/lockscreen/LockScreenUi.qml:307
 #, kde-format
@@ -918,16 +913,3 @@ msgstr "Ukončit režim úprav"
 #, kde-format
 msgid "Panel Focus Indicator"
 msgstr ""
-
-#~ msgid "Author:"
-#~ msgstr "Autor:"
-
-#~ msgid "Email:"
-#~ msgstr "E-mail:"
-
-#~ msgid "Uninstall"
-#~ msgstr "Odinstalovat"
-
-#~ msgctxt "Percentage value"
-#~ msgid "%1%"
-#~ msgstr "%1%"

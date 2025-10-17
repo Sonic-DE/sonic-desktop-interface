@@ -40,20 +40,35 @@ static const char *s_action_name_previous_activity = "previous activity";
 
 namespace
 {
-bool areModifiersPressed(const QKeySequence &seq)
+
+bool areModifiersPressed(const QKeySequence &seq, const KModifierKeyInfo &modifierInfo)
 {
     if (seq.isEmpty()) {
         return false;
     }
-    int mod = seq[seq.count() - 1].keyboardModifiers();
-    auto activeMods = qGuiApp->queryKeyboardModifiers();
-    return activeMods & mod;
+
+    auto mod = seq[seq.count() - 1].keyboardModifiers();
+
+    if (mod & Qt::ShiftModifier && modifierInfo.isKeyPressed(Qt::Key_Shift)) {
+        return true;
+    }
+    if (mod & Qt::ControlModifier && modifierInfo.isKeyPressed(Qt::Key_Control)) {
+        return true;
+    }
+    if (mod & Qt::AltModifier && modifierInfo.isKeyPressed(Qt::Key_Alt)) {
+        return true;
+    }
+    // On X11 KModifierKeyInfo reports what we call Meta via Key_Super_L
+    if (mod & Qt::MetaModifier && (modifierInfo.isKeyPressed(Qt::Key_Meta) || modifierInfo.isKeyPressed(Qt::Key_Super_L))) {
+        return true;
+    }
+    return false;
 }
 
-bool isReverseTab(const QKeySequence &prevAction)
+bool isReverseTab(const QKeySequence &prevAction, const KModifierKeyInfo &modifierInfo)
 {
     if (prevAction == QKeySequence(Qt::ShiftModifier | Qt::Key_Tab)) {
-        return areModifiersPressed(Qt::SHIFT);
+        return areModifiersPressed(Qt::SHIFT, modifierInfo);
     } else {
         return false;
     }
@@ -162,8 +177,7 @@ SwitcherBackend::SwitcherBackend(QObject *parent)
     : QObject(parent)
     , m_shouldShowSwitcher(false)
     , m_dropModeActive(false)
-    , m_runningActivitiesModel(new SortedActivitiesModel({KActivities::Info::Running, KActivities::Info::Stopping}, this))
-    , m_stoppedActivitiesModel(new SortedActivitiesModel({KActivities::Info::Stopped, KActivities::Info::Starting}, this))
+    , m_runningActivitiesModel(new SortedActivitiesModel(this))
 {
     registerShortcut(QString::fromLatin1(s_action_name_next_activity),
                      i18n("Walk through activities"),
@@ -212,7 +226,7 @@ SwitcherBackend *SwitcherBackend::create(QQmlEngine *engine, QJSEngine *scriptEn
 
 void SwitcherBackend::keybdSwitchToNextActivity()
 {
-    if (isReverseTab(m_actionShortcut[QString::fromLatin1(s_action_name_previous_activity)])) {
+    if (isReverseTab(m_actionShortcut[QString::fromLatin1(s_action_name_previous_activity)], m_modifierInfo)) {
         switchToActivity(Previous);
     } else {
         switchToActivity(Next);
@@ -241,21 +255,7 @@ void SwitcherBackend::switchToActivity(Direction direction)
 void SwitcherBackend::keybdSwitchedToAnotherActivity()
 {
     m_lastInvokedAction = dynamic_cast<QAction *>(sender());
-    if (KWindowSystem::isPlatformWayland() && !qGuiApp->focusWindow() && !m_inputWindow) {
-        // create a new Window so the compositor sends us modifier info
-        m_inputWindow = new QRasterWindow();
-        m_inputWindow->setGeometry(0, 0, 1, 1);
-        // Only show once the initial switch has been completed, not cause a switch back
-        connect(&m_activities, &KActivities::Consumer::currentActivityChanged, m_inputWindow, [this] {
-            m_inputWindow->show();
-            m_inputWindow->update();
-        });
-        connect(m_inputWindow, &QWindow::activeChanged, this, [this] {
-            showActivitySwitcherIfNeeded();
-        });
-    } else {
-        QTimer::singleShot(100, this, &SwitcherBackend::showActivitySwitcherIfNeeded);
-    }
+    QTimer::singleShot(100, this, &SwitcherBackend::showActivitySwitcherIfNeeded);
 }
 
 void SwitcherBackend::showActivitySwitcherIfNeeded()
@@ -270,7 +270,7 @@ void SwitcherBackend::showActivitySwitcherIfNeeded()
         return;
     }
 
-    if (!areModifiersPressed(m_actionShortcut[actionName])) {
+    if (!areModifiersPressed(m_actionShortcut[actionName], m_modifierInfo)) {
         m_lastInvokedAction = nullptr;
         setShouldShowSwitcher(false);
         return;
@@ -328,11 +328,6 @@ bool SwitcherBackend::shouldShowSwitcher() const
 
 void SwitcherBackend::setShouldShowSwitcher(bool shouldShowSwitcher)
 {
-    if (m_inputWindow) {
-        delete m_inputWindow;
-        m_inputWindow = nullptr;
-    }
-
     if (m_shouldShowSwitcher == shouldShowSwitcher)
         return;
 
@@ -356,19 +351,9 @@ QAbstractItemModel *SwitcherBackend::runningActivitiesModel() const
     return m_runningActivitiesModel;
 }
 
-QAbstractItemModel *SwitcherBackend::stoppedActivitiesModel() const
-{
-    return m_stoppedActivitiesModel;
-}
-
 void SwitcherBackend::setCurrentActivity(const QString &activity)
 {
     m_activities.setCurrentActivity(activity);
-}
-
-void SwitcherBackend::stopActivity(const QString &activity)
-{
-    m_activities.stopActivity(activity);
 }
 
 void SwitcherBackend::removeActivity(const QString &activity)
@@ -409,7 +394,7 @@ void SwitcherBackend::drop(QMimeData *mimeData, int modifiers, const QVariant &a
         }
 
         const QString newActivity = activityId.toString();
-        const QStringList runningActivities = m_activities.runningActivities();
+        const QStringList runningActivities = m_activities.activities();
 
         if (!runningActivities.contains(newActivity)) {
             return;

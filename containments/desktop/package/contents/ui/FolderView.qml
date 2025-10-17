@@ -41,6 +41,7 @@ FocusScope {
     property alias filterPattern: dir.filterPattern
     property alias filterMimeTypes: dir.filterMimeTypes
     property alias showHiddenFiles: dir.showHiddenFiles
+    property alias creatingNewItems: dir.creatingNewItems
     property alias flow: gridView.flow
     property alias layoutDirection: gridView.layoutDirection
     property alias cellWidth: gridView.cellWidth
@@ -66,22 +67,22 @@ FocusScope {
 
     function rename() {
         if (gridView.currentIndex !== -1) {
-            var renameAction = folderView.model.action("rename");
+            let renameAction = folderView.model.action("rename");
             if (renameAction && !renameAction.enabled) {
                 return;
             }
 
-            if (!editor) {
+            if (!main.editor) {
                 editor = editorComponent.createObject(listener);
             }
 
-            editor.targetItem = gridView.currentItem;
+            main.editor.targetItem = gridView.currentItem;
         }
     }
 
     function cancelRename() {
-        if (editor) {
-            editor.targetItem = null;
+        if (main.editor) {
+            main.editor.targetItem = null;
         }
     }
 
@@ -90,18 +91,18 @@ FocusScope {
     }
 
     function handleDragMove(x, y) {
-        var child = childAt(x, y);
+        let child = childAt(x, y);
 
-        if (child !== null && child === backButton) {
+        if (child !== null && child === main.backButton) {
             hoveredItem = null;
-            backButton.handleDragMove();
+            main.backButton.handleDragMove();
         } else {
-            if (backButton && backButton.containsDrag) {
-                backButton.endDragMove();
+            if (main.backButton && main.backButton.containsDrag) {
+                main.backButton.endDragMove();
             }
 
-            var pos = mapToItem(gridView.contentItem, x, y);
-            var item = gridView.safeItemAt(pos.x, pos.y);
+            let pos = mapToItem(gridView.contentItem, x, y);
+            let item = gridView.safeItemAt(pos.x, pos.y);
 
             if (item && item.isDir) {
                 hoveredItem = item;
@@ -112,15 +113,15 @@ FocusScope {
     }
 
     function endDragMove() {
-        if (backButton && backButton.active) {
-            backButton.endDragMove();
+        if (main.backButton && main.backButton.active) {
+            main.backButton.endDragMove();
         } else if (hoveredItem && !hoveredItem.popupDialog) {
             hoveredItem = null;
         }
     }
 
     function dropItemAt(pos) {
-        var item = gridView.safeItemAt(pos.x, pos.y);
+        let item = gridView.safeItemAt(pos.x, pos.y);
 
         if (item && !item.blank) {
             gridView.currentIndex = item.index
@@ -131,10 +132,10 @@ FocusScope {
     }
 
     function drop(target, event, pos) {
-        var dropPos = mapToItem(gridView.contentItem, pos.x, pos.y);
-        var dropIndex = gridView.safeIndexAt(dropPos.x, dropPos.y);
-        var dragPos = mapToItem(gridView.contentItem, listener.dragX, listener.dragY);
-        var dragIndex = gridView.safeIndexAt(dragPos.x, dragPos.y);
+        let dropPos = mapToItem(gridView.contentItem, pos.x, pos.y);
+        let dropIndex = gridView.safeIndexAt(dropPos.x, dropPos.y);
+        let dragPos = mapToItem(gridView.contentItem, listener.dragX, listener.dragY);
+        let dragIndex = gridView.safeIndexAt(dragPos.x, dragPos.y);
 
         if (listener.dragX === -1 || dragIndex !== dropIndex) {
             dir.drop(target, event, dropItemAt(dropPos), root.isContainment && !Plasmoid.immutable);
@@ -142,8 +143,8 @@ FocusScope {
     }
 
     function generateDragImage() {
-        for (var i = 0; i < gridView.count; i++) {
-            var item = gridView.itemAtIndex(i);
+        for (let i = 0; i < gridView.count; i++) {
+            let item = gridView.itemAtIndex(i);
             if (item) {
                 item.updateDragImage();
             }
@@ -210,10 +211,10 @@ FocusScope {
         target: root
 
         function onIsPopupChanged() {
-            if (backButton === null && root.useListViewMode) {
-                backButton = makeBackButton();
-            } else if (backButton !== null) {
-                backButton.destroy();
+            if (main.backButton === null && root.useListViewMode) {
+                main.backButton = main.makeBackButton();
+            } else if (main.backButton !== null) {
+                main.backButton.destroy();
             }
         }
     }
@@ -222,11 +223,19 @@ FocusScope {
         id: eventGenerator
     }
 
+    onEnabledChanged: {
+        if (!main.enabled) {
+            listener.clearPressState();
+        }
+    }
+
     MouseEventListener {
         id: listener
 
+        enabled: !Plasmoid.containment.corona.editMode
+
         anchors {
-            topMargin: backButton !== null ? backButton.height : undefined
+            topMargin: main.backButton !== null ? main.backButton.height : undefined
             fill: parent
         }
 
@@ -267,9 +276,9 @@ FocusScope {
                 return;
             }
 
-            // Ignore clicks if editor is enabled and we click on that
+            // Ignore clicks if main.editor is enabled and we click on that
             // BUG:494558
-            if (editor && childAt(mouse.x, mouse.y) === editor) {
+            if (main.editor && childAt(mouse.x, mouse.y) === main.editor) {
                 return;
             }
 
@@ -277,20 +286,20 @@ FocusScope {
 
             if (mouse.buttons & Qt.BackButton) {
                 if (root.isPopup && dir.resolvedUrl !== dir.resolve(Plasmoid.configuration.url)) {
-                    doBack();
+                    main.doBack();
                     mouse.accepted = true;
                 }
 
                 return;
             }
 
-            if (editor && childAt(mouse.x, mouse.y) !== editor) {
-                editor.commit();
+            if (main.editor && childAt(mouse.x, mouse.y) !== main.editor) {
+                main.editor.commit();
             }
 
             const mappedPos = mapToItem(gridView.contentItem, mouse.x, mouse.y)
-            var index = gridView.safeIndexAt(mappedPos.x, mappedPos.y);
-            var indexItem = gridView.itemAtIndex(index);
+            const index = gridView.safeIndexAt(mappedPos.x, mappedPos.y);
+            const indexItem = gridView.itemAtIndex(index);
 
             if (indexItem && indexItem.iconArea) { // update position in case of touch or untriggered hover
                 gridView.currentIndex = index;
@@ -312,7 +321,7 @@ FocusScope {
             if (!hoveredItem || hoveredItem.blank) {
                 if (!gridView.ctrlPressed) {
                     gridView.currentIndex = -1;
-                    previouslySelectedItemIndex = -1;
+                    main.previouslySelectedItemIndex = -1;
                     dir.clearSelection();
                 }
 
@@ -320,7 +329,8 @@ FocusScope {
                     clearPressState();
 
                     // If it's the desktop, fall through to the desktop context menu plugin
-                    if (!dir.usedByContainment) {
+                    // Disallow opening contextmenu if we're already creating new items
+                    if (!dir.usedByContainment && !dir.creatingNewItems) {
                         dir.openContextMenu(main, mouse.modifiers);
                         mouse.accepted = true;
                     }
@@ -328,7 +338,7 @@ FocusScope {
             } else {
                 pressedItem = hoveredItem;
 
-                var pos = mapToItem(hoveredItem.actionsOverlay, mouse.x, mouse.y);
+                let pos = mapToItem(hoveredItem.actionsOverlay, mouse.x, mouse.y);
 
                 if (!(pos.x <= hoveredItem.actionsOverlay.width && pos.y <= hoveredItem.actionsOverlay.height)) {
                     if (gridView.shiftPressed && gridView.currentIndex !== -1) {
@@ -336,7 +346,7 @@ FocusScope {
                     } else {
                         // Deselecting everything else when one item is clicked is handled in onReleased in order to distinguish between drag and click
                         if (!gridView.ctrlPressed && !dir.isSelected(positioner.map(hoveredItem.index))) {
-                            previouslySelectedItemIndex = -1;
+                            main.previouslySelectedItemIndex = -1;
                             dir.clearSelection();
                         }
 
@@ -371,7 +381,7 @@ FocusScope {
             // if we click on an item, cancel the current selection and select just the clicked icon
             // the cachedRectangleSelection guards this release being associated with an existing drag
             if (!gridView.cachedRectangleSelection && hoveredItem && !hoveredItem.blank && mouse.button !== Qt.RightButton) {
-                var pos = mapToItem(hoveredItem.actionsOverlay, mouse.x, mouse.y);
+                const pos = mapToItem(hoveredItem.actionsOverlay, mouse.x, mouse.y);
                 if (!(pos.x <= hoveredItem.actionsOverlay.width && pos.y <= hoveredItem.actionsOverlay.height)
                     && (!(gridView.shiftPressed && gridView.currentIndex !== -1) && !gridView.ctrlPressed)) {
                         dir.clearSelection();
@@ -399,7 +409,7 @@ FocusScope {
             clearPressState();
 
             if (mouse.button === Qt.RightButton ||
-                (editor && childAt(mouse.x, mouse.y) === editor)) {
+                (main.editor && childAt(mouse.x, mouse.y) === main.editor)) {
                 return;
             }
 
@@ -409,7 +419,7 @@ FocusScope {
                 return;
             }
 
-            var pos = mapToItem(hoveredItem, mouse.x, mouse.y);
+            let pos = mapToItem(hoveredItem, mouse.x, mouse.y);
 
             // Moving from an item to its preview popup dialog doesn't unset hoveredItem
             // even though the cursor has left it, so we need to check whether the click
@@ -418,7 +428,7 @@ FocusScope {
             // hoveredItem) and abort.
             if (pos.x < 0 || pos.x > hoveredItem.width || pos.y < 0 || pos.y > hoveredItem.height) {
                 hoveredItem = null;
-                previouslySelectedItemIndex = -1;
+                main.previouslySelectedItemIndex = -1;
                 dir.clearSelection();
 
                 return;
@@ -439,7 +449,7 @@ FocusScope {
                     && pos.x <= hoveredItem.labelArea.x + hoveredItem.labelArea.width
                     && pos.y > hoveredItem.labelArea.y
                     && pos.y <= hoveredItem.labelArea.y + hoveredItem.labelArea.height
-                    && previouslySelectedItemIndex === gridView.currentIndex
+                    && main.previouslySelectedItemIndex === gridView.currentIndex
                     && gridView.currentIndex !== -1
                     && !Qt.styleHints.singleClickActivation
                     && Plasmoid.configuration.renameInline
@@ -449,17 +459,17 @@ FocusScope {
                 // double-click mode and double-clicked on the item: open it
                 if (Qt.styleHints.singleClickActivation || doubleClickInProgress || mouse.source === Qt.MouseEventSynthesizedByQt) {
                     doubleClickInProgress = false
-                    var func = root.useListViewMode && mouse.button === Qt.LeftButton && hoveredItem.isDir ? doCd : dir.run;
+                    let func = root.useListViewMode && mouse.button === Qt.LeftButton && hoveredItem.isDir ? main.doCd : dir.run;
 
                     func(positioner.map(gridView.currentIndex));
-                    previouslySelectedItemIndex = gridView.currentIndex;
+                    main.previouslySelectedItemIndex = gridView.currentIndex;
                     hoveredItem = null;
                 } else {
                     // None of the above: select it
                     doubleClickInProgress = true;
                     doubleClickTimer.interval = Qt.styleHints.mouseDoubleClickInterval;
                     doubleClickTimer.start();
-                    previouslySelectedItemIndex = gridView.currentIndex;
+                    main.previouslySelectedItemIndex = gridView.currentIndex;
                 }
             }
         }
@@ -469,11 +479,11 @@ FocusScope {
             gridView.shiftPressed = (mouse.modifiers & Qt.ShiftModifier);
 
             const mappedPos = mapToItem(gridView.contentItem, mouse.x, mouse.y)
-            var item = gridView.safeItemAt(mappedPos.x, mappedPos.y);
-            var leftEdge = Math.min(gridView.contentX, gridView.originX);
+            const item = gridView.safeItemAt(mappedPos.x, mappedPos.y);
+            const leftEdge = Math.min(gridView.contentX, gridView.originX);
 
             if (!item || item.blank) {
-                if (gridView.hoveredItem && !root.containsDrag && (!dialog || !dialog.containsDrag) && !gridView.hoveredItem.popupDialog) {
+                if (gridView.hoveredItem && !root.containsDrag && (!main.dialog || !main.dialog.containsDrag) && !gridView.hoveredItem.popupDialog) {
                     gridView.hoveredItem = null;
                 }
             }
@@ -490,15 +500,15 @@ FocusScope {
 
             // Update rubberband geometry.
             if (main.rubberBand) {
-                var rB = main.rubberBand;
-                var cPos = mapToItem(gridView.contentItem, mouse.x, mouse.y);
+                let rB = main.rubberBand;
+                let cPos = mapToItem(gridView.contentItem, mouse.x, mouse.y);
 
                 if (cPos.x < cPress.x) {
                     rB.x = Math.max(leftEdge, cPos.x);
                     rB.width = Math.abs(rB.x - cPress.x);
                 } else {
                     rB.x = cPress.x;
-                    var ceil = Math.max(gridView.width, gridView.contentItem.width) + leftEdge;
+                    let ceil = Math.max(gridView.width, gridView.contentItem.width) + leftEdge;
                     rB.width = Math.min(ceil - rB.x, Math.abs(rB.x - cPos.x));
                 }
 
@@ -507,7 +517,7 @@ FocusScope {
                     rB.height = Math.abs(rB.y - cPress.y);
                 } else {
                     rB.y = cPress.y;
-                    var ceil = Math.max(gridView.height, gridView.contentItem.height);
+                    let ceil = Math.max(gridView.height, gridView.contentItem.height);
                     rB.height = Math.min(ceil - rB.y, Math.abs(rB.y - cPos.y));
                 }
 
@@ -534,7 +544,7 @@ FocusScope {
                     clearPressState();
                 } else {
                     // Disable rubberband in popup list view mode or while renaming
-                    if (root.useListViewMode || (editor && editor.targetItem)) {
+                    if (root.useListViewMode || (main.editor && main.editor.targetItem) || (verticalScrollBar.active || horizontalScrollBar.active)) {
                         return;
                     }
 
@@ -590,6 +600,9 @@ FocusScope {
         onContainsMouseChanged: {
             if (!containsMouse && !main.rubberBand) {
                 clearPressState();
+                if (!(hoveredItem?.popupDialog?.visible ?? false)) {
+                    hoveredItem = null;
+                }
             }
         }
 
@@ -639,12 +652,12 @@ FocusScope {
             interval: root.hoverActivateDelay
 
             onTriggered: {
-                if (!hoveredItem) {
+                if (!main.hoveredItem) {
                     return;
                 }
 
                 if (root.useListViewMode) {
-                    doCd(index);
+                    main.doCd(index);
                 } else if (Plasmoid.configuration.popups) {
                     hoveredItem.openPopup();
                 }
@@ -729,14 +742,16 @@ FocusScope {
                 PlasmaComponents.ScrollBar.vertical: PlasmaComponents.ScrollBar {
                     id: verticalScrollBar
                 }
-                PlasmaComponents.ScrollBar.horizontal: PlasmaComponents.ScrollBar {}
+                PlasmaComponents.ScrollBar.horizontal: PlasmaComponents.ScrollBar {
+                    id: horizontalScrollBar
+                }
 
                 function calcExtraSpacing(cellSize, containerSize) {
-                    var availableColumns = Math.floor(containerSize / cellSize);
-                    var extraSpacing = 0;
+                    const availableColumns = Math.floor(containerSize / cellSize);
+                    let extraSpacing = 0;
                     if (availableColumns > 0) {
-                        var allColumnSize = availableColumns * cellSize;
-                        var extraSpace = Math.max(containerSize - allColumnSize, 0);
+                        let allColumnSize = availableColumns * cellSize;
+                        let extraSpace = Math.max(containerSize - allColumnSize, 0);
                         extraSpacing = extraSpace / availableColumns;
                     }
                     return Math.floor(extraSpacing);
@@ -746,10 +761,10 @@ FocusScope {
                     if (root.useListViewMode) {
                         return gridView.width - (verticalScrollBar.visible ? verticalScrollBar.width : 0);
                     } else {
-                        var iconWidth = iconSize + (2 * Kirigami.Units.gridUnit) + (2 * Kirigami.Units.smallSpacing);
+                        const iconWidth = iconSize + (2 * Kirigami.Units.gridUnit) + (2 * Kirigami.Units.smallSpacing);
                         if (root.isContainment && isRootView && scrollArea.viewportWidth > 0) {
-                            var minIconWidth = Math.max(iconWidth, Kirigami.Units.iconSizes.small * ((Plasmoid.configuration.labelWidth * 2) + 4));
-                            var extraWidth = calcExtraSpacing(minIconWidth, scrollArea.viewportWidth);
+                            const minIconWidth = Math.max(iconWidth, Kirigami.Units.iconSizes.small * ((Plasmoid.configuration.labelWidth * 2) + 4));
+                            const extraWidth = calcExtraSpacing(minIconWidth, scrollArea.viewportWidth);
                             return minIconWidth + extraWidth;
                         } else {
                             return iconWidth;
@@ -764,9 +779,9 @@ FocusScope {
                             listItemSvg.margins.top + listItemSvg.margins.bottom)) / 2) * 2;
                     } else {
                         // the smallSpacings are for padding
-                        var iconHeight = iconSize + (Kirigami.Units.gridUnit * Plasmoid.configuration.textLines) + (Kirigami.Units.smallSpacing * 3);
+                        const iconHeight = iconSize + (Kirigami.Units.gridUnit * Plasmoid.configuration.textLines) + (Kirigami.Units.smallSpacing * 3);
                         if (root.isContainment && isRootView && scrollArea.viewportHeight > 0) {
-                            var extraHeight = calcExtraSpacing(iconHeight, scrollArea.viewportHeight);
+                            let extraHeight = calcExtraSpacing(iconHeight, scrollArea.viewportHeight);
                             return iconHeight + extraHeight;
                         } else {
                             return iconHeight;
@@ -799,7 +814,7 @@ FocusScope {
 
                     // Update rubberband geometry.
                     if (main.rubberBand) {
-                        var rB = main.rubberBand;
+                        const rB = main.rubberBand;
 
                         if (scrollLeft) {
                             rB.x = Math.min(gridView.contentX, gridView.originX);
@@ -807,7 +822,7 @@ FocusScope {
                         }
 
                         if (scrollRight) {
-                            var lastCol = gridView.contentX + gridView.width;
+                            const lastCol = gridView.contentX + gridView.width;
                             rB.width = lastCol - rB.x;
                         }
 
@@ -820,7 +835,7 @@ FocusScope {
                         hoverActivateTimer.stop();
                     }
 
-                    cancelRename();
+                    main.cancelRename();
 
                     dir.setDragHotSpotScrollOffset(contentX, contentY);
 
@@ -834,7 +849,7 @@ FocusScope {
 
                     // Update rubberband geometry.
                     if (main.rubberBand) {
-                        var rB = main.rubberBand;
+                        const rB = main.rubberBand;
 
                         if (scrollUp) {
                             rB.y = 0;
@@ -842,7 +857,7 @@ FocusScope {
                         }
 
                         if (scrollDown) {
-                            var lastRow = gridView.contentY + gridView.height;
+                            const lastRow = gridView.contentY + gridView.height;
                             rB.height = lastRow - rB.y;
                         }
 
@@ -925,9 +940,9 @@ FocusScope {
                         dir.clearSelection();
                         dir.setSelected(positioner.map(currentIndex));
                         if (currentIndex === -1) {
-                            previouslySelectedItemIndex = -1;
+                            main.previouslySelectedItemIndex = -1;
                         }
-                        previouslySelectedItemIndex = currentIndex;
+                        main.previouslySelectedItemIndex = currentIndex;
                     }
                 }
 
@@ -939,20 +954,19 @@ FocusScope {
                 }
 
                 function rectangleSelect(x, y, width, height, rubberBand) {
-                    var rows = (gridView.flow === GridView.FlowLeftToRight);
-                    var axis = rows ? gridView.width : gridView.height;
-                    var step = rows ? cellWidth : cellHeight;
-                    var perStripe = Math.floor(axis / step);
-                    var stripes = Math.ceil(gridView.count / perStripe);
-                    var cWidth = gridView.cellWidth - (2 * Kirigami.Units.smallSpacing);
-                    var cHeight = gridView.cellHeight - (2 * Kirigami.Units.smallSpacing);
-                    var midWidth = gridView.cellWidth / 2;
-                    var midHeight = gridView.cellHeight / 2;
-                    var indices = [];
+                    const rows = (gridView.flow === GridView.FlowLeftToRight);
+                    const axis = rows ? gridView.width : gridView.height;
+                    const step = rows ? cellWidth : cellHeight;
+                    const stripes = Math.ceil(gridView.count / positioner.perStripe);
+                    const cWidth = gridView.cellWidth - (2 * Kirigami.Units.smallSpacing);
+                    const cHeight = gridView.cellHeight - (2 * Kirigami.Units.smallSpacing);
+                    const midWidth = gridView.cellWidth / 2;
+                    const midHeight = gridView.cellHeight / 2;
+                    let indices = [];
 
-                    for (var s = 0; s < stripes; s++) {
-                        for (var i = 0; i < perStripe; i++) {
-                            var index = (s * perStripe) + i;
+                    for (let s = 0; s < stripes; s++) {
+                        for (let i = 0; i < positioner.perStripe; i++) {
+                            let index = (s * positioner.perStripe) + i;
 
                             if (index >= gridView.count) {
                                 break;
@@ -962,8 +976,8 @@ FocusScope {
                                 continue;
                             }
 
-                            var itemX = ((rows ? i : s) * gridView.cellWidth);
-                            var itemY = ((rows ? s : i) * gridView.cellHeight);
+                            let itemX = ((rows ? i : s) * gridView.cellWidth);
+                            let itemY = ((rows ? s : i) * gridView.cellHeight);
 
                             if (gridView.effectiveLayoutDirection === Qt.RightToLeft) {
                                 itemX -= (rows ? gridView.contentX : gridView.originX);
@@ -971,10 +985,11 @@ FocusScope {
                                 itemX = (rows ? gridView.width : gridView.contentItem.width) - itemX;
                             }
 
-                            var item = gridView.contentItem.childAt(itemX + midWidth, itemY + midHeight);
-                            if (rubberBand.intersects(Qt.rect(item.x, item.y, item.width, item.height))) {
+                            const item = gridView.contentItem.childAt(itemX + midWidth, itemY + midHeight);
+                            if (item && rubberBand.intersects(Qt.rect(item.x, item.y, item.width, item.height))) {
                                 indices.push(index)
                             }
+
                         }
                     }
 
@@ -984,7 +999,7 @@ FocusScope {
                 function runOrCdSelected() {
                     if (currentIndex !== -1 && dir.hasSelection()) {
                         if (root.useListViewMode && currentItem.isDir) {
-                            doCd(positioner.map(currentIndex));
+                            main.doCd(positioner.map(currentIndex));
                         } else {
                             dir.runSelected();
                         }
@@ -1015,8 +1030,8 @@ FocusScope {
                 }
 
                 Keys.onEscapePressed: event => {
-                    if (!editor || !editor.targetItem) {
-                        previouslySelectedItemIndex = -1;
+                    if (!main.editor || !main.editor.targetItem) {
+                        main.previouslySelectedItemIndex = -1;
                         dir.clearSelection();
                         event.accepted = false;
                     }
@@ -1032,7 +1047,7 @@ FocusScope {
                     }
 
                     onRenameFile: {
-                        rename();
+                        main.rename();
                     }
 
                     onMoveToTrash: {
@@ -1093,10 +1108,10 @@ FocusScope {
                 Keys.onLeftPressed: event => {
                     if (root.isPopup && root.useListViewMode) {
                         if (dir.resolvedUrl !== dir.resolve(Plasmoid.configuration.url)) {
-                            doBack();
+                            main.doBack();
                         }
                     } else if (positioner.enabled) {
-                        var newIndex = positioner.nearestItem(currentIndex,
+                        const newIndex = positioner.nearestItem(currentIndex,
                             FolderTools.effectiveNavDirection(gridView.flow, gridView.effectiveLayoutDirection, Qt.LeftArrow));
 
                         if (newIndex !== -1) {
@@ -1104,7 +1119,7 @@ FocusScope {
                             updateSelection(event.modifiers);
                         }
                     } else {
-                        var oldIndex = currentIndex;
+                        const oldIndex = currentIndex;
 
                         moveCurrentIndexLeft();
 
@@ -1119,10 +1134,10 @@ FocusScope {
                 Keys.onRightPressed: event => {
                     if (root.isPopup && root.useListViewMode) {
                         if (currentIndex !== -1 && dir.hasSelection() && currentItem.isDir) {
-                            doCd(positioner.map(currentIndex));
+                            main.doCd(positioner.map(currentIndex));
                         }
                     } else if (positioner.enabled) {
-                        var newIndex = positioner.nearestItem(currentIndex,
+                        const newIndex = positioner.nearestItem(currentIndex,
                             FolderTools.effectiveNavDirection(gridView.flow, gridView.effectiveLayoutDirection, Qt.RightArrow));
 
                         if (newIndex !== -1) {
@@ -1130,7 +1145,7 @@ FocusScope {
                             updateSelection(event.modifiers);
                         }
                     } else {
-                        var oldIndex = currentIndex;
+                        const oldIndex = currentIndex;
 
                         moveCurrentIndexRight();
 
@@ -1144,7 +1159,7 @@ FocusScope {
 
                 Keys.onUpPressed: event => {
                     if (positioner.enabled) {
-                        var newIndex = positioner.nearestItem(currentIndex,
+                        const newIndex = positioner.nearestItem(currentIndex,
                             FolderTools.effectiveNavDirection(gridView.flow, gridView.effectiveLayoutDirection, Qt.UpArrow));
 
                         if (newIndex !== -1) {
@@ -1152,7 +1167,7 @@ FocusScope {
                             updateSelection(event.modifiers);
                         }
                     } else {
-                        var oldIndex = currentIndex;
+                        const oldIndex = currentIndex;
 
                         moveCurrentIndexUp();
 
@@ -1166,7 +1181,7 @@ FocusScope {
 
                 Keys.onDownPressed: event => {
                     if (positioner.enabled) {
-                        var newIndex = positioner.nearestItem(currentIndex,
+                        const newIndex = positioner.nearestItem(currentIndex,
                             FolderTools.effectiveNavDirection(gridView.flow, gridView.effectiveLayoutDirection, Qt.DownArrow));
 
                         if (newIndex !== -1) {
@@ -1174,7 +1189,7 @@ FocusScope {
                             updateSelection(event.modifiers);
                         }
                     } else {
-                        var oldIndex = currentIndex;
+                        const oldIndex = currentIndex;
 
                         moveCurrentIndexDown();
 
@@ -1188,7 +1203,7 @@ FocusScope {
 
                 Keys.onBackPressed: event => {
                     if (root.isPopup && dir.resolvedUrl !== dir.resolve(Plasmoid.configuration.url)) {
-                        doBack();
+                        main.doBack();
                     }
                 }
 
@@ -1204,8 +1219,8 @@ FocusScope {
                     }
 
                     function onUrlChanged() {
-                        history = [];
-                        updateHistory();
+                        main.history = [];
+                        main.updateHistory();
                     }
                 }
             }
@@ -1217,7 +1232,7 @@ FocusScope {
                 text: i18nc("@info",
                     "There are a lot of files and folders on the desktop. This can cause bugs and performance issues. Please consider moving some of them elsewhere.")
                 // Note: the trigger amount is intentionally lower than the screen mapping cap. We want to warn ahead of hitting our caps.
-                visible: isRootView && gridView.count > 2048
+                visible: main.isRootView && gridView.count > 2048
             }
         }
 
@@ -1243,36 +1258,46 @@ FocusScope {
                 if (!gridView.model && root.expanded) {
                     gridView.model = positioner;
                     gridView.currentIndex = isPopup ? 0 : -1;
-                } else if (goingBack) {
-                    goingBack = false;
-                    gridView.currentIndex = Math.min(lastPosition.index, gridView.count - 1);
+                } else if (main.goingBack) {
+                    main.goingBack = false;
+                    gridView.currentIndex = Math.min(main.lastPosition.index, gridView.count - 1);
                     setSelected(positioner.map(gridView.currentIndex));
-                    gridView.contentY = lastPosition.yPosition * gridView.contentHeight;
+                    gridView.contentY = main.lastPosition.yPosition * gridView.contentHeight;
                 }
+            }
+
+            onAvailableRelativeScreenRectChanged: {
+                positioner.updateResolution();
+                if (!positioner.enabled) {
+                    return;
+                }
+                const rows = (gridView.flow === GridView.FlowLeftToRight);
+                const axis = rows ? gridView.width : gridView.height;
+                const step = rows ? gridView.cellWidth : gridView.cellHeight;
+                positioner.perStripe = Math.floor(axis / step);
             }
 
             onMove: (x, y, urls) => {
                 if (!positioner.enabled) {
                     return;
                 }
-                var rows = (gridView.flow === GridView.FlowLeftToRight);
-                var axis = rows ? gridView.width : gridView.height;
-                var step = rows ? gridView.cellWidth : gridView.cellHeight;
+                const rows = (gridView.flow === GridView.FlowLeftToRight);
+                const axis = rows ? gridView.width : gridView.height;
+                const step = rows ? gridView.cellWidth : gridView.cellHeight;
                 // We need to update the perStripe when moving due to panel changes etc.
                 positioner.perStripe = Math.floor(axis / step);
-                var perStripe = positioner.perStripe;
-                var dropPos = gridView.mapToItem(gridView.contentItem, x, y);
-                var leftEdge = Math.min(gridView.contentX, gridView.originX);
+                const dropPos = gridView.mapToItem(gridView.contentItem, x, y);
+                const leftEdge = Math.min(gridView.contentX, gridView.originX);
 
-                var moves = []
-                var itemX = -1;
-                var itemY = -1;
-                var col = -1;
-                var row = -1;
-                var from = -1;
-                var to = -1;
+                let moves = []
+                let itemX = -1;
+                let itemY = -1;
+                let col = -1;
+                let row = -1;
+                let from = -1;
+                let to = -1;
 
-                for (var i = 0; i < urls.length; i++) {
+                for (let i = 0; i < urls.length; i++) {
                     from = positioner.indexForUrl(urls[i]);
                     to = -1;
 
@@ -1280,7 +1305,7 @@ FocusScope {
                         continue;
                     }
 
-                    var offset = dir.dragCursorOffset(positioner.map(from));
+                    let offset = dir.dragCursorOffset(positioner.map(from));
 
                     if (offset.x === -1) {
                         continue;
@@ -1300,15 +1325,15 @@ FocusScope {
                     row = rows ? Math.floor(itemY / gridView.cellHeight) : Math.floor(itemX / gridView.cellWidth);
 
 
-                    if (col <= perStripe) {
+                    if (col <= positioner.perStripe) {
                         // We have somehow moved the item outside of the available
                         // areas (usually during file creation), so make sure
                         // the col is within perStripe
-                        if (col === perStripe) {
+                        if (col === positioner.perStripe) {
                             col -= 1;
                         }
 
-                        to = (row * perStripe) + col;
+                        to = (row * positioner.perStripe) + col;
 
                         if (to < 0) {
                             return;
@@ -1328,7 +1353,7 @@ FocusScope {
                     gridView.forceLayout();
                 }
 
-                previouslySelectedItemIndex = -1;
+                main.previouslySelectedItemIndex = -1;
             }
         }
 
@@ -1390,13 +1415,13 @@ FocusScope {
         }
 
         Component.onCompleted: {
-            dir.requestRename.connect(rename);
+            dir.requestRename.connect(main.rename);
         }
     }
 
     Component.onCompleted: {
-        if (backButton === null && root.useListViewMode) {
-            backButton = makeBackButton();
+        if (main.backButton === null && root.useListViewMode) {
+            main.backButton = makeBackButton();
         }
     }
 }
