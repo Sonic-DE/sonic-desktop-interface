@@ -28,8 +28,6 @@ KCMUtils.SimpleKCM {
             Kirigami.FormEntry {
                 title: i18n("Theme:")
                 contentItem: RowLayout {
-                    Kirigami.FormData.label: i18n("Theme:")
-
                     Layout.alignment: Qt.AlignCenter
                     spacing: Kirigami.Units.largeSpacing
 
