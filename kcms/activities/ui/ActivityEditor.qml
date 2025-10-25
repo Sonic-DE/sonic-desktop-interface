@@ -20,6 +20,7 @@ KCM.SimpleKCM {
     property int newActivityModelIndex
     property alias activityId: settings.activityId
     property alias userSortOrder: settings.userSortOrder
+    property alias userSortOrder: settings.userSortOrder
 
     title: activityId ? i18nc("@title:window", "Activity Settings for %1", settings.name)
                       : i18nc("@title:window", "Create a New Activity")
