@@ -48,6 +48,7 @@ class Bug487023Test(unittest.TestCase):
             "LC_ALL": "en_US.UTF-8",
             "QT_FATAL_WARNINGS": "0",
             "QT_LOGGING_RULES": "qt.accessibility.atspi.warning=false;kf.plasma.core.warning=false;kf.windowsystem.warning=false;kf.kirigami.platform.warning=false;org.kde.plasma.notificationmanager.warning=false;org.kde.plasma.taskmanager.debug=true",
+            "WAYLAND_DEBUG": "1",
         })
         options.set_capability("app", f"plasmawindowed -p org.kde.plasma.desktop {WIDGET_ID}")
         options.set_capability("timeouts", {'implicit': 10000})
