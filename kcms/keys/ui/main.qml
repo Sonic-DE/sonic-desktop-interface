@@ -185,6 +185,9 @@ KCM.AbstractKCM {
 
                     delegate: QQC2.ItemDelegate {
                         id: componentDelegate
+
+                        readonly property bool pendingDeletion: model.pendingDeletion
+
                         width: ListView.view.width
 
                         text: model.display
@@ -338,7 +341,7 @@ KCM.AbstractKCM {
             }
 
             QQC2.ScrollView  {
-                enabled: !exportActive
+                enabled: !exportActive && (components.currentItem ? !components.currentItem.pendingDeletion : true)
                 id: shortcutsScroll
                 Layout.fillHeight: true
                 Layout.fillWidth: true
