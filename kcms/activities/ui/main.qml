@@ -21,14 +21,22 @@ KCM.ScrollViewKCM {
 
     KCM.ConfigModule.buttons: KCM.ConfigModule.Help
 
+    Activities.ActivityModel {
+        id: kactivities
+    }
+
+    Activities.ActivitySortProxyModel {
+        id: kactivitiesProxy
+
+        sourceModel: kactivities
+    }
+
     view: ListView {
         id: activitiesList
 
         clip: true
 
-        model: Activities.ActivityModel {
-            id: kactivities
-        }
+        model: kactivitiesProxy
 
         delegate: QQC2.ItemDelegate {
             width: ListView.view.width
@@ -72,7 +80,7 @@ KCM.ScrollViewKCM {
 
                 QQC2.ToolButton {
                     visible: kcm.isNewActivityAuthorized
-                    enabled: activitiesList.count > 1 && model.index < activitiesList.count
+                    enabled: activitiesList.count > 1 && model.index < activitiesList.count - 1
                     icon.name: "arrow-down"
                     text: i18nc("@info:tooltip", "Demote %1 activity", model.name)
                     display: QQC2.AbstractButton.IconOnly
