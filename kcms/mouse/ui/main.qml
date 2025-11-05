@@ -26,7 +26,7 @@ KCMUtils.SimpleKCM {
     // have an API to provide a mapping of initial properties for the root page.
     readonly property Mouse.InputBackend backend: KCMUtils.ConfigModule.inputBackend
 
-    readonly property Mouse.InputDevice device: backend.inputDevices[KCMUtils.ConfigModule.currentDeviceIndex] ?? null
+    readonly property Mouse.InputDevice device: backend?.inputDevices[KCMUtils.ConfigModule.currentDeviceIndex] ?? null
 
     function supportsExtraButtons(device: Mouse.InputDevice): bool {
         return (device?.supportedButtons ?? 0) & ~(Qt.LeftButton | Qt.RightButton | Qt.MiddleButton);
@@ -37,11 +37,11 @@ KCMUtils.SimpleKCM {
         text: i18ndc("kcmmouse", "@action:button", "Configure Extra Buttons…")
 
         visible: {
-            if (root.backend.isAnonymousInputDevice) {
+            if (root.backend?.isAnonymousInputDevice) {
                 return false;
             }
-            return root.backend.buttonMappingCount > 0
-                || root.backend.inputDevices.some(root.supportsExtraButtons);
+            return (root.backend?.buttonMappingCount > 0
+                || root.backend?.inputDevices?.some(root.supportsExtraButtons)) ?? false;
         }
 
         onTriggered: source => {
@@ -62,10 +62,10 @@ KCMUtils.SimpleKCM {
         QQC2.ComboBox {
             id: deviceSelector
             Kirigami.FormData.label: i18nd("kcmmouse", "Device:")
-            visible: !root.backend.isAnonymousInputDevice
+            visible: !root.backend?.isAnonymousInputDevice
             enabled: count > 1
             Layout.fillWidth: true
-            model: root.backend.inputDevices
+            model: root.backend?.inputDevices ?? null
             textRole: "name"
 
             Component.onCompleted: {
@@ -86,7 +86,7 @@ KCMUtils.SimpleKCM {
             id: deviceEnabled
             Kirigami.FormData.label: i18nd("kcmmouse", "General:")
             text: i18nd("kcmmouse", "Device enabled")
-            visible: !root.backend.isAnonymousInputDevice
+            visible: !root.backend?.isAnonymousInputDevice
             enabled: root.device?.supportsDisableEvents ?? false
             checked: root.device && (!root.device.supportsDisableEvents || root.device.enabled)
 
@@ -246,7 +246,7 @@ KCMUtils.SimpleKCM {
             Kirigami.FormData.buddyFor: scrollFactor
             Layout.fillWidth: true
 
-            visible: !root.backend.isAnonymousInputDevice
+            visible: !root.backend?.isAnonymousInputDevice
             columns: 3
 
             QQC2.Slider {
