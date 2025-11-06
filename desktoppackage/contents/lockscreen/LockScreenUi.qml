@@ -75,9 +75,10 @@ Item {
         }
 
         function onPromptChanged(msg) {
-            lockScreenUi.handleMessage(authenticator.prompt);
+            lockScreenUi.handleMessage(msg);
         }
         function onPromptForSecretChanged(msg) {
+            lockScreenUi.handleMessage(msg);
             mainBlock.showPassword = false;
             mainBlock.mainPasswordBox.forceActiveFocus();
         }
