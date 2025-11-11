@@ -25,18 +25,16 @@ KCM.ScrollViewKCM {
         id: kactivities
     }
 
-    Activities.ActivitySortProxyModel {
-        id: kactivitiesProxy
-
-        sourceModel: kactivities
-    }
-
     view: ListView {
         id: activitiesList
 
         clip: true
 
-        model: kactivitiesProxy
+        model: Activities.ActivitySortProxyModel {
+            id: kactivitiesProxy
+
+            sourceModel: kactivities
+        }
 
         delegate: QQC2.ItemDelegate {
             width: ListView.view.width
@@ -117,10 +115,12 @@ KCM.ScrollViewKCM {
             onTriggered: kcm.newActivity();
         },
         Kirigami.Action {
-            visible: kcm.isNewActivityAuthorized
-            text: i18n("Reset Sort")
+            visible: kcm.isNewActivityAuthorized && activitiesList.count > 1
+            text: i18n("Default Sort")
             icon.name: "sort-name-symbolic"
-            onTriggered: kcm.setActivitySortMethodDefault();
+            onTriggered: {
+                kcm.setActivitySortMethodDefault();
+            }
         }
     ]
 
