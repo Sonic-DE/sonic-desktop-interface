@@ -3,39 +3,40 @@
 # SPDX-FileCopyrightText: 2023 Fushan Wen <qydwhotmail@gmail.com>
 # SPDX-License-Identifier: MIT
 
-import sys
+import gi
 
-from PySide6.QtCore import QEvent, QTimer
-from PySide6.QtWidgets import QApplication, QMainWindow, QPushButton
+gi.require_version('Gtk', '4.0')
+from gi.repository import GLib, Gtk
 
 
-class TestWindow(QMainWindow):
+class TestWindow(Gtk.ApplicationWindow):
 
-    def __init__(self, parent=None) -> None:
-        super().__init__(parent)
-        self.setWindowTitle("Test Window")
+    def __init__(self, _app: Gtk.Application) -> None:
+        super().__init__(application=_app, title="Test Window")
 
-        self.button = QPushButton("Active Window")
-        self.button.clicked.connect(self.on_button_clicked)
-        self.setCentralWidget(self.button)
-        self.installEventFilter(self)
-        QTimer.singleShot(60000, self.close)
+        self.button = Gtk.Button(label="Active Window")
+        self.button.connect("clicked", self.on_button_clicked)
+        self.set_child(self.button)
+        self.connect("notify::is-active", self.on_is_active_changed)
 
-    def on_button_clicked(self) -> None:
+        GLib.timeout_add_seconds(60, self.close)
+
+    def on_button_clicked(self, widget) -> None:
         self.close()
 
-    def eventFilter(self, watched, event):
-        if watched == self:
-            if event.type() == QEvent.WindowActivate:
-                self.button.setText("Active Window")
-            elif event.type() == QEvent.WindowDeactivate:
-                self.button.setText("Inactive Window")
-        return super().eventFilter(watched, event)
+    def on_is_active_changed(self, instance, param) -> None:
+        if self.is_active():
+            self.button.set_label("Active Window")
+        else:
+            self.button.set_label("Inactive Window")
+
+
+def on_activate(_app: Gtk.Application) -> None:
+    win = TestWindow(_app)
+    win.present()
 
 
 if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    app.setDesktopFileName("org.kde.testwindow")
-    win = TestWindow()
-    win.show()
-    sys.exit(app.exec())
+    app = Gtk.Application(application_id='org.kde.testwindow')
+    app.connect('activate', on_activate)
+    app.run(None)
