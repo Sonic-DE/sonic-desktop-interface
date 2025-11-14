@@ -1,0 +1,20 @@
+{
+    "KPlugin": {
+        "Authors": [
+            {
+                "Email": "plasma-devel@kde.org",
+                "Name": "KDE Plasma Development Team"
+            }
+        ],
+        "Description": "Global shortcuts for tablet screen mapping",
+        "Description[x-test]": "xxGlobal shortcuts for tablet screen mappingxx",
+        "EnabledByDefault": true,
+        "Icon": "input-tablet",
+        "License": "GPL",
+        "Name": "Tablet Daemon",
+        "Name[x-test]": "xxTablet Daemonxx"
+    },
+    "X-KDE-Kded-autoload": true,
+    "X-KDE-Kded-load-on-demand": false,
+    "X-KDE-Kded-phase": 1
+}
