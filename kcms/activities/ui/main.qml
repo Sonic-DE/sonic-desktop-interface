@@ -57,12 +57,6 @@ KCM.ScrollViewKCM {
                     textFormat: Text.PlainText
                 }
 
-                QQC2.Label {
-                    Layout.fillWidth: true
-                    text: model.userSortOrder
-                    textFormat: Text.PlainText
-                }
-
                 QQC2.ToolButton {
                     visible: kcm.isNewActivityAuthorized
                     enabled: activitiesList.count > 1 && model.index != 0
