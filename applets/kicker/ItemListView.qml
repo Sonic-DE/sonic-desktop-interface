@@ -32,7 +32,8 @@ FocusScope {
     property QtObject dialog: null
     property QtObject childDialog: null
     property bool iconsEnabled: false
-    property int itemHeight: Math.ceil((Math.max(Kirigami.Units.iconSizes.sizeForLabels, Kirigami.Units.iconSizes.small)
+    property int itemHeight: Math.ceil((Math.max(Kirigami.Units.iconSizes.sizeForLabels, iconsEnabled ? 
+        Kirigami.Units.iconSizes.smallMedium : Kirigami.Units.iconSizes.small)
         + Math.max(highlightItemSvg.margins.top + highlightItemSvg.margins.bottom,
         listItemSvg.margins.top + listItemSvg.margins.bottom)) / 2) * 2
     property int separatorHeight: showSeparators ? lineMetrics.elementRect.height + (2 * Kirigami.Units.smallSpacing) : 0

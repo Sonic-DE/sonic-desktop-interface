@@ -185,7 +185,7 @@ Item {
 
             anchors.verticalCenter: parent.verticalCenter
 
-            width: visible ? Kirigami.Units.iconSizes.small : 0
+            width: visible ? Kirigami.Units.iconSizes.smallMedium : 0
             height: width
 
             visible: iconsEnabled
