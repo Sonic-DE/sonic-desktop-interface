@@ -17,6 +17,7 @@ KCM.SimpleKCM {
     id: root
 
     property bool cfg_showText: Plasmoid.configuration.showText
+    property bool cfg_showIcon: Plasmoid.configuration.showIcon
 
     Kirigami.FormLayout {
         anchors.right: parent.right
@@ -48,6 +49,36 @@ KCM.SimpleKCM {
             text: Plasmoid.formFactor === PlasmaCore.Types.Vertical ?
                 // On a vertical panel
                 i18n("Only icons can be shown when the Panel is vertical.") :
+                // On the desktop
+                i18n("Not applicable when the widget is on the Desktop.")
+            textFormat: Text.PlainText
+            wrapMode: Text.Wrap
+            font: Kirigami.Theme.smallFont
+        }
+
+        QQC2.CheckBox {
+            id: showIconCheckbox
+
+            // Hiding the icon doesn't make sense except on a horizontal panel where only the icon is shown.
+            enabled: Plasmoid.formFactor === PlasmaCore.Types.Horizontal
+
+            text: i18n("Show active application's icon on Panel button")
+
+            checked: root.cfg_showIcon
+            onToggled: root.cfg_showIcon = checked
+        }
+
+        QQC2.Label {
+            Layout.fillWidth: true
+            // Arbitrary maximum length to make it wrap earlier, because long
+            // unwrapped text is ugly and harder to read.
+            Layout.maximumWidth: Kirigami.Units.gridUnit * 25
+
+            visible: !showTextCheckbox.enabled
+
+            text: Plasmoid.formFactor === PlasmaCore.Types.Vertical ?
+                // On a vertical panel
+                i18n("Icon can only be hidden when the Panel is vertical.") :
                 // On the desktop
                 i18n("Not applicable when the widget is on the Desktop.")
             textFormat: Text.PlainText
