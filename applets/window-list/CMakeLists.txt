@@ -3,8 +3,7 @@
 
 plasma_add_applet(org.kde.plasma.windowlist
     QML_SOURCES
-        ConfigAppearance.qml
-        ConfigBehavior.qml
+        ConfigGeneral.qml
         config.qml
         main.qml
         MenuButton.qml
