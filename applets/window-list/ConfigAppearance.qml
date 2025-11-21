@@ -1,5 +1,5 @@
 /*
- *  SPDX-FileCopyrightText: 2022 Nate Graham <nate@kde.org>
+ *  SPDX-FileCopyrightText: 2025 Shubham Arora <shubhamarora@protonmail.com>
  *
  *  SPDX-License-Identifier: GPL-2.0-or-later
  */
