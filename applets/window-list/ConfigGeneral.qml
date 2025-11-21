@@ -18,6 +18,8 @@ KCM.SimpleKCM {
 
     property bool cfg_showText: Plasmoid.configuration.showText
     property bool cfg_showIcon: Plasmoid.configuration.showIcon
+    property bool cfg_openOnHover: Plasmoid.configuration.openOnHover
+    property int cfg_hoverOpenDelay: Plasmoid.configuration.hoverOpenDelay
 
     Kirigami.FormLayout {
         anchors.right: parent.right
@@ -86,6 +88,50 @@ KCM.SimpleKCM {
             textFormat: Text.PlainText
             wrapMode: Text.Wrap
             font: Kirigami.Theme.smallFont
+        }
+
+        QQC2.CheckBox {
+            id: openOnHoverCheckbox
+
+            text: i18n("Open Window List popup on hover")
+
+            checked: root.cfg_openOnHover
+            onToggled: root.cfg_openOnHover = checked
+        }
+
+        QQC2.SpinBox {
+            id: hoverDelaySpinBox
+
+            Kirigami.FormData.label: i18nc("Hover open delay", "Delay:")
+
+            from: 50
+            to: 5000
+            stepSize: 50
+
+            value: root.cfg_hoverOpenDelay
+
+            onValueChanged: root.cfg_hoverOpenDelay = value
+
+            textFromValue: function(value, locale) {
+                return i18np("%1 ms", "%1 ms", value)
+            }
+
+            validator: IntValidator {
+                bottom: hoverDelaySpinBox.from
+                top: hoverDelaySpinBox.to
+            }
+
+            valueFromText: (text, locale) => {
+                return Number.fromLocaleString(locale, text.replace(i18ncp("short for millisecond(s)", "ms", "ms"), ""))
+            }
+
+            Accessible.name: i18nc("@label:spinbox accessible", "Hover open delay %1", textFromValue(value))
+
+            KCM.SettingStateBinding {
+                configObject: Plasmoid.configuration
+                settingName: "hoverOpenDelay"
+                extraEnabledConditions: root.cfg_openOnHover
+            }
         }
     }
 }
