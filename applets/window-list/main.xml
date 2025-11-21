@@ -13,6 +13,7 @@
     <entry name="showIcon" type="Bool">
       <label>Whether to show the icon on the Panel button</label>
       <default>true</default>
+    </entry>
     <entry name="openOnHover" type="Bool">
         <label>Whether to open the window list popup when hovering over the applet</label>
         <default>false</default>
