@@ -10,6 +10,7 @@
 
 #include <SDL2/SDL_hidapi.h>
 
+#include "gamepadbutton.h"
 #include "logging.h"
 #include "udevmatcher.h"
 
@@ -186,6 +187,12 @@ bool Device::open()
             }
         }
     }
+
+    for (int i = 0; i < buttonCount(); ++i) {
+        GamepadButton *button = new GamepadButton(this);
+        m_buttons.insert(i, button);
+    }
+
     return m_joystick != nullptr;
 }
 
@@ -262,6 +269,18 @@ int Device::buttonCount() const
     return m_buttonCount;
 }
 
+bool Device::hasButton(int index) const
+{
+    // If we are a joystick, just do a numeric comparison
+    if (!m_controller) {
+        return index >= 0 && index < SDL_JoystickNumButtons(m_joystick);
+    }
+
+    // If we are a controller, ask SDL
+    else {
+        return SDL_GameControllerHasButton(m_controller, SDL_GameControllerButton(index));
+    }
+}
 bool Device::buttonState(int index) const
 {
     // Invalid index
@@ -281,6 +300,14 @@ QString Device::buttonName(int index) const
         return ButtonToButtonName(static_cast<SDL_GameControllerButton>(m_buttonType.value(index)));
     }
     return QString::number(index + 1);
+}
+
+GamepadButton *Device::button(int index)
+{
+    if (m_buttons.contains(index)) {
+        return m_buttons.value(index);
+    }
+    return nullptr;
 }
 
 int Device::axisCount() const
@@ -336,12 +363,20 @@ QVector2D Device::hatPosition(int index) const
 void Device::onButtonEvent(const SDL_JoyButtonEvent &event)
 {
     Q_EMIT buttonStateChanged(event.button);
+    if (m_buttons.contains(event.button)) {
+        qDebug() << "Setting button " << event.button << " to state: " << event.state;
+        m_buttons.value(event.button)->setState(event.state);
+    }
 }
 
 void Device::onControllerButtonEvent(const SDL_ControllerButtonEvent &event)
 {
     qCDebug(KCM_GAMECONTROLLER) << "Got controller button event for button: " << ButtonToButtonName(SDL_GameControllerButton(event.button));
     Q_EMIT buttonStateChanged(event.button);
+    if (m_buttons.contains(event.button)) {
+        qDebug() << "Setting controller button " << event.button << " to state: " << event.state;
+        m_buttons.value(event.button)->setState(event.state);
+    }
 }
 
 void Device::onAxisEvent(const SDL_JoyAxisEvent &event)
