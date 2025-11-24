@@ -27,12 +27,18 @@ QQC2.ItemDelegate {
     width: shortcutsList.width
     action: QQC2.Action {
         id: expandAction
+        text: root.state === "expanded"
+            ? i18nc("@action:button Collapse shortcuts view", "Collapse")
+            : i18nc("@action:button", "Expand to configure shortcuts")
+        icon.name: root.state === "expanded" ? "collapse" : "expand"
         onTriggered: {
             shortcutsList.selectedIndex = (root.state === "expanded") ? -1 : index;
         }
     }
     Accessible.name: root.state === "expanded" ? i18n("Editing shortcut: %1", displayLabel.text) : displayLabel.text + keySequenceList.text
     Accessible.onPressAction: action.trigger()
+
+    Kirigami.Theme.useAlternateBackgroundColor: true
 
     contentItem: ColumnLayout {
         clip: true
@@ -93,13 +99,16 @@ QQC2.ItemDelegate {
                     opacity: !model.isDefault
                     color: Kirigami.Theme.neutralTextColor
                 }
-                QQC2.ToolButton {
+                QQC2.Button {
                     Layout.alignment: Qt.AlignRight
-                    id: expandButton
                     visible: root.showExpandButton
-                    icon.name: "expand"
+                    display: QQC2.AbstractButton.IconOnly
+                    action: expandAction
                     activeFocusOnTab: false
-                    onClicked: expandAction.trigger()
+
+                    QQC2.ToolTip.text: text
+                    QQC2.ToolTip.visible: hovered || activeFocus
+                    QQC2.ToolTip.delay: Kirigami.Units.toolTipDelay
                 }
             }
         }
@@ -182,12 +191,14 @@ QQC2.ItemDelegate {
                                 }
                             }
                             QQC2.Button {
-                                Accessible.name: i18nc("@action:button accessible", "Delete shortcut")
                                 icon.name: "edit-delete"
+                                text: i18nc("@action:button accessible", "Delete shortcut")
+                                display: QQC2.AbstractButton.IconOnly
                                 onClicked: originalIndex.model.disableShortcut(originalIndex, modelData)
-                                QQC2.ToolTip {
-                                    text: i18nc("@info:tooltip", "Delete this shortcut")
-                                }
+
+                                QQC2.ToolTip.text: text
+                                QQC2.ToolTip.visible: hovered || activeFocus
+                                QQC2.ToolTip.delay: Kirigami.Units.toolTipDelay
                             }
                         }
                     }
@@ -228,12 +239,14 @@ QQC2.ItemDelegate {
                                 }
                             }
                             QQC2.Button {
-                                Accessible.name: i18nc("@action:button accessible", "Cancel capturing shortcut")
                                 icon.name: "dialog-cancel"
+                                text: i18nc("@action:button accessible", "Cancel capturing shortcut")
+                                display: QQC2.AbstractButton.IconOnly
                                 onClicked: parent.finished()
-                                QQC2.ToolTip {
-                                    text: i18nc("@info:tooltip", "Cancel capturing of new shortcut")
-                                }
+
+                                QQC2.ToolTip.text: text
+                                QQC2.ToolTip.visible: hovered || activeFocus
+                                QQC2.ToolTip.delay: Kirigami.Units.toolTipDelay
                             }
                         }
                     }
@@ -257,10 +270,6 @@ QQC2.ItemDelegate {
             PropertyChanges {
                 target: keySequenceList
                 visible: false
-            }
-            PropertyChanges {
-                target: expandButton
-                icon.name: "collapse"
             }
             PropertyChanges {
                 target: editLoader

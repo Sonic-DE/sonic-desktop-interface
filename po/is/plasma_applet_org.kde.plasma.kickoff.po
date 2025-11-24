@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-desktop\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-10-06 00:44+0000\n"
+"POT-Creation-Date: 2025-11-23 00:44+0000\n"
 "PO-Revision-Date: 2025-09-16 23:53+0000\n"
 "Last-Translator: Gummi <gudmundure@gmail.com>\n"
 "Language-Team: Icelandic <kde-i18n-doc@kde.org>\n"
@@ -280,7 +280,7 @@ msgstr "Forrit"
 msgid "Places"
 msgstr "Staðir"
 
-#: FullRepresentation.qml:154
+#: FullRepresentation.qml:133
 #, kde-format
 msgctxt "@info:status"
 msgid "No matches"
@@ -296,13 +296,13 @@ msgstr "Opna notandastillingar"
 msgid "Keep Open"
 msgstr "Halda opnu"
 
-#: KickoffGridDelegate.qml:60 KickoffListDelegate.qml:119
+#: KickoffGridDelegate.qml:60 KickoffListDelegate.qml:110
 #, kde-format
 msgctxt "Newly installed app, badge, keep short"
 msgid "New!"
 msgstr "Nýtt!"
 
-#: KickoffGridDelegate.qml:61 KickoffListDelegate.qml:121
+#: KickoffGridDelegate.qml:61 KickoffListDelegate.qml:112
 #, kde-format
 msgid "Newly installed application"
 msgstr "Nýlega uppsett forrit"
@@ -312,7 +312,7 @@ msgstr "Nýlega uppsett forrit"
 msgid "Grid with %1 rows, %2 columns"
 msgstr "Reitir í %1 röðum, %2 dálkum"
 
-#: KickoffListDelegate.qml:120
+#: KickoffListDelegate.qml:111
 #, kde-format
 msgid "There is a newly installed application in this category"
 msgstr "Það eru nýlega uppsett forrit í þessum flokki"
@@ -332,19 +332,19 @@ msgstr "Seta og frágangur"
 msgid "Edit Applications…"
 msgstr "Breyta forritum…"
 
-#: PlacesPage.qml:63
+#: PlacesPage.qml:64
 #, kde-format
 msgctxt "category in Places sidebar"
 msgid "Computer"
 msgstr "Tölvan"
 
-#: PlacesPage.qml:64
+#: PlacesPage.qml:65
 #, kde-format
 msgctxt "category in Places sidebar"
 msgid "History"
 msgstr "Ferill"
 
-#: PlacesPage.qml:65
+#: PlacesPage.qml:66
 #, kde-format
 msgctxt "category in Places sidebar"
 msgid "Frequently Used"

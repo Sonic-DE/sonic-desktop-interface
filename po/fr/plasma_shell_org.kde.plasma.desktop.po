@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-10-03 00:45+0000\n"
+"POT-Creation-Date: 2025-11-23 00:44+0000\n"
 "PO-Revision-Date: 2025-09-20 10:19+0200\n"
 "Last-Translator: Xavier Besnard <xavier.besnard@kde.org>\n"
 "Language-Team: French <French <kde-francophone@kde.org>>\n"
@@ -83,7 +83,7 @@ msgstr "Copier dans le presse-papier"
 msgid "View Error Details…"
 msgstr "Afficher le détail des erreurs..."
 
-#: contents/applet/CompactApplet.qml:76
+#: contents/applet/CompactApplet.qml:91
 #, kde-format
 msgid "Open %1"
 msgstr "Ouvrir %1"
@@ -105,50 +105,50 @@ msgctxt "@info:tooltip %1 url"
 msgid "Open website %1"
 msgstr "Ouvrir la page Internet %1"
 
-#: contents/configuration/AboutPlugin.qml:143
+#: contents/configuration/AboutPlugin.qml:146
 #, kde-format
 msgctxt "@title:group"
 msgid "Website"
 msgstr "Site Internet"
 
-#: contents/configuration/AboutPlugin.qml:154
+#: contents/configuration/AboutPlugin.qml:157
 #, kde-format
 msgctxt "@title:group"
 msgid "Get Help"
 msgstr "Obtenir de l'aide"
 
-#: contents/configuration/AboutPlugin.qml:162
+#: contents/configuration/AboutPlugin.qml:165
 #, kde-format
 msgid "Report an issue"
 msgstr "Signaler un problème"
 
-#: contents/configuration/AboutPlugin.qml:169
+#: contents/configuration/AboutPlugin.qml:172
 #, kde-format
 msgid "Copyright"
 msgstr "Droit d'auteur"
 
-#: contents/configuration/AboutPlugin.qml:188
+#: contents/configuration/AboutPlugin.qml:191
 #, kde-format
 msgid "License: %1"
 msgstr "Licence : %1"
 
-#: contents/configuration/AboutPlugin.qml:194
+#: contents/configuration/AboutPlugin.qml:197
 #, kde-format
 msgctxt "@action:button"
 msgid "Read License"
 msgstr "Lire la licence"
 
-#: contents/configuration/AboutPlugin.qml:208
+#: contents/configuration/AboutPlugin.qml:211
 #, kde-format
 msgid "Authors"
 msgstr "Auteurs"
 
-#: contents/configuration/AboutPlugin.qml:221
+#: contents/configuration/AboutPlugin.qml:224
 #, kde-format
 msgid "Credits"
 msgstr "Remerciements"
 
-#: contents/configuration/AboutPlugin.qml:235
+#: contents/configuration/AboutPlugin.qml:238
 #, kde-format
 msgid "Translators"
 msgstr "Traducteurs"

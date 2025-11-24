@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma_applet_org.kde.plasma.taskmanager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-10-04 00:44+0000\n"
-"PO-Revision-Date: 2025-08-12 09:55+0300\n"
+"POT-Creation-Date: 2025-11-18 00:45+0000\n"
+"PO-Revision-Date: 2025-11-18 09:56+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -132,6 +132,12 @@ msgstr "Показувати мініатюри вікон при наведен
 msgctxt "@option:check section General"
 msgid "Hide other windows when hovering over previews"
 msgstr "Сховати інші вікна при наведення на мініатюру"
+
+#: package/contents/ui/ConfigAppearance.qml:54
+#, kde-format
+msgctxt "@option:check section General"
+msgid "Hide other windows when hovering over tooltips"
+msgstr "Сховати інші вікна при наведення на підказки"
 
 #: package/contents/ui/ConfigAppearance.qml:59
 #, kde-format
@@ -476,7 +482,8 @@ msgstr "Переносить на поточну віртуальну стіль
 #, kde-format
 msgctxt ""
 "@label:listbox Part of a sentence: 'Scrolling behavior does nothing/cycles "
-"through tasks/cycles through the selected task's windows'"
+"through tasks/cycles through the selected task's windows/adjusts the hovered "
+"task’s volume''"
 msgid "Scrolling behavior:"
 msgstr "Поведінка при гортанні:"
 
@@ -502,83 +509,91 @@ msgctxt ""
 msgid "Cycles through the hovered task’s windows"
 msgstr "Циклічний перехід вікнами позначеного завдання"
 
-#: package/contents/ui/ConfigBehavior.qml:219
+#: package/contents/ui/ConfigBehavior.qml:212
+#, kde-format
+msgctxt ""
+"@item:inlistbox Part of a sentence: 'Scrolling behavior adjusts the hovered "
+"task’s volume'"
+msgid "Adjusts the hovered task’s volume"
+msgstr "Коригує гучність у завданні"
+
+#: package/contents/ui/ConfigBehavior.qml:220
 #, kde-format
 msgctxt "@option:check mouse wheel task cycling"
 msgid "Skip minimized tasks"
 msgstr "Пропустити мінімізовані завдання"
 
-#: package/contents/ui/ConfigBehavior.qml:229
+#: package/contents/ui/ConfigBehavior.qml:230
 #, kde-format
 msgctxt ""
 "@label for checkbox group, completes sentence like: … from current screen"
 msgid "Show only tasks:"
 msgstr "Показувати лише завдання:"
 
-#: package/contents/ui/ConfigBehavior.qml:230
+#: package/contents/ui/ConfigBehavior.qml:231
 #, kde-format
 msgctxt "@option:check completes sentence: show only tasks"
 msgid "From the current desktop"
 msgstr "з поточної стільниці"
 
-#: package/contents/ui/ConfigBehavior.qml:235
+#: package/contents/ui/ConfigBehavior.qml:236
 #, kde-format
 msgctxt "@option:check completes sentence: show only tasks"
 msgid "From the current activity"
 msgstr "з поточного простору дій"
 
-#: package/contents/ui/ConfigBehavior.qml:240
+#: package/contents/ui/ConfigBehavior.qml:241
 #, kde-format
 msgctxt "@option:check completes sentence: show only tasks"
 msgid "From the current screen"
 msgstr "з поточного екрана"
 
-#: package/contents/ui/ConfigBehavior.qml:245
+#: package/contents/ui/ConfigBehavior.qml:246
 #, kde-format
 msgctxt "@option:check completes sentence: show only tasks"
 msgid "That are minimized"
 msgstr "вікна яких мінімізовано"
 
-#: package/contents/ui/ConfigBehavior.qml:254
+#: package/contents/ui/ConfigBehavior.qml:255
 #, kde-format
 msgctxt ""
 "@label for checkbox, completes sentence: … unhide if window wants attention"
 msgid "When panel is hidden:"
 msgstr "Якщо панель приховано:"
 
-#: package/contents/ui/ConfigBehavior.qml:255
+#: package/contents/ui/ConfigBehavior.qml:256
 #, kde-format
 msgctxt "@option:check completes sentence: When panel is hidden"
 msgid "Unhide when a window wants attention"
 msgstr "Скасовувати приховування, якщо вікно потребує уваги"
 
-#: package/contents/ui/ConfigBehavior.qml:270
+#: package/contents/ui/ConfigBehavior.qml:271
 #, kde-format
 msgctxt "@label for radiobutton group completes sentence like: … on the bottom"
 msgid "New tasks appear:"
 msgstr "Нові завдання з'являтимуться:"
 
-#: package/contents/ui/ConfigBehavior.qml:274
+#: package/contents/ui/ConfigBehavior.qml:275
 #, kde-format
 msgctxt "@option:check completes sentence: New tasks appear"
 msgid "On the bottom"
 msgstr "Внизу"
 
-#: package/contents/ui/ConfigBehavior.qml:278
-#: package/contents/ui/ConfigBehavior.qml:297
+#: package/contents/ui/ConfigBehavior.qml:279
+#: package/contents/ui/ConfigBehavior.qml:298
 #, kde-format
 msgctxt "@option:check completes sentence: New tasks appear"
 msgid "To the right"
 msgstr "Праворуч"
 
-#: package/contents/ui/ConfigBehavior.qml:280
-#: package/contents/ui/ConfigBehavior.qml:295
+#: package/contents/ui/ConfigBehavior.qml:281
+#: package/contents/ui/ConfigBehavior.qml:296
 #, kde-format
 msgctxt "@option:check completes sentence: New tasks appear"
 msgid "To the left"
 msgstr "Ліворуч"
 
-#: package/contents/ui/ConfigBehavior.qml:291
+#: package/contents/ui/ConfigBehavior.qml:292
 #, kde-format
 msgctxt "@option:check completes sentence: New tasks appear"
 msgid "On the top"
@@ -752,29 +767,29 @@ msgstr "Утримувати п&ід іншими"
 msgid "&Fullscreen"
 msgstr "&На весь екран"
 
-#: package/contents/ui/ContextMenu.qml:701
+#: package/contents/ui/ContextMenu.qml:702
 #, kde-format
 msgid "&Shade"
 msgstr "З&горнути"
 
-#: package/contents/ui/ContextMenu.qml:713
+#: package/contents/ui/ContextMenu.qml:714
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "&No Titlebar and Frame"
 msgstr "&Без смужки заголовка і рамки"
 
-#: package/contents/ui/ContextMenu.qml:729
+#: package/contents/ui/ContextMenu.qml:730
 #, kde-format
 msgid "Allow this program to be grouped"
 msgstr "Дозволити групування для цієї програми"
 
-#: package/contents/ui/ContextMenu.qml:775
+#: package/contents/ui/ContextMenu.qml:776
 #, kde-format
 msgctxt "@item:inmenu"
 msgid "&Close All"
 msgstr "З&акрити усе"
 
-#: package/contents/ui/ContextMenu.qml:775
+#: package/contents/ui/ContextMenu.qml:776
 #, kde-format
 msgid "&Close"
 msgstr "&Закрити"
@@ -824,61 +839,61 @@ msgctxt "@info:tooltip Close this window"
 msgid "Close window"
 msgstr "Закрити вікно"
 
-#: package/contents/ui/ToolTipInstance.qml:448
+#: package/contents/ui/ToolTipInstance.qml:456
 #, kde-format
 msgctxt "button to unmute app"
 msgid "Unmute %1"
 msgstr "Увімкнути звук у %1"
 
-#: package/contents/ui/ToolTipInstance.qml:449
+#: package/contents/ui/ToolTipInstance.qml:457
 #, kde-format
 msgctxt "button to mute app"
 msgid "Mute %1"
 msgstr "Вимкнути звук у %1"
 
-#: package/contents/ui/ToolTipInstance.qml:467
+#: package/contents/ui/ToolTipInstance.qml:475
 #, kde-format
 msgctxt "Accessibility data on volume slider"
 msgid "Adjust volume for %1"
 msgstr "Скоригувати гучність для %1"
 
-#: package/contents/ui/ToolTipInstance.qml:483
+#: package/contents/ui/ToolTipInstance.qml:491
 #, kde-format
 msgctxt "volume percentage"
 msgid "%1%"
 msgstr "%1%"
 
-#: package/contents/ui/ToolTipInstance.qml:487
+#: package/contents/ui/ToolTipInstance.qml:495
 #, kde-format
 msgctxt "only used for sizing, should be widest possible string"
 msgid "100%"
 msgstr "100%"
 
-#: package/contents/ui/ToolTipInstance.qml:503
+#: package/contents/ui/ToolTipInstance.qml:511
 #, kde-format
 msgctxt "Comma-separated list of desktops"
 msgid "On %1"
 msgstr "На %1"
 
-#: package/contents/ui/ToolTipInstance.qml:506
+#: package/contents/ui/ToolTipInstance.qml:514
 #, kde-format
 msgctxt "Comma-separated list of desktops"
 msgid "Pinned to all desktops"
 msgstr "Пришпилено до усіх стільниць"
 
-#: package/contents/ui/ToolTipInstance.qml:512
+#: package/contents/ui/ToolTipInstance.qml:520
 #, kde-format
 msgctxt "Which virtual desktop a window is currently on"
 msgid "Available on all activities"
 msgstr "Доступне у всіх просторах дій"
 
-#: package/contents/ui/ToolTipInstance.qml:522
+#: package/contents/ui/ToolTipInstance.qml:530
 #, kde-format
 msgctxt "Activities a window is currently on (apart from the current one)"
 msgid "Also available on %1"
 msgstr "Також доступне у %1"
 
-#: package/contents/ui/ToolTipInstance.qml:526
+#: package/contents/ui/ToolTipInstance.qml:534
 #, kde-format
 msgctxt "Which activities a window is currently on"
 msgid "Available on %1"

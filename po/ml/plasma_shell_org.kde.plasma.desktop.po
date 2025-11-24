@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-desktop\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-10-03 00:45+0000\n"
+"POT-Creation-Date: 2025-11-23 00:44+0000\n"
 "PO-Revision-Date: 2019-12-12 22:59+0000\n"
 "Last-Translator: Sabu Siyad <ssiyad@tuta.io>\n"
 "Language-Team: Swathanthra|സ്വതന്ത്ര Malayalam|മലയാളം Computing|കമ്പ്യൂട്ടിങ്ങ് <smc."
@@ -72,7 +72,7 @@ msgstr ""
 msgid "View Error Details…"
 msgstr ""
 
-#: contents/applet/CompactApplet.qml:76
+#: contents/applet/CompactApplet.qml:91
 #, kde-format
 msgid "Open %1"
 msgstr ""
@@ -94,50 +94,50 @@ msgctxt "@info:tooltip %1 url"
 msgid "Open website %1"
 msgstr ""
 
-#: contents/configuration/AboutPlugin.qml:143
+#: contents/configuration/AboutPlugin.qml:146
 #, kde-format
 msgctxt "@title:group"
 msgid "Website"
 msgstr ""
 
-#: contents/configuration/AboutPlugin.qml:154
+#: contents/configuration/AboutPlugin.qml:157
 #, kde-format
 msgctxt "@title:group"
 msgid "Get Help"
 msgstr ""
 
-#: contents/configuration/AboutPlugin.qml:162
+#: contents/configuration/AboutPlugin.qml:165
 #, kde-format
 msgid "Report an issue"
 msgstr ""
 
-#: contents/configuration/AboutPlugin.qml:169
+#: contents/configuration/AboutPlugin.qml:172
 #, kde-format
 msgid "Copyright"
 msgstr ""
 
-#: contents/configuration/AboutPlugin.qml:188
+#: contents/configuration/AboutPlugin.qml:191
 #, kde-format
 msgid "License: %1"
 msgstr ""
 
-#: contents/configuration/AboutPlugin.qml:194
+#: contents/configuration/AboutPlugin.qml:197
 #, kde-format
 msgctxt "@action:button"
 msgid "Read License"
 msgstr ""
 
-#: contents/configuration/AboutPlugin.qml:208
+#: contents/configuration/AboutPlugin.qml:211
 #, kde-format
 msgid "Authors"
 msgstr ""
 
-#: contents/configuration/AboutPlugin.qml:221
+#: contents/configuration/AboutPlugin.qml:224
 #, kde-format
 msgid "Credits"
 msgstr ""
 
-#: contents/configuration/AboutPlugin.qml:235
+#: contents/configuration/AboutPlugin.qml:238
 #, kde-format
 msgid "Translators"
 msgstr ""

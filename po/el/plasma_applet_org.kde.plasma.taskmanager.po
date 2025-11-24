@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma_applet_tasks\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-10-04 00:44+0000\n"
+"POT-Creation-Date: 2025-11-18 00:45+0000\n"
 "PO-Revision-Date: 2024-09-19 17:30+0300\n"
 "Last-Translator: Antonis Geralis <capoiosct@gmail.com>\n"
 "Language-Team: Greek <kde-i18n-el@kde.org>\n"
@@ -138,6 +138,15 @@ msgstr ""
 #, kde-format
 msgctxt "@option:check section General"
 msgid "Hide other windows when hovering over previews"
+msgstr ""
+"Απόκρυψη άλλων παραθύρων όταν περνάτε με το ποντίκι πάνω από προεπισκοπήσεις"
+
+#: package/contents/ui/ConfigAppearance.qml:54
+#, fuzzy, kde-format
+#| msgctxt "@option:check section General"
+#| msgid "Hide other windows when hovering over previews"
+msgctxt "@option:check section General"
+msgid "Hide other windows when hovering over tooltips"
 msgstr ""
 "Απόκρυψη άλλων παραθύρων όταν περνάτε με το ποντίκι πάνω από προεπισκοπήσεις"
 
@@ -483,7 +492,8 @@ msgstr "Το μεταφέρει στην τρέχουσα εικονική επ�
 #| msgid "Show only tasks:"
 msgctxt ""
 "@label:listbox Part of a sentence: 'Scrolling behavior does nothing/cycles "
-"through tasks/cycles through the selected task's windows'"
+"through tasks/cycles through the selected task's windows/adjusts the hovered "
+"task’s volume''"
 msgid "Scrolling behavior:"
 msgstr "Εμφάνιση μόνο εργασιών:"
 
@@ -521,20 +531,32 @@ msgctxt ""
 msgid "Cycles through the hovered task’s windows"
 msgstr "Εναλλάσσεται μεταξύ των εργασιών"
 
-#: package/contents/ui/ConfigBehavior.qml:219
+#: package/contents/ui/ConfigBehavior.qml:212
+#, fuzzy, kde-format
+#| msgctxt ""
+#| "@item:inlistbox Completes the sentence 'Clicking grouped task cycles "
+#| "through tasks' "
+#| msgid "Cycles through tasks"
+msgctxt ""
+"@item:inlistbox Part of a sentence: 'Scrolling behavior adjusts the hovered "
+"task’s volume'"
+msgid "Adjusts the hovered task’s volume"
+msgstr "Εναλλάσσεται μεταξύ των εργασιών"
+
+#: package/contents/ui/ConfigBehavior.qml:220
 #, kde-format
 msgctxt "@option:check mouse wheel task cycling"
 msgid "Skip minimized tasks"
 msgstr "Παράλειψη ελαχιστοποιημένων εργασιών"
 
-#: package/contents/ui/ConfigBehavior.qml:229
+#: package/contents/ui/ConfigBehavior.qml:230
 #, kde-format
 msgctxt ""
 "@label for checkbox group, completes sentence like: … from current screen"
 msgid "Show only tasks:"
 msgstr "Εμφάνιση μόνο εργασιών:"
 
-#: package/contents/ui/ConfigBehavior.qml:230
+#: package/contents/ui/ConfigBehavior.qml:231
 #, fuzzy, kde-format
 #| msgctxt "@option:check completes sentence: show only tasks"
 #| msgid "From current desktop"
@@ -542,7 +564,7 @@ msgctxt "@option:check completes sentence: show only tasks"
 msgid "From the current desktop"
 msgstr "Από τρέχουσα επιφάνεια εργασίας"
 
-#: package/contents/ui/ConfigBehavior.qml:235
+#: package/contents/ui/ConfigBehavior.qml:236
 #, fuzzy, kde-format
 #| msgctxt "@option:check completes sentence: show only tasks"
 #| msgid "From current activity"
@@ -550,7 +572,7 @@ msgctxt "@option:check completes sentence: show only tasks"
 msgid "From the current activity"
 msgstr "Από τρέχουσα δραστηριότητα"
 
-#: package/contents/ui/ConfigBehavior.qml:240
+#: package/contents/ui/ConfigBehavior.qml:241
 #, fuzzy, kde-format
 #| msgctxt "@option:check completes sentence: show only tasks"
 #| msgid "From current screen"
@@ -558,52 +580,52 @@ msgctxt "@option:check completes sentence: show only tasks"
 msgid "From the current screen"
 msgstr "Από τρέχουσα οθόνη"
 
-#: package/contents/ui/ConfigBehavior.qml:245
+#: package/contents/ui/ConfigBehavior.qml:246
 #, kde-format
 msgctxt "@option:check completes sentence: show only tasks"
 msgid "That are minimized"
 msgstr "Που έχουν ελαχιστοποιηθεί"
 
-#: package/contents/ui/ConfigBehavior.qml:254
+#: package/contents/ui/ConfigBehavior.qml:255
 #, kde-format
 msgctxt ""
 "@label for checkbox, completes sentence: … unhide if window wants attention"
 msgid "When panel is hidden:"
 msgstr "Όταν ο πίνακας είναι κρυμμένος:"
 
-#: package/contents/ui/ConfigBehavior.qml:255
+#: package/contents/ui/ConfigBehavior.qml:256
 #, kde-format
 msgctxt "@option:check completes sentence: When panel is hidden"
 msgid "Unhide when a window wants attention"
 msgstr "Αποκάλυψη όταν ένα παράθυρο θέλει προσοχή"
 
-#: package/contents/ui/ConfigBehavior.qml:270
+#: package/contents/ui/ConfigBehavior.qml:271
 #, kde-format
 msgctxt "@label for radiobutton group completes sentence like: … on the bottom"
 msgid "New tasks appear:"
 msgstr "Νέες εργασίες εμφανίζονται:"
 
-#: package/contents/ui/ConfigBehavior.qml:274
+#: package/contents/ui/ConfigBehavior.qml:275
 #, kde-format
 msgctxt "@option:check completes sentence: New tasks appear"
 msgid "On the bottom"
 msgstr "Στο κάτω μέρος"
 
-#: package/contents/ui/ConfigBehavior.qml:278
-#: package/contents/ui/ConfigBehavior.qml:297
+#: package/contents/ui/ConfigBehavior.qml:279
+#: package/contents/ui/ConfigBehavior.qml:298
 #, kde-format
 msgctxt "@option:check completes sentence: New tasks appear"
 msgid "To the right"
 msgstr "Στα τα δεξιά"
 
-#: package/contents/ui/ConfigBehavior.qml:280
-#: package/contents/ui/ConfigBehavior.qml:295
+#: package/contents/ui/ConfigBehavior.qml:281
+#: package/contents/ui/ConfigBehavior.qml:296
 #, kde-format
 msgctxt "@option:check completes sentence: New tasks appear"
 msgid "To the left"
 msgstr "Στα αριστερά"
 
-#: package/contents/ui/ConfigBehavior.qml:291
+#: package/contents/ui/ConfigBehavior.qml:292
 #, kde-format
 msgctxt "@option:check completes sentence: New tasks appear"
 msgid "On the top"
@@ -777,29 +799,29 @@ msgstr "Διατήρηση κάτω από άλλα"
 msgid "&Fullscreen"
 msgstr "&Πλήρης οθόνη"
 
-#: package/contents/ui/ContextMenu.qml:701
+#: package/contents/ui/ContextMenu.qml:702
 #, kde-format
 msgid "&Shade"
 msgstr "&Σκίαση"
 
-#: package/contents/ui/ContextMenu.qml:713
+#: package/contents/ui/ContextMenu.qml:714
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "&No Titlebar and Frame"
 msgstr ""
 
-#: package/contents/ui/ContextMenu.qml:729
+#: package/contents/ui/ContextMenu.qml:730
 #, kde-format
 msgid "Allow this program to be grouped"
 msgstr "Να επιτρέπεται η ομαδοποίηση του προγράμματος"
 
-#: package/contents/ui/ContextMenu.qml:775
+#: package/contents/ui/ContextMenu.qml:776
 #, kde-format
 msgctxt "@item:inmenu"
 msgid "&Close All"
 msgstr "&Κλείσιμο όλων"
 
-#: package/contents/ui/ContextMenu.qml:775
+#: package/contents/ui/ContextMenu.qml:776
 #, kde-format
 msgid "&Close"
 msgstr "&Κλείσιμο"
@@ -851,61 +873,61 @@ msgctxt "@info:tooltip Close this window"
 msgid "Close window"
 msgstr "Κλείνει το παράθυρο ή ομάδα"
 
-#: package/contents/ui/ToolTipInstance.qml:448
+#: package/contents/ui/ToolTipInstance.qml:456
 #, kde-format
 msgctxt "button to unmute app"
 msgid "Unmute %1"
 msgstr "Αποσίγαση %1"
 
-#: package/contents/ui/ToolTipInstance.qml:449
+#: package/contents/ui/ToolTipInstance.qml:457
 #, kde-format
 msgctxt "button to mute app"
 msgid "Mute %1"
 msgstr "Σίγαση %1"
 
-#: package/contents/ui/ToolTipInstance.qml:467
+#: package/contents/ui/ToolTipInstance.qml:475
 #, kde-format
 msgctxt "Accessibility data on volume slider"
 msgid "Adjust volume for %1"
 msgstr "Ρύθμιση έντασης για %1"
 
-#: package/contents/ui/ToolTipInstance.qml:483
+#: package/contents/ui/ToolTipInstance.qml:491
 #, kde-format
 msgctxt "volume percentage"
 msgid "%1%"
 msgstr "%1%"
 
-#: package/contents/ui/ToolTipInstance.qml:487
+#: package/contents/ui/ToolTipInstance.qml:495
 #, kde-format
 msgctxt "only used for sizing, should be widest possible string"
 msgid "100%"
 msgstr "100%"
 
-#: package/contents/ui/ToolTipInstance.qml:503
+#: package/contents/ui/ToolTipInstance.qml:511
 #, kde-format
 msgctxt "Comma-separated list of desktops"
 msgid "On %1"
 msgstr "Σε %1"
 
-#: package/contents/ui/ToolTipInstance.qml:506
+#: package/contents/ui/ToolTipInstance.qml:514
 #, kde-format
 msgctxt "Comma-separated list of desktops"
 msgid "Pinned to all desktops"
 msgstr "Καρφίτσωμα σε όλες τις επιφάνειες εργασίας"
 
-#: package/contents/ui/ToolTipInstance.qml:512
+#: package/contents/ui/ToolTipInstance.qml:520
 #, kde-format
 msgctxt "Which virtual desktop a window is currently on"
 msgid "Available on all activities"
 msgstr "Διαθέσιμο σε όλες τις δραστηριότητες"
 
-#: package/contents/ui/ToolTipInstance.qml:522
+#: package/contents/ui/ToolTipInstance.qml:530
 #, kde-format
 msgctxt "Activities a window is currently on (apart from the current one)"
 msgid "Also available on %1"
 msgstr "Επίσης διαθέσιμο σε %1"
 
-#: package/contents/ui/ToolTipInstance.qml:526
+#: package/contents/ui/ToolTipInstance.qml:534
 #, kde-format
 msgctxt "Which activities a window is currently on"
 msgid "Available on %1"

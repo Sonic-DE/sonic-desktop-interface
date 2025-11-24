@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-desktop\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-10-03 00:45+0000\n"
+"POT-Creation-Date: 2025-11-23 00:44+0000\n"
 "PO-Revision-Date: 2025-09-20 22:13+0200\n"
 "Last-Translator: Mincho Kondarev <mkondarev@yahoo.de>\n"
 "Language-Team: Bulgarian <kde-i18n-doc@kde.org>\n"
@@ -75,7 +75,7 @@ msgstr "Копиране в клипборда"
 msgid "View Error Details…"
 msgstr "Подробности за грешка…"
 
-#: contents/applet/CompactApplet.qml:76
+#: contents/applet/CompactApplet.qml:91
 #, kde-format
 msgid "Open %1"
 msgstr "Отваряне на %1"
@@ -97,50 +97,50 @@ msgctxt "@info:tooltip %1 url"
 msgid "Open website %1"
 msgstr "Отваряне на уебстраница %1"
 
-#: contents/configuration/AboutPlugin.qml:143
+#: contents/configuration/AboutPlugin.qml:146
 #, kde-format
 msgctxt "@title:group"
 msgid "Website"
 msgstr "Уебсайт"
 
-#: contents/configuration/AboutPlugin.qml:154
+#: contents/configuration/AboutPlugin.qml:157
 #, kde-format
 msgctxt "@title:group"
 msgid "Get Help"
 msgstr "Помощ"
 
-#: contents/configuration/AboutPlugin.qml:162
+#: contents/configuration/AboutPlugin.qml:165
 #, kde-format
 msgid "Report an issue"
 msgstr "Докладване на проблем"
 
-#: contents/configuration/AboutPlugin.qml:169
+#: contents/configuration/AboutPlugin.qml:172
 #, kde-format
 msgid "Copyright"
 msgstr "Авторско право"
 
-#: contents/configuration/AboutPlugin.qml:188
+#: contents/configuration/AboutPlugin.qml:191
 #, kde-format
 msgid "License: %1"
 msgstr "Лиценз: %1"
 
-#: contents/configuration/AboutPlugin.qml:194
+#: contents/configuration/AboutPlugin.qml:197
 #, kde-format
 msgctxt "@action:button"
 msgid "Read License"
 msgstr "Прочитане на лиценза"
 
-#: contents/configuration/AboutPlugin.qml:208
+#: contents/configuration/AboutPlugin.qml:211
 #, kde-format
 msgid "Authors"
 msgstr "Автори"
 
-#: contents/configuration/AboutPlugin.qml:221
+#: contents/configuration/AboutPlugin.qml:224
 #, kde-format
 msgid "Credits"
 msgstr "Заслуги"
 
-#: contents/configuration/AboutPlugin.qml:235
+#: contents/configuration/AboutPlugin.qml:238
 #, kde-format
 msgid "Translators"
 msgstr "Преводачи"
@@ -912,13 +912,3 @@ msgstr "Излизане от режим на редактиране"
 #, kde-format
 msgid "Panel Focus Indicator"
 msgstr "Индикатор за фокус на панела"
-
-#~ msgid "Stopped activities:"
-#~ msgstr "Преустановени дейности:"
-
-#~ msgctxt "@info:whatsthis"
-#~ msgid "View license text"
-#~ msgstr "Показване на текста на лиценза"
-
-#~ msgid "Stop activity"
-#~ msgstr "Спиране на дейност"

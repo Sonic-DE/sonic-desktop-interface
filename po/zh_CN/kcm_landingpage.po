@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdeorg\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-10-17 00:43+0000\n"
+"POT-Creation-Date: 2025-11-17 11:53+0000\n"
 "PO-Revision-Date: 2024-04-22 15:58\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
@@ -84,7 +84,7 @@ msgctxt ""
 "@info:tooltip 1 is the name of a light global theme, 2 is the name of a dark "
 "global theme"
 msgid "Use “%1” during the day and “%2” at night"
-msgstr ""
+msgstr "日间使用“%1”，夜间使用“%2”"
 
 #: ui/main.qml:136
 #, kde-format

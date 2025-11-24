@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: KDE 4.2\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-10-04 00:44+0000\n"
-"PO-Revision-Date: 2025-06-06 22:45+0200\n"
+"POT-Creation-Date: 2025-11-18 00:45+0000\n"
+"PO-Revision-Date: 2025-11-10 22:25+0100\n"
 "Last-Translator: Kristof Kiszel <ulysses@fsf.hu>\n"
 "Language-Team: Hungarian <kde-l10n-hu@kde.org>\n"
 "Language: hu\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 25.04.1\n"
+"X-Generator: Lokalize 25.08.2\n"
 
 #: backend.cpp:284
 #, kde-format
@@ -129,6 +129,14 @@ msgstr "Ablakok előnézetének megjelenítése az ikonokra rámutatáskor"
 #, kde-format
 msgctxt "@option:check section General"
 msgid "Hide other windows when hovering over previews"
+msgstr "Egyéb ablakok elrejtése az előnézetekre mutatáskor"
+
+#: package/contents/ui/ConfigAppearance.qml:54
+#, fuzzy, kde-format
+#| msgctxt "@option:check section General"
+#| msgid "Hide other windows when hovering over previews"
+msgctxt "@option:check section General"
+msgid "Hide other windows when hovering over tooltips"
 msgstr "Egyéb ablakok elrejtése az előnézetekre mutatáskor"
 
 #: package/contents/ui/ConfigAppearance.qml:59
@@ -470,32 +478,22 @@ msgid "Brings it to the current virtual desktop"
 msgstr "A jelenlegi virtuális asztalra mozgatás"
 
 #: package/contents/ui/ConfigBehavior.qml:205
-#, fuzzy, kde-format
-#| msgctxt ""
-#| "@label for checkbox group, completes sentence like: … from current screen"
-#| msgid "Show only tasks:"
+#, kde-format
 msgctxt ""
 "@label:listbox Part of a sentence: 'Scrolling behavior does nothing/cycles "
-"through tasks/cycles through the selected task's windows'"
+"through tasks/cycles through the selected task's windows/adjusts the hovered "
+"task’s volume''"
 msgid "Scrolling behavior:"
-msgstr "Megjelenítendő alkalmazások:"
+msgstr "Görgetés működése:"
 
 #: package/contents/ui/ConfigBehavior.qml:209
-#, fuzzy, kde-format
-#| msgctxt ""
-#| "@item:inlistbox Part of a sentence: 'Middle-clicking any task does "
-#| "nothing'"
-#| msgid "Does nothing"
+#, kde-format
 msgctxt "@item:inlistbox Part of a sentence: 'Scrolling behavior does nothing'"
 msgid "Does nothing"
 msgstr "Ne tegyen semmit"
 
 #: package/contents/ui/ConfigBehavior.qml:210
-#, fuzzy, kde-format
-#| msgctxt ""
-#| "@item:inlistbox Part of a sentence: 'Scrolling anywhere switches through "
-#| "all tasks'"
-#| msgid "Cycles through all tasks"
+#, kde-format
 msgctxt ""
 "@item:inlistbox Part of a sentence: 'Scrolling behavior cycles through all "
 "tasks'"
@@ -503,100 +501,102 @@ msgid "Cycles through all tasks"
 msgstr "Váltás az összes feladat között"
 
 #: package/contents/ui/ConfigBehavior.qml:211
+#, kde-format
+msgctxt ""
+"@item:inlistbox Part of a sentence: 'Scrolling behavior cycles through the "
+"hovered task's windows'"
+msgid "Cycles through the hovered task’s windows"
+msgstr "Váltás a rámutatott feladat ablakai között"
+
+#: package/contents/ui/ConfigBehavior.qml:212
 #, fuzzy, kde-format
 #| msgctxt ""
 #| "@item:inlistbox Completes the sentence 'Clicking grouped task cycles "
 #| "through tasks' "
 #| msgid "Cycles through tasks"
 msgctxt ""
-"@item:inlistbox Part of a sentence: 'Scrolling behavior cycles through the "
-"hovered task's windows'"
-msgid "Cycles through the hovered task’s windows"
+"@item:inlistbox Part of a sentence: 'Scrolling behavior adjusts the hovered "
+"task’s volume'"
+msgid "Adjusts the hovered task’s volume"
 msgstr "Váltás az alkalmazások között"
 
-#: package/contents/ui/ConfigBehavior.qml:219
+#: package/contents/ui/ConfigBehavior.qml:220
 #, kde-format
 msgctxt "@option:check mouse wheel task cycling"
 msgid "Skip minimized tasks"
 msgstr "Minimalizált alkalmazások átugrása"
 
-#: package/contents/ui/ConfigBehavior.qml:229
+#: package/contents/ui/ConfigBehavior.qml:230
 #, kde-format
 msgctxt ""
 "@label for checkbox group, completes sentence like: … from current screen"
 msgid "Show only tasks:"
 msgstr "Megjelenítendő alkalmazások:"
 
-#: package/contents/ui/ConfigBehavior.qml:230
-#, fuzzy, kde-format
-#| msgctxt "@option:check completes sentence: show only tasks"
-#| msgid "From current desktop"
+#: package/contents/ui/ConfigBehavior.qml:231
+#, kde-format
 msgctxt "@option:check completes sentence: show only tasks"
 msgid "From the current desktop"
 msgstr "A jelenlegi asztalról"
 
-#: package/contents/ui/ConfigBehavior.qml:235
-#, fuzzy, kde-format
-#| msgctxt "@option:check completes sentence: show only tasks"
-#| msgid "From current activity"
+#: package/contents/ui/ConfigBehavior.qml:236
+#, kde-format
 msgctxt "@option:check completes sentence: show only tasks"
 msgid "From the current activity"
 msgstr "A jelenlegi aktivitásról"
 
-#: package/contents/ui/ConfigBehavior.qml:240
-#, fuzzy, kde-format
-#| msgctxt "@option:check completes sentence: show only tasks"
-#| msgid "From current screen"
+#: package/contents/ui/ConfigBehavior.qml:241
+#, kde-format
 msgctxt "@option:check completes sentence: show only tasks"
 msgid "From the current screen"
 msgstr "A jelenlegi képernyőről"
 
-#: package/contents/ui/ConfigBehavior.qml:245
+#: package/contents/ui/ConfigBehavior.qml:246
 #, kde-format
 msgctxt "@option:check completes sentence: show only tasks"
 msgid "That are minimized"
 msgstr "Csak a minimalizáltak"
 
-#: package/contents/ui/ConfigBehavior.qml:254
+#: package/contents/ui/ConfigBehavior.qml:255
 #, kde-format
 msgctxt ""
 "@label for checkbox, completes sentence: … unhide if window wants attention"
 msgid "When panel is hidden:"
 msgstr "Amikor a panel rejtett:"
 
-#: package/contents/ui/ConfigBehavior.qml:255
+#: package/contents/ui/ConfigBehavior.qml:256
 #, kde-format
 msgctxt "@option:check completes sentence: When panel is hidden"
 msgid "Unhide when a window wants attention"
 msgstr "Megjelenítés, ha az ablak beavatkozást igényel"
 
-#: package/contents/ui/ConfigBehavior.qml:270
+#: package/contents/ui/ConfigBehavior.qml:271
 #, kde-format
 msgctxt "@label for radiobutton group completes sentence like: … on the bottom"
 msgid "New tasks appear:"
 msgstr "Új feladatok helye:"
 
-#: package/contents/ui/ConfigBehavior.qml:274
+#: package/contents/ui/ConfigBehavior.qml:275
 #, kde-format
 msgctxt "@option:check completes sentence: New tasks appear"
 msgid "On the bottom"
 msgstr "Lent"
 
-#: package/contents/ui/ConfigBehavior.qml:278
-#: package/contents/ui/ConfigBehavior.qml:297
+#: package/contents/ui/ConfigBehavior.qml:279
+#: package/contents/ui/ConfigBehavior.qml:298
 #, kde-format
 msgctxt "@option:check completes sentence: New tasks appear"
 msgid "To the right"
 msgstr "Jobbra"
 
-#: package/contents/ui/ConfigBehavior.qml:280
-#: package/contents/ui/ConfigBehavior.qml:295
+#: package/contents/ui/ConfigBehavior.qml:281
+#: package/contents/ui/ConfigBehavior.qml:296
 #, kde-format
 msgctxt "@option:check completes sentence: New tasks appear"
 msgid "To the left"
 msgstr "Balra"
 
-#: package/contents/ui/ConfigBehavior.qml:291
+#: package/contents/ui/ConfigBehavior.qml:292
 #, kde-format
 msgctxt "@option:check completes sentence: New tasks appear"
 msgid "On the top"
@@ -770,29 +770,29 @@ msgstr "Az ablak a többi a&lá kerüljön"
 msgid "&Fullscreen"
 msgstr "&Teljes képernyő"
 
-#: package/contents/ui/ContextMenu.qml:701
+#: package/contents/ui/ContextMenu.qml:702
 #, kde-format
 msgid "&Shade"
 msgstr "&Felgördítés"
 
-#: package/contents/ui/ContextMenu.qml:713
+#: package/contents/ui/ContextMenu.qml:714
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "&No Titlebar and Frame"
 msgstr "&Nincs címsor és keret"
 
-#: package/contents/ui/ContextMenu.qml:729
+#: package/contents/ui/ContextMenu.qml:730
 #, kde-format
 msgid "Allow this program to be grouped"
 msgstr "A program legyen csoportosítható"
 
-#: package/contents/ui/ContextMenu.qml:775
+#: package/contents/ui/ContextMenu.qml:776
 #, kde-format
 msgctxt "@item:inmenu"
 msgid "&Close All"
 msgstr "Össz&es bezárása"
 
-#: package/contents/ui/ContextMenu.qml:775
+#: package/contents/ui/ContextMenu.qml:776
 #, kde-format
 msgid "&Close"
 msgstr "&Bezárás"
@@ -835,70 +835,66 @@ msgid "Activate %1"
 msgstr "%1. aktiválása"
 
 #: package/contents/ui/ToolTipInstance.qml:188
-#, fuzzy, kde-format
-#| msgctxt ""
-#| "@item:inlistbox Part of a sentence: 'Middle-clicking any task closes "
-#| "window or group'"
-#| msgid "Closes window or group"
+#, kde-format
 msgctxt "@info:tooltip Close this window"
 msgid "Close window"
-msgstr "Ablak vagy csoport bezárása"
+msgstr "Ablak bezárása"
 
-#: package/contents/ui/ToolTipInstance.qml:448
+#: package/contents/ui/ToolTipInstance.qml:456
 #, kde-format
 msgctxt "button to unmute app"
 msgid "Unmute %1"
 msgstr "%1 visszahangosítása"
 
-#: package/contents/ui/ToolTipInstance.qml:449
+#: package/contents/ui/ToolTipInstance.qml:457
 #, kde-format
 msgctxt "button to mute app"
 msgid "Mute %1"
 msgstr "%1 némítása"
 
-#: package/contents/ui/ToolTipInstance.qml:467
+#: package/contents/ui/ToolTipInstance.qml:475
 #, kde-format
 msgctxt "Accessibility data on volume slider"
 msgid "Adjust volume for %1"
 msgstr "%1 hangerejének beállítása"
 
-#: package/contents/ui/ToolTipInstance.qml:483
+#: package/contents/ui/ToolTipInstance.qml:491
 #, kde-format
 msgctxt "volume percentage"
 msgid "%1%"
 msgstr "%1%"
 
-#: package/contents/ui/ToolTipInstance.qml:487
+#: package/contents/ui/ToolTipInstance.qml:495
 #, kde-format
 msgctxt "only used for sizing, should be widest possible string"
 msgid "100%"
 msgstr "100%"
 
-#: package/contents/ui/ToolTipInstance.qml:503
+#: package/contents/ui/ToolTipInstance.qml:511
 #, kde-format
 msgctxt "Comma-separated list of desktops"
 msgid "On %1"
 msgstr "Ezen: %1"
 
-#: package/contents/ui/ToolTipInstance.qml:506
+#: package/contents/ui/ToolTipInstance.qml:514
 #, kde-format
 msgctxt "Comma-separated list of desktops"
 msgid "Pinned to all desktops"
 msgstr "Összes asztalra rögzítve"
 
-#: package/contents/ui/ToolTipInstance.qml:512
+#: package/contents/ui/ToolTipInstance.qml:520
 #, kde-format
 msgctxt "Which virtual desktop a window is currently on"
 msgid "Available on all activities"
 msgstr "Elérhető az összes aktivitáson"
 
-#: package/contents/ui/ToolTipInstance.qml:522
+#: package/contents/ui/ToolTipInstance.qml:530
 #, kde-format
 msgctxt "Activities a window is currently on (apart from the current one)"
 msgid "Also available on %1"
 msgstr "Szintén elérhető ezen: %1"
 
-#: package/contents/ui/ToolTipInstance.qml:526
+#: package/contents/ui/ToolTipInstance.qml:534
 #, kde-format
 msgctxt "Which activities a window is currently on"
 msgid "Available on %1"

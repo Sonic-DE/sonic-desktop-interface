@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma_applet_tasks\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-10-04 00:44+0000\n"
+"POT-Creation-Date: 2025-11-18 00:45+0000\n"
 "PO-Revision-Date: 2022-10-19 22:48+0200\n"
 "Last-Translator: Mihkel Tõnnov <mihhkel@gmail.com>\n"
 "Language-Team: Estonian <>\n"
@@ -137,6 +137,13 @@ msgstr "Akende esiletõstmine hiirekursori viimisel tegumi kohale"
 #| msgid "Hide other windows when hovering over previews"
 msgctxt "@option:check section General"
 msgid "Hide other windows when hovering over previews"
+msgstr "Akende esiletõstmine hiirekursori viimisel tegumi kohtspikri kohale"
+
+#: package/contents/ui/ConfigAppearance.qml:54
+#, fuzzy, kde-format
+#| msgid "Hide other windows when hovering over previews"
+msgctxt "@option:check section General"
+msgid "Hide other windows when hovering over tooltips"
 msgstr "Akende esiletõstmine hiirekursori viimisel tegumi kohtspikri kohale"
 
 #: package/contents/ui/ConfigAppearance.qml:59
@@ -529,7 +536,8 @@ msgstr "Toob selle aktiivsele virtuaalsele töölauale"
 #| msgid "Show only tasks:"
 msgctxt ""
 "@label:listbox Part of a sentence: 'Scrolling behavior does nothing/cycles "
-"through tasks/cycles through the selected task's windows'"
+"through tasks/cycles through the selected task's windows/adjusts the hovered "
+"task’s volume''"
 msgid "Scrolling behavior:"
 msgstr "Näidatakse ainult:"
 
@@ -563,14 +571,25 @@ msgctxt ""
 msgid "Cycles through the hovered task’s windows"
 msgstr "Kerib läbi tegumite"
 
-#: package/contents/ui/ConfigBehavior.qml:219
+#: package/contents/ui/ConfigBehavior.qml:212
+#, fuzzy, kde-format
+#| msgctxt ""
+#| "Completes the sentence 'Clicking grouped task cycles through tasks' "
+#| msgid "Cycles through tasks"
+msgctxt ""
+"@item:inlistbox Part of a sentence: 'Scrolling behavior adjusts the hovered "
+"task’s volume'"
+msgid "Adjusts the hovered task’s volume"
+msgstr "Kerib läbi tegumite"
+
+#: package/contents/ui/ConfigBehavior.qml:220
 #, fuzzy, kde-format
 #| msgid "Skip minimized tasks"
 msgctxt "@option:check mouse wheel task cycling"
 msgid "Skip minimized tasks"
 msgstr "Minimeeritud tegumid jäetakse vahele"
 
-#: package/contents/ui/ConfigBehavior.qml:229
+#: package/contents/ui/ConfigBehavior.qml:230
 #, fuzzy, kde-format
 #| msgid "Show only tasks:"
 msgctxt ""
@@ -578,35 +597,35 @@ msgctxt ""
 msgid "Show only tasks:"
 msgstr "Näidatakse ainult:"
 
-#: package/contents/ui/ConfigBehavior.qml:230
+#: package/contents/ui/ConfigBehavior.qml:231
 #, fuzzy, kde-format
 #| msgid "From current desktop"
 msgctxt "@option:check completes sentence: show only tasks"
 msgid "From the current desktop"
 msgstr "Aktiivse töölaua tegumeid"
 
-#: package/contents/ui/ConfigBehavior.qml:235
+#: package/contents/ui/ConfigBehavior.qml:236
 #, fuzzy, kde-format
 #| msgid "From current activity"
 msgctxt "@option:check completes sentence: show only tasks"
 msgid "From the current activity"
 msgstr "Aktiivse tegevuse tegumeid"
 
-#: package/contents/ui/ConfigBehavior.qml:240
+#: package/contents/ui/ConfigBehavior.qml:241
 #, fuzzy, kde-format
 #| msgid "From current screen"
 msgctxt "@option:check completes sentence: show only tasks"
 msgid "From the current screen"
 msgstr "Aktiivse ekraani tegumeid"
 
-#: package/contents/ui/ConfigBehavior.qml:245
+#: package/contents/ui/ConfigBehavior.qml:246
 #, fuzzy, kde-format
 #| msgid "That are minimized"
 msgctxt "@option:check completes sentence: show only tasks"
 msgid "That are minimized"
 msgstr "Minimeeritud tegumeid"
 
-#: package/contents/ui/ConfigBehavior.qml:254
+#: package/contents/ui/ConfigBehavior.qml:255
 #, fuzzy, kde-format
 #| msgid "When panel is hidden:"
 msgctxt ""
@@ -614,43 +633,43 @@ msgctxt ""
 msgid "When panel is hidden:"
 msgstr "Kui paneel on peidetud:"
 
-#: package/contents/ui/ConfigBehavior.qml:255
+#: package/contents/ui/ConfigBehavior.qml:256
 #, fuzzy, kde-format
 #| msgid "Unhide when a window wants attention"
 msgctxt "@option:check completes sentence: When panel is hidden"
 msgid "Unhide when a window wants attention"
 msgstr "Tähelepanu nõudva akna korral tuuakse peidust välja"
 
-#: package/contents/ui/ConfigBehavior.qml:270
+#: package/contents/ui/ConfigBehavior.qml:271
 #, fuzzy, kde-format
 #| msgid "New tasks appear:"
 msgctxt "@label for radiobutton group completes sentence like: … on the bottom"
 msgid "New tasks appear:"
 msgstr "Uued tegumid ilmuvad:"
 
-#: package/contents/ui/ConfigBehavior.qml:274
+#: package/contents/ui/ConfigBehavior.qml:275
 #, kde-format
 msgctxt "@option:check completes sentence: New tasks appear"
 msgid "On the bottom"
 msgstr ""
 
-#: package/contents/ui/ConfigBehavior.qml:278
-#: package/contents/ui/ConfigBehavior.qml:297
+#: package/contents/ui/ConfigBehavior.qml:279
+#: package/contents/ui/ConfigBehavior.qml:298
 #, fuzzy, kde-format
 #| msgid "To the right"
 msgctxt "@option:check completes sentence: New tasks appear"
 msgid "To the right"
 msgstr "Paremale"
 
-#: package/contents/ui/ConfigBehavior.qml:280
-#: package/contents/ui/ConfigBehavior.qml:295
+#: package/contents/ui/ConfigBehavior.qml:281
+#: package/contents/ui/ConfigBehavior.qml:296
 #, fuzzy, kde-format
 #| msgid "To the left"
 msgctxt "@option:check completes sentence: New tasks appear"
 msgid "To the left"
 msgstr "Vasakule"
 
-#: package/contents/ui/ConfigBehavior.qml:291
+#: package/contents/ui/ConfigBehavior.qml:292
 #, kde-format
 msgctxt "@option:check completes sentence: New tasks appear"
 msgid "On the top"
@@ -824,30 +843,30 @@ msgstr "T&eiste all"
 msgid "&Fullscreen"
 msgstr "Täisek&raan"
 
-#: package/contents/ui/ContextMenu.qml:701
+#: package/contents/ui/ContextMenu.qml:702
 #, kde-format
 msgid "&Shade"
 msgstr "&Keri kokku"
 
-#: package/contents/ui/ContextMenu.qml:713
+#: package/contents/ui/ContextMenu.qml:714
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "&No Titlebar and Frame"
 msgstr ""
 
-#: package/contents/ui/ContextMenu.qml:729
+#: package/contents/ui/ContextMenu.qml:730
 #, kde-format
 msgid "Allow this program to be grouped"
 msgstr "Luba seda rakendust grupeerida"
 
-#: package/contents/ui/ContextMenu.qml:775
+#: package/contents/ui/ContextMenu.qml:776
 #, fuzzy, kde-format
 #| msgid "&Close"
 msgctxt "@item:inmenu"
 msgid "&Close All"
 msgstr "&Sulge"
 
-#: package/contents/ui/ContextMenu.qml:775
+#: package/contents/ui/ContextMenu.qml:776
 #, kde-format
 msgid "&Close"
 msgstr "&Sulge"
@@ -899,61 +918,61 @@ msgctxt "@info:tooltip Close this window"
 msgid "Close window"
 msgstr "Sulgeb akna või rühma"
 
-#: package/contents/ui/ToolTipInstance.qml:448
+#: package/contents/ui/ToolTipInstance.qml:456
 #, kde-format
 msgctxt "button to unmute app"
 msgid "Unmute %1"
 msgstr ""
 
-#: package/contents/ui/ToolTipInstance.qml:449
+#: package/contents/ui/ToolTipInstance.qml:457
 #, kde-format
 msgctxt "button to mute app"
 msgid "Mute %1"
 msgstr "Vaigista %1"
 
-#: package/contents/ui/ToolTipInstance.qml:467
+#: package/contents/ui/ToolTipInstance.qml:475
 #, kde-format
 msgctxt "Accessibility data on volume slider"
 msgid "Adjust volume for %1"
 msgstr ""
 
-#: package/contents/ui/ToolTipInstance.qml:483
+#: package/contents/ui/ToolTipInstance.qml:491
 #, kde-format
 msgctxt "volume percentage"
 msgid "%1%"
 msgstr "%1%"
 
-#: package/contents/ui/ToolTipInstance.qml:487
+#: package/contents/ui/ToolTipInstance.qml:495
 #, kde-format
 msgctxt "only used for sizing, should be widest possible string"
 msgid "100%"
 msgstr "100%"
 
-#: package/contents/ui/ToolTipInstance.qml:503
+#: package/contents/ui/ToolTipInstance.qml:511
 #, kde-format
 msgctxt "Comma-separated list of desktops"
 msgid "On %1"
 msgstr "Töölaudadel %1"
 
-#: package/contents/ui/ToolTipInstance.qml:506
+#: package/contents/ui/ToolTipInstance.qml:514
 #, kde-format
 msgctxt "Comma-separated list of desktops"
 msgid "Pinned to all desktops"
 msgstr "Kinnistatud kõigile töölaudadele"
 
-#: package/contents/ui/ToolTipInstance.qml:512
+#: package/contents/ui/ToolTipInstance.qml:520
 #, kde-format
 msgctxt "Which virtual desktop a window is currently on"
 msgid "Available on all activities"
 msgstr "Saadaval kõigis tegevustes"
 
-#: package/contents/ui/ToolTipInstance.qml:522
+#: package/contents/ui/ToolTipInstance.qml:530
 #, kde-format
 msgctxt "Activities a window is currently on (apart from the current one)"
 msgid "Also available on %1"
 msgstr "Saadaval ka tegevuses %1"
 
-#: package/contents/ui/ToolTipInstance.qml:526
+#: package/contents/ui/ToolTipInstance.qml:534
 #, kde-format
 msgctxt "Which activities a window is currently on"
 msgid "Available on %1"

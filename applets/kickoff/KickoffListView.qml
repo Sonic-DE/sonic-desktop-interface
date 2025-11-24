@@ -33,6 +33,7 @@ EmptyPage {
     property alias section: view.section
     property alias highlight: view.highlight
     property alias view: view
+    property bool isSidebar: false
 
     property bool mainContentView: false
     property bool hasSectionView: false
@@ -140,9 +141,21 @@ EmptyPage {
                     && kickoff.searchField.activeFocus)
         }
 
+        onCountChanged: {
+            if (!activeFocus) {
+                currentIndex = (count > 0 ? 0 : -1)
+            } else if (count > 0 && currentIndex !== -1) {
+                positionViewAtIndex(currentIndex, ListView.Contain)
+            }
+        }
+
         delegate: KickoffListDelegate {
             width: view.availableWidth
         }
+
+        // Without switch-on-hover, it's possible for the selected category and the hovered category to be adjacent.
+        // When this happens, their highlights tuoch and look ungly without some artificial spacing added.
+        spacing: root.isSidebar && !Plasmoid.configuration.switchCategoryOnHover ? Kirigami.Units.smallSpacing : 0
 
         section {
             property: "group"

@@ -11,16 +11,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-desktop\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-10-03 00:45+0000\n"
-"PO-Revision-Date: 2025-09-19 06:52-0300\n"
-"Last-Translator: Marcus Gama <marcus.gama@gmail.com>\n"
+"POT-Creation-Date: 2025-11-23 00:44+0000\n"
+"PO-Revision-Date: 2025-11-08 21:10-0300\n"
+"Last-Translator: Guilherme Marçal Silva <guimarcalsilva@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <kde-i18n-pt_BR@kde.org>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 25.08.1\n"
+"X-Generator: Lokalize 25.08.2\n"
 
 #: contents/activitymanager/ActivityItem.qml:203
 #, kde-format
@@ -80,7 +80,7 @@ msgstr "Copiar para a área de transferência"
 msgid "View Error Details…"
 msgstr "Ver detalhes do erro…"
 
-#: contents/applet/CompactApplet.qml:76
+#: contents/applet/CompactApplet.qml:91
 #, kde-format
 msgid "Open %1"
 msgstr "Abrir %1"
@@ -102,50 +102,50 @@ msgctxt "@info:tooltip %1 url"
 msgid "Open website %1"
 msgstr "Abrir site %1"
 
-#: contents/configuration/AboutPlugin.qml:143
+#: contents/configuration/AboutPlugin.qml:146
 #, kde-format
 msgctxt "@title:group"
 msgid "Website"
 msgstr "Site"
 
-#: contents/configuration/AboutPlugin.qml:154
+#: contents/configuration/AboutPlugin.qml:157
 #, kde-format
 msgctxt "@title:group"
 msgid "Get Help"
 msgstr "Obter ajuda"
 
-#: contents/configuration/AboutPlugin.qml:162
+#: contents/configuration/AboutPlugin.qml:165
 #, kde-format
 msgid "Report an issue"
 msgstr "Relatar um problema"
 
-#: contents/configuration/AboutPlugin.qml:169
+#: contents/configuration/AboutPlugin.qml:172
 #, kde-format
 msgid "Copyright"
 msgstr "Copyright"
 
-#: contents/configuration/AboutPlugin.qml:188
+#: contents/configuration/AboutPlugin.qml:191
 #, kde-format
 msgid "License: %1"
 msgstr "Licença: %1"
 
-#: contents/configuration/AboutPlugin.qml:194
+#: contents/configuration/AboutPlugin.qml:197
 #, kde-format
 msgctxt "@action:button"
 msgid "Read License"
 msgstr "Ler a licença"
 
-#: contents/configuration/AboutPlugin.qml:208
+#: contents/configuration/AboutPlugin.qml:211
 #, kde-format
 msgid "Authors"
 msgstr "Autores"
 
-#: contents/configuration/AboutPlugin.qml:221
+#: contents/configuration/AboutPlugin.qml:224
 #, kde-format
 msgid "Credits"
 msgstr "Créditos"
 
-#: contents/configuration/AboutPlugin.qml:235
+#: contents/configuration/AboutPlugin.qml:238
 #, kde-format
 msgid "Translators"
 msgstr "Tradutores"
@@ -274,7 +274,7 @@ msgstr "Tipo de papel de parede:"
 #: contents/configuration/ConfigurationContainmentAppearance.qml:154
 #, kde-format
 msgid "Get New Plugins…"
-msgstr "Baixar novos plugins..."
+msgstr "Baixar novos plugins…"
 
 #: contents/configuration/ConfigurationContainmentAppearance.qml:244
 #, kde-format
@@ -723,13 +723,13 @@ msgstr "Widgets"
 #, kde-format
 msgctxt "@action:button The word 'new' refers to widgets"
 msgid "Get New…"
-msgstr "Obter novos..."
+msgstr "Obter novos…"
 
 #: contents/explorer/WidgetExplorer.qml:179
 #, kde-format
 msgctxt "@action:button"
 msgid "Get New Widgets…"
-msgstr "Obter novos widgets..."
+msgstr "Obter novos widgets…"
 
 #: contents/explorer/WidgetExplorer.qml:192
 #, kde-format

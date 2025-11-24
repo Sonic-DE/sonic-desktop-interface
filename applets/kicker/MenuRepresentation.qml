@@ -136,6 +136,7 @@ PlasmaComponents3.ScrollView {
                 anchors.top: parent.top
                 anchors.horizontalCenter: parent.horizontalCenter
                 height: Math.max(implicitHeight, parent.height)
+                width: parent.width
 
                 LayoutItemProxy {
                     target: sideBar.onTopPanel ? favoriteSystemActions : favoriteApps
@@ -162,6 +163,7 @@ PlasmaComponents3.ScrollView {
                     id: favoriteApps
 
                     Layout.fillHeight: true
+                    Layout.alignment: Qt.AlignHCenter
 
                     KeyNavigation.up: favoriteSystemActions.bottomSideBarItem
                     KeyNavigation.down: favoriteSystemActions
@@ -178,6 +180,8 @@ PlasmaComponents3.ScrollView {
 
                 SideBarSection {
                     id: favoriteSystemActions
+
+                    Layout.alignment: Qt.AlignHCenter
 
                     model: systemFavorites
                     KeyNavigation.up: favoriteApps.bottomSideBarItem
@@ -302,9 +306,10 @@ PlasmaComponents3.ScrollView {
                 id: noMatchesPlaceholder
 
                 property bool searchRunning: false
+                property string lastQuery: "" // copy to avoid timing conflicts with visible binding
 
                 anchors.centerIn: parent
-                visible: searchField.text !== "" && runnerColumns.width < 1 && (!searchRunning || visible)
+                visible: lastQuery !== "" && runnerColumns.width < 1 && (!searchRunning || visible)
 
                 iconName: "edit-none"
                 text: i18nc("@info:status", "No matches")
@@ -322,6 +327,7 @@ PlasmaComponents3.ScrollView {
 
                     function onTextChanged() {
                         noMatchesPlaceholder.searchRunning = searchField.text !== ""
+                        noMatchesPlaceholder.lastQuery = searchField.text
                     }
                 }
             }
@@ -412,14 +418,20 @@ PlasmaComponents3.ScrollView {
                 if (rootList.visible) {
                     root.focusRootList(event.key === Qt.Key_Down);
                 } else if (runnerColumns.visible) {
+                    let index = runnerColumns.visibleChildren[0].currentIndex
                     root.focusRunnerColumn(0, event.key === Qt.Key_Down)
+                    // First column, first entry is initially selected even when focus is on the search
+                    // field, as Return will activate it. Down should immediately go to the second entry.
+                    if (index === 0 && event.key === Qt.Key_Down) {
+                        runnerColumns.visibleChildren[0].currentIndex = Math.min(index + 1, runnerColumns.visibleChildren[0].count - 1)
+                    }
                 }
                 event.accepted = true;
             } else if (backArrowKey) {
                 if (!sideBar.visible && !runnerColumns.visible) {
                     return;
                 }
-                if (runnerColumns.visibleChildren[0].length > 1) {
+                if (runnerColumns.visibleChildren[0]?.length > 1) {
                     runnerColumns.visibleChildren[0].currentIndex = -1;
                 }
                 if (sideBar.visible) {

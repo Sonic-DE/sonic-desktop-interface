@@ -13,15 +13,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma_applet_tasks\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-10-04 00:44+0000\n"
-"PO-Revision-Date: 2025-08-16 14:42+0900\n"
+"POT-Creation-Date: 2025-11-18 00:45+0000\n"
+"PO-Revision-Date: 2025-11-20 20:47+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
 "Language: zh_TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 25.07.70\n"
+"X-Generator: Lokalize 26.03.70\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: backend.cpp:284
@@ -133,6 +133,12 @@ msgstr "當游標停留在工作上時顯示小的視窗預覽"
 msgctxt "@option:check section General"
 msgid "Hide other windows when hovering over previews"
 msgstr "當游標停留在預覽上時隱藏其他視窗"
+
+#: package/contents/ui/ConfigAppearance.qml:54
+#, kde-format
+msgctxt "@option:check section General"
+msgid "Hide other windows when hovering over tooltips"
+msgstr "當游標停留在工具提示上時隱藏其他視窗"
 
 #: package/contents/ui/ConfigAppearance.qml:59
 #, kde-format
@@ -473,7 +479,8 @@ msgstr "將它移至目前虛擬桌面"
 #, kde-format
 msgctxt ""
 "@label:listbox Part of a sentence: 'Scrolling behavior does nothing/cycles "
-"through tasks/cycles through the selected task's windows'"
+"through tasks/cycles through the selected task's windows/adjusts the hovered "
+"task’s volume''"
 msgid "Scrolling behavior:"
 msgstr "捲動行為："
 
@@ -499,83 +506,91 @@ msgctxt ""
 msgid "Cycles through the hovered task’s windows"
 msgstr "循環切換游標下工作的視窗"
 
-#: package/contents/ui/ConfigBehavior.qml:219
+#: package/contents/ui/ConfigBehavior.qml:212
+#, kde-format
+msgctxt ""
+"@item:inlistbox Part of a sentence: 'Scrolling behavior adjusts the hovered "
+"task’s volume'"
+msgid "Adjusts the hovered task’s volume"
+msgstr "調整游標下工作的音量"
+
+#: package/contents/ui/ConfigBehavior.qml:220
 #, kde-format
 msgctxt "@option:check mouse wheel task cycling"
 msgid "Skip minimized tasks"
 msgstr "跳過最小化工作"
 
-#: package/contents/ui/ConfigBehavior.qml:229
+#: package/contents/ui/ConfigBehavior.qml:230
 #, kde-format
 msgctxt ""
 "@label for checkbox group, completes sentence like: … from current screen"
 msgid "Show only tasks:"
 msgstr "只顯示哪些工作："
 
-#: package/contents/ui/ConfigBehavior.qml:230
+#: package/contents/ui/ConfigBehavior.qml:231
 #, kde-format
 msgctxt "@option:check completes sentence: show only tasks"
 msgid "From the current desktop"
 msgstr "目前桌面上的"
 
-#: package/contents/ui/ConfigBehavior.qml:235
+#: package/contents/ui/ConfigBehavior.qml:236
 #, kde-format
 msgctxt "@option:check completes sentence: show only tasks"
 msgid "From the current activity"
 msgstr "目前活動裡的"
 
-#: package/contents/ui/ConfigBehavior.qml:240
+#: package/contents/ui/ConfigBehavior.qml:241
 #, kde-format
 msgctxt "@option:check completes sentence: show only tasks"
 msgid "From the current screen"
 msgstr "目前螢幕上的"
 
-#: package/contents/ui/ConfigBehavior.qml:245
+#: package/contents/ui/ConfigBehavior.qml:246
 #, kde-format
 msgctxt "@option:check completes sentence: show only tasks"
 msgid "That are minimized"
 msgstr "已最小化的"
 
-#: package/contents/ui/ConfigBehavior.qml:254
+#: package/contents/ui/ConfigBehavior.qml:255
 #, kde-format
 msgctxt ""
 "@label for checkbox, completes sentence: … unhide if window wants attention"
 msgid "When panel is hidden:"
 msgstr "當面板已隱藏時："
 
-#: package/contents/ui/ConfigBehavior.qml:255
+#: package/contents/ui/ConfigBehavior.qml:256
 #, kde-format
 msgctxt "@option:check completes sentence: When panel is hidden"
 msgid "Unhide when a window wants attention"
 msgstr "有視窗請求注意時取消隱藏"
 
-#: package/contents/ui/ConfigBehavior.qml:270
+#: package/contents/ui/ConfigBehavior.qml:271
 #, kde-format
 msgctxt "@label for radiobutton group completes sentence like: … on the bottom"
 msgid "New tasks appear:"
 msgstr "新工作出現在："
 
-#: package/contents/ui/ConfigBehavior.qml:274
+#: package/contents/ui/ConfigBehavior.qml:275
 #, kde-format
 msgctxt "@option:check completes sentence: New tasks appear"
 msgid "On the bottom"
 msgstr "底部"
 
-#: package/contents/ui/ConfigBehavior.qml:278
-#: package/contents/ui/ConfigBehavior.qml:297
+#: package/contents/ui/ConfigBehavior.qml:279
+#: package/contents/ui/ConfigBehavior.qml:298
 #, kde-format
 msgctxt "@option:check completes sentence: New tasks appear"
 msgid "To the right"
 msgstr "右方"
 
-#: package/contents/ui/ConfigBehavior.qml:280
-#: package/contents/ui/ConfigBehavior.qml:295
+#: package/contents/ui/ConfigBehavior.qml:281
+#: package/contents/ui/ConfigBehavior.qml:296
 #, kde-format
 msgctxt "@option:check completes sentence: New tasks appear"
 msgid "To the left"
 msgstr "左方"
 
-#: package/contents/ui/ConfigBehavior.qml:291
+#: package/contents/ui/ConfigBehavior.qml:292
 #, kde-format
 msgctxt "@option:check completes sentence: New tasks appear"
 msgid "On the top"
@@ -749,29 +764,29 @@ msgstr "維持在其它項目之下(&B)"
 msgid "&Fullscreen"
 msgstr "全螢幕(&F)"
 
-#: package/contents/ui/ContextMenu.qml:701
+#: package/contents/ui/ContextMenu.qml:702
 #, kde-format
 msgid "&Shade"
 msgstr "收起(&S)"
 
-#: package/contents/ui/ContextMenu.qml:713
+#: package/contents/ui/ContextMenu.qml:714
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "&No Titlebar and Frame"
 msgstr "沒有標題列及框架(&N)"
 
-#: package/contents/ui/ContextMenu.qml:729
+#: package/contents/ui/ContextMenu.qml:730
 #, kde-format
 msgid "Allow this program to be grouped"
 msgstr "允許此程式被分組"
 
-#: package/contents/ui/ContextMenu.qml:775
+#: package/contents/ui/ContextMenu.qml:776
 #, kde-format
 msgctxt "@item:inmenu"
 msgid "&Close All"
 msgstr "全部關閉(&C)"
 
-#: package/contents/ui/ContextMenu.qml:775
+#: package/contents/ui/ContextMenu.qml:776
 #, kde-format
 msgid "&Close"
 msgstr "關閉(&C)"
@@ -818,61 +833,61 @@ msgctxt "@info:tooltip Close this window"
 msgid "Close window"
 msgstr "關閉視窗"
 
-#: package/contents/ui/ToolTipInstance.qml:448
+#: package/contents/ui/ToolTipInstance.qml:456
 #, kde-format
 msgctxt "button to unmute app"
 msgid "Unmute %1"
 msgstr "取消靜音 %1"
 
-#: package/contents/ui/ToolTipInstance.qml:449
+#: package/contents/ui/ToolTipInstance.qml:457
 #, kde-format
 msgctxt "button to mute app"
 msgid "Mute %1"
 msgstr "靜音 %1"
 
-#: package/contents/ui/ToolTipInstance.qml:467
+#: package/contents/ui/ToolTipInstance.qml:475
 #, kde-format
 msgctxt "Accessibility data on volume slider"
 msgid "Adjust volume for %1"
 msgstr "調整 %1 的音量"
 
-#: package/contents/ui/ToolTipInstance.qml:483
+#: package/contents/ui/ToolTipInstance.qml:491
 #, kde-format
 msgctxt "volume percentage"
 msgid "%1%"
 msgstr "%1%"
 
-#: package/contents/ui/ToolTipInstance.qml:487
+#: package/contents/ui/ToolTipInstance.qml:495
 #, kde-format
 msgctxt "only used for sizing, should be widest possible string"
 msgid "100%"
 msgstr "100%"
 
-#: package/contents/ui/ToolTipInstance.qml:503
+#: package/contents/ui/ToolTipInstance.qml:511
 #, kde-format
 msgctxt "Comma-separated list of desktops"
 msgid "On %1"
 msgstr "於 %1"
 
-#: package/contents/ui/ToolTipInstance.qml:506
+#: package/contents/ui/ToolTipInstance.qml:514
 #, kde-format
 msgctxt "Comma-separated list of desktops"
 msgid "Pinned to all desktops"
 msgstr "釘選到所有桌面"
 
-#: package/contents/ui/ToolTipInstance.qml:512
+#: package/contents/ui/ToolTipInstance.qml:520
 #, kde-format
 msgctxt "Which virtual desktop a window is currently on"
 msgid "Available on all activities"
 msgstr "所有活動都可使用"
 
-#: package/contents/ui/ToolTipInstance.qml:522
+#: package/contents/ui/ToolTipInstance.qml:530
 #, kde-format
 msgctxt "Activities a window is currently on (apart from the current one)"
 msgid "Also available on %1"
 msgstr "也可在 %1 上使用"
 
-#: package/contents/ui/ToolTipInstance.qml:526
+#: package/contents/ui/ToolTipInstance.qml:534
 #, kde-format
 msgctxt "Which activities a window is currently on"
 msgid "Available on %1"

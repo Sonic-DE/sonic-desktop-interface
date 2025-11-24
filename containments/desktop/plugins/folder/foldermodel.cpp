@@ -908,8 +908,22 @@ void FolderModel::rename(int row, const QString &name)
     }
 
     QModelIndex idx = index(row, 0);
+    const QString filename = data(idx, UrlRole).toString();
+    Q_EMIT itemAboutToRename(filename);
     m_dirModel->setData(mapToSource(idx), name, Qt::EditRole);
-    connect(m_dirModel, &KDirModel::dataChanged, this, &FolderModel::itemRenamed, Qt::SingleShotConnection);
+    connect(
+        m_dirModel,
+        &KDirModel::dataChanged,
+        this,
+        [=, this](const QModelIndex &topLeft, const QModelIndex &bottomRight, const QList<int> &roles) {
+            Q_UNUSED(roles)
+            QString newFilename;
+            if (topLeft == bottomRight) {
+                newFilename = data(mapFromSource(topLeft), UrlRole).toString();
+            }
+            Q_EMIT itemRenamed(filename, newFilename);
+        },
+        Qt::SingleShotConnection);
 }
 
 int FolderModel::fileExtensionBoundary(int row)
@@ -2216,8 +2230,6 @@ void FolderModel::setApplet(Plasma::Applet *applet)
                 }
                 setScreen(containment->screen());
                 connect(containment, &Plasma::Containment::screenChanged, this, &FolderModel::setScreen);
-                connect(containment, &Plasma::Containment::screenGeometryChanged, this, &FolderModel::screenGeometryChanged);
-                connect(containment, &Plasma::Containment::availableRelativeScreenRectChanged, this, &FolderModel::availableRelativeScreenRectChanged);
             }
         }
 
@@ -2225,8 +2237,20 @@ void FolderModel::setApplet(Plasma::Applet *applet)
     }
 }
 
+#ifdef BUILD_TESTING
+void FolderModel::setScreenResolution(const QSizeF &size)
+{
+    m_screenResolution = size;
+}
+#endif
+
 QRectF FolderModel::screenGeometry()
 {
+#ifdef BUILD_TESTING
+    if (m_screenResolution.isValid()) {
+        return QRectF(QPointF(), m_screenResolution);
+    }
+#endif
     if (m_applet) {
         Plasma::Containment *containment = m_applet->containment();
         if (containment) {

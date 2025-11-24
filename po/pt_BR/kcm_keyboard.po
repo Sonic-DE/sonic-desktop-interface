@@ -6,7 +6,7 @@
 # Fernando Boaglio <boaglio@kde.org>, 2008.
 # Luiz Fernando Ranghetti <elchevive@opensuse.org>, 2009, 2017, 2020, 2021.
 # André Marcelo Alvarenga <alvarenga@kde.org>, 2009, 2010, 2011, 2012, 2014, 2016.
-# Marcus Gama <marcus.gama@gmail.com>, 2011.
+# SPDX-FileCopyrightText: 2011, 2025 Marcus Gama <marcus.gama@gmail.com>
 # Aracele Torres <aracele@kde.org>, 2017.
 # Thiago Masato Costa Sueto <herzenschein@gmail.com>, 2021.
 # SPDX-FileCopyrightText: 2024 Geraldo Simiao <geraldosimiao@fedoraproject.org>
@@ -15,16 +15,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kcmkeyboard\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-09-04 00:44+0000\n"
-"PO-Revision-Date: 2025-03-28 01:43-0300\n"
-"Last-Translator: Guilherme Marçal Silva <guimarcalsilva@gmail.com>\n"
+"POT-Creation-Date: 2025-11-17 11:53+0000\n"
+"PO-Revision-Date: 2025-10-31 07:17-0300\n"
+"Last-Translator: Marcus Gama <marcus.gama@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <kde-i18n-pt_BR@kde.org>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 24.12.3\n"
+"X-Generator: Lokalize 25.08.2\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
@@ -131,19 +131,25 @@ msgctxt "@info:tooltip"
 msgid "Reset selected options for this group"
 msgstr "Redefinir opções selecionadas para este grupo"
 
-#: ui/LayoutDialog.qml:20
+#: ui/LayoutDialog.qml:22
+#, kde-format
+msgctxt "@title:window"
+msgid "Set Layout"
+msgstr "Definir layout"
+
+#: ui/LayoutDialog.qml:22
 #, kde-format
 msgctxt "@title:window"
 msgid "Add Layout"
 msgstr "Adicionar layout"
 
-#: ui/LayoutDialog.qml:180
+#: ui/LayoutDialog.qml:129
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Short layout name"
 msgstr "Nome curto do layout"
 
-#: ui/LayoutDialog.qml:190
+#: ui/LayoutDialog.qml:139
 #, kde-format
 msgctxt "@info"
 msgid ""
@@ -153,13 +159,13 @@ msgstr ""
 "O nome abreviado do layout selecionado, o qual será exibido na bandeja do "
 "sistema. Você mesmo pode mudar esta configuração."
 
-#: ui/LayoutDialog.qml:198
+#: ui/LayoutDialog.qml:147
 #, kde-format
 msgctxt "@option:textbox"
 msgid "Shortcut:"
 msgstr "Atalho:"
 
-#: ui/LayoutDialog.qml:209 ui/main.qml:287
+#: ui/LayoutDialog.qml:158 ui/main.qml:287
 #, kde-format
 msgctxt "@action:button"
 msgid "Preview"
@@ -251,55 +257,55 @@ msgctxt "@label:checkbox"
 msgid "Key repeat:"
 msgstr "Repetição de tecla:"
 
-#: ui/main.qml:155
+#: ui/main.qml:155 ui/main_phone.qml:115
 #, kde-format
 msgctxt "@label:checkbox accessible"
 msgid "Key repeat"
 msgstr "Repetição de tecla"
 
-#: ui/main.qml:166
+#: ui/main.qml:166 ui/main_phone.qml:131
 #, kde-format
 msgctxt "@label:textbox Key repeat delay"
 msgid "Delay:"
 msgstr "Atraso:"
 
-#: ui/main.qml:180
+#: ui/main.qml:180 ui/main_phone.qml:135
 #, kde-format
 msgctxt "@label:spinbox accessible"
 msgid "Key repeat delay %1"
 msgstr "Atraso de repetição da tecla %1"
 
-#: ui/main.qml:188
+#: ui/main.qml:188 ui/main_phone.qml:143
 #, kde-format
 msgctxt "@spinbox:value Repeat delay interval"
 msgid "%1 ms"
 msgstr "%1 ms"
 
-#: ui/main.qml:192
+#: ui/main.qml:192 ui/main_phone.qml:147
 #, kde-format
 msgctxt "@spinbox:value Repeat delay interval"
 msgid "ms"
 msgstr "ms"
 
-#: ui/main.qml:205
+#: ui/main.qml:205 ui/main_phone.qml:162
 #, kde-format
 msgctxt "@label:textbox Key repeat rate"
 msgid "Rate:"
 msgstr "Taxa:"
 
-#: ui/main.qml:219
+#: ui/main.qml:219 ui/main_phone.qml:169
 #, kde-format
 msgctxt "@label:spinbox accessible"
 msgid "Key repeat rate %1"
 msgstr "Taxa de repetição da tecla %1"
 
-#: ui/main.qml:227
+#: ui/main.qml:227 ui/main_phone.qml:177
 #, kde-format
 msgctxt "@spinbox:value  Key repeat rate"
 msgid "%1 repeats/s"
 msgstr "%1 repetições/s"
 
-#: ui/main.qml:231
+#: ui/main.qml:231 ui/main_phone.qml:181
 #, kde-format
 msgctxt "@spinbox:value  Key repeat rate"
 msgid "repeats/s"
@@ -408,6 +414,41 @@ msgstr "Mudar atalho de layout:"
 msgctxt "@label Change layout shortcut or \"Configure Switching\""
 msgid "or"
 msgstr "ou"
+
+#: ui/main_phone.qml:36
+#, kde-format
+msgid "Model & Layout"
+msgstr "Modelo & layout"
+
+#: ui/main_phone.qml:43
+#, kde-format
+msgctxt "@label:listbox"
+msgid "Keyboard Model"
+msgstr "Modelo do teclado"
+
+#: ui/main_phone.qml:72
+#, kde-format
+msgctxt "@option:check"
+msgid "Custom Layout"
+msgstr "Layout personalizado"
+
+#: ui/main_phone.qml:96
+#, kde-format
+msgctxt "@action:button"
+msgid "Change Layout..."
+msgstr "Mudar layout..."
+
+#: ui/main_phone.qml:103
+#, kde-format
+msgctxt "@title:group"
+msgid "Key Repeat"
+msgstr "Repetição de tecla"
+
+#: ui/main_phone.qml:109
+#, kde-format
+msgctxt "@option:check"
+msgid "Customize Repeat"
+msgstr "Repetição personalizada"
 
 #: ui/Switching.qml:17
 #, kde-format
@@ -524,10 +565,6 @@ msgctxt "no shortcuts defined"
 msgid "None"
 msgstr "Nenhum"
 
-#~ msgctxt "@title:group"
-#~ msgid "Keyboard model:"
-#~ msgstr "Modelo do teclado:"
-
 #~ msgctxt "@option:radio"
 #~ msgid "Turn Off"
 #~ msgstr "Desligar"
@@ -599,10 +636,6 @@ msgstr "Nenhum"
 #~ msgctxt "@title:column"
 #~ msgid "Label"
 #~ msgstr "Rótulo"
-
-#~ msgctxt "@title:column"
-#~ msgid "Layout"
-#~ msgstr "Layout"
 
 #~ msgctxt "@title:column"
 #~ msgid "Variant"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-desktop\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-10-03 00:45+0000\n"
+"POT-Creation-Date: 2025-11-23 00:44+0000\n"
 "PO-Revision-Date: 2025-03-23 07:29+0100\n"
 "Last-Translator: Oliver Kellogg <olivermkellogg@gmail.com>\n"
 "Language-Team: Esperanto <kde-i18n-eo@kde.org>\n"
@@ -76,7 +76,7 @@ msgstr "Kopii al tondujo"
 msgid "View Error Details…"
 msgstr "Rigardi erardetalojn…"
 
-#: contents/applet/CompactApplet.qml:76
+#: contents/applet/CompactApplet.qml:91
 #, kde-format
 msgid "Open %1"
 msgstr "Malfermi %1"
@@ -98,53 +98,53 @@ msgctxt "@info:tooltip %1 url"
 msgid "Open website %1"
 msgstr "Malfermi retejon %1"
 
-#: contents/configuration/AboutPlugin.qml:143
+#: contents/configuration/AboutPlugin.qml:146
 #, kde-format
 msgctxt "@title:group"
 msgid "Website"
 msgstr ""
 
-#: contents/configuration/AboutPlugin.qml:154
+#: contents/configuration/AboutPlugin.qml:157
 #, kde-format
 msgctxt "@title:group"
 msgid "Get Help"
 msgstr ""
 
-#: contents/configuration/AboutPlugin.qml:162
+#: contents/configuration/AboutPlugin.qml:165
 #, fuzzy, kde-format
 #| msgid "Report a Bug…"
 msgid "Report an issue"
 msgstr "Raporti cimon…"
 
-#: contents/configuration/AboutPlugin.qml:169
+#: contents/configuration/AboutPlugin.qml:172
 #, kde-format
 msgid "Copyright"
 msgstr "Kopirajto"
 
-#: contents/configuration/AboutPlugin.qml:188
+#: contents/configuration/AboutPlugin.qml:191
 #, fuzzy, kde-format
 #| msgid "License:"
 msgid "License: %1"
 msgstr "Permesilo:"
 
-#: contents/configuration/AboutPlugin.qml:194
+#: contents/configuration/AboutPlugin.qml:197
 #, fuzzy, kde-format
 #| msgid "License:"
 msgctxt "@action:button"
 msgid "Read License"
 msgstr "Permesilo:"
 
-#: contents/configuration/AboutPlugin.qml:208
+#: contents/configuration/AboutPlugin.qml:211
 #, kde-format
 msgid "Authors"
 msgstr "Aŭtoroj"
 
-#: contents/configuration/AboutPlugin.qml:221
+#: contents/configuration/AboutPlugin.qml:224
 #, kde-format
 msgid "Credits"
 msgstr "Kreditigoj"
 
-#: contents/configuration/AboutPlugin.qml:235
+#: contents/configuration/AboutPlugin.qml:238
 #, kde-format
 msgid "Translators"
 msgstr "Tradukistoj"

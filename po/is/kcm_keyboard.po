@@ -2,16 +2,16 @@
 # Copyright (C) 2006, 2011 This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
 #
-# Sveinn í Felli <sveinki@nett.is>, 2008, 2010, 2011, 2016.
+# SPDX-FileCopyrightText: 2008, 2010, 2011, 2016, 2025 Sveinn í Felli <sveinki@nett.is>
 # SPDX-FileCopyrightText: 2022, 2023, 2024, 2025 Guðmundur Erlingsson <gudmundure@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: kcmkeyboard\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-09-04 00:44+0000\n"
-"PO-Revision-Date: 2025-04-17 14:18+0000\n"
-"Last-Translator: Gummi <gudmundure@gmail.com>\n"
-"Language-Team: Icelandic <kde-i18n-doc@kde.org>\n"
+"POT-Creation-Date: 2025-11-17 11:53+0000\n"
+"PO-Revision-Date: 2025-11-22 09:41+0000\n"
+"Last-Translator: Sveinn í Felli <sv1@fellsnet.is>\n"
+"Language-Team: Icelandic\n"
 "Language: is\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -87,10 +87,10 @@ msgid ""
 "not supported and  will also trigger this message. These might still work "
 "fine if applied"
 msgstr ""
-"Mistókst að hlaða inn lögun og stærð lyklaborðsins. Oft þýðir það að þessi "
-"gerð lyklaborðs styðji ekki tiltekna skipan eða tilbrigði hennar. Þetta "
-"vandamál kemur sennilega líka upp þegar þú reynir að nota þessa samsetningu "
-"af lyklaborðsgerð, uppstillingu og tilbrigði.\n"
+"Mistókst að hlaða inn lögun og stærð lyklaborðsins. Það bendir oft til þess "
+"að þessi gerð lyklaborðs styðji ekki tiltekna skipan eða tilbrigði hennar. "
+"Þetta vandamál kemur sennilega líka upp þegar þú reynir að nota þessa "
+"samsetningu af lyklaborðsgerð, uppstillingu og tilbrigði.\n"
 "Forskoðun á lyklaborðsskipunum sem eru skilgreindar utan xkb-möppu "
 "stýrikerfisins er ekki studd og keyrir einnig þessi skilaboð. Þetta gæti "
 "samt alveg virkað rétt ef þetta er valið"
@@ -125,19 +125,25 @@ msgctxt "@info:tooltip"
 msgid "Reset selected options for this group"
 msgstr "Endurstilla valda valkosti fyrir þennan hóp"
 
-#: ui/LayoutDialog.qml:20
+#: ui/LayoutDialog.qml:22
+#, kde-format
+msgctxt "@title:window"
+msgid "Set Layout"
+msgstr "Stilla framsetningu"
+
+#: ui/LayoutDialog.qml:22
 #, kde-format
 msgctxt "@title:window"
 msgid "Add Layout"
 msgstr "Bæta við lyklaborðsskipan"
 
-#: ui/LayoutDialog.qml:180
+#: ui/LayoutDialog.qml:129
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Short layout name"
 msgstr "Stutt heiti fyrir skipan"
 
-#: ui/LayoutDialog.qml:190
+#: ui/LayoutDialog.qml:139
 #, kde-format
 msgctxt "@info"
 msgid ""
@@ -147,13 +153,13 @@ msgstr ""
 "Skammstöfun á völdu lyklaborðsskipaninni sem birtist í kerfisbakkanum. Þú "
 "getur breytt þessum stillingum."
 
-#: ui/LayoutDialog.qml:198
+#: ui/LayoutDialog.qml:147
 #, kde-format
 msgctxt "@option:textbox"
 msgid "Shortcut:"
 msgstr "Flýtilykill:"
 
-#: ui/LayoutDialog.qml:209 ui/main.qml:287
+#: ui/LayoutDialog.qml:158 ui/main.qml:287
 #, kde-format
 msgctxt "@action:button"
 msgid "Preview"
@@ -245,55 +251,55 @@ msgctxt "@label:checkbox"
 msgid "Key repeat:"
 msgstr "Endurtekning lykla:"
 
-#: ui/main.qml:155
+#: ui/main.qml:155 ui/main_phone.qml:115
 #, kde-format
 msgctxt "@label:checkbox accessible"
 msgid "Key repeat"
 msgstr "Endurtekning lykla"
 
-#: ui/main.qml:166
+#: ui/main.qml:166 ui/main_phone.qml:131
 #, kde-format
 msgctxt "@label:textbox Key repeat delay"
 msgid "Delay:"
 msgstr "Töf:"
 
-#: ui/main.qml:180
+#: ui/main.qml:180 ui/main_phone.qml:135
 #, kde-format
 msgctxt "@label:spinbox accessible"
 msgid "Key repeat delay %1"
 msgstr "Töf á endurtekningu lykla %1"
 
-#: ui/main.qml:188
+#: ui/main.qml:188 ui/main_phone.qml:143
 #, kde-format
 msgctxt "@spinbox:value Repeat delay interval"
 msgid "%1 ms"
 msgstr "%1 msek."
 
-#: ui/main.qml:192
+#: ui/main.qml:192 ui/main_phone.qml:147
 #, kde-format
 msgctxt "@spinbox:value Repeat delay interval"
 msgid "ms"
 msgstr " msek."
 
-#: ui/main.qml:205
+#: ui/main.qml:205 ui/main_phone.qml:162
 #, kde-format
 msgctxt "@label:textbox Key repeat rate"
 msgid "Rate:"
 msgstr "Tíðni:"
 
-#: ui/main.qml:219
+#: ui/main.qml:219 ui/main_phone.qml:169
 #, kde-format
 msgctxt "@label:spinbox accessible"
 msgid "Key repeat rate %1"
 msgstr "Endurtekningartíðni lykla %1"
 
-#: ui/main.qml:227
+#: ui/main.qml:227 ui/main_phone.qml:177
 #, kde-format
 msgctxt "@spinbox:value  Key repeat rate"
 msgid "%1 repeats/s"
 msgstr "%1 endurtekningar/sek."
 
-#: ui/main.qml:231
+#: ui/main.qml:231 ui/main_phone.qml:181
 #, kde-format
 msgctxt "@spinbox:value  Key repeat rate"
 msgid "repeats/s"
@@ -402,6 +408,41 @@ msgstr "Breyta flýtilykli fyrir skipan:"
 msgctxt "@label Change layout shortcut or \"Configure Switching\""
 msgid "or"
 msgstr "eða"
+
+#: ui/main_phone.qml:36
+#, kde-format
+msgid "Model & Layout"
+msgstr "Gerð og framsetning"
+
+#: ui/main_phone.qml:43
+#, kde-format
+msgctxt "@label:listbox"
+msgid "Keyboard Model"
+msgstr "Gerð lyklaborðs"
+
+#: ui/main_phone.qml:72
+#, kde-format
+msgctxt "@option:check"
+msgid "Custom Layout"
+msgstr "Sérsniðin framsetning"
+
+#: ui/main_phone.qml:96
+#, kde-format
+msgctxt "@action:button"
+msgid "Change Layout..."
+msgstr "Skipta um framsetningu..."
+
+#: ui/main_phone.qml:103
+#, kde-format
+msgctxt "@title:group"
+msgid "Key Repeat"
+msgstr "Endurtekning lykla"
+
+#: ui/main_phone.qml:109
+#, kde-format
+msgctxt "@option:check"
+msgid "Customize Repeat"
+msgstr "Sérsníða endurtekningu"
 
 #: ui/Switching.qml:17
 #, kde-format
@@ -517,10 +558,6 @@ msgctxt "no shortcuts defined"
 msgid "None"
 msgstr "Engin"
 
-#~ msgctxt "@title:group"
-#~ msgid "Keyboard model:"
-#~ msgstr "Gerð lyklaborðs:"
-
 #~ msgctxt "@option:radio"
 #~ msgid "Turn Off"
 #~ msgstr "Slökkt"
@@ -592,10 +629,6 @@ msgstr "Engin"
 #~ msgctxt "@title:column"
 #~ msgid "Label"
 #~ msgstr "Skýring"
-
-#~ msgctxt "@title:column"
-#~ msgid "Layout"
-#~ msgstr "Lyklaborðsskipan"
 
 #~ msgctxt "@title:column"
 #~ msgid "Variant"

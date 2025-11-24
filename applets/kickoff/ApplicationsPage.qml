@@ -20,6 +20,7 @@ BasePage {
         id: sideBar
         focus: true // needed for Loaders
         model: kickoff.rootModel
+        isSidebar: true
         // needed otherwise app displayed at top-level will show a first character as group.
         section.property: ""
         delegate: KickoffListDelegate {

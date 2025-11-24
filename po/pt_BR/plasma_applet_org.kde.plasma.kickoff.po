@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma_applet_org.kde.plasma.kickoff\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-10-06 00:44+0000\n"
+"POT-Creation-Date: 2025-11-23 00:44+0000\n"
 "PO-Revision-Date: 2025-06-27 23:44-0300\n"
 "Last-Translator: Geraldo Simiao <geraldosimiao@fedoraproject.org>\n"
 "Language-Team: Brazilian Portuguese <kde-i18n-pt_BR@kde.org>\n"
@@ -286,7 +286,7 @@ msgstr "Aplicativos"
 msgid "Places"
 msgstr "Locais"
 
-#: FullRepresentation.qml:154
+#: FullRepresentation.qml:133
 #, kde-format
 msgctxt "@info:status"
 msgid "No matches"
@@ -302,13 +302,13 @@ msgstr "Abrir configurações do usuário"
 msgid "Keep Open"
 msgstr "Manter aberto"
 
-#: KickoffGridDelegate.qml:60 KickoffListDelegate.qml:119
+#: KickoffGridDelegate.qml:60 KickoffListDelegate.qml:110
 #, kde-format
 msgctxt "Newly installed app, badge, keep short"
 msgid "New!"
 msgstr "Novo!"
 
-#: KickoffGridDelegate.qml:61 KickoffListDelegate.qml:121
+#: KickoffGridDelegate.qml:61 KickoffListDelegate.qml:112
 #, kde-format
 msgid "Newly installed application"
 msgstr "Aplicativo instalado recentemente"
@@ -318,7 +318,7 @@ msgstr "Aplicativo instalado recentemente"
 msgid "Grid with %1 rows, %2 columns"
 msgstr "Grade com %1 linhas e %2 colunas"
 
-#: KickoffListDelegate.qml:120
+#: KickoffListDelegate.qml:111
 #, kde-format
 msgid "There is a newly installed application in this category"
 msgstr "Existem aplicativos instalados recentemente nesta categoria"
@@ -338,19 +338,19 @@ msgstr "Sessão e energia"
 msgid "Edit Applications…"
 msgstr "Editar aplicativos…"
 
-#: PlacesPage.qml:63
+#: PlacesPage.qml:64
 #, kde-format
 msgctxt "category in Places sidebar"
 msgid "Computer"
 msgstr "Computador"
 
-#: PlacesPage.qml:64
+#: PlacesPage.qml:65
 #, kde-format
 msgctxt "category in Places sidebar"
 msgid "History"
 msgstr "Histórico"
 
-#: PlacesPage.qml:65
+#: PlacesPage.qml:66
 #, kde-format
 msgctxt "category in Places sidebar"
 msgid "Frequently Used"

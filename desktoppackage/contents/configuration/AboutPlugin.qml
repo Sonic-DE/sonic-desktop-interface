@@ -120,14 +120,17 @@ KCM.SimpleKCM {
 
                 Kirigami.Heading {
                     Layout.fillWidth: true
+                    Layout.alignment: Qt.AlignBottom
                     text: page.metaData.name + " " + page.metaData.version
                     textFormat: Text.PlainText
                 }
 
                 Kirigami.Heading {
                     Layout.fillWidth: true
+                    Layout.alignment: Qt.AlignTop
                     Layout.maximumWidth: Kirigami.Units.gridUnit * 15
-                    level: 2
+                    level: 3
+                    type: Kirigami.Heading.Type.Secondary
                     wrapMode: Text.WordWrap
                     text: page.metaData.description
                     textFormat: Text.PlainText

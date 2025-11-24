@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma_applet_org.kde.desktopcontainment\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-10-09 00:44+0000\n"
-"PO-Revision-Date: 2025-08-03 02:00-0300\n"
+"POT-Creation-Date: 2025-11-23 00:44+0000\n"
+"PO-Revision-Date: 2025-11-08 21:10-0300\n"
 "Last-Translator: Guilherme Marçal Silva <guimarcalsilva@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <kde-i18n-pt_BR@kde.org>\n"
 "Language: pt_BR\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 25.04.3\n"
+"X-Generator: Lokalize 25.08.2\n"
 
 #: package/contents/config/config.qml:16
 #, kde-format
@@ -116,7 +116,7 @@ msgstr "Usar ícone personalizado"
 #, kde-format
 msgctxt "@item:inmenu Open icon chooser dialog"
 msgid "Choose…"
-msgstr "Escolher..."
+msgstr "Escolher…"
 
 #: package/contents/ui/ConfigIcons.qml:104
 #, kde-format
@@ -316,7 +316,7 @@ msgstr "Mostrar miniaturas de visualização"
 #: package/contents/ui/ConfigIcons.qml:349
 #, kde-format
 msgid "Configure Preview Plugins…"
-msgstr "Configurar os plugins de visualização..."
+msgstr "Configurar os plugins de visualização…"
 
 #: package/contents/ui/ConfigLocation.qml:81
 #, kde-format
@@ -416,7 +416,7 @@ msgstr "Remover"
 msgid "Preview Plugins"
 msgstr "Plugins de visualização"
 
-#: package/contents/ui/FolderView.qml:1233
+#: package/contents/ui/FolderView.qml:1241
 #, kde-format
 msgctxt "@info"
 msgid ""
@@ -447,7 +447,7 @@ msgstr "Selecionar pasta"
 msgid "&Refresh Desktop"
 msgstr "Atualiza&r área de trabalho"
 
-#: plugins/folder/foldermodel.cpp:532 plugins/folder/foldermodel.cpp:1748
+#: plugins/folder/foldermodel.cpp:532 plugins/folder/foldermodel.cpp:1762
 #, kde-format
 msgid "&Refresh View"
 msgstr "Atualiza&r exibição"
@@ -470,23 +470,23 @@ msgstr ""
 "<filename>%1</filename> aponta para <filename>%2</filename>, mas este não "
 "foi encontrado. O arquivo pode ter sido movido ou excluído."
 
-#: plugins/folder/foldermodel.cpp:1757
+#: plugins/folder/foldermodel.cpp:1771
 #, kde-format
 msgid "&Empty Trash"
 msgstr "&Esvaziar Lixeira"
 
-#: plugins/folder/foldermodel.cpp:1760
+#: plugins/folder/foldermodel.cpp:1774
 #, kde-format
 msgctxt "Restore from trash"
 msgid "Restore to Former Location"
 msgstr "Restaurar para o local anterior"
 
-#: plugins/folder/foldermodel.cpp:1763
+#: plugins/folder/foldermodel.cpp:1777
 #, kde-format
 msgid "&Open"
 msgstr "&Abrir"
 
-#: plugins/folder/foldermodel.cpp:1767
+#: plugins/folder/foldermodel.cpp:1781
 #, kde-format
 msgctxt ""
 "@action:inmenu open file manager showing the target file or folder that this "
@@ -494,23 +494,23 @@ msgctxt ""
 msgid "Show Target"
 msgstr "Exibir destino"
 
-#: plugins/folder/foldermodel.cpp:1868
+#: plugins/folder/foldermodel.cpp:1882
 #, kde-format
 msgctxt "@action:inmenu Removes the trash icon on the desktop"
 msgid "Remove Trash Icon"
 msgstr "Remover ícone da lixeira"
 
-#: plugins/folder/foldermodel.cpp:1871
+#: plugins/folder/foldermodel.cpp:1885
 #, kde-format
 msgid "&Move to Trash"
 msgstr "&Mover para lixeira"
 
-#: plugins/folder/foldermodel.cpp:1904
+#: plugins/folder/foldermodel.cpp:1918
 #, kde-format
 msgid "&Paste"
 msgstr "Co&lar"
 
-#: plugins/folder/foldermodel.cpp:2055
+#: plugins/folder/foldermodel.cpp:2069
 #, kde-format
 msgid "&Properties"
 msgstr "&Propriedades"

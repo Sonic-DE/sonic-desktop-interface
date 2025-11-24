@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdeorg\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-09-19 00:44+0000\n"
+"POT-Creation-Date: 2025-11-17 11:53+0000\n"
 "PO-Revision-Date: 2024-04-22 15:58\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
@@ -31,7 +31,7 @@ msgstr "配置…"
 #: ConfigOverlay.qml:325
 #, kde-format
 msgid "Show Alternatives…"
-msgstr "显示替代方案…"
+msgstr "显示替代小部件…"
 
 #: ConfigOverlay.qml:351
 #, kde-format
@@ -53,4 +53,4 @@ msgstr "打开面板配置界面"
 #: main.qml:460
 #, kde-format
 msgid "Add Widgets…"
-msgstr "添加挂件…"
+msgstr "添加小部件…"

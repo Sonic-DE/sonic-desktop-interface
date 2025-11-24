@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-10-06 00:44+0000\n"
+"POT-Creation-Date: 2025-11-23 00:44+0000\n"
 "PO-Revision-Date: 2025-06-10 22:33+0200\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
@@ -280,7 +280,7 @@ msgstr "앱"
 msgid "Places"
 msgstr "위치"
 
-#: FullRepresentation.qml:154
+#: FullRepresentation.qml:133
 #, kde-format
 msgctxt "@info:status"
 msgid "No matches"
@@ -296,13 +296,13 @@ msgstr "사용자 설정 열기"
 msgid "Keep Open"
 msgstr "열린 상태로 유지"
 
-#: KickoffGridDelegate.qml:60 KickoffListDelegate.qml:119
+#: KickoffGridDelegate.qml:60 KickoffListDelegate.qml:110
 #, kde-format
 msgctxt "Newly installed app, badge, keep short"
 msgid "New!"
 msgstr "새 앱!"
 
-#: KickoffGridDelegate.qml:61 KickoffListDelegate.qml:121
+#: KickoffGridDelegate.qml:61 KickoffListDelegate.qml:112
 #, kde-format
 msgid "Newly installed application"
 msgstr "새로 설치한 앱"
@@ -312,7 +312,7 @@ msgstr "새로 설치한 앱"
 msgid "Grid with %1 rows, %2 columns"
 msgstr "%1줄, %2칸 크기 격자"
 
-#: KickoffListDelegate.qml:120
+#: KickoffListDelegate.qml:111
 #, kde-format
 msgid "There is a newly installed application in this category"
 msgstr "이 분류에 새로 설치한 앱이 있음"
@@ -332,19 +332,19 @@ msgstr "세션과 전원"
 msgid "Edit Applications…"
 msgstr "앱 편집…"
 
-#: PlacesPage.qml:63
+#: PlacesPage.qml:64
 #, kde-format
 msgctxt "category in Places sidebar"
 msgid "Computer"
 msgstr "컴퓨터"
 
-#: PlacesPage.qml:64
+#: PlacesPage.qml:65
 #, kde-format
 msgctxt "category in Places sidebar"
 msgid "History"
 msgstr "과거 기록"
 
-#: PlacesPage.qml:65
+#: PlacesPage.qml:66
 #, kde-format
 msgctxt "category in Places sidebar"
 msgid "Frequently Used"

@@ -17,7 +17,9 @@ import org.kde.plasma.private.kcm_keyboard as KCMKeyboard
 Kirigami.Dialog {
     id: dialog
 
-    title: i18nc("@title:window", "Add Layout")
+    property bool isMobile: false
+
+    title: isMobile ? i18nc("@title:window", "Set Layout") : i18nc("@title:window", "Add Layout")
 
     implicitWidth: Kirigami.Units.gridUnit * 34
     implicitHeight: Kirigami.Units.gridUnit * 26
@@ -38,7 +40,11 @@ Kirigami.Dialog {
         const shortcut = sequenceItem.keySequence;
         const displayName = layout === displayNameField.text ? "" : displayNameField.text
 
-        kcm.userLayoutModel.addLayout(layout, variant, shortcut, displayName)
+        if (!isMobile) {
+            kcm.userLayoutModel.addLayout(layout, variant, shortcut, displayName)
+        } else {
+            kcm.userLayoutModel.setSingleLayout(layout, variant, shortcut, displayName)
+        }
     }
 
     KCMKeyboard.LayoutSearchModel {
@@ -47,70 +53,12 @@ Kirigami.Dialog {
         searchString: ""
     }
 
-    KItemModels.KSortFilterProxyModel {
+    KeyboardLayoutsModel {
         id: layoutsProxy
-        sourceModel: layoutSearchProxy
-        sortRoleName: "searchScore"
-        sortOrder: Qt.DescendingOrder
-
-        filterRowCallback: function (row, parent) {
-            const modelIndex = sourceModel.index(row, 0, parent);
-            const currentVariantName = sourceModel.data(modelIndex, KItemModels.KRoleNames.role("variantName"));
-            const description = sourceModel.data(modelIndex, KItemModels.KRoleNames.role("description"));
-
-            if (currentVariantName !== '') {
-                return false;
-            }
-
-            if (searchField.text.length > 0) {
-                const score = sourceModel.data(modelIndex, KItemModels.KRoleNames.role("searchScore"));
-                if (score !== 0) {
-                    return true;
-                }
-                const shortNameRole = KItemModels.KRoleNames.role("shortName");
-                const currentName = sourceModel.data(modelIndex, shortNameRole);
-                const searchScoreRole = KItemModels.KRoleNames.role("searchScore");
-                for (let i = 0; i < sourceModel.rowCount(); i++) {
-                    const index = sourceModel.index(i, 0, parent);
-                    const name = sourceModel.data(index, shortNameRole);
-                    const variantSearchScore = sourceModel.data(index, searchScoreRole);
-                    if (name === currentName && variantSearchScore > 100) {
-                        return true;
-                    }
-                }
-                return false;
-            }
-
-            return true;
-        }
     }
 
-    KItemModels.KSortFilterProxyModel {
+    KeyboardVariantsModel {
         id: variantProxy
-        sourceModel: layoutSearchProxy
-        sortRoleName: "searchScore"
-        sortOrder: Qt.DescendingOrder
-
-        filterRowCallback: function (row, parent) {
-            if (!layoutsView.currentItem) {
-                return false;
-            }
-
-            const modelIndex = sourceModel.index(row, 0, parent);
-            const currentName = sourceModel.data(modelIndex, KItemModels.KRoleNames.role("shortName"));
-            const selectedName = layoutsView.currentItem.shortName;
-
-            if (currentName !== selectedName) {
-                return false;
-            }
-
-            if (searchField.text.length > 0) {
-                const searchScore = sourceModel.data(modelIndex, KItemModels.KRoleNames.role("searchScore"));
-                return searchScore > 100;
-            }
-
-            return true;
-        }
     }
 
     contentItem: ColumnLayout {
@@ -173,6 +121,7 @@ Kirigami.Dialog {
 
         RowLayout {
             spacing: Kirigami.Units.smallSpacing
+            visible: !isMobile
 
             QQC2.TextField {
                 id: displayNameField

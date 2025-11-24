@@ -254,6 +254,9 @@ public:
 
     void setScreen(int screen);
 
+#ifdef BUILD_TESTING
+    void setScreenResolution(const QSizeF &size);
+#endif
     QRectF screenGeometry();
 
 Q_SIGNALS:
@@ -285,9 +288,8 @@ Q_SIGNALS:
     void popupMenuAboutToShow(KIO::DropJob *dropJob, QMimeData *mimeData, int x, int y);
     void selectionChanged() const;
     void showHiddenFilesChanged() const;
-    void itemRenamed() const;
-    void screenGeometryChanged() const;
-    void availableRelativeScreenRectChanged() const;
+    void itemAboutToRename(const QString &filename) const;
+    void itemRenamed(const QString &filename, const QString &newFilename) const;
     void selectionDone();
     void creatingNewItemsChanged() const;
 
@@ -384,6 +386,10 @@ private:
      */
     QString m_currentActivity;
     bool m_showHiddenFiles;
+
+#ifdef BUILD_TESTING
+    QSizeF m_screenResolution;
+#endif
 };
 
 class DragTracker : public QObject

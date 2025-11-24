@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-desktop\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-08-22 00:44+0000\n"
-"PO-Revision-Date: 2025-08-22 16:51+0200\n"
+"POT-Creation-Date: 2025-11-17 11:53+0000\n"
+"PO-Revision-Date: 2025-11-08 11:16+0100\n"
 "Last-Translator: Freek de Kruijf <freekdekruijf@kde.nl>\n"
 "Language-Team: \n"
 "Language: nl\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 25.08.0\n"
+"X-Generator: Lokalize 25.08.2\n"
 
 #: axesmodel.cpp:122 hatmodel.cpp:80
 #, kde-format
@@ -137,18 +137,18 @@ msgstr "NVidia-schild"
 
 #: device.cpp:41
 #, kde-format
-msgid "Switch Left Joycon"
-msgstr "Linker Joycon omschakelen"
+msgid "Switch Left Joy-Con"
+msgstr "Linker Joy-Con omschakelen"
 
 #: device.cpp:42
 #, kde-format
-msgid "Switch Right Joycon"
-msgstr "Rechter Joycon omschakelen"
+msgid "Switch Right Joy-Con"
+msgstr "Rechter Joy-Con omschakelen"
 
 #: device.cpp:43
 #, kde-format
-msgid "Switch Paired Joycon"
-msgstr "gepaarde Joycon omschakelen"
+msgid "Switch Paired Joy-Con"
+msgstr "Gepaarde Joy-Con omschakelen"
 
 #: device.cpp:48
 #, kde-format

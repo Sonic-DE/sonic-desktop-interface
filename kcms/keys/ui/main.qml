@@ -185,6 +185,13 @@ KCM.AbstractKCM {
 
                     delegate: QQC2.ItemDelegate {
                         id: componentDelegate
+
+                        readonly property bool pendingDeletion: model.pendingDeletion
+
+                        function undoDeletion() {
+                            model.pendingDeletion = false;
+                        }
+
                         width: ListView.view.width
 
                         text: model.display
@@ -220,13 +227,14 @@ KCM.AbstractKCM {
                                 implicitHeight: label.implicitHeight
                                 implicitWidth: implicitHeight
 
-                                Accessible.name: i18nc("@action:button accessible %1 is the name of a custom command", "Edit command for %1", model.display)
+                                icon.name: "edit-rename"
+                                text: i18nc("@action:button %1 is the name of a custom command", "Edit command for %1", model.display)
+                                display: QQC2.AbstractButton.IconOnly
 
                                 visible: model.section === Private.ComponentType.Command
                                          && !exportActive
                                          && !model.pendingDeletion
                                          && (componentDelegate.hovered || componentDelegate.ListView.isCurrentItem)
-                                icon.name: "edit-rename"
                                 onClicked: {
                                     addCommandDialog.editing = true;
                                     addCommandDialog.componentName = model.component;
@@ -235,39 +243,49 @@ KCM.AbstractKCM {
                                     addCommandDialog.commandListItemDelegate = componentDelegate;
                                     addCommandDialog.open();
                                 }
-                                QQC2.ToolTip {
-                                    text: i18nc("@info:tooltip %1 is the text of a custom command", "Edit command for %1", model.display)
-                                }
+
+                                QQC2.ToolTip.text: text
+                                QQC2.ToolTip.visible: hovered || activeFocus
+                                QQC2.ToolTip.delay: Kirigami.Units.toolTipDelay
                             }
                             QQC2.Button {
                                 id: deleteButton
 
                                 implicitHeight: label.implicitHeight
                                 implicitWidth: implicitHeight
-                                Accessible.name: i18nc("@action:button accessible %1 is the name of a shortcut category", "Remove all shortcuts for %1", model.display)
+
+                                icon.name: "edit-delete"
+                                text: i18nc("@action:button %1 is the name of a shortcut category", "Remove all shortcuts for %1", model.display)
+                                display: QQC2.AbstractButton.IconOnly
 
                                 visible: model.section !== Private.ComponentType.CommonAction
                                          && model.isRemovable
                                          && !exportActive
                                          && !model.pendingDeletion
                                          && (componentDelegate.hovered || componentDelegate.ListView.isCurrentItem)
-                                icon.name: "edit-delete"
-                                onClicked: model.pendingDeletion = true
-                                QQC2.ToolTip {
-                                    text: i18nc("@info:tooltip %1 is the text of a shortcut category", "Remove all shortcuts for %1", model.display)
+                                onClicked: {
+                                    model.pendingDeletion = true;
+                                    componentDelegate.click();
                                 }
+
+                                QQC2.ToolTip.text: text
+                                QQC2.ToolTip.visible: hovered || activeFocus
+                                QQC2.ToolTip.delay: Kirigami.Units.toolTipDelay
                             }
                             QQC2.Button {
                                 implicitHeight: label.implicitHeight
                                 implicitWidth: implicitHeight
 
-                                Accessible.name: i18nc("@action:button accessible", "Undo deletion")
-                                visible: !exportActive && model.pendingDeletion
                                 icon.name: "edit-undo"
-                                onClicked: model.pendingDeletion = false
-                                QQC2.ToolTip {
-                                    text: i18nc("@info:tooltip", "Undo deletion")
-                                }
+                                text: i18nc("@action:button", "Undo deletion")
+                                display: QQC2.AbstractButton.IconOnly
+
+                                visible: !exportActive && model.pendingDeletion
+                                onClicked: componentDelegate.undoDeletion()
+
+                                QQC2.ToolTip.text: text
+                                QQC2.ToolTip.visible: hovered || activeFocus
+                                QQC2.ToolTip.delay: Kirigami.Units.toolTipDelay
                             }
                             Rectangle {
                                 id: defaultIndicator
@@ -329,32 +347,57 @@ KCM.AbstractKCM {
                 Layout.fillHeight: true
             }
 
-            QQC2.ScrollView  {
-                enabled: !exportActive
-                id: shortcutsScroll
-                Layout.fillHeight: true
-                Layout.fillWidth: true
-                clip: true
+            ColumnLayout {
+                spacing: 0
 
-                ListView {
-                    clip:true
-                    id: shortcutsList
-                    property int selectedIndex: -1
-                    activeFocusOnTab: true
-                    model: DelegateModel {
-                        id: dm
-                        model: rootIndex.valid ?  kcm.filteredModel : undefined
-                        delegate: ShortcutActionDelegate {
-                            showExpandButton: shortcutsList.count > 1
+                Kirigami.InlineMessage {
+                    Layout.fillWidth: true
+                    visible: shortcutsList.contentsWillBeDeleted
+                    position: Kirigami.InlineMessage.Position.Header
+                    type: Kirigami.MessageType.Warning
+                    text: i18nc("@info", "These shortcuts will be deleted when changes are applied.")
+                    actions: [
+                        Kirigami.Action {
+                            icon.name: "edit-undo-symbolic"
+                            text: i18nc("@action:button", "Undo")
+                            Accessible.name: i18nc("@action:button", "Undo deleting shortcuts")
+                            onTriggered: components.currentItem.undoDeletion();
                         }
-                        KeyNavigation.left: components
-                    }
+                    ]
+                }
 
-                    Kirigami.PlaceholderMessage {
-                        anchors.centerIn: parent
-                        width: parent.width - (Kirigami.Units.largeSpacing * 4)
-                        visible: components.currentIndex == -1
-                        text: i18n("Select an item from the list to view its shortcuts here")
+                QQC2.ScrollView  {
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
+
+                    enabled: !root.exportActive
+                    clip: true
+
+                    ListView {
+                        id: shortcutsList
+
+                        readonly property bool contentsWillBeDeleted: !root.exportActive && (components.currentItem ? components.currentItem.pendingDeletion : false)
+                        property int selectedIndex: -1
+
+                        clip: true
+                        activeFocusOnTab: true
+
+                        model: DelegateModel {
+                            id: dm
+                            model: rootIndex.valid ?  kcm.filteredModel : undefined
+                            delegate: ShortcutActionDelegate {
+                                showExpandButton: shortcutsList.count > 1
+                                enabled: !shortcutsList.contentsWillBeDeleted
+                            }
+                            KeyNavigation.left: components
+                        }
+
+                        Kirigami.PlaceholderMessage {
+                            anchors.centerIn: parent
+                            width: parent.width - (Kirigami.Units.largeSpacing * 4)
+                            visible: components.currentIndex == -1
+                            text: i18n("Select an item from the list to view its shortcuts here")
+                        }
                     }
                 }
             }
