@@ -10,6 +10,7 @@ import QtQuick.Controls 2.10
 import org.kde.plasma.core as PlasmaCore
 import org.kde.ksvg 1.0 as KSvg
 import org.kde.plasma.components 3.0 as PC3
+import org.kde.plasma.extras 2.0 as PlasmaExtras
 import org.kde.kirigami 2.20 as Kirigami
 import org.kde.plasma.plasmoid 2.0
 
@@ -26,6 +27,18 @@ AbstractButton {
 
     // needed since icon property can't hold QIcon, which the tasks manager gives us
     property alias iconSource: iconItem.source
+    property int hoverOpenDelay: Plasmoid?.configuration?.hoverOpenDelay ?? 300
+
+    Timer {
+        id: hoverOpenTimer
+        interval: controlRoot.hoverOpenDelay
+        repeat: false
+        onTriggered: {
+            if (tasksMenu?.status === PlasmaExtras.Menu.Closed) {
+                tasksMenu.open()
+            }
+        }
+    }
 
     background: Item {
         id: background
@@ -56,7 +69,8 @@ AbstractButton {
     contentItem: RowLayout {
         Kirigami.Icon {
             id: iconItem
-            visible: source !== "" && iconItem.valid
+            visible: (Plasmoid.formFactor !== PlasmaCore.Types.Horizontal
+              || Plasmoid.configuration.showIcon) && source !== "" && iconItem.valid
 
             implicitWidth: Kirigami.Units.iconSizes.sizeForLabels
             implicitHeight: Kirigami.Units.iconSizes.sizeForLabels
@@ -65,7 +79,8 @@ AbstractButton {
         }
         // Fall back to a generic icon if the application doesn't provide a valid one
         Kirigami.Icon {
-            visible: !iconItem.valid
+            visible: (Plasmoid.formFactor !== PlasmaCore.Types.Horizontal
+              || Plasmoid.configuration.showIcon) && !iconItem.valid
 
             source: "preferences-system-windows"
 
@@ -82,6 +97,14 @@ AbstractButton {
             color: controlRoot.down || controlRoot.hovered ? Kirigami.Theme.highlightedTextColor : Kirigami.Theme.textColor
             verticalAlignment: Text.AlignVCenter
             Layout.fillHeight: true
+        }
+    }
+
+    onHoveredChanged: {
+        if (hovered && Plasmoid.configuration.openOnHover) {
+            hoverOpenTimer.start()
+        } else {
+            hoverOpenTimer.stop()
         }
     }
 }

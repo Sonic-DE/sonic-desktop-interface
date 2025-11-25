@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-desktop\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:53+0000\n"
-"PO-Revision-Date: 2025-02-25 07:27+0100\n"
+"POT-Creation-Date: 2025-11-24 00:44+0000\n"
+"PO-Revision-Date: 2025-11-24 06:33+0100\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
 "Language: ka\n"
@@ -16,25 +16,47 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.5\n"
+"X-Generator: Poedit 3.8\n"
 
 #: config.qml:13
 #, kde-format
 msgid "General"
 msgstr "ძირითადი"
 
-#: ConfigGeneral.qml:30
+#: ConfigGeneral.qml:29
 #, kde-format
-msgid "Show active application's name on Panel button"
-msgstr "აქტიური აპლიკაციის სახელის პანელის ღილაკზე ჩვენება"
+msgctxt "@label:listbox"
+msgid "For active application, show:"
+msgstr "აქტიური აპლიკაციებისთვის ჩვენება:"
 
-#: ConfigGeneral.qml:50
+#: ConfigGeneral.qml:34
+#, kde-format
+msgctxt ""
+"@item:inlistbox what to show for active application in horizontal panel"
+msgid "Icon and name"
+msgstr "ხატულა და სახელი"
+
+#: ConfigGeneral.qml:35
+#, kde-format
+msgctxt ""
+"@item:inlistbox what to show for active application in horizontal panel"
+msgid "Icon"
+msgstr "ხატულა"
+
+#: ConfigGeneral.qml:36
+#, kde-format
+msgctxt ""
+"@item:inlistbox what to show for active application in horizontal panel"
+msgid "Name"
+msgstr "სახელი"
+
+#: ConfigGeneral.qml:83
 #, kde-format
 msgid "Only icons can be shown when the Panel is vertical."
 msgstr ""
 "ხატულების ჩვენება მხოლოდ პანელის ვერტიკალურობის შემთხვევაშია შესაძლებელი."
 
-#: ConfigGeneral.qml:52
+#: ConfigGeneral.qml:85
 #, kde-format
 msgid "Not applicable when the widget is on the Desktop."
 msgstr "გამოუყენებადია, როცა ვიჯეტი სამუშაო მაგიდაზეა."
@@ -49,3 +71,6 @@ msgstr "ღია ფანრების გარეშე"
 #, kde-format
 msgid "Plasma Desktop"
 msgstr "Plasma-ის სამუშაო მაგიდა"
+
+#~ msgid "Show active application's name on Panel button"
+#~ msgstr "აქტიური აპლიკაციის სახელის პანელის ღილაკზე ჩვენება"
