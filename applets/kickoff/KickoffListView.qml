@@ -38,6 +38,31 @@ EmptyPage {
     property bool mainContentView: false
     property bool hasSectionView: false
 
+    property bool blockTriggerDuringQuery: false
+    property bool pendingTrigger: false
+
+    signal triggerQueued()
+
+    function triggerCurrentItem() {
+        if (!blockTriggerDuringQuery && currentItem) {
+            currentItem.action.triggered();
+            currentItem.forceActiveFocus(Qt.ShortcutFocusReason);
+            return true;
+        } else if (blockTriggerDuringQuery) {
+            pendingTrigger = true;
+            triggerQueued();
+            return true;
+        }
+        return false;
+    }
+
+    onBlockTriggerDuringQueryChanged: {
+        if (!blockTriggerDuringQuery && pendingTrigger) {
+            pendingTrigger = false;
+            triggerCurrentItem();
+        }
+    }
+
     /**
      * Request showing the section view
      */
@@ -314,9 +339,7 @@ EmptyPage {
                     case Qt.Key_Return:
                         /* Fall through*/
                     case Qt.Key_Enter:
-                        root.currentItem.action.triggered();
-                        root.currentItem.forceActiveFocus(Qt.ShortcutFocusReason);
-                        event.accepted = true;
+                        event.accepted = root.triggerCurrentItem();
                         break;
                 }
             }

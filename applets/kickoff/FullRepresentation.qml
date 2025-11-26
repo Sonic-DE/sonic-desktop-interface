@@ -103,6 +103,56 @@ EmptyPage {
                 }
                 section.property: "group"
                 activeFocusOnTab: true
+                property bool queryActive: false
+                blockTriggerDuringQuery: queryActive
+
+                function checkExactMatch() {
+                    if (!searchView.queryActive || !resultsReadyTimer.running) {
+                        return;
+                    }
+
+                    const query = kickoff.runnerModel.query.toLowerCase()
+                    const itemText = (searchView.currentItem?.text || searchView.currentItem?.display || "").toLowerCase()
+
+                    if (query.length > 0 && itemText.startsWith(query)) {
+                        searchView.queryActive = false
+                        resultsReadyTimer.stop()
+                    }
+                }
+
+                Timer {
+                    id: resultsReadyTimer
+                    interval: 500
+                    repeat: false
+                    onTriggered: {
+                        searchView.queryActive = false
+                    }
+                }
+
+                Connections {
+                    target: kickoff.runnerModel
+                    function onQueryChanged() {
+                        resultsReadyTimer.stop()
+                        searchView.queryActive = kickoff.runnerModel.query.length > 0
+                    }
+                    function onQueryFinished() {
+                        if (searchView.queryActive) {
+                            resultsReadyTimer.start()
+                        }
+                    }
+                }
+
+                Connections {
+                    target: searchView
+                    enabled: searchView.queryActive
+                    function onCurrentItemChanged() {
+                        searchView.checkExactMatch()
+                    }
+                    function onTriggerQueued() {
+                        searchView.checkExactMatch()
+                    }
+                }
+
                 Keys.onTabPressed: event => {
                     kickoff.firstHeaderItem.forceActiveFocus(Qt.TabFocusReason);
                 }
