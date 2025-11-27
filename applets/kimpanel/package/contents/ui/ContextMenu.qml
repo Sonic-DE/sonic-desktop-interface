@@ -4,17 +4,24 @@
 
     SPDX-License-Identifier: GPL-2.0-or-later
 */
+pragma ComponentBehavior: Bound
 
-import QtQuick 2.0
+import QtQuick
 
 import org.kde.plasma.core as PlasmaCore
-import org.kde.plasma.extras 2.0 as PlasmaExtras
-import org.kde.plasma.plasmoid 2.0
+import org.kde.plasma.extras as PlasmaExtras
+import org.kde.plasma.plasmoid
+import org.kde.plasma.private.kimpanel as Kimpanel
 
 Item {
     id: root
 
-    property QtObject menu
+    signal showAction(string key)
+    signal hideAction(string key)
+
+    required property Kimpanel.Kimpanel helper
+
+    property ContextMenuComponent menu
     property Item visualParent
     property variant actionList
 
@@ -51,19 +58,25 @@ Item {
             icon: actionItem.icon
 
             onClicked: {
-                kimpanel.showAction(actionItem.key);
+                root.showAction(actionItem.key);
             }
         }
+    }
+
+    component ContextMenuComponent: PlasmaExtras.Menu {
+        property variant actionItem
+        property PlasmaExtras.MenuItem separator
+        property PlasmaExtras.Menu showMenu
     }
 
     Component {
         id: contextMenuComponent
 
-        PlasmaExtras.Menu {
+        ContextMenuComponent {
+            id: menu
             visualParent: root.visualParent
-            property variant actionItem
-            property PlasmaExtras.MenuItem separator: separatorItem
-            property QtObject showMenu: subShowMenu
+            separator: separatorItem
+            showMenu: subShowMenu
 
             placement: {
                 if (Plasmoid.location === PlasmaCore.Types.LeftEdge) {
@@ -80,7 +93,7 @@ Item {
             PlasmaExtras.MenuItem {
                 id: showItem
                 visible: separatorItem.visible
-                text: i18n("Show")
+                text: i18nc("@action:inmenu", "Show") // qmllint disable unqualified
 
                 property PlasmaExtras.Menu _subShowMenu: PlasmaExtras.Menu {
                     id: subShowMenu
@@ -95,40 +108,40 @@ Item {
             }
 
             PlasmaExtras.MenuItem {
-                text: i18n("Hide %1", actionItem.label);
+                text: i18nc("@action:inmenu", "Hide %1", menu.actionItem.label) // qmllint disable unqualified
                 onClicked: {
-                    kimpanel.hideAction(actionItem.key);
+                    root.hideAction(menu.actionItem.key);
                 }
-                enabled: actionItem.key !== 'kimpanel-placeholder'
+                enabled: menu.actionItem.key !== 'kimpanel-placeholder'
                 visible: enabled
             }
 
             PlasmaExtras.MenuItem {
-                text: i18n("Configure Input Method")
+                text: i18nc("@action:inmenu", "Configure Input Method") // qmllint disable unqualified
                 icon: "configure"
                 onClicked: {
-                    helper.configure();
+                    root.helper.configure();
                 }
             }
 
             PlasmaExtras.MenuItem {
-                text: i18n("Reload Config")
+                text: i18nc("@action:inmenu", "Reload Config") // qmllint disable unqualified
                 icon: "view-refresh"
                 onClicked: {
-                    helper.reloadConfig();
+                    root.helper.reloadConfig();
                 }
             }
 
             PlasmaExtras.MenuItem {
-                text: i18n("Exit Input Method")
+                text: i18nc("@action:inmenu", "Exit Input Method") // qmllint disable unqualified
                 icon: "application-exit"
                 onClicked: {
-                    helper.exit();
+                    root.helper.exit();
                 }
             }
 
             PlasmaExtras.MenuItem {
-                property QtObject configureAction: null
+                property PlasmaCore.Action configureAction: null
 
                 enabled: configureAction && configureAction.enabled
 
