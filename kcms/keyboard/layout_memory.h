@@ -42,6 +42,9 @@ public:
 
     void configChanged();
 
+Q_SIGNALS:
+    void layoutHasChanged();
+
 protected:
     // QVariant does not support long for WId so we'll use QString for key instead
     QMap<QString, LayoutSet> layoutMap;

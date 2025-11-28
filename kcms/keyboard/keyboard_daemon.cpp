@@ -14,6 +14,7 @@
 #include <QProcess>
 
 #include <KPluginFactory>
+#include <KLocalizedString>
 
 #include "flags.h"
 #include "keyboard_hardware.h"
@@ -48,6 +49,8 @@ KeyboardDaemon::KeyboardDaemon(QObject *parent, const QList<QVariant> &)
 
     configureKeyboard();
     registerListeners();
+
+    connect(&layoutMemory, &LayoutMemory::layoutHasChanged, this, &KeyboardDaemon::correctShortcutTargetIndexes);
 
     LayoutMemoryPersister layoutMemoryPersister(layoutMemory);
     if (layoutMemoryPersister.restore()) {
@@ -220,26 +223,6 @@ bool KeyboardDaemon::setLayout(uint index)
         const uint indexOfLastMainLayoutInConfig = keyboardConfig->layouts().lastIndexOf(layouts.takeLast());
         const uint indexOfLastMainLayoutInXKB = layouts.size();
 
-        // Re-calculate indexes for layout switching Actions
-        const auto &actions = actionCollection->actions();
-        for (const auto &action : actions) {
-            // clang-format off
-            if (action->data().toUInt() == indexOfLastMainLayoutInXKB) {
-                action->setData(indexOfLastMainLayoutInConfig < index ?
-                                    indexOfLastMainLayoutInConfig + 1 :
-                                    indexOfLastMainLayoutInConfig);
-            } else if (action->data().toUInt() == index) {
-                action->setData(indexOfLastMainLayoutInXKB);
-            } else if (index < indexOfLastMainLayoutInConfig
-                       && index < action->data().toUInt() && action->data().toUInt() <= indexOfLastMainLayoutInConfig) {
-                action->setData(action->data().toUInt() - 1);
-            } else if (indexOfLastMainLayoutInConfig < index
-                       && indexOfLastMainLayoutInConfig < action->data().toUInt() && action->data().toUInt() < index) {
-                action->setData(action->data().toUInt() + 1);
-            }
-            // clang-format on
-        }
-
         if (index <= indexOfLastMainLayoutInConfig) {
             // got to a shifted diapason due to previously selected spare layout, so adjusting the index accordingly
             --index;
@@ -248,9 +231,29 @@ bool KeyboardDaemon::setLayout(uint index)
         layouts.append(keyboardConfig->layouts().at(index));
         XkbHelper::initializeKeyboardLayouts(layouts);
         index = indexOfLastMainLayoutInXKB;
+
+        correctShortcutTargetIndexes();
     }
     setLastUsedLayoutValue(getLayout());
     return X11Helper::setGroup(index);
+}
+
+void KeyboardDaemon::correctShortcutTargetIndexes()
+{
+    const auto &actions = actionCollection->actions();
+    const auto localLayoutList = getLayoutsList();
+    const uint sz = localLayoutList.size();
+    for (uint i = 0; i < sz; i++) {
+        const auto i18ActionName = i18n("Switch keyboard layout to %1", localLayoutList.at(i).longName);
+        for (const auto &action: actions) {
+            if (action->text() == i18ActionName) {
+                qCDebug(KCM_KEYBOARD) << "|" << action->text() << "|" << localLayoutList.at(i).shortName << "|" << localLayoutList.at(i).longName << "|" << localLayoutList.at(i).displayName;
+                qCDebug(KCM_KEYBOARD) << "Setting action data to" << i;
+                action->setData(i);
+                break;
+            }
+        }
+    }
 }
 
 uint KeyboardDaemon::getLayout() const

@@ -44,6 +44,7 @@ private Q_SLOTS:
     void layoutChangedSlot();
     void layoutMapChanged();
     bool setLayout(QAction *action);
+    void correctShortcutTargetIndexes();
 
 public Q_SLOTS:
     Q_SCRIPTABLE void switchToNextLayout();
