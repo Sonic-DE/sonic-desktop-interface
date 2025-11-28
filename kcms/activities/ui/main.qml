@@ -110,7 +110,7 @@ KCM.ScrollViewKCM {
         },
         Kirigami.Action {
             visible: kcm.isNewActivityAuthorized && activitiesList.count > 1
-            text: i18n("Default Sort")
+            text: i18nc("@action:button", "Default Sort")
             icon.name: "sort-name-symbolic"
             onTriggered: {
                 kcm.setActivitySortMethodDefault();
