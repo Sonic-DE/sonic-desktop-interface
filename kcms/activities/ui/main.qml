@@ -61,7 +61,7 @@ KCM.ScrollViewKCM {
                     visible: kcm.isNewActivityAuthorized
                     enabled: activitiesList.count > 1 && model.index != 0
                     icon.name: "arrow-up"
-                    text: i18nc("@info:tooltip", "Promote %1 activity", model.name)
+                    text: i18nc("@info:tooltip 'Promote activity <name>'", "Promote activity %1", model.name)
                     display: QQC2.AbstractButton.IconOnly
                     QQC2.ToolTip.text: text
                     QQC2.ToolTip.visible: hovered
@@ -74,7 +74,7 @@ KCM.ScrollViewKCM {
                     visible: kcm.isNewActivityAuthorized
                     enabled: activitiesList.count > 1 && model.index < activitiesList.count - 1
                     icon.name: "arrow-down"
-                    text: i18nc("@info:tooltip", "Demote %1 activity", model.name)
+                    text: i18nc("@info:tooltip 'Demote activity <name>'", "Demote activity %1", model.name)
                     display: QQC2.AbstractButton.IconOnly
                     QQC2.ToolTip.text: text
                     QQC2.ToolTip.visible: hovered
