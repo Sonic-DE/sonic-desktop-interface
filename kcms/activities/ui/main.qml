@@ -104,7 +104,7 @@ KCM.ScrollViewKCM {
     actions: [
         Kirigami.Action {
             visible: kcm.isNewActivityAuthorized
-            text: i18n("Create New…")
+            text: i18nc("@action:button", "Create New…")
             icon.name: "list-add"
             onTriggered: kcm.newActivity();
         },
