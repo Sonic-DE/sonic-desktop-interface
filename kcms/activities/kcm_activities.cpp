@@ -85,7 +85,7 @@ void ActivitiesModule::setActivitySortMethodDefault()
     KActivities::Controller().setActivitySortMethodDefault();
 }
 
-void ActivitiesModule::setActivityUserSortOrder(const QString &id, const int &userSortOrder)
+void ActivitiesModule::setActivityUserSortOrder(const QString &id, int userSortOrder)
 {
     if (!m_isNewActivityAuthorized) {
         return;
