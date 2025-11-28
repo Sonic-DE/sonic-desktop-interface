@@ -35,7 +35,7 @@ KCM.SimpleKCM {
     Keys.onEscapePressed: kcm.pop();
 
     function saveContents() {
-        if (settings.userSortOrder == -1) {
+        if (settings.userSortOrder === -1) {
             settings.userSortOrder = newActivityModelIndex;
         }
         settings.save();
