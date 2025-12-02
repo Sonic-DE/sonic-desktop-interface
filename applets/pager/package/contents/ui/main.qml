@@ -50,6 +50,8 @@ PlasmoidItem {
 
     property int wheelDelta: 0
 
+    property real cumulativeWidth: Math.max(repeater.count * pagerItemGrid.columnWidth, 0)
+
     function colorWithAlpha(color: color, alpha: real): color {
         return Qt.rgba(color.r, color.g, color.b, alpha)
     }
@@ -623,4 +625,6 @@ PlasmoidItem {
             }
         }
     ]
+
+    onCumulativeWidthChanged: root.parent.parent.width = cumulativeWidth
 }
