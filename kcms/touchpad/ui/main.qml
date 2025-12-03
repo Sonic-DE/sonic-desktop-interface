@@ -489,12 +489,12 @@ KCM.SimpleKCM {
                 Layout.fillWidth: true
                 visible: !middleClickMethod.visible
                 leftPadding: Application.layoutDirection === Qt.LeftToRight ?
-                rightClickMethodAreas.contentItem.leftPadding : rightClickMethodAreas.padding
+                    rightClickMethodAreas.contentItem.leftPadding : rightClickMethodAreas.padding
                 rightPadding: Application.layoutDirection === Qt.RightToLeft ?
-                rightClickMethodAreas.contentItem.rightPadding : rightClickMethodAreas.padding
+                    rightClickMethodAreas.contentItem.rightPadding : rightClickMethodAreas.padding
                 text: middleEmulation.checked
-                ? i18ndc("kcm_touchpad", "@info shown below radio button", "Middle-click by pressing both bottom corners.")
-                : i18ndc("kcm_touchpad", "@info shown below radio button", "Middle-click by pressing bottom center.")
+                    ? i18ndc("kcm_touchpad", "@info shown below radio button", "Middle-click by pressing both bottom corners.")
+                    : i18ndc("kcm_touchpad", "@info shown below radio button", "Middle-click by pressing bottom center.")
                 textFormat: Text.PlainText
                 elide: Text.ElideRight
                 font: Kirigami.Theme.smallFont
@@ -514,9 +514,9 @@ KCM.SimpleKCM {
                 Layout.fillWidth: true
                 visible: !middleClickMethod.visible
                 leftPadding: Application.layoutDirection === Qt.LeftToRight ?
-                rightClickMethodClickfinger.contentItem.leftPadding : rightClickMethodClickfinger.padding
+                    rightClickMethodClickfinger.contentItem.leftPadding : rightClickMethodClickfinger.padding
                 rightPadding: Application.layoutDirection === Qt.RightToLeft ?
-                rightClickMethodClickfinger.contentItem.rightPadding : rightClickMethodClickfinger.padding
+                    rightClickMethodClickfinger.contentItem.rightPadding : rightClickMethodClickfinger.padding
                 text: i18ndc("kcm_touchpad", "@info shown below radio button", "Middle-click by pressing anywhere with three fingers.")
                 textFormat: Text.PlainText
                 elide: Text.ElideRight
@@ -526,14 +526,14 @@ KCM.SimpleKCM {
 
         ColumnLayout {
             id: middleClickMethod
-            Kirigami.FormData.label: i18ndc("kcm_touchpad", "@label for radiobutton group, brgins the sentence 'middle-click by pressing bottom-middle edge/'", "Middle-click by middle-click:")
+            Kirigami.FormData.label: i18ndc("kcm_touchpad", "@label for radiobutton group, begins the sentence 'middle-click by pressing bottom-middle edge/'", "Middle-click by middle-click:")
             Kirigami.FormData.buddyFor: middleSoftwareEmulation
             enabled: root.device?.supportsMiddleEmulation ?? false
 
             spacing: Kirigami.Units.smallSpacing
             visible: noMiddleSoftwareEmulation.visible ||
-            middleSoftwareEmulation.visible ||
-            clickfingerMiddleInfoBox.visible
+                middleSoftwareEmulation.visible ||
+                clickfingerMiddleInfoBox.visible
 
             QQC2.ButtonGroup {
                 buttons: [noMiddleSoftwareEmulation, middleSoftwareEmulation]
