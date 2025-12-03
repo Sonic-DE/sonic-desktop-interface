@@ -167,7 +167,7 @@ KCM.SimpleKCM {
 
         QQC2.CheckBox {
             id: leftHanded
-            text: i18nd("kcm_touchpad", "Enable left-handed mode")
+            text: i18nd("kcm_touchpad", "Swap left and right buttons (left-handed mode)")
             enabled: root.device?.supportsLeftHanded ?? false
             checked: enabled && (root.device?.leftHanded ?? false)
 
@@ -446,7 +446,7 @@ KCM.SimpleKCM {
         QQC2.CheckBox {
             id: tapToClick
             Kirigami.FormData.label: i18ndc("kcm_touchpad", "@label for checkbox, tap-to-click", "Tapping:")
-            text: i18ndc("kcm_touchpad", "@option:check", "Enable tap-to-click")
+            text: i18ndc("kcm_touchpad", "@option:check", "Tap to click")
             enabled: root.device?.tapFingerCount > 0
             checked: enabled && (root.device?.tapToClick ?? false)
 
@@ -462,7 +462,7 @@ KCM.SimpleKCM {
             spacing: Kirigami.Units.smallSpacing
             QQC2.CheckBox {
                 id: tapAndDrag
-                text: i18nd("kcm_touchpad", "Enable tap-and-drag")
+                text: i18nd("kcm_touchpad", "Allow dragging after tapping")
                 enabled: root.device?.tapFingerCount > 0 && tapToClick.checked
                 checked: enabled && (root.device?.tapAndDrag ?? false)
 
