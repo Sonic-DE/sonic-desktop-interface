@@ -97,10 +97,13 @@ KCMUtils.SimpleKCM {
             }
         }
 
+        Item {
+            Kirigami.FormData.isSection: false
+        }
+
         QQC2.CheckBox {
-            id: leftHanded
-            Kirigami.FormData.label: deviceEnabled.visible ? null : deviceEnabled.Kirigami.FormData.label
-            text: i18nd("kcmmouse", "Swap left and right buttons (left-handed mode)")
+            Kirigami.FormData.label: i18ndc("kcmmouse", "@title:group", "Left and right buttons:")
+            text: i18nd("kcmmouse", "Swap (left-handed mode)")
             enabled: root.device?.supportsLeftHanded ?? false
             checked: enabled && (root.device?.leftHanded ?? false)
 
@@ -115,7 +118,7 @@ KCMUtils.SimpleKCM {
             spacing: Kirigami.Units.smallSpacing
             QQC2.CheckBox {
                 id: middleEmulation
-                text: i18ndc("kcmmouse", "@option:check", "Press left and right buttons for middle-click")
+                text: i18ndc("kcmmouse", "@option:check 'both' refers to the left and right buttons'", "Press both simultaneously to middle-click")
                 enabled: root.device?.supportsMiddleEmulation ?? false
                 checked: enabled && (root.device?.middleEmulation ?? false)
 
@@ -131,8 +134,11 @@ KCMUtils.SimpleKCM {
             }
         }
 
-        Item {
-            Kirigami.FormData.isSection: false
+
+        // Speed section
+        Kirigami.Separator {
+            Layout.fillWidth: true
+            Kirigami.FormData.isSection: true
         }
 
         // Acceleration
@@ -236,8 +242,11 @@ KCMUtils.SimpleKCM {
             }
         }
 
-        Item {
-            Kirigami.FormData.isSection: false
+
+        // Scrolling section
+        Kirigami.Separator {
+            Layout.fillWidth: true
+            Kirigami.FormData.isSection: true
         }
 
         // Scroll Speed aka scroll Factor
