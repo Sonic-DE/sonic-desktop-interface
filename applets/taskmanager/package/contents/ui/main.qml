@@ -539,6 +539,16 @@ PlasmoidItem {
         }
     }
 
+    // This is called by plasmashell in response to a Meta+Shift+number shortcut.
+    function activateTaskAtIndexNewWindow(index) {
+        if (typeof index !== "number") {
+            return;
+        }
+
+        const task = taskRepeater.itemAt(index);
+        tasksModel.requestNewInstance(task.modelIndex());
+    }
+
     function createContextMenu(rootTask, modelIndex, args = {}) {
         const initialArgs = Object.assign(args, {
             visualParent: rootTask,
