@@ -40,9 +40,8 @@ Kirigami.ApplicationWindow {
         if (!visible) {
             return;
         }
-        CopyHelper.copyTextToClipboard(thing)
         recentEmojiModel.includeRecent(thing, description);
-        window.showPassiveNotification(i18n("%1 copied to the clipboard", thing))
+        CopyHelper.copyToClipboardAndQuit(thing)
     }
 
     Kirigami.Action {
