@@ -316,17 +316,25 @@ KCMUtils.SimpleKCM {
         }
 
         // Scrolling
-        QQC2.CheckBox {
-            id: naturalScroll
+        RowLayout {
             Kirigami.FormData.label: i18nd("kcmmouse", "Scrolling:")
-            text: i18nd("kcmmouse", "Invert scroll direction")
-            enabled: root.device?.supportsNaturalScroll ?? false
-            checked: enabled && (root.device?.naturalScroll ?? false)
+            Kirigami.FormData.buddyFor: naturalScroll
 
-            onToggled: {
-                if (root.device) {
-                    root.device.naturalScroll = checked
+            QQC2.CheckBox {
+                id: naturalScroll
+                text: i18nd("kcmmouse", "Natural scrolling")
+                enabled: root.device?.supportsNaturalScroll ?? false
+                checked: enabled && (root.device?.naturalScroll ?? false)
+
+                onToggled: {
+                    if (root.device) {
+                        root.device.naturalScroll = checked
+                    }
                 }
+            }
+
+            Kirigami.ContextualHelpButton {
+                toolTipText: i18ndc("kcmmouse", "@info:tooltip from ContextualHelpButton keep in sync with kcm_touchpad", "Scrolling works like on a touchscreen. For scrollable views, the scrolling direction is inverted (turn wheel upward up to scroll down). Sliders and similar controls are not affected by this setting and always move as if directly interacted with.")
             }
         }
 
