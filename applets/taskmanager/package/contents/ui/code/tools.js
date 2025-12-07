@@ -75,26 +75,22 @@ function activateNextPrevTask(anchor, next, wheelSkipMinimized, wheelEnabled, ta
         return;
     }
 
-    let target = taskIndexList[0];
+    let target = taskIndexList.length - 1;
 
     for (let i = 0; i < taskIndexList.length; ++i) {
         if (taskIndexList[i] === activeTaskIndex)
         {
             if (next && i < (taskIndexList.length - 1)) {
-                target = taskIndexList[i + 1];
+                target = i + 1;
             } else if (!next) {
-                if (i) {
-                    target = taskIndexList[i - 1];
-                } else {
-                    target = taskIndexList[taskIndexList.length - 1];
-                }
+                target = i ? i - 1 : 0
             }
 
             break;
         }
     }
 
-    tasks.tasksModel.requestActivate(target);
+    tasks.tasksModel.requestActivate(taskIndexList[target]);
 }
 
 // Get the model index of the task with the maximum value for `attribute`,
