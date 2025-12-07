@@ -5,6 +5,7 @@
 */
 
 import QtQuick
+import QtQuick.Layouts
 
 import org.kde.kirigami as Kirigami
 import org.kde.plasma.core as PlasmaCore
@@ -14,7 +15,6 @@ import org.kde.plasma.private.kicker as Kicker
 Kicker.SubMenu {
     id: itemDialog
 
-    property alias focusParent: itemListView.focusParent
     property alias model: funnelModel.sourceModel
 
     property int index: -1
@@ -36,6 +36,8 @@ Kicker.SubMenu {
 
     mainItem: ItemListView {
         id: itemListView
+        height: implicitHeight
+        width: Math.min(Math.max(Layout.minimumWidth, implicitWidth), Layout.maximumWidth)
 
         iconsEnabled: true
         LayoutMirroring.enabled: itemDialog.LayoutMirroring.enabled
