@@ -55,7 +55,7 @@ PlasmaComponents3.ScrollView {
     PlasmaComponents3.ScrollBar.horizontal.policy: PlasmaComponents3.ScrollBar.AlwaysOff
 
     function resetDelegateSizing() { // only needed when submenus are reused, called from ItemListDialog
-        listView.maxDelegateImplicitWidth = 0
+        listView.implicitWidth = 0
     }
 
     function subMenuForCurrentItem(focusOnSpawn=false) {
@@ -114,18 +114,11 @@ PlasmaComponents3.ScrollView {
     ListView {
         id: listView
 
-        width: listView.availableWidth
+        width: itemList.availableWidth
         implicitHeight: contentHeight
-        implicitWidth: itemList.Layout.minimumWidth
+        implicitWidth: 0
 
-        property int maxDelegateImplicitWidth: 0 // used to set implicitWidth
         property bool showSeparators: !model.sorted // separators are mostly useless when sorted
-
-        Binding on implicitWidth {
-            value: listView.maxDelegateImplicitWidth
-            delayed: true // only resize once all delegates are loaded
-            when: listView.maxDelegateImplicitWidth > 0
-        }
 
         currentIndex: -1
         focus: true
@@ -136,10 +129,6 @@ PlasmaComponents3.ScrollView {
         spacing: 0
         keyNavigationEnabled: false
         cacheBuffer: 10000 // try to load all delegates for sizing; krunner won't return too many anyway
-
-        function updateImplicitWidth () {
-            implicitWidth = maxDelegateImplicitWidth
-        }
 
         delegate: ItemListDelegate {
             showSeparators: listView.showSeparators
@@ -159,11 +148,11 @@ PlasmaComponents3.ScrollView {
                 target: itemList.mainSearchField
 
                 function onTextChanged() {
-                    listView.maxDelegateImplicitWidth = 0
+                    listView.implicitWidth = 0
                 }
             }
             onImplicitWidthChanged: {
-                listView.maxDelegateImplicitWidth = Math.max(listView.maxDelegateImplicitWidth, implicitWidth)
+                listView.implicitWidth = Math.max(listView.implicitWidth, implicitWidth)
             }
         }
 
@@ -187,7 +176,7 @@ PlasmaComponents3.ScrollView {
         onCurrentIndexChanged: {
             if (currentIndex === childDialog?.index) {
                 return;
-            } else if (currentIndex === -1  || !currentItem.hasChildren || !kicker.expanded) {
+            } else if (currentIndex === -1  || !currentItem?.hasChildren || !kicker.expanded) {
                 dialogSpawnTimer.stop();
                 itemList.clearChildDialog();
             } else if (itemList.childDialog) {

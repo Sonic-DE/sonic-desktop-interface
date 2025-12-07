@@ -34,6 +34,17 @@ RowLayout {
         runnerMatches.forceActiveFocus(focusReason)
     }
 
+    function determineInitialHighlight () {
+        if (runnerResultsList.activeFocus) {
+            return; // don't interfere if the user has already moved focus
+        }
+        if (searchFieldPlaceholder.visible && mainSearchField.focus) {
+            currentIndex = 0;
+        } else {
+            currentIndex = -1;
+        }
+    }
+
     KSvg.SvgItem {
         id: vertLine
 
@@ -50,6 +61,7 @@ RowLayout {
         Layout.fillWidth: true
         Layout.minimumWidth: runnerMatches.Layout.minimumWidth
         Layout.maximumWidth: runnerMatches.Layout.maximumWidth
+
         spacing: Kirigami.Units.smallSpacing
 
         PlasmaComponents3.Label {
@@ -88,21 +100,6 @@ RowLayout {
 
             model: runnerModel.modelForRow(index)
 
-            Connections {
-                target: runnerModel
-                function onAnyRunnerFinished () {
-                    Qt.callLater( () => { // these come in quickly at the start
-                        if (runnerResultsList.activeFocus) {
-                            return; // don't interfere if the user has already moved focus
-                        }
-                        if (searchFieldPlaceholder.visible && searchField.focus) {
-                            currentIndex = 0;
-                        } else {
-                            currentIndex = -1;
-                        }
-                    })
-                }
-            }
             onNavigateLeftRequested: runnerResultsList.navigateLeftRequested()
             onNavigateRightRequested: runnerResultsList.navigateRightRequested()
             onKeyNavigationAtListEnd: mainSearchField.forceActiveFocus(Qt.TabFocusReason)
