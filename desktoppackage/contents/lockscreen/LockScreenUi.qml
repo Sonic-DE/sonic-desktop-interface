@@ -26,6 +26,9 @@ Item {
     // See https://bugs.kde.org/show_bug.cgi?id=398317
     readonly property bool softwareRendering: GraphicsInfo.api === GraphicsInfo.Software
 
+    property bool isLoginAttemptOngoing: false
+    property bool hasAnimationRunForLoginAttempt: false // Will help trigger the animation even when PAM is built without fail delays
+
     function handleMessage(msg) {
         if (!root.notification) {
             root.notification += msg;
@@ -34,6 +37,14 @@ Item {
         } else {
             root.notification += "\n" + msg
         }
+    }
+
+    function handleLoginFailed() {
+        const msg = i18nd("plasma_shell_org.kde.plasma.desktop", "Unlocking failed");
+        lockScreenUi.handleMessage(msg);
+        notificationRemoveTimer.restart();
+        rejectPasswordAnimation.start();
+        lockScreenUi.hasAnimationRunForLoginAttempt = true;
     }
 
     Kirigami.Theme.inherit: false
@@ -45,14 +56,23 @@ Item {
             if (kind != 0) { // if this is coming from the noninteractive authenticators
                 return;
             }
-            const msg = i18nd("plasma_shell_org.kde.plasma.desktop", "Unlocking failed");
-            lockScreenUi.handleMessage(msg);
-            graceLockTimer.restart();
-            notificationRemoveTimer.restart();
-            rejectPasswordAnimation.start();
+            if (!lockScreenUi.hasAnimationRunForLoginAttempt) {
+               lockScreenUi.handleLoginFailed();
+            }
+            lockScreenUi.isLoginAttemptOngoing = false;
+            authenticator.startAuthenticating();
+            lockScreenUi.hasAnimationRunForLoginAttempt = false; // Reset for future attempts
+        }
+
+        function onLoginFailedDelayStarted(kind, authenticator, uSecDelay) {
+            if (kind !== 0) { // if this is coming from the noninteractive authenticators
+                return;
+            }
+            lockScreenUi.handleLoginFailed();
         }
 
         function onSucceeded() {
+            lockScreenUi.isLoginAttemptOngoing = false;
             if (authenticator.hadPrompt) {
                 Qt.quit();
             } else {
@@ -102,6 +122,10 @@ Item {
     RejectPasswordAnimation {
         id: rejectPasswordAnimation
         target: mainBlock
+
+        onFinished: function() {
+            root.clearPassword();
+        }
     }
 
     MouseArea {
@@ -171,14 +195,6 @@ Item {
             id: notificationRemoveTimer
             interval: 3000
             onTriggered: root.notification = ""
-        }
-        Timer {
-            id: graceLockTimer
-            interval: 3000
-            onTriggered: {
-                root.clearPassword();
-                authenticator.startAuthenticating();
-            }
         }
 
         PropertyAnimation {
@@ -262,7 +278,7 @@ Item {
 
                 showUserList: userList.y + mainStack.y > 0
 
-                enabled: !graceLockTimer.running
+                enabled: !lockScreenUi.isLoginAttemptOngoing
 
                 StackView.onStatusChanged: {
                     // prepare for presenting again to the user
@@ -287,7 +303,8 @@ Item {
                 }
 
                 onPasswordResult: password => {
-                    authenticator.respond(password)
+                    lockScreenUi.isLoginAttemptOngoing = true;
+                    authenticator.respond(password);
                 }
 
                 actionItems: [
