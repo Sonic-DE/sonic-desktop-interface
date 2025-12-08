@@ -38,6 +38,8 @@ ContainmentItem {
     width: isPopup ? undefined : preferredWidth(false) // Initial size when adding to e.g. desktop.
     height: isPopup ? undefined : preferredHeight(false) // Initial size when adding to e.g. desktop.
 
+    Plasmoid.backgroundHints: PlasmaCore.Types.DefaultBackground | PlasmaCore.Types.ConfigurableBackground
+
     function switchSize() {
         // Support expanding into the full representation on very thick vertical panels.
         if (isPopup && Plasmoid.formFactor === PlasmaCore.Types.Vertical) {
