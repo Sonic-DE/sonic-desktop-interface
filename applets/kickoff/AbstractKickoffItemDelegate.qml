@@ -73,7 +73,32 @@ T.ItemDelegate {
         );
         if (favoriteActions) {
             if (actions && actions.length > 0) {
-                actions.push({ "type": "separator" }, ...favoriteActions);
+                // same logic as in kicker's fillActionMenu()
+                // Qt does not have Array.prototype.findLastIndex
+                let lastAddToActionIndex = -1;
+                for (let i = actions.length; i >= 0; i--) {
+                    const actionId = actions[i]?.actionId;
+                    if (
+                        actionId === "addToDesktop" ||
+                        actionId === "addToTaskManager" ||
+                        actionId === "addToPanel"
+                    ) {
+                        lastAddToActionIndex = i;
+                        break;
+                    }
+                }
+                // Insert favoriteActions after the "Add to" actions (called
+                // "addLauncherActions" by libkicker)
+                if (lastAddToActionIndex >= 0) {
+                    actions.splice(
+                        lastAddToActionIndex + 1,
+                        0,
+                        ...favoriteActions,
+                    );
+                } else {
+                    // Or at the end (with a separator) if they're not found
+                    actions.push({ type: "separator" }, ...favoriteActions);
+                }
             } else {
                 actions = favoriteActions;
             }
