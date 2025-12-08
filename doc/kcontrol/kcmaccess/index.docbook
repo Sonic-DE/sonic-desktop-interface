@@ -31,328 +31,603 @@
 
 <title>Introduction</title>
 
-<para>This module is designed to help users who have difficulty hearing
-audible cues, or who have difficulty using a keyboard.  </para>
+<para>
+This module is designed to help users who have difficulty hearing
+audible cues, or who have difficulty using a keyboard.
+</para>
 
 <para>
-The module is divided into six tabs: <link
-linkend="access-bell"><guilabel>Bell</guilabel></link>, <link
-linkend="access-modifier-keys"><guilabel>Modifier keys</guilabel></link>, <link
-linkend="access-keyboard-filters"><guilabel>Keyboard Filters</guilabel></link>, <link
-linkend="access-activation-gestures"><guilabel>Activation Gestures</guilabel></link>, <link
-linkend="mouse-navigation"><guilabel>Mouse Navigation</guilabel></link>, and <link
-linkend="access-screenreader"><guilabel>Screen Reader</guilabel></link>.
+    The module is divided into six pages:
+    <link linkend="access-bell"><guilabel>Sytem Bell</guilabel></link>,
+    <link linkend="access-modifier-keys"><guilabel>Modifier Keys</guilabel></link>,
+    <link linkend="access-keyboard-filters"><guilabel>Keyboard Filters</guilabel></link>,
+    <link linkend="access-activation-shortcuts"><guilabel>Activation Shortcuts</guilabel></link>,
+    <link linkend="mouse-navigation"><guilabel>Mouse Navigation</guilabel></link>,
+    <link linkend="access-screenreader"><guilabel>Screen Reader</guilabel></link>,
+    <link linkend="access-color-blindness"><guilabel>Color Blindness Correction</guilabel></link>, and
+    <link linkend="access-shake-cursor"><guilabel>Shake Cursor</guilabel></link>.
 </para>
 
 <sect3 id="access-bell">
-<title><guilabel>Bell</guilabel></title>
+<title>System Bell</title>
 
 <para>
-This panel is divided into an <guilabel>Audible Bell</guilabel> section
-and a <guilabel>Visible Bell</guilabel> section.
+    The system bell consists of a way to notify you that a certain event
+    has occurred or that you have pressed specific keys. This notification
+    can be done with sound using the <guilabel>Audible bell</guilabel>
+    (for users with visual impairments) or with a visual cue using the
+    <guilabel>Visual bell</guilabel> (for users with hearing impairments).
 </para>
 
 <para>
-The top check box labeled <guilabel>Use System Bell</guilabel>, determines
-whether the normal System bell rings.  If this option is disabled, the
-System bell will be silenced.
+    The events or key presses that trigger the system bell can be found
+    under the <link linkend="access-modifier-keys"><guilabel>Modifier Keys</guilabel></link>,
+    <link linkend="access-keyboard-filters"><guilabel>Keyboard Filters</guilabel></link>,
+    and <link linkend="access-activation-shortcuts"><guilabel>Activation Shortcuts</guilabel></link> pages.
 </para>
 
 <para>
-The next check box down can be used to play a different sound whenever
-the system bell is triggered.  To activate, place a mark in the check
-box labeled <guilabel>Use customized bell</guilabel>, and enter the
-complete pathname to the sound file in the text box labeled
-<guilabel>Sound to play</guilabel>.  If you want, you can select the
-<guibutton>Browse</guibutton> button to navigate through your filesystem
-to find the exact file.
+    The top check box labeled <guilabel>Audible bell: Enable</guilabel>
+    determines whether the computer will beep or ring a sound when a certain
+    event happens or key is pressed. Examples of this are enabling activation
+    shortcuts, or pressing Ctrl or Caps Lock.
 </para>
 
 <para>
-For those users who have difficulty hearing the System bell, or those
-users who have a silent computer, &kde; offers the <emphasis>visual bell</emphasis>.  This
-provides a visual signal (inverting the screen or flashing a color
-across it) when the system bell would normally sound.
+    If you want to use a different sound for the system bell, enable the
+    <guilabel>Custom sound:</guilabel> check box, and enter the complete
+    pathname to the sound file in the text box next to the check box.
+    If you want, you can select the <guiicon>button next to it containing a folder
+    icon</guiicon> to navigate through your filesystem to find the exact file.
 </para>
 
 <para>
-To use the visual bell, first place a mark in the check box labeled
-<guilabel>Use visual bell</guilabel>.
+    For those users who have difficulty hearing the audible bell, or those
+    users who have a silent computer, &kde; offers the <emphasis>visual bell</emphasis>.
+    This provides a visual signal (inverting the screen or flashing a color
+    across it) instead of ringing a sound. This visual signal lasts for half
+    a second by default, and it is deliberately intrusive to call attention
+    to itself and ensure you notice it.
 </para>
 
 <para>
-You can then select between <guilabel>Invert screen</guilabel>, or
-<guilabel>Flash screen</guilabel>.  If you select <guilabel>Invert
-screen</guilabel>, all colors on the screen will be reversed.  If you
-choose <guilabel>Flash screen</guilabel>, you can choose the color by
-clicking the button to the right of the <guilabel>Flash
-screen</guilabel> selection.
+    To use the visual bell, enable the check box labeled
+    <guilabel>Visual bell: Enabled</guilabel>. You can then choose between
+    <guibutton>Invert screen colors</guibutton> or <guibutton>Flash screen</guibutton>
+    for the visual bell.
 </para>
 
 <para>
-The spin box can be used to adjust the duration of the visible
-bell.  The default value is 500 msec, or half a second.
+    If you select <guilabel>Invert screen colors</guilabel>, all colors on
+    the screen will be reversed. If you choose <guilabel>Flash screen</guilabel>,
+    you can click the button to the right of the <guilabel>Flash screen</guilabel>
+    check box, which opens a color picker that lets you choose a custom color.
+    The default color is red.
+</para>
+
+<para>
+    You can adjust the duration of the visual bell by changing the value of the
+    <guilabel>Duration</guilabel> spin box.
+    The default value is 500 msec, or half a second.
 </para>
 
 </sect3>
 
 <sect3 id="access-modifier-keys">
-<title><guilabel>Modifier keys</guilabel></title>
+<title>Modifier Keys</title>
 
-<para>There are the two sections <guilabel>Sticky Keys</guilabel>
-and <guilabel>Locking Keys</guilabel> to this panel.</para>
+<para>
+    Modifier keys are special keys on your keyboard that modify the behavior of
+    the next key that is pressed. For example, pressing Ctrl + v will paste the
+    contents of your clipboard on a text editor instead of simply typing the
+    letter v. The most common modifier keys are:
+</para>
+
+<itemizedlist>
+    <listitem><para>Ctrl</para></listitem>
+    <listitem><para>Shift</para></listitem>
+    <listitem><para>Alt</para></listitem>
+    <listitem><para>Meta (also known as Super or Windows key)</para></listitem>
+</itemizedlist>
 
 <variablelist>
 <varlistentry>
-<term><guilabel>Use Sticky Keys</guilabel></term>
+<term><guilabel>Sticky Keys:</guilabel></term>
 <listitem>
-<para>
-If this option is enabled, you can press and release the &Shift;,
-&Alt; or &Ctrl; keys, and then press another key to get a key combo
-(example: <keycombo action="simul">&Ctrl;&Alt;&Del;</keycombo> could
-be done with &Ctrl;, then &Alt; and then &Del;).
-</para>
+    <para>
+        Typically, to trigger a keyboard shortcut like
+        <keycombo action="simul">&Ctrl;&Alt;&Del;</keycombo>, you would:
+    </para>
+    <itemizedlist>
+        <listitem><para>Press and hold &Ctrl;</para></listitem>
+        <listitem><para>Press and hold &Alt; while holding &Ctrl;</para></listitem>
+        <listitem><para>Press and release T while holding &Ctrl; and &Alt;</para></listitem>
+        <listitem><para>Release &Ctrl; and &Alt;</para></listitem>
+    </itemizedlist>
+    <para>
+        In other words, all the modifier keys would need to be held down while performing
+        the shortcut. This can cause strain in the hands, especially if you suffer from
+        any motor skill issues.
+    </para>
+    <para>
+        If Sticky Keys is enabled, modifier keys will behave as though they <quote>stick</quote>
+        in place, that is, they no longer need to be held down, and you will only need to do the
+        following in order to trigger the shortcut:
+    </para>
+    <itemizedlist>
+        <listitem><para>Press and release &Ctrl;</para></listitem>
+        <listitem><para>Press and release &Alt;</para></listitem>
+        <listitem><para>Press and release T</para></listitem>
+    </itemizedlist>
 
-<para>
-Also in this section is a check box labeled <guilabel>Lock Sticky
-Keys</guilabel>.  If this check box is enabled, the &Alt;, &Ctrl;
-and &Shift; keys stay <quote>selected</quote> until you
-<quote>de-selected</quote> them.
-</para>
+    <para>
+        If the next check box, <guilabel>Lock sticky keys</guilabel>, is enabled, modifier keys
+        stay <quote>selected</quote> until you <quote>de-select</quote> them. As an example:
+    </para>
 
-<para>
-As an example:
-</para>
-<variablelist>
-<varlistentry>
-<term>With <guilabel>Lock Sticky Keys</guilabel> disabled:</term>
-<listitem>
-<para>If you press the &Shift; key then press the
-<keycap>F</keycap> key, the computer interprets this as <keycombo
-action="simul">&Shift;<keycap>F</keycap></keycombo>.  Now if you
-type a <keycap>P</keycap>, the computer interprets this as the letter p
-(no shift).
-</para>
+    <variablelist>
+        <varlistentry>
+            <term>With <guilabel>Lock Sticky Keys</guilabel> disabled:</term>
+            <listitem>
+                <para>If you press the &Shift; key then press the
+                    <keycap>F</keycap> key, the computer interprets this as <keycombo
+                        action="simul">&Shift;<keycap>F</keycap></keycombo>.  Now if you
+                    type a <keycap>P</keycap>, the computer interprets this as the letter p
+                    (no shift).
+                </para>
+            </listitem>
+        </varlistentry>
+
+        <varlistentry>
+            <term>With <guilabel>Lock Sticky Keys</guilabel> enabled:</term>
+            <listitem>
+                <para>
+                    If you press the &Shift; key <emphasis>twice</emphasis> then press the <keycap>F</keycap> key,
+                    the computer interprets this as <keycombo
+                        action="simul">&Shift;<keycap>F</keycap></keycombo>.  Now if you
+                    type a <keycap>P</keycap>, the computer interprets this as the letter P
+                    (<keycombo action="simul">&Shift;<keycap>P</keycap></keycombo>). To
+                    de-select the &Shift; key, press it again.
+                </para>
+            </listitem>
+        </varlistentry>
+    </variablelist>
+
+    <para>
+        If the check box <guilabel>Disable when two keys are held down</guilabel> is enabled,
+        pressing and holding two keys, for example Shift P, will cancel or <quote>deselect</quote>
+        the modifier keys that have been previously locked.
+    </para>
+    <para>
+        If the check box <guilabel>Ring system bell when modifier keys are used</guilabel> is enabled,
+        every time a modifier key is pressed, the system bell will ring. At least one of the bell
+        options provided in the <link linkend="access-bell">System Bell</link> page should
+        be enabled for this option to work.
+    </para>
+
+    <para>
+        The following two options are feedback options, and they don't need sticky keys to be active.
+    </para>
+
+    <para>
+        If the check box <guilabel>Ring system bell when locking keys are used</guilabel> is enabled,
+        every time a locking key is pressed, the system bell will ring. At least one of the bell
+        options provided in the <link linkend="access-bell">System Bell</link> page should
+        be enabled for this option to work. The locking keys are Caps Lock, Num Lock, and Scroll Lock.
+    </para>
+
+    <para>
+        If the check box <guilabel>Show notification when modifier or locking keys are used</guilabel> is enabled,
+        a visual Plasma notification will show up for five seconds when any of the mentioned keys are pressed
+        with a message like <quote>The Shift key is now active</quote>.
+    </para>
+
+    <para>
+        Click the <guibutton>Configure Notifications...</guibutton> button to open a dialog
+        that allows you to edit the notifications for all accessibility features, including
+        whether the notification should make a sound or show a popup.
+    </para>
+
 </listitem>
 </varlistentry>
-
-<varlistentry>
-<term>With <guilabel>Lock Sticky Keys</guilabel> enabled:</term>
-<listitem>
-<para>
-If you press the &Shift; key <emphasis>twice</emphasis> then press the <keycap>F</keycap> key,
-the computer interprets this as <keycombo
-action="simul">&Shift;<keycap>F</keycap></keycombo>.  Now if you
-type a <keycap>P</keycap>, the computer interprets this as the letter P
-(<keycombo action="simul">&Shift;<keycap>P</keycap></keycombo>). To
-de-select the &Shift; key, press it again.
-</para>
-</listitem>
-</varlistentry>
-</variablelist>
-<!--this is missing - explain it
-<para><guilabel>Turn sticky keys off when two keys are pressed simultaneously</guilabel></para>
-<para><guilabel>Use system bell whenever a modifier gets latched, locked or unlocked</guilabel></para>
--->
-</listitem>
-</varlistentry>
-<!-- explain use case etc
-<guilabel>Locking Keys</guilabel> what is that?
-<varlistentry>
-<term><guilabel>Use system bell whenever a locking key gets activated or deactivated</guilabel></term>
-<listitem><para></para></listitem>
-</varlistentry>
-<varlistentry>
-<term><guilabel>Use Plasma's system notification mechanism whenever a modifier or locking key 
-changes its state</guilabel></term>
-<listitem><para>Click the <guibutton>Configure Notifications...</guibutton> button to open a dialog 
-which allows you to edit the notifications for status changes of all keys</para></listitem>
-</varlistentry>
--->
 </variablelist>
 
 </sect3>
 
 <sect3 id="access-keyboard-filters">
-<title><guilabel>Keyboard Filters</guilabel></title>
+<title>Keyboard Filters</title>
 
-<para>There are two sections to this panel.</para>
+<para>
+    Keyboard filters control the behavior of keypresses, and they apply to all keys.
+</para>
 
 <variablelist>
-<varlistentry>
-<term><guilabel>Use slow keys</guilabel></term>
-<listitem>
-<para>
-If this option is enabled, you must hold the key down for a
-specified length of time (adjustable with the spin box) before the
-keystroke will be accepted. This helps prevent accidental key strokes.
-</para>
-</listitem>
-</varlistentry>
-<!-- Acceptance delay slider 500 ms default
-Use system bell whenever a key is pressed/accepted/rejected
--->
-<varlistentry>
-<term><guilabel>Use bounce keys</guilabel></term>
-<listitem>
-<para>
-If this option is enabled, you must wait for a specified length of time
-(configurable with the spin box) before the next key press can be
-accepted. This prevents accidental multiple key strokes.
-</para>
-</listitem>
-</varlistentry>
-<!-- Debounce time slider 500 ms default
-Use system bell whenever a key is rejected
--->
+    <varlistentry>
+        <term><guilabel>Slow keys</guilabel></term>
+        <listitem>
+            <para>
+                If the check box to <guilabel>Enable</guilabel> is selected, you must hold any desired key down for a
+                specified length of time (adjustable with the spin box) before the
+                keystroke will be accepted. This helps prevent accidental key strokes.
+            </para>
+            <para>
+                By default, the <guilabel>Delay</guilabel> spinbox is set to 100 ms, or a tenth of a second,
+                and it is configurable.
+            </para>
+        </listitem>
+    </varlistentry>
 
+    <varlistentry>
+        <term><guilabel>Ring system bell</guilabel></term>
+        <listitem>
+            <para>
+                When <guilabel>Slow keys</guilabel> is enabled, it can be difficult to estimate whether a key
+                was successfully pressed or not, the time it takes it for the key press to count,
+                and what is the current state of the key press.
+            </para>
+            <para>
+                To assist with that, the system bell can be rung <guilabel>when a key was pressed</guilabel>,
+                <guilabel>when a key was accepted</guilabel>, and <guilabel>when a key was rejected</guilabel>.
+            </para>
+            <para>
+                If the check box <guilabel>Ring system bell when a key was pressed</guilabel> is enabled,
+                the moment you press any key, the system bell will be rung.
+                This will happen every time, regardless of whether other Keyboard Filters are enabled.
+                This option is enabled by default once you enable <guilabel>Slow keys</guilabel>.
+            </para>
+            <para>
+                If the check box <guilabel>Ring system bell when a key was accepted</guilabel> is enabled,
+                the system bell will be rung only if the conditions for a key press were applied.
+                For example, if you have enabled <guilabel>Slow keys</guilabel>, the system bell will ring once you have
+                pressed the key for the necessary amount of time.
+                This option is disabled by default. Should you choose to enable it, you will likely want
+                for the option <guilabel>Ring system bell when a key was rejected</guilabel> to be disabled.
+            </para>
+            <para>
+                If the check box <guilabel>Ring system bell when a key was rejected</guilabel> is enabled,
+                the system bell will be rung every time the desired key is pressed for less time than it should
+                for the key to be accepted.
+                This option is disabled by default. Should you choose to enable it, you will likely want
+                for the option <guilabel>Ring system bell when a key was accepted</guilabel> to be disabled.
+            </para>
+        </listitem>
+    </varlistentry>
+
+    <varlistentry>
+        <term><guilabel>Bounce keys</guilabel></term>
+        <listitem>
+            <para>
+                If the check box to <guilabel>Enable</guilabel> is selected, you must wait for a specified length of time
+                before the next key press can be accepted. This prevents accidental multiple key strokes, which can happen
+                in case you have hand tremors or any sort of motor skill issue.
+            </para>
+            <para>
+                By default, the <guilabel>Delay</guilabel> spinbox is set to 500 ms, or half a second, and it is configurable.
+                The delay in this case corresponds to the time before an initial keypress and the next key press.
+                If the time you take to press a key for the second time is shorter than the delay, the key press action will be rejected.
+            </para>
+            <para>
+                When <guilabel>Bounce keys</guilabel> is enabled, it can be difficult to make sure whether you have accidentally
+                pressed a key multiple times or not.
+            </para>
+            <para>
+                To assist with that, you can enable the check box <guilabel>Ring the system bell when rejected</guilabel>.
+                If the time you take to press a key for the second time is shorter than the set delay, the key press action will be rejected,
+                in which case the system bell will ring to warn you to start your key press again.
+            </para>
+        </listitem>
+    </varlistentry>
 </variablelist>
-
-</sect3>
-
-<sect3 id="access-activation-gestures">
-<title><guilabel>Activation Gestures</guilabel></title>
-
-<para>There are two sections to this panel.</para>
-
-<variablelist>
-<varlistentry>
-<term><guilabel>Activation Gestures</guilabel> with these options:</term>
-<listitem>
-<para>
-<simplelist>
-<member><guilabel>Use gestures for activating sticky keys and slow keys</guilabel></member>
-<member>Here you can activate keyboard gestures that turn on the following features:</member>
-<member>Mouse Keys: Press &Shift;+NumLock</member>
-<member>Sticky keys: Press &Shift; key 5 consecutive times</member>
-<member>Slow keys: Hold down &Shift; for 8 seconds</member>
-<member><guilabel>Turn sticky keys and slow keys off after a certain period of inactivity</guilabel></member>
-</simplelist>
-</para>
-</listitem>
-</varlistentry>
-
-<varlistentry>
-<term><guilabel>Notification</guilabel> with these options:</term>
-<listitem>
-<para>
-<simplelist>
-<member><guilabel>Use the system bell whenever a gesture is used to turn an accessibility 
-feature on or off</guilabel></member>
-
-<member><guilabel>Show a confirmation dialog whenever a keyboard accessibility feature is 
-turned on or off</guilabel></member>
-<member>If this option is checked, &kde; will show a confirmation dialog whenever a 
-keyboard accessibility feature is turned on or off.</member>
-<member>Ensure you know what you are doing if you uncheck it, as the keyboard 
-accessibility settings will then always be applied without confirmation.</member>
-
-<member><guilabel>Use &kde;'s system notification mechanism whenever a keyboard accessibility 
-feature is turned on or off</guilabel></member>
-</simplelist>
-</para>
-</listitem>
-</varlistentry>
-</variablelist>
-<para>Click the <guibutton>Configure Notifications</guibutton> button to open a dialog 
-which allows you to edit the notifications for status changes of all keys.</para>
 
 </sect3>
 
 <sect3 id="mouse-navigation">
-<title>Mouse Navigation</title>
+    <title>Mouse Navigation</title>
+
+    <para>
+        This page allows you to configure the keyboard number pad keys to move the cursor as though it were a mouse.
+        This may be useful when you are working on a computer without a mouse, or in case you have no other use
+        for the number pad.
+    </para>
+
+    <variablelist>
+
+    <varlistentry>
+        <term><guilabel>Use the number pad to move cursor</guilabel></term>
+            <listitem>
+                <para>
+                    If the check box labeled <guilabel>Use the number pad to move cursor</guilabel>
+                    is selected, the functionality will be enabled.
+                </para>
+                <important>
+                    <para>
+                    This option will override the behavior of the Num Lock key no matter whether it is enabled or disabled.
+                    This means you won't be able to type numbers using the number pad.
+                    </para>
+                </important>
+                <para>
+                    The various keys on the number pad move in the direction you would expect.
+                    Note that you can move diagonally as well as up, down, left and right.
+                    The <keycap>5</keycap> key emulates a click to a pointer button, typically &LMB;.
+                    You change which button is emulated by using the <keycap>/</keycap> key (which makes it &LMB;),
+                    <keycap>*</keycap> key (which makes it &MMB;) and <keycap>-</keycap> (which makes it &RMB;).
+                    Using the <keycap>+</keycap> emulates a double click to the selected pointer button.
+                    You can use the <keycap>0</keycap> key to emulate holding down the selected pointer button (for easy dragging),
+                    and then use the <keycap>.</keycap> to emulate releasing the selected pointer button.
+                </para>
+            </listitem>
+    </varlistentry>
+
+    <varlistentry>
+        <term><guilabel>Acceleration delay</guilabel></term>
+        <listitem>
+            <para>
+            This is the time (in milliseconds) between the initial key press
+            and the first repeated motion event before the cursor begins to accelerate.
+            It has a maximum of 500 milliseconds (or half a second).
+            </para>
+        </listitem>
+    </varlistentry>
+
+    <varlistentry>
+        <term><guilabel>Repeat interval</guilabel></term>
+        <listitem>
+            <para>
+            This is the time in milliseconds between repeated motion events while the cursor is moving.
+            This refers to the time before the cursor transitions from one motion to the next.
+            It has a maximum of 130 milliseconds.
+            </para>
+        </listitem>
+    </varlistentry>
+
+    <varlistentry>
+        <term><guilabel>Acceleration time</guilabel></term>
+        <listitem>
+            <para>
+            This is the time in milliseconds before the cursor reaches a maximum speed for mouse key acceleration.
+            It has a maximum of 100 milliseconds.
+            </para>
+        </listitem>
+    </varlistentry>
+
+    <varlistentry>
+        <term><guilabel>Maximum speed</guilabel></term>
+        <listitem>
+            <para>
+            This is the maximum speed in pixels per second the cursor can reach for mouse key acceleration.
+            It has a maximum of 100 pixels per second.
+            </para>
+        </listitem>
+    </varlistentry>
+
+    <varlistentry>
+        <term><guilabel>Pointer acceleration</guilabel></term>
+        <listitem>
+            <para>
+            This is the amount of acceleration to apply to mouse key acceleration.
+            It has a maximum value of 1000.
+            </para>
+        </listitem>
+    </varlistentry>
+
+    </variablelist>
+</sect3>
+
+<sect3 id="access-activation-shortcuts">
+<title>Activation Shortcuts</title>
 
 <para>
-This tab allows you to configure the keyboard number pad keys as a mouse-type device. This may be useful when you are working on a device without another pointing device, or where you have no other use for the number pad.
+    Activation shortcuts are special keyboard shortcuts that can be used to quickly trigger
+    accessibility settings.
 </para>
 
-<variablelist>
-
-<varlistentry>
-<term><guilabel>Move pointer with keyboard (using the num pad)</guilabel></term>
-<listitem>
 <para>
-To enable keyboard mouse mode, you need to select the check box labeled <guilabel>Move pointer with keyboard (using the num pad)</guilabel>. When you do this, the other settings will become enabled, and you can customize the keyboard pointer behavior further, if required.
+    If the check box <guilabel>Activation shortcuts: Enable</guilabel> is selected, two new
+    keyboard shortcuts will be made available:
 </para>
-<para>
-The various keys on the number pad move in the direction you would expect. Note that you can move diagonally as well as up, down, left and right.  The <keycap>5</keycap> key emulates a click to a pointer button, typically &LMB;. You change which button is emulated by using the <keycap>/</keycap> key (which makes it &LMB;), <keycap>*</keycap> key (which makes it &MMB;) and <keycap>-</keycap> (which makes it &RMB;). Using the <keycap>+</keycap> emulates a double click to the selected pointer button. You can use the <keycap>0</keycap> key to emulate holding down the selected pointer button (for easy dragging), and then use the <keycap>.</keycap> to emulate releasing the selected pointer button.
-</para>
-</listitem>
-</varlistentry>
 
-<varlistentry>
-<term><guilabel>Acceleration delay</guilabel></term>
-<listitem>
-<para>
-This is the time (in milliseconds) between the initial key press and the first repeated motion event for mouse key acceleration.
-</para>
-</listitem>
-</varlistentry>
+<itemizedlist>
+    <listitem>
+        <para>
+            Press &Shift; 5 times to enable Sticky Keys
+        </para>
+    </listitem>
+    <listitem>
+        <para>
+            Hold &Shift; for 8 seconds to enable Slow Keys
+        </para>
+    </listitem>
+</itemizedlist>
 
-<varlistentry>
-<term><guilabel>Repeat interval</guilabel></term>
-<listitem>
 <para>
-This is the time in milliseconds between repeated motion events for mouse key acceleration.
+    If the check box <guilabel>Disable sticky and slow keys after:</guilabel> is enabled,
+    once either of the activation shortcuts are triggered, an internal timer will start to tick down,
+    and after it ends the shortcuts will be disabled. The timer is programmable by a spinbox.
 </para>
-</listitem>
-</varlistentry>
 
-<varlistentry>
-<term><guilabel>Acceleration time</guilabel></term>
-<listitem>
 <para>
-This is the time in milliseconds before the pointer reaches a maximum speed for mouse key acceleration.
+    Similar to sticky keys and slow keys, activation shortcuts also have options to
+    let you know when the functionality gets enabled: <guilabel>When a shortcut is used:</guilabel>.
 </para>
-</listitem>
-</varlistentry>
 
-<varlistentry>
-<term><guilabel>Maximum speed</guilabel></term>
-<listitem>
-<para>
-This is the maximum speed in pixels per second the pointer can reach for mouse key acceleration.
-</para>
-</listitem>
-</varlistentry>
-
-<varlistentry>
-<term><guilabel>Pointer acceleration</guilabel></term>
-<listitem>
-<para>
-This is the amount of acceleration to apply to mouse key acceleration.
-</para>
-</listitem>
-</varlistentry>
-
-</variablelist>
+<itemizedlist>
+    <listitem>
+        <para>
+            If the check box <guilabel>Display a confirmation dialog</guilabel> is enabled,
+            a dialog describing the expected behavior of the functionality will appear, asking if you would really like
+            to enable this feature. This is useful in case you know you might accidentally trigger activation shortcuts.
+        </para>
+        <para>
+            If the check box <guilabel>Ring the system bell</guilabel> is enabled, the system bell will be triggered.
+            This option requires you to have enabled either the visible bell, the audible bell, or both.
+        </para>
+        <para>
+            If the check box <guilabel>Show a notification</guilabel> is enabled, a notification should appear explicitly
+            stating whether the relevant functionality was enabled or disabled.
+        </para>
+        <para>
+            If more customizable notification settings are needed to improve your experience with activation shortcuts,
+            you can click the <guibutton>Configure Notifications...</guibutton> button to open a dialog
+            that allows you to edit the notifications for all accessibility features, including
+            whether the notification should make a sound or show a popup.
+        </para>
+    </listitem>
+</itemizedlist>
 
 </sect3>
 
 <sect3 id="access-screenreader">
-<title><guilabel>Screen Reader</guilabel></title>
+<title>Screen Reader</title>
 
-<para>Install a screen reader application like
-<ulink url="https://en.wikipedia.org/wiki/Orca_(assistive_technology)">Orca</ulink>
-together with <application>speech-dispatcher</application>.
+<para>
+    If you do not have the
+    <ulink url="https://en.wikipedia.org/wiki/Orca_(assistive_technology)">Orca screen reader</ulink>
+    installed, upon opening this page, you will see a message instructing you to install it
+    on your system, then close and reopen the Accessibility settings window.
 </para>
 
-<para>Test that sound from speech dispatcher works using the command
-<command>spd-say hello</command> in a terminal.
+<para>
+    Upon installing Orca, you should have <application>speech-dispatcher</application>
+    and <application>espeak</application> installed as well.
+    In case this does not happen, you may need to install it manually.
 </para>
 
-<para>In addition you need a text to speech synthesizer like &eg; <application>espeak</application>.
+<para>
+    Test that sound from speech dispatcher works using the command
+    <command>spd-say hello</command> in a terminal.
 </para>
 
-<para>Enable the screen reader in the checkbox, logout and restart your desktop session.
+<para>
+    If the check box <guilabel>Enable Screen Reader</guilabel> is checked,
+    upon clicking on <guibutton>Apply</guibutton>, Orca will start automatically in the background.
 </para>
 
-<para>For &plasma; itself, make sure to use the traditional <guilabel>Application Menu</guilabel>,
-and check that this menu has a keyboard shortcut associated
-(<keycombo action="simul">&Alt;<keycap>F1</keycap></keycombo>).
-When pressing this shortcut, the menu should open and be read when navigating
-the menu with the arrow keys.
+<para>
+    If you are unfamiliar with Orca, you should see the
+    <ulink url="https://help.gnome.org/users/orca/stable/index.html">Orca documentation website</ulink>.
 </para>
+
+<para>
+    You may want to configure:
+</para>
+
+<itemizedlist>
+    <listitem>
+        <para>
+            In the <guilabel>General</guilabel> tab: whether the <guilabel>Keyboard Layout</guilabel>
+            should be in <guilabel>Desktop</guilabel> mode or <guilabel>Laptop</guilabel> mode.
+        </para>
+        <para>
+            In Desktop mode, the Orca Modifier used by most keyboard shortcuts to activate Orca
+            functionality will be either Insert or the number 0 on the number pad, whereas in
+            Laptop mode the Orca Modifier will be Caps Lock. Note that Orca itself refers to
+            number pad keys as KP, which stands for Key Pad.
+        </para>
+    </listitem>
+    <listitem>
+        <para>
+            In the <guilabel>Voice</guilabel> tab: select the <guilabel>Person</guilabel> voice
+            to be used. This will dramatically affect your screen reader experience. You should
+            also adjust the <guilabel>Rate</guilabel> accordingly to make the voice faster,
+            as the default is fairly slow in most configurations.
+        </para>
+    </listitem>
+    <listitem>
+        <para>
+            Also in the <guilabel>Voice</guilabel> tab: you might want to configure another speech
+            synthesizer, such as <ulink url="https://github.com/Elleo/pied">Pied</ulink>.
+            To do so, you might need to close the Orca settings, install the new speech synthesizer,
+            then reopen and enable it in this tab.
+        </para>
+    </listitem>
+    <listitem>
+        <para>
+            In the <guilabel>Keybindings</guilabel> tab: select which <guilabel>Screen Reader Modifier Key(s)</guilabel>
+            will function as the default Orca Modifier for keyboard shortcuts.
+        </para>
+    </listitem>
+</itemizedlist>
+
+</sect3>
+
+<sect3 id="access-color-blindness">
+    <title>Color Blindness Correction</title>
+
+    <para>
+        Color blindness is a condition where the user's eyes have trouble identifying
+        colors, either partially or completely. Color blindness might manifest as the
+        inability to see a color, multiple colors, or the inability to differentiate
+        between certain colors.
+    </para>
+
+    <para>
+        To improve the perception of images for users with color blindness, it is possible
+        to apply some color correction to the screen via software. This correction is
+        called daltonization.
+        It consists of changing the color or colors that the user cannot see to a
+        different color or shade such that it becomes possible to at least differentiate
+        the color of an element in the image from the other colors in the same image.
+    </para>
+
+    <para>
+        If the check box labeled <guilabel>Color blindness correction: Enabled</guilabel> is checked,
+        the <guilabel>Mode</guilabel> combobox and the <guilabel>Intensity</guilabel> slider
+        will be made available.
+    </para>
+
+    <para>
+        Below the above controls you should see four columns of squares with different shades
+        of red, green, blue, and purple. These serve as baselines for you to compare the
+        results of the current color correction mode.
+    </para>
+
+    <para>
+        Only once you select an option from the <guilabel>Mode</guilabel> combobox and click
+        <guibutton>Apply</guibutton> will the new color correction effect take place.
+        Each mode refers to a specific condition that counts as color blindness and comes
+        with a brief explanation in parentheses () mentioning the colors involved with the
+        condition. The result should be evident using the baseline squares below the controls.
+    </para>
+
+    <para>
+        For example, for <guilabel>Protanopia (red weak)</guilabel>, a condition where the user
+        struggles to see or cannot see red, the color red is replaced with a shade of pink.
+        This also applies to colors that are not red but contain some level of red in them,
+        such as orange or purple. Other colors might be affected as well to reinforce the
+        distinction between shades of color.
+    </para>
+
+    <para>
+        The <guilabel>Intensity</guilabel> slider can be used to modify the intensity of
+        the color correction effect, with <guilabel>Mild</guilabel> to the left and
+        <guilabel>Intense</guilabel> to the right. By default the intensity will be the maximum value.
+        The value can be lowered appropriately for the degree of color blindness you experience.
+        The results only take effect once you click the <guibutton>Apply</guibutton> button.
+    </para>
+</sect3>
+
+<sect3 id="access-shake-cursor">
+    <title>Shake Cursor</title>
+
+    <para>
+        The default Breeze cursors follow the guideline of having two contrasting colors, dark and light,
+        to allow the cursor to stand out whether it is hovering a light background or a dark background.
+        However, certain states of the cursor can make it difficult to stand out, or you might be using a
+        different cursor theme, or you might struggle to see its colors or notice its movements,
+        in which case it might not be enough to locate the cursor.
+    </para>
+
+    <para>
+        If the check box <guilabel>Shake cursor to find it: Enable</guilabel> is selected, upon five
+        shakes of the mouse, the cursor will increase in size. The direction of the shake does not matter,
+        but the distance traveled by the cursor needs to be of a minimum length for the effect to trigger.
+    </para>
+
+    <para>
+        The <guilabel>Magnification</guilabel> slider allows you to choose the size of the expanded cursor,
+        with <guilabel>Normal</guilabel> to the left and <guilabel>Large</guilabel> to the right.
+        The default value is one level of magnification starting from the left.
+    </para>
 </sect3>
 
 </sect2>
