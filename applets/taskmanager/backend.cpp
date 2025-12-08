@@ -336,6 +336,10 @@ QVariantList Backend::recentDocumentActions(const QUrl &launcherUrl, QObject *pa
             continue;
         }
 
+        if (url.isLocalFile() && !QFile(url.toLocalFile()).exists()) {
+            continue;
+        }
+
         allFolders = allFolders && mimetype == QLatin1String("inode/directory");
         allDownloads = allDownloads && url.toLocalFile().startsWith(downloadsPath);
         allRemoteWithoutFileName = allRemoteWithoutFileName && !url.isLocalFile() && url.fileName().isEmpty();
