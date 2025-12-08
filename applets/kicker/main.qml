@@ -190,18 +190,6 @@ PlasmoidItem {
         prefix: "normal"
     }
 
-    PlasmaComponents3.Label {
-        id: toolTipDelegate
-
-        width: contentWidth
-        height: undefined
-
-        property Item toolTip
-
-        text: toolTip ? toolTip.mainText : ""
-        textFormat: Text.PlainText
-    }
-
     Connections {
         target: kicker
 
