@@ -66,7 +66,7 @@ KCM.ScrollViewKCM {
                     QQC2.ToolTip.text: text
                     QQC2.ToolTip.visible: hovered
                     onClicked: {
-                        kcm.setActivityUserSortOrder(model.id, model.index - 1);
+                        kcm.setSortActivitiesByOrder(model.id, model.index - 1);
                     }
                 }
 
@@ -79,13 +79,13 @@ KCM.ScrollViewKCM {
                     QQC2.ToolTip.text: text
                     QQC2.ToolTip.visible: hovered
                     onClicked: {
-                        kcm.setActivityUserSortOrder(model.id, model.index + 1);
+                        kcm.setSortActivitiesByOrder(model.id, model.index + 1);
                     }
                 }
 
                 QQC2.ToolButton {
                     visible: kcm.isNewActivityAuthorized
-                    enabled:  activitiesList.count > 1
+                    enabled: activitiesList.count > 1
                     icon.name: "edit-delete"
                     text: i18nc("@info:tooltip", "Delete %1 activity", model.name)
                     display: QQC2.AbstractButton.IconOnly
@@ -110,10 +110,10 @@ KCM.ScrollViewKCM {
         },
         Kirigami.Action {
             visible: kcm.isNewActivityAuthorized && activitiesList.count > 1
-            text: i18nc("@action:button", "Default Sort")
+            text: i18nc("@action:button", "Sort by Name")
             icon.name: "sort-name-symbolic"
             onTriggered: {
-                kcm.setActivitySortMethodDefault();
+                kcm.setSortActivitiesByName();
             }
         }
     ]

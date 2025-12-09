@@ -76,22 +76,14 @@ void ActivitiesModule::deleteActivity(const QString &id)
     KActivities::Controller().removeActivity(id);
 }
 
-void ActivitiesModule::setActivitySortMethodDefault()
+void ActivitiesModule::setSortActivitiesByName()
 {
-    if (!m_isNewActivityAuthorized) {
-        return;
-    }
-
-    KActivities::Controller().setActivitySortMethodDefault();
+    KActivities::Controller().setSortActivitiesByName();
 }
 
-void ActivitiesModule::setActivityUserSortOrder(const QString &id, int userSortOrder)
+void ActivitiesModule::setSortActivitiesByOrder(const QString &id, int sortOrder)
 {
-    if (!m_isNewActivityAuthorized) {
-        return;
-    }
-
-    KActivities::Controller().setActivityUserSortOrder(id, userSortOrder);
+    KActivities::Controller().setSortActivitiesByOrder(id, sortOrder);
 }
 
 void ActivitiesModule::load()

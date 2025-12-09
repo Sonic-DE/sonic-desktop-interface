@@ -19,7 +19,7 @@ KCM.SimpleKCM {
 
     property int newActivityModelIndex
     property alias activityId: settings.activityId
-    property alias userSortOrder: settings.userSortOrder
+    property alias sortOrder: settings.sortOrder
 
     title: activityId ? i18nc("@title:window", "Activity Settings for %1", settings.name)
                       : i18nc("@title:window", "Create a New Activity")
@@ -35,8 +35,8 @@ KCM.SimpleKCM {
     Keys.onEscapePressed: kcm.pop();
 
     function saveContents() {
-        if (settings.userSortOrder === -1) {
-            settings.userSortOrder = newActivityModelIndex;
+        if (settings.sortOrder === -1) {
+            settings.sortOrder = newActivityModelIndex;
         }
         settings.save();
         kcm.pop();
