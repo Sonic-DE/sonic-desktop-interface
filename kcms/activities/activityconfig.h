@@ -20,6 +20,7 @@ class ActivityConfig : public QObject
     Q_PROPERTY(QString name MEMBER m_name NOTIFY infoChanged)
     Q_PROPERTY(QString description MEMBER m_description NOTIFY infoChanged)
     Q_PROPERTY(QString iconName MEMBER m_iconName NOTIFY infoChanged)
+    Q_PROPERTY(int sortOrder MEMBER m_sortOrder NOTIFY infoChanged)
     Q_PROPERTY(bool isPrivate MEMBER m_private NOTIFY infoChanged)
     Q_PROPERTY(QKeySequence shortcut MEMBER m_shortcut NOTIFY infoChanged)
     Q_PROPERTY(bool isSaveNeeded READ isSaveNeeded NOTIFY infoChanged)
@@ -53,6 +54,7 @@ private:
     QString m_name;
     QString m_description;
     QString m_iconName;
+    int m_sortOrder;
     bool m_private;
     QKeySequence m_shortcut;
     bool m_inhibitScreen = false;

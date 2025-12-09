@@ -55,7 +55,10 @@ void ActivitiesModule::configureActivity(const QString &id)
     if (depth() > 1) {
         pop();
     }
-    push(QStringLiteral("ActivityEditor.qml"), QVariantMap{{QStringLiteral("activityId"), id}});
+
+    const int newActivityModelIndex = KActivities::Controller().activities().length();
+    push(QStringLiteral("ActivityEditor.qml"),
+         QVariantMap{{QStringLiteral("activityId"), id}, {QStringLiteral("newActivityModelIndex"), newActivityModelIndex}});
 }
 
 void ActivitiesModule::newActivity()
@@ -71,6 +74,16 @@ void ActivitiesModule::deleteActivity(const QString &id)
     }
 
     KActivities::Controller().removeActivity(id);
+}
+
+void ActivitiesModule::setSortActivitiesByName()
+{
+    KActivities::Controller().setSortActivitiesByName();
+}
+
+void ActivitiesModule::setSortActivitiesByOrder(const QString &id, int sortOrder)
+{
+    KActivities::Controller().setSortActivitiesByOrder(id, sortOrder);
 }
 
 void ActivitiesModule::load()
