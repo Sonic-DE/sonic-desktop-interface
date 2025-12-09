@@ -1,3 +1,10 @@
+/*
+ *  SPDX-FileCopyrightText: 2023 Tanbir Jishan <tantalising007@gmail.com>
+ *  SPDX-FileCopyrightText: 2023 Niccolò Venerandi <niccolo.venerandi@kde.org>
+ *
+ *  SPDX-License-Identifier: GPL-2.0-or-later
+ */
+
 import QtQuick
 import QtQuick.Layouts
 
