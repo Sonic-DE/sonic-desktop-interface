@@ -197,7 +197,7 @@ PlasmaComponents3.ScrollView {
             Layout.minimumWidth: searchField.defaultWidth
 
 
-            visible: searchField.text === ""
+            visible: runnerModel.query === ""
 
             iconsEnabled: Plasmoid.configuration.showIconsRootLevel
 
@@ -231,21 +231,73 @@ PlasmaComponents3.ScrollView {
         RowLayout {
             id: runnerColumns
 
+            signal resultsChanged()
+
             readonly property bool searchResultsPresent: runnerColumns.visibleChildren[0] instanceof RunnerResultsList
+            property real minimumSearchFieldWidth: 0
+            property bool delayActive: false // don't bind to running, it flips on restart
 
             Layout.minimumWidth: searchField.defaultWidth
             Layout.fillHeight: true
 
-            visible: searchField.text !== "" && runnerModel.count > 0
+            visible: runnerModel.query !== ""
 
             spacing: Kirigami.Units.smallSpacing
 
             LayoutMirroring.enabled: mainRow.LayoutMirroring.enabled
 
+            Timer {
+                id: resultDelayTimer
+                interval: 400
+                onTriggered: {
+                    runnerColumns.Layout.minimumWidth = searchField.defaultWidth
+                    runnerColumns.minimumSearchFieldWidth = Math.max(runnerColumns.visibleChildren[0]?.width ?? 0, searchField.defaultWidth)
+                    runnerColumns.delayActive = false
+                    runnerColumns.resultsChanged()
+                }
+            }
+
+            Binding {
+                when: runnerColumns.visible
+                searchField.width: runnerColumns.delayActive
+                    ? runnerColumns.minimumSearchFieldWidth
+                    : Math.max(runnerColumns.visibleChildren[0]?.width ?? 0, searchField.defaultWidth)
+            }
+
+            Connections {
+                target: runnerModel
+
+                function onAnyRunnerFinished () {
+                    if (!runnerColumns.delayActive) {
+                        runnerColumns.resultsChanged()
+                    }
+                }
+
+                function onQueryFinished () {
+                    resultDelayTimer.triggered()
+                }
+            }
+
+            Connections {
+                target: searchField
+
+                function onTextChanged() {
+                    if (searchField.text !== "") {
+                        runnerColumns.Layout.minimumWidth = runnerColumns.visible ? runnerColumns.width : searchField.defaultWidth
+                        runnerColumns.minimumSearchFieldWidth = Math.max(runnerColumns.visibleChildren[0]?.width ?? 0, searchField.defaultWidth)
+                        runnerColumns.delayActive = true
+                        resultDelayTimer.restart()
+                    } else {
+                        runnerColumns.Layout.minimumWidth = searchField.defaultWidth
+                        runnerColumns.minimumSearchFieldWidth = searchField.defaultWidth
+                    }
+                }
+            }
+
             Repeater {
                 id: runnerColumnsRepeater
 
-                model: runnerModel
+                model: runnerColumns.delayActive ? null : runnerModel
 
                 delegate: RunnerResultsList {
                     id: runnerMatches
@@ -281,6 +333,14 @@ PlasmaComponents3.ScrollView {
                         }
                     }
 
+                    Connections {
+                        target: runnerColumns
+
+                        function onResultsChanged() {
+                            runnerMatches.determineInitialHighlight()
+                        }
+                    }
+
                     onNavigateLeftRequested: navigateToAdjacentColumn(false)
                     onNavigateRightRequested: navigateToAdjacentColumn(true)
                 }
@@ -290,12 +350,11 @@ PlasmaComponents3.ScrollView {
                 id: noMatchesPlaceholder
 
                 property bool searchRunning: false
-                property string lastQuery: "" // copy to avoid timing conflicts with visible binding
 
                 Layout.minimumWidth: searchField.defaultWidth
                 Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
 
-                visible: lastQuery !== "" && !runnerColumns.searchResultsPresent && (!searchRunning || visible)
+                visible: searchField.text !== "" && !resultDelayTimer.running && !runnerColumns.searchResultsPresent && (!searchRunning || visible)
                 iconName: "edit-none"
                 text: i18nc("@info:status", "No matches")
 
@@ -312,7 +371,6 @@ PlasmaComponents3.ScrollView {
 
                     function onTextChanged() {
                         noMatchesPlaceholder.searchRunning = searchField.text !== ""
-                        noMatchesPlaceholder.lastQuery = searchField.text
                     }
                 }
             }
@@ -330,14 +388,12 @@ PlasmaComponents3.ScrollView {
 
         readonly property real defaultWidth: Kirigami.Units.gridUnit * 14
 
-        width: runnerColumns.visible
-            ? (runnerColumns.searchResultsPresent ? runnerColumns.visibleChildren[0].width : runnerColumns.width)
-            : (rootList.visible ? rootList.width : defaultWidth)
+        width: (rootList.visible ? rootList.width : defaultWidth)
 
         focus: !Kirigami.InputMethod.willShowOnActive
 
         onTextChanged: {
-            runnerModel.query = text;
+            Qt.callLater(() => runnerModel.query = text) // callLater to mkae sure other things trigger first
         }
 
         onFocusChanged: {
