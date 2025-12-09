@@ -27,10 +27,6 @@ PlasmaComponents3.ScrollView {
     property QtObject dialog: null
     property QtObject childDialog: null
     property bool iconsEnabled: false
-    property int itemHeight: Math.ceil((Math.max(Kirigami.Units.iconSizes.sizeForLabels, Kirigami.Units.iconSizes.small)
-        + Math.max(highlightItemSvg.margins.top + highlightItemSvg.margins.bottom,
-        listItemSvg.margins.top + listItemSvg.margins.bottom)) / 2) * 2
-    property int separatorHeight: showSeparators ? lineMetrics.elementRect.height + (2 * Kirigami.Units.smallSpacing) : 0
 
     property alias currentIndex: listView.currentIndex
     property alias currentItem: listView.currentItem
@@ -40,10 +36,6 @@ PlasmaComponents3.ScrollView {
     property alias resetOnExitDelay: resetIndexTimer.interval
     property alias showSeparators: listView.showSeparators
 
-    property KSvg.SvgItem lineMetrics: KSvg.SvgItem {
-        imagePath: "widgets/line"
-        elementId: "horizontal-line"
-    }
 
     implicitWidth: listView.implicitWidth + actualScrollBarWidth
     implicitHeight: listView.contentHeight
@@ -136,6 +128,9 @@ PlasmaComponents3.ScrollView {
         spacing: 0
         keyNavigationEnabled: false
         cacheBuffer: 10000 // try to load all delegates for sizing; krunner won't return too many anyway
+
+        Accessible.name: itemList.Accessible.name
+        Accessible.role: Accessible.List
 
         function updateImplicitWidth () {
             implicitWidth = maxDelegateImplicitWidth

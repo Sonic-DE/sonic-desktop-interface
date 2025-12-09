@@ -17,12 +17,11 @@ import "code/tools.js" as Tools
 PC3.ToolButton {
     id: item
 
-    signal actionTriggered(string actionId, var actionArgument)
-    signal aboutToShowActionMenu(var actionMenu)
     activeFocusOnTab: false
 
     text: model.display
     display: PC3.AbstractButton.IconOnly
+    Accessible.role: Accessible.ListItem
     icon.source: model.decoration
     icon.width: Kirigami.Units.iconSizes.medium
     icon.height: Kirigami.Units.iconSizes.medium
@@ -31,17 +30,6 @@ PC3.ToolButton {
     property bool hasActionList: ((model.favoriteId !== null)
         || (("hasActionList" in model) && (model.hasActionList !== null)))
     property int itemIndex: model.index
-
-    onAboutToShowActionMenu: actionMenu => {
-        const actionList = (model.hasActionList !== null) ? model.actionList : [];
-        Tools.fillActionMenu(i18n, actionMenu, actionList, repeater.model, model.favoriteId);
-    }
-
-    onActionTriggered: (actionId, actionArgument) => {
-        if (Tools.triggerAction(repeater.model, model.index, actionId, actionArgument) === true) {
-            kicker.expanded = false;
-        }
-    }
 
     function activate() : void {
         if (dragHandler.active) {
@@ -57,7 +45,8 @@ PC3.ToolButton {
     onClicked: activate()
 
     function openActionMenu(visualParent, x, y) {
-        aboutToShowActionMenu(actionMenu);
+        const actionList = (model.hasActionList !== null) ? model.actionList : [];
+        Tools.fillActionMenu(i18n, actionMenu, actionList, repeater.model, model.favoriteId);
         actionMenu.visualParent = visualParent;
         actionMenu.open(x, y);
     }
@@ -66,7 +55,9 @@ PC3.ToolButton {
         id: actionMenu
 
         onActionClicked: (actionId, actionArgument) => {
-            actionTriggered(actionId, actionArgument);
+            if (Tools.triggerAction(repeater.model, model.index, actionId, actionArgument) === true) {
+                kicker.expanded = false;
+            }
         }
     }
 
