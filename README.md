@@ -18,15 +18,12 @@ This repository contains only components specific to the desktop form factor. Co
 
 The easiest way to make changes and test Plasma Desktop during development is to [build it with kdesrc-build](https://develop.kde.org/docs/getting-started/building/).
 
-## Contributing
+## Contributing to Plasma Desktop
 
-Like other projects in the KDE ecosystem, contributions are welcome from all. This repository is managed on [KDE Invent](https://invent.kde.org/plasma/plasma-desktop), our GitLab instance.
+We appreciate your interest in contributing! We use the [GitHub flow - GitHub Docs](https://docs.github.com/en/get-started/using-github/github-flow) for code contributions. To report a bug, please use the Plasma Desktop bug tracker at [Issues · Sonic-DE/plasma-desktop-sonic](https://github.com/Sonic-DE/plasma-desktop-sonic/issues).
 
-* Want to contribute code? See the [GitLab wiki page](https://community.kde.org/Infrastructure/GitLab) for a tutorial on how to send a merge request.
-* Reporting a bug? Please submit it on the [KDE Bugtracking System](https://bugs.kde.org/enter_bug.cgi?format=guided&product=plasmashell). Please do not use the Issues
-tab to report bugs.
-* Is there a part of Plasma Desktop that's not translated? See the [Getting Involved in Translation wiki page](https://community.kde.org/Get_Involved/translation) to see how
-you can help translate!
+## Getting in contact
 
-If you get stuck or need help with anything at all, head over to the [KDE New Contributors room](https://go.kde.org/matrix/#/#kde-welcome:kde.org) on Matrix. For questions specifically about Plasma Desktop, please ask in the [KDE Development room](https://go.kde.org/matrix/#/#plasma:kde.org). See [Matrix](https://community.kde.org/Matrix) for more details.
+We'd love to hear from you on one of our channels. To get end-user support, please also check your distribution's chat or forum.
 
+<img src="./.github/icons/bluesky.svg">&nbsp;[Bluesky](https://bsky.app/profile/sonicdesktop.bsky.social)&nbsp; <img src="./.github/icons/discord.svg">&nbsp;[Discord](https://discord.gg/cNZMQ62u5S) &nbsp; <img src="./.github/icons/mastodon.svg">&nbsp;[Mastodon](https://mastodon.social/@sonicdesktop) &nbsp; <img src="./.github/icons/matrix.svg">&nbsp;[Matrix](https://matrix.to/#/#sonicdesktop:matrix.org) &nbsp; <img src="./.github/icons/oftc.svg">&nbsp;[OFTC IRC](https://webchat.oftc.net/?channels=sonicde%2Csonicde-devel%2Csonicde-dist&uio=MT11bmRlZmluZWQb1) &nbsp; <img src="./.github/icons/telegram.svg">&nbsp;[Telegram](https://t.me/sonic_de) &nbsp; <img src="./.github/icons/x.svg">&nbsp;[X (Twitter)](https://x.com/SonicDesktop)
