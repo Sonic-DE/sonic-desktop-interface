@@ -23,8 +23,9 @@ KCMUtils.SimpleKCM {
     id: root
 
     readonly property Mouse.KWinWaylandBackend backend: KCMUtils.ConfigModule.inputBackend
+    readonly property Mouse.InputDevice device: backend.inputDevices[KCMUtils.ConfigModule.currentDeviceIndex] ?? null
 
-    title: i18ndc("kcmmouse", "@title", "Extra Mouse Buttons")
+    title: device?.name ?? ""
 
     header: Header {
         saveLoadMessage: root.KCMUtils.ConfigModule.saveLoadMessage
@@ -66,10 +67,17 @@ KCMUtils.SimpleKCM {
 
             twinFormLayouts: otherLayout
 
+            Item {
+                Kirigami.FormData.isSection: true
+                Kirigami.FormData.label: i18ndc("kcmmouse", "@title:group", "Extra Button Bindings")
+            }
+
             Repeater {
                 id: buttonMappings
 
-                model: extraButtons.filter(entry => entry.buttonName in root.backend.buttonMapping) ?? []
+                model: extraButtons.filter(entry => root.device?.buttonMapping[entry.buttonName] !== undefined).map(entry => {
+                    return {"buttonData": entry, "keySeq": root.device.buttonMapping[entry.buttonName]};
+                })
 
                 readonly property var extraButtons: Array.from({length: 24}, (value, index) => ({
                     buttonName: "ExtraButton" + (index + 1),
@@ -78,20 +86,21 @@ KCMUtils.SimpleKCM {
                 }))
 
                 delegate: KQuickControls.KeySequenceItem {
-                    required property var modelData
+                    required property var buttonData
+                    required property var keySeq
 
-                    Kirigami.FormData.label: modelData.label
+                    Kirigami.FormData.label: buttonData.label
 
-                    keySequence: root.backend.buttonMapping[modelData.buttonName]
+                    keySequence: keySeq
 
                     patterns: KQuickControls.ShortcutPattern.Modifier | KQuickControls.ShortcutPattern.Key | KQuickControls.ShortcutPattern.ModifierAndKey
                     multiKeyShortcutsAllowed: false
                     checkForConflictsAgainst: KQuickControls.ShortcutType.None
 
                     onCaptureFinished: {
-                        const copy = root.backend.buttonMapping;
-                        copy[modelData.buttonName] = keySequence
-                        root.backend.buttonMapping = copy
+                        const copy = root.device.buttonMapping
+                        copy[buttonData.buttonName] = keySequence
+                        root.device.buttonMapping = copy
                     }
                 }
             }
@@ -144,9 +153,9 @@ KCMUtils.SimpleKCM {
                     visible = false
                     newBinding.visible = true
                     newBinding.checked = false
-                    const copy = root.backend.buttonMapping;
+                    const copy = root.device.buttonMapping
                     copy[buttonCapture.lastButton.buttonName] = keySequence
-                    root.backend.buttonMapping = copy
+                    root.device.buttonMapping = copy
                 }
             }
         }

@@ -28,27 +28,6 @@ KCMUtils.SimpleKCM {
 
     readonly property Mouse.InputDevice device: backend.inputDevices[KCMUtils.ConfigModule.currentDeviceIndex] ?? null
 
-    function supportsExtraButtons(device: Mouse.InputDevice): bool {
-        return (device?.supportedButtons ?? 0) & ~(Qt.LeftButton | Qt.RightButton | Qt.MiddleButton);
-    }
-
-    actions: Kirigami.Action  {
-        icon.name: "input-mouse-click-left-symbolic"
-        text: i18ndc("kcmmouse", "@action:button", "Configure Extra Buttons…")
-
-        visible: {
-            if (root.backend.isAnonymousInputDevice) {
-                return false;
-            }
-            return root.backend.buttonMappingCount > 0
-                || root.backend.inputDevices.some(root.supportsExtraButtons);
-        }
-
-        onTriggered: source => {
-            root.KCMUtils.ConfigModule.push("bindings.qml");
-        }
-    }
-
     header: Header {
         saveLoadMessage: root.KCMUtils.ConfigModule.saveLoadMessage
         hotplugMessage: root.KCMUtils.ConfigModule.hotplugMessage
@@ -349,6 +328,17 @@ KCMUtils.SimpleKCM {
 
             Kirigami.ContextualHelpButton {
                 toolTipText: i18ndc("kcmmouse", "@info:tooltip from ContextualHelpButton", "This will interfere with applications that use middle-button drag, such as some image editors, document viewers, or video games. It may be used on any device, but is intended primarily as a substitute for scroll wheels on devices that do not have any.")
+            }
+        }
+
+        QQC2.Button {
+            icon.name: "input-mouse-click-left-symbolic"
+            text: i18ndc("kcmmouse", "@action:button", "Configure Extra Buttons…")
+
+            visible: root.device?.supportsButtonMapping ?? false
+
+            onClicked: {
+                root.KCMUtils.ConfigModule.push("bindings.qml");
             }
         }
     }
