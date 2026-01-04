@@ -1,13 +1,13 @@
 # Copyright (C) 2024 This file is copyright:
 # This file is distributed under the same license as the plasma-desktop package.
-# SPDX-FileCopyrightText: 2021, 2022, 2024, 2025 Łukasz Wojniłowicz <lukasz.wojnilowicz@gmail.com>
+# SPDX-FileCopyrightText: 2021, 2022, 2024, 2025, 2026 Łukasz Wojniłowicz <lukasz.wojnilowicz@gmail.com>
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: plasma-desktop\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-12-07 00:44+0000\n"
-"PO-Revision-Date: 2025-09-06 05:15+0200\n"
+"PO-Revision-Date: 2026-01-03 13:46+0100\n"
 "Last-Translator: Łukasz Wojniłowicz <lukasz.wojnilowicz@gmail.com>\n"
 "Language-Team: pl\n"
 "Language: pl\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
 "|| n%100>=20) ? 1 : 2);\n"
-"X-Generator: Lokalize 25.08.0\n"
+"X-Generator: Lokalize 25.08.2\n"
 
 #: inputsequence.cpp:191
 #, kde-format
@@ -479,10 +479,9 @@ msgid "Pad"
 msgstr "Wypełnienie"
 
 #: ui/MissingPadTab.qml:15
-#, fuzzy, kde-format
-#| msgid "No drawing tablets found"
+#, kde-format
 msgid "No pad inputs found"
-msgstr "Nie znaleziono żadnego tabletu rysunkowego"
+msgstr "Nie znaleziono żadnego urządzenia obsługi poprzez płytkę"
 
 #: ui/MissingPadTab.qml:16
 #, kde-format
@@ -490,6 +489,8 @@ msgid ""
 "No buttons or other inputs were detected. This could mean the driver for "
 "this device is missing."
 msgstr ""
+"Nie wykryto przycisków ani innych urządzeń obsługi. Może to oznaczać, że "
+"brakuje sterownika dla tego urządzenia."
 
 #: ui/PadTab.qml:37
 #, kde-format
