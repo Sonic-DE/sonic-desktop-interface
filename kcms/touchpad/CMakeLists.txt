@@ -70,8 +70,7 @@ add_subdirectory(backends)
 add_subdirectory(kded)
 
 kcmutils_add_qml_kcm(kcm_touchpad)
-target_sources(kcm_touchpad PRIVATE kcm.cpp)
-target_include_directories(kcm_touchpad PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+target_sources(kcm_touchpad PRIVATE kcm.cpp touchpadmoduledata.cpp)
 
 target_link_libraries(kcm_touchpad
     PRIVATE
@@ -94,3 +93,4 @@ add_custom_command(TARGET kcm_touchpad POST_BUILD
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/kcm_touchpad_init.so DESTINATION ${KDE_INSTALL_PLUGINDIR}/plasma/kcminit)
 
 install(FILES org.kde.touchpadshortcuts.desktop DESTINATION ${KDE_INSTALL_DATADIR}/kglobalaccel)
+
