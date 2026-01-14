@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-desktop\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-04-02 02:40+0000\n"
+"POT-Creation-Date: 2026-01-14 00:46+0000\n"
 "PO-Revision-Date: 2024-08-20 09:41+0200\n"
 "Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
@@ -20,38 +20,38 @@ msgstr ""
 "X-Accelerator-Marker: &\n"
 "X-Generator: Lokalize 24.05.2\n"
 
-#: ConfigOverlay.qml:368
+#: ConfigOverlay.qml:333
 #, kde-format
 msgctxt "@action:inmenu removes widget"
 msgid "Remove"
 msgstr "Elimina"
 
-#: ConfigOverlay.qml:378
+#: ConfigOverlay.qml:343
 #, kde-format
 msgctxt "@action:inmenu opens widget config dialog"
 msgid "Configure…"
 msgstr "Configura…"
 
-#: ConfigOverlay.qml:389
+#: ConfigOverlay.qml:354
 #, kde-format
 msgctxt "@action:inmenu opens widget alternatives explorer"
 msgid "Show Alternatives…"
 msgstr "Mostra les alternatives…"
 
-#: ConfigOverlay.qml:408
+#: ConfigOverlay.qml:373
 #, kde-format
 msgctxt "@label:spinbox"
 msgid "Spacer width"
 msgstr "Amplària de l'espaiador"
 
-#: ConfigOverlay.qml:431
+#: ConfigOverlay.qml:396
 #, kde-format
 msgctxt ""
 "@option:check Whether to allow a spacer widget to fill available space"
 msgid "Flexible size"
 msgstr "Mida flexible"
 
-#: main.qml:462
+#: main.qml:453
 #, kde-format
 msgctxt ""
 "@info:whatsthis Accessible description for entering Panel edit mode click "
@@ -59,7 +59,7 @@ msgctxt ""
 msgid "Open Panel configuration ui"
 msgstr "IU de la configuració d'obertura del quadro"
 
-#: main.qml:469
+#: main.qml:460
 #, kde-format
 msgctxt "@action:button opens widget explorer"
 msgid "Add Widgets…"

@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kcminput\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-01-08 00:45+0000\n"
-"PO-Revision-Date: 2026-02-01 18:40+0530\n"
+"POT-Creation-Date: 2026-01-14 00:46+0000\n"
+"PO-Revision-Date: 2026-01-04 17:08+0530\n"
 "Last-Translator: Kishore G <kishore96@gmail.com>\n"
 "Language-Team: Tamil <kde-l10n-ta@kde.org>\n"
 "Language: ta\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 25.12.1\n"
+"X-Generator: Lokalize 25.12.0\n"
 
 #: backends/kwin_wl/kwin_wl_backend.cpp:61
 #, kde-format
@@ -28,12 +28,12 @@ msgstr ""
 msgid "Critical error on reading fundamental device infos of %1."
 msgstr "%1 என்பதன் அடிப்படை விவரங்களை கண்டறிவதில் சிக்கல்."
 
-#: kcm.cpp:86
+#: kcm.cpp:87
 #, kde-format
 msgid "Not able to select appropriate backend"
 msgstr "உரிய பின்நிலையை தேர்ந்தெடுக்க முடியவில்லை"
 
-#: kcm.cpp:142
+#: kcm.cpp:143
 #, kde-format
 msgid ""
 "Error while loading values. See logs for more information. Please restart "
@@ -42,12 +42,12 @@ msgstr ""
 "மதிப்புகளை ஏற்றுவதில் சிக்கல். மேலும் விவரங்களுக்கு கணினியின் பதிவுகளை பாருங்கள். "
 "இக்கட்டுப்பாட்டுக்கூறை மூடி மறுபடியும் திறவுங்கள்."
 
-#: kcm.cpp:145
+#: kcm.cpp:146
 #, kde-format
 msgid "No pointer device found. Connect now."
 msgstr "எந்த சுட்டி சாதனமும் கண்டுபிடிக்கப்படவில்லை. சாதனத்தை இப்போது செருகுங்கள்."
 
-#: kcm.cpp:154
+#: kcm.cpp:155
 #, kde-format
 msgid ""
 "Not able to save all changes. See logs for more information. Please restart "
@@ -56,7 +56,7 @@ msgstr ""
 "சில மாற்றங்களை சேமிக்க முடியவில்லை. மேலும் விவரங்களுக்கு கணினியின் பதிவுகளை பாருங்கள். "
 "இக்கட்டுப்பாட்டுக்கூறை மூடி மறுபடியும் திறவுங்கள்."
 
-#: kcm.cpp:172
+#: kcm.cpp:173
 #, kde-format
 msgid ""
 "Error while loading default values. Failed to set some options to their "
@@ -65,7 +65,7 @@ msgstr ""
 "இயல்பிருப்பு மதிப்புகளை ஏற்றுவதில் சிக்கல். சில விருப்பங்கள் அவற்றின் இயல்பிருப்பு "
 "மதிப்புகளுக்கு மாற்றப்படவில்லை."
 
-#: kcm.cpp:187
+#: kcm.cpp:188
 #, kde-format
 msgid ""
 "Error while adding newly connected device. Please reconnect it and restart "
@@ -74,12 +74,12 @@ msgstr ""
 "புதிதாக செருகிய சாதனத்தை சேர்ப்பதில் சிக்கல். அதை கழற்றி, மீண்டும் செருகிய பின் இக்கூறை "
 "மீள்துவக்குங்கள்."
 
-#: kcm.cpp:200
+#: kcm.cpp:201
 #, kde-format
 msgid "Pointer device disconnected. Closed its setting dialog."
 msgstr "சுட்டி கழற்றப்பட்டதால் அதன் அமைப்புச்சாளரம் மூடப்பட்டது."
 
-#: kcm.cpp:202
+#: kcm.cpp:203
 #, kde-format
 msgid "Pointer device disconnected. No other devices found."
 msgstr "சுட்டி கழற்றப்பட்டபின் வேறெந்த சாதனமும் கண்டுபிடிக்கப்படவில்லை."
@@ -133,19 +133,22 @@ msgid "Configure Extra Buttons…"
 msgstr "கூடுதல் பட்டன்களை அமை…"
 
 #: ui/main.qml:64
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Device:"
 msgctxt "@title:listbox select device"
 msgid "Device:"
 msgstr "சாதனம்:"
 
 #: ui/main.qml:87
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "General:"
 msgctxt "@title:group"
 msgid "General:"
 msgstr "பொதுவானவை:"
 
 #: ui/main.qml:88
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Enable device"
 msgctxt "@option:check enable this mouse device"
 msgid "Enable device"
 msgstr "சாதனத்தை இயக்கு"
@@ -157,10 +160,11 @@ msgid "Left and right buttons:"
 msgstr "இடது மற்றும் வலது பட்டன்கள்:"
 
 #: ui/main.qml:106
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Swap (left-handed mode)"
 msgctxt "@option:check Left and right buttons"
 msgid "Swap (left-handed mode)"
-msgstr "புரட்டு (இடதுகை பயன்முறை)"
+msgstr "இடமாற்று (இடதுகை பயன்முறை)"
 
 #: ui/main.qml:121
 #, kde-format
@@ -180,26 +184,33 @@ msgstr ""
 "அடையாளங்காணஇந்த கூடுதல் தாமதம் தேவை."
 
 #: ui/main.qml:148
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Pointer speed:"
 msgctxt "@label:slider and @label:spinbox"
 msgid "Pointer speed:"
 msgstr "சுட்டிக்குறியின் வேகம்:"
 
 #: ui/main.qml:227
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Enable pointer acceleration"
 msgctxt "@option:check"
 msgid "Enable pointer acceleration"
 msgstr "சுட்டிக்குறி வேகவளர்ச்சியை இயக்கு"
 
 #: ui/main.qml:241
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@info:tooltip from ContextualHelpButton"
+#| msgid ""
+#| "When enabled, pointer travel distance increases with faster movement "
+#| "speed."
 msgctxt "@info:whatsthis ContextualHelpButton tooltip"
 msgid ""
 "When enabled, pointer travel distance increases with faster movement speed."
 msgstr "இது இயக்கப்பட்டிருந்தால், சுட்டியை நகர்த்தும் தூரம் கூட அதன் வேகமும் கூடும்."
 
 #: ui/main.qml:254
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Scrolling speed:"
 msgctxt "@label:slider and @label:spinbox"
 msgid "Scrolling speed:"
 msgstr "உருளல் வேகம்:"
@@ -217,25 +228,34 @@ msgid "Faster"
 msgstr "வேகமாக"
 
 #: ui/main.qml:321
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Scrolling:"
 msgctxt "@title:group"
 msgid "Scrolling:"
 msgstr "உருளல்:"
 
 #: ui/main.qml:322
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Invert scroll direction"
 msgctxt "@option:check"
 msgid "Invert scroll direction"
 msgstr "உருளல் திசையைப் புரட்டு"
 
 #: ui/main.qml:339
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Hold down middle button and move mouse to scroll"
 msgctxt "@option:check"
 msgid "Hold down middle button and move mouse to scroll"
 msgstr "உருள நடு பட்டனை அழுத்தியபடியே சுட்டியை நகர்த்து"
 
 #: ui/main.qml:351
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@info:tooltip from ContextualHelpButton"
+#| msgid ""
+#| "This will interfere with applications that use middle-button drag, such "
+#| "as some image editors, document viewers, or video games. It may be used "
+#| "on any device, but is intended primarily as a substitute for scroll "
+#| "wheels on devices that do not have any."
 msgctxt "@info:whatsthis ContextualHelpButton tooltip"
 msgid ""
 "This will interfere with applications that use middle-button drag, such as "

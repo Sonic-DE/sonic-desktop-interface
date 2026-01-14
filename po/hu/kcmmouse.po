@@ -4,13 +4,13 @@
 # Kristóf Kiszel <ulysses@kubuntu.org>, 2010, 2011, 2014, 2015, 2019.
 # Balázs Úr <urbalazs@gmail.com>, 2012.
 # SPDX-FileCopyrightText: 2017, 2020, 2023 Kiszel Kristóf <kiszel.kristof@gmail.com>
-# SPDX-FileCopyrightText: 2024-2026 Kristof Kiszel <ulysses@fsf.hu>
+# SPDX-FileCopyrightText: 2024, 2025 Kristof Kiszel <ulysses@fsf.hu>
 msgid ""
 msgstr ""
 "Project-Id-Version: KDE 4.1\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-06-08 02:42+0000\n"
-"PO-Revision-Date: 2026-06-18 21:42+0200\n"
+"POT-Creation-Date: 2026-01-14 00:46+0000\n"
+"PO-Revision-Date: 2025-06-06 22:36+0200\n"
 "Last-Translator: Kristof Kiszel <ulysses@fsf.hu>\n"
 "Language-Team: Hungarian <kde-l10n-hu@kde.org>\n"
 "Language: hu\n"
@@ -18,9 +18,15 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 26.04.2\n"
+"X-Generator: Lokalize 25.04.1\n"
 
-#: backends/kwin_wl/kwin_wl_backend.cpp:44
+#: backends/kwin_wl/kwin_wl_backend.cpp:61
+#, kde-format
+msgid "Querying input devices failed. Please reopen this settings module."
+msgstr ""
+"Nem sikerült lekérdezni a beviteli eszközöket. Nyissa meg újra ezt a modult."
+
+#: backends/kwin_wl/kwin_wl_backend.cpp:81
 #, kde-format
 msgid "Critical error on reading fundamental device infos of %1."
 msgstr "Kritikus hiba a(z) %1 eszközinformációinak olvasásakor."
@@ -109,7 +115,7 @@ msgstr "Új billetyűkombináció megadása ehhez: %1"
 #, kde-format
 msgctxt "@action:button"
 msgid "Cancel"
-msgstr "Mégse"
+msgstr "Mégsem"
 
 #: ui/bindings.qml:130
 #, kde-format
@@ -129,43 +135,52 @@ msgctxt "@action:button"
 msgid "Configure Extra Buttons…"
 msgstr "Extra gombok beállítása…"
 
-#: ui/main.qml:66
-#, kde-format
+#: ui/main.qml:64
+#, fuzzy, kde-format
+#| msgid "Device:"
 msgctxt "@title:listbox select device"
 msgid "Device:"
 msgstr "Eszköz:"
 
-#: ui/main.qml:89
-#, kde-format
+#: ui/main.qml:87
+#, fuzzy, kde-format
+#| msgid "General:"
 msgctxt "@title:group"
 msgid "General:"
 msgstr "Általános:"
 
-#: ui/main.qml:90
+#: ui/main.qml:88
 #, kde-format
 msgctxt "@option:check enable this mouse device"
 msgid "Enable device"
-msgstr "Bekapcsolás"
+msgstr ""
 
-#: ui/main.qml:107
-#, kde-format
+#: ui/main.qml:105
+#, fuzzy, kde-format
+#| msgid "Swap left and right buttons."
 msgctxt "@title:group"
 msgid "Left and right buttons:"
-msgstr "Bal és jobb gombok:"
+msgstr "Bal és jobb gombok megcserélése."
 
-#: ui/main.qml:108
-#, kde-format
+#: ui/main.qml:106
+#, fuzzy, kde-format
+#| msgid "Left-handed mode"
 msgctxt "@option:check Left and right buttons"
 msgid "Swap (left-handed mode)"
-msgstr "Csere (balkezes mód)"
+msgstr "Balkezes mód"
 
-#: ui/main.qml:123
-#, kde-format
+#: ui/main.qml:121
+#, fuzzy, kde-format
+#| msgctxt "@info:tooltip"
+#| msgid ""
+#| "Pressing the left and right button simultaneously acts as middle-click."
 msgctxt "@option:check 'both' refers to the left and right buttons'"
 msgid "Press both simultaneously to middle-click"
-msgstr "Nyomja meg mindkettőt egyszerre a középső kattintáshoz"
+msgstr ""
+"A bal és jobb gomb egyszerre történő lenyomása egy középső egérgombos "
+"kattintásnak felel meg"
 
-#: ui/main.qml:135
+#: ui/main.qml:133
 #, kde-format
 msgctxt "@info:tooltip from ContextualHelpButton"
 msgid ""
@@ -176,20 +191,26 @@ msgstr ""
 "egérkattintás késleltetését. Az extra késleltetésre az egyidejű bal és jobb "
 "egérkattintások helyes érzékeléséhez van szükség."
 
-#: ui/main.qml:147
-#, kde-format
+#: ui/main.qml:148
+#, fuzzy, kde-format
+#| msgid "Pointer speed:"
 msgctxt "@label:slider and @label:spinbox"
 msgid "Pointer speed:"
 msgstr "Mutató sebessége:"
 
-#: ui/main.qml:226
-#, kde-format
+#: ui/main.qml:227
+#, fuzzy, kde-format
+#| msgid "Enable pointer acceleration"
 msgctxt "@option:check"
 msgid "Enable pointer acceleration"
 msgstr "Mutatógyorsítás bekapcsolása"
 
-#: ui/main.qml:240
-#, kde-format
+#: ui/main.qml:241
+#, fuzzy, kde-format
+#| msgctxt "@info:tooltip from ContextualHelpButton"
+#| msgid ""
+#| "When enabled, pointer travel distance increases with faster movement "
+#| "speed."
 msgctxt "@info:whatsthis ContextualHelpButton tooltip"
 msgid ""
 "When enabled, pointer travel distance increases with faster movement speed."
@@ -197,45 +218,55 @@ msgstr ""
 "Ha be van kapcsolva, a mutató mozgási távolsága a gyorsabb mozgási "
 "sebességgel nő."
 
-#: ui/main.qml:250
-#, kde-format
+#: ui/main.qml:254
+#, fuzzy, kde-format
+#| msgid "Scrolling speed:"
 msgctxt "@label:slider and @label:spinbox"
 msgid "Scrolling speed:"
 msgstr "Görgetési sebesség:"
 
-#: ui/main.qml:301
+#: ui/main.qml:304
 #, kde-format
 msgctxt "Slower Scroll"
 msgid "Slower"
 msgstr "Lassabb"
 
-#: ui/main.qml:310
+#: ui/main.qml:313
 #, kde-format
 msgctxt "Faster Scroll Speed"
 msgid "Faster"
 msgstr "Gyorsabb"
 
-#: ui/main.qml:320
-#, kde-format
+#: ui/main.qml:321
+#, fuzzy, kde-format
+#| msgid "Scrolling:"
 msgctxt "@title:group"
 msgid "Scrolling:"
 msgstr "Görgetés:"
 
-#: ui/main.qml:321
-#, kde-format
+#: ui/main.qml:322
+#, fuzzy, kde-format
+#| msgid "Invert scroll direction"
 msgctxt "@option:check"
 msgid "Invert scroll direction"
 msgstr "Görgetés irányának megfordítása"
 
-#: ui/main.qml:336
-#, kde-format
+#: ui/main.qml:339
+#, fuzzy, kde-format
+#| msgid "Hold down middle button and move mouse to scroll"
 msgctxt "@option:check"
 msgid "Hold down middle button and move mouse to scroll"
 msgstr ""
 "Tartsa lenyomva a középső egérgombot és mozgassa az egeret a görgetéshez"
 
-#: ui/main.qml:348
-#, kde-format
+#: ui/main.qml:351
+#, fuzzy, kde-format
+#| msgctxt "@info:tooltip from ContextualHelpButton"
+#| msgid ""
+#| "This will interfere with applications that use middle-button drag, such "
+#| "as some image editors, document viewers, or video games. It may be used "
+#| "on any device, but is intended primarily as a substitute for scroll "
+#| "wheels on devices that do not have any."
 msgctxt "@info:whatsthis ContextualHelpButton tooltip"
 msgid ""
 "This will interfere with applications that use middle-button drag, such as "
@@ -247,11 +278,6 @@ msgstr ""
 "példáulegyes képszerkesztők, dokumentummegjelenítők vagy videojátékok. "
 "Bármilyen eszközön használható, de elsősorban a görgetőkerekek "
 "helyettesítésére szolgál olyan eszközökön, amelyek nem rendelkeznek azzal."
-
-#~ msgid "Querying input devices failed. Please reopen this settings module."
-#~ msgstr ""
-#~ "Nem sikerült lekérdezni a beviteli eszközöket. Nyissa meg újra ezt a "
-#~ "modult."
 
 #~ msgid "Device enabled"
 #~ msgstr "Eszköz bekapcsolva"

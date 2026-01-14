@@ -4,13 +4,13 @@
 # SPDX-FileCopyrightText: 2023 Johannes Obermayr <johannesobermayr@gmx.de>
 # SPDX-FileCopyrightText: 2024 Flori G <Renner03@protonmail.com>
 # SPDX-FileCopyrightText: 2025 Alois Spitzbart <spitz234@hotmail.com>
-# SPDX-FileCopyrightText: 2025-2026 Philipp Kiemle <l10n.daphipz@fastmail.de>
+# SPDX-FileCopyrightText: 2025, 2026 Philipp Kiemle <l10n.daphipz@fastmail.de>
 msgid ""
 msgstr ""
 "Project-Id-Version: kcm_gamecontroller\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-01-15 03:00+0000\n"
-"PO-Revision-Date: 2026-01-12 20:12+0100\n"
+"POT-Creation-Date: 2026-01-14 00:46+0000\n"
+"PO-Revision-Date: 2026-01-06 16:26+0100\n"
 "Last-Translator: Philipp Kiemle <l10n.daphipz@fastmail.de>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de\n"
@@ -332,16 +332,18 @@ msgstr ""
 "Plasma erlauben.<nl/><nl/>Spiele können den Controller immer verwenden."
 
 #: ui/main.qml:51
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "No game controllers found"
 msgctxt "@info placeholdermessage text"
 msgid "No game controllers found"
-msgstr "Keine Controller gefunden"
+msgstr "Es wurden keine Controller gefunden"
 
 #: ui/main.qml:52
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Connect a wired or wireless controller"
 msgctxt "@info:usagetip placeholdermessage text"
 msgid "Connect a wired or wireless controller"
-msgstr "Verbinden Sie einen kabelgebundenen oder drahtlosen Controller"
+msgstr "Verbinden Sie einen kabelgebundenen oder drahtlosen Gamecontroller"
 
 #: ui/main.qml:82
 #, kde-format

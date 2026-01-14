@@ -10,20 +10,20 @@
 # Mthw <jari_45@hotmail.com>, 2018.
 # Dušan Kazik <prescott66@gmail.com>, 2020.
 # SPDX-FileCopyrightText: 2020, 2022, 2023, 2024 Matej Mrenica <matejm98mthw@gmail.com>
-# SPDX-FileCopyrightText: 2025, 2026 Lucia Mrenica <lucia.mrenica@gmail.com>
+# SPDX-FileCopyrightText: 2025 Lucia Mrenica <lucia.mrenica@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: kcminput\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-01-08 00:45+0000\n"
-"PO-Revision-Date: 2026-01-15 20:24+0100\n"
+"POT-Creation-Date: 2026-01-14 00:46+0000\n"
+"PO-Revision-Date: 2025-05-30 20:36+0200\n"
 "Last-Translator: Lucia Mrenica <lucia.mrenica@gmail.com>\n"
 "Language-Team: Slovak <kde-i18n-doc@kde.org>\n"
 "Language: sk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 25.12.1\n"
+"X-Generator: Lokalize 25.04.1\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 
 #: backends/kwin_wl/kwin_wl_backend.cpp:61
@@ -38,12 +38,12 @@ msgstr ""
 msgid "Critical error on reading fundamental device infos of %1."
 msgstr "Kritická chyba počas čítania základných informácií o zariadení %1."
 
-#: kcm.cpp:86
+#: kcm.cpp:87
 #, kde-format
 msgid "Not able to select appropriate backend"
-msgstr "Nie je možné vybrať vhodný backend"
+msgstr ""
 
-#: kcm.cpp:142
+#: kcm.cpp:143
 #, kde-format
 msgid ""
 "Error while loading values. See logs for more information. Please restart "
@@ -52,12 +52,12 @@ msgstr ""
 "Chyba počas načítavania hodnôt. Pozrite si logy pre viac informácií. Prosím "
 "reštartujte tento konfiguračný modul."
 
-#: kcm.cpp:145
+#: kcm.cpp:146
 #, kde-format
 msgid "No pointer device found. Connect now."
 msgstr "Nenájdené žiadne ukazovacie zariadenie. Pripojte ho teraz."
 
-#: kcm.cpp:154
+#: kcm.cpp:155
 #, kde-format
 msgid ""
 "Not able to save all changes. See logs for more information. Please restart "
@@ -66,7 +66,7 @@ msgstr ""
 "Nebolo možné uložiť zmeny. Pozrite logy pre viac informácií. Prosím "
 "reštarujte teto konfiguračný modul a skúste znova."
 
-#: kcm.cpp:172
+#: kcm.cpp:173
 #, kde-format
 msgid ""
 "Error while loading default values. Failed to set some options to their "
@@ -75,7 +75,7 @@ msgstr ""
 "Chyba počas načítania predvolených hodnôt. Zlyhalo nastavenie niektorých "
 "možností na ich predvolené hodnoty."
 
-#: kcm.cpp:187
+#: kcm.cpp:188
 #, kde-format
 msgid ""
 "Error while adding newly connected device. Please reconnect it and restart "
@@ -84,12 +84,12 @@ msgstr ""
 "Chyba počas pridávania nového zariadenia. Prosím pripojte ho znova a "
 "reštarujte tento modul nastavení."
 
-#: kcm.cpp:200
+#: kcm.cpp:201
 #, kde-format
 msgid "Pointer device disconnected. Closed its setting dialog."
 msgstr "Ukazovacie zariadenie odpojené. Zatvorte tento dialóg nastavení."
 
-#: kcm.cpp:202
+#: kcm.cpp:203
 #, kde-format
 msgid "Pointer device disconnected. No other devices found."
 msgstr "Ukazovacie zariadenie odpojené. Žiadne iné zariadenie nebolo nájdené."
@@ -143,40 +143,48 @@ msgid "Configure Extra Buttons…"
 msgstr "Nastaviť extra tlačidlá myši…"
 
 #: ui/main.qml:64
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Device:"
 msgctxt "@title:listbox select device"
 msgid "Device:"
 msgstr "Zariadenie:"
 
 #: ui/main.qml:87
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "General:"
 msgctxt "@title:group"
 msgid "General:"
-msgstr "Všeobecné:"
+msgstr "&Všeobecné:"
 
 #: ui/main.qml:88
 #, kde-format
 msgctxt "@option:check enable this mouse device"
 msgid "Enable device"
-msgstr "Povoliť zariadenie"
+msgstr ""
 
 #: ui/main.qml:105
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Swap left and right buttons."
 msgctxt "@title:group"
 msgid "Left and right buttons:"
-msgstr "Ľavé a pravé tlačidlá:"
+msgstr "Vymeniť ľavé a pravé tlačidlo."
 
 #: ui/main.qml:106
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Left-handed mode"
 msgctxt "@option:check Left and right buttons"
 msgid "Swap (left-handed mode)"
-msgstr "Vymeniť (režim pre ľavákov)"
+msgstr "Režim ľavej ruky"
 
 #: ui/main.qml:121
-#, kde-format
+#, fuzzy, kde-format
+#| msgid ""
+#| "Clicking left and right button simultaneously sends middle button click."
 msgctxt "@option:check 'both' refers to the left and right buttons'"
 msgid "Press both simultaneously to middle-click"
-msgstr "Stlačte obe súčasne pre stredné kliknutie"
+msgstr ""
+"Stlačenie ľavého a pravého tlačidla myši naraz odošle stlačenie stredného "
+"tlačidla."
 
 #: ui/main.qml:133
 #, kde-format
@@ -190,28 +198,30 @@ msgstr ""
 "ľavým a pravým tlačidlom myši."
 
 #: ui/main.qml:148
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Pointer speed:"
 msgctxt "@label:slider and @label:spinbox"
 msgid "Pointer speed:"
 msgstr "Rýchlosť ukazovateľa:"
 
 #: ui/main.qml:227
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Pointer acceleration:"
 msgctxt "@option:check"
 msgid "Enable pointer acceleration"
-msgstr "Povoliť zrýchlenie ukazovateľa"
+msgstr "Zrýchlenie ukazovateľa:"
 
 #: ui/main.qml:241
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Cursor travel distance depends on the mouse movement speed."
 msgctxt "@info:whatsthis ContextualHelpButton tooltip"
 msgid ""
 "When enabled, pointer travel distance increases with faster movement speed."
-msgstr ""
-"Keď je táto funkcia zapnutá, vzdialenosť pohybu ukazovateľa sa zvyšuje s "
-"vyššou rýchlosťou pohybu."
+msgstr "Vzdialenosť o akú sa kurzor presunie závisí od rýchlosti pohybu myši."
 
 #: ui/main.qml:254
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Scrolling speed:"
 msgctxt "@label:slider and @label:spinbox"
 msgid "Scrolling speed:"
 msgstr "Rýchlosť rolovania:"
@@ -229,13 +239,15 @@ msgid "Faster"
 msgstr "Rýchlejšie"
 
 #: ui/main.qml:321
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Scrolling:"
 msgctxt "@title:group"
 msgid "Scrolling:"
 msgstr "Rolovanie:"
 
 #: ui/main.qml:322
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Invert scroll direction"
 msgctxt "@option:check"
 msgid "Invert scroll direction"
 msgstr "Obrátiť smer rolovania"
@@ -244,7 +256,7 @@ msgstr "Obrátiť smer rolovania"
 #, kde-format
 msgctxt "@option:check"
 msgid "Hold down middle button and move mouse to scroll"
-msgstr "Podržte stredné tlačidlo a pohybujte myšou, aby ste posúvali"
+msgstr ""
 
 #: ui/main.qml:351
 #, kde-format
@@ -255,10 +267,6 @@ msgid ""
 "device, but is intended primarily as a substitute for scroll wheels on "
 "devices that do not have any."
 msgstr ""
-"To bude kolidovať s aplikáciami, ktoré používajú ťahanie stredným tlačidlom, "
-"ako sú niektoré editory obrázkov, prehliadače dokumentov alebo videohry. "
-"Môže sa používať na akomkoľvek zariadení, ale je určený predovšetkým ako "
-"náhrada za rolovacie kolieska na zariadeniach, ktoré ich nemajú."
 
 #~ msgid "Device enabled"
 #~ msgstr "Zariadenie povolené"

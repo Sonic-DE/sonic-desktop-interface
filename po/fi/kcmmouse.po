@@ -10,7 +10,7 @@
 # Teemu Rytilahti <teemu.rytilahti@d5k.net>, 2008.
 # Jorma Karvonen <karvonen.jorma@gmail.com>, 2010.
 # Lasse Liehu <lasse.liehu@gmail.com>, 2011, 2013, 2014, 2015, 2022.
-# SPDX-FileCopyrightText: 2016, 2017, 2018, 2020, 2023, 2024, 2025, 2026 Tommi Nieminen <translator@legisign.org>
+# SPDX-FileCopyrightText: 2016, 2017, 2018, 2020, 2023, 2024, 2025 Tommi Nieminen <translator@legisign.org>
 #
 # KDE Finnish translation sprint participants:
 # Author: Artnay
@@ -18,8 +18,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kcminput\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-01-08 00:45+0000\n"
-"PO-Revision-Date: 2026-01-05 18:00+0200\n"
+"POT-Creation-Date: 2026-01-14 00:46+0000\n"
+"PO-Revision-Date: 2025-05-25 09:14+0300\n"
 "Last-Translator: Tommi Nieminen <translator@legisign.org>\n"
 "Language-Team: Finnish <kde-i18n-doc@kde.org>\n"
 "Language: fi\n"
@@ -39,12 +39,12 @@ msgstr "Syötelaitteiden kysely epäonnistui. Avaa tämä asetusmoduuli uudellee
 msgid "Critical error on reading fundamental device infos of %1."
 msgstr "Kriittinen virhe luettaessa laitteen %1 perustietoja."
 
-#: kcm.cpp:86
+#: kcm.cpp:87
 #, kde-format
 msgid "Not able to select appropriate backend"
 msgstr "Ei voida valita sopivaa taustajärjestelmää"
 
-#: kcm.cpp:142
+#: kcm.cpp:143
 #, kde-format
 msgid ""
 "Error while loading values. See logs for more information. Please restart "
@@ -53,12 +53,12 @@ msgstr ""
 "Virhe ladattaessa arvoja. Katso lisätietoa lokista. Käynnistä tämä "
 "asetusmoduuli uudelleen."
 
-#: kcm.cpp:145
+#: kcm.cpp:146
 #, kde-format
 msgid "No pointer device found. Connect now."
 msgstr "Osoitinlaitteita ei löytynyt. Kytke sellainen nyt."
 
-#: kcm.cpp:154
+#: kcm.cpp:155
 #, kde-format
 msgid ""
 "Not able to save all changes. See logs for more information. Please restart "
@@ -67,7 +67,7 @@ msgstr ""
 "Kaikkia muutoksia ei voitu tallentaa. Katso lisätietoa lokista. Käynnistä "
 "tämä asetusmoduuli uudelleen."
 
-#: kcm.cpp:172
+#: kcm.cpp:173
 #, kde-format
 msgid ""
 "Error while loading default values. Failed to set some options to their "
@@ -76,7 +76,7 @@ msgstr ""
 "Virhe ladattaessa oletusarvoja. Joitakin asetuksia ei saatu asetetuksi "
 "oletusarvoihinsa."
 
-#: kcm.cpp:187
+#: kcm.cpp:188
 #, kde-format
 msgid ""
 "Error while adding newly connected device. Please reconnect it and restart "
@@ -85,12 +85,12 @@ msgstr ""
 "Virhe lisättäessä vasta kytkettyä laitetta. Kytke se uudelleen ja käynnistä "
 "tämän asetusmoduuli sitten toistamiseen."
 
-#: kcm.cpp:200
+#: kcm.cpp:201
 #, kde-format
 msgid "Pointer device disconnected. Closed its setting dialog."
 msgstr "Osoitinlaitetta ei ole kytketty. Suljettiin sen asetusikkuna."
 
-#: kcm.cpp:202
+#: kcm.cpp:203
 #, kde-format
 msgid "Pointer device disconnected. No other devices found."
 msgstr "Osoitinlaitetta ei ole kytketty. Muita laitteita ei löytynyt."
@@ -164,10 +164,11 @@ msgid "Enable device"
 msgstr ""
 
 #: ui/main.qml:105
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Swap left and right buttons."
 msgctxt "@title:group"
 msgid "Left and right buttons:"
-msgstr "Vasen ja oikea painike:"
+msgstr "Vaihda vasen ja oikea painike keskenään."
 
 #: ui/main.qml:106
 #, fuzzy, kde-format
@@ -177,10 +178,15 @@ msgid "Swap (left-handed mode)"
 msgstr "Vasenkätinen tila"
 
 #: ui/main.qml:121
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@info:tooltip"
+#| msgid ""
+#| "Pressing the left and right button simultaneously acts as middle-click."
 msgctxt "@option:check 'both' refers to the left and right buttons'"
 msgid "Press both simultaneously to middle-click"
-msgstr "Tee keskinapsautus painamalla kumpaakin yhtä aikaa"
+msgstr ""
+"Vasemman ja oikean painikkeen yhteisnapsautus lähettää keskipainikkeen "
+"napsautuksen."
 
 #: ui/main.qml:133
 #, kde-format

@@ -1,14 +1,14 @@
 # Copyright (C) 2024 This file is copyright:
 # This file is distributed under the same license as the plasma-desktop package.
-# SPDX-FileCopyrightText: 2023, 2025, 2026 Tommi Nieminen <translator@legisign.org>
+# SPDX-FileCopyrightText: 2023, 2025 Tommi Nieminen <translator@legisign.org>
 # SPDX-FileCopyrightText: 2024 Kimmo Kujansuu <mrkujansuu@gmail.com>
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: plasma-desktop\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-01-15 03:00+0000\n"
-"PO-Revision-Date: 2026-01-26 14:54+0200\n"
+"POT-Creation-Date: 2026-01-14 00:46+0000\n"
+"PO-Revision-Date: 2025-09-03 18:37+0300\n"
 "Last-Translator: Tommi Nieminen <translator@legisign.org>\n"
 "Language-Team: Finnish <kde-i18n-doc@kde.org>\n"
 "Language: fi\n"
@@ -54,7 +54,7 @@ msgstr "Rulla"
 #: device.cpp:20
 #, kde-format
 msgid "Arcade Stick"
-msgstr "Arkadipeliohjaintikku"
+msgstr "Arkadipeliohjain"
 
 #: device.cpp:21
 #, kde-format
@@ -79,7 +79,7 @@ msgstr "Rummut"
 #: device.cpp:25
 #, kde-format
 msgid "Arcade Pad"
-msgstr "Arkadipeliohjain"
+msgstr ""
 
 #: device.cpp:26
 #, kde-format
@@ -109,12 +109,12 @@ msgstr "Sony Dualshock 4"
 #: device.cpp:35
 #, kde-format
 msgid "Switch Pro"
-msgstr "Switch Pro"
+msgstr ""
 
 #: device.cpp:36
 #, kde-format
 msgid "Virtual"
-msgstr "Virtuaalinen"
+msgstr ""
 
 #: device.cpp:37
 #, kde-format
@@ -193,19 +193,20 @@ msgctxt "The start game controller button"
 msgid "Start button"
 msgstr "Käynnistyspainike"
 
-# ”Stick” on melkein pakko kääntää muuksi kuin ohjaimeksi, koska niitä on tässä melkoinen määrä erilaisia.
 #: device.cpp:55
 #, kde-format
 msgctxt "The button under the game controller's left analog stick"
 msgid "Left analog stick"
-msgstr "Vasemmanpuoleinen analoginen tikku"
+msgstr ""
 
-# ”Stick” on melkein pakko kääntää muuksi kuin ohjaimeksi, koska niitä on tässä melkoinen määrä erilaisia.
 #: device.cpp:56
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt ""
+#| "@label Visual representation of the axis position for the right axis"
+#| msgid "Right position:"
 msgctxt "The button under the game controller's right analog stick"
 msgid "Right analog stick"
-msgstr "Oikeanpuoleinen analoginen tikku"
+msgstr "Oikea sijainti:"
 
 #: device.cpp:57
 #, kde-format
@@ -251,37 +252,35 @@ msgctxt ""
 msgid "Miscellaneous button"
 msgstr "Sekalainen painike"
 
-# Periaatteessa voisi kääntää ”mailaksi”, mutta ulkomuoto on ihan muuta ja nähtävästi kyse on enemmän historiasta:
-# https://fi.wikipedia.org/wiki/Paddle-ohjain
 #: device.cpp:65
 #, kde-format
 msgctxt "The game controller's 1st paddle button"
 msgid "Paddle button 1"
-msgstr "Paddlen painike 1"
+msgstr ""
 
 #: device.cpp:66
 #, kde-format
 msgctxt "The game controller's 2nd paddle button"
 msgid "Paddle button 2"
-msgstr "Paddlen painike 2"
+msgstr ""
 
 #: device.cpp:67
 #, kde-format
 msgctxt "The game controller's 3rd paddle button"
 msgid "Paddle button 3"
-msgstr "Paddlen painike 3"
+msgstr ""
 
 #: device.cpp:68
 #, kde-format
 msgctxt "The game controller's 4th paddle button"
 msgid "Paddle button 4"
-msgstr "Paddlen painike 4"
+msgstr ""
 
 #: device.cpp:69
 #, kde-format
 msgctxt "The button under the game controller's touchpad"
 msgid "Touchpad button"
-msgstr "Kosketuslevypainike"
+msgstr ""
 
 #: device.cpp:73
 #, kde-format
