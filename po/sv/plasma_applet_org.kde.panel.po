@@ -1,13 +1,13 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
 #
-# SPDX-FileCopyrightText: 2018, 2019, 2021, 2022, 2024, 2026 Stefan Asserhäll <stefan.asserhall@gmail.com>
+# SPDX-FileCopyrightText: 2018, 2019, 2021, 2022, 2024 Stefan Asserhäll <stefan.asserhall@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-04-02 02:40+0000\n"
-"PO-Revision-Date: 2026-01-18 08:42+0100\n"
+"POT-Creation-Date: 2026-01-14 00:46+0000\n"
+"PO-Revision-Date: 2024-08-20 07:15+0200\n"
 "Last-Translator: Stefan Asserhäll <stefan.asserhall@gmail.com>\n"
 "Language-Team: Swedish <kde-i18n-doc@kde.org>\n"
 "Language: sv\n"
@@ -15,49 +15,55 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 25.12.1\n"
+"X-Generator: Lokalize 24.05.2\n"
 
-#: ConfigOverlay.qml:368
-#, kde-format
+#: ConfigOverlay.qml:333
+#, fuzzy, kde-format
+#| msgid "Remove"
 msgctxt "@action:inmenu removes widget"
 msgid "Remove"
 msgstr "Ta bort"
 
-#: ConfigOverlay.qml:378
-#, kde-format
+#: ConfigOverlay.qml:343
+#, fuzzy, kde-format
+#| msgid "Configure…"
 msgctxt "@action:inmenu opens widget config dialog"
 msgid "Configure…"
 msgstr "Anpassa…"
 
-#: ConfigOverlay.qml:389
-#, kde-format
+#: ConfigOverlay.qml:354
+#, fuzzy, kde-format
+#| msgid "Show Alternatives…"
 msgctxt "@action:inmenu opens widget alternatives explorer"
 msgid "Show Alternatives…"
 msgstr "Visa alternativ…"
 
-#: ConfigOverlay.qml:408
-#, kde-format
+#: ConfigOverlay.qml:373
+#, fuzzy, kde-format
+#| msgid "Spacer width"
 msgctxt "@label:spinbox"
 msgid "Spacer width"
 msgstr "Distansbredd"
 
-#: ConfigOverlay.qml:431
+#: ConfigOverlay.qml:396
 #, kde-format
 msgctxt ""
 "@option:check Whether to allow a spacer widget to fill available space"
 msgid "Flexible size"
 msgstr "Flexibel storlek"
 
-#: main.qml:462
-#, kde-format
+#: main.qml:453
+#, fuzzy, kde-format
+#| msgid "Open Panel configuration ui"
 msgctxt ""
 "@info:whatsthis Accessible description for entering Panel edit mode click "
 "area"
 msgid "Open Panel configuration ui"
 msgstr "Öppna användargränssnitt för panelinställning"
 
-#: main.qml:469
-#, kde-format
+#: main.qml:460
+#, fuzzy, kde-format
+#| msgid "Add Widgets…"
 msgctxt "@action:button opens widget explorer"
 msgid "Add Widgets…"
 msgstr "Lägg till grafiska komponenter…"

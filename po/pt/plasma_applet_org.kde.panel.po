@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma_applet_org\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-04-02 02:40+0000\n"
+"POT-Creation-Date: 2026-01-14 00:46+0000\n"
 "PO-Revision-Date: 2022-05-16 14:29+0100\n"
 "Last-Translator: José Nuno Coelho Pires <zepires@gmail.com>\n"
 "Language-Team: Portuguese <kde-i18n-pt@kde.org>\n"
@@ -17,42 +17,42 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
-#: ConfigOverlay.qml:368
+#: ConfigOverlay.qml:333
 #, fuzzy, kde-format
 #| msgid "Remove"
 msgctxt "@action:inmenu removes widget"
 msgid "Remove"
 msgstr "Remover"
 
-#: ConfigOverlay.qml:378
+#: ConfigOverlay.qml:343
 #, fuzzy, kde-format
 #| msgid "Configure…"
 msgctxt "@action:inmenu opens widget config dialog"
 msgid "Configure…"
 msgstr "Configurar…"
 
-#: ConfigOverlay.qml:389
+#: ConfigOverlay.qml:354
 #, fuzzy, kde-format
 #| msgid "Show Alternatives…"
 msgctxt "@action:inmenu opens widget alternatives explorer"
 msgid "Show Alternatives…"
 msgstr "Mostrar as Alternativas…"
 
-#: ConfigOverlay.qml:408
+#: ConfigOverlay.qml:373
 #, fuzzy, kde-format
 #| msgid "Spacer width"
 msgctxt "@label:spinbox"
 msgid "Spacer width"
 msgstr "Largura do intervalo"
 
-#: ConfigOverlay.qml:431
+#: ConfigOverlay.qml:396
 #, kde-format
 msgctxt ""
 "@option:check Whether to allow a spacer widget to fill available space"
 msgid "Flexible size"
 msgstr ""
 
-#: main.qml:462
+#: main.qml:453
 #, kde-format
 msgctxt ""
 "@info:whatsthis Accessible description for entering Panel edit mode click "
@@ -60,7 +60,7 @@ msgctxt ""
 msgid "Open Panel configuration ui"
 msgstr ""
 
-#: main.qml:469
+#: main.qml:460
 #, kde-format
 msgctxt "@action:button opens widget explorer"
 msgid "Add Widgets…"

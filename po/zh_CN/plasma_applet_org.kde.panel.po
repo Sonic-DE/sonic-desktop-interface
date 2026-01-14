@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdeorg\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-04-02 02:40+0000\n"
+"POT-Creation-Date: 2026-01-14 00:46+0000\n"
 "PO-Revision-Date: 2024-04-22 15:58\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
@@ -14,42 +14,42 @@ msgstr ""
 "X-Crowdin-Project: kdeorg\n"
 "X-Crowdin-Project-ID: 269464\n"
 "X-Crowdin-Language: zh-CN\n"
-"X-Crowdin-File: /kf6-stable/messages/plasma-desktop/plasma_applet_org.kde."
+"X-Crowdin-File: /kf6-trunk/messages/plasma-desktop/plasma_applet_org.kde."
 "panel.pot\n"
-"X-Crowdin-File-ID: 49836\n"
+"X-Crowdin-File-ID: 42861\n"
 
-#: ConfigOverlay.qml:368
+#: ConfigOverlay.qml:333
 #, kde-format
 msgctxt "@action:inmenu removes widget"
 msgid "Remove"
 msgstr "移除"
 
-#: ConfigOverlay.qml:378
+#: ConfigOverlay.qml:343
 #, kde-format
 msgctxt "@action:inmenu opens widget config dialog"
 msgid "Configure…"
 msgstr "配置…"
 
-#: ConfigOverlay.qml:389
+#: ConfigOverlay.qml:354
 #, kde-format
 msgctxt "@action:inmenu opens widget alternatives explorer"
 msgid "Show Alternatives…"
 msgstr "显示替代小部件…"
 
-#: ConfigOverlay.qml:408
+#: ConfigOverlay.qml:373
 #, kde-format
 msgctxt "@label:spinbox"
 msgid "Spacer width"
 msgstr "空隔宽度"
 
-#: ConfigOverlay.qml:431
+#: ConfigOverlay.qml:396
 #, kde-format
 msgctxt ""
 "@option:check Whether to allow a spacer widget to fill available space"
 msgid "Flexible size"
 msgstr "可变大小"
 
-#: main.qml:462
+#: main.qml:453
 #, kde-format
 msgctxt ""
 "@info:whatsthis Accessible description for entering Panel edit mode click "
@@ -57,7 +57,7 @@ msgctxt ""
 msgid "Open Panel configuration ui"
 msgstr "打开面板配置界面"
 
-#: main.qml:469
+#: main.qml:460
 #, kde-format
 msgctxt "@action:button opens widget explorer"
 msgid "Add Widgets…"

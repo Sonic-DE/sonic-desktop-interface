@@ -1,14 +1,13 @@
 # SPDX-FileCopyrightText: 2022, 2023 Ryuichi Yamada <ryuichi_ya220@outlook.jp>
 # Tomohiro Hyakutake <tomhioo@outlook.jp>, 2019.
-# SPDX-FileCopyrightText: 2026 Mint <5602mint@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: plasma_applet_org.kde.panel\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-04-02 02:40+0000\n"
-"PO-Revision-Date: 2026-03-27 12:34+0900\n"
-"Last-Translator: Mint <5602mint@gmail.com>\n"
-"Language-Team: Japanese <kde-i18n-doc@kde.org>\n"
+"POT-Creation-Date: 2026-01-14 00:46+0000\n"
+"PO-Revision-Date: 2023-12-29 16:26+0900\n"
+"Last-Translator: Ryuichi Yamada <ryuichi_ya220@outlook.jp>\n"
+"Language-Team: Japanese <kde-jp@kde.org>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -16,49 +15,54 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Accelerator-Marker: &\n"
 "X-Text-Markup: kde4\n"
-"X-Generator: Lokalize 25.12.3\n"
+"X-Generator: Lokalize 23.08.4\n"
 
-#: ConfigOverlay.qml:368
-#, kde-format
+#: ConfigOverlay.qml:333
+#, fuzzy, kde-format
+#| msgid "Remove"
 msgctxt "@action:inmenu removes widget"
 msgid "Remove"
 msgstr "削除"
 
-#: ConfigOverlay.qml:378
-#, kde-format
+#: ConfigOverlay.qml:343
+#, fuzzy, kde-format
+#| msgid "Configure…"
 msgctxt "@action:inmenu opens widget config dialog"
 msgid "Configure…"
 msgstr "設定..."
 
-#: ConfigOverlay.qml:389
-#, kde-format
+#: ConfigOverlay.qml:354
+#, fuzzy, kde-format
+#| msgid "Show Alternatives…"
 msgctxt "@action:inmenu opens widget alternatives explorer"
 msgid "Show Alternatives…"
 msgstr "代替を表示..."
 
-#: ConfigOverlay.qml:408
-#, kde-format
+#: ConfigOverlay.qml:373
+#, fuzzy, kde-format
+#| msgid "Spacer width"
 msgctxt "@label:spinbox"
 msgid "Spacer width"
 msgstr "スペーサーの幅"
 
-#: ConfigOverlay.qml:431
+#: ConfigOverlay.qml:396
 #, kde-format
 msgctxt ""
 "@option:check Whether to allow a spacer widget to fill available space"
 msgid "Flexible size"
-msgstr "フレキシブルなサイズ"
+msgstr ""
 
-#: main.qml:462
+#: main.qml:453
 #, kde-format
 msgctxt ""
 "@info:whatsthis Accessible description for entering Panel edit mode click "
 "area"
 msgid "Open Panel configuration ui"
-msgstr "パネル設定画面を開く"
+msgstr ""
 
-#: main.qml:469
-#, kde-format
+#: main.qml:460
+#, fuzzy, kde-format
+#| msgid "Add Widgets…"
 msgctxt "@action:button opens widget explorer"
 msgid "Add Widgets…"
 msgstr "ウィジェットを追加..."

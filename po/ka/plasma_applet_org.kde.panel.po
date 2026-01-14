@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-desktop\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-04-02 02:40+0000\n"
+"POT-Creation-Date: 2026-01-14 00:46+0000\n"
 "PO-Revision-Date: 2026-01-08 05:36+0100\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
@@ -18,38 +18,38 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.8\n"
 
-#: ConfigOverlay.qml:368
+#: ConfigOverlay.qml:333
 #, kde-format
 msgctxt "@action:inmenu removes widget"
 msgid "Remove"
 msgstr "წაშლა"
 
-#: ConfigOverlay.qml:378
+#: ConfigOverlay.qml:343
 #, kde-format
 msgctxt "@action:inmenu opens widget config dialog"
 msgid "Configure…"
 msgstr "მორგება…"
 
-#: ConfigOverlay.qml:389
+#: ConfigOverlay.qml:354
 #, kde-format
 msgctxt "@action:inmenu opens widget alternatives explorer"
 msgid "Show Alternatives…"
 msgstr "ალტერნატივების ჩვენება…"
 
-#: ConfigOverlay.qml:408
+#: ConfigOverlay.qml:373
 #, kde-format
 msgctxt "@label:spinbox"
 msgid "Spacer width"
 msgstr "დამშორებლის სიგანე"
 
-#: ConfigOverlay.qml:431
+#: ConfigOverlay.qml:396
 #, kde-format
 msgctxt ""
 "@option:check Whether to allow a spacer widget to fill available space"
 msgid "Flexible size"
 msgstr "მოქნილი ზომა"
 
-#: main.qml:462
+#: main.qml:453
 #, kde-format
 msgctxt ""
 "@info:whatsthis Accessible description for entering Panel edit mode click "
@@ -57,7 +57,7 @@ msgctxt ""
 msgid "Open Panel configuration ui"
 msgstr "პანელის მორგების ფანჯრის გახსნა"
 
-#: main.qml:469
+#: main.qml:460
 #, kde-format
 msgctxt "@action:button opens widget explorer"
 msgid "Add Widgets…"

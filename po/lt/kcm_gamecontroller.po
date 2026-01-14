@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-desktop\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-01-15 03:00+0000\n"
-"PO-Revision-Date: 2026-01-22 00:09+0200\n"
+"POT-Creation-Date: 2026-01-14 00:46+0000\n"
+"PO-Revision-Date: 2025-09-01 17:48+0300\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: lt\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : n%10>=2 && (n%100<10 || n"
 "%100>=20) ? 1 : n%10==0 || (n%100>10 && n%100<20) ? 2 : 3);\n"
-"X-Generator: Poedit 3.8\n"
+"X-Generator: Poedit 3.6\n"
 
 #: axesmodel.cpp:122 hatmodel.cpp:80
 #, kde-format
@@ -50,107 +50,107 @@ msgstr "Žaidimų valdiklis"
 #: device.cpp:19
 #, kde-format
 msgid "Wheel"
-msgstr "Vairas"
+msgstr ""
 
 #: device.cpp:20
 #, kde-format
 msgid "Arcade Stick"
-msgstr "Arkados svirtis"
+msgstr ""
 
 #: device.cpp:21
 #, kde-format
 msgid "Flight Stick"
-msgstr "Skrydžio svirtis"
+msgstr ""
 
 #: device.cpp:22
 #, kde-format
 msgid "Dance Pad"
-msgstr "Šokių kilimėlis"
+msgstr ""
 
 #: device.cpp:23
 #, kde-format
 msgid "Guitar"
-msgstr "Gitara"
+msgstr ""
 
 #: device.cpp:24
 #, kde-format
 msgid "Drum Kit"
-msgstr "Būgnai"
+msgstr ""
 
 #: device.cpp:25
 #, kde-format
 msgid "Arcade Pad"
-msgstr "Arkados kilimėlis"
+msgstr ""
 
 #: device.cpp:26
 #, kde-format
 msgid "Throttle"
-msgstr "Traukos svirtis"
+msgstr ""
 
 #: device.cpp:31
 #, kde-format
 msgid "XBox 360"
-msgstr "XBox 360"
+msgstr ""
 
 #: device.cpp:32
 #, kde-format
 msgid "XBox One"
-msgstr "XBox One"
+msgstr ""
 
 #: device.cpp:33
 #, kde-format
 msgid "Sony Dualshock 3"
-msgstr "Sony Dualshock 3"
+msgstr ""
 
 #: device.cpp:34
 #, kde-format
 msgid "Sony Dualshock 4"
-msgstr "Sony Dualshock 4"
+msgstr ""
 
 #: device.cpp:35
 #, kde-format
 msgid "Switch Pro"
-msgstr "Switch Pro"
+msgstr ""
 
 #: device.cpp:36
 #, kde-format
 msgid "Virtual"
-msgstr "Virtualus"
+msgstr ""
 
 #: device.cpp:37
 #, kde-format
 msgid "Sony Dualsense"
-msgstr "Sony Dualsense"
+msgstr ""
 
 #: device.cpp:38
 #, kde-format
 msgid "Amazon Luna"
-msgstr "Amazon Luna"
+msgstr ""
 
 #: device.cpp:39
 #, kde-format
 msgid "Google Stadia"
-msgstr "Google Stadia"
+msgstr ""
 
 #: device.cpp:40
 #, kde-format
 msgid "NVidia Shield"
-msgstr "NVidia Shield"
+msgstr ""
 
 #: device.cpp:41
 #, kde-format
 msgid "Switch Left Joy-Con"
-msgstr "Switch kairysis Joy-Con"
+msgstr ""
 
 #: device.cpp:42
 #, kde-format
 msgid "Switch Right Joy-Con"
-msgstr "Switch dešinysis Joy-Con"
+msgstr ""
 
 #: device.cpp:43
 #, kde-format
 msgid "Switch Paired Joy-Con"
-msgstr "Switch poriniai Joy-Con"
+msgstr ""
 
 #: device.cpp:48
 #, kde-format
@@ -177,70 +177,74 @@ msgid "Y button"
 msgstr "Y mygtukas"
 
 #: device.cpp:52
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@label Gamepad buttons"
+#| msgid "Buttons:"
 msgctxt "The back game controller button"
 msgid "Back button"
-msgstr "Mygtukas „Atgal“"
+msgstr "Mygtukai:"
 
 #: device.cpp:53
 #, kde-format
 msgctxt "The guide game controller button"
 msgid "Guide button"
-msgstr "Mygtukas „Žinynas“"
+msgstr ""
 
 #: device.cpp:54
 #, kde-format
 msgctxt "The start game controller button"
 msgid "Start button"
-msgstr "Mygtukas „Pradėti“"
+msgstr ""
 
 #: device.cpp:55
 #, kde-format
 msgctxt "The button under the game controller's left analog stick"
 msgid "Left analog stick"
-msgstr "Kairioji analoginė svirtis"
+msgstr ""
 
 #: device.cpp:56
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@label Visual representation of an axis position"
+#| msgid "Position:"
 msgctxt "The button under the game controller's right analog stick"
 msgid "Right analog stick"
-msgstr "Dešinioji analoginė svirtis"
+msgstr "Pozicija:"
 
 #: device.cpp:57
 #, kde-format
 msgctxt "The game controller's left shoulder button"
 msgid "Left shoulder button"
-msgstr "Kairysis peties mygtukas"
+msgstr ""
 
 #: device.cpp:58
 #, kde-format
 msgctxt "The game controller's right shoulder button"
 msgid "Right shoulder button"
-msgstr "Dešinysis peties mygtukas"
+msgstr ""
 
 #: device.cpp:59
 #, kde-format
 msgctxt "The game controller's d-pad Up button"
 msgid "D-pad up button"
-msgstr "Mygtukas aukštyn krypties skydelyje"
+msgstr ""
 
 #: device.cpp:60
 #, kde-format
 msgctxt "The game controller's d-pad down button"
 msgid "D-pad down button"
-msgstr "Mygtukas žemyn krypties skydelyje"
+msgstr ""
 
 #: device.cpp:61
 #, kde-format
 msgctxt "The game controller's d-pad left button"
 msgid "D-pad left button"
-msgstr "Mygtukas kairėn krypties skydelyje"
+msgstr ""
 
 #: device.cpp:62
 #, kde-format
 msgctxt "The game controller's d-pad right button"
 msgid "D-pad right button"
-msgstr "Mygtukas dešinėn krypties skydelyje"
+msgstr ""
 
 #: device.cpp:64
 #, kde-format
@@ -248,37 +252,37 @@ msgctxt ""
 "The game controller's miscellaneous button (Share on Xbox, mic on "
 "Playstation/Luna, capture on Switch)"
 msgid "Miscellaneous button"
-msgstr "Mygtukas „Kita“"
+msgstr ""
 
 #: device.cpp:65
 #, kde-format
 msgctxt "The game controller's 1st paddle button"
 msgid "Paddle button 1"
-msgstr "Pulto mygtukas 1"
+msgstr ""
 
 #: device.cpp:66
 #, kde-format
 msgctxt "The game controller's 2nd paddle button"
 msgid "Paddle button 2"
-msgstr "Pulto mygtukas 2"
+msgstr ""
 
 #: device.cpp:67
 #, kde-format
 msgctxt "The game controller's 3rd paddle button"
 msgid "Paddle button 3"
-msgstr "Pulto mygtukas 3"
+msgstr ""
 
 #: device.cpp:68
 #, kde-format
 msgctxt "The game controller's 4th paddle button"
 msgid "Paddle button 4"
-msgstr "Pulto mygtukas 4"
+msgstr ""
 
 #: device.cpp:69
 #, kde-format
 msgctxt "The button under the game controller's touchpad"
 msgid "Touchpad button"
-msgstr "Jutiklinio kilimėlio mygtukas"
+msgstr ""
 
 #: device.cpp:73
 #, kde-format
@@ -318,7 +322,7 @@ msgstr "%1 (%2)"
 #, kde-format
 msgctxt "@option:check Allow using game controllers as a pointer and keyboard"
 msgid "Allow using as pointer and keyboard"
-msgstr "Leisti naudoti kaip rodyklę ir klaviatūrą"
+msgstr ""
 
 #: ui/main.qml:43
 #, kde-kuit-format
@@ -327,18 +331,17 @@ msgid ""
 "Allow game controllers to act like pointer and keyboard devices in Plasma "
 "and non-game applications.<nl/><nl/>Games can always use the controller."
 msgstr ""
-"Leisti, kad žaidimų valdikliai Plasma ir ne žaidimų programose būtų "
-"naudojami kaip rodyklės ir klaviatūros įrenginiai.<nl/><nl/>Žaidimai visada "
-"gali naudoti valdiklį."
 
 #: ui/main.qml:51
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "No game controllers found"
 msgctxt "@info placeholdermessage text"
 msgid "No game controllers found"
 msgstr "Nerasta jokių žaidimų valdiklių"
 
 #: ui/main.qml:52
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Connect a wired or wireless controller"
 msgctxt "@info:usagetip placeholdermessage text"
 msgid "Connect a wired or wireless controller"
 msgstr "Prijunkite laidinį arba belaidį valdiklį"
@@ -352,10 +355,6 @@ msgid ""
 "controller, or enable automatic blocking by allowing the use as pointer and "
 "keyboard."
 msgstr ""
-"Naudojant valdiklį sistema gali būti pristabdyta ar užrakinti ekraną. "
-"Apsvarstykite galimybę rankiniu būdu užblokuoti sistemos pristabdymą ir "
-"ekrano užrakinimą, kol naudojate valdiklį, arba įjunkite automatinį "
-"blokavimą leisdami naudoti valdiklį kaip rodyklę ir klaviatūrą."
 
 #: ui/main.qml:97
 #, kde-format
@@ -383,16 +382,20 @@ msgid "Connection type:"
 msgstr "Ryšio tipas:"
 
 #: ui/main.qml:173
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@label Visual representation of an axis position"
+#| msgid "Position:"
 msgctxt "@label Visual representation of the axis position for the left axis"
 msgid "Left position:"
-msgstr "Kairioji pozicija:"
+msgstr "Pozicija:"
 
 #: ui/main.qml:185
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@label Visual representation of an axis position"
+#| msgid "Position:"
 msgctxt "@label Visual representation of the axis position for the right axis"
 msgid "Right position:"
-msgstr "Dešinioji pozicija:"
+msgstr "Pozicija:"
 
 #: ui/main.qml:204
 #, kde-format

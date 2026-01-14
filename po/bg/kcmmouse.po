@@ -3,23 +3,30 @@
 #
 # Zlatko Popov <zlatkopopov@fsa-bg.org>, 2006, 2007, 2008.
 # Yasen Pramatarov <yasen@lindeas.com>, 2010, 2011.
-# SPDX-FileCopyrightText: 2022, 2023, 2024, 2025, 2026 Mincho Kondarev <mkondarev@yahoo.de>
+# SPDX-FileCopyrightText: 2022, 2023, 2024, 2025 Mincho Kondarev <mkondarev@yahoo.de>
 msgid ""
 msgstr ""
 "Project-Id-Version: kcminput\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-04-08 00:48+0000\n"
-"PO-Revision-Date: 2026-01-19 20:32+0100\n"
+"POT-Creation-Date: 2026-01-14 00:46+0000\n"
+"PO-Revision-Date: 2025-12-04 17:57+0100\n"
 "Last-Translator: Mincho Kondarev <mkondarev@yahoo.de>\n"
 "Language-Team: Bulgarian <kde-i18n-doc@kde.org>\n"
 "Language: bg\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 26.03.70\n"
+"X-Generator: Lokalize 25.07.70\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
-#: backends/kwin_wl/kwin_wl_backend.cpp:44
+#: backends/kwin_wl/kwin_wl_backend.cpp:61
+#, kde-format
+msgid "Querying input devices failed. Please reopen this settings module."
+msgstr ""
+"Заявката за входни устройства е неуспешна. Моля, отворете отново този модул "
+"за настройки."
+
+#: backends/kwin_wl/kwin_wl_backend.cpp:81
 #, kde-format
 msgid "Critical error on reading fundamental device infos of %1."
 msgstr ""
@@ -132,43 +139,47 @@ msgctxt "@action:button"
 msgid "Configure Extra Buttons…"
 msgstr "Конфигуриране на допълнителни бутони…"
 
-#: ui/main.qml:66
-#, kde-format
+#: ui/main.qml:64
+#, fuzzy, kde-format
+#| msgid "Device:"
 msgctxt "@title:listbox select device"
 msgid "Device:"
 msgstr "Устройство:"
 
-#: ui/main.qml:89
-#, kde-format
+#: ui/main.qml:87
+#, fuzzy, kde-format
+#| msgid "General:"
 msgctxt "@title:group"
 msgid "General:"
 msgstr "Общи:"
 
-#: ui/main.qml:90
-#, kde-format
+#: ui/main.qml:88
+#, fuzzy, kde-format
+#| msgid "Enable device"
 msgctxt "@option:check enable this mouse device"
 msgid "Enable device"
 msgstr "Активиране на устройството"
 
-#: ui/main.qml:107
+#: ui/main.qml:105
 #, kde-format
 msgctxt "@title:group"
 msgid "Left and right buttons:"
 msgstr "Ляв и десен бутон:"
 
-#: ui/main.qml:108
-#, kde-format
+#: ui/main.qml:106
+#, fuzzy, kde-format
+#| msgid "Swap (left-handed mode)"
 msgctxt "@option:check Left and right buttons"
 msgid "Swap (left-handed mode)"
-msgstr "Размяна (режим за лява ръка)"
+msgstr "Размяна (ляв режим)"
 
-#: ui/main.qml:123
+#: ui/main.qml:121
 #, kde-format
 msgctxt "@option:check 'both' refers to the left and right buttons'"
 msgid "Press both simultaneously to middle-click"
 msgstr "Натиснете едновременно и двете, за да кликнете със средния бутон"
 
-#: ui/main.qml:135
+#: ui/main.qml:133
 #, kde-format
 msgctxt "@info:tooltip from ContextualHelpButton"
 msgid ""
@@ -179,20 +190,26 @@ msgstr ""
 "с 50ms.Това е необходимо, за да се откриват правилно едновременни щраквания "
 "с левия и десния бутон на мишката."
 
-#: ui/main.qml:147
-#, kde-format
+#: ui/main.qml:148
+#, fuzzy, kde-format
+#| msgid "Pointer speed:"
 msgctxt "@label:slider and @label:spinbox"
 msgid "Pointer speed:"
 msgstr "Скорост на показалеца:"
 
-#: ui/main.qml:225
-#, kde-format
+#: ui/main.qml:227
+#, fuzzy, kde-format
+#| msgid "Enable pointer acceleration"
 msgctxt "@option:check"
 msgid "Enable pointer acceleration"
 msgstr "Активиране на ускорение на показалеца"
 
-#: ui/main.qml:239
-#, kde-format
+#: ui/main.qml:241
+#, fuzzy, kde-format
+#| msgctxt "@info:tooltip from ContextualHelpButton"
+#| msgid ""
+#| "When enabled, pointer travel distance increases with faster movement "
+#| "speed."
 msgctxt "@info:whatsthis ContextualHelpButton tooltip"
 msgid ""
 "When enabled, pointer travel distance increases with faster movement speed."
@@ -200,45 +217,55 @@ msgstr ""
 "Когато е активирано, разстоянието на движение на показалеца се увеличава с "
 "увеличаване на скоростта на движение."
 
-#: ui/main.qml:249
-#, kde-format
+#: ui/main.qml:254
+#, fuzzy, kde-format
+#| msgid "Scrolling speed:"
 msgctxt "@label:slider and @label:spinbox"
 msgid "Scrolling speed:"
 msgstr "Скорост на превъртане:"
 
-#: ui/main.qml:300
+#: ui/main.qml:304
 #, kde-format
 msgctxt "Slower Scroll"
 msgid "Slower"
 msgstr "По-бавно"
 
-#: ui/main.qml:309
+#: ui/main.qml:313
 #, kde-format
 msgctxt "Faster Scroll Speed"
 msgid "Faster"
 msgstr "По-бързо"
 
-#: ui/main.qml:319
-#, kde-format
+#: ui/main.qml:321
+#, fuzzy, kde-format
+#| msgid "Scrolling:"
 msgctxt "@title:group"
 msgid "Scrolling:"
 msgstr "Превъртане:"
 
-#: ui/main.qml:320
-#, kde-format
+#: ui/main.qml:322
+#, fuzzy, kde-format
+#| msgid "Invert scroll direction"
 msgctxt "@option:check"
 msgid "Invert scroll direction"
 msgstr "Обръщане на посоката на превъртане"
 
-#: ui/main.qml:335
-#, kde-format
+#: ui/main.qml:339
+#, fuzzy, kde-format
+#| msgid "Hold down middle button and move mouse to scroll"
 msgctxt "@option:check"
 msgid "Hold down middle button and move mouse to scroll"
 msgstr ""
 "Натискане и задържане на средния бутон и преместване на мишката за превъртане"
 
-#: ui/main.qml:347
-#, kde-format
+#: ui/main.qml:351
+#, fuzzy, kde-format
+#| msgctxt "@info:tooltip from ContextualHelpButton"
+#| msgid ""
+#| "This will interfere with applications that use middle-button drag, such "
+#| "as some image editors, document viewers, or video games. It may be used "
+#| "on any device, but is intended primarily as a substitute for scroll "
+#| "wheels on devices that do not have any."
 msgctxt "@info:whatsthis ContextualHelpButton tooltip"
 msgid ""
 "This will interfere with applications that use middle-button drag, such as "
@@ -251,3 +278,6 @@ msgstr ""
 "документи или видеоигри. Може да се използва на всяко устройство, но е "
 "предназначено предимно като заместител на колелцата за превъртане на "
 "устройства, които нямат такива."
+
+#~ msgid "Device enabled"
+#~ msgstr "Устройството е активирано"

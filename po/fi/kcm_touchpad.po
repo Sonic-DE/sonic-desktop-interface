@@ -1,14 +1,14 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
 # SPDX-FileCopyrightText: 2013, 2014, 2015, 2017, 2024 Lasse Liehu <lasse.liehu@gmail.com>
-# SPDX-FileCopyrightText: 2014, 2017, 2018, 2019, 2020, 2021, 2023, 2024, 2025, 2026 Tommi Nieminen <translator@legisign.org>
+# SPDX-FileCopyrightText: 2014, 2017, 2018, 2019, 2020, 2021, 2023, 2024, 2025 Tommi Nieminen <translator@legisign.org>
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-01-08 00:45+0000\n"
-"PO-Revision-Date: 2026-01-05 17:59+0200\n"
+"POT-Creation-Date: 2026-01-14 00:46+0000\n"
+"PO-Revision-Date: 2025-05-25 09:13+0300\n"
 "Last-Translator: Tommi Nieminen <translator@legisign.org>\n"
 "Language-Team: Finnish <kde-i18n-doc@kde.org>\n"
 "Language: fi\n"
@@ -53,7 +53,7 @@ msgstr "Kosketuslevyn asetuksia ei saada luettua"
 msgid "Cannot read default touchpad configuration"
 msgstr "Kosketuslevyn asetuksia ei saada luetuksi"
 
-#: kcm.cpp:107
+#: kcm.cpp:108
 #, kde-format
 msgid ""
 "Error while loading values. See logs for more information. Please restart "
@@ -62,12 +62,12 @@ msgstr ""
 "Virhe ladattaessa arvoja. Katso lisätietoa lokista. Käynnistä tämä "
 "asetusmoduuli uudelleen."
 
-#: kcm.cpp:110
+#: kcm.cpp:111
 #, kde-format
 msgid "No touchpad found. Connect touchpad now."
 msgstr "Kosketuslevyä ei löydy. Kytke kosketuslevy nyt."
 
-#: kcm.cpp:119
+#: kcm.cpp:120
 #, kde-format
 msgid ""
 "Not able to save all changes. See logs for more information. Please restart "
@@ -76,7 +76,7 @@ msgstr ""
 "Kaikkia muutoksia ei voitu tallentaa. Katso lisätietoa lokista. Käynnistä "
 "tämä asetusmoduuli uudelleen."
 
-#: kcm.cpp:138
+#: kcm.cpp:139
 #, kde-format
 msgid ""
 "Error while loading default values. Failed to set some options to their "
@@ -85,7 +85,7 @@ msgstr ""
 "Virhe ladattaessa oletusarvoja. Joitain tai kaikkia asetuksia ei onnistuttu "
 "asettamaan oletusarvoihin."
 
-#: kcm.cpp:154
+#: kcm.cpp:155
 #, kde-format
 msgid ""
 "Error while adding newly connected device. Please reconnect it and restart "
@@ -94,12 +94,12 @@ msgstr ""
 "Virhe lisättäessä vasta kytkettyä laitetta. Kytke se toistamiseen ja "
 "käynnistä tämä asetusosio uudelleen."
 
-#: kcm.cpp:169
+#: kcm.cpp:170
 #, kde-format
 msgid "Touchpad disconnected. Closed its setting dialog."
 msgstr "Kosketuslevy irrotettiin. Sen asetusikkuna suljettiin."
 
-#: kcm.cpp:171
+#: kcm.cpp:172
 #, kde-format
 msgid "Touchpad disconnected. No other touchpads found."
 msgstr "Kosketuslevy irrotettiin. Muita kosketuslevyjä ei löytynyt."
@@ -160,10 +160,11 @@ msgid "This can interfere with video games."
 msgstr "Tämä voi häiritä videopelejä."
 
 #: ui/main.qml:174
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Swap left and right buttons."
 msgctxt "@title:group"
 msgid "Left and right buttons:"
-msgstr "Vasen ja oikea painike:"
+msgstr "Vaihda vasen ja oikea painike keskenään."
 
 #: ui/main.qml:175
 #, fuzzy, kde-format
@@ -173,10 +174,12 @@ msgid "Swap (left-handed mode)"
 msgstr "Vasenkätinen tila"
 
 #: ui/main.qml:191
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@option:check"
+#| msgid "Press left and right buttons to middle-click"
 msgctxt "@option:check 'both' refers to the left and right buttons'"
 msgid "Press both simultaneously to middle-click"
-msgstr "Tee keskinapsautus painamalla kumpaakin yhtä aikaa"
+msgstr "Vasen ja oikea painike toimivat yhdessä keskipainikkeena"
 
 #: ui/main.qml:204
 #, kde-format
@@ -281,7 +284,9 @@ msgid "Right-click by:"
 msgstr "Oikean painikkeen napsautus"
 
 #: ui/main.qml:481
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@option:radio touchpad integrated right-click"
+#| msgid "Press bottom-right corner"
 msgctxt ""
 "@option:radio Completes the sentence 'right-click by pressing bottom-right "
 "corner'"
@@ -305,29 +310,36 @@ msgid "Middle-click by pressing bottom center."
 msgstr "Keskinapsauta painamalla alareunan keskeltä."
 
 #: ui/main.qml:505
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@option:radio touchpad integrated right-click"
+#| msgid "Press touchpad with two fingers"
 msgctxt ""
 "@option:radio Completes the sentence 'right-click by pressing with two "
 "fingers'"
 msgid "Pressing anywhere with two fingers"
-msgstr "Paina minne vain kahdella sormella"
+msgstr "Paina kosketuslevyä kahdella sormella"
 
 #: ui/main.qml:520
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@info shown below radio button"
+#| msgid "Middle-click by pressing with three fingers."
 msgctxt "@info shown below radio button"
 msgid "Middle-click by pressing anywhere with three fingers."
-msgstr "Keskinapsautus painamalla minne vain kolmella sormella."
+msgstr "Keskinapsautus painamalla kolmella sormella."
 
 #: ui/main.qml:529
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Middle-click"
 msgctxt ""
 "@label for radiobutton group, begins the sentence 'middle-click by pressing "
 "bottom-middle edge/by pressing anywhere with three fingers'"
 msgid "Middle-click by:"
-msgstr "Keskipainikkeen napsautus:"
+msgstr "Keskipainikkeen napsautus"
 
 #: ui/main.qml:550
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@option:radio touchpad integrated middle-click"
+#| msgid "Press bottom middle edge"
 msgctxt ""
 "@option:radio completes the sentence 'middle-click by pressing bottom-middle "
 "edge'"
@@ -335,7 +347,9 @@ msgid "Pressing bottom-middle edge"
 msgstr "Paina alareunan keskelle"
 
 #: ui/main.qml:557
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@option:radio touchpad integrated middle-click"
+#| msgid "Press bottom left and bottom right corners"
 msgctxt ""
 "@option:radio completes the sentence 'middle-click by pressing bottom-left "
 "and bottom-right corners'"
@@ -343,12 +357,14 @@ msgid "Pressing bottom-left and bottom-right corners"
 msgstr "Paina yhtäaikaisesti vasenta ja oikeaa alakulmaa"
 
 #: ui/main.qml:564
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@option:check touchpad integrated middle-click"
+#| msgid "Press touchpad with three fingers"
 msgctxt ""
 "@option:check completes the sentence 'middle-click by pressing anywhere with "
 "three fingers'"
 msgid "Pressing anywhere with three fingers"
-msgstr "Paina minne vain kolmella sormella"
+msgstr "Paina kosketuslevyä kolmella sormella"
 
 #: ui/main.qml:580
 #, kde-format
@@ -357,7 +373,8 @@ msgid "Tapping:"
 msgstr "Napauttaminen:"
 
 #: ui/main.qml:581
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Tap to Click"
 msgctxt "@option:check"
 msgid "Tap to click"
 msgstr "Napsauta napauttamalla"
