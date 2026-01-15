@@ -82,8 +82,10 @@ void DeviceModel::poll()
 {
     if (!initialized) {
         qCDebug(KCM_GAMECONTROLLER) << "Calling SDL_Init";
-        SDL_SetHint(SDL_HINT_NO_SIGNAL_HANDLERS, "1");
-        SDL_Init(SDL_INIT_GAMECONTROLLER);
+        if (SDL_Init(SDL_INIT_GAMECONTROLLER) != 0) {
+            qCWarning(KCM_GAMECONTROLLER) << "Could not initialise SDL. No controllers will be shown: " << qPrintable(SDL_GetError());
+            return;
+        }
         initialized = true;
     }
 
@@ -185,3 +187,4 @@ int DeviceModel::count() const
 {
     return m_devices.size();
 }
+
