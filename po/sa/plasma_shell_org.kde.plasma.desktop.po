@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-desktop\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-03-13 02:40+0000\n"
+"POT-Creation-Date: 2026-01-15 00:44+0000\n"
 "PO-Revision-Date: 2024-12-20 21:53+0530\n"
 "Last-Translator: kali <skkalwar999@gmail.com>\n"
 "Language-Team: Sanskrit <kde-i18n-doc@kde.org>\n"
@@ -574,156 +574,156 @@ msgctxt "@title:group"
 msgid "Visibility"
 msgstr "दृश्यता"
 
-#: contents/configuration/PanelConfiguration.qml:386
+#: contents/configuration/PanelConfiguration.qml:387
 #, fuzzy, kde-format
 #| msgid "Always visible"
 msgctxt "@item:inlistbox"
 msgid "Always visible"
 msgstr "सदा दृश्यमानम्"
 
-#: contents/configuration/PanelConfiguration.qml:387
+#: contents/configuration/PanelConfiguration.qml:388
 #, fuzzy, kde-format
 #| msgid "Auto hide"
 msgctxt "@item:inlistbox"
 msgid "Auto hide"
 msgstr "स्वतः गोपनम्"
 
-#: contents/configuration/PanelConfiguration.qml:388
+#: contents/configuration/PanelConfiguration.qml:389
 #, fuzzy, kde-format
 #| msgid "Dodge windows"
 msgctxt "@item:inlistbox"
 msgid "Dodge windows"
 msgstr "खिडकयः चकमातु"
 
-#: contents/configuration/PanelConfiguration.qml:389
+#: contents/configuration/PanelConfiguration.qml:390
 #, fuzzy, kde-format
 #| msgid "Windows go below"
 msgctxt "@item:inlistbox"
 msgid "Windows go below"
 msgstr "विण्डोजः अधः गच्छन्ति"
 
-#: contents/configuration/PanelConfiguration.qml:449
+#: contents/configuration/PanelConfiguration.qml:450
 #, fuzzy, kde-format
 #| msgid "Opacity"
 msgctxt "@title:group"
 msgid "Opacity"
 msgstr "अपारदर्शिता"
 
-#: contents/configuration/PanelConfiguration.qml:465
+#: contents/configuration/PanelConfiguration.qml:466
 #, fuzzy, kde-format
 #| msgid "Adaptive"
 msgctxt "@item:inlistbox"
 msgid "Adaptive"
 msgstr "अनुकूली"
 
-#: contents/configuration/PanelConfiguration.qml:466
+#: contents/configuration/PanelConfiguration.qml:467
 #, fuzzy, kde-format
 #| msgid "Opaque"
 msgctxt "@item:inlistbox"
 msgid "Opaque"
 msgstr "अपारदर्शी"
 
-#: contents/configuration/PanelConfiguration.qml:467
+#: contents/configuration/PanelConfiguration.qml:468
 #, fuzzy, kde-format
 #| msgid "Translucent"
 msgctxt "@item:inlistbox"
 msgid "Translucent"
 msgstr "अर्धपारदर्शक"
 
-#: contents/configuration/PanelConfiguration.qml:499
+#: contents/configuration/PanelConfiguration.qml:500
 #, fuzzy, kde-format
 #| msgid "Floating"
 msgctxt "@title:group Degree of floatingness of panel and applets"
 msgid "Floating"
 msgstr "प्लवमानः"
 
-#: contents/configuration/PanelConfiguration.qml:515
+#: contents/configuration/PanelConfiguration.qml:516
 #, kde-format
 msgctxt "@item:inlistbox Option to disable floating panels or applets"
 msgid "Disabled"
 msgstr ""
 
-#: contents/configuration/PanelConfiguration.qml:516
+#: contents/configuration/PanelConfiguration.qml:517
 #, kde-format
 msgctxt "@item:inlistbox Option to make only panel applets always float"
 msgid "Applets only"
 msgstr ""
 
-#: contents/configuration/PanelConfiguration.qml:517
+#: contents/configuration/PanelConfiguration.qml:518
 #, fuzzy, kde-format
 #| msgid "Panel and Desktop Management"
 msgctxt "@item:inlistbox Option to make panel and applets floating"
 msgid "Panel and applets"
 msgstr "पैनल तथा डेस्कटॉप प्रबन्धन"
 
-#: contents/configuration/PanelConfiguration.qml:560
+#: contents/configuration/PanelConfiguration.qml:561
 #, kde-format
 msgctxt ""
 "@action:button Revert an unsupported configuration back to the defaults"
 msgid "Fix it"
 msgstr "तत् समाधातु"
 
-#: contents/configuration/PanelConfiguration.qml:646
+#: contents/configuration/PanelConfiguration.qml:647
 #, fuzzy, kde-format
 #| msgid "Panel Width:"
 msgctxt "@label:spinbox"
 msgid "Panel Width:"
 msgstr "फलकस्य विस्तारः :"
 
-#: contents/configuration/PanelConfiguration.qml:647
+#: contents/configuration/PanelConfiguration.qml:648
 #, fuzzy, kde-format
 #| msgid "Panel Height:"
 msgctxt "@label:spinbox"
 msgid "Panel Height:"
 msgstr "फलकस्य ऊर्ध्वता :"
 
-#: contents/configuration/PanelConfiguration.qml:670
+#: contents/configuration/PanelConfiguration.qml:671
 #, fuzzy, kde-format
 #| msgid "Focus shortcut:"
 msgctxt "@title:group shortcut that moves focus to the panel"
 msgid "Focus shortcut:"
 msgstr "फोकस शॉर्टकट् :"
 
-#: contents/configuration/PanelConfiguration.qml:680
+#: contents/configuration/PanelConfiguration.qml:682
 #, fuzzy, kde-format
 #| msgid "Press this keyboard shortcut to move focus to the Panel"
 msgctxt "@info:tooltip"
 msgid "Press this keyboard shortcut to move focus to the Panel"
 msgstr "Panel मध्ये फोकस गन्तुं एतत् कीबोर्ड शॉर्टकट् नुदन्तु"
 
-#: contents/configuration/PanelConfiguration.qml:687
+#: contents/configuration/PanelConfiguration.qml:689
 #, fuzzy, kde-format
 #| msgid "Focus shortcut:"
 msgctxt "@action:button accessible name"
 msgid "Focus Shortcut Setter"
 msgstr "फोकस शॉर्टकट् :"
 
-#: contents/configuration/PanelConfiguration.qml:688
+#: contents/configuration/PanelConfiguration.qml:690
 #, kde-format
 msgctxt "@info:whatsthis Accessible description for button"
 msgid "Button to set the shortcut for the panel to gain focus"
 msgstr ""
 
-#: contents/configuration/PanelConfiguration.qml:714
+#: contents/configuration/PanelConfiguration.qml:716
 #, kde-format
 msgctxt "@action:button Delete the panel"
 msgid "Delete Panel"
 msgstr "पटलं विलोपयन्तु"
 
-#: contents/configuration/PanelConfiguration.qml:717
+#: contents/configuration/PanelConfiguration.qml:719
 #, fuzzy, kde-format
 #| msgid "Remove this panel; this action is undo-able"
 msgctxt "@info:tooltip for button"
 msgid "Remove this panel; this action can be undone"
 msgstr "एतत् पटलं निष्कासयन्तु; एतत् कर्म अण्डो-सक्षमम् अस्ति"
 
-#: contents/configuration/PanelConfiguration.qml:726
+#: contents/configuration/PanelConfiguration.qml:728
 #, kde-format
 msgctxt "@action:button Clone the panel"
 msgid "Clone Panel"
 msgstr "क्लोन पैनल"
 
-#: contents/configuration/PanelConfiguration.qml:730
+#: contents/configuration/PanelConfiguration.qml:732
 #, fuzzy, kde-format
 #| msgctxt "@info:tooltip"
 #| msgid "Create a new panel with the same settings and applets"
@@ -731,20 +731,20 @@ msgctxt "@info:tooltip for button"
 msgid "Create a new panel with the same settings and applets"
 msgstr "समानसेटिंग्स् एप्लेट् च सह नूतनं पटलं रचयन्तु"
 
-#: contents/configuration/PanelConfiguration.qml:739
+#: contents/configuration/PanelConfiguration.qml:741
 #, kde-format
 msgctxt "@action:button Close the panel configuration window"
 msgid "Close"
 msgstr "पिधानं करोतु"
 
-#: contents/configuration/PanelConfiguration.qml:739
+#: contents/configuration/PanelConfiguration.qml:741
 #, kde-format
 msgctxt ""
 "@action:button Close the panel configuration window and exit edit mode"
 msgid "Exit Edit Mode"
 msgstr "सम्पादन मोडतः निर्गच्छन्तु"
 
-#: contents/configuration/PanelConfiguration.qml:742
+#: contents/configuration/PanelConfiguration.qml:744
 #, fuzzy, kde-format
 #| msgid "Close Panel Settings window and exit Edit Mode"
 msgctxt "@info:tooltip for button"
@@ -1080,41 +1080,41 @@ msgctxt "@info:status"
 msgid "Unlocking failed"
 msgstr "अनलॉकिंग् विफलम् अभवत्"
 
-#: contents/lockscreen/LockScreenUi.qml:285
+#: contents/lockscreen/LockScreenUi.qml:281
 #, fuzzy, kde-format
 #| msgid "Caps Lock is on"
 msgctxt "@info:status"
 msgid "Caps Lock is on"
 msgstr "Caps Lock चालू अस्ति"
 
-#: contents/lockscreen/LockScreenUi.qml:299
+#: contents/lockscreen/LockScreenUi.qml:295
 #, fuzzy, kde-format
 #| msgid "Sleep"
 msgctxt "@action:button"
 msgid "Slee&p"
 msgstr "शयनं करोतु"
 
-#: contents/lockscreen/LockScreenUi.qml:305
+#: contents/lockscreen/LockScreenUi.qml:301
 #, fuzzy, kde-format
 #| msgid "Hibernate"
 msgctxt "@action:button"
 msgid "&Hibernate"
 msgstr "शीतनिद्रा"
 
-#: contents/lockscreen/LockScreenUi.qml:311
+#: contents/lockscreen/LockScreenUi.qml:307
 #, fuzzy, kde-format
 #| msgid "Switch User"
 msgctxt "@action:button"
 msgid "Switch &User"
 msgstr "उपयोक्तारं परिवर्तयन्तु"
 
-#: contents/lockscreen/LockScreenUi.qml:372
+#: contents/lockscreen/LockScreenUi.qml:368
 #, kde-format
 msgctxt "Button to show/hide virtual keyboard"
 msgid "Virtual Keyboard"
 msgstr "आभासी कीबोर्ड"
 
-#: contents/lockscreen/LockScreenUi.qml:396
+#: contents/lockscreen/LockScreenUi.qml:392
 #, kde-format
 msgctxt "Button to change keyboard layout"
 msgid "Switch layout"
@@ -1190,13 +1190,13 @@ msgctxt "@action:button no-password unlock"
 msgid "Unlock"
 msgstr "अनलॉक"
 
-#: contents/views/DesktopEditMode.qml:122
+#: contents/views/DesktopEditMode.qml:135
 #, kde-format
 msgctxt "@action:button"
 msgid "More"
 msgstr "अधिकः"
 
-#: contents/views/DesktopEditMode.qml:131
+#: contents/views/DesktopEditMode.qml:144
 #, fuzzy, kde-format
 #| msgid "Exit Edit Mode"
 msgctxt "@action:button"

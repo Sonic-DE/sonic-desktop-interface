@@ -3,13 +3,13 @@
 # This file is distributed under the same license as the plasma-desktop package.
 # Automatically generated, 2019.
 #
-# SPDX-FileCopyrightText: 2019-2023, 2025-2026 Eloy Cuadra <ecuadra@eloihr.net>
+# SPDX-FileCopyrightText: 2019, 2020, 2021, 2022, 2023, 2025, 2026 Eloy Cuadra <ecuadra@eloihr.net>
 msgid ""
 msgstr ""
 "Project-Id-Version: org.kde.plasma.emojier\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-06-02 03:54+0000\n"
-"PO-Revision-Date: 2026-05-13 20:36+0100\n"
+"POT-Creation-Date: 2026-01-13 08:43+0000\n"
+"PO-Revision-Date: 2026-01-14 12:09+0100\n"
 "Last-Translator: Eloy Cuadra <ecuadra@eloihr.net>\n"
 "Language-Team: Spanish <kde-l10n-es@kde.org>\n"
 "Language: es\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 26.04.1\n"
+"X-Generator: Lokalize 25.12.0\n"
 
 #: app/emojier.cpp:43 app/emojier.cpp:45
 #, kde-format
@@ -46,133 +46,119 @@ msgstr "ecuadra@eloihr.net"
 msgid "Replace an existing instance"
 msgstr "Sustituir una instancia existente"
 
-#: app/ui/CategoryPage.qml:41
-#, kde-format
-msgctxt "@action Search field action"
-msgid "Search"
-msgstr "Buscar"
-
-#: app/ui/CategoryPage.qml:100
+#: app/ui/CategoryPage.qml:112
 #, kde-format
 msgctxt "@action:button clear emoji history"
 msgid "Clear History"
 msgstr "Borrar el historial"
 
-#: app/ui/CategoryPage.qml:131
+#: app/ui/CategoryPage.qml:124
 #, kde-format
 msgctxt "@action:button Button to open a menu that lets you choose a skin tone"
-msgid "Skin tone: %1"
-msgstr "Tono de piel: %1"
+msgid "Skin tone:"
+msgstr "Tono de piel:"
 
-#: app/ui/CategoryPage.qml:137
+#: app/ui/CategoryPage.qml:135 app/ui/Emojier.qml:73
+#, kde-format
+msgctxt "@title:page All emojis"
+msgid "All"
+msgstr "Todos"
+
+#: app/ui/CategoryPage.qml:189
 #, kde-format
 msgctxt "@action:inmenu Skin Tone"
 msgid "🖐️ Neutral"
 msgstr "🖐️ Neutro"
 
-#: app/ui/CategoryPage.qml:138
+#: app/ui/CategoryPage.qml:190
 #, kde-format
 msgctxt "@action:inmenu Skin Tone"
 msgid "Neutral"
 msgstr "Neutro"
 
-#: app/ui/CategoryPage.qml:146
+#: app/ui/CategoryPage.qml:198
 #, kde-format
 msgctxt "@action:inmenu Skin Tone"
 msgid "🖐🏻 Light"
 msgstr "🖐🏻 Claro"
 
-#: app/ui/CategoryPage.qml:147
+#: app/ui/CategoryPage.qml:199
 #, kde-format
 msgctxt "@action:inmenu Skin Tone"
 msgid "Light"
 msgstr "Claro"
 
-#: app/ui/CategoryPage.qml:155
+#: app/ui/CategoryPage.qml:207
 #, kde-format
 msgctxt "@action:inmenu Skin Tone"
 msgid "🖐🏼 Medium Light"
 msgstr "🖐🏼 Claro medio"
 
-#: app/ui/CategoryPage.qml:156
+#: app/ui/CategoryPage.qml:208
 #, kde-format
 msgctxt "@action:inmenu Skin Tone"
 msgid "Medium Light"
 msgstr "Claro medio"
 
-#: app/ui/CategoryPage.qml:164
+#: app/ui/CategoryPage.qml:216
 #, kde-format
 msgctxt "@action:inmenu Skin Tone"
 msgid "🖐🏽 Medium"
 msgstr "🖐🏽 Medio"
 
-#: app/ui/CategoryPage.qml:165
+#: app/ui/CategoryPage.qml:217
 #, kde-format
 msgctxt "@action:inmenu Skin Tone"
 msgid "Medium"
 msgstr "Medio"
 
-#: app/ui/CategoryPage.qml:173
+#: app/ui/CategoryPage.qml:225
 #, kde-format
 msgctxt "@action:inmenu Skin Tone"
 msgid "🖐🏾 Medium Dark"
 msgstr "🖐🏾 Oscuro medio"
 
-#: app/ui/CategoryPage.qml:174
+#: app/ui/CategoryPage.qml:226
 #, kde-format
 msgctxt "@action:inmenu Skin Tone"
 msgid "Medium Dark"
 msgstr "Oscuro medio"
 
-#: app/ui/CategoryPage.qml:182
+#: app/ui/CategoryPage.qml:234
 #, kde-format
 msgctxt "@action:inmenu Skin Tone"
 msgid "🖐🏿 Dark"
 msgstr "🖐🏿 Oscuro"
 
-#: app/ui/CategoryPage.qml:183
+#: app/ui/CategoryPage.qml:235
 #, kde-format
 msgctxt "@action:inmenu Skin Tone"
 msgid "Dark"
 msgstr "Oscuro"
 
-#: app/ui/CategoryPage.qml:194
-#, kde-format
-msgctxt "@title:window A two-tone skin variant can be selected here"
-msgid "Select Variant"
-msgstr "Seleccionar variante"
-
-#: app/ui/CategoryPage.qml:242
+#: app/ui/CategoryPage.qml:264
 #, kde-format
 msgctxt "@item:inmenu"
 msgid "Copy Character"
 msgstr "Copiara carácter"
 
-#: app/ui/CategoryPage.qml:250
+#: app/ui/CategoryPage.qml:269
 #, kde-format
 msgctxt "@item:inmenu"
 msgid "Copy Description"
 msgstr "Copiar descripción"
 
-#: app/ui/CategoryPage.qml:291
+#: app/ui/CategoryPage.qml:368
 #, kde-format
 msgctxt "@label placeholder for empty recent emoji list"
-msgid "No recent emojis"
+msgid "No recent Emojis"
 msgstr "No hay emojis recientes"
 
-#: app/ui/CategoryPage.qml:291
+#: app/ui/CategoryPage.qml:368
 #, kde-format
 msgctxt "@label placeholder for no emoji found in category"
 msgid "No matching emoji found"
 msgstr "No se ha encontrado ningún emoji coincidente"
-
-#: app/ui/CategoryPage.qml:339
-#, kde-format
-msgctxt ""
-"@action:button Opens a window where a two-tone skin variant can be selected. "
-"%1 is the emoji's name"
-msgid "Select Variant of \"%1\""
-msgstr "Seleccionar variante de «%1»"
 
 #: app/ui/Emojier.qml:44
 #, kde-format
@@ -185,12 +171,6 @@ msgstr "%1 copiado al portapapeles"
 msgctxt "@title page title for Recent Emoji view, and sidebar label for it"
 msgid "Recent"
 msgstr "Recientes"
-
-#: app/ui/Emojier.qml:73
-#, kde-format
-msgctxt "@title:page All emojis"
-msgid "All"
-msgstr "Todos"
 
 #: emojicategory.cpp:14
 msgctxt "Emoji Category"

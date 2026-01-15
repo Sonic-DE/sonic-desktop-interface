@@ -1,17 +1,18 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR This file is copyright:
 # This file is distributed under the same license as the plasma-desktop package.
-# Aindriú Mac Giolla Eoin <aindriu80@yahoo.com>, 2026.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: plasma-desktop\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-03-13 02:40+0000\n"
-"PO-Revision-Date: 2026-01-21 14:35+0000\n"
-"Last-Translator: Aindriú Mac Giolla Eoin <aindriu80@yahoo.com>\n"
-"Language-Team: Irish <http://weblate.amgelocalnet.duckdns.org/projects/kde-"
-"plasma-translations/plasma_shell_org-kde-plasma-desktop/ga/>\n"
-"Language: ga\n"
+"POT-Creation-Date: 2026-01-15 00:44+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <kde-i18n-doc@kde.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -22,7 +23,7 @@ msgstr ""
 #, kde-format
 msgctxt "@info:status currently active activity"
 msgid "Currently being used"
-msgstr "In úsáid faoi láthair"
+msgstr ""
 
 #: contents/activitymanager/ActivityItem.qml:243
 #, kde-format
@@ -31,8 +32,6 @@ msgid ""
 "Move to\n"
 "this activity"
 msgstr ""
-"Bog go \n"
-"dtí an ghníomhaíocht seo"
 
 #: contents/activitymanager/ActivityItem.qml:273
 #, kde-format
@@ -41,134 +40,132 @@ msgid ""
 "Show also\n"
 "in this activity"
 msgstr ""
-"Taispeáin freisin \n"
-"sa ghníomhaíocht seo"
 
 #: contents/activitymanager/ActivityItem.qml:335
 #, kde-format
 msgctxt "@action:button tooltip only, opens kcm"
 msgid "Configure"
-msgstr "Cumraigh"
+msgstr ""
 
 #: contents/activitymanager/ActivityManager.qml:118
 #, kde-format
 msgctxt "@action:button opens Activity kcm"
 msgid "Create activity…"
-msgstr "Cruthaigh gníomhaíocht…"
+msgstr ""
 
 #: contents/activitymanager/Heading.qml:59
 #, kde-format
 msgctxt "@title:window"
 msgid "Activities"
-msgstr "Gníomhaíochtaí"
+msgstr ""
 
 #: contents/applet/AppletError.qml:165
 #, kde-format
 msgctxt "@action:button"
 msgid "Copy to Clipboard"
-msgstr "Cóipeáil chuig an nGearrthaisce"
+msgstr ""
 
 #: contents/applet/AppletError.qml:188
 #, kde-format
 msgctxt "@action:button opens dialog"
 msgid "View Error Details…"
-msgstr "Féach Sonraí na hEarráide…"
+msgstr ""
 
 #: contents/applet/CompactApplet.qml:91
 #, kde-format
 msgctxt "@info:whatsthis Accessible description for panel widget %1"
 msgid "Open %1"
-msgstr "Oscail %1"
+msgstr ""
 
 #: contents/configuration/AboutPlugin.qml:21
 #, kde-format
 msgctxt "@title:window About this widget"
 msgid "About"
-msgstr "Maidir"
+msgstr ""
 
 #: contents/configuration/AboutPlugin.qml:51
 #, kde-format
 msgctxt "plasma_shell_org.kde.plasma.desktop"
 msgid "Send an email to %1"
-msgstr "Seol ríomhphost chuig %1"
+msgstr ""
 
 #: contents/configuration/AboutPlugin.qml:65
 #, kde-format
 msgctxt "@action:button icononly for tooltip & accessible %1 is url"
 msgid "Open website %1"
-msgstr "Oscail suíomh Gréasáin %1"
+msgstr ""
 
 #: contents/configuration/AboutPlugin.qml:146
 #, kde-format
 msgctxt "@title:group"
 msgid "Website"
-msgstr "Suíomh Gréasáin"
+msgstr ""
 
 #: contents/configuration/AboutPlugin.qml:157
 #, kde-format
 msgctxt "@title:group"
 msgid "Get Help"
-msgstr "Faigh Cabhair"
+msgstr ""
 
 #: contents/configuration/AboutPlugin.qml:165
 #, kde-format
 msgctxt "@action:button urlbutton"
 msgid "Report an issue"
-msgstr "Tuairiscigh fadhb"
+msgstr ""
 
 #: contents/configuration/AboutPlugin.qml:172
 #, kde-format
 msgctxt "@title license information"
 msgid "Copyright"
-msgstr "Cóipcheart"
+msgstr ""
 
 #: contents/configuration/AboutPlugin.qml:191
 #, kde-format
 msgctxt "@label %1 is the short SPDX text for the license"
 msgid "License: %1"
-msgstr "Ceadúnas: %1"
+msgstr ""
 
 #: contents/configuration/AboutPlugin.qml:197
 #, kde-format
 msgctxt "@action:button"
 msgid "Read License"
-msgstr "Ceadúnas Léigh"
+msgstr ""
 
 #: contents/configuration/AboutPlugin.qml:211
 #, kde-format
 msgctxt "@title:group"
 msgid "Authors"
-msgstr "Údair"
+msgstr ""
 
 #: contents/configuration/AboutPlugin.qml:223
 #, kde-format
 msgctxt "@title:group"
 msgid "Credits"
-msgstr "Creidiúintí"
+msgstr ""
 
 #: contents/configuration/AboutPlugin.qml:236
 #, kde-format
 msgctxt "@title:group"
 msgid "Translators"
-msgstr "Aistritheoirí"
+msgstr ""
 
 #: contents/configuration/AppletConfiguration.qml:90
 #, kde-format
 msgctxt "@title:group for configuration dialog page"
 msgid "Keyboard Shortcuts"
-msgstr "Aicearraí Méarchláir"
+msgstr ""
 
 #: contents/configuration/AppletConfiguration.qml:337
 #, kde-format
 msgctxt "@title:group for About dialog page"
 msgid "About"
-msgstr "Maidir"
+msgstr ""
 
 #: contents/configuration/AppletConfiguration.qml:385
 #, kde-format
 msgctxt "@title:window dialog title"
 msgid "Apply Settings"
-msgstr "Cuir Socruithe i bhFeidhm"
+msgstr ""
 
 #: contents/configuration/AppletConfiguration.qml:386
 #, kde-format
@@ -176,26 +173,24 @@ msgctxt "@label dialog body"
 msgid ""
 "The current page has unsaved changes. Apply the changes or discard them?"
 msgstr ""
-"Tá athruithe neamhshábháilte ar an leathanach reatha. An bhfuil tú ag "
-"iarraidh na hathruithe a chur i bhfeidhm nó iad a chaitheamh amach?"
 
 #: contents/configuration/AppletConfiguration.qml:418
 #, kde-format
 msgctxt "@action:button"
 msgid "OK"
-msgstr "Ceart go leor"
+msgstr ""
 
 #: contents/configuration/AppletConfiguration.qml:425
 #, kde-format
 msgctxt "@action:button"
 msgid "Apply"
-msgstr "Cuir i bhfeidhm"
+msgstr ""
 
 #: contents/configuration/AppletConfiguration.qml:431
 #, kde-format
 msgctxt "@action:button"
 msgid "Cancel"
-msgstr "Cealaigh"
+msgstr ""
 
 #: contents/configuration/ConfigCategoryDelegate.qml:26
 #, kde-format
@@ -203,166 +198,163 @@ msgctxt ""
 "@info:whatsthis Accessible description for sidebar entries opening "
 "configuration page"
 msgid "Open configuration page"
-msgstr "Oscail an leathanach cumraíochta"
+msgstr ""
 
 #: contents/configuration/ConfigurationContainmentActions.qml:19
 #, kde-format
 msgctxt "@label for shortcuts"
 msgid "Left-Button"
-msgstr "Cnaipe Clé"
+msgstr ""
 
 #: contents/configuration/ConfigurationContainmentActions.qml:20
 #, kde-format
 msgctxt "@label for shortcuts"
 msgid "Right-Button"
-msgstr "Cnaipe Deas"
+msgstr ""
 
 #: contents/configuration/ConfigurationContainmentActions.qml:21
 #, kde-format
 msgctxt "@label for shortcuts"
 msgid "Middle-Button"
-msgstr "Cnaipe Lárnach"
+msgstr ""
 
 #: contents/configuration/ConfigurationContainmentActions.qml:22
 #, kde-format
 msgctxt "@label for shortcuts"
 msgid "Back-Button"
-msgstr "Cnaipe Ar Ais"
+msgstr ""
 
 #: contents/configuration/ConfigurationContainmentActions.qml:23
 #, kde-format
 msgctxt "@label for shortcuts"
 msgid "Forward-Button"
-msgstr "Cnaipe Ar Aghaidh"
+msgstr ""
 
 #: contents/configuration/ConfigurationContainmentActions.qml:25
 #, kde-format
 msgctxt "@label for shortcuts"
 msgid "Vertical-Scroll"
-msgstr "Scrollaigh Ingearach"
+msgstr ""
 
 #: contents/configuration/ConfigurationContainmentActions.qml:26
 #, kde-format
 msgctxt "@label for shortcuts"
 msgid "Horizontal-Scroll"
-msgstr "Scrollaigh Chothrománach"
+msgstr ""
 
 #: contents/configuration/ConfigurationContainmentActions.qml:28
 #, kde-format
 msgctxt "@label for shortcuts"
 msgid "Shift"
-msgstr "Shift"
+msgstr ""
 
 #: contents/configuration/ConfigurationContainmentActions.qml:29
 #, kde-format
 msgctxt "@label for shortcuts"
 msgid "Ctrl"
-msgstr "Ctrl"
+msgstr ""
 
 #: contents/configuration/ConfigurationContainmentActions.qml:30
 #, kde-format
 msgctxt "@label for shortcuts"
 msgid "Alt"
-msgstr "Alt"
+msgstr ""
 
 #: contents/configuration/ConfigurationContainmentActions.qml:31
 #, kde-format
 msgctxt "@label for shortcuts"
 msgid "Meta"
-msgstr "Meta"
+msgstr ""
 
 #: contents/configuration/ConfigurationContainmentActions.qml:72
 #, kde-format
 msgctxt "Concatenation sign for shortcuts, e.g. Ctrl+Shift"
 msgid "+"
-msgstr "+"
+msgstr ""
 
 #: contents/configuration/ConfigurationContainmentActions.qml:139
 #, kde-format
 msgctxt "@action:button"
 msgid "Add Action"
-msgstr "Cuir Gníomh Leis"
+msgstr ""
 
 #: contents/configuration/ConfigurationContainmentAppearance.qml:76
 #, kde-format
 msgctxt "@info:status inlinemessage"
 msgid "Layout changes have been restricted by the system administrator"
 msgstr ""
-"Tá srian curtha ag riarthóir an chórais ar athruithe ar an leagan amach"
 
 #: contents/configuration/ConfigurationContainmentAppearance.qml:91
 #, kde-format
 msgctxt "@label:listbox"
 msgid "Layout:"
-msgstr "Leagan Amach:"
+msgstr ""
 
 #: contents/configuration/ConfigurationContainmentAppearance.qml:114
 #, kde-format
 msgctxt "@label:listbox"
 msgid "Wallpaper type:"
-msgstr "Cineál cúlbhrat:"
+msgstr ""
 
 #: contents/configuration/ConfigurationContainmentAppearance.qml:153
 #, kde-format
 msgctxt "@action:button"
 msgid "Get New Plugins…"
-msgstr "Faigh Breiseáin Nua…"
+msgstr ""
 
 #: contents/configuration/ConfigurationContainmentAppearance.qml:243
 #, kde-format
 msgctxt "@info"
 msgid "Layout changes must be applied before other changes can be made"
 msgstr ""
-"Ní mór athruithe leagan amach a chur i bhfeidhm sula bhféadfar athruithe "
-"eile a dhéanamh"
 
 #: contents/configuration/ConfigurationContainmentAppearance.qml:247
 #, kde-format
 msgctxt "@action:button"
 msgid "Apply Now"
-msgstr "Cuir i bhfeidhm anois"
+msgstr ""
 
 #: contents/configuration/ConfigurationShortcuts.qml:16
 #, kde-format
 msgctxt "@title:window for configuration page"
 msgid "Shortcuts"
-msgstr "Aicearraí"
+msgstr ""
 
 #: contents/configuration/ConfigurationShortcuts.qml:29
 #, kde-format
 msgctxt "@action:button set keyboard shortcut for"
 msgid "Activate widget as if clicked:"
-msgstr "Gníomhachtaigh an giuirléid amhail is dá gcliceálfaí air:"
+msgstr ""
 
 #: contents/configuration/ContainmentConfiguration.qml:26
 #, kde-format
 msgctxt "@title:group for configuration dialog page"
 msgid "Wallpaper"
-msgstr "Cúlbhrat"
+msgstr ""
 
 #: contents/configuration/ContainmentConfiguration.qml:31
 #, kde-format
 msgctxt "@title:group for configuration dialog page"
 msgid "Mouse Actions"
-msgstr "Gníomhartha Luiche"
+msgstr ""
 
 #: contents/configuration/MouseEventInputButton.qml:13
 #, kde-format
 msgctxt "@action:button inactive state for button recording mouse input"
 msgid "Add Action"
-msgstr "Cuir Gníomh Leis"
+msgstr ""
 
 #: contents/configuration/MouseEventInputButton.qml:20
 #, kde-format
 msgctxt "@action:button active state for button recording mouse input"
 msgid "Input Here"
-msgstr "Ionchur Anseo"
+msgstr ""
 
 #: contents/configuration/PanelConfiguration.qml:99
 #, kde-format
 msgctxt "@title:window"
 msgid "Panel Settings"
-msgstr "Socruithe Painéil"
+msgstr ""
 
 #: contents/configuration/PanelConfiguration.qml:108
 #, kde-format
@@ -370,323 +362,322 @@ msgctxt ""
 "@action:button label of button to open a menu that lets you add widgets or "
 "spacers"
 msgid "Add New"
-msgstr "Cuir Nua leis"
+msgstr ""
 
 #: contents/configuration/PanelConfiguration.qml:126
 #, kde-format
 msgctxt "@action:menu add a spacer"
 msgid "Spacer"
-msgstr "Eatraimhín"
+msgstr ""
 
 #: contents/configuration/PanelConfiguration.qml:133
 #, kde-format
 msgctxt "@action:menu add a widget"
 msgid "Widgets…"
-msgstr "Giuirléidí…"
+msgstr ""
 
 #: contents/configuration/PanelConfiguration.qml:162
 #, kde-format
 msgctxt "@title:group"
 msgid "Position"
-msgstr "Seasamh"
+msgstr ""
 
 #: contents/configuration/PanelConfiguration.qml:167
 #, kde-format
 msgctxt "@label panel screen edge"
 msgid "Top"
-msgstr "Barr"
+msgstr ""
 
 #: contents/configuration/PanelConfiguration.qml:168
 #, kde-format
 msgctxt "@label panel screen edge"
 msgid "Right"
-msgstr "Deas"
+msgstr ""
 
 #: contents/configuration/PanelConfiguration.qml:169
 #, kde-format
 msgctxt "@label panel screen edge"
 msgid "Left"
-msgstr "Chlé"
+msgstr ""
 
 #: contents/configuration/PanelConfiguration.qml:170
 #, kde-format
 msgctxt "@label panel screen edge"
 msgid "Bottom"
-msgstr "Bun"
+msgstr ""
 
 #: contents/configuration/PanelConfiguration.qml:190
 #, kde-format
 msgctxt "action:button"
 msgid "Set Position…"
-msgstr "Socraigh Suíomh…"
+msgstr ""
 
 #: contents/configuration/PanelConfiguration.qml:217
 #, kde-format
 msgctxt "@title:group"
 msgid "Alignment"
-msgstr "Ailíniú"
+msgstr ""
 
 #: contents/configuration/PanelConfiguration.qml:282
 #, kde-format
 msgctxt "@item:inlistbox"
 msgid "Top"
-msgstr "Barr"
+msgstr ""
 
 #: contents/configuration/PanelConfiguration.qml:282
 #, kde-format
 msgctxt "@item:inlistbox"
 msgid "Left"
-msgstr "Chlé"
+msgstr ""
 
 #: contents/configuration/PanelConfiguration.qml:283
 #, kde-format
 msgctxt "@item:inlistbox"
 msgid "Center"
-msgstr "Lár"
+msgstr ""
 
 #: contents/configuration/PanelConfiguration.qml:284
 #, kde-format
 msgctxt "@item:inlistbox"
 msgid "Bottom"
-msgstr "Bun"
+msgstr ""
 
 #: contents/configuration/PanelConfiguration.qml:284
 #, kde-format
 msgctxt "@item:inlistbox"
 msgid "Right"
-msgstr "Deas"
+msgstr ""
 
 #: contents/configuration/PanelConfiguration.qml:314
 #, kde-format
 msgctxt "@title:group panel height"
 msgid "Height"
-msgstr "Airde"
+msgstr ""
 
 #: contents/configuration/PanelConfiguration.qml:315
 #, kde-format
 msgctxt "@title:group panel width"
 msgid "Width"
-msgstr "Leithead"
+msgstr ""
 
 #: contents/configuration/PanelConfiguration.qml:334
 #, kde-format
 msgctxt "@item:inlistbox panel fills the full height of the display"
 msgid "Fill height"
-msgstr "Airde líonta"
+msgstr ""
 
 #: contents/configuration/PanelConfiguration.qml:334
 #, kde-format
 msgctxt "@item:inlistbox panel fills the full width of the display"
 msgid "Fill width"
-msgstr "Leithead líonta"
+msgstr ""
 
 #: contents/configuration/PanelConfiguration.qml:335
 #, kde-format
 msgctxt "@item:inlistbox panel is just big enough to fit its content"
 msgid "Fit content"
-msgstr "Ábhar oiriúnach"
+msgstr ""
 
 #: contents/configuration/PanelConfiguration.qml:336
 #, kde-format
 msgctxt "@item:inlistbox panel size"
 msgid "Custom"
-msgstr "Saincheaptha"
+msgstr ""
 
 #: contents/configuration/PanelConfiguration.qml:369
 #, kde-format
 msgctxt "@title:group"
 msgid "Visibility"
-msgstr "Infheictheacht"
-
-#: contents/configuration/PanelConfiguration.qml:386
-#, kde-format
-msgctxt "@item:inlistbox"
-msgid "Always visible"
-msgstr "Le feiceáil i gcónaí"
+msgstr ""
 
 #: contents/configuration/PanelConfiguration.qml:387
 #, kde-format
 msgctxt "@item:inlistbox"
-msgid "Auto hide"
-msgstr "Folaigh go huathoibríoch"
+msgid "Always visible"
+msgstr ""
 
 #: contents/configuration/PanelConfiguration.qml:388
 #, kde-format
 msgctxt "@item:inlistbox"
-msgid "Dodge windows"
-msgstr "Fuinneoga Seachain"
+msgid "Auto hide"
+msgstr ""
 
 #: contents/configuration/PanelConfiguration.qml:389
 #, kde-format
 msgctxt "@item:inlistbox"
-msgid "Windows go below"
-msgstr "Téann fuinneoga thíos"
+msgid "Dodge windows"
+msgstr ""
 
-#: contents/configuration/PanelConfiguration.qml:449
+#: contents/configuration/PanelConfiguration.qml:390
+#, kde-format
+msgctxt "@item:inlistbox"
+msgid "Windows go below"
+msgstr ""
+
+#: contents/configuration/PanelConfiguration.qml:450
 #, kde-format
 msgctxt "@title:group"
 msgid "Opacity"
-msgstr "Teimhneacht"
-
-#: contents/configuration/PanelConfiguration.qml:465
-#, kde-format
-msgctxt "@item:inlistbox"
-msgid "Adaptive"
-msgstr "Oiriúnaitheach"
+msgstr ""
 
 #: contents/configuration/PanelConfiguration.qml:466
 #, kde-format
 msgctxt "@item:inlistbox"
-msgid "Opaque"
-msgstr "Teimhneach"
+msgid "Adaptive"
+msgstr ""
 
 #: contents/configuration/PanelConfiguration.qml:467
 #, kde-format
 msgctxt "@item:inlistbox"
-msgid "Translucent"
-msgstr "Trédhearcach"
+msgid "Opaque"
+msgstr ""
 
-#: contents/configuration/PanelConfiguration.qml:499
+#: contents/configuration/PanelConfiguration.qml:468
+#, kde-format
+msgctxt "@item:inlistbox"
+msgid "Translucent"
+msgstr ""
+
+#: contents/configuration/PanelConfiguration.qml:500
 #, kde-format
 msgctxt "@title:group Degree of floatingness of panel and applets"
 msgid "Floating"
-msgstr "Ar snámh"
-
-#: contents/configuration/PanelConfiguration.qml:515
-#, kde-format
-msgctxt "@item:inlistbox Option to disable floating panels or applets"
-msgid "Disabled"
-msgstr "Díchumasaithe"
+msgstr ""
 
 #: contents/configuration/PanelConfiguration.qml:516
 #, kde-format
-msgctxt "@item:inlistbox Option to make only panel applets always float"
-msgid "Applets only"
-msgstr "Feidhmchláiríní amháin"
+msgctxt "@item:inlistbox Option to disable floating panels or applets"
+msgid "Disabled"
+msgstr ""
 
 #: contents/configuration/PanelConfiguration.qml:517
 #, kde-format
+msgctxt "@item:inlistbox Option to make only panel applets always float"
+msgid "Applets only"
+msgstr ""
+
+#: contents/configuration/PanelConfiguration.qml:518
+#, kde-format
 msgctxt "@item:inlistbox Option to make panel and applets floating"
 msgid "Panel and applets"
-msgstr "Painéal agus feidhmchláiríní"
+msgstr ""
 
-#: contents/configuration/PanelConfiguration.qml:560
+#: contents/configuration/PanelConfiguration.qml:561
 #, kde-format
 msgctxt ""
 "@action:button Revert an unsupported configuration back to the defaults"
 msgid "Fix it"
-msgstr "Deisigh é"
-
-#: contents/configuration/PanelConfiguration.qml:646
-#, kde-format
-msgctxt "@label:spinbox"
-msgid "Panel Width:"
-msgstr "Leithead an Phainéil:"
+msgstr ""
 
 #: contents/configuration/PanelConfiguration.qml:647
 #, kde-format
 msgctxt "@label:spinbox"
-msgid "Panel Height:"
-msgstr "Airde an Phainéil:"
+msgid "Panel Width:"
+msgstr ""
 
-#: contents/configuration/PanelConfiguration.qml:670
+#: contents/configuration/PanelConfiguration.qml:648
+#, kde-format
+msgctxt "@label:spinbox"
+msgid "Panel Height:"
+msgstr ""
+
+#: contents/configuration/PanelConfiguration.qml:671
 #, kde-format
 msgctxt "@title:group shortcut that moves focus to the panel"
 msgid "Focus shortcut:"
-msgstr "Aicearra fócais:"
+msgstr ""
 
-#: contents/configuration/PanelConfiguration.qml:680
+#: contents/configuration/PanelConfiguration.qml:682
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "Press this keyboard shortcut to move focus to the Panel"
 msgstr ""
-"Brúigh an aicearra méarchláir seo chun an fócas a bhogadh chuig an bPainéal"
 
-#: contents/configuration/PanelConfiguration.qml:687
+#: contents/configuration/PanelConfiguration.qml:689
 #, kde-format
 msgctxt "@action:button accessible name"
 msgid "Focus Shortcut Setter"
-msgstr "Socraitheoir Aicearra Fócais"
+msgstr ""
 
-#: contents/configuration/PanelConfiguration.qml:688
+#: contents/configuration/PanelConfiguration.qml:690
 #, kde-format
 msgctxt "@info:whatsthis Accessible description for button"
 msgid "Button to set the shortcut for the panel to gain focus"
-msgstr "Cnaipe chun an aicearra a shocrú don phainéal chun fócas a fháil"
+msgstr ""
 
-#: contents/configuration/PanelConfiguration.qml:714
+#: contents/configuration/PanelConfiguration.qml:716
 #, kde-format
 msgctxt "@action:button Delete the panel"
 msgid "Delete Panel"
-msgstr "Scrios Painéal"
+msgstr ""
 
-#: contents/configuration/PanelConfiguration.qml:717
+#: contents/configuration/PanelConfiguration.qml:719
 #, kde-format
 msgctxt "@info:tooltip for button"
 msgid "Remove this panel; this action can be undone"
-msgstr "Bain an painéal seo; is féidir an gníomh seo a chealú"
+msgstr ""
 
-#: contents/configuration/PanelConfiguration.qml:726
+#: contents/configuration/PanelConfiguration.qml:728
 #, kde-format
 msgctxt "@action:button Clone the panel"
 msgid "Clone Panel"
-msgstr "Painéal Clónála"
+msgstr ""
 
-#: contents/configuration/PanelConfiguration.qml:730
+#: contents/configuration/PanelConfiguration.qml:732
 #, kde-format
 msgctxt "@info:tooltip for button"
 msgid "Create a new panel with the same settings and applets"
-msgstr "Cruthaigh painéal nua leis na socruithe agus na feidhmchláiríní céanna"
+msgstr ""
 
-#: contents/configuration/PanelConfiguration.qml:739
+#: contents/configuration/PanelConfiguration.qml:741
 #, kde-format
 msgctxt "@action:button Close the panel configuration window"
 msgid "Close"
-msgstr "Dún"
+msgstr ""
 
-#: contents/configuration/PanelConfiguration.qml:739
+#: contents/configuration/PanelConfiguration.qml:741
 #, kde-format
 msgctxt ""
 "@action:button Close the panel configuration window and exit edit mode"
 msgid "Exit Edit Mode"
-msgstr "Scoir Mód Eagarthóireachta"
+msgstr ""
 
-#: contents/configuration/PanelConfiguration.qml:742
+#: contents/configuration/PanelConfiguration.qml:744
 #, kde-format
 msgctxt "@info:tooltip for button"
 msgid "Close Panel Settings window and exit Edit Mode"
-msgstr "Dún fuinneog Socruithe Painéil agus fág Mód Eagarthóireachta"
+msgstr ""
 
 #: contents/configuration/panelconfiguration/Ruler.qml:25
 #, kde-format
 msgctxt "@info:tooltip slider handle"
 msgid "Drag to change maximum height."
-msgstr "Tarraing chun an airde uasta a athrú."
+msgstr ""
 
 #: contents/configuration/panelconfiguration/Ruler.qml:26
 #, kde-format
 msgctxt "@info:tooltip slider handle"
 msgid "Drag to change maximum width."
-msgstr "Tarraing chun an leithead uasta a athrú."
+msgstr ""
 
 #: contents/configuration/panelconfiguration/Ruler.qml:27
 #: contents/configuration/panelconfiguration/Ruler.qml:32
 #, kde-format
 msgctxt "@info:tooltip slider handle"
 msgid "Double-click to reset."
-msgstr "Cliceáil faoi dhó chun athshocrú."
+msgstr ""
 
 #: contents/configuration/panelconfiguration/Ruler.qml:30
 #, kde-format
 msgctxt "@info:tooltip slider handle"
 msgid "Drag to change minimum height."
-msgstr "Tarraing chun an airde íosta a athrú."
+msgstr ""
 
 #: contents/configuration/panelconfiguration/Ruler.qml:31
 #, kde-format
 msgctxt "@info:tooltip slider handle"
 msgid "Drag to change minimum width."
-msgstr "Tarraing chun an leithead íosta a athrú."
+msgstr ""
 
 #: contents/configuration/panelconfiguration/Ruler.qml:80
 #, kde-format
@@ -695,14 +686,12 @@ msgid ""
 "Drag to change position on this screen edge.\n"
 "Double-click to reset."
 msgstr ""
-"Tarraing chun suíomh a athrú ar imeall an scáileáin seo. \n"
-"Cliceáil faoi dhó chun athshocrú."
 
 #: contents/configuration/ShellContainmentConfiguration.qml:19
 #, kde-format
 msgctxt "@title:window"
 msgid "Manage Panels and Desktops"
-msgstr "Bainistigh Painéil agus Deasca"
+msgstr ""
 
 #: contents/configuration/ShellContainmentConfiguration.qml:34
 #, kde-format
@@ -710,115 +699,110 @@ msgctxt "@info:usagetip"
 msgid ""
 "You can drag Panels and Desktops around to move them to different screens."
 msgstr ""
-"Is féidir leat Painéil agus Deasca a tharraingt timpeall chun iad a bhogadh "
-"chuig scáileáin éagsúla."
 
 #: contents/configuration/ShellContainmentConfiguration.qml:44
 #, kde-format
 msgctxt "@action:button Close window"
 msgid "Close"
-msgstr "Dún"
+msgstr ""
 
 #: contents/configuration/shellcontainmentconfiguration/Delegate.qml:187
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "Swap with Desktop on Screen %1"
-msgstr "Malartaigh le Deasc ar Scáileán %1"
+msgstr ""
 
 #: contents/configuration/shellcontainmentconfiguration/Delegate.qml:188
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "Move to Screen %1"
-msgstr "Bog go dtí an Scáileán %1"
+msgstr ""
 
 #: contents/configuration/shellcontainmentconfiguration/Delegate.qml:202
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "Remove Desktop"
-msgstr "Bain an Deasc"
+msgstr ""
 
 #: contents/configuration/shellcontainmentconfiguration/Delegate.qml:203
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "Remove Panel"
-msgstr "Bain an Painéal"
+msgstr ""
 
 #: contents/configuration/shellcontainmentconfiguration/Delegate.qml:279
 #, kde-format
 msgctxt "@info % is screen name"
 msgid "%1 (primary)"
-msgstr "%1 (príomhúil)"
+msgstr ""
 
 #: contents/explorer/AppletAlternatives.qml:70
 #, kde-format
 msgctxt "@title:window for widget alternatives explorer"
 msgid "Alternative Widgets"
-msgstr "Giuirléidí Malartacha"
+msgstr ""
 
 #: contents/explorer/AppletDelegate.qml:28
 #, kde-format
 msgctxt "@action:button accessible only, %1 is widget name"
 msgid "Add %1"
-msgstr "Cuir %1 leis"
+msgstr ""
 
 #: contents/explorer/AppletDelegate.qml:47
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "Unsupported Widget"
-msgstr "Giuirléid Gan Tacaíocht"
+msgstr ""
 
 #: contents/explorer/AppletDelegate.qml:202
 #, kde-format
 msgctxt "Text displayed on top of newly installed widgets"
 msgid "New!"
-msgstr "Nua!"
+msgstr ""
 
 #: contents/explorer/AppletDelegate.qml:204
 #, kde-format
 msgctxt "@info:other accessible for badge showing applet count"
 msgid "%1 widget active"
 msgid_plural "%1 widgets active"
-msgstr[0] "%1 giuirléid gníomhach"
-msgstr[1] "%1 giuirléidí gníomhach"
-msgstr[2] "%1 giuirléidí gníomhach"
-msgstr[3] "%1 giuirléidí gníomhach"
-msgstr[4] "%1 giuirléidí gníomhach"
+msgstr[0] ""
+msgstr[1] ""
 
 #: contents/explorer/AppletDelegate.qml:205
 #, kde-format
 msgctxt " @info:other accessible for badge indicating new widget"
 msgid "Recently installed"
-msgstr "Suiteáilte le déanaí"
+msgstr ""
 
 #: contents/explorer/AppletDelegate.qml:217
 #, kde-format
 msgctxt "@action:button tooltip and accessible cancel uninstall widget"
 msgid "Cancel Uninstallation"
-msgstr "Cealaigh Díshuiteáil"
+msgstr ""
 
 #: contents/explorer/AppletDelegate.qml:218
 #, kde-format
 msgctxt "@action:button tooltip and accessible uninstall widget"
 msgid "Mark for Uninstallation"
-msgstr "Marcáil le haghaidh Díshuiteála"
+msgstr ""
 
 #: contents/explorer/AppletDelegate.qml:222
 #, kde-format
 msgctxt "@action:button accessible only, %1 is widget name"
 msgid "Cancel pending uninstallation for widget %1"
-msgstr "Cealaigh an díshuiteáil atá ar feitheamh don ghiuirléid %1"
+msgstr ""
 
 #: contents/explorer/AppletDelegate.qml:223
 #, kde-format
 msgctxt "@action:button accessible only, %1 is widget name"
 msgid "Mark widget %1 for uninstallation. Requires confirmation"
-msgstr "Marcáil an giuirléid %1 le haghaidh díshuiteála. Teastaíonn deimhniú"
+msgstr ""
 
 #: contents/explorer/AppletDelegate.qml:265
 #, kde-format
 msgctxt "@action:button"
 msgid "Remove all instances"
-msgstr "Bain gach cás"
+msgstr ""
 
 #: contents/explorer/AppletDelegate.qml:269
 #, kde-format
@@ -827,248 +811,242 @@ msgctxt ""
 "name"
 msgid "Remove running instance of widget %2"
 msgid_plural "Remove all %1 running instances of widget %2"
-msgstr[0] "Bain an sampla reatha den ghiuirléid %2"
-msgstr[1] "Bain gach %1 cás reatha den ghiuirléid %2"
-msgstr[2] "Bain gach %1 cás reatha den ghiuirléid %2"
-msgstr[3] "Bain gach %1 cás reatha den ghiuirléid %2"
-msgstr[4] "Bain gach %1 cás reatha den ghiuirléid %2"
+msgstr[0] ""
+msgstr[1] ""
 
 #: contents/explorer/WidgetExplorer.qml:140
 #: contents/explorer/WidgetExplorer.qml:223
 #, kde-format
 msgctxt "@action:button like listbox, switches category to all widgets"
 msgid "All Widgets"
-msgstr "Gach Giuirléidí"
+msgstr ""
 
 #: contents/explorer/WidgetExplorer.qml:169
 #, kde-format
 msgctxt "@title:group for widget grid"
 msgid "Widgets"
-msgstr "Giuirléidí"
+msgstr ""
 
 #: contents/explorer/WidgetExplorer.qml:178
 #, kde-format
 msgctxt "@action:button The word 'new' refers to widgets"
 msgid "Get New…"
-msgstr "Faigh Nua…"
+msgstr ""
 
 #: contents/explorer/WidgetExplorer.qml:179
 #, kde-format
 msgctxt "@action:button"
 msgid "Get New Widgets…"
-msgstr "Faigh Giuirléidí Nua…"
+msgstr ""
 
 #: contents/explorer/WidgetExplorer.qml:192
 #, kde-format
 msgctxt "@action:button accessible for close button"
 msgid "Close Widget Explorer"
-msgstr "Dún an Taiscéalaí Giuirléidí"
+msgstr ""
 
 #: contents/explorer/WidgetExplorer.qml:208
 #, kde-format
 msgctxt "@label:textbox accessible"
 msgid "Search through widgets"
-msgstr "Cuardaigh trí ghiuirléidí"
+msgstr ""
 
 #: contents/explorer/WidgetExplorer.qml:237
 #, kde-format
 msgctxt "@action:button tooltip only"
 msgid "Categories"
-msgstr "Catagóirí"
+msgstr ""
 
 #: contents/explorer/WidgetExplorer.qml:259
 #, kde-format
 msgctxt "@action:button uninstall widgets in widget explorer"
 msgid "Uninstall (%1 Widget)"
 msgid_plural "Uninstall (%1 Widgets)"
-msgstr[0] "Díshuiteáil (%1 Giuirléid)"
-msgstr[1] "Díshuiteáil (%1 Giuirléidí)"
-msgstr[2] "Díshuiteáil (%1 Giuirléidí)"
-msgstr[3] "Díshuiteáil (%1 Giuirléidí)"
-msgstr[4] "Díshuiteáil (%1 Giuirléidí)"
+msgstr[0] ""
+msgstr[1] ""
 
 #: contents/explorer/WidgetExplorer.qml:389
 #, kde-format
 msgctxt "@info placeholdermessage"
 msgid "No widgets matched the search terms"
-msgstr "Níor tháinig aon ghiuirléidí leis na téarmaí cuardaigh"
+msgstr ""
 
 #: contents/explorer/WidgetExplorer.qml:389
 #, kde-format
 msgctxt "@info placeholdermessage"
 msgid "No widgets available"
-msgstr "Níl aon ghiuirléidí ar fáil"
+msgstr ""
 
 #: contents/lockscreen/config.qml:23
 #, kde-format
 msgctxt "@title: group"
 msgid "Show clock:"
-msgstr "Taispeáin clog:"
+msgstr ""
 
 #: contents/lockscreen/config.qml:24
 #, kde-format
 msgctxt "@option:radio Clock always shown"
 msgid "Always"
-msgstr "I gcónaí"
+msgstr ""
 
 #: contents/lockscreen/config.qml:25
 #, kde-format
 msgctxt "@option:radio"
 msgid "Always show clock"
-msgstr "Taispeáin an clog i gcónaí"
+msgstr ""
 
 #: contents/lockscreen/config.qml:40
 #, kde-format
 msgctxt "@option:radio Clock shown only while unlock prompt is visible"
 msgid "On unlocking prompt"
-msgstr "Ar an leid dhíghlasála"
+msgstr ""
 
 #: contents/lockscreen/config.qml:41
 #, kde-format
 msgctxt "@option:radio"
 msgid "Show clock only on unlocking prompt"
-msgstr "Taispeáin an clog amháin nuair a dhéantar an leid dhíghlasála"
+msgstr ""
 
 #: contents/lockscreen/config.qml:54
 #, kde-format
 msgctxt "@option:radio Clock never shown"
 msgid "Never"
-msgstr "Choíche"
+msgstr ""
 
 #: contents/lockscreen/config.qml:55
 #, kde-format
 msgctxt "@option:radio"
 msgid "Never show clock"
-msgstr "Ná taispeáin an clog riamh"
+msgstr ""
 
 #: contents/lockscreen/config.qml:70
 #, kde-format
 msgctxt "@title: group UI controls for playback of multimedia content"
 msgid "Media controls:"
-msgstr "Rialuithe meán:"
+msgstr ""
 
 #: contents/lockscreen/config.qml:73
 #, kde-format
 msgctxt "@option:check"
 msgid "Show under unlocking prompt"
-msgstr "Taispeáin faoin leid dhíghlasála"
+msgstr ""
 
 #: contents/lockscreen/LockScreenUi.qml:48
 #, kde-format
 msgctxt "@info:status"
 msgid "Unlocking failed"
-msgstr "Theip ar dhíghlasáil"
+msgstr ""
 
-#: contents/lockscreen/LockScreenUi.qml:285
+#: contents/lockscreen/LockScreenUi.qml:281
 #, kde-format
 msgctxt "@info:status"
 msgid "Caps Lock is on"
-msgstr "Tá Caps Lock ar siúl"
+msgstr ""
 
-#: contents/lockscreen/LockScreenUi.qml:299
+#: contents/lockscreen/LockScreenUi.qml:295
 #, kde-format
 msgctxt "@action:button"
 msgid "Slee&p"
-msgstr "Codladh"
+msgstr ""
 
-#: contents/lockscreen/LockScreenUi.qml:305
+#: contents/lockscreen/LockScreenUi.qml:301
 #, kde-format
 msgctxt "@action:button"
 msgid "&Hibernate"
-msgstr "&Suanaigh"
+msgstr ""
 
-#: contents/lockscreen/LockScreenUi.qml:311
+#: contents/lockscreen/LockScreenUi.qml:307
 #, kde-format
 msgctxt "@action:button"
 msgid "Switch &User"
-msgstr "&Athraigh Úsáideoir"
+msgstr ""
 
-#: contents/lockscreen/LockScreenUi.qml:372
+#: contents/lockscreen/LockScreenUi.qml:368
 #, kde-format
 msgctxt "Button to show/hide virtual keyboard"
 msgid "Virtual Keyboard"
-msgstr "Méarchlár Fíorúil"
+msgstr ""
 
-#: contents/lockscreen/LockScreenUi.qml:396
+#: contents/lockscreen/LockScreenUi.qml:392
 #, kde-format
 msgctxt "Button to change keyboard layout"
 msgid "Switch layout"
-msgstr "Leagan amach lasc"
+msgstr ""
 
 #: contents/lockscreen/MainBlock.qml:65
 #, kde-format
 msgctxt "@info:placeholder in text field"
 msgid "Password"
-msgstr "Pasfhocal"
+msgstr ""
 
 #: contents/lockscreen/MainBlock.qml:114
 #, kde-format
 msgctxt "@action:button accessible only"
 msgid "Unlock"
-msgstr "Díghlasáil"
+msgstr ""
 
 #: contents/lockscreen/MainBlock.qml:163
 #, kde-format
 msgctxt "@info:usagetip"
 msgid "(or scan your fingerprint on the reader)"
-msgstr "(nó scanadh do mhéarloirg ar an léitheoir)"
+msgstr ""
 
 #: contents/lockscreen/MainBlock.qml:167
 #, kde-format
 msgctxt "@info:usagetip"
 msgid "(or scan your smartcard)"
-msgstr "(nó scanadh do chárta cliste)"
+msgstr ""
 
 #: contents/lockscreen/MediaControls.qml:59
 #, kde-format
 msgctxt "@info:status"
 msgid "No title"
-msgstr "Gan teideal"
+msgstr ""
 
 #: contents/lockscreen/MediaControls.qml:60
 #, kde-format
 msgctxt "@info:status"
 msgid "No media playing"
-msgstr "Gan aon mheáin ag seinm"
+msgstr ""
 
 #: contents/lockscreen/MediaControls.qml:88
 #, kde-format
 msgctxt "@action:button Accessible only"
 msgid "Previous track"
-msgstr "An rian roimhe seo"
+msgstr ""
 
 #: contents/lockscreen/MediaControls.qml:100
 #, kde-format
 msgctxt "@action:button Accessible only"
 msgid "Play or Pause media"
-msgstr "Seinn nó Sos meáin"
+msgstr ""
 
 #: contents/lockscreen/MediaControls.qml:110
 #, kde-format
 msgctxt "@action:button Accessible only"
 msgid "Next track"
-msgstr "An chéad rian eile"
+msgstr ""
 
 #: contents/lockscreen/NoPasswordUnlock.qml:17
 #, kde-format
 msgctxt "@action:button no-password unlock"
 msgid "Unlock"
-msgstr "Díghlasáil"
+msgstr ""
 
-#: contents/views/DesktopEditMode.qml:122
+#: contents/views/DesktopEditMode.qml:135
 #, kde-format
 msgctxt "@action:button"
 msgid "More"
-msgstr "Tuilleadh"
+msgstr ""
 
-#: contents/views/DesktopEditMode.qml:131
+#: contents/views/DesktopEditMode.qml:144
 #, kde-format
 msgctxt "@action:button"
 msgid "Exit Edit Mode"
-msgstr "Scoir Mód Eagarthóireachta"
+msgstr ""
 
 #: contents/views/Panel.qml:326
 #, kde-format
 msgctxt "@info:whatsthis Accessible name"
 msgid "Panel Focus Indicator"
-msgstr "Táscaire Fócas Painéil"
+msgstr ""

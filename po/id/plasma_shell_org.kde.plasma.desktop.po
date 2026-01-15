@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-desktop\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-03-13 02:40+0000\n"
+"POT-Creation-Date: 2026-01-15 00:44+0000\n"
 "PO-Revision-Date: 2025-03-15 07:18+0700\n"
 "Last-Translator: Wantoyo <wantoyek@gmail.com>\n"
 "Language-Team: https://t.me/Localizations_KDE_Indonesia\n"
@@ -577,154 +577,154 @@ msgctxt "@title:group"
 msgid "Visibility"
 msgstr "Keterlihatan"
 
-#: contents/configuration/PanelConfiguration.qml:386
+#: contents/configuration/PanelConfiguration.qml:387
 #, fuzzy, kde-format
 #| msgid "Always visible"
 msgctxt "@item:inlistbox"
 msgid "Always visible"
 msgstr "Selalu terlihat"
 
-#: contents/configuration/PanelConfiguration.qml:387
+#: contents/configuration/PanelConfiguration.qml:388
 #, fuzzy, kde-format
 #| msgid "Auto hide"
 msgctxt "@item:inlistbox"
 msgid "Auto hide"
 msgstr "Auto sembunyi"
 
-#: contents/configuration/PanelConfiguration.qml:388
+#: contents/configuration/PanelConfiguration.qml:389
 #, fuzzy, kde-format
 #| msgid "Dodge windows"
 msgctxt "@item:inlistbox"
 msgid "Dodge windows"
 msgstr "Menghindari jendela"
 
-#: contents/configuration/PanelConfiguration.qml:389
+#: contents/configuration/PanelConfiguration.qml:390
 #, fuzzy, kde-format
 #| msgid "Windows go below"
 msgctxt "@item:inlistbox"
 msgid "Windows go below"
 msgstr "Jendela menuju ke bawahnya"
 
-#: contents/configuration/PanelConfiguration.qml:449
+#: contents/configuration/PanelConfiguration.qml:450
 #, fuzzy, kde-format
 #| msgid "Opacity"
 msgctxt "@title:group"
 msgid "Opacity"
 msgstr "Opasitas"
 
-#: contents/configuration/PanelConfiguration.qml:465
+#: contents/configuration/PanelConfiguration.qml:466
 #, fuzzy, kde-format
 #| msgid "Adaptive"
 msgctxt "@item:inlistbox"
 msgid "Adaptive"
 msgstr "Adaptif"
 
-#: contents/configuration/PanelConfiguration.qml:466
+#: contents/configuration/PanelConfiguration.qml:467
 #, fuzzy, kde-format
 #| msgid "Opaque"
 msgctxt "@item:inlistbox"
 msgid "Opaque"
 msgstr "Kekusaman"
 
-#: contents/configuration/PanelConfiguration.qml:467
+#: contents/configuration/PanelConfiguration.qml:468
 #, fuzzy, kde-format
 #| msgid "Translucent"
 msgctxt "@item:inlistbox"
 msgid "Translucent"
 msgstr "Bening"
 
-#: contents/configuration/PanelConfiguration.qml:499
+#: contents/configuration/PanelConfiguration.qml:500
 #, kde-format
 msgctxt "@title:group Degree of floatingness of panel and applets"
 msgid "Floating"
 msgstr "Mengambang"
 
-#: contents/configuration/PanelConfiguration.qml:515
+#: contents/configuration/PanelConfiguration.qml:516
 #, kde-format
 msgctxt "@item:inlistbox Option to disable floating panels or applets"
 msgid "Disabled"
 msgstr "Dinonfungsikan"
 
-#: contents/configuration/PanelConfiguration.qml:516
+#: contents/configuration/PanelConfiguration.qml:517
 #, kde-format
 msgctxt "@item:inlistbox Option to make only panel applets always float"
 msgid "Applets only"
 msgstr "Hanya applet"
 
-#: contents/configuration/PanelConfiguration.qml:517
+#: contents/configuration/PanelConfiguration.qml:518
 #, kde-format
 msgctxt "@item:inlistbox Option to make panel and applets floating"
 msgid "Panel and applets"
 msgstr "Panel dan applet"
 
-#: contents/configuration/PanelConfiguration.qml:560
+#: contents/configuration/PanelConfiguration.qml:561
 #, kde-format
 msgctxt ""
 "@action:button Revert an unsupported configuration back to the defaults"
 msgid "Fix it"
 msgstr "Perbaiki"
 
-#: contents/configuration/PanelConfiguration.qml:646
+#: contents/configuration/PanelConfiguration.qml:647
 #, fuzzy, kde-format
 #| msgid "Panel Width:"
 msgctxt "@label:spinbox"
 msgid "Panel Width:"
 msgstr "Lebar Panel:"
 
-#: contents/configuration/PanelConfiguration.qml:647
+#: contents/configuration/PanelConfiguration.qml:648
 #, fuzzy, kde-format
 #| msgid "Panel Height:"
 msgctxt "@label:spinbox"
 msgid "Panel Height:"
 msgstr "Tinggi Panel:"
 
-#: contents/configuration/PanelConfiguration.qml:670
+#: contents/configuration/PanelConfiguration.qml:671
 #, fuzzy, kde-format
 #| msgid "Focus shortcut:"
 msgctxt "@title:group shortcut that moves focus to the panel"
 msgid "Focus shortcut:"
 msgstr "Pintasan fokus:"
 
-#: contents/configuration/PanelConfiguration.qml:680
+#: contents/configuration/PanelConfiguration.qml:682
 #, fuzzy, kde-format
 #| msgid "Press this keyboard shortcut to move focus to the Panel"
 msgctxt "@info:tooltip"
 msgid "Press this keyboard shortcut to move focus to the Panel"
 msgstr "Tekan pintasan keyboard ini untuk memindahkan fokus ke Panel"
 
-#: contents/configuration/PanelConfiguration.qml:687
+#: contents/configuration/PanelConfiguration.qml:689
 #, fuzzy, kde-format
 #| msgid "Focus shortcut:"
 msgctxt "@action:button accessible name"
 msgid "Focus Shortcut Setter"
 msgstr "Pintasan fokus:"
 
-#: contents/configuration/PanelConfiguration.qml:688
+#: contents/configuration/PanelConfiguration.qml:690
 #, kde-format
 msgctxt "@info:whatsthis Accessible description for button"
 msgid "Button to set the shortcut for the panel to gain focus"
 msgstr ""
 
-#: contents/configuration/PanelConfiguration.qml:714
+#: contents/configuration/PanelConfiguration.qml:716
 #, kde-format
 msgctxt "@action:button Delete the panel"
 msgid "Delete Panel"
 msgstr "Hapus Panel"
 
-#: contents/configuration/PanelConfiguration.qml:717
+#: contents/configuration/PanelConfiguration.qml:719
 #, fuzzy, kde-format
 #| msgid "Remove this panel; this action is undo-able"
 msgctxt "@info:tooltip for button"
 msgid "Remove this panel; this action can be undone"
 msgstr "Hapus panel ini, tindakan ini dapat diurungkan"
 
-#: contents/configuration/PanelConfiguration.qml:726
+#: contents/configuration/PanelConfiguration.qml:728
 #, kde-format
 msgctxt "@action:button Clone the panel"
 msgid "Clone Panel"
 msgstr "Panel Clone"
 
-#: contents/configuration/PanelConfiguration.qml:730
+#: contents/configuration/PanelConfiguration.qml:732
 #, fuzzy, kde-format
 #| msgctxt "@info:tooltip"
 #| msgid "Create a new panel with the same settings and applets"
@@ -732,20 +732,20 @@ msgctxt "@info:tooltip for button"
 msgid "Create a new panel with the same settings and applets"
 msgstr "Buat sebuah panel baru dengan applet dan pengaturan yang sama"
 
-#: contents/configuration/PanelConfiguration.qml:739
+#: contents/configuration/PanelConfiguration.qml:741
 #, kde-format
 msgctxt "@action:button Close the panel configuration window"
 msgid "Close"
 msgstr "Tutup"
 
-#: contents/configuration/PanelConfiguration.qml:739
+#: contents/configuration/PanelConfiguration.qml:741
 #, kde-format
 msgctxt ""
 "@action:button Close the panel configuration window and exit edit mode"
 msgid "Exit Edit Mode"
 msgstr "Keluar Mode Edit"
 
-#: contents/configuration/PanelConfiguration.qml:742
+#: contents/configuration/PanelConfiguration.qml:744
 #, fuzzy, kde-format
 #| msgid "Close Panel Settings window and exit Edit Mode"
 msgctxt "@info:tooltip for button"
@@ -1070,41 +1070,41 @@ msgctxt "@info:status"
 msgid "Unlocking failed"
 msgstr "Gagal membuka kunci"
 
-#: contents/lockscreen/LockScreenUi.qml:285
+#: contents/lockscreen/LockScreenUi.qml:281
 #, fuzzy, kde-format
 #| msgid "Caps Lock is on"
 msgctxt "@info:status"
 msgid "Caps Lock is on"
 msgstr "Caps Lock telah nyala"
 
-#: contents/lockscreen/LockScreenUi.qml:299
+#: contents/lockscreen/LockScreenUi.qml:295
 #, fuzzy, kde-format
 #| msgid "Slee&p"
 msgctxt "@action:button"
 msgid "Slee&p"
 msgstr "Ti&dur"
 
-#: contents/lockscreen/LockScreenUi.qml:305
+#: contents/lockscreen/LockScreenUi.qml:301
 #, fuzzy, kde-format
 #| msgid "&Hibernate"
 msgctxt "@action:button"
 msgid "&Hibernate"
 msgstr "&Hibernasi"
 
-#: contents/lockscreen/LockScreenUi.qml:311
+#: contents/lockscreen/LockScreenUi.qml:307
 #, fuzzy, kde-format
 #| msgid "Switch &User"
 msgctxt "@action:button"
 msgid "Switch &User"
 msgstr "Beralih Pen&gguna"
 
-#: contents/lockscreen/LockScreenUi.qml:372
+#: contents/lockscreen/LockScreenUi.qml:368
 #, kde-format
 msgctxt "Button to show/hide virtual keyboard"
 msgid "Virtual Keyboard"
 msgstr "Keyboard Virtual"
 
-#: contents/lockscreen/LockScreenUi.qml:396
+#: contents/lockscreen/LockScreenUi.qml:392
 #, kde-format
 msgctxt "Button to change keyboard layout"
 msgid "Switch layout"
@@ -1180,13 +1180,13 @@ msgctxt "@action:button no-password unlock"
 msgid "Unlock"
 msgstr "Lepas kunci"
 
-#: contents/views/DesktopEditMode.qml:122
+#: contents/views/DesktopEditMode.qml:135
 #, kde-format
 msgctxt "@action:button"
 msgid "More"
 msgstr "Selebihnya"
 
-#: contents/views/DesktopEditMode.qml:131
+#: contents/views/DesktopEditMode.qml:144
 #, fuzzy, kde-format
 #| msgid "Exit Edit Mode"
 msgctxt "@action:button"
