@@ -49,22 +49,22 @@ msgstr "Název nynějšího motivu úvodní obrazovky"
 #, kde-format
 msgctxt "@action:button"
 msgid "&Get New…"
-msgstr "Zís&kat nové…"
+msgstr ""
 
 #: ui/main.qml:50
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to show the splash screen preview."
-msgstr "Zobrazení náhledu úvodní obrazovky selhalo."
+msgstr ""
 
 #: ui/main.qml:81
 #, kde-format
 msgctxt "@action:button"
 msgid "Preview Splash Screen"
-msgstr "Náhled úvodní obrazovky"
+msgstr ""
 
 #: ui/main.qml:86
 #, kde-format
 msgctxt "@action:button"
 msgid "Uninstall"
-msgstr "Odinstalovat"
+msgstr ""

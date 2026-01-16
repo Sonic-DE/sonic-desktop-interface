@@ -22,25 +22,25 @@ msgstr ""
 #, kde-format
 msgctxt "@title:group prefix for radiobutton group"
 msgid "Position on screen:"
-msgstr "Pozice na obrazovce:"
+msgstr ""
 
 #: ui/main.qml:35
 #, kde-format
 msgctxt "@option:check Position on top of screen"
 msgid "Top"
-msgstr "Nahoře"
+msgstr ""
 
 #: ui/main.qml:42
 #, kde-format
 msgctxt "@option:check Position in center of screen"
 msgid "Center"
-msgstr "Střed"
+msgstr ""
 
 #: ui/main.qml:55
 #, kde-format
 msgctxt "@label prefix for checkbutton"
 msgid "Activation:"
-msgstr "Aktivace:"
+msgstr ""
 
 #: ui/main.qml:58
 #, kde-format
@@ -52,31 +52,31 @@ msgstr "Aktivovat při stisku jakékoliv klávesy v prostředí"
 #, kde-format
 msgctxt "@title:group prefix for radiobutton group"
 msgid "History:"
-msgstr "Historie:"
+msgstr ""
 
 #: ui/main.qml:74
 #, kde-format
 msgctxt "@option:radio History is disabled"
 msgid "Disabled"
-msgstr "Zakázáno"
+msgstr ""
 
 #: ui/main.qml:79
 #, kde-format
 msgctxt "@option:radio The thing being enabled is search history"
 msgid "Enable suggestions"
-msgstr "Povolit návrhy"
+msgstr ""
 
 #: ui/main.qml:84
 #, kde-format
 msgctxt "@option:radio The thing being enabled is search history"
 msgid "Enable auto-complete"
-msgstr "Povolit automatické doplňování"
+msgstr ""
 
 #: ui/main.qml:92
 #, kde-format
 msgctxt "@action:button"
 msgid "Clear History…"
-msgstr "Vyprázdnit historii…"
+msgstr ""
 
 #: ui/main.qml:115
 #, kde-format

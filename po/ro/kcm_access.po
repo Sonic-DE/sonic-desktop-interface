@@ -1,12 +1,12 @@
 # Traducerea kcmaccess.po în Română
 # Copyright (C) 2005, 2008 Free Software Foundation, Inc.
-# SPDX-FileCopyrightText: 2008, 2009, 2020, 2021, 2022, 2023, 2024, 2026 Sergiu Bivol <sergiu@cip.md>
+# Sergiu Bivol <sergiu@cip.md>, 2008, 2009, 2020, 2021, 2022, 2023, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: kcmaccess\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-01-08 00:45+0000\n"
-"PO-Revision-Date: 2026-01-29 01:02+0000\n"
+"POT-Creation-Date: 2026-01-16 00:45+0000\n"
+"PO-Revision-Date: 2024-06-08 17:04+0100\n"
 "Last-Translator: Sergiu Bivol <sergiu@cip.md>\n"
 "Language-Team: Romanian <kde-i18n-ro@kde.org>\n"
 "Language: ro\n"
@@ -15,52 +15,52 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
 "20)) ? 1 : 2;\n"
-"X-Generator: Lokalize 25.08.1\n"
+"X-Generator: Lokalize 21.12.3\n"
 
 #: kcmaccess.cpp:127 kcmaccess.cpp:155
 #, kde-format
 msgid "KWin"
-msgstr "KWin"
+msgstr ""
 
 #: kcmaccess.cpp:130
 #, kde-format
 msgid "Toggle Invert Effect"
-msgstr "Comută efectul de inversare"
+msgstr ""
 
 #: kcmaccess.cpp:136
 #, kde-format
 msgid "Toggle Invert Effect on Window"
-msgstr "Comută efectul de inversare asupra ferestrei"
+msgstr ""
 
 #: kcmaccess.cpp:178
 #, kde-format
 msgid "Move Left"
-msgstr "Mută la stânga"
+msgstr ""
 
 #: kcmaccess.cpp:185
 #, kde-format
 msgid "Move Right"
-msgstr "Mută la dreapta"
+msgstr ""
 
 #: kcmaccess.cpp:192
 #, kde-format
 msgid "Move Up"
-msgstr "Mută în sus"
+msgstr ""
 
 #: kcmaccess.cpp:199
 #, kde-format
 msgid "Move Down"
-msgstr "Mută în jos"
+msgstr ""
 
 #: kcmaccess.cpp:206
 #, kde-format
 msgid "Move Mouse to Focus"
-msgstr "Mută mausul la focalizare"
+msgstr ""
 
 #: kcmaccess.cpp:213
 #, kde-format
 msgid "Move Mouse to Center"
-msgstr "Mută mausul la centru"
+msgstr ""
 
 #: kcmaccess.cpp:256
 #, kde-format
@@ -140,27 +140,31 @@ msgstr "Inversează culorile sistemului la clopoțel"
 
 #. i18n: ectx: label, entry (VisibleBellColor), group (Bell)
 #: kcmaccessibilitybell.kcfg:28
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Color of the Visible Bell"
 msgid "Color of the Visual Bell"
-msgstr "Culoarea clopoțelului vizual"
+msgstr "Culoarea clopoțelului vizibil"
 
 #. i18n: ectx: label, entry (VisibleBellPause), group (Bell)
 #: kcmaccessibilitybell.kcfg:32
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Duration of the Visible Bell"
 msgid "Duration of the Visual Bell"
-msgstr "Durata clopoțelului vizual"
+msgstr "Durata clopoțelului vizibil"
 
 #. i18n: ectx: label, entry (ColorblindnessCorrection), group (Plugins)
 #: kcmaccessibilitycolorblindnesscorrection.kcfg:13
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Whether Shake Cursor is enabled"
 msgid "Whether Colorblindness Correction is enabled"
-msgstr "Dacă corecția pentru daltonism e activă"
+msgstr "Dacă scuturarea cursorului e activă"
 
 #. i18n: ectx: label, entry (Invert), group (Plugins)
 #: kcmaccessibilityinvert.kcfg:9
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Whether Shake Cursor is enabled"
 msgid "Whether the Invert effect is enabled"
-msgstr "Dacă efectul de inversare e activ"
+msgstr "Dacă scuturarea cursorului e activă"
 
 #. i18n: ectx: label, entry (StickyKeys), group (Keyboard)
 #: kcmaccessibilitykeyboard.kcfg:9
@@ -291,9 +295,10 @@ msgstr "Activează cititorul de ecran"
 
 #. i18n: ectx: label, entry (ShakeCursor), group (Plugins)
 #: kcmaccessibilityshakecursor.kcfg:9
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Whether Shake Cursor is enabled"
 msgid "Whether Shake Pointer is enabled"
-msgstr "Dacă scuturarea indicatorului e activă"
+msgstr "Dacă scuturarea cursorului e activă"
 
 #. i18n: ectx: label, entry (ShakeCursorMagnification), group (Effect-shakecursor)
 #: kcmaccessibilityshakecursor.kcfg:15
@@ -303,24 +308,28 @@ msgstr "Mărire"
 
 #. i18n: ectx: label, entry (Zoom), group (Plugins)
 #: kcmaccessibilityzoommagnifier.kcfg:9
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Whether Shake Cursor is enabled"
 msgid "Whether the Zoom effect is enabled"
-msgstr "Dacă efectul de mărire e activ"
+msgstr "Dacă scuturarea cursorului e activă"
 
 #. i18n: ectx: label, entry (Magnifier), group (Plugins)
 #: kcmaccessibilityzoommagnifier.kcfg:13
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Whether Shake Cursor is enabled"
 msgid "Whether the Magnifier effect is enabled"
-msgstr "Dacă e activ efectul de lupă"
+msgstr "Dacă scuturarea cursorului e activă"
 
 #: ui/ActivationShortcuts.qml:18
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Activation Gestures"
 msgctxt "@option:check"
 msgid "Activation shortcuts:"
-msgstr "Scurtături de activare:"
+msgstr "Gesturi de activare"
 
 #: ui/ActivationShortcuts.qml:19
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Enable"
 msgctxt "Enable activation shortcuts"
 msgid "Enable"
 msgstr "Activează"
@@ -329,22 +338,25 @@ msgstr "Activează"
 #, kde-format
 msgctxt "@label"
 msgid "Press Shift 5 times to enable Sticky Keys"
-msgstr "Apăsați Shift de 5 ori pentru a activa taste lipicioase"
+msgstr ""
 
 #: ui/ActivationShortcuts.qml:38
 #, kde-format
 msgctxt "@label"
 msgid "Hold Shift for 8 seconds to enable Slow Keys"
-msgstr "Țineți Shift pentru 8 secunde pentru a activa taste lente"
+msgstr ""
 
 #: ui/ActivationShortcuts.qml:47
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Turn sticky keys and slow keys off after inactivity:"
 msgctxt "@option:check"
 msgid "Disable sticky and slow keys after:"
-msgstr "Dezactivează tastele lipicioase și lente după:"
+msgstr "Dezactivează tastele lipicioase și lente după inactivitate:"
 
 #: ui/ActivationShortcuts.qml:71
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "%1 min"
+#| msgid_plural "%1 min"
 msgctxt "@label:valuesuffix in spinbox %1 is timeout delay"
 msgid "%1 min"
 msgid_plural "%1 min"
@@ -353,7 +365,8 @@ msgstr[1] "%1 min"
 msgstr[2] "%1 min"
 
 #: ui/ActivationShortcuts.qml:80
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "min"
 msgctxt "short for minute(s)"
 msgid "min"
 msgid_plural "min"
@@ -362,49 +375,58 @@ msgstr[1] "min"
 msgstr[2] "min"
 
 #: ui/ActivationShortcuts.qml:89
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "When a gesture is used:"
 msgctxt "@title:group for checkbox group"
 msgid "When a shortcut is used:"
-msgstr "Când e folosită o scurtătură:"
+msgstr "Când e folosit un gest:"
 
 #: ui/ActivationShortcuts.qml:90
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Display a confirmation dialog"
 msgctxt "@option:check when shortcut used"
 msgid "Display a confirmation dialog"
 msgstr "Afișează un dialog de confirmare"
 
 #: ui/ActivationShortcuts.qml:101
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Ring the System Bell"
 msgctxt "@option:check when shortcut used"
 msgid "Ring the system bell"
 msgstr "Sună clopoțelul de sistem"
 
 #: ui/ActivationShortcuts.qml:112
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Show a notification"
 msgctxt "@option:check when shortcut used"
 msgid "Show a notification"
 msgstr "Arată o notificare"
 
 #: ui/ActivationShortcuts.qml:123
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Configure Notifications…"
 msgctxt "@action:button opens Notifications kcm"
 msgid "Configure Notifications…"
 msgstr "Configurează notificările…"
 
 #: ui/Bell.qml:19
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Please choose an audio file"
 msgctxt "@title:window dialog"
 msgid "Please choose an audio file"
 msgstr "Alegeți un fișier audio"
 
 #: ui/Bell.qml:21
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "Name filters in a file dialog"
+#| msgid "Audio Files (*.ogg *.wav)"
 msgctxt "Name filters in a file dialog. Do not translate `(*.ogg *.oga *.wav)`"
 msgid "ogg, oga, and wav audio files (*.ogg *.oga *.wav)"
-msgstr "Fișiere audio ogg, oga și wav (*.ogg *.oga *.wav)"
+msgstr "Fișiere audio (*.ogg *.wav)"
 
 #: ui/Bell.qml:30
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Audible bell:"
 msgctxt "@label prefix for checkbox"
 msgid "Audible bell:"
 msgstr "Clopoțel sonor:"
@@ -422,13 +444,15 @@ msgid "Custom sound:"
 msgstr "Sunet personalizat:"
 
 #: ui/Bell.qml:75
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Search audio file for the system bell"
 msgctxt "@action:button icononly tooltip"
 msgid "Choose audio file for the system bell"
-msgstr "Alegeți un sunet pentru clopoțelul de sistem"
+msgstr "Caută fișier audio pentru clopoțelul de sistem"
 
 #: ui/Bell.qml:76
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Please choose an audio file"
 msgctxt "@action button accessible only"
 msgid "Choose audio file"
 msgstr "Alegeți un fișier audio"
@@ -437,31 +461,36 @@ msgstr "Alegeți un fișier audio"
 #, kde-format
 msgctxt "@info:usagetip accessible description for button"
 msgid "Opens dialog"
-msgstr "Deschide dialogul"
+msgstr ""
 
 #: ui/Bell.qml:93
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Visual bell:"
 msgctxt "@label prefix for checkbox"
 msgid "Visual bell:"
 msgstr "Clopoțel vizual:"
 
 #: ui/Bell.qml:94
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Enable"
 msgctxt "@option:check Enable visual bell"
 msgid "Enable"
 msgstr "Activează"
 
 #: ui/Bell.qml:108
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "Invert screen on a system bell"
+#| msgid "Invert Screen"
 msgctxt "@option:radio Invert screen colors when a system bell is rung"
 msgid "Invert screen colors"
-msgstr "Inversează culorile ecranului"
+msgstr "Inversează ecranul"
 
 #: ui/Bell.qml:126
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "F&lash screen"
 msgctxt "@option:radio Flash screen when a system bell is rung"
 msgid "Flash screen"
-msgstr "Clipește ecranul"
+msgstr "C&lipește ecranul"
 
 #: ui/Bell.qml:137
 #, kde-format
@@ -476,22 +505,24 @@ msgid "Duration:"
 msgstr "Durată:"
 
 #: ui/Bell.qml:166
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "%1 min"
+#| msgid_plural "%1 min"
 msgctxt "@label:valuesuffix %1 is visible bell duration"
 msgid "%1 ms"
 msgid_plural "%1 ms"
-msgstr[0] "%1 ms"
-msgstr[1] "%1 ms"
-msgstr[2] "%1 ms"
+msgstr[0] "%1 min"
+msgstr[1] "%1 min"
+msgstr[2] "%1 min"
 
 #: ui/Bell.qml:170 ui/KeyboardFilters.qml:65 ui/KeyboardFilters.qml:164
 #, kde-format
 msgctxt "@label:valuesuffix short for millisecond(s)"
 msgid "ms"
 msgid_plural "ms"
-msgstr[0] "ms"
-msgstr[1] "ms"
-msgstr[2] "ms"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 #: ui/ColorblindnessCorrection.qml:21
 #, kde-format
@@ -500,11 +531,10 @@ msgid ""
 "If you have trouble with certain colors on the screen, these filters can "
 "change them into other colors."
 msgstr ""
-"Dacă aveți dificultăți cu anumite culori de pe ecran, aceste filtre le pot "
-"schimba în alte culori."
 
 #: ui/ColorblindnessCorrection.qml:31
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Enable"
 msgctxt "@option check, Enable color blindness correction effect"
 msgid "Enable"
 msgstr "Activează"
@@ -514,88 +544,89 @@ msgstr "Activează"
 msgctxt ""
 "@label:listbox Difficulty seeing any of the following colors on the screen"
 msgid "Problematic colors:"
-msgstr "Culori problematice:"
+msgstr ""
 
 #: ui/ColorblindnessCorrection.qml:49
 #, kde-format
 msgctxt "@option"
 msgid "Red & purple (Protanopia)"
-msgstr "Roșu și purpuriu (protanopie)"
+msgstr ""
 
 #: ui/ColorblindnessCorrection.qml:50
 #, kde-format
 msgctxt "@option"
 msgid "Green & purple (Deuteranopia)"
-msgstr "Verde și purpuriu (deuteranopie)"
+msgstr ""
 
 #: ui/ColorblindnessCorrection.qml:51
 #, kde-format
 msgctxt "@option"
 msgid "Yellow, green & purple (Tritanopia)"
-msgstr "Galben, verde și purpuriu (tritanopie)"
+msgstr ""
 
 #: ui/ColorblindnessCorrection.qml:52
 #, kde-format
 msgctxt "@option"
 msgid "All (grayscale mode)"
-msgstr "Toate (tonuri de gri)"
+msgstr ""
 
 #: ui/ColorblindnessCorrection.qml:67
 #, kde-format
 msgctxt "@label"
 msgid "Intensity:"
-msgstr "Intensitate:"
+msgstr ""
 
 #: ui/ColorblindnessCorrection.qml:90
 #, kde-format
 msgctxt "@label Mild color blindness correction intensity"
 msgid "Mild"
-msgstr "Moderată"
+msgstr ""
 
 #: ui/ColorblindnessCorrection.qml:97
 #, kde-format
 msgctxt "@label Intense color blindness correction intensity"
 msgid "Intense"
-msgstr "Intensă"
+msgstr ""
 
 #: ui/ColorblindnessCorrection.qml:115
 #, kde-format
 msgctxt "@info"
 msgid "Adjusted colors:"
-msgstr "Culori ajustate:"
+msgstr ""
 
 #: ui/ColorblindnessCorrection.qml:132
 #, kde-format
 msgctxt "@title:group for color rectangles"
 msgid "Reds:"
-msgstr "Roșu:"
+msgstr ""
 
 #: ui/ColorblindnessCorrection.qml:133
 #, kde-format
 msgctxt "@title:group for color rectangles"
 msgid "Greens:"
-msgstr "Verde:"
+msgstr ""
 
 #: ui/ColorblindnessCorrection.qml:134
 #, kde-format
 msgctxt "@title:group for color rectangles"
 msgid "Blues:"
-msgstr "Albastru:"
+msgstr ""
 
 #: ui/ColorblindnessCorrection.qml:135
 #, kde-format
 msgctxt "@title:group for color rectangles"
 msgid "Purples:"
-msgstr "Purpuriu:"
+msgstr ""
 
 #: ui/Invert.qml:22
 #, kde-format
 msgctxt "@label"
 msgid "Invert:"
-msgstr "Inversează:"
+msgstr ""
 
 #: ui/Invert.qml:23
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Enable"
 msgctxt "@option check, Enable invert effect"
 msgid "Enable"
 msgstr "Activează"
@@ -605,23 +636,24 @@ msgstr "Activează"
 msgctxt "@label Hint for invert effect enable button"
 msgid "Use shortcuts to toggle inverting display and window colors"
 msgstr ""
-"Folosiți scurtături pentru a comuta inversarea culorilor afișajului și "
-"ferestrelor"
 
 #: ui/Invert.qml:49 ui/ZoomMagnifier.qml:376
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Configure Notifications…"
 msgctxt "@action:button"
 msgid "Configure Shortcuts…"
-msgstr "Configurează scurtăturile…"
+msgstr "Configurează notificările…"
 
 #: ui/KeyboardFilters.qml:18
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Slow keys:"
 msgctxt "@title:group prefix"
 msgid "Slow keys:"
 msgstr "Taste lente:"
 
 #: ui/KeyboardFilters.qml:23
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Enable"
 msgctxt "@option:check Enable slow keys"
 msgid "Enable"
 msgstr "Activează"
@@ -634,57 +666,67 @@ msgid ""
 "Useful if you accidentally type more than one key at a time or have "
 "difficulty pressing the key you want the first time."
 msgstr ""
-"Pentru ca o tastă să fie acceptată, aceasta trebuie ținută pe durata "
-"stabilită. Util atunci când apăsați accidental mai multe taste odată sau "
-"întâmpinați dificultăți la apăsarea tastei dorite la prima încercare."
 
 #: ui/KeyboardFilters.qml:41
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "Slow keys Delay"
+#| msgid "Delay:"
 msgctxt "@label:spinbox Slow keys Delay"
 msgid "Delay:"
 msgstr "Întârziere:"
 
 #: ui/KeyboardFilters.qml:56
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "%1 min"
+#| msgid_plural "%1 min"
 msgctxt "@label:valuesuffix %1 is slow keys delay"
 msgid "%1 ms"
 msgid_plural "%1 ms"
-msgstr[0] "%1 ms"
-msgstr[1] "%1 ms"
-msgstr[2] "%1 ms"
+msgstr[0] "%1 min"
+msgstr[1] "%1 min"
+msgstr[2] "%1 min"
 
 #: ui/KeyboardFilters.qml:74
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Ring system bell:"
 msgctxt "@title:group prefix for checkbox group"
 msgid "Ring system bell:"
 msgstr "Sună clopoțelul de sistem:"
 
 #: ui/KeyboardFilters.qml:75
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "Use system bell when a key is pressed"
+#| msgid "when any key is &pressed"
 msgctxt "@option:check Use system bell when a key is pressed"
 msgid "when any key is &pressed"
 msgstr "când e a&păsată orice tastă"
 
 #: ui/KeyboardFilters.qml:89
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "Use system bell when a key is accepted"
+#| msgid "when any key is &accepted"
 msgctxt "@option:check Use system bell when a key is accepted"
 msgid "when any key is &accepted"
 msgstr "când e &acceptată orice tastă"
 
 #: ui/KeyboardFilters.qml:103
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "Use system bell when a key is rejected"
+#| msgid "when any key is &rejected"
 msgctxt "@option:check Use system bell when a key is rejected"
 msgid "when any key is &rejected"
 msgstr "când e &refuzată orice tastă"
 
 #: ui/KeyboardFilters.qml:119
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Bounce keys:"
 msgctxt "@title:group prefix"
 msgid "Bounce keys:"
 msgstr "Taste săritoare:"
 
 #: ui/KeyboardFilters.qml:124
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Enable"
 msgctxt "@option:check Bounce keys enable"
 msgid "Enable"
 msgstr "Activează"
@@ -697,27 +739,29 @@ msgid ""
 "tremors that cause you to press a key multiple times when you only intend to "
 "press once."
 msgstr ""
-"Ignoră apăsările rapide și repetate ale aceleiași taste. Util când vă "
-"tremură mâinile și apăsați o tastă de multe ori când ați fi vrut să o "
-"apăsați o singură dată."
 
 #: ui/KeyboardFilters.qml:142
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "Slow keys Delay"
+#| msgid "Delay:"
 msgctxt "@label:spinbox Bounce keys delay"
 msgid "Delay:"
 msgstr "Întârziere:"
 
 #: ui/KeyboardFilters.qml:157
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "%1 min"
+#| msgid_plural "%1 min"
 msgctxt "@label:valuesuffix %1 is bounce keys delay"
 msgid "%1 ms"
 msgid_plural "%1 ms"
-msgstr[0] "%1 ms"
-msgstr[1] "%1 ms"
-msgstr[2] "%1 ms"
+msgstr[0] "%1 min"
+msgstr[1] "%1 min"
+msgstr[2] "%1 min"
 
 #: ui/KeyboardFilters.qml:171
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Ring system bell when rejected"
 msgctxt "@option:check for bounce keys"
 msgid "Ring system bell when rejected"
 msgstr "Sună clopoțelul de sistem la respingere"
@@ -726,70 +770,85 @@ msgstr "Sună clopoțelul de sistem la respingere"
 #, kde-format
 msgctxt "@title Category name in sidebar"
 msgid "Zoom & Magnifier"
-msgstr "Apropiere și lupă"
+msgstr ""
 
 #: ui/main.qml:33
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Use System Bell"
 msgctxt "@title Category name in sidebar"
 msgid "System Bell"
-msgstr "Clopoțel de sistem"
+msgstr "Folosește clopoțel de sistem"
 
 #: ui/main.qml:38
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "System Modifier Keys"
+#| msgid "Modifier Keys"
 msgctxt "@title Category name in sidebar"
 msgid "Modifier Keys"
 msgstr "Taste modificatoare"
 
 #: ui/main.qml:43
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "System keyboard filters"
+#| msgid "Keyboard Filters"
 msgctxt "@title Category name in sidebar"
 msgid "Keyboard Filters"
 msgstr "Filtre de tastatură"
 
 #: ui/main.qml:48
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "System mouse navigation"
+#| msgid "Mouse Navigation"
 msgctxt "@title Category name in sidebar"
 msgid "Mouse Navigation"
 msgstr "Navigare cu mausul"
 
 #: ui/main.qml:53
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Activation Gestures"
 msgctxt "@title Category name in sidebar"
 msgid "Activation Shortcuts"
-msgstr "Scurtături de activare"
+msgstr "Gesturi de activare"
 
 #: ui/main.qml:58
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "System mouse navigation"
+#| msgid "Screen Reader"
 msgctxt "@title Category name in sidebar"
 msgid "Screen Reader"
 msgstr "Cititor de ecran"
 
 #: ui/main.qml:63
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Whether Shake Cursor is enabled"
 msgctxt "@title Category name in sidebar"
 msgid "Color Blindness Correction"
-msgstr "Corecție pentru daltonism"
+msgstr "Dacă scuturarea cursorului e activă"
 
 #: ui/main.qml:68
 #, kde-format
 msgctxt "@title Category name in sidebar, for inverting screen colors"
 msgid "Invert"
-msgstr "Inversează"
+msgstr ""
 
 #: ui/main.qml:73
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "Shake cursor to find it"
+#| msgid "Shake Cursor"
 msgctxt "@title Category name in sidebar, shake pointer to find it"
 msgid "Shake Pointer"
-msgstr "Scutură indicatorul"
+msgstr "Scutură cursorul"
 
 #: ui/ModifierKeys.qml:17
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Sticky keys:"
 msgctxt "@option:check"
 msgid "Sticky keys:"
 msgstr "Taste lipicioase:"
 
 #: ui/ModifierKeys.qml:22
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Enable"
 msgctxt "@option:check Enable sticky keys"
 msgid "Enable"
 msgstr "Activează"
@@ -802,12 +861,10 @@ msgid ""
 "though they “stick in place” and no longer need to be held down when typing "
 "a keyboard shortcut."
 msgstr ""
-"Tastele modificatoare ca Ctrl, Shift, Alt și tasta Meta/Super/Windows "
-"acționează de parcă se „lipesc” și nu mai trebuiesc ținute apăsate în timp "
-"ce tastați o scurtătură de taste."
 
 #: ui/ModifierKeys.qml:39
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Lock the sticky keys"
 msgctxt "@option:check"
 msgid "Lock sticky keys"
 msgstr "Blochează taste lipicioase"
@@ -819,59 +876,65 @@ msgid ""
 "Pressing a modifier key twice will keep it in active state until pressed "
 "again."
 msgstr ""
-"Apăsarea unei taste modificatoare de două ori o va ține în starea activă "
-"până e apăsată iar."
 
 #: ui/ModifierKeys.qml:57
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Disable when two keys are held down"
 msgctxt "@option:check"
 msgid "Disable when two keys are held down"
-msgstr "Dezactivează când sunt ținute două taste"
+msgstr "Dezactivează când sunt apăsate două taste"
 
 #: ui/ModifierKeys.qml:70
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Ring system bell when modifier keys are used"
 msgctxt "@option:check"
 msgid "Ring system bell when modifier keys are used"
 msgstr "Sună clopoțelul de sistem la folosirea tastelor modificatoare"
 
 #: ui/ModifierKeys.qml:88
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Feedback:"
 msgctxt "@option:check Feedback options:"
 msgid "Feedback:"
 msgstr "Reacție:"
 
 #: ui/ModifierKeys.qml:93
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Ring system bell when locking keys are toggled"
 msgctxt "@option:check"
 msgid "Ring system bell when locking keys are used"
-msgstr "Sună clopoțelul de sistem la folosirea tastelor de blocare"
+msgstr "Sună clopoțelul de sistem la comutarea tastelor de blocare"
 
 #: ui/ModifierKeys.qml:104
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "The locking keys are Caps Lock, Num Lock, and Scroll Lock."
-msgstr "Tastele de blocare sunt Caps Lock, Num Lock și Scroll Lock."
+msgstr ""
 
 #: ui/ModifierKeys.qml:108
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Show notification when modifier or locking keys are used"
 msgctxt "@option:check"
 msgid "Show notification when modifier or locking keys are used"
 msgstr "Arată o notificare la folosirea tastelor modificatoare sau de blocare"
 
 #: ui/ModifierKeys.qml:120
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Configure Notifications…"
 msgctxt "@action:button"
 msgid "Configure Notifications…"
 msgstr "Configurează notificările…"
 
 #: ui/MouseNavigation.qml:17
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Use number pad to move cursor:"
 msgctxt "@option:check"
 msgid "Use number pad to move pointer:"
-msgstr "Folosește zona numerică pentru a muta indicatorul:"
+msgstr "Folosește tastatura numerică pentru a muta cursorul:"
 
 #: ui/MouseNavigation.qml:22
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Enable"
 msgctxt "@option:check Enable mouse navigation"
 msgid "Enable"
 msgstr "Activează"
@@ -880,33 +943,32 @@ msgstr "Activează"
 #, kde-kuit-format
 msgctxt "@info:tooltip"
 msgid ""
-"The numpad key <shortcut>5</shortcut> functions as a mouse click. The keys "
-"<shortcut>2</shortcut>, <shortcut>4</shortcut>, <shortcut>6</shortcut>, and "
-"<shortcut>8</shortcut> allow for cardinal movement (down, left, right, and "
-"up). The keys <shortcut>1</shortcut>, <shortcut>3</shortcut>, <shortcut>7</"
-"shortcut>, and <shortcut>9</shortcut> allow for diagonal movement."
+"The numpad key <shortcut>5</shortcut> functions as a mouse click, toggled by "
+"<shortcut>/</shortcut> for middle click, <shortcut>*</shortcut> for right "
+"click and <shortcut>NumLock</shortcut> for left click. The keys <shortcut>2</"
+"shortcut>, <shortcut>4</shortcut>, <shortcut>6</shortcut>, and <shortcut>8</"
+"shortcut> allow for cardinal movement (down, left, right, and up). The keys "
+"<shortcut>1</shortcut>, <shortcut>3</shortcut>, <shortcut>7</shortcut>, and "
+"<shortcut>9</shortcut> allow for diagonal movement."
 msgstr ""
-"Tasta <shortcut>5</shortcut> din zona numerică funcționează ca un clic de "
-"șoricel. Tastele <shortcut>2</shortcut>, <shortcut>4</shortcut>, "
-"<shortcut>6</shortcut> și <shortcut>8</shortcut> permit deplasări cardinale "
-"(jos, stânga, dreapta și sus). Tastele <shortcut>1</shortcut>, <shortcut>3</"
-"shortcut>, <shortcut>7</shortcut> și <shortcut>9</shortcut> permit deplasări "
-"diagonale."
 
 #: ui/MouseNavigation.qml:39
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Acceleration delay:"
 msgctxt "@label:spinbox"
 msgid "Acceleration delay:"
 msgstr "Întârziere accelerare:"
 
 #: ui/MouseNavigation.qml:53
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "%1 min"
+#| msgid_plural "%1 min"
 msgctxt "@label:valuesuffix acceleration delay spinbox %1 is value"
 msgid "%1 ms"
 msgid_plural "%1 ms"
-msgstr[0] "%1 ms"
-msgstr[1] "%1 ms"
-msgstr[2] "%1 ms"
+msgstr[0] "%1 min"
+msgstr[1] "%1 min"
+msgstr[2] "%1 min"
 
 #: ui/MouseNavigation.qml:61 ui/MouseNavigation.qml:88
 #: ui/MouseNavigation.qml:114
@@ -914,102 +976,122 @@ msgstr[2] "%1 ms"
 msgctxt "short for millisecond(s)"
 msgid "ms"
 msgid_plural "ms"
-msgstr[0] "ms"
-msgstr[1] "ms"
-msgstr[2] "ms"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 #: ui/MouseNavigation.qml:66
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Repeat interval:"
 msgctxt "@label:spinbox"
 msgid "Repeat interval:"
 msgstr "Interval de repetiție:"
 
 #: ui/MouseNavigation.qml:84
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "%1 min"
+#| msgid_plural "%1 min"
 msgctxt "@label:valuesuffix repeat interval spinbox %1 is value"
 msgid "%1 ms"
 msgid_plural "%1 ms"
-msgstr[0] "%1 ms"
-msgstr[1] "%1 ms"
-msgstr[2] "%1 ms"
+msgstr[0] "%1 min"
+msgstr[1] "%1 min"
+msgstr[2] "%1 min"
 
 #: ui/MouseNavigation.qml:93
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Acceleration time:"
 msgctxt "@label:spinbox"
 msgid "Acceleration time:"
 msgstr "Timp de accelerare:"
 
 #: ui/MouseNavigation.qml:110
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "%1 min"
+#| msgid_plural "%1 min"
 msgctxt "@label:valuesuffix acceleration time spinbox %1 is value"
 msgid "%1 ms"
 msgid_plural "%1 ms"
-msgstr[0] "%1 ms"
-msgstr[1] "%1 ms"
-msgstr[2] "%1 ms"
+msgstr[0] "%1 min"
+msgstr[1] "%1 min"
+msgstr[2] "%1 min"
 
 #: ui/MouseNavigation.qml:118
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Maximum speed:"
 msgctxt "@label:spinbox"
 msgid "Maximum speed:"
 msgstr "Viteză maximă:"
 
 #: ui/MouseNavigation.qml:132
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Pointer acceleration:"
 msgctxt "@label:spinbox"
 msgid "Pointer acceleration:"
 msgstr "Accelerație indicator:"
 
 #: ui/ScreenReader.qml:20
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Launch Orca Screen Reader Configuration…"
 msgctxt "@info Placeholder message title"
 msgid "The Orca Screen Reader is not installed"
-msgstr "Cititorul de ecran Orca nu e instalat"
+msgstr "Lansează configurarea cititorului de ecran Orca…"
 
 #: ui/ScreenReader.qml:21
 #, kde-format
 msgctxt "@info Placeholder message explanation"
 msgid "Please install it, then close and reopen this window"
-msgstr "Instalați-l, apoi închideți și redeschideți această fereastră"
+msgstr ""
 
 #: ui/ScreenReader.qml:27
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Enable Screen Reader"
 msgctxt "@option:check"
 msgid "Enable Screen Reader"
 msgstr "Activează cititorul de ecran"
 
 #: ui/ScreenReader.qml:39
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Launch Orca Screen Reader Configuration…"
 msgctxt "@action:button"
 msgid "Launch Orca Screen Reader Configuration…"
 msgstr "Lansează configurarea cititorului de ecran Orca…"
 
 #: ui/ShakeCursor.qml:15
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@label"
+#| msgid "Shake cursor to find it:"
 msgctxt "@label"
 msgid "Shake pointer to find it:"
-msgstr "Scutură indicatorul pentru a-l găsi:"
+msgstr "Scutură cursorul pentru a-l găsi:"
 
 #: ui/ShakeCursor.qml:16
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Enable"
 msgctxt "@option check, Enable shake pointer effect"
 msgid "Enable"
 msgstr "Activează"
 
 #: ui/ShakeCursor.qml:28
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@label Cursor magnification level"
+#| msgid "Magnification:"
 msgctxt "@label Pointer magnification level"
 msgid "Magnification:"
 msgstr "Mărire:"
 
 #: ui/ShakeCursor.qml:55
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@label Normal cursor size"
+#| msgid "Normal"
 msgctxt "@label Normal pointer size"
 msgid "Normal"
 msgstr "Normală"
 
 #: ui/ShakeCursor.qml:62
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@label Large cursor size"
+#| msgid "Large"
 msgctxt "@label Large pointer size"
 msgid "Large"
 msgstr "Mare"
@@ -1018,192 +1100,196 @@ msgstr "Mare"
 #, kde-format
 msgctxt "@label, followed by 'full screen' or 'magnify region'"
 msgid "Zoom:"
-msgstr "Apropiere:"
+msgstr ""
 
 #: ui/ZoomMagnifier.qml:24
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "F&lash screen"
 msgctxt "@option:check, enable zoom effect, following 'Zoom:'"
 msgid "Full screen"
-msgstr "Ecran complet"
+msgstr "C&lipește ecranul"
 
 #: ui/ZoomMagnifier.qml:53
 #, kde-format
 msgctxt "@label:spinbox"
 msgid "Show pixel grid at zoom level:"
-msgstr "Arată grila de pixeli la nivelul apropierii:"
+msgstr ""
 
 #: ui/ZoomMagnifier.qml:85
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Pointer acceleration:"
 msgctxt "@label:listbox"
 msgid "Pointer appearance:"
-msgstr "Aspectul indicatorului:"
+msgstr "Accelerație indicator:"
 
 #: ui/ZoomMagnifier.qml:87
 #, kde-format
 msgctxt "@item:inlistbox"
 msgid "Scale"
-msgstr "Scalează"
+msgstr ""
 
 #: ui/ZoomMagnifier.qml:87
 #, kde-format
 msgctxt "@item:inlistbox"
 msgid "Keep"
-msgstr "Păstrează"
+msgstr ""
 
 #: ui/ZoomMagnifier.qml:87
 #, kde-format
 msgctxt "@item:inlistbox"
 msgid "Hide"
-msgstr "Ascunde"
+msgstr ""
 
 #: ui/ZoomMagnifier.qml:123
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Pointer acceleration:"
 msgctxt "@label:listbox"
 msgid "Pointer tracking:"
-msgstr "Urmărirea indicatorului:"
+msgstr "Accelerație indicator:"
 
 #: ui/ZoomMagnifier.qml:128
 #, kde-format
 msgctxt "@item:inlistbox"
 msgid "Proportional"
-msgstr "Proporțional"
+msgstr ""
 
 #: ui/ZoomMagnifier.qml:129
 #, kde-format
 msgctxt "@item:inlistbox"
 msgid "Zoom area moves in sync with pointer"
-msgstr "Zona mărită se mișcă împreună cu indicatorul"
+msgstr ""
 
 #: ui/ZoomMagnifier.qml:133
 #, kde-format
 msgctxt "@item:inlistbox"
 msgid "Centered"
-msgstr "Centrat"
+msgstr ""
 
 #: ui/ZoomMagnifier.qml:134
 #, kde-format
 msgctxt "@item:inlistbox"
 msgid "Pointer stays centered on-screen, except near screen edges"
 msgstr ""
-"Indicatorul stă centrat pe ecran dacă nu e aproape de marginea ecranului"
 
 #: ui/ZoomMagnifier.qml:138
 #, kde-format
 msgctxt "@item:inlistbox"
 msgid "Centered (Strict)"
-msgstr "Centrat (strict)"
+msgstr ""
 
 #: ui/ZoomMagnifier.qml:139
 #, kde-format
 msgctxt "@item:inlistbox"
 msgid "Pointer stays centered on-screen, even near screen edges"
 msgstr ""
-"Indicatorul stă centrat pe ecran chiar dacă e aproape de marginea ecranului"
 
 #: ui/ZoomMagnifier.qml:143
 #, kde-format
 msgctxt "@item:inlistbox"
 msgid "Push"
-msgstr "Împinge"
+msgstr ""
 
 #: ui/ZoomMagnifier.qml:144
 #, kde-format
 msgctxt "@item:inlistbox"
 msgid "Pointer pushes zoom area at screen edges"
-msgstr "Indicatorul împinge zona mărită la marginea ecranului"
+msgstr ""
 
 #: ui/ZoomMagnifier.qml:148
 #, kde-format
 msgctxt "@item:inlistbox"
 msgid "Disabled"
-msgstr "Dezactivat"
+msgstr ""
 
 #: ui/ZoomMagnifier.qml:149
 #, kde-format
 msgctxt "@item:inlistbox"
 msgid "Zoom area doesn't follow pointer"
-msgstr "Zona mărită nu urmează indicatorul"
+msgstr ""
 
 #: ui/ZoomMagnifier.qml:166
 #, kde-format
 msgctxt "@option:check"
 msgid "Enable focus tracking"
-msgstr "Activează urmărirea focalizării"
+msgstr ""
 
 #: ui/ZoomMagnifier.qml:178
 #, kde-format
 msgctxt "@option:check"
 msgid "Enable text caret tracking"
-msgstr "Activează urmărirea cursorului textual"
+msgstr ""
 
 #: ui/ZoomMagnifier.qml:194
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Magnification"
 msgctxt "@option:check, enable magnify effect, following 'Zoom:'"
 msgid "Magnify region"
-msgstr "Mărește regiunea"
+msgstr "Mărire"
 
 #: ui/ZoomMagnifier.qml:221
 #, kde-format
 msgctxt "@label:spinbox"
 msgid "Width:"
-msgstr "Lățime:"
+msgstr ""
 
 #: ui/ZoomMagnifier.qml:232 ui/ZoomMagnifier.qml:257
 #, kde-format
 msgctxt "short for pixel(s)"
 msgid "%1 px"
 msgid_plural "%1 px"
-msgstr[0] "%1 px"
-msgstr[1] "%1 px"
-msgstr[2] "%1 px"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 #: ui/ZoomMagnifier.qml:233 ui/ZoomMagnifier.qml:258
 #, kde-format
 msgctxt "short for pixel(s)"
 msgid "px"
-msgstr "px"
+msgstr ""
 
 #: ui/ZoomMagnifier.qml:246
 #, kde-format
 msgctxt "@label:spinbox"
 msgid "Height:"
-msgstr "Înălțime:"
+msgstr ""
 
 #: ui/ZoomMagnifier.qml:275
 #, kde-format
 msgctxt "@option:check, disable zoom/magnify effect"
 msgid "Disabled"
-msgstr "Dezactivat"
+msgstr ""
 
 #: ui/ZoomMagnifier.qml:288
 #, kde-format
 msgctxt "@label:spinbox"
 msgid "Zoom factor:"
-msgstr "Factor de apropiere:"
+msgstr ""
 
 #: ui/ZoomMagnifier.qml:321
 #, kde-format
 msgctxt "@label"
 msgid "Scroll gesture modifier keys:"
-msgstr "Taste modificatoare pentru gestul de derulare:"
+msgstr ""
 
 #: ui/ZoomMagnifier.qml:359
 #, kde-format
 msgctxt "@info:tooltip, indicates feature unavailable on X11"
 msgid "Zoom scroll gestures are only available on Wayland."
-msgstr "Gesturile de apropiere la derulare sunt disponibile doar pe Wayland."
+msgstr ""
 
 #: ui/ZoomMagnifier.qml:365
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Ring system bell when modifier keys are used"
 msgctxt "@label Hint for scroll gestures"
 msgid "Scroll while modifier keys are pressed to zoom"
-msgstr "Derulați în timp ce sunt apăsate taste modificatoare pentru a apropia"
+msgstr "Sună clopoțelul de sistem la folosirea tastelor modificatoare"
 
 #: ui/ZoomMagnifier.qml:386
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Use keys to control the mouse"
 msgctxt "@label Hint for zoom/magnify effect usage"
 msgid "Use shortcuts to control zoom"
-msgstr "Folosiți scurtături pentru a controla apropierea"
+msgstr "Folosește taste pentru a controla mausul"
 
 #~ msgid "Button search audio file"
 #~ msgstr "Buton, caută fișier audio"

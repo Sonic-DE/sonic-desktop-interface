@@ -32,13 +32,13 @@ msgstr "Dostupné moduly"
 #, kde-format
 msgctxt "@action:button in toolbar"
 msgid "Configure KRunner…"
-msgstr "Nastavit KRunner…"
+msgstr ""
 
 #: plasmasearch/ui/main.qml:30
 #, kde-format
 msgctxt "@action:button in toolbar"
 msgid "Get New Plugins…"
-msgstr "Získat nové moduly…"
+msgstr ""
 
 #: plasmasearch/ui/main.qml:45
 #, kde-format
@@ -48,21 +48,18 @@ msgid ""
 "Overview effect). Mark plugins as favorites and arrange them in order you "
 "want to prioritize them."
 msgstr ""
-"Povolit nebo zakázat moduly (použito v KRunneru, spouštěči aplikací a efektu "
-"Přehled). Označit moduly jako oblíbené a organizovat je v pořadí, v jakém je "
-"chcete prioritizovat."
 
 #: plasmasearch/ui/main.qml:91
 #, kde-format
 msgctxt "@action:button, icononly"
 msgid "Remove from favorites"
-msgstr "Odstranit z oblíbených"
+msgstr ""
 
 #: plasmasearch/ui/main.qml:91
 #, kde-format
 msgctxt "@action:button, icononly"
 msgid "Add to favorites"
-msgstr "Přidat do oblíbených"
+msgstr ""
 
 #: plugininstaller/AbstractJob.cpp:18
 #, kde-kuit-format

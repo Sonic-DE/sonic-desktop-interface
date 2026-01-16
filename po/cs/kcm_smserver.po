@@ -47,21 +47,21 @@ msgstr "Vyjmout tyto aplikace ze sezení"
 #, kde-format
 msgctxt "@info:status inlinemessage"
 msgid "Failed to request restart to firmware setup: %1"
-msgstr "Požadavek na restartování do nastavení firmwaru se nezdařil: %1"
+msgstr ""
 
 #: ui/main.qml:31
 #, kde-format
 msgctxt "@info:status inlinemessage"
 msgid ""
 "Next time the computer is restarted, it will enter the UEFI setup screen."
-msgstr "Při dalším restartu počítače bude spuštěno nastavení UEFI."
+msgstr ""
 
 #: ui/main.qml:32
 #, kde-format
 msgctxt "@info:status inlinemessage"
 msgid ""
 "Next time the computer is restarted, it will enter the firmware setup screen."
-msgstr "Při dalším restartu počítače bude spuštěno nastavení firmwaru."
+msgstr ""
 
 #: ui/main.qml:37
 #, kde-format
@@ -101,7 +101,7 @@ msgstr "Obnovení sezení"
 #, kde-format
 msgctxt "@title:group prefix for radiobuttons"
 msgid "On login, launch apps that were open:"
-msgstr "Při přihlášení spustit aplikace, které byly otevřeny:"
+msgstr ""
 
 #: ui/main.qml:72
 #, kde-format
@@ -142,7 +142,7 @@ msgstr "Spustit s prázdnou relací"
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Ignored applications:"
-msgstr "Ignorované aplikace:"
+msgstr ""
 
 #: ui/main.qml:132
 #, kde-format
