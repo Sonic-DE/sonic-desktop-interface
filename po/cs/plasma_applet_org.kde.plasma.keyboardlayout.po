@@ -22,13 +22,13 @@ msgstr ""
 #, kde-format
 msgctxt "@title:group for configuration dialog page"
 msgid "General"
-msgstr "Obecné"
+msgstr ""
 
 #: qml/configGeneral.qml:31
 #, kde-format
 msgctxt "@title:group of radio buttons, options are language codes or images"
 msgid "Display style:"
-msgstr "Styl zobrazení:"
+msgstr ""
 
 #: qml/configGeneral.qml:65
 #, kde-format
@@ -40,10 +40,10 @@ msgstr "Není dostupná žádná vlajka"
 #, kde-format
 msgctxt "@label prefixed to button, as in 'keyboard layouts'"
 msgid "Layouts:"
-msgstr "Rozvržení:"
+msgstr ""
 
 #: qml/configGeneral.qml:103
 #, kde-format
 msgctxt "@action:button opens kcm_keyboard"
 msgid "Configure…"
-msgstr "Nastavit…"
+msgstr ""

@@ -1,22 +1,21 @@
 # Copyright (C) 2025 This file is copyright:
 # This file is distributed under the same license as the plasma-desktop package.
-# SPDX-FileCopyrightText: 2019, 2020, 2021, 2022, 2023, 2025, 2026 Vit Pelcak <vit@pelcak.org>
-# SPDX-FileCopyrightText: 2026 Libor Filípek <libor.filipek@gmail.com>
+# SPDX-FileCopyrightText: 2019, 2020, 2021, 2022, 2023, 2025 Vit Pelcak <vit@pelcak.org>
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: plasma-desktop\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-06-02 03:54+0000\n"
-"PO-Revision-Date: 2026-05-13 19:17+0200\n"
-"Last-Translator: Libor Filípek <libor.filipek@gmail.com>\n"
+"POT-Creation-Date: 2026-01-13 08:43+0000\n"
+"PO-Revision-Date: 2025-10-02 09:24+0200\n"
+"Last-Translator: Vit Pelcak <vit@pelcak.org>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Lokalize 26.04.1\n"
+"X-Generator: Lokalize 25.08.1\n"
 
 #: app/emojier.cpp:43 app/emojier.cpp:45
 #, kde-format
@@ -45,151 +44,131 @@ msgstr "vit@pelcak.org"
 msgid "Replace an existing instance"
 msgstr "Nahradit existující instanci"
 
-#: app/ui/CategoryPage.qml:41
-#, kde-format
-msgctxt "@action Search field action"
-msgid "Search"
-msgstr "Hledat"
-
-#: app/ui/CategoryPage.qml:100
+#: app/ui/CategoryPage.qml:112
 #, kde-format
 msgctxt "@action:button clear emoji history"
 msgid "Clear History"
-msgstr "Vymazat historii"
+msgstr ""
 
-#: app/ui/CategoryPage.qml:131
+#: app/ui/CategoryPage.qml:124
 #, kde-format
 msgctxt "@action:button Button to open a menu that lets you choose a skin tone"
-msgid "Skin tone: %1"
-msgstr "Odstín pleti: %1"
+msgid "Skin tone:"
+msgstr ""
 
-#: app/ui/CategoryPage.qml:137
+#: app/ui/CategoryPage.qml:135 app/ui/Emojier.qml:73
+#, kde-format
+msgctxt "@title:page All emojis"
+msgid "All"
+msgstr "Vše"
+
+#: app/ui/CategoryPage.qml:189
 #, kde-format
 msgctxt "@action:inmenu Skin Tone"
 msgid "🖐️ Neutral"
-msgstr "🖐️ Neutrální"
+msgstr ""
 
-#: app/ui/CategoryPage.qml:138
+#: app/ui/CategoryPage.qml:190
 #, kde-format
 msgctxt "@action:inmenu Skin Tone"
 msgid "Neutral"
-msgstr "Neutrální"
+msgstr ""
 
-#: app/ui/CategoryPage.qml:146
+#: app/ui/CategoryPage.qml:198
 #, kde-format
 msgctxt "@action:inmenu Skin Tone"
 msgid "🖐🏻 Light"
-msgstr "🖐🏻 Světlý"
+msgstr ""
 
-#: app/ui/CategoryPage.qml:147
+#: app/ui/CategoryPage.qml:199
 #, kde-format
 msgctxt "@action:inmenu Skin Tone"
 msgid "Light"
-msgstr "Světlý"
+msgstr ""
 
-#: app/ui/CategoryPage.qml:155
+#: app/ui/CategoryPage.qml:207
 #, kde-format
 msgctxt "@action:inmenu Skin Tone"
 msgid "🖐🏼 Medium Light"
-msgstr "🖐🏼 Světlejší"
+msgstr ""
 
-#: app/ui/CategoryPage.qml:156
+#: app/ui/CategoryPage.qml:208
 #, kde-format
 msgctxt "@action:inmenu Skin Tone"
 msgid "Medium Light"
-msgstr "Světlejší"
+msgstr ""
 
-#: app/ui/CategoryPage.qml:164
+#: app/ui/CategoryPage.qml:216
 #, kde-format
 msgctxt "@action:inmenu Skin Tone"
 msgid "🖐🏽 Medium"
-msgstr "🖐🏽 Střední"
+msgstr ""
 
-#: app/ui/CategoryPage.qml:165
+#: app/ui/CategoryPage.qml:217
 #, kde-format
 msgctxt "@action:inmenu Skin Tone"
 msgid "Medium"
-msgstr "Střední"
+msgstr ""
 
-#: app/ui/CategoryPage.qml:173
+#: app/ui/CategoryPage.qml:225
 #, kde-format
 msgctxt "@action:inmenu Skin Tone"
 msgid "🖐🏾 Medium Dark"
-msgstr "🖐🏾 Tmavší"
+msgstr ""
 
-#: app/ui/CategoryPage.qml:174
+#: app/ui/CategoryPage.qml:226
 #, kde-format
 msgctxt "@action:inmenu Skin Tone"
 msgid "Medium Dark"
-msgstr "Tmavší"
+msgstr ""
 
-#: app/ui/CategoryPage.qml:182
+#: app/ui/CategoryPage.qml:234
 #, kde-format
 msgctxt "@action:inmenu Skin Tone"
 msgid "🖐🏿 Dark"
-msgstr "🖐🏿 Tmavý"
+msgstr ""
 
-#: app/ui/CategoryPage.qml:183
+#: app/ui/CategoryPage.qml:235
 #, kde-format
 msgctxt "@action:inmenu Skin Tone"
 msgid "Dark"
-msgstr "Tmavý"
+msgstr ""
 
-#: app/ui/CategoryPage.qml:194
-#, kde-format
-msgctxt "@title:window A two-tone skin variant can be selected here"
-msgid "Select Variant"
-msgstr "Vyberte variantu"
-
-#: app/ui/CategoryPage.qml:242
+#: app/ui/CategoryPage.qml:264
 #, kde-format
 msgctxt "@item:inmenu"
 msgid "Copy Character"
 msgstr "Kopírovat znak"
 
-#: app/ui/CategoryPage.qml:250
+#: app/ui/CategoryPage.qml:269
 #, kde-format
 msgctxt "@item:inmenu"
 msgid "Copy Description"
 msgstr "Kopírovat popis"
 
-#: app/ui/CategoryPage.qml:291
+#: app/ui/CategoryPage.qml:368
 #, kde-format
 msgctxt "@label placeholder for empty recent emoji list"
-msgid "No recent emojis"
-msgstr "Žádné nedávné emotikony"
+msgid "No recent Emojis"
+msgstr ""
 
-#: app/ui/CategoryPage.qml:291
+#: app/ui/CategoryPage.qml:368
 #, kde-format
 msgctxt "@label placeholder for no emoji found in category"
 msgid "No matching emoji found"
-msgstr "Nebyly nalezeny žádné odpovídající emotikony."
-
-#: app/ui/CategoryPage.qml:339
-#, kde-format
-msgctxt ""
-"@action:button Opens a window where a two-tone skin variant can be selected. "
-"%1 is the emoji's name"
-msgid "Select Variant of \"%1\""
-msgstr "Vyberte variantu \"%1\""
+msgstr ""
 
 #: app/ui/Emojier.qml:44
 #, kde-format
 msgctxt "@info:status passive notification as action feedback, %1 is an emoji"
 msgid "%1 copied to the clipboard"
-msgstr "%1 zkopírováno do schránky"
+msgstr ""
 
 #: app/ui/Emojier.qml:58
 #, kde-format
 msgctxt "@title page title for Recent Emoji view, and sidebar label for it"
 msgid "Recent"
-msgstr "Nedávné"
-
-#: app/ui/Emojier.qml:73
-#, kde-format
-msgctxt "@title:page All emojis"
-msgid "All"
-msgstr "Vše"
+msgstr ""
 
 #: emojicategory.cpp:14
 msgctxt "Emoji Category"
