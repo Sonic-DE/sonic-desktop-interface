@@ -1,15 +1,15 @@
 # German translations for plasma-desktop package.
 # Copyright (C) 2022 This file is copyright:
 # This file is distributed under the same license as the plasma-desktop package.
-# SPDX-FileCopyrightText: 2022-2023 Frederik Schwarzer <schwarzer@kde.org>
-# SPDX-FileCopyrightText: 2022-2025 Alois Spitzbart <spitz234@hotmail.com>
+# SPDX-FileCopyrightText: 2022, 2023 Frederik Schwarzer <schwarzer@kde.org>
+# SPDX-FileCopyrightText: 2022, 2023, 2024, 2025 Alois Spitzbart <spitz234@hotmail.com>
 # SPDX-FileCopyrightText: 2025 Alexander Becker <alex-at-kde-l10n-de@freenet.de>
-# SPDX-FileCopyrightText: 2025-2026 Philipp Kiemle <l10n.daphipz@fastmail.de>
+# SPDX-FileCopyrightText: 2025, 2026 Philipp Kiemle <l10n.daphipz@fastmail.de>
 msgid ""
 msgstr ""
 "Project-Id-Version: kcm_tablet\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-05-02 02:38+0000\n"
+"POT-Creation-Date: 2026-01-08 00:45+0000\n"
 "PO-Revision-Date: 2026-01-09 23:15+0100\n"
 "Last-Translator: Philipp Kiemle <l10n.daphipz@fastmail.de>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 25.12.2\n"
+"X-Generator: Lokalize 25.08.3\n"
 
 #: inputsequence.cpp:191
 #, kde-format
@@ -119,7 +119,7 @@ msgstr "Alle Bildschirme"
 #, kde-format
 msgctxt "model - (x,y widthxheight)"
 msgid "%1 - (%2,%3 %4×%5)"
-msgstr "%1 – (%2,%3 %4×%5)"
+msgstr "%1 - (%2,%3 %4×%5)"
 
 #: kcmtablet.cpp:164 ui/DisplayTab.qml:97 ui/DisplayTab.qml:98
 #, kde-format
@@ -139,13 +139,13 @@ msgctxt "@item:inlistbox Map to portion of the screen"
 msgid "Map to Portion"
 msgstr "Auf einen Teilbereich abbilden"
 
-#: kcmtablet.cpp:269
+#: kcmtablet.cpp:268
 #, kde-format
 msgctxt "Stylus pen button"
 msgid "Pen button %1:"
 msgstr "Stiftknopf %1:"
 
-#: kcmtablet.cpp:270
+#: kcmtablet.cpp:269
 #, kde-format
 msgctxt ""
 "@info Meant to be inserted into an existing sentence like 'configuring pen "
@@ -422,7 +422,7 @@ msgstr "Seitenverhältnis sperren"
 #, kde-format
 msgctxt "tablet area position - size"
 msgid "%1,%2 - %3×%4"
-msgstr "%1,%2 – %3×%4"
+msgstr "%1,%2 - %3×%4"
 
 #: ui/ExternalScreenMapping.qml:190
 #, kde-format
@@ -434,7 +434,7 @@ msgstr "Größe des Bildschirmbereichs ändern"
 #, kde-format
 msgctxt "tablet area position - size"
 msgid "%1%,%2% - %3%×%4%"
-msgstr "%1 %,%2 % – %3 %×%4 %"
+msgstr "%1 %,%2 % - %3 %×%4 %"
 
 #: ui/ExternalScreenMapping.qml:301
 #, kde-format
@@ -555,19 +555,19 @@ msgctxt ""
 msgid "pad button %1"
 msgstr "Tablettknopf %1"
 
-#: ui/StylusTab.qml:223
+#: ui/StylusTab.qml:222
 #, kde-format
 msgctxt "@label prefix for checkbox"
 msgid "Left-handed mode:"
 msgstr "Linkshändiger Modus:"
 
-#: ui/StylusTab.qml:229
+#: ui/StylusTab.qml:228
 #, kde-format
 msgctxt "@option:check Enable left-handed mode"
 msgid "Enable"
 msgstr "Aktivieren"
 
-#: ui/StylusTab.qml:235
+#: ui/StylusTab.qml:234
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""
@@ -580,14 +580,14 @@ msgstr ""
 "Steuerkreuzes umgekehrt, damit das Tablet auf dem Kopf stehend verwendet "
 "werden kann."
 
-#: ui/StylusTab.qml:247
+#: ui/StylusTab.qml:246
 #, kde-format
 msgctxt ""
 "'Mode' is the mode the stylus is in, pen (absolute) or mouse (relative)"
 msgid "Mode:"
 msgstr "Modus:"
 
-#: ui/StylusTab.qml:255
+#: ui/StylusTab.qml:254
 #, kde-format
 msgctxt ""
 "@option:radio Pen mode, where the point on the screen is always where you "
@@ -595,20 +595,20 @@ msgctxt ""
 msgid "Pen"
 msgstr "Stift"
 
-#: ui/StylusTab.qml:260
+#: ui/StylusTab.qml:259
 #, kde-format
 msgctxt "@info:whatsthis Accessible description"
 msgid "The cursor follows where you touch the pen on the surface"
 msgstr "Der Cursor folgt der Position, an der der Stift die Oberfläche berührt"
 
-#: ui/StylusTab.qml:281
+#: ui/StylusTab.qml:280
 #, kde-format
 msgctxt ""
 "@option:radio Mouse mode, or like using the tablet like a giant touchpad"
 msgid "Mouse"
 msgstr "Maus"
 
-#: ui/StylusTab.qml:286
+#: ui/StylusTab.qml:285
 #, kde-format
 msgctxt "@info:whatsthis Accessible description"
 msgid ""
@@ -618,37 +618,37 @@ msgstr ""
 "Wenn Sie den Stift auf der Oberfläche bewegen, bewegt sich der Cursor "
 "relativ zu der Stelle, an der er sich befand, wie bei einer Maus"
 
-#: ui/StylusTab.qml:356
+#: ui/StylusTab.qml:355
 #, kde-format
 msgctxt "@label prefix for pen pressure curve config"
 msgid "Pen Pressure:"
 msgstr "Stiftdruck:"
 
-#: ui/StylusTab.qml:416
+#: ui/StylusTab.qml:415
 #, kde-format
 msgctxt "% of minimum pen pressure"
 msgid "%1%"
 msgstr "%1 %"
 
-#: ui/StylusTab.qml:424
+#: ui/StylusTab.qml:423
 #, kde-format
 msgctxt "% of maximum pen pressure"
 msgid "%1%"
 msgstr "%1 %"
 
-#: ui/StylusTab.qml:435
+#: ui/StylusTab.qml:434
 #, kde-format
 msgctxt "100% or maximum pen pressure"
 msgid "100%"
 msgstr "100 %"
 
-#: ui/StylusTab.qml:443
+#: ui/StylusTab.qml:442
 #, kde-format
 msgctxt "0% or zero pen pressure"
 msgid "0%"
 msgstr "0 %"
 
-#: ui/StylusTab.qml:447
+#: ui/StylusTab.qml:446
 #, kde-format
 msgctxt "@info"
 msgid ""
@@ -658,13 +658,13 @@ msgstr ""
 "Diese Kurve steuert das Verhältnis zwischen dem Druck auf den Stift und den "
 "von Anwendungen empfangenen Druckwerten."
 
-#: ui/StylusTab.qml:452
+#: ui/StylusTab.qml:451
 #, kde-format
 msgctxt "Pen pressure range"
 msgid "Pressure Range:"
 msgstr "Druckbereich:"
 
-#: ui/StylusTab.qml:479
+#: ui/StylusTab.qml:478
 #, kde-format
 msgctxt "@info"
 msgid ""
@@ -674,31 +674,31 @@ msgstr ""
 "Druck wird auf die Schwellenwerte begrenzt und dies bildet den neuen "
 "Druckbereich."
 
-#: ui/StylusTab.qml:490
+#: ui/StylusTab.qml:489
 #, kde-format
 msgctxt "@action:button Calibration in progress"
 msgid "Calibration in Progress"
 msgstr "Kalibrierung läuft"
 
-#: ui/StylusTab.qml:492
+#: ui/StylusTab.qml:491
 #, kde-format
 msgctxt "@action:button Calibrate the pen display"
 msgid "Calibrate"
 msgstr "Kalibrieren"
 
-#: ui/StylusTab.qml:495
+#: ui/StylusTab.qml:494
 #, kde-format
 msgctxt "@action:button Pen display doesn't support calibration"
 msgid "Calibration Not Supported"
 msgstr "Kalibrierung nicht unterstützt"
 
-#: ui/StylusTab.qml:536
+#: ui/StylusTab.qml:535
 #, kde-format
 msgctxt "@action:button"
 msgid "Reset Custom Calibration"
 msgstr "Benutzerdefinierte Kalibrierung zurücksetzen"
 
-#: ui/StylusTab.qml:551
+#: ui/StylusTab.qml:550
 #, kde-format
 msgctxt "@info"
 msgid ""
