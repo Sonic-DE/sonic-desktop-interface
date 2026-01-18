@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-desktop\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-06-03 03:23+0000\n"
+"POT-Creation-Date: 2026-01-13 08:43+0000\n"
 "PO-Revision-Date: 2026-01-16 18:29+0200\n"
 "Last-Translator: Toms Trasuns <toms.trasuns@posteo.net>\n"
 "Language-Team: Latvian <kde-i18n-doc@kde.org>\n"
@@ -50,183 +50,159 @@ msgctxt "@title:group for configuration dialog page"
 msgid "General"
 msgstr "Pamata"
 
-#: ConfigGeneral.qml:50
+#: ConfigGeneral.qml:48
 #, kde-format
 msgctxt "@label prefix for icon-only button"
 msgid "Icon:"
 msgstr "Ikona:"
 
-#: ConfigGeneral.qml:135
+#: ConfigGeneral.qml:133
 #, kde-format
 msgctxt "@item:inmenu Open icon chooser dialog"
 msgid "Choose…"
 msgstr "Izvēlēties..."
 
-#: ConfigGeneral.qml:140
+#: ConfigGeneral.qml:138
 #, kde-format
 msgctxt "@item:inmenu Reset icon to default"
-msgid "Reset to default icon"
-msgstr ""
+msgid "Clear Icon"
+msgstr "Notīrīt ikonu"
 
-#: ConfigGeneral.qml:161
+#: ConfigGeneral.qml:159
 #, kde-format
 msgctxt "@label:listbox"
 msgid "Show applications as:"
 msgstr "Rādīt programmas:"
 
-#: ConfigGeneral.qml:163
+#: ConfigGeneral.qml:161
 #, kde-format
 msgctxt "@item:inlistbox"
 msgid "Name only"
 msgstr "Tikai ar nosaukumu"
 
-#: ConfigGeneral.qml:163
+#: ConfigGeneral.qml:161
 #, kde-format
 msgctxt "@item:inlistbox"
 msgid "Description only"
 msgstr "Tikai ar aprakstu"
 
-#: ConfigGeneral.qml:164
+#: ConfigGeneral.qml:162
 #, kde-format
 msgctxt "@item:inlistbox"
 msgid "Name (Description)"
 msgstr "Nosaukums (apraksts)"
 
-#: ConfigGeneral.qml:164
+#: ConfigGeneral.qml:162
 #, kde-format
 msgctxt "@item:inlistbox"
 msgid "Description (Name)"
 msgstr "Apraksts (nosaukums)"
 
-#: ConfigGeneral.qml:174
+#: ConfigGeneral.qml:172
 #, kde-format
 msgctxt "@title:group prefix for checkbox group"
 msgid "Behavior:"
 msgstr "Uzvedība:"
 
-#: ConfigGeneral.qml:176
+#: ConfigGeneral.qml:174
 #, kde-format
 msgctxt "@option:check"
 msgid "Sort applications alphabetically"
 msgstr "Programmas kārtot alfabētiski"
 
-#: ConfigGeneral.qml:184
+#: ConfigGeneral.qml:182
 #, kde-format
 msgctxt "@option:check"
 msgid "Flatten sub-menus to a single level"
 msgstr "Saplacināt apakšizvēlnes līdz vienam līmenim"
 
-#: ConfigGeneral.qml:192
+#: ConfigGeneral.qml:190
 #, kde-format
 msgctxt "@option:check"
 msgid "Show icons on the root level of the menu"
 msgstr "Rādīt ikonas izvēlnes saknes līmenim"
 
-#: ConfigGeneral.qml:198
-#, fuzzy, kde-format
-#| msgctxt "@option:check"
-#| msgid "Often used applications"
-msgctxt "@option:check"
-msgid "Highlight newly-installed applications"
-msgstr "Biežāk lietotās programmas"
-
-#: ConfigGeneral.qml:208
+#: ConfigGeneral.qml:200
 #, kde-format
 msgctxt "@title:group prefix for checkbox group"
 msgid "Show categories:"
 msgstr "Rādīt kategorijas:"
 
-#: ConfigGeneral.qml:211
+#: ConfigGeneral.qml:203
 #, kde-format
 msgctxt "@option:check"
 msgid "Recent applications"
 msgstr "Nesenās programmas"
 
-#: ConfigGeneral.qml:212
+#: ConfigGeneral.qml:204
 #, kde-format
 msgctxt "@option:check"
 msgid "Often used applications"
 msgstr "Biežāk lietotās programmas"
 
-#: ConfigGeneral.qml:219
+#: ConfigGeneral.qml:211
 #, kde-format
 msgctxt "@option:check"
 msgid "Recent files"
 msgstr "Nesenās datnes"
 
-#: ConfigGeneral.qml:220
+#: ConfigGeneral.qml:212
 #, kde-format
 msgctxt "@option:check"
 msgid "Often used files"
 msgstr "Biežāk lietotās datnes"
 
-#: ConfigGeneral.qml:227
-#, fuzzy, kde-format
-#| msgctxt "@option:check"
-#| msgid "Recent files"
-msgctxt "@option:check"
-msgid "Recent places"
-msgstr "Nesenās datnes"
-
-#: ConfigGeneral.qml:228
-#, fuzzy, kde-format
-#| msgctxt "@option:check"
-#| msgid "Often used files"
-msgctxt "@option:check"
-msgid "Often used places"
-msgstr "Biežāk lietotās datnes"
-
-#: ConfigGeneral.qml:234
+#: ConfigGeneral.qml:218
 #, kde-format
 msgctxt "@label:listbox"
 msgid "Sort items in categories by:"
 msgstr "Kārtot vienumus kategorijās pēc:"
 
-#: ConfigGeneral.qml:235
+#: ConfigGeneral.qml:219
 #, kde-format
 msgctxt ""
 "@item:inlistbox Sort items in categories by [Recently used | Often used]"
 msgid "Recently used"
 msgstr "Nesen lietotie"
 
-#: ConfigGeneral.qml:235
+#: ConfigGeneral.qml:219
 #, kde-format
 msgctxt ""
 "@item:inlistbox Sort items in categories by [Recently used | Often used]"
 msgid "Often used"
 msgstr "Biežāk lietotie"
 
-#: ConfigGeneral.qml:245
+#: ConfigGeneral.qml:229
 #, kde-format
 msgctxt "@title:group prefix for checkbox group"
 msgid "Search:"
 msgstr "Meklēt:"
 
-#: ConfigGeneral.qml:247
+#: ConfigGeneral.qml:231
 #, kde-format
 msgctxt "@option:check"
 msgid "Expand search to bookmarks, files and emails"
 msgstr "Meklēšanā ietvert grāmatzīmes, datnes un e-pasta vēstules"
 
-#: ConfigGeneral.qml:255
+#: ConfigGeneral.qml:239
 #, kde-format
 msgctxt "@option:check"
 msgid "Align search results to bottom"
 msgstr "Meklēšanas rezultātus izlīdzināt gar apakšu"
 
-#: ConfigGeneral.qml:260
+#: ConfigGeneral.qml:244
 #, kde-format
 msgctxt "@label prefix for a checkbox toggling Dark Mode"
 msgid "Appearance:"
 msgstr "Izskats:"
 
-#: ConfigGeneral.qml:265
+#: ConfigGeneral.qml:249
 #, kde-format
 msgctxt "@option:check"
 msgid "Prefer Dark Mode when available"
 msgstr "Kad iespējams, priekšroku dot tumšajam režīmam"
 
-#: ConfigGeneral.qml:269
+#: ConfigGeneral.qml:253
 #, kde-kuit-format
 msgctxt "@info:tooltip"
 msgid ""
@@ -236,79 +212,41 @@ msgstr ""
 "Šī iespēja izmanto papildu krāsas no ierīces krāsu shēmas, kurām parasti ir "
 "tumšs fons."
 
-#: DashboardRepresentation.qml:424
+#: DashboardRepresentation.qml:309
 #, kde-format
 msgctxt "@title:group for column with app and system action grids"
 msgid "Favorites"
 msgstr "Izlase"
 
-#: DashboardRepresentation.qml:950 ItemListDelegate.qml:97
-#, kde-format
-msgctxt "Newly-installed app, badge, keep short"
-msgid "New!"
-msgstr ""
-
-#: DashboardRepresentation.qml:951 ItemListDelegate.qml:98
-#, kde-format
-msgctxt "@info:whatsthis Accessible description for badge"
-msgid "There is a newly-installed application in this category"
-msgstr ""
-
-#: ItemGridDelegate.qml:81
-#, kde-format
-msgctxt "@label Newly-installed app, badge, keep short"
-msgid "New!"
-msgstr ""
-
-#: ItemGridDelegate.qml:83
-#, fuzzy, kde-format
-#| msgctxt "@option:check"
-#| msgid "Often used applications"
-msgctxt "@label Accessible name for badge"
-msgid "Newly-installed application"
-msgstr "Biežāk lietotās programmas"
-
-#: ItemListDelegate.qml:40
+#: ItemListDelegate.qml:31
 #, kde-format
 msgctxt "@action:inmenu accessible description for opening submenu"
 msgid "Open category"
 msgstr "Atvērt kategoriju"
 
-#: ItemListDelegate.qml:41
+#: ItemListDelegate.qml:32
 #, kde-format
 msgctxt "@action:inmenu accessible description for opening app or file"
 msgid "Launch"
 msgstr "Palaist"
 
-#: ItemListDelegate.qml:99
-#, fuzzy, kde-format
-#| msgctxt "@option:check"
-#| msgid "Often used applications"
-msgctxt "@info:whatsthis Accessible description for badge"
-msgid "Newly-installed application"
-msgstr "Biežāk lietotās programmas"
-
-#: main.qml:208
+#: main.qml:211
 #, kde-format
 msgctxt "@action:inmenu launches kmenuedit"
 msgid "Edit Applications…"
 msgstr "Rediģēt programmas…"
 
-#: MenuRepresentation.qml:191
+#: MenuRepresentation.qml:170
 #, kde-format
 msgctxt "@title:group accessible name for favorite group in sidebar"
 msgid "Favorites"
 msgstr "Izlase"
 
-#: MenuRepresentation.qml:368
+#: MenuRepresentation.qml:348
 #, kde-format
 msgctxt "@info:status"
 msgid "No matches"
 msgstr "Nav atbilstību"
-
-#~ msgctxt "@item:inmenu Reset icon to default"
-#~ msgid "Clear Icon"
-#~ msgstr "Notīrīt ikonu"
 
 #~ msgid "Searching for '%1'"
 #~ msgstr "Meklē „%1“"

@@ -179,7 +179,7 @@ msgstr "选择“%1”的变体"
 #, kde-format
 msgctxt "@info:status passive notification as action feedback, %1 is an emoji"
 msgid "%1 copied to the clipboard"
-msgstr ""
+msgstr "%1 已复制到剪贴板"
 
 #: app/ui/Emojier.qml:58
 #, kde-format
