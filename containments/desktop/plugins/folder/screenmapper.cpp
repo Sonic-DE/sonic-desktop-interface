@@ -29,6 +29,8 @@ namespace
 {
 // The maximum amount of mappings we allow. This prevents performance and memory exhaustion problems when too many
 // items are on the desktop.
+// When approaching this limit, we evict the oldest entries using LRU policy.
+constexpr auto EVICTION_THRESHOLD = 3840; // Start evicting at 93.75% of max
 // https://bugs.kde.org/show_bug.cgi?id=469445
 constexpr auto MAX_MAPPING_COUNT = 4096;
 } // namespace
@@ -183,6 +185,23 @@ void ScreenMapper::maybeMoveToDisabledScreens(const QUrl &url, const QString &ac
 
 void ScreenMapper::addMapping(const QUrl &url, int screen, const QString &activity, MappingSignalBehavior behavior)
 {
+    const auto key = std::make_pair(url, activity);
+
+    // If updating existing mapping, update LRU order
+    if (m_screenItemMap.contains(key)) {
+        m_lruList.removeOne(key);
+    }
+
+    // Evict old entries if approaching limit
+    if (m_screenItemMap.count() >= EVICTION_THRESHOLD && !m_lruList.isEmpty()) {
+        // Remove 10% of entries to avoid constant eviction
+        const int toRemove = MAX_MAPPING_COUNT / 10;
+        for (int i = 0; i < toRemove && !m_lruList.isEmpty(); ++i) {
+            const auto oldestKey = m_lruList.takeFirst();
+            m_screenItemMap.remove(oldestKey);
+        }
+    }
+
     if (m_screenItemMap.count() > MAX_MAPPING_COUNT) {
         // Don't spam this
         static auto reported = false;
@@ -195,7 +214,8 @@ void ScreenMapper::addMapping(const QUrl &url, int screen, const QString &activi
         return;
     }
 
-    m_screenItemMap[std::make_pair(url, activity)] = screen;
+    m_screenItemMap[key] = screen;
+    m_lruList.append(key);
 
     if (behavior == DelayedSignal) {
         m_screenMappingChangedTimer->start();
@@ -206,7 +226,9 @@ void ScreenMapper::addMapping(const QUrl &url, int screen, const QString &activi
 
 void ScreenMapper::removeFromMap(const QUrl &url, const QString &activity)
 {
-    m_screenItemMap.remove(std::make_pair(url, activity));
+    const auto key = std::make_pair(url, activity);
+    m_screenItemMap.remove(key);
+    m_lruList.removeOne(key);
 
     m_screenMappingChangedTimer->start();
 }
@@ -268,6 +290,7 @@ void ScreenMapper::setSharedDesktop(bool sharedDesktops)
 void ScreenMapper::cleanup()
 {
     m_screenItemMap.clear();
+    m_lruList.clear();
     m_itemsOnDisabledScreensMap.clear();
     m_screensPerPath.clear();
     m_availableScreens.clear();

@@ -91,6 +91,11 @@ private:
     ScreenMapper(QObject *parent = nullptr);
 
     QHash<std::pair<QUrl, QString /* activity ID */>, int> m_screenItemMap;
+
+    // LRU tracking: newest items at the end, oldest at the front
+    // Used to evict old entries when approaching MAX_MAPPING_COUNT
+    QList<std::pair<QUrl, QString /* activity ID */>> m_lruList;
+
     // Use QSet when appropriate to improve lookup times substantially.
     QHash<std::pair<int /* screen */, QString /* activity ID */>, QSet<QUrl>> m_itemsOnDisabledScreensMap;
     QHash<QUrl, QList<std::pair<int /* screen */, QString /* activity ID */>>> m_screensPerPath; // screens per registered path
