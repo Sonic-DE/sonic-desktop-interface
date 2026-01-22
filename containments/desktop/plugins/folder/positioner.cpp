@@ -43,6 +43,11 @@ Positioner::Positioner(QObject *parent)
 
 Positioner::~Positioner()
 {
+    // Clear position hashes to release memory
+    m_positions.clear();
+    m_changedPositions.clear();
+    m_proxyToSource.clear();
+    m_sourceToProxy.clear();
 }
 
 bool Positioner::enabled() const
