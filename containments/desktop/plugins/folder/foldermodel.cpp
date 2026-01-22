@@ -1332,9 +1332,21 @@ void FolderModel::drop(QQuickItem *target, QObject *dropEvent, int row, bool sho
         mimeCopy->setData(format, mimeData->data(format));
     }
 
-    connect(dropJob, &KIO::DropJob::popupMenuAboutToShow, this, [this, mimeCopy, x, y, dropJob](const KFileItemListProperties &) {
-        Q_EMIT popupMenuAboutToShow(dropJob, mimeCopy, x, y);
-        mimeCopy->deleteLater();
+    // Use QPointer to track if mimeCopy is still valid
+    QPointer<QMimeData> mimeCopyPtr = mimeCopy;
+
+    connect(dropJob, &KIO::DropJob::popupMenuAboutToShow, this, [this, mimeCopyPtr, x, y, dropJob](const KFileItemListProperties &) {
+        if (mimeCopyPtr) {
+            Q_EMIT popupMenuAboutToShow(dropJob, mimeCopyPtr.data(), x, y);
+            mimeCopyPtr->deleteLater();
+        }
+    });
+
+    // Ensure cleanup if popupMenuAboutToShow is never emitted
+    connect(dropJob, &QObject::destroyed, this, [mimeCopyPtr]() {
+        if (mimeCopyPtr) {
+            delete mimeCopyPtr.data();
+        }
     });
 
     /*
