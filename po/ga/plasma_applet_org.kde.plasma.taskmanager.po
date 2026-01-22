@@ -2,16 +2,14 @@
 # Copyright (C) 2009 This_file_is_part_of_KDE
 # This file is distributed under the same license as the plasma_applet_tasks package.
 # Kevin Scannell <kscanne@gmail.com>, 2009.
-# Aindriú Mac Giolla Eoin <aindriu80@yahoo.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: kdebase/plasma_applet_tasks.po\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-06-19 02:40+0000\n"
-"PO-Revision-Date: 2026-01-21 15:09+0000\n"
-"Last-Translator: Aindriú Mac Giolla Eoin <aindriu80@yahoo.com>\n"
-"Language-Team: Irish <http://weblate.amgelocalnet.duckdns.org/projects/kde-"
-"plasma-translations/plasma_applet_org-kde-plasma-taskmanager/ga/>\n"
+"POT-Creation-Date: 2026-01-22 01:00+0000\n"
+"PO-Revision-Date: 2007-12-31 14:35-0500\n"
+"Last-Translator: Kevin Scannell <kscanne@gmail.com>\n"
+"Language-Team: Irish <gaeilge-gnulinux@lists.sourceforge.net>\n"
 "Language: ga\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,164 +17,172 @@ msgstr ""
 "Plural-Forms: nplurals=5; plural=n==1 ? 0 : n==2 ? 1 : n<7 ? 2 : n < 11 ? "
 "3 : 4\n"
 
-#: backend.cpp:288
+#: backend.cpp:284
 #, kde-format
 msgctxt "Show all user Places"
 msgid "%1 more Place…"
 msgid_plural "%1 more Places…"
-msgstr[0] "%1 Áit eile…"
-msgstr[1] "%1 Áiteanna eile…"
-msgstr[2] "%1 Áiteanna eile…"
-msgstr[3] "%1 Áiteanna eile…"
-msgstr[4] "%1 Áiteanna eile…"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+
+#: backend.cpp:368
+#, kde-format
+msgid "Recent Downloads"
+msgstr ""
+
+#: backend.cpp:370
+#, kde-format
+msgid "Recent Connections"
+msgstr ""
 
 #: backend.cpp:372
 #, kde-format
-msgid "Recent Downloads"
-msgstr "Íoslódálacha Le Déanaí"
-
-#: backend.cpp:374
-#, kde-format
-msgid "Recent Connections"
-msgstr "Naisc Le Déanaí"
-
-#: backend.cpp:376
-#, kde-format
 msgid "Recent Places"
-msgstr "Áiteanna Le Déanaí"
+msgstr ""
+
+#: backend.cpp:381
+#, kde-format
+msgctxt "@action:inmenu"
+msgid "Forget Recent Downloads"
+msgstr ""
+
+#: backend.cpp:383
+#, kde-format
+msgctxt "@action:inmenu"
+msgid "Forget Recent Connections"
+msgstr ""
 
 #: backend.cpp:385
 #, kde-format
 msgctxt "@action:inmenu"
-msgid "Forget Recent Downloads"
-msgstr "Déan dearmad ar Íoslódálacha Le Déanaí"
+msgid "Forget Recent Places"
+msgstr ""
 
 #: backend.cpp:387
 #, kde-format
 msgctxt "@action:inmenu"
-msgid "Forget Recent Connections"
-msgstr "Déan dearmad ar naisc le déanaí"
-
-#: backend.cpp:389
-#, kde-format
-msgctxt "@action:inmenu"
-msgid "Forget Recent Places"
-msgstr "Déan dearmad ar áiteanna le déanaí"
-
-#: backend.cpp:391
-#, kde-format
-msgctxt "@action:inmenu"
 msgid "Forget Recent Files"
-msgstr "Déan dearmad ar chomhaid le déanaí"
+msgstr ""
 
 #: qml/AudioStream.qml:94
 #, kde-format
 msgctxt "@action:button"
 msgid "Unmute"
-msgstr "Díbhalbhaigh"
+msgstr ""
 
 #: qml/AudioStream.qml:94
 #, kde-format
 msgctxt "@action:button"
 msgid "Mute"
-msgstr "Balbhaigh"
+msgstr ""
 
 #: qml/AudioStream.qml:95
 #, kde-format
 msgctxt "@info:tooltip %1 is the window title"
 msgid "Unmute %1"
-msgstr "Díbhalbhaigh %1"
+msgstr ""
 
 #: qml/AudioStream.qml:95
 #, kde-format
 msgctxt "@info:tooltip %1 is the window title"
 msgid "Mute %1"
-msgstr "Balbhaigh %1"
+msgstr ""
+
+#: qml/Badge.qml:52
+#, kde-format
+msgctxt "Over 9999 new messages, overlay, keep short"
+msgid "9,999+"
+msgstr ""
 
 #: qml/config.qml:13
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Appearance"
 msgctxt "@title:group for configuration dialog page"
 msgid "Appearance"
-msgstr "Dealramh"
+msgstr "Cuma"
 
 #: qml/config.qml:18
 #, kde-format
 msgctxt "@title:group for configuration dialog page"
 msgid "Behavior"
-msgstr "Iompar"
+msgstr ""
 
 #: qml/ConfigAppearance.qml:49
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "General"
 msgctxt "@label for several checkboxes"
 msgid "General:"
-msgstr "Ginearálta:"
+msgstr "Ginearálta"
 
 #: qml/ConfigAppearance.qml:50
 #, kde-format
 msgctxt "@option:check section General"
 msgid "Show small window previews when hovering over tasks"
 msgstr ""
-"Taispeáin réamhamhairc fuinneoga beaga agus tú ag bogadh thar thascanna"
 
 #: qml/ConfigAppearance.qml:55
 #, kde-format
 msgctxt "@option:check section General"
 msgid "Hide other windows when hovering over previews"
-msgstr "Folaigh fuinneoga eile agus tú ag bogadh thar réamhamhairc"
+msgstr ""
 
 #: qml/ConfigAppearance.qml:55
 #, kde-format
 msgctxt "@option:check section General"
 msgid "Hide other windows when hovering over tooltips"
-msgstr "Folaigh fuinneoga eile agus tú ag luascadh thar leideanna uirlisí"
+msgstr ""
 
 #: qml/ConfigAppearance.qml:60
 #, kde-format
 msgctxt "@option:check section General"
 msgid "Show an indicator when a task is playing audio"
-msgstr "Taispeáin táscaire nuair a bhíonn tasc ag seinm fuaime"
+msgstr ""
 
 #: qml/ConfigAppearance.qml:70
 #, kde-format
 msgctxt "@option:check section General"
 msgid "Mute task when clicking indicator"
-msgstr "Táscaire balbhaigh tasc nuair a chliceálann tú"
+msgstr ""
 
 #: qml/ConfigAppearance.qml:78
 #, kde-format
 msgctxt "@option:check section General"
 msgid "Show media and volume controls in tooltip"
-msgstr "Taispeáin rialuithe meán agus toirte sa leid uirlisí"
+msgstr ""
 
 #: qml/ConfigAppearance.qml:86
 #, kde-format
 msgctxt "@option:check section General"
 msgid "Fill free space on panel"
-msgstr "Líon an spás saor ar an bpainéal"
+msgstr ""
 
 #: qml/ConfigAppearance.qml:98
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Maximum rows:"
 msgctxt "@label:listbox"
 msgid "Maximum task width:"
-msgstr "Leithead uasta tascanna:"
+msgstr "Líon uasta na rónna:"
 
 #: qml/ConfigAppearance.qml:101
 #, kde-format
 msgctxt "@item:inlistbox how wide a task item should be"
 msgid "Narrow"
-msgstr "Caol"
+msgstr ""
 
 #: qml/ConfigAppearance.qml:102
 #, kde-format
 msgctxt "@item:inlistbox how wide a task item should be"
 msgid "Medium"
-msgstr "Meánach"
+msgstr ""
 
 #: qml/ConfigAppearance.qml:103
 #, kde-format
 msgctxt "@item:inlistbox how wide a task item should be"
 msgid "Wide"
-msgstr "Leathan"
+msgstr ""
 
 #: qml/ConfigAppearance.qml:114
 #, kde-format
@@ -184,7 +190,7 @@ msgctxt ""
 "@label for radio button group, completes sentence: … when panel is low on "
 "space etc."
 msgid "Use multi-column view:"
-msgstr "Úsáid radharc ilcholún:"
+msgstr ""
 
 #: qml/ConfigAppearance.qml:115
 #, kde-format
@@ -192,62 +198,69 @@ msgctxt ""
 "@label for radio button group, completes sentence: … when panel is low on "
 "space etc."
 msgid "Use multi-row view:"
-msgstr "Úsáid radharc il-shraithe:"
+msgstr ""
 
 #: qml/ConfigAppearance.qml:121
 #, kde-format
 msgctxt "@option:radio Never use multi-column view for Task Manager"
 msgid "Never"
-msgstr "Choíche"
+msgstr ""
 
 #: qml/ConfigAppearance.qml:131
 #, kde-format
 msgctxt "@option:radio completes sentence: Use multi-column/row view"
 msgid "When panel is low on space and thick enough"
 msgstr ""
-"Nuair a bhíonn easpa spáis ar an bpainéal agus go bhfuil sé tiubh go leor"
 
 #: qml/ConfigAppearance.qml:141
 #, kde-format
 msgctxt "@option:radio completes sentence: Use multi-column/row view"
 msgid "Always when panel is thick enough"
-msgstr "I gcónaí nuair a bhíonn an painéal tiubh go leor"
+msgstr ""
 
 #: qml/ConfigAppearance.qml:148
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Maximum rows:"
 msgctxt "@label:spinbox maximum number of columns for tasks"
 msgid "Maximum columns:"
-msgstr "Uasmhéid colún:"
+msgstr "Líon uasta na rónna:"
 
 #: qml/ConfigAppearance.qml:149
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Maximum rows:"
 msgctxt "@label:spinbox maximum number of rows for tasks"
 msgid "Maximum rows:"
-msgstr "Uasmhéid sraitheanna:"
+msgstr "Líon uasta na rónna:"
 
 #: qml/ConfigAppearance.qml:159
 #, kde-format
 msgctxt "@label:listbox"
 msgid "Spacing between icons:"
-msgstr "Spásáil idir deilbhíní:"
+msgstr ""
 
 #: qml/ConfigAppearance.qml:163
 #, kde-format
 msgctxt "@item:inlistbox Icon spacing"
 msgid "Small"
-msgstr "Beag"
+msgstr ""
 
 #: qml/ConfigAppearance.qml:167
 #, kde-format
 msgctxt "@item:inlistbox Icon spacing"
 msgid "Normal"
-msgstr "Gnáth"
+msgstr ""
 
 #: qml/ConfigAppearance.qml:171
 #, kde-format
 msgctxt "@item:inlistbox Icon spacing"
 msgid "Large"
-msgstr "Mór"
+msgstr ""
+
+#: qml/ConfigAppearance.qml:197
+#, kde-format
+msgctxt "@info:usagetip under a set of radio buttons when Touch Mode is on"
+msgid "Automatically set to Large when in Touch mode"
+msgstr ""
 
 #: qml/ConfigBehavior.qml:50
 #, kde-format
@@ -258,34 +271,33 @@ msgid ""
 "behavior. If you don't find one, consider reporting this as a bug to the "
 "app's developer."
 msgstr ""
-"Más rud é go bhfuil an socrú seo á úsáid agat chun dul timpeall ar "
-"fheidhmchlár a éilíonn aird rómhinic, lorg socrú san aip ar dtús chun an t-"
-"iompar sin a dhíchumasú. Mura bhfaighidh tú ceann, smaoinigh ar é seo a "
-"thuairisciú mar fhabht d'fhorbróir na haipe."
 
 #: qml/ConfigBehavior.qml:66
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Grouping:"
 msgctxt "@label:listbox how to group tasks"
 msgid "Group:"
-msgstr "Grúpa:"
+msgstr "Grúpáil:"
 
 #: qml/ConfigBehavior.qml:70
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Do Not Group"
 msgctxt "@item:inlistbox how to group tasks"
 msgid "Do not group"
-msgstr "Ná grúpáil"
+msgstr "Ná Grúpáil"
 
 #: qml/ConfigBehavior.qml:71
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "By Program Name"
 msgctxt "@item:inlistbox how to group tasks"
 msgid "By program name"
-msgstr "De réir ainm an chláir"
+msgstr "De Réir Ainm an Chláir"
 
 #: qml/ConfigBehavior.qml:77
 #, kde-format
 msgctxt "@label:listbox completes sentence like: … cycles through tasks"
 msgid "Clicking grouped task:"
-msgstr "Ag cliceáil ar thasc grúpáilte:"
+msgstr ""
 
 #: qml/ConfigBehavior.qml:84
 #, kde-format
@@ -293,7 +305,7 @@ msgctxt ""
 "@item:inlistbox Completes the sentence 'Clicking grouped task cycles through "
 "tasks' "
 msgid "Cycles through tasks"
-msgstr "Timthriallta trí thascanna"
+msgstr ""
 
 #: qml/ConfigBehavior.qml:85
 #, kde-format
@@ -301,7 +313,7 @@ msgctxt ""
 "@item:inlistbox Completes the sentence 'Clicking grouped task shows small "
 "window previews' "
 msgid "Shows small window previews"
-msgstr "Taispeánann réamhamhairc fuinneoga beaga"
+msgstr ""
 
 #: qml/ConfigBehavior.qml:86
 #, kde-format
@@ -309,7 +321,7 @@ msgctxt ""
 "@item:inlistbox Completes the sentence 'Clicking grouped task shows large "
 "window previews' "
 msgid "Shows large window previews"
-msgstr "Taispeánann réamhamhairc fuinneoige móra"
+msgstr ""
 
 #: qml/ConfigBehavior.qml:87
 #, kde-format
@@ -317,7 +329,7 @@ msgctxt ""
 "@item:inlistbox Completes the sentence 'Clicking grouped task shows textual "
 "list' "
 msgid "Shows textual list"
-msgstr "Taispeánann liosta téacsúil"
+msgstr ""
 
 #: qml/ConfigBehavior.qml:98
 #, kde-format
@@ -326,74 +338,78 @@ msgid ""
 "The compositor does not support displaying windows side by side, so a "
 "textual list will be displayed instead."
 msgstr ""
-"Ní thacaíonn an cumadóir le fuinneoga a thaispeáint taobh le taobh, mar sin "
-"taispeánfar liosta téacsúil ina ionad."
 
 #: qml/ConfigBehavior.qml:108
 #, kde-format
 msgctxt "@option:check grouped task"
 msgid "Combine into single button"
-msgstr "Comhcheangail i gcnaipe amháin"
+msgstr ""
 
 #: qml/ConfigBehavior.qml:115
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Only when the taskbar is full"
 msgctxt "@option:check grouped task"
 msgid "Group only when the Task Manager is full"
-msgstr "Grúpaigh ach amháin nuair a bhíonn an Bainisteoir Tascanna lán"
+msgstr "Nuair atá an tascbharra lán amháin"
 
 #: qml/ConfigBehavior.qml:127
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Sorting:"
 msgctxt "@label:listbox sort tasks in grouped task"
 msgid "Sort:"
 msgstr "Sórtáil:"
 
 #: qml/ConfigBehavior.qml:134
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Do Not Group"
 msgctxt "@item:inlistbox sort tasks in grouped task"
 msgid "Do not sort"
-msgstr "Ná sórtáil"
+msgstr "Ná Grúpáil"
 
 #: qml/ConfigBehavior.qml:138
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Manually"
 msgctxt "@item:inlistbox sort tasks in grouped task"
 msgid "Manually"
-msgstr "De láimh"
+msgstr "De Láimh"
 
 #: qml/ConfigBehavior.qml:142
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Alphabetically"
 msgctxt "@item:inlistbox sort tasks in grouped task"
 msgid "Alphabetically"
-msgstr "De réir aibítre"
+msgstr "In Ord Aibítre"
 
 #: qml/ConfigBehavior.qml:146
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "By Desktop"
 msgctxt "@item:inlistbox sort tasks in grouped task"
 msgid "By desktop"
-msgstr "De réir deisce"
+msgstr "De Réir Deisce"
 
 #: qml/ConfigBehavior.qml:150
 #, kde-format
 msgctxt "@item:inlistbox sort tasks in grouped task"
 msgid "By activity"
-msgstr "De réir gníomhaíochta"
+msgstr ""
 
 #: qml/ConfigBehavior.qml:154
 #, kde-format
 msgctxt "@item:inlistbox sort tasks in grouped task"
 msgid "By horizontal window position"
-msgstr "De réir suíomh cothrománach na fuinneoige"
+msgstr ""
 
 #: qml/ConfigBehavior.qml:165
 #, kde-format
 msgctxt "@option:check configure task sorting"
 msgid "Keep launchers separate"
-msgstr "Coinnigh lainseálaithe ar leithligh"
+msgstr ""
 
 #: qml/ConfigBehavior.qml:172
 #, kde-format
 msgctxt "@option:check for icons-and-text task manager"
 msgid "Hide launchers after application startup"
-msgstr "Folaigh lainseálaithe tar éis thosú an fheidhmchláir"
+msgstr ""
 
 #: qml/ConfigBehavior.qml:182
 #, kde-format
@@ -401,27 +417,27 @@ msgctxt ""
 "@label for checkbox Part of a sentence: 'Clicking active task minimizes the "
 "task'"
 msgid "Clicking active task:"
-msgstr "Ag cliceáil ar an tasc gníomhach:"
+msgstr ""
 
 #: qml/ConfigBehavior.qml:183
 #, kde-format
 msgctxt ""
 "@option:check Part of a sentence: 'Clicking active task minimizes the task'"
 msgid "Minimizes the task"
-msgstr "Laghdaíonn sé an tasc"
+msgstr ""
 
 #: qml/ConfigBehavior.qml:188
 #, kde-format
 msgctxt "@label:listbox completes sentence like: … does nothing"
 msgid "Middle-clicking any task:"
-msgstr "Cliceáil sa lár ar aon tasc:"
+msgstr ""
 
 #: qml/ConfigBehavior.qml:192
 #, kde-format
 msgctxt ""
 "@item:inlistbox Part of a sentence: 'Middle-clicking any task does nothing'"
 msgid "Does nothing"
-msgstr "Ní dhéanann sé tada"
+msgstr ""
 
 #: qml/ConfigBehavior.qml:193
 #, kde-format
@@ -429,7 +445,7 @@ msgctxt ""
 "@item:inlistbox Part of a sentence: 'Middle-clicking any task closes window "
 "or group'"
 msgid "Closes window or group"
-msgstr "Dúnann sé fuinneog nó grúpa"
+msgstr ""
 
 #: qml/ConfigBehavior.qml:194
 #, kde-format
@@ -437,7 +453,7 @@ msgctxt ""
 "@item:inlistbox Part of a sentence: 'Middle-clicking any task opens a new "
 "window'"
 msgid "Opens a new window"
-msgstr "Osclaíonn fuinneog nua"
+msgstr ""
 
 #: qml/ConfigBehavior.qml:195
 #, kde-format
@@ -445,7 +461,7 @@ msgctxt ""
 "@item:inlistbox Part of a sentence: 'Middle-clicking any task minimizes/"
 "restores window or group'"
 msgid "Minimizes/Restores window or group"
-msgstr "Íoslaghdaíonn/Athchóiríonn fuinneog nó grúpa"
+msgstr ""
 
 #: qml/ConfigBehavior.qml:196
 #, kde-format
@@ -453,30 +469,32 @@ msgctxt ""
 "@item:inlistbox Part of a sentence: 'Middle-clicking any task toggles "
 "grouping'"
 msgid "Toggles grouping"
-msgstr "Athraíonn grúpáil"
+msgstr ""
 
 #: qml/ConfigBehavior.qml:197
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Only show tasks from the current desktop"
 msgctxt ""
 "@item:inlistbox Part of a sentence: 'Middle-clicking any task brings it to "
 "the current virtual desktop'"
 msgid "Brings it to the current virtual desktop"
-msgstr "Tugann sé chuig an deasc fíorúil reatha é"
+msgstr "Taispeáin tascanna ón deasc reatha amháin"
 
 #: qml/ConfigBehavior.qml:207
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Show tooltips"
 msgctxt ""
 "@label:listbox Part of a sentence: 'Scrolling behavior does nothing/cycles "
 "through tasks/cycles through the selected task's windows/adjusts the hovered "
 "task’s volume''"
 msgid "Scrolling behavior:"
-msgstr "Iompar scrollaigh:"
+msgstr "Taispeáin leideanna uirlisí"
 
 #: qml/ConfigBehavior.qml:211
 #, kde-format
 msgctxt "@item:inlistbox Part of a sentence: 'Scrolling behavior does nothing'"
 msgid "Does nothing"
-msgstr "Ní dhéanann sé tada"
+msgstr ""
 
 #: qml/ConfigBehavior.qml:212
 #, kde-format
@@ -484,7 +502,7 @@ msgctxt ""
 "@item:inlistbox Part of a sentence: 'Scrolling behavior cycles through all "
 "tasks'"
 msgid "Cycles through all tasks"
-msgstr "Téann sé trí na tascanna go léir"
+msgstr ""
 
 #: qml/ConfigBehavior.qml:213
 #, kde-format
@@ -492,7 +510,7 @@ msgctxt ""
 "@item:inlistbox Part of a sentence: 'Scrolling behavior cycles through the "
 "hovered task's windows'"
 msgid "Cycles through the hovered task’s windows"
-msgstr "Téann sé trí fhuinneoga an tasc atá faoi chois"
+msgstr ""
 
 #: qml/ConfigBehavior.qml:214
 #, kde-format
@@ -500,445 +518,491 @@ msgctxt ""
 "@item:inlistbox Part of a sentence: 'Scrolling behavior adjusts the hovered "
 "task’s volume'"
 msgid "Adjusts the hovered task’s volume"
-msgstr "Coigeartaíonn sé toirt an tasc atá faoi luamhán"
+msgstr ""
 
 #: qml/ConfigBehavior.qml:222
 #, kde-format
 msgctxt "@option:check mouse wheel task cycling"
 msgid "Skip minimized tasks"
-msgstr "Seachain tascanna íoslaghdaithe"
+msgstr ""
 
 #: qml/ConfigBehavior.qml:232
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Show tooltips"
 msgctxt ""
 "@label for checkbox group, completes sentence like: … from current screen"
 msgid "Show only tasks:"
-msgstr "Taispeáin tascanna amháin:"
+msgstr "Taispeáin leideanna uirlisí"
 
 #: qml/ConfigBehavior.qml:233
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "By Desktop"
 msgctxt "@option:check completes sentence: show only tasks"
 msgid "From the current desktop"
-msgstr "Ón deasc reatha"
+msgstr "De Réir Deisce"
 
 #: qml/ConfigBehavior.qml:238
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Only show tasks from the current activity"
 msgctxt "@option:check completes sentence: show only tasks"
 msgid "From the current activity"
-msgstr "Ón ngníomhaíocht reatha"
+msgstr "Taispeáin tascanna ón ghníomhaíocht reatha amháin"
 
 #: qml/ConfigBehavior.qml:243
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Only show tasks from the current screen"
 msgctxt "@option:check completes sentence: show only tasks"
 msgid "From the current screen"
-msgstr "Ón scáileán reatha"
+msgstr "Taispeáin tascanna ón scáileán reatha amháin"
 
 #: qml/ConfigBehavior.qml:248
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Only show tasks that are minimized"
 msgctxt "@option:check completes sentence: show only tasks"
 msgid "That are minimized"
-msgstr "A bhfuil íoslaghdú déanta orthu"
+msgstr "Ná taispeáin ach tascanna íoslaghdaithe"
 
 #: qml/ConfigBehavior.qml:257
 #, kde-format
 msgctxt ""
 "@label for checkbox, completes sentence: … unhide if window wants attention"
 msgid "When panel is hidden:"
-msgstr "Nuair a bhíonn an painéal i bhfolach:"
+msgstr ""
 
 #: qml/ConfigBehavior.qml:258
 #, kde-format
 msgctxt "@option:check completes sentence: When panel is hidden"
 msgid "Unhide when a window wants attention"
-msgstr "Nochtadh nuair a bhíonn aird ag teastáil ó fhuinneog"
+msgstr ""
 
 #: qml/ConfigBehavior.qml:273
 #, kde-format
 msgctxt "@label for radiobutton group completes sentence like: … on the bottom"
 msgid "New tasks appear:"
-msgstr "Feictear tascanna nua:"
+msgstr ""
 
 #: qml/ConfigBehavior.qml:277
 #, kde-format
 msgctxt "@option:check completes sentence: New tasks appear"
 msgid "On the bottom"
-msgstr "Ar an mbun"
+msgstr ""
 
 #: qml/ConfigBehavior.qml:281 qml/ConfigBehavior.qml:300
 #, kde-format
 msgctxt "@option:check completes sentence: New tasks appear"
 msgid "To the right"
-msgstr "Ar dheis"
+msgstr ""
 
 #: qml/ConfigBehavior.qml:283 qml/ConfigBehavior.qml:298
 #, kde-format
 msgctxt "@option:check completes sentence: New tasks appear"
 msgid "To the left"
-msgstr "Ar chlé"
+msgstr ""
 
 #: qml/ConfigBehavior.qml:294
 #, kde-format
 msgctxt "@option:check completes sentence: New tasks appear"
 msgid "On the top"
-msgstr "Ar an mbarr"
+msgstr ""
 
 #: qml/ContextMenu.qml:100
 #, kde-format
 msgctxt "@title:group for section of menu items"
 msgid "Places"
-msgstr "Áiteanna"
+msgstr ""
 
 #: qml/ContextMenu.qml:106
 #, kde-format
 msgctxt "@title:group for section of menu items"
 msgid "Recent Files"
-msgstr "Comhaid Le Déanaí"
+msgstr ""
 
 #: qml/ContextMenu.qml:116
 #, kde-format
 msgctxt "@title:group for section of menu items"
 msgid "Actions"
-msgstr "Gníomhartha"
+msgstr ""
 
 #: qml/ContextMenu.qml:163
 #, kde-format
 msgctxt "Play previous track"
 msgid "Previous Track"
-msgstr "An Rian Roimhe Seo"
+msgstr ""
 
 #: qml/ContextMenu.qml:177
 #, kde-format
 msgctxt "Pause playback"
 msgid "Pause"
-msgstr "Sos"
+msgstr ""
 
 #: qml/ContextMenu.qml:177
 #, kde-format
 msgctxt "Start playback"
 msgid "Play"
-msgstr "Seinn"
+msgstr ""
 
 #: qml/ContextMenu.qml:195
 #, kde-format
 msgctxt "Play next track"
 msgid "Next Track"
-msgstr "An Chéad Rian Eile"
+msgstr ""
 
 #: qml/ContextMenu.qml:206
 #, kde-format
 msgctxt "Stop playback"
 msgid "Stop"
-msgstr "Stop"
+msgstr ""
 
 #: qml/ContextMenu.qml:226
 #, kde-format
 msgctxt "Quit media player app"
 msgid "Quit"
-msgstr "Scoir"
+msgstr ""
 
 #: qml/ContextMenu.qml:241
 #, kde-format
 msgctxt "Open or bring to the front window of media player app"
 msgid "Restore"
-msgstr "Athchóirigh"
+msgstr ""
 
 #: qml/ContextMenu.qml:266
 #, kde-format
 msgctxt "@option:check inmenu, no separate unmute action"
 msgid "Mute"
-msgstr "Balbhaigh"
+msgstr ""
 
 #: qml/ContextMenu.qml:277
 #, kde-format
 msgctxt "action:inmenu"
 msgid "Open New Window"
-msgstr "Oscail Fuinneog Nua"
+msgstr ""
 
 #: qml/ContextMenu.qml:293
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "By Desktop"
 msgctxt "action:inmenu"
 msgid "Move to &Desktop"
-msgstr "Bog go dtí &Deasc"
+msgstr "De Réir Deisce"
 
 #: qml/ContextMenu.qml:323
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "By Desktop"
 msgctxt "action:inmenu"
 msgid "Move &To Current Desktop"
-msgstr "Bog go &dtí an Deasc Reatha"
+msgstr "De Réir Deisce"
 
-#: qml/ContextMenu.qml:345
-#, kde-format
+#: qml/ContextMenu.qml:332
+#, fuzzy, kde-format
+#| msgid "By Desktop"
 msgctxt "action:inmenu"
 msgid "&All Desktops"
-msgstr "&Gach Deasc"
+msgstr "De Réir Deisce"
 
-#: qml/ContextMenu.qml:373
-#, kde-format
+#: qml/ContextMenu.qml:360
+#, fuzzy, kde-format
+#| msgid "By Desktop"
 msgctxt "action:inmenu"
 msgid "&New Desktop"
-msgstr "Deasc &Nua"
+msgstr "De Réir Deisce"
 
-#: qml/ContextMenu.qml:393
+#: qml/ContextMenu.qml:380
 #, kde-format
 msgctxt "action:inmenu"
 msgid "Show in &Activities"
-msgstr "Taispeáin i &Gníomhaíochtaí"
+msgstr ""
 
-#: qml/ContextMenu.qml:417
-#, kde-format
+#: qml/ContextMenu.qml:404
+#, fuzzy, kde-format
+#| msgid "Only show tasks from the current activity"
 msgctxt "action:inmenu"
 msgid "Add To Current Activity"
-msgstr "Cuir leis an nGníomhaíocht Reatha"
+msgstr "Taispeáin tascanna ón ghníomhaíocht reatha amháin"
 
-#: qml/ContextMenu.qml:427
+#: qml/ContextMenu.qml:414
 #, kde-format
 msgctxt "action:inmenu"
 msgid "All Activities"
-msgstr "Gach Gníomhaíocht"
+msgstr ""
 
-#: qml/ContextMenu.qml:483
-#, kde-format
+#: qml/ContextMenu.qml:470
+#, fuzzy, kde-format
+#| msgid "By Desktop"
 msgctxt "action:inmenu"
 msgid "Move to %1"
-msgstr "Bog go %1"
+msgstr "De Réir Deisce"
 
-#: qml/ContextMenu.qml:509 qml/ContextMenu.qml:525
+#: qml/ContextMenu.qml:496 qml/ContextMenu.qml:512
 #, kde-format
 msgctxt "action:inmenu"
 msgid "&Pin to Task Manager"
-msgstr "&Pionáil chuig Bainisteoir Tascanna"
+msgstr ""
 
-#: qml/ContextMenu.qml:577
+#: qml/ContextMenu.qml:564
 #, kde-format
 msgctxt "action:inmenu"
 msgid "On All Activities"
-msgstr "Ar Gach Gníomhaíocht"
+msgstr ""
 
-#: qml/ContextMenu.qml:583
-#, kde-format
+#: qml/ContextMenu.qml:570
+#, fuzzy, kde-format
+#| msgid "Only show tasks from the current activity"
 msgctxt "action:inmenu"
 msgid "On The Current Activity"
-msgstr "Ar An Gníomhaíocht Reatha"
+msgstr "Taispeáin tascanna ón ghníomhaíocht reatha amháin"
 
-#: qml/ContextMenu.qml:607
+#: qml/ContextMenu.qml:594
 #, kde-format
 msgctxt "action:inmenu"
 msgid "Unpin from Task Manager"
-msgstr "Díphionáil ón mBainisteoir Tascanna"
+msgstr ""
 
-#: qml/ContextMenu.qml:622
+#: qml/ContextMenu.qml:609
 #, kde-format
 msgctxt "item:inmenu opens submenu"
 msgid "More"
-msgstr "Tuilleadh"
+msgstr ""
 
-#: qml/ContextMenu.qml:631
+#: qml/ContextMenu.qml:618
 #, kde-format
 msgctxt "action:inmenu"
 msgid "&Move"
-msgstr "&Bog"
+msgstr ""
 
-#: qml/ContextMenu.qml:640
+#: qml/ContextMenu.qml:627
 #, kde-format
 msgctxt "action:inmenu"
 msgid "Re&size"
-msgstr "Athraigh méid"
+msgstr ""
 
-#: qml/ContextMenu.qml:654
+#: qml/ContextMenu.qml:641
 #, kde-format
 msgctxt "action:inmenu"
 msgid "Ma&ximize"
-msgstr "Uasmhéadaigh"
+msgstr ""
 
-#: qml/ContextMenu.qml:668
+#: qml/ContextMenu.qml:655
 #, kde-format
 msgctxt "action:inmenu"
 msgid "Mi&nimize"
-msgstr "Íoslaghdaigh"
+msgstr ""
 
-#: qml/ContextMenu.qml:678
+#: qml/ContextMenu.qml:665
 #, kde-format
 msgctxt "action:inmenu"
 msgid "Keep &Above Others"
-msgstr "Coinnigh &Os Cionn Daoine Eile"
+msgstr ""
 
-#: qml/ContextMenu.qml:688
+#: qml/ContextMenu.qml:675
 #, kde-format
 msgctxt "action:inmenu"
 msgid "Keep &Below Others"
-msgstr "Coinnigh &Faoi bhun Daoine Eile"
+msgstr ""
+
+#: qml/ContextMenu.qml:687
+#, kde-format
+msgctxt "action:inmenu"
+msgid "&Fullscreen"
+msgstr ""
 
 #: qml/ContextMenu.qml:700
 #, kde-format
 msgctxt "action:inmenu"
-msgid "&Fullscreen"
-msgstr "&Lánscáileán"
-
-#: qml/ContextMenu.qml:713
-#, kde-format
-msgctxt "action:inmenu"
 msgid "&Shade"
-msgstr "&Scáth"
+msgstr ""
+
+#: qml/ContextMenu.qml:712
+#, kde-format
+msgctxt "@action:inmenu"
+msgid "&No Titlebar and Frame"
+msgstr ""
 
 #: qml/ContextMenu.qml:725
 #, kde-format
 msgctxt "@action:inmenu"
-msgid "&No Titlebar and Frame"
-msgstr "Gan Barra Teidil ná Fráma"
-
-#: qml/ContextMenu.qml:738
-#, kde-format
-msgctxt "@action:inmenu"
 msgid "&Hide from Screencast"
-msgstr "&Folaigh ón gCraoladh Scáileáin"
+msgstr ""
 
-#: qml/ContextMenu.qml:754
+#: qml/ContextMenu.qml:741
 #, kde-format
 msgctxt "@option:check inmenu"
 msgid "Allow this program to be grouped"
-msgstr "Ceadaigh an clár seo a ghrúpáil"
+msgstr ""
 
-#: qml/ContextMenu.qml:800
+#: qml/ContextMenu.qml:787
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "&Close All"
-msgstr "&Dún Gach Rud"
+msgstr ""
 
-#: qml/ContextMenu.qml:800
+#: qml/ContextMenu.qml:787
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "&Close"
-msgstr "&Dún"
+msgstr ""
 
-#: qml/Task.qml:157
+#: qml/Task.qml:153
 #, kde-format
 msgctxt "@info:usagetip %1 application name"
 msgid "Launch %1"
-msgstr "Lainseáil %1"
+msgstr ""
 
-#: qml/Task.qml:162
+#: qml/Task.qml:158
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "There is %1 new message."
 msgid_plural "There are %1 new messages."
-msgstr[0] "Tá %1 teachtaireacht nua ann."
-msgstr[1] "Tá %1 teachtaireachtaí nua ann."
-msgstr[2] "Tá %1 teachtaireachtaí nua ann."
-msgstr[3] "Tá %1 teachtaireachtaí nua ann."
-msgstr[4] "Tá %1 teachtaireachtaí nua ann."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+
+#: qml/Task.qml:166
+#, fuzzy, kde-format
+#| msgid "Show tooltips"
+msgctxt "@info:usagetip %1 task name"
+msgid "Show Task tooltip for %1"
+msgstr "Taispeáin leideanna uirlisí"
 
 #: qml/Task.qml:170
 #, kde-format
 msgctxt "@info:usagetip %1 task name"
-msgid "Show Task tooltip for %1"
-msgstr "Taispeáin leid uirlisí Tasca do %1"
+msgid "Show windows side by side for %1"
+msgstr ""
 
-#: qml/Task.qml:174
+#: qml/Task.qml:175
 #, kde-format
 msgctxt "@info:usagetip %1 task name"
-msgid "Show windows side by side for %1"
-msgstr "Taispeáin fuinneoga taobh le taobh le haghaidh %1"
+msgid "Open textual list of windows for %1"
+msgstr ""
 
 #: qml/Task.qml:179
 #, kde-format
 msgctxt "@info:usagetip %1 task name"
-msgid "Open textual list of windows for %1"
-msgstr "Oscail liosta téacsúil fuinneoga le haghaidh %1"
-
-#: qml/Task.qml:183
-#, kde-format
-msgctxt "@info:usagetip %1 task name"
 msgid "Activate %1"
-msgstr "Gníomhachtaigh %1"
-
-#: qml/TaskBadgeOverlay.qml:101
-#, kde-format
-msgctxt ""
-"'k' is a suffix for 'thousand'; keep to one character or else the badge "
-"could overflow!"
-msgid "9k+"
 msgstr ""
 
-#: qml/TaskBadgeOverlay.qml:104
-#, fuzzy, kde-format
-#| msgctxt "volume percentage"
-#| msgid "%1%"
-msgctxt ""
-"'k' is a suffix for 'thousand'; keep to one character or else the badge "
-"could overflow!"
-msgid "%1k"
-msgstr "%1%"
-
-#: qml/ToolTipInstance.qml:201
+#: qml/ToolTipInstance.qml:189
 #, kde-format
 msgctxt "@info:tooltip Close this window"
 msgid "Close window"
-msgstr "Dún an fhuinneog"
+msgstr ""
 
-#: qml/ToolTipInstance.qml:471
+#: qml/ToolTipInstance.qml:459
 #, kde-format
 msgctxt "button to unmute app"
 msgid "Unmute %1"
-msgstr "Díbhalbhaigh %1"
+msgstr ""
 
-#: qml/ToolTipInstance.qml:472
+#: qml/ToolTipInstance.qml:460
 #, kde-format
 msgctxt "button to mute app"
 msgid "Mute %1"
-msgstr "Balbhaigh %1"
+msgstr ""
 
-#: qml/ToolTipInstance.qml:490
+#: qml/ToolTipInstance.qml:478
 #, kde-format
 msgctxt "Accessibility data on volume slider"
 msgid "Adjust volume for %1"
-msgstr "Coigeartaigh an toirt do %1"
+msgstr ""
 
-#: qml/ToolTipInstance.qml:506
-#, kde-format
+#: qml/ToolTipInstance.qml:494
+#, fuzzy, kde-format
+#| msgctxt "@title:group Name of a group of windows"
+#| msgid "%1"
 msgctxt "volume percentage"
 msgid "%1%"
-msgstr "%1%"
+msgstr "%1"
 
-#: qml/ToolTipInstance.qml:510
+#: qml/ToolTipInstance.qml:498
 #, kde-format
 msgctxt "only used for sizing, should be widest possible string"
 msgid "100%"
-msgstr "100%"
+msgstr ""
 
-#: qml/ToolTipInstance.qml:526
-#, kde-format
+#: qml/ToolTipInstance.qml:514
+#, fuzzy, kde-format
+#| msgctxt "Which virtual desktop a window is currently on"
+#| msgid "On %1"
 msgctxt "Comma-separated list of desktops"
 msgid "On %1"
 msgstr "Ar %1"
 
-#: qml/ToolTipInstance.qml:529
+#: qml/ToolTipInstance.qml:517
 #, kde-format
 msgctxt "Comma-separated list of desktops"
 msgid "Pinned to all desktops"
-msgstr "Prionáilte le gach deasc"
+msgstr ""
 
-#: qml/ToolTipInstance.qml:535
+#: qml/ToolTipInstance.qml:523
 #, kde-format
 msgctxt "Which virtual desktop a window is currently on"
 msgid "Available on all activities"
-msgstr "Ar fáil ar gach gníomhaíocht"
+msgstr ""
 
-#: qml/ToolTipInstance.qml:545
+#: qml/ToolTipInstance.qml:533
 #, kde-format
 msgctxt "Activities a window is currently on (apart from the current one)"
 msgid "Also available on %1"
-msgstr "Ar fáil freisin ar %1"
+msgstr ""
 
-#: qml/ToolTipInstance.qml:549
+#: qml/ToolTipInstance.qml:537
 #, kde-format
 msgctxt "Which activities a window is currently on"
 msgid "Available on %1"
-msgstr "Ar fáil ar %1"
+msgstr ""
 
-#~ msgctxt "Over 9999 new messages, overlay, keep short"
-#~ msgid "9,999+"
-#~ msgstr "9,999+"
+#, fuzzy
+#~| msgid "By Desktop"
+#~ msgctxt "1 = number of desktop, 2 = desktop name"
+#~ msgid "&%1 %2"
+#~ msgstr "De Réir Deisce"
 
-#~ msgctxt "@info:usagetip under a set of radio buttons when Touch Mode is on"
-#~ msgid "Automatically set to Large when in Touch mode"
-#~ msgstr "Socraithe go Mór go huathoibríoch nuair atá tú i mód Tadhaill"
+#~ msgid "Show tooltips"
+#~ msgstr "Taispeáin leideanna uirlisí"
+
+#, fuzzy
+#~| msgid "Grouping:"
+#~ msgctxt "When clicking it would toggle grouping windows of a specific app"
+#~ msgid "Group/Ungroup"
+#~ msgstr "Grúpáil:"
+
+#, fuzzy
+#~| msgid "Filters"
+#~ msgid "Filter:"
+#~ msgstr "Scagairí"
+
+#, fuzzy
+#~| msgid "Only show tasks from the current desktop"
+#~ msgid "Show only tasks from the current desktop"
+#~ msgstr "Taispeáin tascanna ón deasc reatha amháin"
+
+#~ msgid "Highlight windows"
+#~ msgstr "Aibhsigh fuinneoga"
+
+#~ msgid "Grouping and Sorting"
+#~ msgstr "Grúpáil agus Sórtáil"
+
+#~ msgid "Do Not Sort"
+#~ msgstr "Ná Sórtáil"
+
+#~ msgid "Force row settings"
+#~ msgstr "Fórsáil socruithe ró"
+
+#~ msgid "Collapse Group"
+#~ msgstr "Laghdaigh Grúpa"
+
+#~ msgid "Expand Group"
+#~ msgstr "Leathnaigh Grúpa"
+
+#~ msgid "Edit Group"
+#~ msgstr "Cuir Grúpa in Eagar"
+
+#~ msgid "New Group Name: "
+#~ msgstr "Ainm Nua: "
+
+#~ msgid "Collapse Parent Group"
+#~ msgstr "Laghdaigh Máthairghrúpa"
+
+#~ msgid "Configure Taskbar"
+#~ msgstr "Cumraigh an Tascbharra"
