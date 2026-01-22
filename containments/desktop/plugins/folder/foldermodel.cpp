@@ -1525,7 +1525,10 @@ bool FolderModel::isDir(const QModelIndex &index, const KDirModel *dirModel) con
         // Assume the root folder of a protocol is always a folder.
         // This avoids spinning up e.g. trash KIO slave just to check whether trash:/ is a folder.
         if (url.path() == QLatin1String("/")) {
-            m_isDirCache.insert(item.url(), true);
+            // Limit cache size to prevent unbounded growth
+            if (m_isDirCache.size() < 512) {
+                m_isDirCache.insert(item.url(), true);
+            }
             return true;
         }
 
@@ -1552,7 +1555,10 @@ void FolderModel::statResult(KJob *job)
     const QModelIndex &idx = index(indexForUrl(url), 0);
 
     if (idx.isValid() && statJob->error() == KJob::NoError) {
-        m_isDirCache[url] = statJob->statResult().isDir();
+        // Limit cache size to prevent unbounded growth
+        if (m_isDirCache.size() < 512) {
+            m_isDirCache[url] = statJob->statResult().isDir();
+        }
 
         Q_EMIT dataChanged(idx, idx, QList<int>() << IsDirRole);
     }
