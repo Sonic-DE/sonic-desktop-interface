@@ -263,6 +263,11 @@ FolderModel::FolderModel(QObject *parent)
 
 FolderModel::~FolderModel()
 {
+    // Stop all timers to prevent callbacks during destruction
+    if (m_dropTargetPositionsCleanup) {
+        m_dropTargetPositionsCleanup->stop();
+    }
+
     // Ensure drag images are cleaned up
     clearDragImages();
     m_dragIndexes.clear();
