@@ -1,32 +1,44 @@
-# Plasma Desktop
+# Sonic Desktop Interface
 
-Plasma for the desktop form factor. This repository contains code for many of the widgets, KCMs, and other parts of the Plasma Desktop.
+Sonic for the desktop form factor. This repository contains code for many of the widgets, KCMs, and other parts of the Sonic Desktop Interface.
 
 See [the CODEMAP](./CODEMAP.md) to get an idea of the layout of this repository.
 
 ## See Also
 
-This repository contains only components specific to the desktop form factor. Components which are more generic can be found elsewhere under the [Plasma group](https://invent.kde.org/plasma/) or in individual repositories. For example:
+This repository contains only components specific to the desktop form factor. Components which are more generic can be found in other repositories. For example:
 
-* [Plasma Workspace](https://invent.kde.org/plasma/plasma-workspace) contains more generic code shared between Desktop, Mobile, and other form factors of Plasma. If you can't find what you're looking for in plasma-desktop, look here first.
-* [libplasma](https://invent.kde.org/plasma/libplasma) includes the building blocks for Plasma widgets.
-* [Plasma NetworkManager Applet](https://invent.kde.org/plasma/plasma-nm) has code for the network manager widget.
-* [Plasma PulseAudio Applet](https://invent.kde.org/plasma/plasma-pa) is where the code for the PulseAudio KCM and widget lives.
-* [Plasma Add-ons](https://invent.kde.org/plasma/kdeplasma-addons) is the home of the rest of the widgets that aren't in plasma-desktop, plasma-workspace, or another specific repository. For example: Web Browser, Comics, and Sticky Notes.
+* [Sonic Workspace](https://github.com/Sonic-DE/sonic-workspace) contains more generic code shared between Desktop, Mobile, and other form factors of Plasma. If you can't find what you're looking for in plasma-desktop, look here first.
+* [sonic-libworkspace](https://github.com/Sonic-DE/sonic-libworkspace) includes the building blocks for Plasma widgets.
+* [Sonic Network Manager](https://github.com/Sonic-DE/sonic-network-manager) has code for the network manager widget.
+* [Sonic Audio Applet Pulse](https://github.com/Sonic-DE/sonic-audio-applet-pulse) is where the code for the PulseAudio KCM and widget lives.
+* [Sonic Workspace Add-ons](https://github.com/Sonic-DE/sonic-workspace-addons) is the home of the rest of the widgets that aren't in sonic-desktop-interface, sonic-workspace, or another specific repository. For example: Web Browser, Comics, and Sticky Notes.
 
-## Building
+## Building from source
 
-The easiest way to make changes and test Plasma Desktop during development is to [build it with kdesrc-build](https://develop.kde.org/docs/getting-started/building/).
+```bash
+# Clone the repository
+git clone https://github.com/Sonic-DE/sonic-desktop-interface.git
+cd sonic-desktop-interface
+
+# Create build directory
+mkdir build && cd build
+
+# Configure and build
+cmake ..
+make -j$(nproc)
+
+# Optionally install
+sudo make install
+```
 
 ## Contributing
 
-Like other projects in the KDE ecosystem, contributions are welcome from all. This repository is managed on [KDE Invent](https://invent.kde.org/plasma/plasma-desktop), our GitLab instance.
+We appreciate your interest in contributing! To report a bug, please use the Sonic Desktip Interface bug tracker at [Issues · Sonic-DE/sonic-desktop-interface](https://github.com/Sonic-DE/sonic-desktop-interface/issues).
 
-* Want to contribute code? See the [GitLab wiki page](https://community.kde.org/Infrastructure/GitLab) for a tutorial on how to send a merge request.
-* Reporting a bug? Please submit it on the [KDE Bugtracking System](https://bugs.kde.org/enter_bug.cgi?format=guided&product=plasmashell). Please do not use the Issues
-tab to report bugs.
-* Is there a part of Plasma Desktop that's not translated? See the [Getting Involved in Translation wiki page](https://community.kde.org/Get_Involved/translation) to see how
-you can help translate!
+## Getting in contact
 
-If you get stuck or need help with anything at all, head over to the [KDE New Contributors room](https://go.kde.org/matrix/#/#kde-welcome:kde.org) on Matrix. For questions specifically about Plasma Desktop, please ask in the [KDE Development room](https://go.kde.org/matrix/#/#plasma:kde.org). See [Matrix](https://community.kde.org/Matrix) for more details.
+We'd love to hear from you on one of our channels. To get end-user support, please also check your distribution's chat or forum.
+
+<img src="./.github/icons/bluesky.svg">&nbsp;[Bluesky](https://bsky.app/profile/sonicdesktop.bsky.social)&nbsp; <img src="./.github/icons/discord.svg">&nbsp;[Discord](https://discord.gg/cNZMQ62u5S) &nbsp; <img src="./.github/icons/mastodon.svg">&nbsp;[Mastodon](https://mastodon.social/@sonicdesktop) &nbsp; <img src="./.github/icons/matrix.svg">&nbsp;[Matrix](https://matrix.to/#/#sonicdesktop:matrix.org) &nbsp; <img src="./.github/icons/oftc.svg">&nbsp;[OFTC IRC](https://webchat.oftc.net/?channels=sonicde%2Csonicde-devel%2Csonicde-dist&uio=MT11bmRlZmluZWQb1) &nbsp; <img src="./.github/icons/telegram.svg">&nbsp;[Telegram](https://t.me/sonic_de) &nbsp; <img src="./.github/icons/x.svg">&nbsp;[X (Twitter)](https://x.com/SonicDesktop)
 
