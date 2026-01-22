@@ -2083,12 +2083,24 @@ void FolderModel::openContextMenu(QQuickItem *visualParent, Qt::KeyboardModifier
     }
 
     menu->popup(m_menuPosition);
-    connect(menu, &QMenu::aboutToHide, this, [this, menu]() {
-        menu->deleteLater();
+
+    // Use QPointer to safely track menu lifetime
+    QPointer<QMenu> menuPtr = menu;
+
+    connect(menu, &QMenu::aboutToHide, this, [this, menuPtr]() {
+        if (!menuPtr) {
+            return;
+        }
+        menuPtr->deleteLater();
 
         // Remove the event filter for swapping delete and trash action from the QCoreApplication as it is no longer needed
         if (RemoveAction *removeAction = qobject_cast<RemoveAction *>(m_actionCollection.action(QStringLiteral("remove"))))
             QCoreApplication::instance()->removeEventFilter(removeAction);
+    });
+
+    // Safety cleanup after 5 minutes if menu is somehow still around
+    QTimer::singleShot(300000, this, [menuPtr]() {
+        delete menuPtr.data();
     });
 }
 
