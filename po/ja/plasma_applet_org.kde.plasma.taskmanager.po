@@ -1,5 +1,4 @@
 # Translation of plasma_applet_tasks into Japanese.
-# SPDX-FileCopyrightText: 2026 Mint <5602mint@gmail.com>
 # This file is distributed under the same license as the kdebase package.
 # Yukiko Bando <ybando@k6.dion.ne.jp>, 2008, 2009, 2010.
 # Fuminobu Takeyama <ftake@geeko.jp>, 2018.
@@ -11,10 +10,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma_applet_tasks\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-06-19 02:40+0000\n"
-"PO-Revision-Date: 2026-03-27 23:51+0900\n"
-"Last-Translator: Mint <5602mint@gmail.com>\n"
-"Language-Team: Japanese <kde-i18n-doc@kde.org>\n"
+"POT-Creation-Date: 2026-01-22 01:00+0000\n"
+"PO-Revision-Date: 2024-09-11 06:29+0900\n"
+"Last-Translator: UTUMI Hirosi <utuhiro78@yahoo.co.jp>\n"
+"Language-Team: Japanese <kde-jp@kde.org>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,49 +21,52 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Accelerator-Marker: &\n"
 "X-Text-Markup: kde4\n"
-"X-Generator: Lokalize 25.12.3\n"
+"X-Generator: Poedit 3.4.2\n"
 
-#: backend.cpp:288
-#, kde-format
+#: backend.cpp:284
+#, fuzzy, kde-format
+#| msgctxt "Show all user Places"
+#| msgid "%1 more Place"
+#| msgid_plural "%1 more Places"
 msgctxt "Show all user Places"
 msgid "%1 more Place…"
 msgid_plural "%1 more Places…"
-msgstr[0] "その他 (%1個)…"
+msgstr[0] "その他の場所(%1件)"
 
-#: backend.cpp:372
+#: backend.cpp:368
 #, kde-format
 msgid "Recent Downloads"
 msgstr "最近のダウンロード"
 
-#: backend.cpp:374
+#: backend.cpp:370
 #, kde-format
 msgid "Recent Connections"
 msgstr "最近の接続"
 
-#: backend.cpp:376
+#: backend.cpp:372
 #, kde-format
 msgid "Recent Places"
 msgstr "最近の場所"
 
-#: backend.cpp:385
+#: backend.cpp:381
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "Forget Recent Downloads"
 msgstr "最近のダウロードを忘れる"
 
-#: backend.cpp:387
+#: backend.cpp:383
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "Forget Recent Connections"
 msgstr "最近の接続を忘れる"
 
-#: backend.cpp:389
+#: backend.cpp:385
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "Forget Recent Places"
 msgstr "最近使用した場所を忘れる"
 
-#: backend.cpp:391
+#: backend.cpp:387
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "Forget Recent Files"
@@ -94,14 +96,22 @@ msgctxt "@info:tooltip %1 is the window title"
 msgid "Mute %1"
 msgstr "%1 をミュート"
 
-#: qml/config.qml:13
+#: qml/Badge.qml:52
 #, kde-format
+msgctxt "Over 9999 new messages, overlay, keep short"
+msgid "9,999+"
+msgstr "9,999+"
+
+#: qml/config.qml:13
+#, fuzzy, kde-format
+#| msgid "Appearance"
 msgctxt "@title:group for configuration dialog page"
 msgid "Appearance"
 msgstr "外観"
 
 #: qml/config.qml:18
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Behavior"
 msgctxt "@title:group for configuration dialog page"
 msgid "Behavior"
 msgstr "挙動"
@@ -136,19 +146,19 @@ msgstr "プレビューにマウスを置いたときに他のウィンドウを
 #, kde-format
 msgctxt "@option:check section General"
 msgid "Show an indicator when a task is playing audio"
-msgstr "タスクが音声を再生している場合はインジケーターを表示"
+msgstr ""
 
 #: qml/ConfigAppearance.qml:70
 #, kde-format
 msgctxt "@option:check section General"
 msgid "Mute task when clicking indicator"
-msgstr "インジケーターをクリックしてミュート"
+msgstr ""
 
 #: qml/ConfigAppearance.qml:78
 #, kde-format
 msgctxt "@option:check section General"
 msgid "Show media and volume controls in tooltip"
-msgstr "ツールチップにメディアとボリュームコントロールを表示"
+msgstr ""
 
 #: qml/ConfigAppearance.qml:86
 #, kde-format
@@ -250,6 +260,12 @@ msgctxt "@item:inlistbox Icon spacing"
 msgid "Large"
 msgstr "大"
 
+#: qml/ConfigAppearance.qml:197
+#, kde-format
+msgctxt "@info:usagetip under a set of radio buttons when Touch Mode is on"
+msgid "Automatically set to Large when in Touch mode"
+msgstr "タッチモードのときは自動的に「大」に設定"
+
 #: qml/ConfigBehavior.qml:50
 #, kde-format
 msgctxt "@info"
@@ -259,9 +275,6 @@ msgid ""
 "behavior. If you don't find one, consider reporting this as a bug to the "
 "app's developer."
 msgstr ""
-"アプリケーションが頻繁に注意を促すためにこの設定を使用している場合は、まずそ"
-"のアプリで動作を無効にできないか確認してください。もし見つからない場合、バグ"
-"としてアプリの開発者に報告することをおすすめします。"
 
 #: qml/ConfigBehavior.qml:66
 #, kde-format
@@ -381,7 +394,7 @@ msgstr "アクティビティで"
 #, kde-format
 msgctxt "@item:inlistbox sort tasks in grouped task"
 msgid "By horizontal window position"
-msgstr "ウィンドウ位置の高さ"
+msgstr ""
 
 #: qml/ConfigBehavior.qml:165
 #, kde-format
@@ -464,43 +477,62 @@ msgid "Brings it to the current virtual desktop"
 msgstr "現在の仮想デスクトップに移動する"
 
 #: qml/ConfigBehavior.qml:207
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt ""
+#| "@label for checkbox group, completes sentence like: … from current screen"
+#| msgid "Show only tasks:"
 msgctxt ""
 "@label:listbox Part of a sentence: 'Scrolling behavior does nothing/cycles "
 "through tasks/cycles through the selected task's windows/adjusts the hovered "
 "task’s volume''"
 msgid "Scrolling behavior:"
-msgstr "スクロールしたとき:"
+msgstr "タスクのみを表示:"
 
 #: qml/ConfigBehavior.qml:211
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt ""
+#| "@item:inlistbox Part of a sentence: 'Middle-clicking any task does "
+#| "nothing'"
+#| msgid "Does nothing"
 msgctxt "@item:inlistbox Part of a sentence: 'Scrolling behavior does nothing'"
 msgid "Does nothing"
 msgstr "何もしない"
 
 #: qml/ConfigBehavior.qml:212
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt ""
+#| "@item:inlistbox Completes the sentence 'Clicking grouped task cycles "
+#| "through tasks' "
+#| msgid "Cycles through tasks"
 msgctxt ""
 "@item:inlistbox Part of a sentence: 'Scrolling behavior cycles through all "
 "tasks'"
 msgid "Cycles through all tasks"
-msgstr "すべてのタスクを順に切り替える"
+msgstr "タスクを循環"
 
 #: qml/ConfigBehavior.qml:213
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt ""
+#| "@item:inlistbox Completes the sentence 'Clicking grouped task cycles "
+#| "through tasks' "
+#| msgid "Cycles through tasks"
 msgctxt ""
 "@item:inlistbox Part of a sentence: 'Scrolling behavior cycles through the "
 "hovered task's windows'"
 msgid "Cycles through the hovered task’s windows"
-msgstr "ホバー中のタスクのウィンドウを順に切り替える"
+msgstr "タスクを循環"
 
 #: qml/ConfigBehavior.qml:214
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt ""
+#| "@item:inlistbox Completes the sentence 'Clicking grouped task cycles "
+#| "through tasks' "
+#| msgid "Cycles through tasks"
 msgctxt ""
 "@item:inlistbox Part of a sentence: 'Scrolling behavior adjusts the hovered "
 "task’s volume'"
 msgid "Adjusts the hovered task’s volume"
-msgstr "ホバー中のタスクの音量を調節する"
+msgstr "タスクを循環"
 
 #: qml/ConfigBehavior.qml:222
 #, kde-format
@@ -516,19 +548,25 @@ msgid "Show only tasks:"
 msgstr "タスクのみを表示:"
 
 #: qml/ConfigBehavior.qml:233
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@option:check completes sentence: show only tasks"
+#| msgid "From current desktop"
 msgctxt "@option:check completes sentence: show only tasks"
 msgid "From the current desktop"
 msgstr "現在のデスクトップ"
 
 #: qml/ConfigBehavior.qml:238
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@option:check completes sentence: show only tasks"
+#| msgid "From current activity"
 msgctxt "@option:check completes sentence: show only tasks"
 msgid "From the current activity"
 msgstr "現在のアクティビティ"
 
 #: qml/ConfigBehavior.qml:243
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@option:check completes sentence: show only tasks"
+#| msgid "From current screen"
 msgctxt "@option:check completes sentence: show only tasks"
 msgid "From the current screen"
 msgstr "現在のスクリーン"
@@ -583,19 +621,22 @@ msgid "On the top"
 msgstr "一番上に"
 
 #: qml/ContextMenu.qml:100
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Places"
 msgctxt "@title:group for section of menu items"
 msgid "Places"
 msgstr "場所"
 
 #: qml/ContextMenu.qml:106
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Recent Files"
 msgctxt "@title:group for section of menu items"
 msgid "Recent Files"
 msgstr "最近のファイル"
 
 #: qml/ContextMenu.qml:116
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Actions"
 msgctxt "@title:group for section of menu items"
 msgid "Actions"
 msgstr "アクション"
@@ -643,294 +684,332 @@ msgid "Restore"
 msgstr "復元"
 
 #: qml/ContextMenu.qml:266
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Mute"
 msgctxt "@option:check inmenu, no separate unmute action"
 msgid "Mute"
 msgstr "ミュート"
 
 #: qml/ContextMenu.qml:277
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Open New Window"
 msgctxt "action:inmenu"
 msgid "Open New Window"
 msgstr "新しいウィンドウを開く"
 
 #: qml/ContextMenu.qml:293
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Move to &Desktop"
 msgctxt "action:inmenu"
 msgid "Move to &Desktop"
 msgstr "デスクトップに移動(&D)"
 
 #: qml/ContextMenu.qml:323
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Move &To Current Desktop"
 msgctxt "action:inmenu"
 msgid "Move &To Current Desktop"
 msgstr "現在のデスクトップに移動(&T)"
 
-#: qml/ContextMenu.qml:345
-#, kde-format
+#: qml/ContextMenu.qml:332
+#, fuzzy, kde-format
+#| msgid "&All Desktops"
 msgctxt "action:inmenu"
 msgid "&All Desktops"
 msgstr "すべてのデスクトップ(&A)"
 
-#: qml/ContextMenu.qml:373
-#, kde-format
+#: qml/ContextMenu.qml:360
+#, fuzzy, kde-format
+#| msgid "&New Desktop"
 msgctxt "action:inmenu"
 msgid "&New Desktop"
 msgstr "新しいデスクトップ(&N)"
 
-#: qml/ContextMenu.qml:393
-#, kde-format
+#: qml/ContextMenu.qml:380
+#, fuzzy, kde-format
+#| msgid "Show in &Activities"
 msgctxt "action:inmenu"
 msgid "Show in &Activities"
 msgstr "アクティビティに表示(&A)"
 
-#: qml/ContextMenu.qml:417
-#, kde-format
+#: qml/ContextMenu.qml:404
+#, fuzzy, kde-format
+#| msgid "Add To Current Activity"
 msgctxt "action:inmenu"
 msgid "Add To Current Activity"
 msgstr "現在のアクティビティに追加"
 
-#: qml/ContextMenu.qml:427
-#, kde-format
+#: qml/ContextMenu.qml:414
+#, fuzzy, kde-format
+#| msgid "All Activities"
 msgctxt "action:inmenu"
 msgid "All Activities"
 msgstr "すべてのアクティビティ"
 
-#: qml/ContextMenu.qml:483
-#, kde-format
+#: qml/ContextMenu.qml:470
+#, fuzzy, kde-format
+#| msgid "Move to %1"
 msgctxt "action:inmenu"
 msgid "Move to %1"
 msgstr "%1 に移動"
 
-#: qml/ContextMenu.qml:509 qml/ContextMenu.qml:525
-#, kde-format
+#: qml/ContextMenu.qml:496 qml/ContextMenu.qml:512
+#, fuzzy, kde-format
+#| msgid "&Pin to Task Manager"
 msgctxt "action:inmenu"
 msgid "&Pin to Task Manager"
 msgstr "タスクマネージャにピン留め(&P)"
 
-#: qml/ContextMenu.qml:577
-#, kde-format
+#: qml/ContextMenu.qml:564
+#, fuzzy, kde-format
+#| msgid "On All Activities"
 msgctxt "action:inmenu"
 msgid "On All Activities"
 msgstr "すべてのアクティビティで"
 
-#: qml/ContextMenu.qml:583
-#, kde-format
+#: qml/ContextMenu.qml:570
+#, fuzzy, kde-format
+#| msgid "On The Current Activity"
 msgctxt "action:inmenu"
 msgid "On The Current Activity"
 msgstr "現在のアクティビティで"
 
-#: qml/ContextMenu.qml:607
-#, kde-format
+#: qml/ContextMenu.qml:594
+#, fuzzy, kde-format
+#| msgid "Unpin from Task Manager"
 msgctxt "action:inmenu"
 msgid "Unpin from Task Manager"
 msgstr "タスクマネージャからピン留めを外す"
 
-#: qml/ContextMenu.qml:622
-#, kde-format
+#: qml/ContextMenu.qml:609
+#, fuzzy, kde-format
+#| msgid "More"
 msgctxt "item:inmenu opens submenu"
 msgid "More"
 msgstr "その他"
 
-#: qml/ContextMenu.qml:631
-#, kde-format
+#: qml/ContextMenu.qml:618
+#, fuzzy, kde-format
+#| msgid "&Move"
 msgctxt "action:inmenu"
 msgid "&Move"
 msgstr "移動(&M)"
 
-#: qml/ContextMenu.qml:640
-#, kde-format
+#: qml/ContextMenu.qml:627
+#, fuzzy, kde-format
+#| msgid "Re&size"
 msgctxt "action:inmenu"
 msgid "Re&size"
 msgstr "サイズ変更(&S)"
 
-#: qml/ContextMenu.qml:654
-#, kde-format
+#: qml/ContextMenu.qml:641
+#, fuzzy, kde-format
+#| msgid "Ma&ximize"
 msgctxt "action:inmenu"
 msgid "Ma&ximize"
 msgstr "最大化(&X)"
 
-#: qml/ContextMenu.qml:668
-#, kde-format
+#: qml/ContextMenu.qml:655
+#, fuzzy, kde-format
+#| msgid "Mi&nimize"
 msgctxt "action:inmenu"
 msgid "Mi&nimize"
 msgstr "最小化(&N)"
 
-#: qml/ContextMenu.qml:678
-#, kde-format
+#: qml/ContextMenu.qml:665
+#, fuzzy, kde-format
+#| msgid "Keep &Above Others"
 msgctxt "action:inmenu"
 msgid "Keep &Above Others"
 msgstr "常に最前面に表示(&A)"
 
-#: qml/ContextMenu.qml:688
-#, kde-format
+#: qml/ContextMenu.qml:675
+#, fuzzy, kde-format
+#| msgid "Keep &Below Others"
 msgctxt "action:inmenu"
 msgid "Keep &Below Others"
 msgstr "常に最背面に表示(&B)"
 
-#: qml/ContextMenu.qml:700
-#, kde-format
+#: qml/ContextMenu.qml:687
+#, fuzzy, kde-format
+#| msgid "&Fullscreen"
 msgctxt "action:inmenu"
 msgid "&Fullscreen"
 msgstr "フルスクリーン(&F)"
 
-#: qml/ContextMenu.qml:713
-#, kde-format
+#: qml/ContextMenu.qml:700
+#, fuzzy, kde-format
+#| msgid "&Shade"
 msgctxt "action:inmenu"
 msgid "&Shade"
 msgstr "シェード(&S)"
 
-#: qml/ContextMenu.qml:725
+#: qml/ContextMenu.qml:712
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "&No Titlebar and Frame"
-msgstr "タイトルバーとフレームを非表示(&N)"
+msgstr ""
 
-#: qml/ContextMenu.qml:738
+#: qml/ContextMenu.qml:725
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "&Hide from Screencast"
-msgstr "画面録画から消す(&H)"
+msgstr ""
 
-#: qml/ContextMenu.qml:754
-#, kde-format
+#: qml/ContextMenu.qml:741
+#, fuzzy, kde-format
+#| msgid "Allow this program to be grouped"
 msgctxt "@option:check inmenu"
 msgid "Allow this program to be grouped"
 msgstr "このプログラムのグループ化を許可する"
 
-#: qml/ContextMenu.qml:800
-#, kde-format
+#: qml/ContextMenu.qml:787
+#, fuzzy, kde-format
+#| msgctxt "@item:inmenu"
+#| msgid "&Close All"
 msgctxt "@action:inmenu"
 msgid "&Close All"
 msgstr "すべて閉じる(&C)"
 
-#: qml/ContextMenu.qml:800
-#, kde-format
+#: qml/ContextMenu.qml:787
+#, fuzzy, kde-format
+#| msgid "&Close"
 msgctxt "@action:inmenu"
 msgid "&Close"
 msgstr "閉じる(&C)"
 
-#: qml/Task.qml:157
+#: qml/Task.qml:153
 #, kde-format
 msgctxt "@info:usagetip %1 application name"
 msgid "Launch %1"
 msgstr "%1 を起動"
 
-#: qml/Task.qml:162
+#: qml/Task.qml:158
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "There is %1 new message."
 msgid_plural "There are %1 new messages."
 msgstr[0] "%1 件の新しいメッセージがあります。"
 
-#: qml/Task.qml:170
+#: qml/Task.qml:166
 #, kde-format
 msgctxt "@info:usagetip %1 task name"
 msgid "Show Task tooltip for %1"
 msgstr "%1 のツールチップを表示"
 
-#: qml/Task.qml:174
+#: qml/Task.qml:170
 #, kde-format
 msgctxt "@info:usagetip %1 task name"
 msgid "Show windows side by side for %1"
 msgstr "%1 のウィンドウを並べて表示"
 
-#: qml/Task.qml:179
+#: qml/Task.qml:175
 #, kde-format
 msgctxt "@info:usagetip %1 task name"
 msgid "Open textual list of windows for %1"
 msgstr "%1 のウィンドウのリストを開く"
 
-#: qml/Task.qml:183
-#, kde-format
+#: qml/Task.qml:179
+#, fuzzy, kde-format
+#| msgid "Activate %1"
 msgctxt "@info:usagetip %1 task name"
 msgid "Activate %1"
 msgstr "%1 を有効化"
 
-#: qml/TaskBadgeOverlay.qml:101
-#, kde-format
-msgctxt ""
-"'k' is a suffix for 'thousand'; keep to one character or else the badge "
-"could overflow!"
-msgid "9k+"
-msgstr ""
-
-#: qml/TaskBadgeOverlay.qml:104
+#: qml/ToolTipInstance.qml:189
 #, fuzzy, kde-format
-#| msgctxt "volume percentage"
-#| msgid "%1%"
-msgctxt ""
-"'k' is a suffix for 'thousand'; keep to one character or else the badge "
-"could overflow!"
-msgid "%1k"
-msgstr "%1%"
-
-#: qml/ToolTipInstance.qml:201
-#, kde-format
+#| msgctxt ""
+#| "@item:inlistbox Part of a sentence: 'Middle-clicking any task closes "
+#| "window or group'"
+#| msgid "Closes window or group"
 msgctxt "@info:tooltip Close this window"
 msgid "Close window"
-msgstr "ウィンドウを閉じる"
+msgstr "ウインドウまたはグループを閉じる"
 
-#: qml/ToolTipInstance.qml:471
+#: qml/ToolTipInstance.qml:459
 #, kde-format
 msgctxt "button to unmute app"
 msgid "Unmute %1"
 msgstr "%1 をミュート解除"
 
-#: qml/ToolTipInstance.qml:472
+#: qml/ToolTipInstance.qml:460
 #, kde-format
 msgctxt "button to mute app"
 msgid "Mute %1"
 msgstr "ミュート %1"
 
-#: qml/ToolTipInstance.qml:490
+#: qml/ToolTipInstance.qml:478
 #, kde-format
 msgctxt "Accessibility data on volume slider"
 msgid "Adjust volume for %1"
 msgstr "%1 の音量を調整"
 
-#: qml/ToolTipInstance.qml:506
+#: qml/ToolTipInstance.qml:494
 #, kde-format
 msgctxt "volume percentage"
 msgid "%1%"
 msgstr "%1%"
 
-#: qml/ToolTipInstance.qml:510
+#: qml/ToolTipInstance.qml:498
 #, kde-format
 msgctxt "only used for sizing, should be widest possible string"
 msgid "100%"
 msgstr "100%"
 
-#: qml/ToolTipInstance.qml:526
+#: qml/ToolTipInstance.qml:514
 #, kde-format
 msgctxt "Comma-separated list of desktops"
 msgid "On %1"
 msgstr "%1 で"
 
-#: qml/ToolTipInstance.qml:529
+#: qml/ToolTipInstance.qml:517
 #, kde-format
 msgctxt "Comma-separated list of desktops"
 msgid "Pinned to all desktops"
 msgstr "すべてのデスクトップにピン止め済み"
 
-#: qml/ToolTipInstance.qml:535
+#: qml/ToolTipInstance.qml:523
 #, kde-format
 msgctxt "Which virtual desktop a window is currently on"
 msgid "Available on all activities"
 msgstr "すべてのアクティビティで利用可能"
 
-#: qml/ToolTipInstance.qml:545
+#: qml/ToolTipInstance.qml:533
 #, kde-format
 msgctxt "Activities a window is currently on (apart from the current one)"
 msgid "Also available on %1"
 msgstr "%1 でも利用可能"
 
-#: qml/ToolTipInstance.qml:549
+#: qml/ToolTipInstance.qml:537
 #, kde-format
 msgctxt "Which activities a window is currently on"
 msgid "Available on %1"
 msgstr "%1 で利用可能"
 
-#~ msgctxt "Over 9999 new messages, overlay, keep short"
-#~ msgid "9,999+"
-#~ msgstr "9,999+"
+#~ msgctxt "Invalid number of new messages, overlay, keep short"
+#~ msgid "—"
+#~ msgstr "—"
+
+#, fuzzy
+#~| msgctxt ""
+#~| "@item:inlistbox Part of a sentence: 'Middle-clicking any task does "
+#~| "nothing'"
+#~| msgid "Does nothing"
+#~ msgctxt ""
+#~ "@item:inlistbox Part of a sentence: 'Scrolling on any task does nothing'"
+#~ msgid "Does nothing"
+#~ msgstr "何もしない"
+
+#~ msgctxt ""
+#~ "@label for checkbox Part of a sentence: 'Mouse wheel cycles through tasks'"
+#~ msgid "Mouse wheel:"
+#~ msgstr "マウスホイール:"
+
+#~ msgctxt ""
+#~ "@option:check Part of a sentence: 'Mouse wheel cycles through tasks'"
+#~ msgid "Cycles through tasks"
+#~ msgstr "タスクを循環する"
+
+#~ msgctxt "@option:check section General"
+#~ msgid "Mark applications that play audio"
+#~ msgstr "オーディオを再生するアプリケーションをマークする"

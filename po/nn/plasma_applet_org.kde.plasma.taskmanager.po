@@ -6,10 +6,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma_applet_tasks\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-06-19 02:40+0000\n"
+"POT-Creation-Date: 2026-01-22 01:00+0000\n"
 "PO-Revision-Date: 2025-10-26 12:41+0100\n"
 "Last-Translator: Karl Ove Hufthammer <karl@huftis.org>\n"
-"Language-Team: Norwegian Nynorsk <l10n-no@nuug.no>\n"
+"Language-Team: Norwegian Nynorsk <l10n-no@lister.huftis.org>\n"
 "Language: nn\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -20,7 +20,7 @@ msgstr ""
 "X-Accelerator-Marker: &\n"
 "X-Text-Markup: kde4\n"
 
-#: backend.cpp:288
+#: backend.cpp:284
 #, kde-format
 msgctxt "Show all user Places"
 msgid "%1 more Place…"
@@ -28,40 +28,40 @@ msgid_plural "%1 more Places…"
 msgstr[0] "%1 stad til …"
 msgstr[1] "%1 stadar til …"
 
-#: backend.cpp:372
+#: backend.cpp:368
 #, kde-format
 msgid "Recent Downloads"
 msgstr "Nylege nedlastingar"
 
-#: backend.cpp:374
+#: backend.cpp:370
 #, kde-format
 msgid "Recent Connections"
 msgstr "Nyleg brukte tilkoplingar"
 
-#: backend.cpp:376
+#: backend.cpp:372
 #, kde-format
 msgid "Recent Places"
 msgstr "Nyleg brukte stadar"
 
-#: backend.cpp:385
+#: backend.cpp:381
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "Forget Recent Downloads"
 msgstr "Gløym nylege nedlastingar"
 
-#: backend.cpp:387
+#: backend.cpp:383
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "Forget Recent Connections"
 msgstr "Gløym nyleg brukte tilkoplingar"
 
-#: backend.cpp:389
+#: backend.cpp:385
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "Forget Recent Places"
 msgstr "Gløym nyleg brukte stadar"
 
-#: backend.cpp:391
+#: backend.cpp:387
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "Forget Recent Files"
@@ -90,6 +90,12 @@ msgstr "Slå av lyddemping for %1"
 msgctxt "@info:tooltip %1 is the window title"
 msgid "Mute %1"
 msgstr "Demp %1"
+
+#: qml/Badge.qml:52
+#, kde-format
+msgctxt "Over 9999 new messages, overlay, keep short"
+msgid "9,999+"
+msgstr "9 999+"
 
 #: qml/config.qml:13
 #, fuzzy, kde-format
@@ -248,6 +254,12 @@ msgstr "Vanleg"
 msgctxt "@item:inlistbox Icon spacing"
 msgid "Large"
 msgstr "Stor"
+
+#: qml/ConfigAppearance.qml:197
+#, kde-format
+msgctxt "@info:usagetip under a set of radio buttons when Touch Mode is on"
+msgid "Automatically set to Large when in Touch mode"
+msgstr "Set automatisk til «stor» i trykkskjerm-modus"
 
 #: qml/ConfigBehavior.qml:50
 #, kde-format
@@ -669,159 +681,159 @@ msgctxt "action:inmenu"
 msgid "Move &To Current Desktop"
 msgstr "Flytt &til dette skrivebordet"
 
-#: qml/ContextMenu.qml:345
+#: qml/ContextMenu.qml:332
 #, fuzzy, kde-format
 #| msgid "&All Desktops"
 msgctxt "action:inmenu"
 msgid "&All Desktops"
 msgstr "&Alle skrivebord"
 
-#: qml/ContextMenu.qml:373
+#: qml/ContextMenu.qml:360
 #, fuzzy, kde-format
 #| msgid "&New Desktop"
 msgctxt "action:inmenu"
 msgid "&New Desktop"
 msgstr "&Nytt skrivebord"
 
-#: qml/ContextMenu.qml:393
+#: qml/ContextMenu.qml:380
 #, fuzzy, kde-format
 #| msgid "Show in &Activities"
 msgctxt "action:inmenu"
 msgid "Show in &Activities"
 msgstr "Vis i &aktivitetar"
 
-#: qml/ContextMenu.qml:417
+#: qml/ContextMenu.qml:404
 #, fuzzy, kde-format
 #| msgid "Add To Current Activity"
 msgctxt "action:inmenu"
 msgid "Add To Current Activity"
 msgstr "Legg til i gjeldande aktivitet"
 
-#: qml/ContextMenu.qml:427
+#: qml/ContextMenu.qml:414
 #, fuzzy, kde-format
 #| msgid "All Activities"
 msgctxt "action:inmenu"
 msgid "All Activities"
 msgstr "Alle aktivitetar"
 
-#: qml/ContextMenu.qml:483
+#: qml/ContextMenu.qml:470
 #, fuzzy, kde-format
 #| msgid "Move to %1"
 msgctxt "action:inmenu"
 msgid "Move to %1"
 msgstr "Flytt til %1"
 
-#: qml/ContextMenu.qml:509 qml/ContextMenu.qml:525
+#: qml/ContextMenu.qml:496 qml/ContextMenu.qml:512
 #, fuzzy, kde-format
 #| msgid "&Pin to Task Manager"
 msgctxt "action:inmenu"
 msgid "&Pin to Task Manager"
 msgstr "&Fest til oppgåvelinja"
 
-#: qml/ContextMenu.qml:577
+#: qml/ContextMenu.qml:564
 #, fuzzy, kde-format
 #| msgid "On All Activities"
 msgctxt "action:inmenu"
 msgid "On All Activities"
 msgstr "På alle aktivitetar"
 
-#: qml/ContextMenu.qml:583
+#: qml/ContextMenu.qml:570
 #, fuzzy, kde-format
 #| msgid "On The Current Activity"
 msgctxt "action:inmenu"
 msgid "On The Current Activity"
 msgstr "På gjeldande aktivitet"
 
-#: qml/ContextMenu.qml:607
+#: qml/ContextMenu.qml:594
 #, fuzzy, kde-format
 #| msgid "Unpin from Task Manager"
 msgctxt "action:inmenu"
 msgid "Unpin from Task Manager"
 msgstr "&Løys frå oppgåvelinje"
 
-#: qml/ContextMenu.qml:622
+#: qml/ContextMenu.qml:609
 #, fuzzy, kde-format
 #| msgid "More"
 msgctxt "item:inmenu opens submenu"
 msgid "More"
 msgstr "Meir"
 
-#: qml/ContextMenu.qml:631
+#: qml/ContextMenu.qml:618
 #, fuzzy, kde-format
 #| msgid "&Move"
 msgctxt "action:inmenu"
 msgid "&Move"
 msgstr "&Flytt"
 
-#: qml/ContextMenu.qml:640
+#: qml/ContextMenu.qml:627
 #, fuzzy, kde-format
 #| msgid "Re&size"
 msgctxt "action:inmenu"
 msgid "Re&size"
 msgstr "&Endra storleik"
 
-#: qml/ContextMenu.qml:654
+#: qml/ContextMenu.qml:641
 #, fuzzy, kde-format
 #| msgid "Ma&ximize"
 msgctxt "action:inmenu"
 msgid "Ma&ximize"
 msgstr "Ma&ksimer"
 
-#: qml/ContextMenu.qml:668
+#: qml/ContextMenu.qml:655
 #, fuzzy, kde-format
 #| msgid "Mi&nimize"
 msgctxt "action:inmenu"
 msgid "Mi&nimize"
 msgstr "Mi&nimer"
 
-#: qml/ContextMenu.qml:678
+#: qml/ContextMenu.qml:665
 #, fuzzy, kde-format
 #| msgid "Keep &Above Others"
 msgctxt "action:inmenu"
 msgid "Keep &Above Others"
 msgstr "Hald &over andre"
 
-#: qml/ContextMenu.qml:688
+#: qml/ContextMenu.qml:675
 #, fuzzy, kde-format
 #| msgid "Keep &Below Others"
 msgctxt "action:inmenu"
 msgid "Keep &Below Others"
 msgstr "Hald &under andre"
 
-#: qml/ContextMenu.qml:700
+#: qml/ContextMenu.qml:687
 #, fuzzy, kde-format
 #| msgid "&Fullscreen"
 msgctxt "action:inmenu"
 msgid "&Fullscreen"
 msgstr "&Fullskjerm"
 
-#: qml/ContextMenu.qml:713
+#: qml/ContextMenu.qml:700
 #, fuzzy, kde-format
 #| msgid "&Shade"
 msgctxt "action:inmenu"
 msgid "&Shade"
 msgstr "&Rull opp"
 
-#: qml/ContextMenu.qml:725
+#: qml/ContextMenu.qml:712
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "&No Titlebar and Frame"
 msgstr "&Inga tittellinje og ramme"
 
-#: qml/ContextMenu.qml:738
+#: qml/ContextMenu.qml:725
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "&Hide from Screencast"
 msgstr ""
 
-#: qml/ContextMenu.qml:754
+#: qml/ContextMenu.qml:741
 #, fuzzy, kde-format
 #| msgid "Allow this program to be grouped"
 msgctxt "@option:check inmenu"
 msgid "Allow this program to be grouped"
 msgstr "Tillat gruppering av programmet"
 
-#: qml/ContextMenu.qml:800
+#: qml/ContextMenu.qml:787
 #, fuzzy, kde-format
 #| msgctxt "@item:inmenu"
 #| msgid "&Close All"
@@ -829,20 +841,20 @@ msgctxt "@action:inmenu"
 msgid "&Close All"
 msgstr "Lu&kk alle"
 
-#: qml/ContextMenu.qml:800
+#: qml/ContextMenu.qml:787
 #, fuzzy, kde-format
 #| msgid "&Close"
 msgctxt "@action:inmenu"
 msgid "&Close"
 msgstr "&Lukk"
 
-#: qml/Task.qml:157
+#: qml/Task.qml:153
 #, kde-format
 msgctxt "@info:usagetip %1 application name"
 msgid "Launch %1"
 msgstr "Start %1"
 
-#: qml/Task.qml:162
+#: qml/Task.qml:158
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "There is %1 new message."
@@ -850,115 +862,97 @@ msgid_plural "There are %1 new messages."
 msgstr[0] "Du har %1 ny melding."
 msgstr[1] "Du har %1 nye meldingar."
 
-#: qml/Task.qml:170
+#: qml/Task.qml:166
 #, kde-format
 msgctxt "@info:usagetip %1 task name"
 msgid "Show Task tooltip for %1"
 msgstr "Vis oppgåve-hjelpeboble for %1"
 
-#: qml/Task.qml:174
+#: qml/Task.qml:170
 #, kde-format
 msgctxt "@info:usagetip %1 task name"
 msgid "Show windows side by side for %1"
 msgstr "Viser vindauge side ved side for %1"
 
-#: qml/Task.qml:179
+#: qml/Task.qml:175
 #, kde-format
 msgctxt "@info:usagetip %1 task name"
 msgid "Open textual list of windows for %1"
 msgstr "Vis tekstliste med vindauge for %1"
 
-#: qml/Task.qml:183
+#: qml/Task.qml:179
 #, fuzzy, kde-format
 #| msgid "Activate %1"
 msgctxt "@info:usagetip %1 task name"
 msgid "Activate %1"
 msgstr "Slå på %1"
 
-#: qml/TaskBadgeOverlay.qml:101
-#, kde-format
-msgctxt ""
-"'k' is a suffix for 'thousand'; keep to one character or else the badge "
-"could overflow!"
-msgid "9k+"
-msgstr ""
-
-#: qml/TaskBadgeOverlay.qml:104
-#, fuzzy, kde-format
-#| msgctxt "volume percentage"
-#| msgid "%1%"
-msgctxt ""
-"'k' is a suffix for 'thousand'; keep to one character or else the badge "
-"could overflow!"
-msgid "%1k"
-msgstr "%1 %"
-
-#: qml/ToolTipInstance.qml:201
+#: qml/ToolTipInstance.qml:189
 #, kde-format
 msgctxt "@info:tooltip Close this window"
 msgid "Close window"
 msgstr "Lukk vindauget"
 
-#: qml/ToolTipInstance.qml:471
+#: qml/ToolTipInstance.qml:459
 #, kde-format
 msgctxt "button to unmute app"
 msgid "Unmute %1"
 msgstr "Slå av lyddemping for %1"
 
-#: qml/ToolTipInstance.qml:472
+#: qml/ToolTipInstance.qml:460
 #, kde-format
 msgctxt "button to mute app"
 msgid "Mute %1"
 msgstr "Demp lyden på %1"
 
-#: qml/ToolTipInstance.qml:490
+#: qml/ToolTipInstance.qml:478
 #, kde-format
 msgctxt "Accessibility data on volume slider"
 msgid "Adjust volume for %1"
 msgstr "Juster lydstyrken for %1"
 
-#: qml/ToolTipInstance.qml:506
+#: qml/ToolTipInstance.qml:494
 #, kde-format
 msgctxt "volume percentage"
 msgid "%1%"
 msgstr "%1 %"
 
-#: qml/ToolTipInstance.qml:510
+#: qml/ToolTipInstance.qml:498
 #, kde-format
 msgctxt "only used for sizing, should be widest possible string"
 msgid "100%"
 msgstr "100 %"
 
-#: qml/ToolTipInstance.qml:526
+#: qml/ToolTipInstance.qml:514
 #, kde-format
 msgctxt "Comma-separated list of desktops"
 msgid "On %1"
 msgstr "På %1"
 
-#: qml/ToolTipInstance.qml:529
+#: qml/ToolTipInstance.qml:517
 #, kde-format
 msgctxt "Comma-separated list of desktops"
 msgid "Pinned to all desktops"
 msgstr "Festa til alle skriveborda"
 
-#: qml/ToolTipInstance.qml:535
+#: qml/ToolTipInstance.qml:523
 #, kde-format
 msgctxt "Which virtual desktop a window is currently on"
 msgid "Available on all activities"
 msgstr "Tilgjengeleg i alle aktivitetar"
 
-#: qml/ToolTipInstance.qml:545
+#: qml/ToolTipInstance.qml:533
 #, kde-format
 msgctxt "Activities a window is currently on (apart from the current one)"
 msgid "Also available on %1"
 msgstr "Også tilgjengelig på %1"
 
-#: qml/ToolTipInstance.qml:549
+#: qml/ToolTipInstance.qml:537
 #, kde-format
 msgctxt "Which activities a window is currently on"
 msgid "Available on %1"
 msgstr "Tilgjengeleg på %1"
 
-#~ msgctxt "Over 9999 new messages, overlay, keep short"
-#~ msgid "9,999+"
-#~ msgstr "9 999+"
+#~ msgctxt "Invalid number of new messages, overlay, keep short"
+#~ msgid "—"
+#~ msgstr "–"
