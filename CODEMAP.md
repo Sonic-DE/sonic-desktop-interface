@@ -10,20 +10,20 @@ The Emoji Selector, bound to Meta+dot by default.
 
 ### `kcms/`
 
-KCMs are KDE Config Modules, which make up System Settings. Desktop-specific ones can be found here.
+SCMs are SonicDE Config Modules, which make up System Settings. Desktop-specific ones can be found here.
 
 ### `runners/`
 
-Runners are plugins for KRunner, the launcher system used throughout Plasma. Only two runners are provided here:
+Runners are plugins for KRunner, the launcher system used throughout Sonic. Only two runners are provided here:
 
-- `plasma-desktop`, which provides access to the Plasma and KWin scripting consoles.
-- `kwin`, which provides access to the KWin debug console.
+- `plasma-desktop`, which provides access to the Sonic and sonic-win scripting consoles.
+- `kwin`, which provides access to the sonic-win debug console.
 
-Most of the interesting runners are in plasma-workspace and other component repos.
+Most of the interesting runners are in sonic-workspace and other component repos.
 
 ### `toolboxes/`
 
-UI for the "Edit Mode" in Plasma. See also the `ConfigOverlay.qml` in `containments/` for the UI elements for editing individual applets.
+UI for the "Edit Mode" in Sonic. See also the `ConfigOverlay.qml` in `containments/` for the UI elements for editing individual applets.
 
 ### `containments/`
 
@@ -31,7 +31,7 @@ The panel, desktop, and folder view containments.
 
 ### `desktoppackage/contents/updates/`
 
-Update scripts used to ensure that Plasma updates go smoothly, such as migrating settings whenever the configuration format changes.
+Update scripts used to ensure that Sonic updates go smoothly, such as migrating settings whenever the configuration format changes.
 
 ### `desktoppackage/contents/configuration/`
 
@@ -55,7 +55,7 @@ Templates for the items in the "Add Panel…" menu on the desktop: default panel
 
 ### `solid-device-automounter/`
 
-Provides the KCM, library, and KDE Daemon (kded) plugin for handling and configuring the automatic mounting of any removable devices plugged in.
+Provides the SCM, library, and SonicDE Daemon (kded) plugin for handling and configuring the automatic mounting of any removable devices plugged in.
 
 ### `kaccess/`
 
@@ -71,4 +71,4 @@ Provides the `org.kde.plasma.activityswitcher` QML import. Used in various apple
 
 ### `attica-kde/`
 
-Attica is the KDE Framework for interacting with Open Collaboration Services, used in KDE for the Get New Stuff system. The part here is the plugin for integrating the OCS accounts system into Plasma.
+Attica is the SonicDE Framework for interacting with Open Collaboration Services, used in SonicDE for the Get New Stuff system. The part here is the plugin for integrating the OCS accounts system into Sonic.
