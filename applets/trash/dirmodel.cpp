@@ -143,6 +143,14 @@ QVariant DirModel::data(const QModelIndex &index, int role) const
 
 void DirModel::delayedPreview()
 {
+    // Limit concurrent preview jobs to prevent resource exhaustion
+    constexpr int MAX_PREVIEW_JOBS = 50;
+    if (m_previewJobs.size() >= MAX_PREVIEW_JOBS) {
+        // Retry later when some jobs have completed
+        m_previewTimer->start(500);
+        return;
+    }
+
     QHash<QUrl, QPersistentModelIndex>::const_iterator i = m_filesToPreview.constBegin();
 
     KFileItemList list;
