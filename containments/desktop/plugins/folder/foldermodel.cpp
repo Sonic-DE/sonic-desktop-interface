@@ -263,6 +263,10 @@ FolderModel::FolderModel(QObject *parent)
 
 FolderModel::~FolderModel()
 {
+    // Ensure drag images are cleaned up
+    clearDragImages();
+    m_dragIndexes.clear();
+
     if (m_usedByContainment) {
         // disconnect so we don't handle signals from the screen mapper when
         // removeScreen is called
