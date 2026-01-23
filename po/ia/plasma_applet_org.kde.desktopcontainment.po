@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-05-29 02:43+0000\n"
-"PO-Revision-Date: 2026-04-30 16:58+0200\n"
+"POT-Creation-Date: 2026-01-08 00:45+0000\n"
+"PO-Revision-Date: 2026-01-22 15:57+0100\n"
 "Last-Translator: giovanni <g.sora@tiscali.it>\n"
 "Language-Team: Interlingua <kde-i18n-doc@kde.org>\n"
 "Language: ia\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 25.04.0\n"
+"X-Generator: Lokalize 23.08.5\n"
 
 #: package/contents/config/config.qml:17
 #, kde-format
@@ -113,253 +113,240 @@ msgctxt "@action:button tooltip only, ascending/descending"
 msgid "Switch Sort Order"
 msgstr "Commuta Ordine de ordinar"
 
-#: package/contents/ui/ConfigIcons.qml:61
+#: package/contents/ui/ConfigIcons.qml:57
 #, kde-format
 msgctxt "@title:group prefix for checkbox + button"
 msgid "Panel button:"
 msgstr "Button de pannello:"
 
-#: package/contents/ui/ConfigIcons.qml:67
+#: package/contents/ui/ConfigIcons.qml:63
 #, kde-format
 msgctxt "@option:check"
 msgid "Use a custom icon"
 msgstr "Usa icone personalisate"
 
-#: package/contents/ui/ConfigIcons.qml:100
+#: package/contents/ui/ConfigIcons.qml:96
 #, kde-format
 msgctxt "@item:inmenu Open icon chooser dialog"
 msgid "Choose…"
 msgstr "Selige..."
 
-#: package/contents/ui/ConfigIcons.qml:106
+#: package/contents/ui/ConfigIcons.qml:102
 #, kde-format
 msgctxt "@item:inmenu Reset icon to default"
 msgid "Clear Icon"
 msgstr "Netta icones"
 
-#: package/contents/ui/ConfigIcons.qml:126
+#: package/contents/ui/ConfigIcons.qml:122
 #, kde-format
 msgctxt "@label:listbox columns/rows"
 msgid "Arrangement:"
 msgstr "Collocation:"
 
-#: package/contents/ui/ConfigIcons.qml:129
-#, kde-format
+#: package/contents/ui/ConfigIcons.qml:125
+#, fuzzy, kde-format
+#| msgctxt "@item:inlistbox arrangement of icons"
+#| msgid "Columns"
 msgctxt "@item:inlistbox arrangement of icons"
 msgid "In Columns"
-msgstr "In Columnas"
+msgstr "Columnas"
 
-#: package/contents/ui/ConfigIcons.qml:130
-#, kde-format
+#: package/contents/ui/ConfigIcons.qml:126
+#, fuzzy, kde-format
+#| msgctxt "@item:inlistbox arrangement of icons"
+#| msgid "Rows"
 msgctxt "@item:inlistbox arrangement of icons"
 msgid "In Rows"
-msgstr "In Rangos"
+msgstr "Rangos"
 
-#: package/contents/ui/ConfigIcons.qml:139
-#, kde-format
+#: package/contents/ui/ConfigIcons.qml:135
+#, fuzzy, kde-format
+#| msgid "Sorting:"
 msgctxt "@label:listbox, LtR/RtL"
 msgid "Sort Alignment:"
-msgstr "Ordina Alineamento:"
+msgstr "Ordinar:"
 
-#: package/contents/ui/ConfigIcons.qml:142
+#: package/contents/ui/ConfigIcons.qml:138
 #, kde-format
 msgctxt "@item:inlistbox alignment of icons"
 msgid "Left-to-Right"
 msgstr "Sinistra a dextera"
 
-#: package/contents/ui/ConfigIcons.qml:143
+#: package/contents/ui/ConfigIcons.qml:139
 #, kde-format
 msgctxt "@item:inlistbox alignment of icons"
 msgid "Right-to-Left"
 msgstr "Dextera a Sinistra"
 
-#: package/contents/ui/ConfigIcons.qml:165
+#: package/contents/ui/ConfigIcons.qml:161
 #, kde-format
 msgctxt "@option:check lock icon positions"
 msgid "Lock in place"
 msgstr "Bloca in posto"
 
-#: package/contents/ui/ConfigIcons.qml:179
+#: package/contents/ui/ConfigIcons.qml:175
 #, kde-format
 msgctxt "@label:listbox sort items by field"
 msgid "Sort by:"
 msgstr "Ordina per:"
 
-#: package/contents/ui/ConfigIcons.qml:187
+#: package/contents/ui/ConfigIcons.qml:183
 #, kde-format
 msgctxt "@item:inlistbox sort icons manually"
 msgid "Manual"
 msgstr "Manual"
 
-#: package/contents/ui/ConfigIcons.qml:188
+#: package/contents/ui/ConfigIcons.qml:184
 #, kde-format
 msgctxt "@item:inlistbox sort icons by name"
 msgid "Name"
 msgstr "Nomine"
 
-#: package/contents/ui/ConfigIcons.qml:189
+#: package/contents/ui/ConfigIcons.qml:185
 #, kde-format
 msgctxt "@item:inlistbox sort icons by size"
 msgid "Size"
 msgstr "Dimension"
 
-#: package/contents/ui/ConfigIcons.qml:190
+#: package/contents/ui/ConfigIcons.qml:186
 #, kde-format
 msgctxt "@item:inlistbox sort icons by file type"
 msgid "Type"
 msgstr "Typo"
 
-#: package/contents/ui/ConfigIcons.qml:191
+#: package/contents/ui/ConfigIcons.qml:187
 #, kde-format
 msgctxt "@item:inlistbox sort icons by date"
 msgid "Date"
 msgstr "Data"
 
-#: package/contents/ui/ConfigIcons.qml:202
+#: package/contents/ui/ConfigIcons.qml:198
 #, kde-format
 msgctxt "@option:check sort icons in descending order"
 msgid "Descending"
 msgstr "Descendente"
 
-#: package/contents/ui/ConfigIcons.qml:210
+#: package/contents/ui/ConfigIcons.qml:206
 #, kde-format
 msgctxt "@option:check sort icons with folders first"
 msgid "Folders first"
 msgstr "Prime le dossieres"
 
-#: package/contents/ui/ConfigIcons.qml:224
+#: package/contents/ui/ConfigIcons.qml:220
 #, kde-format
 msgctxt "whether to use icon or list view"
 msgid "View mode:"
 msgstr "Modo de vista:"
 
-#: package/contents/ui/ConfigIcons.qml:226
+#: package/contents/ui/ConfigIcons.qml:222
 #, kde-format
 msgctxt "@item:inlistbox show icons in a list"
 msgid "List"
 msgstr "Lista"
 
-#: package/contents/ui/ConfigIcons.qml:227
+#: package/contents/ui/ConfigIcons.qml:223
 #, kde-format
 msgctxt "@item:inlistbox show icons in a grid"
 msgid "Grid"
 msgstr "Grillia"
 
-#: package/contents/ui/ConfigIcons.qml:238
+#: package/contents/ui/ConfigIcons.qml:234
 #, kde-format
 msgctxt "@label:slider"
 msgid "Icon size:"
 msgstr "Dimension de Icone:"
 
-#: package/contents/ui/ConfigIcons.qml:253
+#: package/contents/ui/ConfigIcons.qml:249
 #, kde-format
 msgctxt "@item:inrange smallest icon size"
 msgid "Small"
 msgstr "Parve"
 
-#: package/contents/ui/ConfigIcons.qml:262
+#: package/contents/ui/ConfigIcons.qml:258
 #, kde-format
 msgctxt "@item:inrange largest icon size"
 msgid "Large"
 msgstr "Grande (Large)"
 
-#: package/contents/ui/ConfigIcons.qml:271
+#: package/contents/ui/ConfigIcons.qml:267
 #, kde-format
 msgctxt "@label:listbox"
 msgid "Label width:"
 msgstr "Largessa de Etiquetta:"
 
-#: package/contents/ui/ConfigIcons.qml:274
+#: package/contents/ui/ConfigIcons.qml:270
 #, kde-format
 msgctxt "@item:inlistbox how long a text label should be"
 msgid "Narrow"
 msgstr "Stricte"
 
-#: package/contents/ui/ConfigIcons.qml:275
+#: package/contents/ui/ConfigIcons.qml:271
 #, kde-format
 msgctxt "@item:inlistbox how long a text label should be"
 msgid "Medium"
 msgstr "Medie"
 
-#: package/contents/ui/ConfigIcons.qml:276
+#: package/contents/ui/ConfigIcons.qml:272
 #, kde-format
 msgctxt "@item:inlistbox how long a text label should be"
 msgid "Wide"
 msgstr "Large"
 
-#: package/contents/ui/ConfigIcons.qml:284
+#: package/contents/ui/ConfigIcons.qml:280
 #, kde-format
 msgctxt "@label:spinbox"
 msgid "Text lines:"
 msgstr "Rangos de texto:"
 
-#: package/contents/ui/ConfigIcons.qml:300
+#: package/contents/ui/ConfigIcons.qml:296
 #, kde-format
 msgctxt "@title:group prefix for checkbox group"
 msgid "When hovering over icons:"
 msgstr "Quando plana sur icones:"
 
-#: package/contents/ui/ConfigIcons.qml:302
+#: package/contents/ui/ConfigIcons.qml:298
 #, kde-format
 msgctxt "@option:check When hovering over icons…"
 msgid "Show tooltips"
 msgstr "Monstra consilios"
 
-#: package/contents/ui/ConfigIcons.qml:309
+#: package/contents/ui/ConfigIcons.qml:305
 #, kde-format
 msgctxt "@option:check When hovering over icons…"
 msgid "Show selection markers"
-msgstr "Monstra marcatores de selection"
+msgstr "Monstra marcatores d selection"
 
-#: package/contents/ui/ConfigIcons.qml:316
+#: package/contents/ui/ConfigIcons.qml:312
 #, kde-format
 msgctxt "@option:check When hovering over icons…"
 msgid "Show folder preview popups"
 msgstr "Monstra Popups de vista preliminar de dossier"
 
-#: package/contents/ui/ConfigIcons.qml:328
-#, kde-format
-msgctxt "@title:group"
-msgid "Typing on the desktop:"
-msgstr "Typante sur le scriptorio:"
-
-#: package/contents/ui/ConfigIcons.qml:334
-#, kde-format
-msgctxt "@option:radio Typing on the desktop selects items"
-msgid "Selects items"
-msgstr "Selectiona elementos"
-
-#: package/contents/ui/ConfigIcons.qml:340
-#, kde-format
-msgctxt "@option:radio Typing on the desktop activates KRunner"
-msgid "Activates KRunner"
-msgstr "Activa KRunner"
-
-#: package/contents/ui/ConfigIcons.qml:356
+#: package/contents/ui/ConfigIcons.qml:322
 #, kde-format
 msgctxt "@label prefix for checkbox"
 msgid "Rename:"
 msgstr "Renomina:"
 
-#: package/contents/ui/ConfigIcons.qml:360
+#: package/contents/ui/ConfigIcons.qml:326
 #, kde-format
 msgctxt "@option:check"
 msgid "Rename inline by clicking selected item's text"
 msgstr "Renomina inline (incrporate) per pulsar texto de elemento selectionate"
 
-#: package/contents/ui/ConfigIcons.qml:371
+#: package/contents/ui/ConfigIcons.qml:337
 #, kde-format
 msgctxt "@title:group prefix for checkbox and button"
 msgid "Previews:"
 msgstr "Vistas preliminar:"
 
-#: package/contents/ui/ConfigIcons.qml:373
+#: package/contents/ui/ConfigIcons.qml:339
 #, kde-format
 msgctxt "@option:check"
 msgid "Show preview thumbnails"
 msgstr "Monstra Vistas preliminar de miniaturas"
 
-#: package/contents/ui/ConfigIcons.qml:381
+#: package/contents/ui/ConfigIcons.qml:347
 #, kde-format
 msgctxt "@action:button opens dialog"
 msgid "Configure Preview Plugins…"
@@ -467,7 +454,7 @@ msgctxt "@title:window"
 msgid "Preview Plugins"
 msgstr "Vistas preliminar de plugins"
 
-#: package/contents/ui/FolderView.qml:1274
+#: package/contents/ui/FolderView.qml:1237
 #, kde-format
 msgctxt "@info"
 msgid ""
@@ -489,7 +476,7 @@ msgctxt "@item:inmenu opens submenu with view options like sorting"
 msgid "Icons"
 msgstr "Icones"
 
-#: package/contents/ui/main.qml:448
+#: package/contents/ui/main.qml:439
 #, kde-format
 msgctxt "@action:inmenu opens config dialog"
 msgid "Desktop and Wallpaper"
@@ -500,17 +487,17 @@ msgstr "Scriptorio e Tapete de papiro"
 msgid "Select Folder"
 msgstr "Selige dossier"
 
-#: plugins/folder/foldermodel.cpp:569
+#: plugins/folder/foldermodel.cpp:505
 #, kde-format
 msgid "&Refresh Desktop"
 msgstr "&Refresca Scriptorio"
 
-#: plugins/folder/foldermodel.cpp:569 plugins/folder/foldermodel.cpp:1803
+#: plugins/folder/foldermodel.cpp:505 plugins/folder/foldermodel.cpp:1742
 #, kde-format
 msgid "&Refresh View"
 msgstr "&Refresca Vista"
 
-#: plugins/folder/foldermodel.cpp:932
+#: plugins/folder/foldermodel.cpp:868
 #, kde-format
 msgctxt ""
 "@title:notifications Here 'link' refers to a symbolic link to another file "
@@ -518,7 +505,7 @@ msgctxt ""
 msgid "Link Target Not Found"
 msgstr "Objectivo de ligamine non trovate"
 
-#: plugins/folder/foldermodel.cpp:934
+#: plugins/folder/foldermodel.cpp:870
 #, kde-kuit-format
 msgctxt "@info Body text of a system notification"
 msgid ""
@@ -528,23 +515,23 @@ msgstr ""
 "<filename>%1</filename> puncta a <filename>%2</filename>, ma illo non  "
 "poteva esser trovate. Il poterea esser movite o delite."
 
-#: plugins/folder/foldermodel.cpp:1812
+#: plugins/folder/foldermodel.cpp:1751
 #, kde-format
 msgid "&Empty Trash"
 msgstr "Vacua corb&e"
 
-#: plugins/folder/foldermodel.cpp:1815
+#: plugins/folder/foldermodel.cpp:1754
 #, kde-format
 msgctxt "Restore from trash"
 msgid "Restore to Former Location"
 msgstr "Restabili a location previe"
 
-#: plugins/folder/foldermodel.cpp:1818
+#: plugins/folder/foldermodel.cpp:1757
 #, kde-format
 msgid "&Open"
 msgstr "&Aperi"
 
-#: plugins/folder/foldermodel.cpp:1822
+#: plugins/folder/foldermodel.cpp:1761
 #, kde-format
 msgctxt ""
 "@action:inmenu open file manager showing the target file or folder that this "
@@ -552,23 +539,23 @@ msgctxt ""
 msgid "Show Target"
 msgstr "Monstra Objectivo"
 
-#: plugins/folder/foldermodel.cpp:1923
+#: plugins/folder/foldermodel.cpp:1862
 #, kde-format
 msgctxt "@action:inmenu Removes the trash icon on the desktop"
 msgid "Remove Trash Icon"
 msgstr "Remove icone de Corbe"
 
-#: plugins/folder/foldermodel.cpp:1926
+#: plugins/folder/foldermodel.cpp:1865
 #, kde-format
 msgid "&Move to Trash"
 msgstr "&Move al Corbe"
 
-#: plugins/folder/foldermodel.cpp:1959
+#: plugins/folder/foldermodel.cpp:1898
 #, kde-format
 msgid "&Paste"
 msgstr "&Colla"
 
-#: plugins/folder/foldermodel.cpp:2110
+#: plugins/folder/foldermodel.cpp:2049
 #, kde-format
 msgid "&Properties"
 msgstr "&Proprietates"
@@ -674,21 +661,25 @@ msgid "Arrange"
 msgstr "Dispone"
 
 #: plugins/folder/viewpropertiesmenu.cpp:70
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@item:inmenu arrangement of icons"
+#| msgid "Columns"
 msgctxt "@item:inmenu arrangement of icons"
 msgid "In Columns"
-msgstr "In Columnas"
+msgstr "Columnas"
 
 #: plugins/folder/viewpropertiesmenu.cpp:74
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@item:inmenu arrangement of icons"
+#| msgid "Rows"
 msgctxt "@item:inmenu arrangement of icons"
 msgid "In Rows"
-msgstr "In Rangos"
+msgstr "Rangos"
 
 #: plugins/folder/viewpropertiesmenu.cpp:79
 #, kde-format
 msgid "Sort Alignment"
-msgstr "Ordina Alineamento"
+msgstr ""
 
 #: plugins/folder/viewpropertiesmenu.cpp:83
 #, kde-format
