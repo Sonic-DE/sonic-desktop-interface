@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-01-08 00:45+0000\n"
-"PO-Revision-Date: 2026-02-05 16:23+0100\n"
+"PO-Revision-Date: 2026-01-23 16:41+0100\n"
 "Last-Translator: giovanni <g.sora@tiscali.it>\n"
 "Language-Team: Interlingua <kde-i18n-doc@kde.org>\n"
 "Language: ia\n"
@@ -18,7 +18,8 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
 #: config.qml:13
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "General"
 msgctxt "@title:group for configuration dialog page"
 msgid "General"
 msgstr "General"
@@ -27,14 +28,14 @@ msgstr "General"
 #, kde-format
 msgctxt "@label:listbox"
 msgid "For active application, show:"
-msgstr "Per application active,monstra:"
+msgstr ""
 
 #: ConfigGeneral.qml:40
 #, kde-format
 msgctxt ""
 "@item:inlistbox what to show for active application in horizontal panel"
 msgid "Icon and name"
-msgstr "Icone e nomine"
+msgstr ""
 
 #: ConfigGeneral.qml:41
 #, kde-format
@@ -66,13 +67,13 @@ msgstr "Non applicabile quando le widget es sur le Scriptorio."
 #, kde-format
 msgctxt "@label:checkbox"
 msgid "Open on hover:"
-msgstr "Aperi sur planar"
+msgstr ""
 
 #: ConfigGeneral.qml:109
 #, kde-format
 msgctxt "@option:check open-on-hover is enabled, with the following delay:"
 msgid "Enabled, with delay:"
-msgstr "Habilitate, con retardo"
+msgstr ""
 
 #: ConfigGeneral.qml:122
 #, kde-format
@@ -94,14 +95,16 @@ msgstr[1] "ms"
 #, kde-format
 msgctxt "@label:spinbox accessible %1 is milliseconds"
 msgid "Hover open delay %1 ms"
-msgstr "Retardo de aperi de planar  %1 ms"
+msgstr ""
 
 #: ConfigGeneral.qml:144
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@info:placeholder"
+#| msgid "No open windows"
 msgctxt ""
 "@label for checkbox group, completes sentence like: … from current screen"
 msgid "Show only windows:"
-msgstr "Monstra solmente fenestras:"
+msgstr "Nulle fenestras aperite"
 
 #: ConfigGeneral.qml:145
 #, kde-format
