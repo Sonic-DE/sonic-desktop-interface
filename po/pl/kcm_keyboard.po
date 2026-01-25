@@ -2,14 +2,14 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
 # Marta Rybczyńska <kde-i18n@rybczynska.net>, 2007, 2008, 2010.
-# SPDX-FileCopyrightText: 2011-2012, 2014-2017, 2019-2026 Łukasz Wojniłowicz <lukasz.wojnilowicz@gmail.com>
+# SPDX-FileCopyrightText: 2011, 2012, 2014, 2015, 2016, 2017, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026 Łukasz Wojniłowicz <lukasz.wojnilowicz@gmail.com>
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: kcmkeyboard\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-04-30 02:40+0000\n"
-"PO-Revision-Date: 2026-05-09 16:01+0200\n"
+"POT-Creation-Date: 2026-01-08 00:45+0000\n"
+"PO-Revision-Date: 2026-01-24 10:13+0100\n"
 "Last-Translator: Łukasz Wojniłowicz <lukasz.wojnilowicz@gmail.com>\n"
 "Language-Team: pl\n"
 "Language: pl\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
 "|| n%100>=20) ? 1 : 2);\n"
-"X-Generator: Lokalize 26.04.0\n"
+"X-Generator: Lokalize 25.08.2\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
@@ -105,19 +105,19 @@ msgctxt "@label:checkbox"
 msgid "Configure keyboard options"
 msgstr "Ustawienia klawiatury"
 
-#: ui/KeyBindings.qml:134
+#: ui/KeyBindings.qml:130
 #, kde-format
 msgctxt "@action:button"
 msgid "Reset"
 msgstr "Wyzeruj"
 
-#: ui/KeyBindings.qml:138
+#: ui/KeyBindings.qml:134
 #, kde-format
 msgctxt "@info accessible"
 msgid "Reset selected options for this group"
 msgstr "Wyzeruj zaznaczone pola dla tej grupy"
 
-#: ui/KeyBindings.qml:139
+#: ui/KeyBindings.qml:135
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "Reset selected options for this group"
@@ -525,7 +525,7 @@ msgid ""
 "page."
 msgstr ""
 "Stare skróty X11 zapewniają lepszą obsługę skrótów składających się tylko z "
-"klawiszy przełączających i mają trochę lepszą obsługę na X11 w przypadkach "
+"klawiszy odmieniających i mają trochę lepszą obsługę na X11 w przypadkach "
 "szczególnych. Można ich używać także na Waylandzie.<nl/> <nl/> Ustawienie "
 "tych skrótów przeniesie cię na ich stronę."
 
@@ -542,8 +542,8 @@ msgid ""
 "Modifier keys can be used to type additional characters, symbols, and "
 "diacritical marks."
 msgstr ""
-"Klawiszy przełączających można użyć do wpisywania dodatkowych znaków, "
-"symboli lub znaków diakrytycznych."
+"Klawiszy odmieniających można użyć do wpisywania dodatkowych znaków, symboli "
+"lub znaków diakrytycznych."
 
 #: xkboptionsmodel.cpp:165
 #, kde-format
