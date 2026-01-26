@@ -14,8 +14,8 @@ msgstr ""
 "Project-Id-Version: kcm_device_automounter\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-01-23 00:45+0000\n"
-"PO-Revision-Date: 2022-09-24 14:45+0200\n"
-"Last-Translator: Xavier Besnard <xavier.besnard@neuf.fr>\n"
+"PO-Revision-Date: 2026-01-24 10:25+0100\n"
+"Last-Translator: Xavier Besnard <xavier.besnard@kde.org>\n"
 "Language-Team: \n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
@@ -39,12 +39,7 @@ msgstr "jcorn@free.fr, mcorteel@gmail.com"
 
 #. i18n: ectx: property (whatsThis), widget (QTreeView, deviceView)
 #: DeviceAutomounterKCM.ui:17
-#, fuzzy, kde-format
-#| msgid ""
-#| "This list contains the storage devices known to the system. If "
-#| "\"Automount on Login\" is checked, the device will be automatically "
-#| "mounted even though \"Mount all removable media at login\" is unchecked. "
-#| "The same applies for \"Automount on Attach\"."
+#, kde-format
 msgid ""
 "This list contains the storage devices known to the system. If \"Automount "
 "on Login\" is checked, devices will be automatically mounted even though "
@@ -52,10 +47,10 @@ msgid ""
 "\"Automount on Attach\"."
 msgstr ""
 "Cette liste contient les périphériques de stockage connus du système. Si "
-"l'option « Montage automatique lors de la connexion » est cochée, le "
-"périphérique sera automatiquement monté, même si l'option « Monter tous les "
-"média amovibles lors de la connexion » est décoché. Il en va de même pour le "
-"paramètre « Montage automatique lors du raccordement »."
+"l'option « Montage automatique lors de la connexion » est cochée, les "
+"périphériques seront automatiquement montés, même si l'option « Monter tous "
+"les média amovibles lors de la connexion » est décochée. Il en va de même "
+"pour le paramètre « Montage automatique lors du raccordement »."
 
 #. i18n: ectx: property (whatsThis), widget (QPushButton, forgetDevice)
 #: DeviceAutomounterKCM.ui:54
