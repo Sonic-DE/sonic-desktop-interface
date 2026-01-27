@@ -220,6 +220,37 @@ Kirigami.ScrollablePage {
         onClosed: emojiView.currentItem?.forceActiveFocus()
     }
 
+    Kirigami.Dialog {
+        id: variantDialog
+        title: i18nc("@title:window A two-tone skin variant can be selected here", "Select Variant")
+
+        ColumnLayout {
+            GridView {
+                id: dialogEmojiView
+
+                Layout.alignment: Qt.AlignHCenter
+                Layout.preferredHeight: contentHeight
+                readonly property real desiredSize: Kirigami.Units.gridUnit * 3
+
+                cellWidth: desiredSize
+                cellHeight: desiredSize
+                implicitWidth: (view.model.skinTone === SkinTone.Neutral ? 5 : 4) * desiredSize
+
+                model: emoji.twoToneEmojiModel
+                delegate: emojiDelegateComponent
+            }
+        }
+
+        onVisibleChanged: {
+            if (visible) {
+                dialogEmojiView.currentIndex = 0;
+                dialogEmojiView.forceActiveFocus();
+            }
+        }
+
+        onClosed: emojiView.currentItem?.forceActiveFocus()
+    }
+
     Shortcut {
         sequences: [StandardKey.Copy]
         enabled: emojiView.currentItem
