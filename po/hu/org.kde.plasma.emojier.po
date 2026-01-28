@@ -2,13 +2,13 @@
 # This file is distributed under the same license as the plasma-desktop package.
 #
 # SPDX-FileCopyrightText: 2020, 2021, 2023 Kristóf Kiszel <kiszel.kristof@gmail.com>
-# SPDX-FileCopyrightText: 2025-2026 Kristof Kiszel <ulysses@fsf.hu>
+# SPDX-FileCopyrightText: 2025 Kristof Kiszel <ulysses@fsf.hu>
 msgid ""
 msgstr ""
 "Project-Id-Version: plasma-desktop\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-06-02 03:54+0000\n"
-"PO-Revision-Date: 2026-05-21 22:44+0200\n"
+"POT-Creation-Date: 2026-01-28 00:46+0000\n"
+"PO-Revision-Date: 2025-11-10 22:30+0100\n"
 "Last-Translator: Kristof Kiszel <ulysses@fsf.hu>\n"
 "Language-Team: Hungarian <kde-l10n-hu@kde.org>\n"
 "Language: hu\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 26.04.1\n"
+"X-Generator: Lokalize 25.08.2\n"
 
 #: app/emojier.cpp:43 app/emojier.cpp:45
 #, kde-format
@@ -38,158 +38,156 @@ msgstr "Kiszel Kristóf"
 #, kde-format
 msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
-msgstr "ulysses@fsf.hu"
+msgstr "kiszel.kristof@gmail.com"
 
 #: app/emojier.cpp:58
 #, kde-format
 msgid "Replace an existing instance"
 msgstr "Meglévő példány cseréje"
 
-#: app/ui/CategoryPage.qml:41
-#, kde-format
-msgctxt "@action Search field action"
-msgid "Search"
-msgstr "Keresés"
-
-#: app/ui/CategoryPage.qml:100
-#, kde-format
+#: app/ui/CategoryPage.qml:112
+#, fuzzy, kde-format
+#| msgid "Clear History"
 msgctxt "@action:button clear emoji history"
 msgid "Clear History"
 msgstr "Előzmények törlése"
 
-#: app/ui/CategoryPage.qml:131
+#: app/ui/CategoryPage.qml:124
 #, kde-format
 msgctxt "@action:button Button to open a menu that lets you choose a skin tone"
-msgid "Skin tone: %1"
-msgstr "Bőrszín: %1"
+msgid "Skin tone:"
+msgstr ""
 
-#: app/ui/CategoryPage.qml:137
+#: app/ui/CategoryPage.qml:135 app/ui/Emojier.qml:73
+#, kde-format
+msgctxt "@title:page All emojis"
+msgid "All"
+msgstr "Mind"
+
+#: app/ui/CategoryPage.qml:189
 #, kde-format
 msgctxt "@action:inmenu Skin Tone"
 msgid "🖐️ Neutral"
-msgstr "🖐️ Semleges"
+msgstr ""
 
-#: app/ui/CategoryPage.qml:138
+#: app/ui/CategoryPage.qml:190
 #, kde-format
 msgctxt "@action:inmenu Skin Tone"
 msgid "Neutral"
-msgstr "Semleges"
+msgstr ""
 
-#: app/ui/CategoryPage.qml:146
+#: app/ui/CategoryPage.qml:198
 #, kde-format
 msgctxt "@action:inmenu Skin Tone"
 msgid "🖐🏻 Light"
-msgstr "🖐🏻 Világos"
+msgstr ""
 
-#: app/ui/CategoryPage.qml:147
+#: app/ui/CategoryPage.qml:199
 #, kde-format
 msgctxt "@action:inmenu Skin Tone"
 msgid "Light"
-msgstr "Világos"
+msgstr ""
 
-#: app/ui/CategoryPage.qml:155
+#: app/ui/CategoryPage.qml:207
 #, kde-format
 msgctxt "@action:inmenu Skin Tone"
 msgid "🖐🏼 Medium Light"
-msgstr "🖐🏼 Közepesen világos"
+msgstr ""
 
-#: app/ui/CategoryPage.qml:156
+#: app/ui/CategoryPage.qml:208
 #, kde-format
 msgctxt "@action:inmenu Skin Tone"
 msgid "Medium Light"
-msgstr "Közepesen világos"
+msgstr ""
 
-#: app/ui/CategoryPage.qml:164
+#: app/ui/CategoryPage.qml:216
 #, kde-format
 msgctxt "@action:inmenu Skin Tone"
 msgid "🖐🏽 Medium"
-msgstr "🖐🏽 Közepes"
+msgstr ""
 
-#: app/ui/CategoryPage.qml:165
+#: app/ui/CategoryPage.qml:217
 #, kde-format
 msgctxt "@action:inmenu Skin Tone"
 msgid "Medium"
-msgstr "Közepes"
+msgstr ""
 
-#: app/ui/CategoryPage.qml:173
+#: app/ui/CategoryPage.qml:225
 #, kde-format
 msgctxt "@action:inmenu Skin Tone"
 msgid "🖐🏾 Medium Dark"
-msgstr "🖐🏾 Közepesen sötét"
+msgstr ""
 
-#: app/ui/CategoryPage.qml:174
+#: app/ui/CategoryPage.qml:226
 #, kde-format
 msgctxt "@action:inmenu Skin Tone"
 msgid "Medium Dark"
-msgstr "Közepesen sötét"
+msgstr ""
 
-#: app/ui/CategoryPage.qml:182
+#: app/ui/CategoryPage.qml:234
 #, kde-format
 msgctxt "@action:inmenu Skin Tone"
 msgid "🖐🏿 Dark"
-msgstr "🖐🏿 Sötét"
+msgstr ""
 
-#: app/ui/CategoryPage.qml:183
+#: app/ui/CategoryPage.qml:235
 #, kde-format
 msgctxt "@action:inmenu Skin Tone"
 msgid "Dark"
-msgstr "Sötét"
+msgstr ""
 
-#: app/ui/CategoryPage.qml:194
+#: app/ui/CategoryPage.qml:247
 #, kde-format
 msgctxt "@title:window A two-tone skin variant can be selected here"
 msgid "Select Variant"
-msgstr "Változat kiválasztása"
+msgstr ""
 
-#: app/ui/CategoryPage.qml:242
+#: app/ui/CategoryPage.qml:295
 #, kde-format
 msgctxt "@item:inmenu"
 msgid "Copy Character"
 msgstr "Karakter másolása"
 
-#: app/ui/CategoryPage.qml:250
+#: app/ui/CategoryPage.qml:303
 #, kde-format
 msgctxt "@item:inmenu"
 msgid "Copy Description"
 msgstr "Leírás másolása"
 
-#: app/ui/CategoryPage.qml:291
-#, kde-format
+#: app/ui/CategoryPage.qml:344
+#, fuzzy, kde-format
+#| msgid "No recent Emojis"
 msgctxt "@label placeholder for empty recent emoji list"
 msgid "No recent emojis"
-msgstr "Nincsenek legutóbbi emodzsik"
+msgstr "Nincsenek legutóbi emodzsik"
 
-#: app/ui/CategoryPage.qml:291
+#: app/ui/CategoryPage.qml:344
 #, kde-format
 msgctxt "@label placeholder for no emoji found in category"
 msgid "No matching emoji found"
-msgstr "Nincs illeszkedő emodzsi"
+msgstr ""
 
-#: app/ui/CategoryPage.qml:339
+#: app/ui/CategoryPage.qml:392
 #, kde-format
 msgctxt ""
 "@action:button Opens a window where a two-tone skin variant can be selected. "
 "%1 is the emoji's name"
 msgid "Select Variant of \"%1\""
-msgstr "„%1” változatának kiválasztása"
+msgstr ""
 
 #: app/ui/Emojier.qml:44
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "%1 copied to the clipboard"
 msgctxt "@info:status passive notification as action feedback, %1 is an emoji"
 msgid "%1 copied to the clipboard"
 msgstr "A(z) %1 a vágólapra került"
 
 #: app/ui/Emojier.qml:58
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Recent"
 msgctxt "@title page title for Recent Emoji view, and sidebar label for it"
 msgid "Recent"
 msgstr "Legutóbbiak"
-
-#: app/ui/Emojier.qml:73
-#, kde-format
-msgctxt "@title:page All emojis"
-msgid "All"
-msgstr "Mind"
 
 #: emojicategory.cpp:14
 msgctxt "Emoji Category"
@@ -243,6 +241,9 @@ msgstr "Zászlók"
 
 #~ msgid "Categories"
 #~ msgstr "Kategóriák"
+
+#~ msgid "Search"
+#~ msgstr "Keresés"
 
 #~ msgid "Search…"
 #~ msgstr "Keresés…"

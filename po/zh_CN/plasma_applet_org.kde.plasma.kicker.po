@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdeorg\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-06-03 03:23+0000\n"
+"POT-Creation-Date: 2026-01-28 00:46+0000\n"
 "PO-Revision-Date: 2024-04-22 15:58\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
@@ -14,9 +14,9 @@ msgstr ""
 "X-Crowdin-Project: kdeorg\n"
 "X-Crowdin-Project-ID: 269464\n"
 "X-Crowdin-Language: zh-CN\n"
-"X-Crowdin-File: /kf6-stable/messages/plasma-desktop/plasma_applet_org.kde."
+"X-Crowdin-File: /kf6-trunk/messages/plasma-desktop/plasma_applet_org.kde."
 "plasma.kicker.pot\n"
-"X-Crowdin-File-ID: 52832\n"
+"X-Crowdin-File-ID: 43741\n"
 
 #: code/tools.js:53
 #, kde-format
@@ -49,177 +49,159 @@ msgctxt "@title:group for configuration dialog page"
 msgid "General"
 msgstr "常规"
 
-#: ConfigGeneral.qml:50
+#: ConfigGeneral.qml:48
 #, kde-format
 msgctxt "@label prefix for icon-only button"
 msgid "Icon:"
 msgstr "图标："
 
-#: ConfigGeneral.qml:135
+#: ConfigGeneral.qml:133
 #, kde-format
 msgctxt "@item:inmenu Open icon chooser dialog"
 msgid "Choose…"
 msgstr "选择…"
 
-#: ConfigGeneral.qml:140
+#: ConfigGeneral.qml:138
 #, kde-format
 msgctxt "@item:inmenu Reset icon to default"
-msgid "Reset to default icon"
-msgstr "重置为默认图标"
+msgid "Clear Icon"
+msgstr "清除图标"
 
-#: ConfigGeneral.qml:161
+#: ConfigGeneral.qml:159
 #, kde-format
 msgctxt "@label:listbox"
 msgid "Show applications as:"
 msgstr "应用程序显示方式："
 
-#: ConfigGeneral.qml:163
+#: ConfigGeneral.qml:161
 #, kde-format
 msgctxt "@item:inlistbox"
 msgid "Name only"
 msgstr "仅名称"
 
-#: ConfigGeneral.qml:163
+#: ConfigGeneral.qml:161
 #, kde-format
 msgctxt "@item:inlistbox"
 msgid "Description only"
 msgstr "仅描述"
 
-#: ConfigGeneral.qml:164
+#: ConfigGeneral.qml:162
 #, kde-format
 msgctxt "@item:inlistbox"
 msgid "Name (Description)"
 msgstr "名称 (描述)"
 
-#: ConfigGeneral.qml:164
+#: ConfigGeneral.qml:162
 #, kde-format
 msgctxt "@item:inlistbox"
 msgid "Description (Name)"
 msgstr "描述 (名称)"
 
-#: ConfigGeneral.qml:174
+#: ConfigGeneral.qml:172
 #, kde-format
 msgctxt "@title:group prefix for checkbox group"
 msgid "Behavior:"
 msgstr "行为："
 
-#: ConfigGeneral.qml:176
+#: ConfigGeneral.qml:174
 #, kde-format
 msgctxt "@option:check"
 msgid "Sort applications alphabetically"
 msgstr "按字母顺序排列应用程序"
 
-#: ConfigGeneral.qml:184
+#: ConfigGeneral.qml:182
 #, kde-format
 msgctxt "@option:check"
 msgid "Flatten sub-menus to a single level"
 msgstr "扁平化子菜单到一级"
 
-#: ConfigGeneral.qml:192
+#: ConfigGeneral.qml:190
 #, kde-format
 msgctxt "@option:check"
 msgid "Show icons on the root level of the menu"
 msgstr "在顶级菜单显示图标"
 
-#: ConfigGeneral.qml:198
-#, kde-format
-msgctxt "@option:check"
-msgid "Highlight newly-installed applications"
-msgstr "突出显示新安装的应用程序"
-
-#: ConfigGeneral.qml:208
+#: ConfigGeneral.qml:200
 #, kde-format
 msgctxt "@title:group prefix for checkbox group"
 msgid "Show categories:"
 msgstr "显示类别："
 
-#: ConfigGeneral.qml:211
+#: ConfigGeneral.qml:203
 #, kde-format
 msgctxt "@option:check"
 msgid "Recent applications"
 msgstr "最近应用程序"
 
-#: ConfigGeneral.qml:212
+#: ConfigGeneral.qml:204
 #, kde-format
 msgctxt "@option:check"
 msgid "Often used applications"
 msgstr "常用应用程序"
 
-#: ConfigGeneral.qml:219
+#: ConfigGeneral.qml:211
 #, kde-format
 msgctxt "@option:check"
 msgid "Recent files"
 msgstr "最近文件"
 
-#: ConfigGeneral.qml:220
+#: ConfigGeneral.qml:212
 #, kde-format
 msgctxt "@option:check"
 msgid "Often used files"
 msgstr "常用文件"
 
-#: ConfigGeneral.qml:227
-#, kde-format
-msgctxt "@option:check"
-msgid "Recent places"
-msgstr "最近位置"
-
-#: ConfigGeneral.qml:228
-#, kde-format
-msgctxt "@option:check"
-msgid "Often used places"
-msgstr "常用位置"
-
-#: ConfigGeneral.qml:234
+#: ConfigGeneral.qml:218
 #, kde-format
 msgctxt "@label:listbox"
 msgid "Sort items in categories by:"
 msgstr "类别内部项目排序方式："
 
-#: ConfigGeneral.qml:235
+#: ConfigGeneral.qml:219
 #, kde-format
 msgctxt ""
 "@item:inlistbox Sort items in categories by [Recently used | Often used]"
 msgid "Recently used"
 msgstr "最近使用"
 
-#: ConfigGeneral.qml:235
+#: ConfigGeneral.qml:219
 #, kde-format
 msgctxt ""
 "@item:inlistbox Sort items in categories by [Recently used | Often used]"
 msgid "Often used"
 msgstr "经常使用"
 
-#: ConfigGeneral.qml:245
+#: ConfigGeneral.qml:229
 #, kde-format
 msgctxt "@title:group prefix for checkbox group"
 msgid "Search:"
 msgstr "搜索："
 
-#: ConfigGeneral.qml:247
+#: ConfigGeneral.qml:231
 #, kde-format
 msgctxt "@option:check"
 msgid "Expand search to bookmarks, files and emails"
 msgstr "扩展查找范围至书签、文件和电子邮件"
 
-#: ConfigGeneral.qml:255
+#: ConfigGeneral.qml:239
 #, kde-format
 msgctxt "@option:check"
 msgid "Align search results to bottom"
 msgstr "查找结果在底部对齐"
 
-#: ConfigGeneral.qml:260
+#: ConfigGeneral.qml:244
 #, kde-format
 msgctxt "@label prefix for a checkbox toggling Dark Mode"
 msgid "Appearance:"
 msgstr "外观："
 
-#: ConfigGeneral.qml:265
+#: ConfigGeneral.qml:249
 #, kde-format
 msgctxt "@option:check"
 msgid "Prefer Dark Mode when available"
 msgstr "当可用时，优先选择深色模式"
 
-#: ConfigGeneral.qml:269
+#: ConfigGeneral.qml:253
 #, kde-kuit-format
 msgctxt "@info:tooltip"
 msgid ""
@@ -227,67 +209,37 @@ msgid ""
 "usually feature a dark background."
 msgstr "此功能使用您配色方案中的互补色，通常具有深色背景。"
 
-#: DashboardRepresentation.qml:424
+#: DashboardRepresentation.qml:358
 #, kde-format
 msgctxt "@title:group for column with app and system action grids"
 msgid "Favorites"
 msgstr "常用应用程序"
 
-#: DashboardRepresentation.qml:950 ItemListDelegate.qml:97
-#, kde-format
-msgctxt "Newly-installed app, badge, keep short"
-msgid "New!"
-msgstr "新！"
-
-#: DashboardRepresentation.qml:951 ItemListDelegate.qml:98
-#, kde-format
-msgctxt "@info:whatsthis Accessible description for badge"
-msgid "There is a newly-installed application in this category"
-msgstr "此类别中有一个新安装的应用程序"
-
-#: ItemGridDelegate.qml:81
-#, kde-format
-msgctxt "@label Newly-installed app, badge, keep short"
-msgid "New!"
-msgstr "新！"
-
-#: ItemGridDelegate.qml:83
-#, kde-format
-msgctxt "@label Accessible name for badge"
-msgid "Newly-installed application"
-msgstr "新安装的应用程序"
-
-#: ItemListDelegate.qml:40
+#: ItemListDelegate.qml:31
 #, kde-format
 msgctxt "@action:inmenu accessible description for opening submenu"
 msgid "Open category"
 msgstr "打开分类"
 
-#: ItemListDelegate.qml:41
+#: ItemListDelegate.qml:32
 #, kde-format
 msgctxt "@action:inmenu accessible description for opening app or file"
 msgid "Launch"
 msgstr "启动"
 
-#: ItemListDelegate.qml:99
-#, kde-format
-msgctxt "@info:whatsthis Accessible description for badge"
-msgid "Newly-installed application"
-msgstr "新安装的应用程序"
-
-#: main.qml:208
+#: main.qml:211
 #, kde-format
 msgctxt "@action:inmenu launches kmenuedit"
 msgid "Edit Applications…"
 msgstr "编辑应用程序…"
 
-#: MenuRepresentation.qml:191
+#: MenuRepresentation.qml:170
 #, kde-format
 msgctxt "@title:group accessible name for favorite group in sidebar"
 msgid "Favorites"
 msgstr "常用程序"
 
-#: MenuRepresentation.qml:368
+#: MenuRepresentation.qml:348
 #, kde-format
 msgctxt "@info:status"
 msgid "No matches"

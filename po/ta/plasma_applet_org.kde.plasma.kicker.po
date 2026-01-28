@@ -1,13 +1,13 @@
 # Copyright (C) 2023 This file is copyright:
 # This file is distributed under the same license as the plasma-desktop package.
 #
-# SPDX-FileCopyrightText: 2021, 2023, 2025-2026 Kishore G <kishore96@gmail.com>
+# SPDX-FileCopyrightText: 2021, 2023, 2025, 2026 Kishore G <kishore96@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: plasma-desktop\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-06-03 03:23+0000\n"
-"PO-Revision-Date: 2026-05-02 18:42+0530\n"
+"POT-Creation-Date: 2026-01-28 00:46+0000\n"
+"PO-Revision-Date: 2026-01-04 17:00+0530\n"
 "Last-Translator: Kishore G <kishore96@gmail.com>\n"
 "Language-Team: Tamil <kde-l10n-ta@kde.org>\n"
 "Language: ta\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 26.04.0\n"
+"X-Generator: Lokalize 25.12.0\n"
 
 #: code/tools.js:53
 #, kde-format
@@ -43,182 +43,190 @@ msgid "Show in Favorites"
 msgstr "பிடித்தவற்றில் காட்டு"
 
 #: config.qml:13
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "General"
 msgctxt "@title:group for configuration dialog page"
 msgid "General"
 msgstr "பொதுவானவை"
 
-#: ConfigGeneral.qml:50
-#, kde-format
+#: ConfigGeneral.qml:48
+#, fuzzy, kde-format
+#| msgid "Icon:"
 msgctxt "@label prefix for icon-only button"
 msgid "Icon:"
 msgstr "சின்னம்:"
 
-#: ConfigGeneral.qml:135
+#: ConfigGeneral.qml:133
 #, kde-format
 msgctxt "@item:inmenu Open icon chooser dialog"
 msgid "Choose…"
 msgstr "தேர்வு செய்…"
 
-#: ConfigGeneral.qml:140
+#: ConfigGeneral.qml:138
 #, kde-format
 msgctxt "@item:inmenu Reset icon to default"
-msgid "Reset to default icon"
-msgstr ""
+msgid "Clear Icon"
+msgstr "சின்னத்தை நீக்கு"
 
-#: ConfigGeneral.qml:161
-#, kde-format
+#: ConfigGeneral.qml:159
+#, fuzzy, kde-format
+#| msgid "Show applications as:"
 msgctxt "@label:listbox"
 msgid "Show applications as:"
 msgstr "செயலிகளை இவ்வாறு காட்டு:"
 
-#: ConfigGeneral.qml:163
-#, kde-format
+#: ConfigGeneral.qml:161
+#, fuzzy, kde-format
+#| msgid "Name only"
 msgctxt "@item:inlistbox"
 msgid "Name only"
 msgstr "பெயர் மட்டும்"
 
-#: ConfigGeneral.qml:163
-#, kde-format
+#: ConfigGeneral.qml:161
+#, fuzzy, kde-format
+#| msgid "Description only"
 msgctxt "@item:inlistbox"
 msgid "Description only"
 msgstr "விவரணம் மட்டும்"
 
-#: ConfigGeneral.qml:164
-#, kde-format
+#: ConfigGeneral.qml:162
+#, fuzzy, kde-format
+#| msgid "Name (Description)"
 msgctxt "@item:inlistbox"
 msgid "Name (Description)"
 msgstr "பெயர் (விவரணம்)"
 
-#: ConfigGeneral.qml:164
-#, kde-format
+#: ConfigGeneral.qml:162
+#, fuzzy, kde-format
+#| msgid "Description (Name)"
 msgctxt "@item:inlistbox"
 msgid "Description (Name)"
 msgstr "விவரணம் (பெயர்)"
 
-#: ConfigGeneral.qml:174
-#, kde-format
+#: ConfigGeneral.qml:172
+#, fuzzy, kde-format
+#| msgid "Behavior:"
 msgctxt "@title:group prefix for checkbox group"
 msgid "Behavior:"
 msgstr "நடத்தை:"
 
-#: ConfigGeneral.qml:176
-#, kde-format
+#: ConfigGeneral.qml:174
+#, fuzzy, kde-format
+#| msgid "Sort applications alphabetically"
 msgctxt "@option:check"
 msgid "Sort applications alphabetically"
-msgstr "செயலிகளை அகரவரிசைப்படுத்து"
+msgstr "செயலிகளை அகர வரிசைப்படுத்து"
 
-#: ConfigGeneral.qml:184
-#, kde-format
+#: ConfigGeneral.qml:182
+#, fuzzy, kde-format
+#| msgid "Flatten sub-menus to a single level"
 msgctxt "@option:check"
 msgid "Flatten sub-menus to a single level"
 msgstr "துணை பட்டிகளை ஒரே மட்டத்தில் காட்டு"
 
-#: ConfigGeneral.qml:192
-#, kde-format
+#: ConfigGeneral.qml:190
+#, fuzzy, kde-format
+#| msgid "Show icons on the root level of the menu"
 msgctxt "@option:check"
 msgid "Show icons on the root level of the menu"
 msgstr "பட்டியின் மேல் மட்டத்தில் சின்னங்களை காட்டு"
 
-#: ConfigGeneral.qml:198
-#, kde-format
-msgctxt "@option:check"
-msgid "Highlight newly-installed applications"
-msgstr "புதியதாக நிறுவியுள்ள செயலிகளை முன்னிலைப்படுத்து"
-
-#: ConfigGeneral.qml:208
-#, kde-format
+#: ConfigGeneral.qml:200
+#, fuzzy, kde-format
+#| msgid "Show categories:"
 msgctxt "@title:group prefix for checkbox group"
 msgid "Show categories:"
 msgstr "பகுப்புகளை காட்டு:"
 
-#: ConfigGeneral.qml:211
-#, kde-format
+#: ConfigGeneral.qml:203
+#, fuzzy, kde-format
+#| msgid "Recent applications"
 msgctxt "@option:check"
 msgid "Recent applications"
 msgstr "சமீப செயலிகள்"
 
-#: ConfigGeneral.qml:212
-#, kde-format
+#: ConfigGeneral.qml:204
+#, fuzzy, kde-format
+#| msgid "Often used applications"
 msgctxt "@option:check"
 msgid "Often used applications"
 msgstr "அடிக்கடி பயன்படுத்தப்படும் செயலிகள்"
 
-#: ConfigGeneral.qml:219
-#, kde-format
+#: ConfigGeneral.qml:211
+#, fuzzy, kde-format
+#| msgid "Recent files"
 msgctxt "@option:check"
 msgid "Recent files"
 msgstr "சமீப கோப்புகள்"
 
-#: ConfigGeneral.qml:220
-#, kde-format
+#: ConfigGeneral.qml:212
+#, fuzzy, kde-format
+#| msgid "Often used files"
 msgctxt "@option:check"
 msgid "Often used files"
 msgstr "அடிக்கடி பயன்படுத்தப்படும் கோப்புகள்"
 
-#: ConfigGeneral.qml:227
-#, kde-format
-msgctxt "@option:check"
-msgid "Recent places"
-msgstr "சமீப இடங்கள்"
-
-#: ConfigGeneral.qml:228
-#, kde-format
-msgctxt "@option:check"
-msgid "Often used places"
-msgstr "அடிக்கடி அணுகப்படும் இடங்கள்"
-
-#: ConfigGeneral.qml:234
-#, kde-format
+#: ConfigGeneral.qml:218
+#, fuzzy, kde-format
+#| msgid "Sort items in categories by:"
 msgctxt "@label:listbox"
 msgid "Sort items in categories by:"
 msgstr "பகுப்புகளின் உருப்படிகளை இவ்வாறு வரிசைப்படுத்து:"
 
-#: ConfigGeneral.qml:235
+#: ConfigGeneral.qml:219
 #, kde-format
 msgctxt ""
 "@item:inlistbox Sort items in categories by [Recently used | Often used]"
 msgid "Recently used"
 msgstr "சமீபத்தில் பயன்படுத்தியவை"
 
-#: ConfigGeneral.qml:235
-#, kde-format
+#: ConfigGeneral.qml:219
+#, fuzzy, kde-format
+#| msgctxt ""
+#| "@item:inlistbox Sort items in categories by [Recently used | Ofetn used]"
+#| msgid "Often used"
 msgctxt ""
 "@item:inlistbox Sort items in categories by [Recently used | Often used]"
 msgid "Often used"
 msgstr "அடிக்கடி பயன்படுத்தப்படுபவை"
 
-#: ConfigGeneral.qml:245
-#, kde-format
+#: ConfigGeneral.qml:229
+#, fuzzy, kde-format
+#| msgid "Search:"
 msgctxt "@title:group prefix for checkbox group"
 msgid "Search:"
 msgstr "தேடல்:"
 
-#: ConfigGeneral.qml:247
-#, kde-format
+#: ConfigGeneral.qml:231
+#, fuzzy, kde-format
+#| msgid "Expand search to bookmarks, files and emails"
 msgctxt "@option:check"
 msgid "Expand search to bookmarks, files and emails"
 msgstr "தேடலில் நினைவுக்குறிகள், கோப்புகள் மற்றும் அஞ்சல்களை உட்படுத்து"
 
-#: ConfigGeneral.qml:255
-#, kde-format
+#: ConfigGeneral.qml:239
+#, fuzzy, kde-format
+#| msgid "Align search results to bottom"
 msgctxt "@option:check"
 msgid "Align search results to bottom"
 msgstr "தேடலின் முடிவுகளை கீழே சீரமை"
 
-#: ConfigGeneral.qml:260
-#, kde-format
+#: ConfigGeneral.qml:244
+#, fuzzy, kde-format
+#| msgctxt "@label:textbox for a checkbox toggling Dark Mode"
+#| msgid "Appearance:"
 msgctxt "@label prefix for a checkbox toggling Dark Mode"
 msgid "Appearance:"
 msgstr "தோற்றம்:"
 
-#: ConfigGeneral.qml:265
-#, kde-format
+#: ConfigGeneral.qml:249
+#, fuzzy, kde-format
+#| msgid "Prefer Dark Mode when available"
 msgctxt "@option:check"
 msgid "Prefer Dark Mode when available"
 msgstr "முடிந்தால் கருத்த நிறத்திட்டத்தைப் பயன்படுத்து"
 
-#: ConfigGeneral.qml:269
+#: ConfigGeneral.qml:253
 #, kde-kuit-format
 msgctxt "@info:tooltip"
 msgid ""
@@ -228,75 +236,43 @@ msgstr ""
 "உங்கள் நிறத்திட்டத்திலுள்ள எதிர்முறை நிறங்களை இது பயன்படுத்தும். பெரும்பாலான "
 "நிறத்திட்டங்களில், எதிர்முறை நிறங்கள் கருத்தவையாக இருக்கும்."
 
-#: DashboardRepresentation.qml:424
-#, kde-format
+#: DashboardRepresentation.qml:358
+#, fuzzy, kde-format
+#| msgid "Favorites"
 msgctxt "@title:group for column with app and system action grids"
 msgid "Favorites"
 msgstr "பிடித்தவை"
 
-#: DashboardRepresentation.qml:950 ItemListDelegate.qml:97
-#, kde-format
-msgctxt "Newly-installed app, badge, keep short"
-msgid "New!"
-msgstr "புதியது!"
-
-#: DashboardRepresentation.qml:951 ItemListDelegate.qml:98
-#, kde-format
-msgctxt "@info:whatsthis Accessible description for badge"
-msgid "There is a newly-installed application in this category"
-msgstr "இப்பகுப்பில் புதியதாக நிறுவியுள்ள செயலி உள்ளது"
-
-#: ItemGridDelegate.qml:81
-#, kde-format
-msgctxt "@label Newly-installed app, badge, keep short"
-msgid "New!"
-msgstr "புதியது!"
-
-#: ItemGridDelegate.qml:83
-#, kde-format
-msgctxt "@label Accessible name for badge"
-msgid "Newly-installed application"
-msgstr "புதியதாக நிறுவியுள்ள செயலி"
-
-#: ItemListDelegate.qml:40
+#: ItemListDelegate.qml:31
 #, kde-format
 msgctxt "@action:inmenu accessible description for opening submenu"
 msgid "Open category"
 msgstr "பகுப்பைத் திற"
 
-#: ItemListDelegate.qml:41
+#: ItemListDelegate.qml:32
 #, kde-format
 msgctxt "@action:inmenu accessible description for opening app or file"
 msgid "Launch"
 msgstr "திற"
 
-#: ItemListDelegate.qml:99
-#, kde-format
-msgctxt "@info:whatsthis Accessible description for badge"
-msgid "Newly-installed application"
-msgstr "புதியதாக நிறுவியுள்ள செயலி"
-
-#: main.qml:208
-#, kde-format
+#: main.qml:211
+#, fuzzy, kde-format
+#| msgid "Edit Applications…"
 msgctxt "@action:inmenu launches kmenuedit"
 msgid "Edit Applications…"
 msgstr "செயலிகளை திருத்து…"
 
-#: MenuRepresentation.qml:191
+#: MenuRepresentation.qml:170
 #, kde-format
 msgctxt "@title:group accessible name for favorite group in sidebar"
 msgid "Favorites"
 msgstr "பிடித்தவை"
 
-#: MenuRepresentation.qml:368
+#: MenuRepresentation.qml:348
 #, kde-format
 msgctxt "@info:status"
 msgid "No matches"
 msgstr "பொருத்தங்கள் இல்லை"
-
-#~ msgctxt "@item:inmenu Reset icon to default"
-#~ msgid "Clear Icon"
-#~ msgstr "சின்னத்தை நீக்கு"
 
 #~ msgid "Searching for '%1'"
 #~ msgstr "'%1' தேடப்படுகிறது"
