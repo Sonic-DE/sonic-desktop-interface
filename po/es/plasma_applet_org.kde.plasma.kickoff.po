@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma_applet_org.kde.plasma.kickoff\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-04-05 02:42+0000\n"
+"POT-Creation-Date: 2026-01-28 00:46+0000\n"
 "PO-Revision-Date: 2026-01-09 00:42+0100\n"
 "Last-Translator: Eloy Cuadra <ecuadra@eloihr.net>\n"
 "Language-Team: Spanish <kde-l10n-es@kde.org>\n"
@@ -317,13 +317,13 @@ msgctxt "@info:status"
 msgid "No matches"
 msgstr "Sin coincidencias"
 
-#: Header.qml:86
+#: Header.qml:84
 #, kde-format
 msgctxt "@action:button icon-only, for tooltip/Accessible"
 msgid "Open user settings"
 msgstr "Abrir las preferencias del usuario"
 
-#: Header.qml:276
+#: Header.qml:264
 #, kde-format
 msgctxt ""
 "@action:button Pin widget open if it loses focus, icon-only button, for "
@@ -343,7 +343,7 @@ msgctxt "@label Accessible name for badge"
 msgid "Newly installed application"
 msgstr "Aplicación instalada recientemente"
 
-#: KickoffGridView.qml:105
+#: KickoffGridView.qml:101
 #, kde-format
 msgctxt "@info:whatsthis Accessible description"
 msgid "Grid with %1 rows, %2 columns"
@@ -391,7 +391,7 @@ msgctxt "@title:menu menubutton"
 msgid "Session and Power"
 msgstr "Sesión y energía"
 
-#: main.qml:357
+#: main.qml:356
 #, kde-format
 msgctxt "@action:inmenu launches kmenuedit"
 msgid "Edit Applications…"

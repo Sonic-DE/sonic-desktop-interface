@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-desktop\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-06-02 03:54+0000\n"
-"PO-Revision-Date: 2026-02-01 17:44+0530\n"
+"POT-Creation-Date: 2026-01-28 00:46+0000\n"
+"PO-Revision-Date: 2026-01-04 17:07+0530\n"
 "Last-Translator: Kishore G <kishore96@gmail.com>\n"
 "Language-Team: Tamil <kde-l10n-ta@kde.org>\n"
 "Language: ta\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 25.12.1\n"
+"X-Generator: Lokalize 25.12.0\n"
 
 #: app/emojier.cpp:43 app/emojier.cpp:45
 #, kde-format
@@ -44,155 +44,149 @@ msgstr "Kde-l10n-ta@kde.org"
 msgid "Replace an existing instance"
 msgstr "ஏற்கனவே உள்ளதற்கு பதிலாக இது இயங்கட்டும்"
 
-#: app/ui/CategoryPage.qml:41
+#: app/ui/CategoryPage.qml:112
 #, fuzzy, kde-format
-#| msgid "Search"
-msgctxt "@action Search field action"
-msgid "Search"
-msgstr "தேடல்"
-
-#: app/ui/CategoryPage.qml:100
-#, kde-format
+#| msgid "Clear History"
 msgctxt "@action:button clear emoji history"
 msgid "Clear History"
 msgstr "வரலாற்றை காலியாக்கு"
 
-#: app/ui/CategoryPage.qml:131
-#, fuzzy, kde-format
-#| msgctxt ""
-#| "@action:button Button to open a menu that lets you choose a skin tone"
-#| msgid "Skin tone:"
+#: app/ui/CategoryPage.qml:124
+#, kde-format
 msgctxt "@action:button Button to open a menu that lets you choose a skin tone"
-msgid "Skin tone: %1"
+msgid "Skin tone:"
 msgstr "தோல்நிறம்:"
 
-#: app/ui/CategoryPage.qml:137
+#: app/ui/CategoryPage.qml:135 app/ui/Emojier.qml:73
+#, kde-format
+msgctxt "@title:page All emojis"
+msgid "All"
+msgstr "அனைத்தும்"
+
+#: app/ui/CategoryPage.qml:189
 #, kde-format
 msgctxt "@action:inmenu Skin Tone"
 msgid "🖐️ Neutral"
 msgstr "🖐️ மஞ்சல்"
 
-#: app/ui/CategoryPage.qml:138
+#: app/ui/CategoryPage.qml:190
 #, kde-format
 msgctxt "@action:inmenu Skin Tone"
 msgid "Neutral"
 msgstr "மஞ்சல்"
 
-#: app/ui/CategoryPage.qml:146
+#: app/ui/CategoryPage.qml:198
 #, kde-format
 msgctxt "@action:inmenu Skin Tone"
 msgid "🖐🏻 Light"
 msgstr "🖐🏻 வெள்ளை"
 
-#: app/ui/CategoryPage.qml:147
+#: app/ui/CategoryPage.qml:199
 #, kde-format
 msgctxt "@action:inmenu Skin Tone"
 msgid "Light"
 msgstr "வெள்ளை"
 
-#: app/ui/CategoryPage.qml:155
+#: app/ui/CategoryPage.qml:207
 #, kde-format
 msgctxt "@action:inmenu Skin Tone"
 msgid "🖐🏼 Medium Light"
 msgstr "🖐🏼 ஓரளவு வெள்ளை"
 
-#: app/ui/CategoryPage.qml:156
+#: app/ui/CategoryPage.qml:208
 #, kde-format
 msgctxt "@action:inmenu Skin Tone"
 msgid "Medium Light"
 msgstr "ஓரளவு வெள்ளை"
 
-#: app/ui/CategoryPage.qml:164
+#: app/ui/CategoryPage.qml:216
 #, kde-format
 msgctxt "@action:inmenu Skin Tone"
 msgid "🖐🏽 Medium"
 msgstr "🖐🏽 மாநிறம்"
 
-#: app/ui/CategoryPage.qml:165
+#: app/ui/CategoryPage.qml:217
 #, kde-format
 msgctxt "@action:inmenu Skin Tone"
 msgid "Medium"
 msgstr "மாநிறம்"
 
-#: app/ui/CategoryPage.qml:173
+#: app/ui/CategoryPage.qml:225
 #, kde-format
 msgctxt "@action:inmenu Skin Tone"
 msgid "🖐🏾 Medium Dark"
 msgstr "🖐🏾 ஓரளவு கருப்பு"
 
-#: app/ui/CategoryPage.qml:174
+#: app/ui/CategoryPage.qml:226
 #, kde-format
 msgctxt "@action:inmenu Skin Tone"
 msgid "Medium Dark"
 msgstr "ஓரளவு கருப்பு"
 
-#: app/ui/CategoryPage.qml:182
+#: app/ui/CategoryPage.qml:234
 #, kde-format
 msgctxt "@action:inmenu Skin Tone"
 msgid "🖐🏿 Dark"
 msgstr "🖐🏿 கருப்பு"
 
-#: app/ui/CategoryPage.qml:183
+#: app/ui/CategoryPage.qml:235
 #, kde-format
 msgctxt "@action:inmenu Skin Tone"
 msgid "Dark"
 msgstr "கருப்பு"
 
-#: app/ui/CategoryPage.qml:194
+#: app/ui/CategoryPage.qml:247
 #, kde-format
 msgctxt "@title:window A two-tone skin variant can be selected here"
 msgid "Select Variant"
-msgstr "திரிபைத் தேர்ந்தெடுப்பது"
+msgstr ""
 
-#: app/ui/CategoryPage.qml:242
+#: app/ui/CategoryPage.qml:295
 #, kde-format
 msgctxt "@item:inmenu"
 msgid "Copy Character"
 msgstr "சின்னத்தை நகலெடு"
 
-#: app/ui/CategoryPage.qml:250
+#: app/ui/CategoryPage.qml:303
 #, kde-format
 msgctxt "@item:inmenu"
 msgid "Copy Description"
 msgstr "விவரணத்தை நகலெடு"
 
-#: app/ui/CategoryPage.qml:291
-#, kde-format
+#: app/ui/CategoryPage.qml:344
+#, fuzzy, kde-format
+#| msgid "No recent Emojis"
 msgctxt "@label placeholder for empty recent emoji list"
 msgid "No recent emojis"
-msgstr "சமீப முகவடி ஏதுமில்லை"
+msgstr "சமீப முகவடிகள் இல்லை"
 
-#: app/ui/CategoryPage.qml:291
+#: app/ui/CategoryPage.qml:344
 #, kde-format
 msgctxt "@label placeholder for no emoji found in category"
 msgid "No matching emoji found"
 msgstr "எந்த முகவடியும் பொருந்தவில்லை"
 
-#: app/ui/CategoryPage.qml:339
+#: app/ui/CategoryPage.qml:392
 #, kde-format
 msgctxt ""
 "@action:button Opens a window where a two-tone skin variant can be selected. "
 "%1 is the emoji's name"
 msgid "Select Variant of \"%1\""
-msgstr "\"%1\" தனின் திரிபைத் தேர்ந்தெடு"
+msgstr ""
 
 #: app/ui/Emojier.qml:44
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "%1 copied to the clipboard"
 msgctxt "@info:status passive notification as action feedback, %1 is an emoji"
 msgid "%1 copied to the clipboard"
-msgstr "%1 பிடிப்புப்பலகைக்கு நகலெடுக்கப்பட்டுள்ளது"
+msgstr "%1 பிடிப்புப்பலகைக்கு நகலெடுக்கப்பட்டது"
 
 #: app/ui/Emojier.qml:58
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Recent"
 msgctxt "@title page title for Recent Emoji view, and sidebar label for it"
 msgid "Recent"
 msgstr "சமீபமானவை"
-
-#: app/ui/Emojier.qml:73
-#, kde-format
-msgctxt "@title:page All emojis"
-msgid "All"
-msgstr "அனைத்தும்"
 
 #: emojicategory.cpp:14
 msgctxt "Emoji Category"
@@ -246,6 +240,9 @@ msgstr "கொடிகள்"
 
 #~ msgid "Categories"
 #~ msgstr "வகைகள்"
+
+#~ msgid "Search"
+#~ msgstr "தேடல்"
 
 #~ msgid "Search…"
 #~ msgstr "தேடு..."

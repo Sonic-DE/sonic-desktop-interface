@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-04-05 02:42+0000\n"
+"POT-Creation-Date: 2026-01-28 00:46+0000\n"
 "PO-Revision-Date: 2023-01-08 16:22+0100\n"
 "Last-Translator: Phu Hung Nguyen <phu.nguyen@kdemail.net>\n"
 "Language-Team: Vietnamese <kde-l10n-vi@kde.org>\n"
@@ -338,14 +338,14 @@ msgctxt "@info:status"
 msgid "No matches"
 msgstr "Không mục nào khớp"
 
-#: Header.qml:86
+#: Header.qml:84
 #, fuzzy, kde-format
 #| msgid "Open user settings"
 msgctxt "@action:button icon-only, for tooltip/Accessible"
 msgid "Open user settings"
 msgstr "Mở thiết lập của người dùng"
 
-#: Header.qml:276
+#: Header.qml:264
 #, fuzzy, kde-format
 #| msgid "Keep Open"
 msgctxt ""
@@ -367,7 +367,7 @@ msgctxt "@label Accessible name for badge"
 msgid "Newly installed application"
 msgstr "Hiện các ứng dụng khác:"
 
-#: KickoffGridView.qml:105
+#: KickoffGridView.qml:101
 #, fuzzy, kde-format
 #| msgid "Grid with %1 rows, %2 columns"
 msgctxt "@info:whatsthis Accessible description"
@@ -421,7 +421,7 @@ msgctxt "@title:menu menubutton"
 msgid "Session and Power"
 msgstr ""
 
-#: main.qml:357
+#: main.qml:356
 #, fuzzy, kde-format
 #| msgid "Edit Applications…"
 msgctxt "@action:inmenu launches kmenuedit"

@@ -4,13 +4,13 @@
 # Balázs Úr <urbalazs@gmail.com>, 2012, 2013, 2014.
 # Kristóf Kiszel <ulysses@kubuntu.org>, 2014, 2019.
 # SPDX-FileCopyrightText: 2017, 2020, 2021, 2023 Kiszel Kristóf <kiszel.kristof@gmail.com>
-# SPDX-FileCopyrightText: 2025-2026 Kristof Kiszel <ulysses@fsf.hu>
+# SPDX-FileCopyrightText: 2025 Kristof Kiszel <ulysses@fsf.hu>
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-06-03 03:23+0000\n"
-"PO-Revision-Date: 2026-05-21 21:56+0200\n"
+"POT-Creation-Date: 2026-01-28 00:46+0000\n"
+"PO-Revision-Date: 2025-11-10 22:26+0100\n"
 "Last-Translator: Kristof Kiszel <ulysses@fsf.hu>\n"
 "Language-Team: Hungarian <kde-l10n-hu@kde.org>\n"
 "Language: hu\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 26.04.1\n"
+"X-Generator: Lokalize 25.08.2\n"
 
 #: code/tools.js:53
 #, kde-format
@@ -46,260 +46,233 @@ msgid "Show in Favorites"
 msgstr "Megjelenítés a Kedvenceknél"
 
 #: config.qml:13
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "General"
 msgctxt "@title:group for configuration dialog page"
 msgid "General"
 msgstr "Általános"
 
-#: ConfigGeneral.qml:50
-#, kde-format
+#: ConfigGeneral.qml:48
+#, fuzzy, kde-format
+#| msgid "Icon:"
 msgctxt "@label prefix for icon-only button"
 msgid "Icon:"
 msgstr "Ikon:"
 
-#: ConfigGeneral.qml:135
+#: ConfigGeneral.qml:133
 #, kde-format
 msgctxt "@item:inmenu Open icon chooser dialog"
 msgid "Choose…"
 msgstr "Kiválasztás…"
 
-#: ConfigGeneral.qml:140
+#: ConfigGeneral.qml:138
 #, kde-format
 msgctxt "@item:inmenu Reset icon to default"
-msgid "Reset to default icon"
-msgstr "Alapértelmezett ikon visszaállítása"
+msgid "Clear Icon"
+msgstr "Ikon visszaállítása"
 
-#: ConfigGeneral.qml:161
-#, kde-format
+#: ConfigGeneral.qml:159
+#, fuzzy, kde-format
+#| msgid "Show applications as:"
 msgctxt "@label:listbox"
 msgid "Show applications as:"
 msgstr "Alkalmazások megjelenítése mint:"
 
-#: ConfigGeneral.qml:163
-#, kde-format
+#: ConfigGeneral.qml:161
+#, fuzzy, kde-format
+#| msgid "Name only"
 msgctxt "@item:inlistbox"
 msgid "Name only"
 msgstr "Csak név"
 
-#: ConfigGeneral.qml:163
-#, kde-format
+#: ConfigGeneral.qml:161
+#, fuzzy, kde-format
+#| msgid "Description only"
 msgctxt "@item:inlistbox"
 msgid "Description only"
 msgstr "Csak leírás"
 
-#: ConfigGeneral.qml:164
-#, kde-format
+#: ConfigGeneral.qml:162
+#, fuzzy, kde-format
+#| msgid "Name (Description)"
 msgctxt "@item:inlistbox"
 msgid "Name (Description)"
 msgstr "Név (leírás)"
 
-#: ConfigGeneral.qml:164
-#, kde-format
+#: ConfigGeneral.qml:162
+#, fuzzy, kde-format
+#| msgid "Description (Name)"
 msgctxt "@item:inlistbox"
 msgid "Description (Name)"
 msgstr "Leírás (név)"
 
-#: ConfigGeneral.qml:174
-#, kde-format
+#: ConfigGeneral.qml:172
+#, fuzzy, kde-format
+#| msgid "Behavior:"
 msgctxt "@title:group prefix for checkbox group"
 msgid "Behavior:"
 msgstr "Működés:"
 
-#: ConfigGeneral.qml:176
-#, kde-format
+#: ConfigGeneral.qml:174
+#, fuzzy, kde-format
+#| msgid "Sort applications alphabetically"
 msgctxt "@option:check"
 msgid "Sort applications alphabetically"
 msgstr "Alkalmazások rendezése ABC sorrendben"
 
-#: ConfigGeneral.qml:184
-#, kde-format
+#: ConfigGeneral.qml:182
+#, fuzzy, kde-format
+#| msgid "Flatten sub-menus to a single level"
 msgctxt "@option:check"
 msgid "Flatten sub-menus to a single level"
 msgstr "Almenük összenyomása egyetlen szintre"
 
-#: ConfigGeneral.qml:192
-#, kde-format
+#: ConfigGeneral.qml:190
+#, fuzzy, kde-format
+#| msgid "Show icons on the root level of the menu"
 msgctxt "@option:check"
 msgid "Show icons on the root level of the menu"
 msgstr "Ikonok megjelenítése a menü legfelső szintjén"
 
-#: ConfigGeneral.qml:198
-#, kde-format
-msgctxt "@option:check"
-msgid "Highlight newly-installed applications"
-msgstr "Újonnan telepített alkalmazások kiemelése"
-
-#: ConfigGeneral.qml:208
-#, kde-format
+#: ConfigGeneral.qml:200
+#, fuzzy, kde-format
+#| msgid "Show categories:"
 msgctxt "@title:group prefix for checkbox group"
 msgid "Show categories:"
 msgstr "Kategóriák:"
 
-#: ConfigGeneral.qml:211
-#, kde-format
+#: ConfigGeneral.qml:203
+#, fuzzy, kde-format
+#| msgid "Recent applications"
 msgctxt "@option:check"
 msgid "Recent applications"
 msgstr "Legutóbbi alkalmazások"
 
-#: ConfigGeneral.qml:212
-#, kde-format
+#: ConfigGeneral.qml:204
+#, fuzzy, kde-format
+#| msgid "Often used applications"
 msgctxt "@option:check"
 msgid "Often used applications"
 msgstr "Gyakran használt alkalmazások"
 
-#: ConfigGeneral.qml:219
-#, kde-format
+#: ConfigGeneral.qml:211
+#, fuzzy, kde-format
+#| msgid "Recent files"
 msgctxt "@option:check"
 msgid "Recent files"
 msgstr "Legutóbbi fájlok"
 
-#: ConfigGeneral.qml:220
-#, kde-format
+#: ConfigGeneral.qml:212
+#, fuzzy, kde-format
+#| msgid "Often used files"
 msgctxt "@option:check"
 msgid "Often used files"
 msgstr "Gyakran használt fájlok"
 
-#: ConfigGeneral.qml:227
-#, kde-format
-msgctxt "@option:check"
-msgid "Recent places"
-msgstr "Legutóbbi helyek"
-
-#: ConfigGeneral.qml:228
-#, kde-format
-msgctxt "@option:check"
-msgid "Often used places"
-msgstr "Gyakran használt helyek"
-
-#: ConfigGeneral.qml:234
-#, kde-format
+#: ConfigGeneral.qml:218
+#, fuzzy, kde-format
+#| msgid "Sort items in categories by:"
 msgctxt "@label:listbox"
 msgid "Sort items in categories by:"
 msgstr "Elemek kategóriába sorolási szempontja:"
 
-#: ConfigGeneral.qml:235
+#: ConfigGeneral.qml:219
 #, kde-format
 msgctxt ""
 "@item:inlistbox Sort items in categories by [Recently used | Often used]"
 msgid "Recently used"
 msgstr "Legutóbb használt"
 
-#: ConfigGeneral.qml:235
-#, kde-format
+#: ConfigGeneral.qml:219
+#, fuzzy, kde-format
+#| msgctxt ""
+#| "@item:inlistbox Sort items in categories by [Recently used | Ofetn used]"
+#| msgid "Often used"
 msgctxt ""
 "@item:inlistbox Sort items in categories by [Recently used | Often used]"
 msgid "Often used"
 msgstr "Gyakran használt"
 
-#: ConfigGeneral.qml:245
-#, kde-format
+#: ConfigGeneral.qml:229
+#, fuzzy, kde-format
+#| msgid "Search:"
 msgctxt "@title:group prefix for checkbox group"
 msgid "Search:"
 msgstr "Keresés:"
 
-#: ConfigGeneral.qml:247
-#, kde-format
+#: ConfigGeneral.qml:231
+#, fuzzy, kde-format
+#| msgid "Expand search to bookmarks, files and emails"
 msgctxt "@option:check"
 msgid "Expand search to bookmarks, files and emails"
 msgstr "Keresés kiterjesztése könyvjelzőkre, fájlokra és e-mailekre"
 
-#: ConfigGeneral.qml:255
-#, kde-format
+#: ConfigGeneral.qml:239
+#, fuzzy, kde-format
+#| msgid "Align search results to bottom"
 msgctxt "@option:check"
 msgid "Align search results to bottom"
 msgstr "Találatok igazítása alulra "
 
-#: ConfigGeneral.qml:260
-#, kde-format
+#: ConfigGeneral.qml:244
+#, fuzzy, kde-format
+#| msgid "Appearance"
 msgctxt "@label prefix for a checkbox toggling Dark Mode"
 msgid "Appearance:"
-msgstr "Megjelenés:"
+msgstr "Megjelenés"
 
-#: ConfigGeneral.qml:265
+#: ConfigGeneral.qml:249
 #, kde-format
 msgctxt "@option:check"
 msgid "Prefer Dark Mode when available"
-msgstr "Sötét mód előnyben részesítése, ha elérhető"
+msgstr ""
 
-#: ConfigGeneral.qml:269
+#: ConfigGeneral.qml:253
 #, kde-kuit-format
 msgctxt "@info:tooltip"
 msgid ""
 "This feature uses the complementary colors from your colorscheme, which "
 "usually feature a dark background."
 msgstr ""
-"Ez a funkció a színsémája kiegészítő színeit használja, amelyek általában "
-"sötét háttérrel párosulnak."
 
-#: DashboardRepresentation.qml:424
-#, kde-format
+#: DashboardRepresentation.qml:358
+#, fuzzy, kde-format
+#| msgid "Favorites"
 msgctxt "@title:group for column with app and system action grids"
 msgid "Favorites"
 msgstr "Kedvencek"
 
-#: DashboardRepresentation.qml:950 ItemListDelegate.qml:97
-#, kde-format
-msgctxt "Newly-installed app, badge, keep short"
-msgid "New!"
-msgstr "Új!"
-
-#: DashboardRepresentation.qml:951 ItemListDelegate.qml:98
-#, kde-format
-msgctxt "@info:whatsthis Accessible description for badge"
-msgid "There is a newly-installed application in this category"
-msgstr "Van egy újonnan telepített alkalmazás ebben a kategóriában"
-
-#: ItemGridDelegate.qml:81
-#, kde-format
-msgctxt "@label Newly-installed app, badge, keep short"
-msgid "New!"
-msgstr "Új!"
-
-#: ItemGridDelegate.qml:83
-#, kde-format
-msgctxt "@label Accessible name for badge"
-msgid "Newly-installed application"
-msgstr "Frissen telepített alkalmazás"
-
-#: ItemListDelegate.qml:40
+#: ItemListDelegate.qml:31
 #, kde-format
 msgctxt "@action:inmenu accessible description for opening submenu"
 msgid "Open category"
-msgstr "Kategória megnyitása"
+msgstr ""
 
-#: ItemListDelegate.qml:41
+#: ItemListDelegate.qml:32
 #, kde-format
 msgctxt "@action:inmenu accessible description for opening app or file"
 msgid "Launch"
-msgstr "Indítás"
+msgstr ""
 
-#: ItemListDelegate.qml:99
-#, kde-format
-msgctxt "@info:whatsthis Accessible description for badge"
-msgid "Newly-installed application"
-msgstr "Frissen telepített alkalmazás"
-
-#: main.qml:208
-#, kde-format
+#: main.qml:211
+#, fuzzy, kde-format
+#| msgid "Edit Applications…"
 msgctxt "@action:inmenu launches kmenuedit"
 msgid "Edit Applications…"
 msgstr "Alkalmazások szerkesztése…"
 
-#: MenuRepresentation.qml:191
-#, kde-format
+#: MenuRepresentation.qml:170
+#, fuzzy, kde-format
+#| msgid "Favorites"
 msgctxt "@title:group accessible name for favorite group in sidebar"
 msgid "Favorites"
 msgstr "Kedvencek"
 
-#: MenuRepresentation.qml:368
+#: MenuRepresentation.qml:348
 #, kde-format
 msgctxt "@info:status"
 msgid "No matches"
 msgstr "Nincs találat"
-
-#~ msgctxt "@item:inmenu Reset icon to default"
-#~ msgid "Clear Icon"
-#~ msgstr "Ikon visszaállítása"
 
 #~ msgid "Searching for '%1'"
 #~ msgstr "„'%1” keresése"
@@ -557,6 +530,12 @@ msgstr "Nincs találat"
 
 #~ msgid "Runner: %1"
 #~ msgstr "Futtató: %1"
+
+#~ msgid "Browse installed applications by categories"
+#~ msgstr "Telepített alkalmazások böngészése kategóriák szerint"
+
+#~ msgid "All Installed Applications"
+#~ msgstr "Minden telepített alkalmazás"
 
 #~ msgid "All Installed Applications With Filters"
 #~ msgstr "Minden telepített alkalmazás szűrőkkel"

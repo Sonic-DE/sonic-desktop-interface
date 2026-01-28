@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdeorg\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-04-05 02:42+0000\n"
+"POT-Creation-Date: 2026-01-28 00:46+0000\n"
 "PO-Revision-Date: 2024-04-22 15:58\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
@@ -14,9 +14,9 @@ msgstr ""
 "X-Crowdin-Project: kdeorg\n"
 "X-Crowdin-Project-ID: 269464\n"
 "X-Crowdin-Language: zh-CN\n"
-"X-Crowdin-File: /kf6-stable/messages/plasma-desktop/plasma_applet_org.kde."
+"X-Crowdin-File: /kf6-trunk/messages/plasma-desktop/plasma_applet_org.kde."
 "plasma.kickoff.pot\n"
-"X-Crowdin-File-ID: 51556\n"
+"X-Crowdin-File-ID: 43605\n"
 
 #: code/tools.js:32
 #, kde-format
@@ -103,13 +103,13 @@ msgstr "移除图标"
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Text label:"
-msgstr "文本标签："
+msgstr "文字标签："
 
 #: ConfigGeneral.qml:118
 #, kde-format
 msgctxt "@info:placeholder"
 msgid "Type here to add a text label"
-msgstr "在此输入要添加的文本标签"
+msgstr "在此输入要添加的文字标签"
 
 #: ConfigGeneral.qml:132
 #, kde-format
@@ -121,7 +121,7 @@ msgstr "重置菜单标签"
 #, kde-format
 msgctxt "@info"
 msgid "A text label cannot be set when the Panel is vertical."
-msgstr "面板垂直时无法设置文本标签。"
+msgstr "面板垂直时无法设置文字标签。"
 
 #: ConfigGeneral.qml:157
 #, kde-format
@@ -291,7 +291,7 @@ msgstr "电源和会话"
 #, kde-format
 msgctxt "@option:check"
 msgid "Show action button captions"
-msgstr "显示操作按钮的文本标签"
+msgstr "显示操作按钮的文字标签"
 
 #: Footer.qml:101
 #, kde-format
@@ -311,13 +311,13 @@ msgctxt "@info:status"
 msgid "No matches"
 msgstr "没有匹配的内容"
 
-#: Header.qml:86
+#: Header.qml:84
 #, kde-format
 msgctxt "@action:button icon-only, for tooltip/Accessible"
 msgid "Open user settings"
 msgstr "打开用户设置"
 
-#: Header.qml:276
+#: Header.qml:264
 #, kde-format
 msgctxt ""
 "@action:button Pin widget open if it loses focus, icon-only button, for "
@@ -329,7 +329,7 @@ msgstr "保持展开状态"
 #, kde-format
 msgctxt "@label Newly installed app, badge, keep short"
 msgid "New!"
-msgstr "新！"
+msgstr "新"
 
 #: KickoffGridDelegate.qml:60
 #, kde-format
@@ -337,7 +337,7 @@ msgctxt "@label Accessible name for badge"
 msgid "Newly installed application"
 msgstr "新安装的应用程序"
 
-#: KickoffGridView.qml:105
+#: KickoffGridView.qml:101
 #, kde-format
 msgctxt "@info:whatsthis Accessible description"
 msgid "Grid with %1 rows, %2 columns"
@@ -347,7 +347,7 @@ msgstr "%1 行 %2 列的网格"
 #, kde-format
 msgctxt "Newly installed app, badge, keep short"
 msgid "New!"
-msgstr "新！"
+msgstr "新增"
 
 #: KickoffListDelegate.qml:118
 #, kde-format
@@ -385,7 +385,7 @@ msgctxt "@title:menu menubutton"
 msgid "Session and Power"
 msgstr "会话和电源"
 
-#: main.qml:357
+#: main.qml:356
 #, kde-format
 msgctxt "@action:inmenu launches kmenuedit"
 msgid "Edit Applications…"
