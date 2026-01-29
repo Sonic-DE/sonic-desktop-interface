@@ -1,14 +1,14 @@
 # Copyright (C) 2025 This_file_is_part_of_KDE
 # This file is distributed under the same license as the plasma-desktop package.
-# SPDX-FileCopyrightText: 2008, 2009, 2010, 2011, 2012, 2013, 2020, 2021, 2022, 2023, 2024, 2025, 2026 Sergiu Bivol <sergiu@cip.md>
+# SPDX-FileCopyrightText: 2008, 2009, 2010, 2011, 2012, 2013, 2020, 2021, 2022, 2023, 2024, 2025 Sergiu Bivol <sergiu@cip.md>
 # Cristian Oneț <onet.cristian@gmail.com>, 2011, 2012.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: plasma_applet_folderview\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-05-29 02:43+0000\n"
-"PO-Revision-Date: 2026-04-01 15:14+0100\n"
+"POT-Creation-Date: 2026-01-29 00:45+0000\n"
+"PO-Revision-Date: 2025-10-03 13:31+0100\n"
 "Last-Translator: Sergiu Bivol <sergiu@cip.md>\n"
 "Language-Team: Romanian <kde-i18n-ro@kde.org>\n"
 "Language: ro\n"
@@ -17,352 +17,372 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
 "20)) ? 1 : 2;\n"
-"X-Generator: Lokalize 25.12.3\n"
+"X-Generator: Lokalize 25.08.1\n"
 
 #: package/contents/config/config.qml:17
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Location"
 msgctxt "@title:group for configuration dialog page"
 msgid "Location"
 msgstr "Amplasare"
 
 #: package/contents/config/config.qml:24
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Icons"
 msgctxt "@title:group for configuration dialog page"
 msgid "Icons"
 msgstr "Pictograme"
 
 #: package/contents/config/config.qml:31
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Filter"
 msgctxt "@title:group for configuration dialog page"
 msgid "Filter"
 msgstr "Filtru"
 
 #: package/contents/ui/BackButtonItem.qml:105
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Back"
 msgctxt "@action:button"
 msgid "Back"
 msgstr "Înapoi"
 
 #: package/contents/ui/ConfigFilter.qml:63
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Files:"
 msgctxt "@label:listbox filter mode"
 msgid "Files:"
 msgstr "Fișiere:"
 
 #: package/contents/ui/ConfigFilter.qml:64
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Show all"
 msgctxt "@item:inlistbox filter mode"
 msgid "Show all"
 msgstr "Arată tot"
 
 #: package/contents/ui/ConfigFilter.qml:64
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Show matching"
 msgctxt "@item:inlistbox filter mode"
 msgid "Show matching"
 msgstr "Arată cele potrivite"
 
 #: package/contents/ui/ConfigFilter.qml:64
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Hide matching"
 msgctxt "@item:inlistbox filter mode"
 msgid "Hide matching"
 msgstr "Ascunde cele potrivite"
 
 #: package/contents/ui/ConfigFilter.qml:69
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "File name pattern:"
 msgctxt "@label:textbox"
 msgid "File name pattern:"
 msgstr "Șablon denumiri:"
 
 #: package/contents/ui/ConfigFilter.qml:76
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "File types:"
 msgctxt "@label:textbox filter list by"
 msgid "File types:"
 msgstr "Tipuri de fișier:"
 
 #: package/contents/ui/ConfigFilter.qml:82
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Show hidden files:"
 msgctxt "@option:check prefix"
 msgid "Show hidden files:"
 msgstr "Arată fișierele ascunse:"
 
 #: package/contents/ui/ConfigFilter.qml:111
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "File Type"
 msgctxt "@title:column"
 msgid "File Type"
 msgstr "Tip de fișier"
 
 #: package/contents/ui/ConfigFilter.qml:112
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Description"
 msgctxt "@title:column"
 msgid "Description"
 msgstr "Descriere"
 
 #: package/contents/ui/ConfigFilter.qml:182
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Select All"
 msgctxt "@action:button tooltip only Select all filetypes"
 msgid "Select All"
 msgstr "Selectează tot"
 
 #: package/contents/ui/ConfigFilter.qml:192
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Deselect All"
 msgctxt "@action:button tooltip only Deselect all filetypes"
 msgid "Deselect All"
 msgstr "Deselectează tot"
 
 #: package/contents/ui/ConfigFilter.qml:201
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Switch Sort Order"
 msgctxt "@action:button tooltip only, ascending/descending"
 msgid "Switch Sort Order"
 msgstr "Schimbă ordinea sortării"
 
-#: package/contents/ui/ConfigIcons.qml:61
-#, kde-format
+#: package/contents/ui/ConfigIcons.qml:57
+#, fuzzy, kde-format
+#| msgid "Panel button:"
 msgctxt "@title:group prefix for checkbox + button"
 msgid "Panel button:"
 msgstr "Buton panou:"
 
-#: package/contents/ui/ConfigIcons.qml:67
-#, kde-format
+#: package/contents/ui/ConfigIcons.qml:63
+#, fuzzy, kde-format
+#| msgid "Use a custom icon"
 msgctxt "@option:check"
 msgid "Use a custom icon"
 msgstr "Folosește pictogramă personalizată"
 
-#: package/contents/ui/ConfigIcons.qml:100
+#: package/contents/ui/ConfigIcons.qml:96
 #, kde-format
 msgctxt "@item:inmenu Open icon chooser dialog"
 msgid "Choose…"
 msgstr "Alege…"
 
-#: package/contents/ui/ConfigIcons.qml:106
+#: package/contents/ui/ConfigIcons.qml:102
 #, kde-format
 msgctxt "@item:inmenu Reset icon to default"
 msgid "Clear Icon"
 msgstr "Șterge pictograma"
 
-#: package/contents/ui/ConfigIcons.qml:126
-#, kde-format
+#: package/contents/ui/ConfigIcons.qml:122
+#, fuzzy, kde-format
+#| msgid "Arrangement:"
 msgctxt "@label:listbox columns/rows"
 msgid "Arrangement:"
 msgstr "Aranjament:"
 
-#: package/contents/ui/ConfigIcons.qml:129
+#: package/contents/ui/ConfigIcons.qml:125
 #, kde-format
 msgctxt "@item:inlistbox arrangement of icons"
 msgid "In Columns"
 msgstr "În coloane"
 
-#: package/contents/ui/ConfigIcons.qml:130
+#: package/contents/ui/ConfigIcons.qml:126
 #, kde-format
 msgctxt "@item:inlistbox arrangement of icons"
 msgid "In Rows"
 msgstr "În rânduri"
 
-#: package/contents/ui/ConfigIcons.qml:139
-#, kde-format
+#: package/contents/ui/ConfigIcons.qml:135
+#, fuzzy, kde-format
+#| msgid "Sort Alignment:"
 msgctxt "@label:listbox, LtR/RtL"
 msgid "Sort Alignment:"
 msgstr "Aliniere la sortare:"
 
-#: package/contents/ui/ConfigIcons.qml:142
+#: package/contents/ui/ConfigIcons.qml:138
 #, kde-format
 msgctxt "@item:inlistbox alignment of icons"
 msgid "Left-to-Right"
 msgstr "De la stânga la dreapta"
 
-#: package/contents/ui/ConfigIcons.qml:143
+#: package/contents/ui/ConfigIcons.qml:139
 #, kde-format
 msgctxt "@item:inlistbox alignment of icons"
 msgid "Right-to-Left"
 msgstr "De la dreapta la stânga"
 
-#: package/contents/ui/ConfigIcons.qml:165
-#, kde-format
+#: package/contents/ui/ConfigIcons.qml:161
+#, fuzzy, kde-format
+#| msgid "Lock in place"
 msgctxt "@option:check lock icon positions"
 msgid "Lock in place"
 msgstr "Blochează în loc"
 
-#: package/contents/ui/ConfigIcons.qml:179
-#, kde-format
+#: package/contents/ui/ConfigIcons.qml:175
+#, fuzzy, kde-format
+#| msgid "Sort by:"
 msgctxt "@label:listbox sort items by field"
 msgid "Sort by:"
 msgstr "Sortează după:"
 
-#: package/contents/ui/ConfigIcons.qml:187
+#: package/contents/ui/ConfigIcons.qml:183
 #, kde-format
 msgctxt "@item:inlistbox sort icons manually"
 msgid "Manual"
 msgstr "Manuală"
 
-#: package/contents/ui/ConfigIcons.qml:188
+#: package/contents/ui/ConfigIcons.qml:184
 #, kde-format
 msgctxt "@item:inlistbox sort icons by name"
 msgid "Name"
 msgstr "Denumire"
 
-#: package/contents/ui/ConfigIcons.qml:189
+#: package/contents/ui/ConfigIcons.qml:185
 #, kde-format
 msgctxt "@item:inlistbox sort icons by size"
 msgid "Size"
 msgstr "Dimensiune"
 
-#: package/contents/ui/ConfigIcons.qml:190
+#: package/contents/ui/ConfigIcons.qml:186
 #, kde-format
 msgctxt "@item:inlistbox sort icons by file type"
 msgid "Type"
 msgstr "Tip"
 
-#: package/contents/ui/ConfigIcons.qml:191
+#: package/contents/ui/ConfigIcons.qml:187
 #, kde-format
 msgctxt "@item:inlistbox sort icons by date"
 msgid "Date"
 msgstr "Dată"
 
-#: package/contents/ui/ConfigIcons.qml:202
+#: package/contents/ui/ConfigIcons.qml:198
 #, kde-format
 msgctxt "@option:check sort icons in descending order"
 msgid "Descending"
 msgstr "Descrescător"
 
-#: package/contents/ui/ConfigIcons.qml:210
+#: package/contents/ui/ConfigIcons.qml:206
 #, kde-format
 msgctxt "@option:check sort icons with folders first"
 msgid "Folders first"
 msgstr "Întâi dosarele"
 
-#: package/contents/ui/ConfigIcons.qml:224
+#: package/contents/ui/ConfigIcons.qml:220
 #, kde-format
 msgctxt "whether to use icon or list view"
 msgid "View mode:"
 msgstr "Regim vizualizare:"
 
-#: package/contents/ui/ConfigIcons.qml:226
+#: package/contents/ui/ConfigIcons.qml:222
 #, kde-format
 msgctxt "@item:inlistbox show icons in a list"
 msgid "List"
 msgstr "Listă"
 
-#: package/contents/ui/ConfigIcons.qml:227
+#: package/contents/ui/ConfigIcons.qml:223
 #, kde-format
 msgctxt "@item:inlistbox show icons in a grid"
 msgid "Grid"
 msgstr "Grilă"
 
-#: package/contents/ui/ConfigIcons.qml:238
-#, kde-format
+#: package/contents/ui/ConfigIcons.qml:234
+#, fuzzy, kde-format
+#| msgid "Icon size:"
 msgctxt "@label:slider"
 msgid "Icon size:"
 msgstr "Dimensiune pictograme:"
 
-#: package/contents/ui/ConfigIcons.qml:253
-#, kde-format
+#: package/contents/ui/ConfigIcons.qml:249
+#, fuzzy, kde-format
+#| msgctxt "@label:slider smallest icon size"
+#| msgid "Small"
 msgctxt "@item:inrange smallest icon size"
 msgid "Small"
 msgstr "Mică"
 
-#: package/contents/ui/ConfigIcons.qml:262
-#, kde-format
+#: package/contents/ui/ConfigIcons.qml:258
+#, fuzzy, kde-format
+#| msgctxt "@label:slider largest icon size"
+#| msgid "Large"
 msgctxt "@item:inrange largest icon size"
 msgid "Large"
 msgstr "Mare"
 
-#: package/contents/ui/ConfigIcons.qml:271
-#, kde-format
+#: package/contents/ui/ConfigIcons.qml:267
+#, fuzzy, kde-format
+#| msgid "Label width:"
 msgctxt "@label:listbox"
 msgid "Label width:"
 msgstr "Lățime etichete:"
 
-#: package/contents/ui/ConfigIcons.qml:274
+#: package/contents/ui/ConfigIcons.qml:270
 #, kde-format
 msgctxt "@item:inlistbox how long a text label should be"
 msgid "Narrow"
 msgstr "Îngustă"
 
-#: package/contents/ui/ConfigIcons.qml:275
+#: package/contents/ui/ConfigIcons.qml:271
 #, kde-format
 msgctxt "@item:inlistbox how long a text label should be"
 msgid "Medium"
 msgstr "Medie"
 
-#: package/contents/ui/ConfigIcons.qml:276
+#: package/contents/ui/ConfigIcons.qml:272
 #, kde-format
 msgctxt "@item:inlistbox how long a text label should be"
 msgid "Wide"
 msgstr "Lată"
 
-#: package/contents/ui/ConfigIcons.qml:284
-#, kde-format
+#: package/contents/ui/ConfigIcons.qml:280
+#, fuzzy, kde-format
+#| msgid "Text lines:"
 msgctxt "@label:spinbox"
 msgid "Text lines:"
 msgstr "Linii textuale:"
 
-#: package/contents/ui/ConfigIcons.qml:300
-#, kde-format
+#: package/contents/ui/ConfigIcons.qml:296
+#, fuzzy, kde-format
+#| msgid "When hovering over icons:"
 msgctxt "@title:group prefix for checkbox group"
 msgid "When hovering over icons:"
 msgstr "La planarea peste pictograme:"
 
-#: package/contents/ui/ConfigIcons.qml:302
-#, kde-format
+#: package/contents/ui/ConfigIcons.qml:298
+#, fuzzy, kde-format
+#| msgid "Show tooltips"
 msgctxt "@option:check When hovering over icons…"
 msgid "Show tooltips"
 msgstr "Arată indicii"
 
-#: package/contents/ui/ConfigIcons.qml:309
-#, kde-format
+#: package/contents/ui/ConfigIcons.qml:305
+#, fuzzy, kde-format
+#| msgid "Show selection markers"
 msgctxt "@option:check When hovering over icons…"
 msgid "Show selection markers"
 msgstr "Arată marcatori de selecție"
 
-#: package/contents/ui/ConfigIcons.qml:316
-#, kde-format
+#: package/contents/ui/ConfigIcons.qml:312
+#, fuzzy, kde-format
+#| msgid "Show folder preview popups"
 msgctxt "@option:check When hovering over icons…"
 msgid "Show folder preview popups"
 msgstr "Arată bule cu previzualizări de dosare"
 
-#: package/contents/ui/ConfigIcons.qml:328
-#, kde-format
-msgctxt "@title:group"
-msgid "Typing on the desktop:"
-msgstr "Tastarea pe birou:"
-
-#: package/contents/ui/ConfigIcons.qml:334
-#, kde-format
-msgctxt "@option:radio Typing on the desktop selects items"
-msgid "Selects items"
-msgstr "Alege elemente"
-
-#: package/contents/ui/ConfigIcons.qml:340
-#, kde-format
-msgctxt "@option:radio Typing on the desktop activates KRunner"
-msgid "Activates KRunner"
-msgstr "Activează KRunner"
-
-#: package/contents/ui/ConfigIcons.qml:356
-#, kde-format
+#: package/contents/ui/ConfigIcons.qml:322
+#, fuzzy, kde-format
+#| msgid "Rename:"
 msgctxt "@label prefix for checkbox"
 msgid "Rename:"
 msgstr "Redenumire:"
 
-#: package/contents/ui/ConfigIcons.qml:360
-#, kde-format
+#: package/contents/ui/ConfigIcons.qml:326
+#, fuzzy, kde-format
+#| msgid "Rename inline by clicking selected item's text"
 msgctxt "@option:check"
 msgid "Rename inline by clicking selected item's text"
 msgstr "Redenumește în linie apăsând pe textul elementului ales"
 
-#: package/contents/ui/ConfigIcons.qml:371
-#, kde-format
+#: package/contents/ui/ConfigIcons.qml:337
+#, fuzzy, kde-format
+#| msgid "Previews:"
 msgctxt "@title:group prefix for checkbox and button"
 msgid "Previews:"
 msgstr "Previzualizări:"
 
-#: package/contents/ui/ConfigIcons.qml:373
-#, kde-format
+#: package/contents/ui/ConfigIcons.qml:339
+#, fuzzy, kde-format
+#| msgid "Show preview thumbnails"
 msgctxt "@option:check"
 msgid "Show preview thumbnails"
 msgstr "Arată miniaturi cu previzualizări"
 
-#: package/contents/ui/ConfigIcons.qml:381
-#, kde-format
+#: package/contents/ui/ConfigIcons.qml:347
+#, fuzzy, kde-format
+#| msgid "Configure Preview Plugins…"
 msgctxt "@action:button opens dialog"
 msgid "Configure Preview Plugins…"
 msgstr "Configurează extensii de previzualizare…"
@@ -440,36 +460,41 @@ msgid "Enter title…"
 msgstr "Introduceți titlul…"
 
 #: package/contents/ui/ConfigOverlay.qml:97
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Click and drag to rotate"
 msgctxt "@action:button tooltip rotate widget"
 msgid "Click and drag to rotate"
 msgstr "Apasă și trage pentru rotire"
 
 #: package/contents/ui/ConfigOverlay.qml:183
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Hide Background"
 msgctxt "@action:button tooltip hide widget background"
 msgid "Hide Background"
 msgstr "Ascunde fundalul"
 
 #: package/contents/ui/ConfigOverlay.qml:183
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Show Background"
 msgctxt "@action:button tooltip"
 msgid "Show Background"
 msgstr "Arată fundalul"
 
 #: package/contents/ui/ConfigOverlay.qml:231
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Remove"
 msgctxt "@action:button tooltip remove widget"
 msgid "Remove"
 msgstr "Elimină"
 
 #: package/contents/ui/FolderItemPreviewPluginsDialog.qml:18
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Preview Plugins"
 msgctxt "@title:window"
 msgid "Preview Plugins"
 msgstr "Extensii de previzualizare"
 
-#: package/contents/ui/FolderView.qml:1274
+#: package/contents/ui/FolderView.qml:1231
 #, kde-format
 msgctxt "@info"
 msgid ""
@@ -487,13 +512,15 @@ msgid "Folder is empty"
 msgstr "Dosarul e gol"
 
 #: package/contents/ui/FolderViewLayer.qml:357
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Icons"
 msgctxt "@item:inmenu opens submenu with view options like sorting"
 msgid "Icons"
 msgstr "Pictograme"
 
-#: package/contents/ui/main.qml:448
-#, kde-format
+#: package/contents/ui/main.qml:439
+#, fuzzy, kde-format
+#| msgid "Desktop and Wallpaper"
 msgctxt "@action:inmenu opens config dialog"
 msgid "Desktop and Wallpaper"
 msgstr "Birou și tapet"
@@ -503,17 +530,17 @@ msgstr "Birou și tapet"
 msgid "Select Folder"
 msgstr "Alege dosarul"
 
-#: plugins/folder/foldermodel.cpp:569
+#: plugins/folder/foldermodel.cpp:505
 #, kde-format
 msgid "&Refresh Desktop"
 msgstr "&Reîmprospătează biroul"
 
-#: plugins/folder/foldermodel.cpp:569 plugins/folder/foldermodel.cpp:1803
+#: plugins/folder/foldermodel.cpp:505 plugins/folder/foldermodel.cpp:1741
 #, kde-format
 msgid "&Refresh View"
 msgstr "&Reîmprospătează vizualizarea"
 
-#: plugins/folder/foldermodel.cpp:932
+#: plugins/folder/foldermodel.cpp:868
 #, kde-format
 msgctxt ""
 "@title:notifications Here 'link' refers to a symbolic link to another file "
@@ -521,7 +548,7 @@ msgctxt ""
 msgid "Link Target Not Found"
 msgstr "Ținta legăturii nu a fost găsită"
 
-#: plugins/folder/foldermodel.cpp:934
+#: plugins/folder/foldermodel.cpp:870
 #, kde-kuit-format
 msgctxt "@info Body text of a system notification"
 msgid ""
@@ -531,23 +558,23 @@ msgstr ""
 "<filename>%1</filename> indică spre <filename>%2</filename>, dar nu a putut "
 "fi găsit. Se poate să fi fost mutat sau șters."
 
-#: plugins/folder/foldermodel.cpp:1812
+#: plugins/folder/foldermodel.cpp:1750
 #, kde-format
 msgid "&Empty Trash"
 msgstr "Gol&ește gunoiul"
 
-#: plugins/folder/foldermodel.cpp:1815
+#: plugins/folder/foldermodel.cpp:1753
 #, kde-format
 msgctxt "Restore from trash"
 msgid "Restore to Former Location"
 msgstr "Restabilește la amplasarea veche"
 
-#: plugins/folder/foldermodel.cpp:1818
+#: plugins/folder/foldermodel.cpp:1756
 #, kde-format
 msgid "&Open"
 msgstr "&Deschide"
 
-#: plugins/folder/foldermodel.cpp:1822
+#: plugins/folder/foldermodel.cpp:1760
 #, kde-format
 msgctxt ""
 "@action:inmenu open file manager showing the target file or folder that this "
@@ -555,23 +582,23 @@ msgctxt ""
 msgid "Show Target"
 msgstr "Arată ținta"
 
-#: plugins/folder/foldermodel.cpp:1923
+#: plugins/folder/foldermodel.cpp:1861
 #, kde-format
 msgctxt "@action:inmenu Removes the trash icon on the desktop"
 msgid "Remove Trash Icon"
 msgstr "Elimină pictograma gunoiului"
 
-#: plugins/folder/foldermodel.cpp:1926
+#: plugins/folder/foldermodel.cpp:1864
 #, kde-format
 msgid "&Move to Trash"
 msgstr "&Mută la gunoi"
 
-#: plugins/folder/foldermodel.cpp:1959
+#: plugins/folder/foldermodel.cpp:1897
 #, kde-format
 msgid "&Paste"
 msgstr "Li&pește"
 
-#: plugins/folder/foldermodel.cpp:2110
+#: plugins/folder/foldermodel.cpp:2048
 #, kde-format
 msgid "&Properties"
 msgstr "&Proprietăți"
