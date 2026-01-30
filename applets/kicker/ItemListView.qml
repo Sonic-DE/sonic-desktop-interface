@@ -34,7 +34,6 @@ PlasmaComponents3.ScrollView {
     property alias model: listView.model
     property alias count: listView.count
     property alias resetOnExitDelay: resetIndexTimer.interval
-    property alias showSeparators: listView.showSeparators
 
 
     implicitWidth: listView.implicitWidth + leftPadding + rightPadding
@@ -108,7 +107,6 @@ PlasmaComponents3.ScrollView {
         implicitWidth: itemList.Layout.minimumWidth
 
         property int maxDelegateImplicitWidth: 0 // used to set implicitWidth
-        property bool showSeparators: !model.sorted // separators are mostly useless when sorted
 
         Binding on implicitWidth {
             value: listView.maxDelegateImplicitWidth
@@ -133,7 +131,6 @@ PlasmaComponents3.ScrollView {
         Accessible.role: Accessible.List
 
         delegate: ItemListDelegate {
-            showSeparators: listView.showSeparators
             showIcons: itemList.iconsEnabled
             dialogDefaultRight: !itemList.LayoutMirroring.enabled
             hoverEnabled: itemList.hoverEnabled
