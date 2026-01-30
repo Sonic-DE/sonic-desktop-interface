@@ -30,7 +30,6 @@ PlasmaComponents3.ItemDelegate {
 
     readonly property ActionMenu menu: actionMenu
 
-    property bool showSeparators: true
     property bool dialogDefaultRight: Application.layoutDirection !== Qt.RightToLeft
 
     signal interactionConcluded

@@ -19,7 +19,7 @@ ItemAbstractDelegate {
     readonly property bool iconAndLabelsShouldlookSelected: pressed && !hasChildren
 
     width: ListView.view.width
-    height: isSeparator && !showSeparators ? 0 : implicitHeight
+    height: implicitHeight
 
     // if it's not disabled and is either a leaf node or a node with children
     enabled: !isSeparator && !disabled && (!isParent || (isParent && hasChildren))
@@ -107,8 +107,7 @@ ItemAbstractDelegate {
             Layout.alignment: Qt.AlignVCenter
             Layout.fillWidth: true
 
-            // Separator positions don't make sense when sorting everything alphabetically
-            active: item.isSeparator && item.showSeparators
+            active: item.isSeparator
             visible: active
 
             asynchronous: false
