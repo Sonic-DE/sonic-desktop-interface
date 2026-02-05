@@ -2,13 +2,13 @@
 # This file is distributed under the same license as the plasma-desktop package.
 #
 # SPDX-FileCopyrightText: 2020, 2021, 2023 Kristóf Kiszel <kiszel.kristof@gmail.com>
-# SPDX-FileCopyrightText: 2024-2026 Kristof Kiszel <ulysses@fsf.hu>
+# SPDX-FileCopyrightText: 2024, 2025 Kristof Kiszel <ulysses@fsf.hu>
 msgid ""
 msgstr ""
 "Project-Id-Version: plasma-desktop\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-05-19 02:41+0000\n"
-"PO-Revision-Date: 2026-06-03 21:12+0200\n"
+"POT-Creation-Date: 2026-02-05 00:45+0000\n"
+"PO-Revision-Date: 2025-11-10 22:31+0100\n"
 "Last-Translator: Kristof Kiszel <ulysses@fsf.hu>\n"
 "Language-Team: Hungarian <kde-l10n-hu@kde.org>\n"
 "Language: hu\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 26.04.1\n"
+"X-Generator: Lokalize 25.08.2\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
@@ -46,20 +46,20 @@ msgctxt "@item:intable"
 msgid "Plasma Workspace"
 msgstr "Plasma Workspace"
 
-#: globalaccelmodel.cpp:281
+#: globalaccelmodel.cpp:254
 #, kde-format
 msgctxt ""
 "%1 is the name of the component, %2 is the action for which saving failed"
 msgid "Error while saving shortcut %1: %2"
 msgstr "Hiba a(z) %1 gyorsbillentyű mentésekor: %2"
 
-#: globalaccelmodel.cpp:395
+#: globalaccelmodel.cpp:371
 #, kde-format
 msgctxt "%1 is the name of an application"
 msgid "Error while adding %1, it seems it has no actions."
 msgstr "Hiba a(z) %1 hozzáadásakor, úgy tűnik, hogy nincsenek műveletei."
 
-#: globalaccelmodel.cpp:469
+#: globalaccelmodel.cpp:422
 #, kde-format
 msgid "Error while communicating with the global shortcuts service"
 msgstr ""
@@ -70,7 +70,7 @@ msgstr ""
 msgid "Failed to communicate with global shortcuts daemon"
 msgstr "A kommunikáció a globális gyorsbillentyű-szolgáltatással meghiúsult"
 
-#: kcm_keys.cpp:380
+#: kcm_keys.cpp:372
 #, kde-kuit-format
 msgctxt ""
 "@info %2 is the name of a category inside the 'Common Actions' section"
@@ -82,7 +82,7 @@ msgstr ""
 "<interface>%3</interface> műveletéhez.<nl/><nl/>Hozzárendeli inkább ehhez: "
 "%4?"
 
-#: kcm_keys.cpp:386
+#: kcm_keys.cpp:378
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""
@@ -95,17 +95,17 @@ msgstr ""
 ">Hozzárendeli a(z) <application>%5</application> <interface>%4</interface> "
 "műveletéhez?"
 
-#: kcm_keys.cpp:396
+#: kcm_keys.cpp:387
 #, kde-format
 msgctxt "@title:window"
 msgid "Resolve Shortcut Conflict"
 msgstr "Gyorsbillentyű-ütközések feloldása"
 
-#: kcm_keys.cpp:406
+#: kcm_keys.cpp:397
 #, kde-format
 msgctxt "@action:button"
 msgid "Reassign"
-msgstr "Igen"
+msgstr "Igen, az új"
 
 #: standardshortcutsmodel.cpp:34
 #, kde-format
@@ -138,25 +138,29 @@ msgid "Help"
 msgstr "Súgó"
 
 #: ui/main.qml:27
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Applications"
 msgctxt "@title:group list section name"
 msgid "Applications"
 msgstr "Alkalmazások"
 
 #: ui/main.qml:27
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Commands"
 msgctxt "@title:group list section name"
 msgid "Commands"
 msgstr "Parancsok"
 
 #: ui/main.qml:27
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "System Services"
 msgctxt "@title:group list section name"
 msgid "System Services"
 msgstr "Rendszerszolgáltatások"
 
 #: ui/main.qml:27
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Common Actions"
 msgctxt "@title:group list section name"
 msgid "Common Actions"
 msgstr "Gyakori műveletek"
@@ -185,7 +189,7 @@ msgctxt "@action:button Export shortcut scheme"
 msgid "Export…"
 msgstr "Exportálás…"
 
-#: ui/main.qml:53 ui/main.qml:128
+#: ui/main.qml:53 ui/main.qml:125
 #, kde-format
 msgctxt "@action:button accessible"
 msgid "Export shortcut scheme"
@@ -221,184 +225,203 @@ msgctxt "@action:menu accessible"
 msgid "Add new command or script"
 msgstr "Új parancs vagy szkript hozzáadása"
 
-#: ui/main.qml:107
-#, kde-format
+#: ui/main.qml:104
+#, fuzzy, kde-format
+#| msgid "Cannot export scheme while there are unsaved changes"
 msgctxt "@info:status inlinemessage"
 msgid "Cannot export scheme while there are unsaved changes"
 msgstr "Nem lehet exportálni a sémákat, amíg nem mentett módosítások vannak"
 
-#: ui/main.qml:120
-#, kde-format
+#: ui/main.qml:117
+#, fuzzy, kde-format
+#| msgid ""
+#| "Select the components below that should be included in the exported scheme"
 msgctxt "@info:usagetip"
 msgid ""
 "Select the components below that should be included in the exported scheme"
-msgstr "Válassza ki lentebb az exportálandó komponenseket"
+msgstr ""
+"Válassza ki lentebb az exportált sémába belefoglalni kívánt komponenseket"
 
-#: ui/main.qml:127
+#: ui/main.qml:124
 #, kde-format
 msgctxt "@action:button Export shortcut scheme"
 msgid "Export"
 msgstr "Exportálás"
 
-#: ui/main.qml:229
+#: ui/main.qml:221
 #, kde-format
 msgctxt ""
 "@option:check accessible export shortcuts %1 is application/group name"
 msgid "Export %1"
 msgstr "%1 exportálása"
 
-#: ui/main.qml:239
-#, kde-format
+#: ui/main.qml:231
+#, fuzzy, kde-format
+#| msgctxt "@action:button accessible %1 is the name of a custom command"
+#| msgid "Edit command for %1"
 msgctxt "@action:button %1 is the name of a custom command"
 msgid "Edit command for %1"
-msgstr "A(z) %1 parancs szerkesztése"
+msgstr "A(z) %1 parancsának szerkesztése"
 
-#: ui/main.qml:268
-#, kde-format
+#: ui/main.qml:258
+#, fuzzy, kde-format
+#| msgctxt "@action:button accessible %1 is the name of a shortcut category"
+#| msgid "Remove all shortcuts for %1"
 msgctxt "@action:button %1 is the name of a shortcut category"
 msgid "Remove all shortcuts for %1"
 msgstr "A(z) %1 összes gyorsbillentyűjének törlése"
 
-#: ui/main.qml:290
-#, kde-format
+#: ui/main.qml:280
+#, fuzzy, kde-format
+#| msgctxt "@action:button accessible"
+#| msgid "Undo deletion"
 msgctxt "@action:button"
 msgid "Undo deletion"
 msgstr "Törlés visszavonása"
 
-#: ui/main.qml:357
-#, kde-format
+#: ui/main.qml:341
+#, fuzzy, kde-format
+#| msgid "No items matched the search terms"
 msgctxt "@info:status placeholdermessage"
 msgid "No items matched the search terms"
 msgstr "Nincsenek találatok a keresésre"
 
-#: ui/main.qml:374
+#: ui/main.qml:358
 #, kde-format
 msgctxt "@info"
 msgid "These shortcuts will be deleted when changes are applied."
 msgstr ""
-"Ezek a gyorsbillentyűk törlésre kerülnek a változtatások alkalmazásakor."
 
-#: ui/main.qml:378
+#: ui/main.qml:362
 #, kde-format
 msgctxt "@action:button"
 msgid "Undo"
-msgstr "Visszavonás"
+msgstr ""
 
-#: ui/main.qml:379
-#, kde-format
+#: ui/main.qml:363
+#, fuzzy, kde-format
+#| msgid "No default shortcuts"
 msgctxt "@action:button"
 msgid "Undo deleting shortcuts"
-msgstr "Gyorsbillentyűk törlésének visszavonása"
+msgstr "Nincsenek alapértelmezett gyorsbillentyűk"
 
-#: ui/main.qml:420
-#, kde-format
+#: ui/main.qml:399
+#, fuzzy, kde-format
+#| msgid "Select an item from the list to view its shortcuts here"
 msgctxt "@info:usagetip placeholdermessage"
 msgid "Select an item from the list to view its shortcuts here"
 msgstr "Válasszon egy elemet a listából a gyorsbillentyűi megtekintéséhez"
 
-#: ui/main.qml:433
-#, kde-format
+#: ui/main.qml:412
+#, fuzzy, kde-format
+#| msgid "Export Shortcut Scheme"
 msgctxt "@title:window dialog"
 msgid "Export Shortcut Scheme"
 msgstr "Gyorsbillentyűséma exportálása"
 
-#: ui/main.qml:433 ui/main.qml:565
-#, kde-format
+#: ui/main.qml:412 ui/main.qml:553
+#, fuzzy, kde-format
+#| msgid "Import Shortcut Scheme"
 msgctxt "@title:window dialog"
 msgid "Import Shortcut Scheme"
 msgstr "Gyorsbillentyűséma importálása"
 
-#: ui/main.qml:435
+#: ui/main.qml:414
 #, kde-format
 msgctxt "Template for file dialog"
 msgid "Shortcut Scheme (*.kksrc)"
 msgstr "Gyorsbillentyűséma (*.kksrc)"
 
-#: ui/main.qml:462
-#, kde-format
+#: ui/main.qml:441
+#, fuzzy, kde-format
+#| msgid "Edit Command"
 msgctxt "@title:window dialog"
 msgid "Edit Command"
 msgstr "Parancs szerkesztése"
 
-#: ui/main.qml:462
-#, kde-format
+#: ui/main.qml:441
+#, fuzzy, kde-format
+#| msgid "Add Command"
 msgctxt "@title:window dialog"
 msgid "Add Command"
 msgstr "Parancs hozzáadása"
 
-#: ui/main.qml:479
-#, kde-format
+#: ui/main.qml:463
+#, fuzzy, kde-format
+#| msgid "Save"
 msgctxt "@action:button in dialog, save changes to custom command"
 msgid "Save"
 msgstr "Mentés"
 
-#: ui/main.qml:479
-#, kde-format
+#: ui/main.qml:463
+#, fuzzy, kde-format
+#| msgid "Add"
 msgctxt "@action:button in dialog, add entry as new custom command"
 msgid "Add"
 msgstr "Hozzáadás"
 
-#: ui/main.qml:481
+#: ui/main.qml:465
 #, kde-format
 msgctxt "@action:button accessible"
 msgid "Save command"
 msgstr "Parancs mentése"
 
-#: ui/main.qml:482
+#: ui/main.qml:466
 #, kde-format
 msgctxt "@action:button accessible"
 msgid "Add command"
 msgstr "Parancs hozzáadása"
 
-#: ui/main.qml:504
-#, kde-format
+#: ui/main.qml:492
+#, fuzzy, kde-format
+#| msgid "Enter a command or choose a script file:"
 msgctxt "@info:usagetip"
 msgid "Enter a command or choose a script file:"
 msgstr "Adjon meg egy parancsot, vagy válasszon egy szkriptfájlt:"
 
-#: ui/main.qml:513
+#: ui/main.qml:501
 #, kde-format
 msgctxt "@label:textbox A shell command"
 msgid "Command:"
 msgstr "Parancs:"
 
-#: ui/main.qml:519
+#: ui/main.qml:507
 #, kde-format
 msgctxt "@label:textbox accessible"
 msgid "Command"
 msgstr "Parancs"
 
-#: ui/main.qml:526
+#: ui/main.qml:514
 #, kde-format
 msgctxt "@action:button"
 msgid "Choose…"
 msgstr "Kiválasztás…"
 
-#: ui/main.qml:527
+#: ui/main.qml:515
 #, kde-format
 msgctxt "@action:button accessible"
 msgid "Choose script file"
 msgstr "Parancsfájl kiválasztása"
 
-#: ui/main.qml:535
+#: ui/main.qml:523
 #, kde-format
 msgctxt "@label:textfield Human-readable name given to a shell command"
 msgid "Name:"
 msgstr "Név:"
 
-#: ui/main.qml:536
+#: ui/main.qml:524
 #, kde-format
 msgctxt "@info:placeholder"
 msgid "Enter name here"
 msgstr "Név megadása itt"
 
-#: ui/main.qml:548
+#: ui/main.qml:536
 #, kde-format
 msgctxt "@title:window"
 msgid "Choose Script File"
 msgstr "Szkriptfájl kiválasztása"
 
-#: ui/main.qml:550
+#: ui/main.qml:538
 #, kde-format
 msgctxt ""
 "Filename filters for file dialog. Do not translate any of the filename "
@@ -406,37 +429,41 @@ msgctxt ""
 msgid "Script files (.sh, .bash, .zsh, etc.) (*.*sh)"
 msgstr "Parancsfájlok (.sh, .bash, .zsh, stb.) (*.*sh)"
 
-#: ui/main.qml:573
-#, kde-format
+#: ui/main.qml:561
+#, fuzzy, kde-format
+#| msgid "Select the scheme to import:"
 msgctxt "@label:listbox regarding 'shortcut schemes'"
 msgid "Select the scheme to import:"
 msgstr "Az importálandó séma:"
 
-#: ui/main.qml:592
-#, kde-format
+#: ui/main.qml:580
+#, fuzzy, kde-format
+#| msgid "Custom Scheme"
 msgctxt "@item:inlistbox regarding 'shortcut schemes'"
 msgid "Custom Scheme"
 msgstr "Egyéni séma"
 
-#: ui/main.qml:600
-#, kde-format
+#: ui/main.qml:588
+#, fuzzy, kde-format
+#| msgid "Select File…"
 msgctxt "@action:button"
 msgid "Select File…"
 msgstr "Fájl kiválasztása…"
 
-#: ui/main.qml:600
-#, kde-format
+#: ui/main.qml:588
+#, fuzzy, kde-format
+#| msgid "Import"
 msgctxt "@action:button import shortcut scheme"
 msgid "Import"
 msgstr "Importálás"
 
-#: ui/main.qml:602
+#: ui/main.qml:590
 #, kde-format
 msgctxt "@action:button accessible"
 msgid "Select shortcut scheme file"
 msgstr "Gyorsbillentyűséma-fájl kiválasztása"
 
-#: ui/main.qml:603
+#: ui/main.qml:591
 #, kde-format
 msgctxt "@action:button accessible"
 msgid "Add shortcut scheme"
@@ -446,16 +473,18 @@ msgstr "Gyorsbillentyűséma hozzáadása"
 #, kde-format
 msgctxt "@action:button Collapse shortcuts view"
 msgid "Collapse"
-msgstr "Összecsukás"
+msgstr ""
 
 #: ui/ShortcutActionDelegate.qml:32
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "No active shortcuts"
 msgctxt "@action:button"
 msgid "Expand to configure shortcuts"
-msgstr "Kibontás a gyorsbillentyűk beállításához"
+msgstr "Nincsenek aktív gyorsbillentyűk"
 
 #: ui/ShortcutActionDelegate.qml:38
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Editing shortcut: %1"
 msgctxt "@info:whatsthis accessible name %1 is shortcut label (not sequence)"
 msgid "Editing shortcut: %1"
 msgstr "Gyorsbillentyű szerkesztése: %1"
@@ -468,63 +497,71 @@ msgctxt ""
 msgid "%1:"
 msgstr "%1:"
 
-#: ui/ShortcutActionDelegate.qml:85
-#, kde-format
+#: ui/ShortcutActionDelegate.qml:88
+#, fuzzy, kde-format
+#| msgid "No active shortcuts"
 msgctxt "@info:status"
 msgid "No active shortcuts"
 msgstr "Nincsenek aktív gyorsbillentyűk"
 
-#: ui/ShortcutActionDelegate.qml:135
-#, kde-format
+#: ui/ShortcutActionDelegate.qml:134
+#, fuzzy, kde-format
+#| msgctxt "%1 decides if singular or plural will be used"
+#| msgid "Default shortcut"
+#| msgid_plural "Default shortcuts"
 msgctxt "@title:column %1 decides if singular or plural will be used"
 msgid "Default shortcut"
 msgid_plural "Default shortcuts"
 msgstr[0] "Alapértelmezett gyorsbillentyű"
 msgstr[1] "Alapértelmezett gyorsbillentyűk"
 
-#: ui/ShortcutActionDelegate.qml:137
-#, kde-format
+#: ui/ShortcutActionDelegate.qml:136
+#, fuzzy, kde-format
+#| msgid "No default shortcuts"
 msgctxt "@label for shortcut with no default bindings"
 msgid "No default shortcuts"
 msgstr "Nincsenek alapértelmezett gyorsbillentyűk"
 
-#: ui/ShortcutActionDelegate.qml:146
-#, kde-format
+#: ui/ShortcutActionDelegate.qml:145
+#, fuzzy, kde-format
+#| msgid "Default shortcut %1 is enabled."
 msgctxt "@info:whatsthis accessible name"
 msgid "Default shortcut %1 is enabled."
 msgstr "A(z) %1 alapértelmezett gyorsbillentyű engedélyezve."
 
-#: ui/ShortcutActionDelegate.qml:146
-#, kde-format
+#: ui/ShortcutActionDelegate.qml:145
+#, fuzzy, kde-format
+#| msgid "Default shortcut %1 is disabled."
 msgctxt "@info:whatsthis accessible name"
 msgid "Default shortcut %1 is disabled."
 msgstr "A(z) %1 alapértelmezett gyorsbillentyű letiltva."
 
-#: ui/ShortcutActionDelegate.qml:169
-#, kde-format
+#: ui/ShortcutActionDelegate.qml:168
+#, fuzzy, kde-format
+#| msgid "Custom shortcuts"
 msgctxt "@title:column"
 msgid "Custom shortcuts"
 msgstr "Egyéni gyorsbillentyűk"
 
-#: ui/ShortcutActionDelegate.qml:205
+#: ui/ShortcutActionDelegate.qml:195
 #, kde-format
 msgctxt "@action:button accessible"
 msgid "Delete shortcut"
 msgstr "Gyorsbillentyű törlése"
 
-#: ui/ShortcutActionDelegate.qml:216
+#: ui/ShortcutActionDelegate.qml:206
 #, kde-format
 msgctxt "@action:button Add custom shortcut"
 msgid "Add…"
 msgstr "Hozzáadás…"
 
-#: ui/ShortcutActionDelegate.qml:217
+#: ui/ShortcutActionDelegate.qml:207
 #, kde-format
 msgctxt "@action:button accessible"
 msgid "Add custom shortcut"
 msgstr "Egyéni gyorsbillentyű hozzáadása"
 
-#: ui/ShortcutActionDelegate.qml:253
+#: ui/ShortcutActionDelegate.qml:243
 #, kde-format
 msgctxt "@action:button accessible"
 msgid "Cancel capturing shortcut"
