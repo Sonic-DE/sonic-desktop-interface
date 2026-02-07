@@ -27,6 +27,7 @@ PlasmaComponents3.ScrollView {
     property Kicker.SubMenu childDialog: null
     property bool iconsEnabled: false
     property bool dynamicResize : true
+    property bool showDescriptionInTooltip: false
     property int innerLeftMargin: 0
     property int innerRightMargin: 0
 
@@ -144,16 +145,11 @@ PlasmaComponents3.ScrollView {
             width: listView.width - itemList.innerRightMargin
             anchors.left: listView.contentItem.left
             showIcons: itemList.iconsEnabled
+            showDescriptionInTooltip: itemList.showDescriptionInTooltip
             dialogDefaultRight: !itemList.LayoutMirroring.enabled
-            hoverEnabled: itemList.hoverEnabled
             onInteractionConcluded: itemList.interactionConcluded()
-            onOpenCategory: keyboardInitiated => {
-                listView.currentIndex = index
-                listView.openOrFocusSubmenu()
-                if (keyboardInitiated) { itemList.childDialog.mainItem.currentIndex = 0; }
-            }
-            onHoveredChanged: {
-                if (hovered && !isSeparator && !ActionMenu.opened) {
+            onContainsMouseChanged: {
+                if (containsMouse && itemList.hoverEnabled && !isSeparator && !ActionMenu.opened) {
                     listView.currentIndex = index
                     itemList.forceActiveFocus()
                     dialogSpawnTimer.restart()
@@ -285,4 +281,5 @@ PlasmaComponents3.ScrollView {
         }
     }
 }
+
 
