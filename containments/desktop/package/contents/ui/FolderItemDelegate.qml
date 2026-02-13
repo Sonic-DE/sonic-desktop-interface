@@ -127,9 +127,6 @@ Item {
 
             onHoveredChanged: {
                 if (hovered) {
-                    if (Plasmoid.configuration.selectionMarkers && Application.styleHints.singleClickActivation) {
-                        selectionButton.visible = true;
-                    }
 
                     if (main.model.isDir) {
                         if (!main.GridView.view.isRootView || root.containsDrag) {
@@ -144,8 +141,6 @@ Item {
                     if (popupDialog != null) {
                         main.closePopup();
                     }
-
-                    selectionButton.visible = false;
 
                     if (popupButton) {
                         popupButton.destroy();
@@ -400,6 +395,7 @@ Item {
                     id: selectionButtonComponent
 
                     FolderItemActionButton {
+                        visible: impl.hovered && Plasmoid.configuration.selectionMarkers && Application.styleHints.singleClickActivation
                         element: main.model.selected ? "remove" : "add"
 
                         onClicked: {
@@ -479,7 +475,6 @@ Item {
             }
 
             Component.onCompleted: {
-                selectionButton.visible = false;
                 if (Plasmoid.isContainment && main.GridView.view.isRootView && root.GraphicsInfo.api === GraphicsInfo.OpenGL) {
                     frameLoader.iconShadow = iconShadowComponent.createObject(frameLoader);
                 }
