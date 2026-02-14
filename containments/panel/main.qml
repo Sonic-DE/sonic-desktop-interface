@@ -262,8 +262,8 @@ ContainmentItem {
                 onWantsToFillWidthChanged: root.checkLastSpacer()
                 onWantsToFillHeightChanged: root.checkLastSpacer()
 
-                property int availWidth: root.width - Layout.leftMargin - Layout.rightMargin
-                property int availHeight: root.height - Layout.topMargin - Layout.bottomMargin
+                availWidth: root.width - Layout.leftMargin - Layout.rightMargin
+                availHeight: root.height - Layout.topMargin - Layout.bottomMargin
                 function findPositive(first, second) {return first > 0 ? first : second}
 
     // BEGIN BUG 454095: do not combine these expressions to a function or the bindings won't work
