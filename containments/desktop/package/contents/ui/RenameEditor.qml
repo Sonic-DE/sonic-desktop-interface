@@ -71,7 +71,7 @@ PlasmaComponents.ScrollView {
                 root.y = xy[1];
                 root.width = getWidth();
                 root.height = getInitHeight();
-                text = targetItem.name;
+                text = targetItem.display;
                 adjustSize();
                 editor.select(0, dir.fileExtensionBoundary(positioner.map(targetItem.index)));
                 if (isPopup) {
@@ -151,7 +151,7 @@ PlasmaComponents.ScrollView {
             if (!targetItem) {
                 return 0;
             }
-            return(targetItem.label.parent.width - Kirigami.Units.smallSpacing +
+            return(targetItem.labelArea.parent.width - Kirigami.Units.smallSpacing +
                 (root.useListViewMode ? -(editor.leftPadding + editor.rightPadding + Kirigami.Units.smallSpacing) : 0) +
                 (addWidthVerticalScroller ? root.PlasmaComponents.ScrollBar.vertical.width : 0));
         }

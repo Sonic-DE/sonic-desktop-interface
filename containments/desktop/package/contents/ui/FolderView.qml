@@ -298,9 +298,7 @@ FocusScope {
             }
 
             if (mouse.source === Qt.MouseEventSynthesizedByQt) {
-                if (gridView.hoveredItem && gridView.hoveredItem.toolTip.active) {
-                    gridView.hoveredItem.toolTip.hideToolTip();
-                }
+                gridView.hoveredItem?.hideToolTip();
             }
 
             pressX = mouse.x;
@@ -348,9 +346,7 @@ FocusScope {
                     gridView.currentIndex = hoveredItem.index;
 
                     if (mouse.buttons & Qt.RightButton) {
-                        if (pressedItem.toolTip && pressedItem.toolTip.active) {
-                            pressedItem.toolTip.hideToolTip();
-                        }
+                        pressedItem.hideToolTip();
 
                         clearPressState();
 
@@ -381,11 +377,7 @@ FocusScope {
 
         onPressAndHold: mouse => {
             if (mouse.source === Qt.MouseEventSynthesizedByQt) {
-                if (pressedItem) {
-                    if (pressedItem.toolTip && pressedItem.toolTip.active) {
-                        pressedItem.toolTip.hideToolTip();
-                    }
-                }
+                pressedItem?.hideToolTip();
                 clearPressState();
                 if (hoveredItem) {
                     dir.openContextMenu(hoveredItem, mouse.modifiers);
@@ -526,7 +518,7 @@ FocusScope {
             // Drag initiation.
             if (pressX !== -1 && root.isDrag(pressX, pressY, mouse.x, mouse.y)) {
                 if (pressedItem !== null && dir.isSelected(positioner.map(pressedItem.index))) {
-                    pressedItem.toolTip.hideToolTip();
+                    pressedItem.hideToolTip();
                     dragX = mouse.x;
                     dragY = mouse.y;
                     gridView.verticalDropHitscanOffset = pressedItem.iconArea.y + (pressedItem.iconArea.height / 2);
@@ -1025,7 +1017,7 @@ FocusScope {
                 Keys.onMenuPressed: event => {
                     if (currentIndex !== -1 && dir.hasSelection() && currentItem) {
                         dir.setSelected(positioner.map(currentIndex));
-                        dir.openContextMenu(currentItem.frame, event.modifiers);
+                        dir.openContextMenu(currentItem, event.modifiers);
                     } else {
                         // Otherwise let the containment handle it.
                         event.accepted = false;
