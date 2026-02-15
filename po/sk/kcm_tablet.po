@@ -2,21 +2,21 @@
 # Roman Paholik <wizzardsk@gmail.com>, 2021.
 # SPDX-FileCopyrightText: 2022, 2023, 2024 Matej Mrenica <matejm98mthw@gmail.com>
 # Ferdinand Galko <galko.ferdinand@gmail.com>, 2023.
-# SPDX-FileCopyrightText: 2025, 2026 Lucia Mrenica <lucia.mrenica@gmail.com>
+# SPDX-FileCopyrightText: 2025 Lucia Mrenica <lucia.mrenica@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: kcm_tablet\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-05-02 02:38+0000\n"
-"PO-Revision-Date: 2026-02-28 19:58+0100\n"
+"POT-Creation-Date: 2026-02-15 00:45+0000\n"
+"PO-Revision-Date: 2025-05-30 20:40+0200\n"
 "Last-Translator: Lucia Mrenica <lucia.mrenica@gmail.com>\n"
 "Language-Team: Slovak <kde-i18n-doc@kde.org>\n"
 "Language: sk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Lokalize 25.04.1\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Lokalize 25.12.2\n"
 
 #: inputsequence.cpp:191
 #, kde-format
@@ -34,10 +34,11 @@ msgstr "Žiadne"
 #, kde-format
 msgctxt "@action:button Two keybinds for a dial, up & down"
 msgid "%1 && %2"
-msgstr "%1 && %2"
+msgstr ""
 
 #: inputsequence.cpp:216
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "None"
 msgctxt "@action:button There is no keybindings"
 msgid "None"
 msgstr "Žiadne"
@@ -67,7 +68,8 @@ msgid "Application-defined"
 msgstr "Definované aplikáciou"
 
 #: inputsequence.cpp:233
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Button %1:"
 msgctxt "@action:button"
 msgid "Pen Button %1"
 msgstr "Tlačidlo %1:"
@@ -76,7 +78,7 @@ msgstr "Tlačidlo %1:"
 #, kde-format
 msgctxt "@action:button"
 msgid "Scroll wheel"
-msgstr "Scroll wheel"
+msgstr ""
 
 #: kcmtablet.cpp:36
 #, kde-format
@@ -104,7 +106,8 @@ msgid "Inverted Landscape"
 msgstr "Inverzná krajinka"
 
 #: kcmtablet.cpp:90
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Follow the active screen"
 msgid "Follow the Current Screen"
 msgstr "Sledovať aktívnu obrazovku"
 
@@ -123,28 +126,31 @@ msgstr "%1 - (%2,%3 %4×%5)"
 #, kde-format
 msgctxt "@item:inlistbox Stretch and fill to the screen"
 msgid "Stretch and Fill"
-msgstr "Stretch and Fill"
+msgstr ""
 
 #: kcmtablet.cpp:165 ui/DisplayTab.qml:99
 #, kde-format
 msgctxt "@item:inlistbox Keep aspect ratio and fit within the screen"
 msgid "Keep Aspect Ratio and Fit"
-msgstr "Keep Aspect Ratio and Fit"
+msgstr ""
 
 #: kcmtablet.cpp:166 ui/DisplayTab.qml:100
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Map to screen:"
 msgctxt "@item:inlistbox Map to portion of the screen"
 msgid "Map to Portion"
 msgstr "Mapovať na obrazovku:"
 
-#: kcmtablet.cpp:269
-#, kde-format
+#: kcmtablet.cpp:268
+#, fuzzy, kde-format
+#| msgid "Button %1:"
 msgctxt "Stylus pen button"
 msgid "Pen button %1:"
 msgstr "Tlačidlo %1:"
 
-#: kcmtablet.cpp:270
-#, kde-format
+#: kcmtablet.cpp:269
+#, fuzzy, kde-format
+#| msgid "Button %1:"
 msgctxt ""
 "@info Meant to be inserted into an existing sentence like 'configuring pen "
 "button X'"
@@ -152,7 +158,9 @@ msgid "pen button %1"
 msgstr "Tlačidlo %1:"
 
 #: ui/ActionDialog.qml:27
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@title Select the action for the tablet button"
+#| msgid "Select Button Action"
 msgctxt "@title Select the action for the tablet dial"
 msgid "Select Dial/Ring Action"
 msgstr "Vybrať akciu tlačidla"
@@ -167,49 +175,50 @@ msgstr "Vybrať akciu tlačidla"
 #, kde-format
 msgctxt "@info %1 is the 'pad button %1' or 'pen button 1/2/3' strings"
 msgid "Choose what action will be taken when rotating %1:"
-msgstr "Choose what action will be taken when rotating %1:"
+msgstr ""
 
 #: ui/ActionDialog.qml:88
 #, kde-format
 msgctxt "@info %1 is the 'pad button %1' or 'pen button 1/2/3' strings"
 msgid "Choose what action will be taken when pressing %1:"
-msgstr "Choose what action will be taken when pressing %1:"
+msgstr ""
 
 #: ui/ActionDialog.qml:102
 #, kde-format
 msgctxt "@option:radio Set this action to an application-defined type"
 msgid "Defer to application"
-msgstr "Defer to application"
+msgstr ""
 
 #: ui/ActionDialog.qml:117
 #, kde-format
 msgctxt "@option:radio Set this action to a keyboard type"
 msgid "Send keyboard key"
-msgstr "Send keyboard key"
+msgstr ""
 
 #: ui/ActionDialog.qml:133
 #, kde-format
 msgctxt "@option:radio Set this action to a up/down keyboard type"
 msgid "Send keyboard keys"
-msgstr "Send keyboard keys"
+msgstr ""
 
 #: ui/ActionDialog.qml:148
 #, kde-format
 msgctxt "@option:radio Set this action to a mouse type"
 msgid "Send mouse button click"
-msgstr "Send mouse button click"
+msgstr ""
 
 #: ui/ActionDialog.qml:164
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Button %1:"
 msgctxt "@option:radio Set this action to a pen button type"
 msgid "Send pen button"
-msgstr "Send pen button"
+msgstr "Tlačidlo %1:"
 
 #: ui/ActionDialog.qml:181
 #, kde-format
 msgctxt "@option:radio Set this action to a scroll wheel type type"
 msgid "Act as scroll wheel"
-msgstr "Act as scroll wheel"
+msgstr ""
 
 #: ui/ActionDialog.qml:199
 #, kde-format
@@ -224,8 +233,6 @@ msgid ""
 "This tablet button is forwarded to the focused application, which can decide "
 "how to handle it."
 msgstr ""
-"This tablet button is forwarded to the focused application, which can decide "
-"ako handle it."
 
 #: ui/ActionDialog.qml:248
 #, kde-format
@@ -233,7 +240,7 @@ msgctxt ""
 "@label prefix for configuring Keybind to send when dial/ring is turned "
 "upwards"
 msgid "Up:"
-msgstr "Hore:"
+msgstr ""
 
 #: ui/ActionDialog.qml:261
 #, kde-format
@@ -241,14 +248,14 @@ msgctxt ""
 "@label prefix for configuring Keybind to send when dial/ring is turned "
 "downwards"
 msgid "Down:"
-msgstr "Dolu:"
+msgstr ""
 
 #: ui/ActionDialog.qml:274
 #, kde-format
 msgctxt ""
 "@label:slider Speed for how often this dial/ring should emit key events"
 msgid "Speed:"
-msgstr "Rýchlosť:"
+msgstr ""
 
 #: ui/ActionDialog.qml:289
 #, kde-format
@@ -314,13 +321,13 @@ msgstr "Tlačidlo 3"
 #, kde-format
 msgctxt "@info"
 msgid "Act like a scroll wheel on a mouse."
-msgstr "Act like a scroll wheel on a mouse."
+msgstr ""
 
 #: ui/ActionDialog.qml:375
 #, kde-format
 msgctxt "@info"
 msgid "This button is disabled and will not do anything."
-msgstr "This button is disabled and will not do anything."
+msgstr ""
 
 #: ui/Calibration.qml:30
 #, kde-format
@@ -336,9 +343,6 @@ msgid ""
 "revert to default calibration in %1 seconds unless further action is taken.</"
 "b>"
 msgstr ""
-"Tap the targets again to confirm the new calibration.<nl/><nl/><b>Will "
-"revert to default calibration in %1 seconds unless further action is taken.</"
-"b>"
 
 #: ui/Calibration.qml:102
 #, kde-kuit-format
@@ -347,14 +351,12 @@ msgid ""
 "Calibration is completed and saved.<nl/><nl/>Refine the calibration further "
 "or close the window."
 msgstr ""
-"Calibration is completed and saved.<nl/><nl/>Refine the calibration further "
-"or close the window."
 
 #: ui/Calibration.qml:105
 #, kde-format
 msgctxt "@info"
 msgid "Tap the center of each target."
-msgstr "Tap the center of each target."
+msgstr ""
 
 #: ui/Calibration.qml:112
 #, kde-format
@@ -366,7 +368,7 @@ msgstr "Spresnenie existujúcej kalibrácie"
 #, kde-format
 msgctxt "@action:button"
 msgid "Reset and Try Again"
-msgstr "Reset and Try Again"
+msgstr ""
 
 #: ui/Calibration.qml:121
 #, kde-format
@@ -387,13 +389,15 @@ msgid "Cancel"
 msgstr "Zrušiť"
 
 #: ui/DisplayTab.qml:46
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Map to screen:"
 msgctxt "@label:listbox"
 msgid "Map to screen:"
 msgstr "Mapovať na obrazovku:"
 
 #: ui/DisplayTab.qml:73
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Orientation:"
 msgctxt "@label:listbox"
 msgid "Orientation:"
 msgstr "Orientácia:"
@@ -402,10 +406,11 @@ msgstr "Orientácia:"
 #, kde-format
 msgctxt "@label substitute for unavailable orientation change"
 msgid "Not Applicable"
-msgstr "Not Applicable"
+msgstr ""
 
 #: ui/DisplayTab.qml:93
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Mapped Area:"
 msgctxt "@label:listbox"
 msgid "Mapped Area:"
 msgstr "Mapovaná oblasť:"
@@ -423,37 +428,44 @@ msgid "%1,%2 - %3×%4"
 msgstr "%1,%2 - %3×%4"
 
 #: ui/ExternalScreenMapping.qml:190
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Resize the tablet area"
 msgctxt "@action:button"
 msgid "Resize the screen area"
 msgstr "Zmena veľkosti oblasti tabletu"
 
 #: ui/ExternalScreenMapping.qml:267
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "tablet area position - size"
+#| msgid "%1,%2 - %3×%4"
 msgctxt "tablet area position - size"
 msgid "%1%,%2% - %3%×%4%"
 msgstr "%1,%2 - %3×%4"
 
 #: ui/ExternalScreenMapping.qml:301
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Resize the tablet area"
 msgctxt "@action:button"
 msgid "Resize the tablet area"
 msgstr "Zmena veľkosti oblasti tabletu"
 
 #: ui/main.qml:38
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "No drawing tablets found"
 msgctxt "@info placeholdermessage text"
 msgid "No drawing tablets found"
 msgstr "Nenašli sa žiadne grafické tablety"
 
 #: ui/main.qml:39
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Configure drawing tablets"
 msgctxt "@info:usagetip placeholdermessage explanation"
 msgid "Connect a drawing tablet"
 msgstr "Nastaviť tablety na kreslenie"
 
 #: ui/main.qml:47
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Tablet"
 msgctxt "Tests tablet functionality like the pen"
 msgid "Test Tablet…"
 msgstr "Tablet"
@@ -466,9 +478,6 @@ msgid ""
 "driver to configure the tablet instead of using the settings here, unless "
 "specifically instructed otherwise."
 msgstr ""
-"This device is managed by a user-space driver that you installed. Use that "
-"driver to configure the tablet namiesto using the settings here, unless "
-"specifically instructed otherwise."
 
 #: ui/main.qml:106
 #, kde-format
@@ -495,7 +504,8 @@ msgid "Pad"
 msgstr "Podložka"
 
 #: ui/MissingPadTab.qml:15
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "No drawing tablets found"
 msgctxt "@info placeholdermessage main text"
 msgid "No pad inputs found"
 msgstr "Nenašli sa žiadne grafické tablety"
@@ -507,17 +517,17 @@ msgid ""
 "No buttons or other inputs were detected. This could mean the driver for "
 "this device is missing."
 msgstr ""
-"No buttons or other inputs were detected. This could mean the driver for "
-"this device is missing."
 
 #: ui/PadTab.qml:37
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Button %1:"
 msgctxt "@label for graphics tablet ring config, % is number of ring"
 msgid "Pad ring %1:"
 msgstr "Tlačidlo %1:"
 
 #: ui/PadTab.qml:60
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Button %1:"
 msgctxt ""
 "@info Meant to be inserted into an existing sentence like 'configuring pad "
 "ring/dial 0'"
@@ -525,7 +535,8 @@ msgid "pad ring/dial %1"
 msgstr "Tlačidlo %1:"
 
 #: ui/PadTab.qml:100
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Button %1:"
 msgctxt "@label for graphics tablet ring config, % is number of dial"
 msgid "Pad dial %1:"
 msgstr "Tlačidlo %1:"
@@ -536,35 +547,40 @@ msgctxt ""
 "@info Meant to be inserted into an existing sentence like 'configuring pad "
 "button 0'"
 msgid "pad dial %1"
-msgstr "pad dial %1"
+msgstr ""
 
 #: ui/PadTab.qml:138
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Button %1:"
 msgctxt "@label for graphics tablet button config, % is number of button"
 msgid "Pad button %1:"
 msgstr "Tlačidlo %1:"
 
 #: ui/PadTab.qml:141
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Button %1:"
 msgctxt ""
 "@info Meant to be inserted into an existing sentence like 'configuring pad "
 "button 0'"
 msgid "pad button %1"
 msgstr "Tlačidlo %1:"
 
-#: ui/StylusTab.qml:223
-#, kde-format
+#: ui/StylusTab.qml:222
+#, fuzzy, kde-format
+#| msgid "Left-handed mode:"
 msgctxt "@label prefix for checkbox"
 msgid "Left-handed mode:"
 msgstr "Režim ľavej ruky:"
 
-#: ui/StylusTab.qml:229
-#, kde-format
+#: ui/StylusTab.qml:228
+#, fuzzy, kde-format
+#| msgctxt "Enable left-handed mode"
+#| msgid "Enable"
 msgctxt "@option:check Enable left-handed mode"
 msgid "Enable"
 msgstr "Povoliť"
 
-#: ui/StylusTab.qml:235
+#: ui/StylusTab.qml:234
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""
@@ -572,137 +588,136 @@ msgid ""
 "device, but often it reverses the pad buttonsʼ functionality so the tablet "
 "can be used upside-down."
 msgstr ""
-"Tells the device to accommodate left-handed users. Effects will vary by "
-"device, but often it reverses the pad buttonsʼ functionality so the tablet "
-"can be used upside-down."
 
-#: ui/StylusTab.qml:247
+#: ui/StylusTab.qml:246
 #, kde-format
 msgctxt ""
 "'Mode' is the mode the stylus is in, pen (absolute) or mouse (relative)"
 msgid "Mode:"
 msgstr "Režim:"
 
-#: ui/StylusTab.qml:255
-#, kde-format
+#: ui/StylusTab.qml:254
+#, fuzzy, kde-format
+#| msgctxt "@title:tab"
+#| msgid "Pen"
 msgctxt ""
 "@option:radio Pen mode, where the point on the screen is always where you "
 "touch the stylus"
 msgid "Pen"
 msgstr "Pero"
 
-#: ui/StylusTab.qml:260
+#: ui/StylusTab.qml:259
 #, kde-format
 msgctxt "@info:whatsthis Accessible description"
 msgid "The cursor follows where you touch the pen on the surface"
-msgstr "The cursor follows where you touch the pen on the surface"
+msgstr ""
 
-#: ui/StylusTab.qml:281
-#, kde-format
+#: ui/StylusTab.qml:280
+#, fuzzy, kde-format
+#| msgctxt "Mouse mode, or like using the tablet like a giant touchpad"
+#| msgid "Mouse"
 msgctxt ""
 "@option:radio Mouse mode, or like using the tablet like a giant touchpad"
 msgid "Mouse"
 msgstr "Myš"
 
-#: ui/StylusTab.qml:286
+#: ui/StylusTab.qml:285
 #, kde-format
 msgctxt "@info:whatsthis Accessible description"
 msgid ""
 "Moving the pen on the surface moves the cursor relative to where it was, "
 "like a mouse"
 msgstr ""
-"Moving the pen on the surface moves the cursor relative to where it was, "
-"like a mouse"
 
-#: ui/StylusTab.qml:356
+#: ui/StylusTab.qml:301
 #, kde-format
+msgid "Sync with mouse cursor"
+msgstr ""
+
+#: ui/StylusTab.qml:361
+#, fuzzy, kde-format
+#| msgid "Pen Pressure:"
 msgctxt "@label prefix for pen pressure curve config"
 msgid "Pen Pressure:"
 msgstr "Tlak pera:"
 
-#: ui/StylusTab.qml:416
+#: ui/StylusTab.qml:421
 #, kde-format
 msgctxt "% of minimum pen pressure"
 msgid "%1%"
-msgstr "%1%"
+msgstr ""
 
-#: ui/StylusTab.qml:424
+#: ui/StylusTab.qml:429
 #, kde-format
 msgctxt "% of maximum pen pressure"
 msgid "%1%"
-msgstr "%1%"
+msgstr ""
 
-#: ui/StylusTab.qml:435
+#: ui/StylusTab.qml:440
 #, kde-format
 msgctxt "100% or maximum pen pressure"
 msgid "100%"
-msgstr "100%"
+msgstr ""
 
-#: ui/StylusTab.qml:443
+#: ui/StylusTab.qml:448
 #, kde-format
 msgctxt "0% or zero pen pressure"
 msgid "0%"
-msgstr "0%"
+msgstr ""
 
-#: ui/StylusTab.qml:447
+#: ui/StylusTab.qml:452
 #, kde-format
 msgctxt "@info"
 msgid ""
 "This curve controls the relationship between the pressure on the stylus and "
 "the pressure values received by applications."
 msgstr ""
-"This curve controls the relationship between the pressure on the stylus and "
-"the pressure values received by applications."
 
-#: ui/StylusTab.qml:452
+#: ui/StylusTab.qml:457
 #, kde-format
 msgctxt "Pen pressure range"
 msgid "Pressure Range:"
 msgstr "Rozsah tlaku:"
 
-#: ui/StylusTab.qml:479
+#: ui/StylusTab.qml:484
 #, kde-format
 msgctxt "@info"
 msgid ""
 "Pressure above or below the threshold will be clamped, and this becomes the "
 "new effective range."
 msgstr ""
-"Pressure above or below the threshold will be clamped, and this becomes the "
-"new effective range."
 
-#: ui/StylusTab.qml:490
+#: ui/StylusTab.qml:495
 #, kde-format
 msgctxt "@action:button Calibration in progress"
 msgid "Calibration in Progress"
-msgstr "Calibration in Progress"
+msgstr ""
 
-#: ui/StylusTab.qml:492
+#: ui/StylusTab.qml:497
 #, kde-format
 msgctxt "@action:button Calibrate the pen display"
 msgid "Calibrate"
 msgstr "Kalibrovať"
 
-#: ui/StylusTab.qml:495
+#: ui/StylusTab.qml:500
 #, kde-format
 msgctxt "@action:button Pen display doesn't support calibration"
 msgid "Calibration Not Supported"
-msgstr "Calibration Not Supported"
+msgstr ""
 
-#: ui/StylusTab.qml:536
+#: ui/StylusTab.qml:541
 #, kde-format
 msgctxt "@action:button"
 msgid "Reset Custom Calibration"
-msgstr "Reset Custom Calibration"
+msgstr ""
 
-#: ui/StylusTab.qml:551
+#: ui/StylusTab.qml:556
 #, kde-format
 msgctxt "@info"
 msgid ""
 "You have manually calibrated this tablet. If it's no longer working "
 "correctly, try resetting this first."
 msgstr ""
-"You have manually calibrated this tablet. If it's no longer working "
-"correctly, try resetting this first."
 
 #: ui/Tester.qml:25
 #, kde-format
@@ -715,7 +730,7 @@ msgstr "Tester tabletov"
 msgctxt ""
 "A tablet stylus was pressed onto the surface X=[x position] Y=[y position]"
 msgid "Stylus press X=%1 Y=%2"
-msgstr "Stylus press X=%1 Y=%2"
+msgstr ""
 
 #: ui/Tester.qml:58
 #, kde-format
@@ -723,7 +738,7 @@ msgctxt ""
 "A tablet stylus has 'released' or was lifted from the surface X=[x position] "
 "Y=[y position]"
 msgid "Stylus release X=%1 Y=%2"
-msgstr "Stylus release X=%1 Y=%2"
+msgstr ""
 
 #: ui/Tester.qml:68
 #, kde-format
@@ -731,22 +746,25 @@ msgctxt ""
 "A tablet stylus has moved over the surface X=[x position] Y=[y position] "
 "P=[pressure] TX=[tilt x] TY=[tilt y]"
 msgid "Stylus move X=%1 Y=%2 P=%3% TX=%4 TY=%5"
-msgstr "Stylus move X=%1 Y=%2 P=%3% TX=%4 TY=%5"
+msgstr ""
 
 #: ui/Tester.qml:75
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Button %1:"
 msgctxt "A tablet pad's button has been pressed B=[the button number]"
 msgid "Pad button press B=%1"
 msgstr "Tlačidlo %1:"
 
 #: ui/Tester.qml:77
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Button %1:"
 msgctxt "A tablet pad's button has been released B=[the button number]"
 msgid "Pad button release B=%1"
 msgstr "Tlačidlo %1:"
 
 #: ui/Tester.qml:83
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Button %1:"
 msgctxt ""
 "A tablet pad's dial has moved, V120 here refers to 'Value 120' which is a "
 "technical term that should be kept as is"
@@ -762,13 +780,11 @@ msgid ""
 "# P - pressure\n"
 "# TX,TY - tilt\n"
 msgstr ""
-"## Legend:\n"
-"# X, Y - event coordinate\n"
-"# P - pressure\n"
-"# TX,TY - tilt\n"
 
 #: ui/Tester.qml:225
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "Clear the event log"
+#| msgid "Clear"
 msgctxt "Clear the tablet tester event log"
 msgid "Clear"
 msgstr "Vyčistiť"
@@ -780,10 +796,12 @@ msgstr "Vyčistiť"
 #~ msgstr "Pero"
 
 #, fuzzy
+#~| msgid "Tool Button 2"
 #~ msgid "Pen button 2:"
 #~ msgstr "Tlačidlo nástroja 2"
 
 #, fuzzy
+#~| msgid "Tool Button 3"
 #~ msgid "Pen button 3:"
 #~ msgstr "Tlačidlo nástroja 3"
 
