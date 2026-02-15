@@ -1,13 +1,13 @@
 # Copyright (C) 2024 This file is copyright:
 # This file is distributed under the same license as the plasma-desktop package.
 #
-# SPDX-FileCopyrightText: 2021, 2022, 2024, 2025, 2026 Stefan Asserhäll <stefan.asserhall@gmail.com>
+# SPDX-FileCopyrightText: 2021, 2022, 2024, 2025 Stefan Asserhäll <stefan.asserhall@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: plasma-desktop\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-05-02 02:38+0000\n"
-"PO-Revision-Date: 2026-01-18 12:01+0100\n"
+"POT-Creation-Date: 2026-02-15 00:45+0000\n"
+"PO-Revision-Date: 2025-09-08 18:32+0200\n"
 "Last-Translator: Stefan Asserhäll <stefan.asserhall@gmail.com>\n"
 "Language-Team: Swedish <kde-i18n-doc@kde.org>\n"
 "Language: sv\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 25.12.1\n"
+"X-Generator: Lokalize 25.08.0\n"
 
 #: inputsequence.cpp:191
 #, kde-format
@@ -136,13 +136,13 @@ msgctxt "@item:inlistbox Map to portion of the screen"
 msgid "Map to Portion"
 msgstr "Avbilda till del"
 
-#: kcmtablet.cpp:269
+#: kcmtablet.cpp:268
 #, kde-format
 msgctxt "Stylus pen button"
 msgid "Pen button %1:"
 msgstr "Pennknapp %1:"
 
-#: kcmtablet.cpp:270
+#: kcmtablet.cpp:269
 #, kde-format
 msgctxt ""
 "@info Meant to be inserted into an existing sentence like 'configuring pen "
@@ -227,7 +227,8 @@ msgstr ""
 "vilket kan bestämma hur den ska hanteras."
 
 #: ui/ActionDialog.qml:248
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Up:"
 msgctxt ""
 "@label prefix for configuring Keybind to send when dial/ring is turned "
 "upwards"
@@ -235,7 +236,8 @@ msgid "Up:"
 msgstr "Upp:"
 
 #: ui/ActionDialog.qml:261
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Down:"
 msgctxt ""
 "@label prefix for configuring Keybind to send when dial/ring is turned "
 "downwards"
@@ -243,7 +245,8 @@ msgid "Down:"
 msgstr "Ner:"
 
 #: ui/ActionDialog.qml:274
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Speed:"
 msgctxt ""
 "@label:slider Speed for how often this dial/ring should emit key events"
 msgid "Speed:"
@@ -386,25 +389,29 @@ msgid "Cancel"
 msgstr "Avbryt"
 
 #: ui/DisplayTab.qml:46
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Map to screen:"
 msgctxt "@label:listbox"
 msgid "Map to screen:"
 msgstr "Avbilda på skärm:"
 
 #: ui/DisplayTab.qml:73
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Orientation:"
 msgctxt "@label:listbox"
 msgid "Orientation:"
 msgstr "Orientering:"
 
 #: ui/DisplayTab.qml:79
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Not Applicable"
 msgctxt "@label substitute for unavailable orientation change"
 msgid "Not Applicable"
 msgstr "inte tillämplig"
 
 #: ui/DisplayTab.qml:93
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Mapped Area:"
 msgctxt "@label:listbox"
 msgid "Mapped Area:"
 msgstr "Avbildat område:"
@@ -422,7 +429,8 @@ msgid "%1,%2 - %3×%4"
 msgstr "%1,%2 - %3 × %4"
 
 #: ui/ExternalScreenMapping.qml:190
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Resize the screen area"
 msgctxt "@action:button"
 msgid "Resize the screen area"
 msgstr "Ändra storlek på skärmytan"
@@ -434,19 +442,22 @@ msgid "%1%,%2% - %3%×%4%"
 msgstr "%1 %,%2 % - %3 % × %4 %"
 
 #: ui/ExternalScreenMapping.qml:301
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Resize the tablet area"
 msgctxt "@action:button"
 msgid "Resize the tablet area"
 msgstr "Ändra storlek på ritplattans yta"
 
 #: ui/main.qml:38
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "No drawing tablets found"
 msgctxt "@info placeholdermessage text"
 msgid "No drawing tablets found"
 msgstr "Inga ritplattor hittades"
 
 #: ui/main.qml:39
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Connect a drawing tablet"
 msgctxt "@info:usagetip placeholdermessage explanation"
 msgid "Connect a drawing tablet"
 msgstr "Anslut en ritplatta"
@@ -494,10 +505,11 @@ msgid "Pad"
 msgstr "Vaddering"
 
 #: ui/MissingPadTab.qml:15
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "No drawing tablets found"
 msgctxt "@info placeholdermessage main text"
 msgid "No pad inputs found"
-msgstr "Ingen inmatning från ritplattor hittades"
+msgstr "Inga ritplattor hittades"
 
 #: ui/MissingPadTab.qml:16
 #, kde-format
@@ -506,11 +518,10 @@ msgid ""
 "No buttons or other inputs were detected. This could mean the driver for "
 "this device is missing."
 msgstr ""
-"Inga knappar eller annan inmatning upptäcktes. Det kan betyda att "
-"drivrutinen för den här enheten saknas."
 
 #: ui/PadTab.qml:37
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Pad ring %1:"
 msgctxt "@label for graphics tablet ring config, % is number of ring"
 msgid "Pad ring %1:"
 msgstr "Plattans vridreglage %1:"
@@ -524,7 +535,8 @@ msgid "pad ring/dial %1"
 msgstr "plattans vridreglage %1"
 
 #: ui/PadTab.qml:100
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Pad dial %1:"
 msgctxt "@label for graphics tablet ring config, % is number of dial"
 msgid "Pad dial %1:"
 msgstr "Plattans vridreglage %1:"
@@ -538,7 +550,8 @@ msgid "pad dial %1"
 msgstr "plattans vridreglage %1"
 
 #: ui/PadTab.qml:138
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Pad button %1:"
 msgctxt "@label for graphics tablet button config, % is number of button"
 msgid "Pad button %1:"
 msgstr "Plattans knapp %1:"
@@ -551,19 +564,22 @@ msgctxt ""
 msgid "pad button %1"
 msgstr "plattans knapp %1"
 
-#: ui/StylusTab.qml:223
-#, kde-format
+#: ui/StylusTab.qml:222
+#, fuzzy, kde-format
+#| msgid "Left-handed mode:"
 msgctxt "@label prefix for checkbox"
 msgid "Left-handed mode:"
 msgstr "Vänsterhänt läge:"
 
-#: ui/StylusTab.qml:229
-#, kde-format
+#: ui/StylusTab.qml:228
+#, fuzzy, kde-format
+#| msgctxt "Enable left-handed mode"
+#| msgid "Enable"
 msgctxt "@option:check Enable left-handed mode"
 msgid "Enable"
 msgstr "Aktivera"
 
-#: ui/StylusTab.qml:235
+#: ui/StylusTab.qml:234
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""
@@ -575,36 +591,44 @@ msgstr ""
 "beroende på enhet, men ofta vänder det på knapparnas funktion så att "
 "ritplattan kan användas upp och ner."
 
-#: ui/StylusTab.qml:247
+#: ui/StylusTab.qml:246
 #, kde-format
 msgctxt ""
 "'Mode' is the mode the stylus is in, pen (absolute) or mouse (relative)"
 msgid "Mode:"
 msgstr "Läge:"
 
-#: ui/StylusTab.qml:255
-#, kde-format
+#: ui/StylusTab.qml:254
+#, fuzzy, kde-format
+#| msgctxt "@title:tab"
+#| msgid "Pen"
 msgctxt ""
 "@option:radio Pen mode, where the point on the screen is always where you "
 "touch the stylus"
 msgid "Pen"
 msgstr "Penna"
 
-#: ui/StylusTab.qml:260
-#, kde-format
+#: ui/StylusTab.qml:259
+#, fuzzy, kde-format
+#| msgid "The cursor follows where you touch the pen on the surface"
 msgctxt "@info:whatsthis Accessible description"
 msgid "The cursor follows where you touch the pen on the surface"
 msgstr "Markören följer där du rör pennan på ytan"
 
-#: ui/StylusTab.qml:281
-#, kde-format
+#: ui/StylusTab.qml:280
+#, fuzzy, kde-format
+#| msgctxt "Mouse mode, or like using the tablet like a giant touchpad"
+#| msgid "Mouse"
 msgctxt ""
 "@option:radio Mouse mode, or like using the tablet like a giant touchpad"
 msgid "Mouse"
 msgstr "Mus"
 
-#: ui/StylusTab.qml:286
-#, kde-format
+#: ui/StylusTab.qml:285
+#, fuzzy, kde-format
+#| msgid ""
+#| "Moving the pen on the surface moves the cursor relative to where it was, "
+#| "like a mouse"
 msgctxt "@info:whatsthis Accessible description"
 msgid ""
 "Moving the pen on the surface moves the cursor relative to where it was, "
@@ -613,37 +637,43 @@ msgstr ""
 "Att flytta pennan på ytan flyttar markören i förhållande till var den var, "
 "som en mus"
 
-#: ui/StylusTab.qml:356
+#: ui/StylusTab.qml:301
 #, kde-format
+msgid "Sync with mouse cursor"
+msgstr ""
+
+#: ui/StylusTab.qml:361
+#, fuzzy, kde-format
+#| msgid "Pen Pressure:"
 msgctxt "@label prefix for pen pressure curve config"
 msgid "Pen Pressure:"
 msgstr "Penntryck:"
 
-#: ui/StylusTab.qml:416
+#: ui/StylusTab.qml:421
 #, kde-format
 msgctxt "% of minimum pen pressure"
 msgid "%1%"
 msgstr "%1 %"
 
-#: ui/StylusTab.qml:424
+#: ui/StylusTab.qml:429
 #, kde-format
 msgctxt "% of maximum pen pressure"
 msgid "%1%"
 msgstr "%1 %"
 
-#: ui/StylusTab.qml:435
+#: ui/StylusTab.qml:440
 #, kde-format
 msgctxt "100% or maximum pen pressure"
 msgid "100%"
 msgstr "100 %"
 
-#: ui/StylusTab.qml:443
+#: ui/StylusTab.qml:448
 #, kde-format
 msgctxt "0% or zero pen pressure"
 msgid "0%"
 msgstr "0 %"
 
-#: ui/StylusTab.qml:447
+#: ui/StylusTab.qml:452
 #, kde-format
 msgctxt "@info"
 msgid ""
@@ -653,13 +683,13 @@ msgstr ""
 "Den här kurvan bestämmer förhållandet mellan trycket på pennan och de "
 "tryckvärden som tas emot av program."
 
-#: ui/StylusTab.qml:452
+#: ui/StylusTab.qml:457
 #, kde-format
 msgctxt "Pen pressure range"
 msgid "Pressure Range:"
 msgstr "Tryckintervall:"
 
-#: ui/StylusTab.qml:479
+#: ui/StylusTab.qml:484
 #, kde-format
 msgctxt "@info"
 msgid ""
@@ -669,31 +699,31 @@ msgstr ""
 "Tryck ovanför eller under tröskeln begränsas, och det blir det nya verkliga "
 "intervallet."
 
-#: ui/StylusTab.qml:490
+#: ui/StylusTab.qml:495
 #, kde-format
 msgctxt "@action:button Calibration in progress"
 msgid "Calibration in Progress"
 msgstr "Kalibrering pågår"
 
-#: ui/StylusTab.qml:492
+#: ui/StylusTab.qml:497
 #, kde-format
 msgctxt "@action:button Calibrate the pen display"
 msgid "Calibrate"
 msgstr "Kalibrera"
 
-#: ui/StylusTab.qml:495
+#: ui/StylusTab.qml:500
 #, kde-format
 msgctxt "@action:button Pen display doesn't support calibration"
 msgid "Calibration Not Supported"
 msgstr "Kalibrering stöds inte"
 
-#: ui/StylusTab.qml:536
+#: ui/StylusTab.qml:541
 #, kde-format
 msgctxt "@action:button"
 msgid "Reset Custom Calibration"
 msgstr "Nollställ egen kalibrering"
 
-#: ui/StylusTab.qml:551
+#: ui/StylusTab.qml:556
 #, kde-format
 msgctxt "@info"
 msgid ""

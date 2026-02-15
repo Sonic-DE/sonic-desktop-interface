@@ -2,13 +2,13 @@
 # This file is distributed under the same license as the plasma-desktop package.
 #
 # SPDX-FileCopyrightText: 2023, 2024, 2025 gummi <gudmundure@gmail.com>
-# SPDX-FileCopyrightText: 2025, 2026 Sveinn í Felli <sv1@fellsnet.is>
+# SPDX-FileCopyrightText: 2025 Sveinn í Felli <sv1@fellsnet.is>
 msgid ""
 msgstr ""
 "Project-Id-Version: plasma-desktop\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-05-02 02:38+0000\n"
-"PO-Revision-Date: 2026-03-13 12:03+0000\n"
+"POT-Creation-Date: 2026-02-15 00:45+0000\n"
+"PO-Revision-Date: 2025-12-03 17:54+0000\n"
 "Last-Translator: Sveinn í Felli <sv1@fellsnet.is>\n"
 "Language-Team: Icelandic\n"
 "Language: is\n"
@@ -137,13 +137,13 @@ msgctxt "@item:inlistbox Map to portion of the screen"
 msgid "Map to Portion"
 msgstr "Varpa á hluta skjásins"
 
-#: kcmtablet.cpp:269
+#: kcmtablet.cpp:268
 #, kde-format
 msgctxt "Stylus pen button"
 msgid "Pen button %1:"
 msgstr "Pennahnappur %1:"
 
-#: kcmtablet.cpp:270
+#: kcmtablet.cpp:269
 #, kde-format
 msgctxt ""
 "@info Meant to be inserted into an existing sentence like 'configuring pen "
@@ -228,7 +228,8 @@ msgstr ""
 "svo ákveðið hvernig á að meðhöndla hann."
 
 #: ui/ActionDialog.qml:248
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Up:"
 msgctxt ""
 "@label prefix for configuring Keybind to send when dial/ring is turned "
 "upwards"
@@ -236,7 +237,8 @@ msgid "Up:"
 msgstr "Upp:"
 
 #: ui/ActionDialog.qml:261
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Down:"
 msgctxt ""
 "@label prefix for configuring Keybind to send when dial/ring is turned "
 "downwards"
@@ -244,7 +246,8 @@ msgid "Down:"
 msgstr "Niður:"
 
 #: ui/ActionDialog.qml:274
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Speed:"
 msgctxt ""
 "@label:slider Speed for how often this dial/ring should emit key events"
 msgid "Speed:"
@@ -387,25 +390,29 @@ msgid "Cancel"
 msgstr "Hætta við"
 
 #: ui/DisplayTab.qml:46
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Map to screen:"
 msgctxt "@label:listbox"
 msgid "Map to screen:"
 msgstr "Varpa á skjá:"
 
 #: ui/DisplayTab.qml:73
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Orientation:"
 msgctxt "@label:listbox"
 msgid "Orientation:"
 msgstr "Stefna:"
 
 #: ui/DisplayTab.qml:79
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Not Applicable"
 msgctxt "@label substitute for unavailable orientation change"
 msgid "Not Applicable"
 msgstr "Á ekki við"
 
 #: ui/DisplayTab.qml:93
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Mapped Area:"
 msgctxt "@label:listbox"
 msgid "Mapped Area:"
 msgstr "Varpað svæði:"
@@ -423,7 +430,8 @@ msgid "%1,%2 - %3×%4"
 msgstr "%1,%2 - %3×%4"
 
 #: ui/ExternalScreenMapping.qml:190
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Resize the screen area"
 msgctxt "@action:button"
 msgid "Resize the screen area"
 msgstr "Breyta stærð skjásvæðis"
@@ -435,19 +443,22 @@ msgid "%1%,%2% - %3%×%4%"
 msgstr "%1%,%2% - %3%×%4%"
 
 #: ui/ExternalScreenMapping.qml:301
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Resize the tablet area"
 msgctxt "@action:button"
 msgid "Resize the tablet area"
 msgstr "Breyta stærð teiknisvæðis"
 
 #: ui/main.qml:38
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "No drawing tablets found"
 msgctxt "@info placeholdermessage text"
 msgid "No drawing tablets found"
 msgstr "Engin teikniborð fundust"
 
 #: ui/main.qml:39
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Connect a drawing tablet"
 msgctxt "@info:usagetip placeholdermessage explanation"
 msgid "Connect a drawing tablet"
 msgstr "Tengja teikniborð"
@@ -495,10 +506,11 @@ msgid "Pad"
 msgstr "Bakki"
 
 #: ui/MissingPadTab.qml:15
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "No pad inputs found"
 msgctxt "@info placeholdermessage main text"
 msgid "No pad inputs found"
-msgstr "Engin inntök fundust fyrir bakka"
+msgstr "Engir inntaksplattar fundust"
 
 #: ui/MissingPadTab.qml:16
 #, kde-format
@@ -507,11 +519,10 @@ msgid ""
 "No buttons or other inputs were detected. This could mean the driver for "
 "this device is missing."
 msgstr ""
-"Engir hnappar eða önnur inntaksatriði fundust. Þetta gæti þýtt að rekilinn "
-"fyrir þetta tæki vanti."
 
 #: ui/PadTab.qml:37
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Pad ring %1:"
 msgctxt "@label for graphics tablet ring config, % is number of ring"
 msgid "Pad ring %1:"
 msgstr "Bakkahringur %1:"
@@ -525,7 +536,8 @@ msgid "pad ring/dial %1"
 msgstr "bakkahringur/skífa %1:"
 
 #: ui/PadTab.qml:100
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Pad dial %1:"
 msgctxt "@label for graphics tablet ring config, % is number of dial"
 msgid "Pad dial %1:"
 msgstr "Bakkaskífa %1:"
@@ -539,7 +551,8 @@ msgid "pad dial %1"
 msgstr "bakkaskífa %1"
 
 #: ui/PadTab.qml:138
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Pad button %1:"
 msgctxt "@label for graphics tablet button config, % is number of button"
 msgid "Pad button %1:"
 msgstr "Bakkahnappur %1:"
@@ -552,19 +565,22 @@ msgctxt ""
 msgid "pad button %1"
 msgstr "bakkahnappur %1"
 
-#: ui/StylusTab.qml:223
-#, kde-format
+#: ui/StylusTab.qml:222
+#, fuzzy, kde-format
+#| msgid "Left-handed mode:"
 msgctxt "@label prefix for checkbox"
 msgid "Left-handed mode:"
 msgstr "Snið fyrir örvhenta:"
 
-#: ui/StylusTab.qml:229
-#, kde-format
+#: ui/StylusTab.qml:228
+#, fuzzy, kde-format
+#| msgctxt "Enable left-handed mode"
+#| msgid "Enable"
 msgctxt "@option:check Enable left-handed mode"
 msgid "Enable"
 msgstr "Virkja"
 
-#: ui/StylusTab.qml:235
+#: ui/StylusTab.qml:234
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""
@@ -576,36 +592,44 @@ msgstr ""
 "tæki, en oft er virkni bakkahnappanna snúið við þannig að hægt sé að snúa "
 "teikniborðinu öfugt."
 
-#: ui/StylusTab.qml:247
+#: ui/StylusTab.qml:246
 #, kde-format
 msgctxt ""
 "'Mode' is the mode the stylus is in, pen (absolute) or mouse (relative)"
 msgid "Mode:"
 msgstr "Snið:"
 
-#: ui/StylusTab.qml:255
-#, kde-format
+#: ui/StylusTab.qml:254
+#, fuzzy, kde-format
+#| msgctxt "@title:tab"
+#| msgid "Pen"
 msgctxt ""
 "@option:radio Pen mode, where the point on the screen is always where you "
 "touch the stylus"
 msgid "Pen"
 msgstr "Penni"
 
-#: ui/StylusTab.qml:260
-#, kde-format
+#: ui/StylusTab.qml:259
+#, fuzzy, kde-format
+#| msgid "The cursor follows where you touch the pen on the surface"
 msgctxt "@info:whatsthis Accessible description"
 msgid "The cursor follows where you touch the pen on the surface"
 msgstr "Bendillinn fer þangað sem þú snertir með pennanum á borðið"
 
-#: ui/StylusTab.qml:281
-#, kde-format
+#: ui/StylusTab.qml:280
+#, fuzzy, kde-format
+#| msgctxt "Mouse mode, or like using the tablet like a giant touchpad"
+#| msgid "Mouse"
 msgctxt ""
 "@option:radio Mouse mode, or like using the tablet like a giant touchpad"
 msgid "Mouse"
 msgstr "Mús"
 
-#: ui/StylusTab.qml:286
-#, kde-format
+#: ui/StylusTab.qml:285
+#, fuzzy, kde-format
+#| msgid ""
+#| "Moving the pen on the surface moves the cursor relative to where it was, "
+#| "like a mouse"
 msgctxt "@info:whatsthis Accessible description"
 msgid ""
 "Moving the pen on the surface moves the cursor relative to where it was, "
@@ -614,37 +638,43 @@ msgstr ""
 "Ef penninn er færður til á borðinu færist bendillinn til samræmis, eins og "
 "mús"
 
-#: ui/StylusTab.qml:356
+#: ui/StylusTab.qml:301
 #, kde-format
+msgid "Sync with mouse cursor"
+msgstr ""
+
+#: ui/StylusTab.qml:361
+#, fuzzy, kde-format
+#| msgid "Pen Pressure:"
 msgctxt "@label prefix for pen pressure curve config"
 msgid "Pen Pressure:"
 msgstr "Pennaþrýstingur:"
 
-#: ui/StylusTab.qml:416
+#: ui/StylusTab.qml:421
 #, kde-format
 msgctxt "% of minimum pen pressure"
 msgid "%1%"
 msgstr "%1%"
 
-#: ui/StylusTab.qml:424
+#: ui/StylusTab.qml:429
 #, kde-format
 msgctxt "% of maximum pen pressure"
 msgid "%1%"
 msgstr "%1%"
 
-#: ui/StylusTab.qml:435
+#: ui/StylusTab.qml:440
 #, kde-format
 msgctxt "100% or maximum pen pressure"
 msgid "100%"
 msgstr "100%"
 
-#: ui/StylusTab.qml:443
+#: ui/StylusTab.qml:448
 #, kde-format
 msgctxt "0% or zero pen pressure"
 msgid "0%"
 msgstr "0%"
 
-#: ui/StylusTab.qml:447
+#: ui/StylusTab.qml:452
 #, kde-format
 msgctxt "@info"
 msgid ""
@@ -654,13 +684,13 @@ msgstr ""
 "Þessi kúrva stjórnar sambandinu á milli þrýstingsins á pennann og "
 "þrýstingsgildanna sem forritið fær send."
 
-#: ui/StylusTab.qml:452
+#: ui/StylusTab.qml:457
 #, kde-format
 msgctxt "Pen pressure range"
 msgid "Pressure Range:"
 msgstr "Þrýstingssvið:"
 
-#: ui/StylusTab.qml:479
+#: ui/StylusTab.qml:484
 #, kde-format
 msgctxt "@info"
 msgid ""
@@ -670,31 +700,31 @@ msgstr ""
 "Lokað er á þrýsting sem er yfir eða undir mörkunum og þetta verður virka "
 "þrýstingssviðið."
 
-#: ui/StylusTab.qml:490
+#: ui/StylusTab.qml:495
 #, kde-format
 msgctxt "@action:button Calibration in progress"
 msgid "Calibration in Progress"
 msgstr "Kvörðun í gangi"
 
-#: ui/StylusTab.qml:492
+#: ui/StylusTab.qml:497
 #, kde-format
 msgctxt "@action:button Calibrate the pen display"
 msgid "Calibrate"
 msgstr "Kvarða"
 
-#: ui/StylusTab.qml:495
+#: ui/StylusTab.qml:500
 #, kde-format
 msgctxt "@action:button Pen display doesn't support calibration"
 msgid "Calibration Not Supported"
 msgstr "Kvörðun ekki studd"
 
-#: ui/StylusTab.qml:536
+#: ui/StylusTab.qml:541
 #, kde-format
 msgctxt "@action:button"
 msgid "Reset Custom Calibration"
 msgstr "Endurstilla sérsniðna kvörðun"
 
-#: ui/StylusTab.qml:551
+#: ui/StylusTab.qml:556
 #, kde-format
 msgctxt "@info"
 msgid ""
