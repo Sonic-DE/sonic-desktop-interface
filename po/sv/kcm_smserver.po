@@ -3,20 +3,20 @@
 # Copyright (C) 2000,2002,2003, 2004, 2005, 2008, 2009 Free Software Foundation, Inc.
 #
 # Mattias Newzella <newzella@linux.nu>, 2000,2001,2002,2003, 2004.
-# SPDX-FileCopyrightText: 2004, 2005, 2008, 2009, 2019, 2020, 2021, 2022, 2024, 2025, 2026 Stefan Asserhäll <stefan.asserhall@gmail.com>
+# SPDX-FileCopyrightText: 2004, 2005, 2008, 2009, 2019, 2020, 2021, 2022, 2024, 2025 Stefan Asserhäll <stefan.asserhall@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: kcmsmserver\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-01-08 00:45+0000\n"
-"PO-Revision-Date: 2026-01-18 08:40+0100\n"
+"POT-Creation-Date: 2026-02-17 00:47+0000\n"
+"PO-Revision-Date: 2025-01-11 12:25+0100\n"
 "Last-Translator: Stefan Asserhäll <stefan.asserhall@gmail.com>\n"
 "Language-Team: Swedish <kde-i18n-doc@kde.org>\n"
 "Language: sv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 25.12.1\n"
+"X-Generator: Lokalize 24.12.0\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
 #. i18n: ectx: label, entry (confirmLogout), group (General)
@@ -44,22 +44,29 @@ msgid "Applications to be excluded from session"
 msgstr "Program som ska undantas från session"
 
 #: ui/main.qml:30
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Failed to request restart to firmware setup: %1"
 msgctxt "@info:status inlinemessage"
 msgid "Failed to request restart to firmware setup: %1"
 msgstr "Misslyckades begära omstart till inställning av fast programvara: %1"
 
 #: ui/main.qml:31
-#, kde-format
+#, fuzzy, kde-format
+#| msgid ""
+#| "Next time the computer is restarted, it will enter the firmware setup "
+#| "screen."
 msgctxt "@info:status inlinemessage"
 msgid ""
-"Next time the computer is restarted, it will enter the UEFI setup screen."
+"Next time the computer is restarted, it will enter UEFI firmware settings."
 msgstr ""
 "Nästa gång datorn startas om kommer den att gå till inställningsskärmen för "
-"UEFI."
+"fast programvara."
 
 #: ui/main.qml:32
-#, kde-format
+#, fuzzy, kde-format
+#| msgid ""
+#| "Next time the computer is restarted, it will enter the firmware setup "
+#| "screen."
 msgctxt "@info:status inlinemessage"
 msgid ""
 "Next time the computer is restarted, it will enter the firmware setup screen."
@@ -68,7 +75,8 @@ msgstr ""
 "fast programvara."
 
 #: ui/main.qml:37
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Restart Now"
 msgctxt "@action:button"
 msgid "Restart Now"
 msgstr "Starta om nu"
@@ -102,7 +110,8 @@ msgid "Session Restore"
 msgstr "Sessionsåterställning"
 
 #: ui/main.qml:71
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "On login, launch apps that were open:"
 msgctxt "@title:group prefix for radiobuttons"
 msgid "On login, launch apps that were open:"
 msgstr "Vid inloggning, starta program som var öppna:"
@@ -143,13 +152,19 @@ msgid "Start with an empty session"
 msgstr "Starta med en tom session"
 
 #: ui/main.qml:113
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Ignored applications:"
 msgctxt "@label:textbox"
 msgid "Ignored applications:"
 msgstr "Ignorerade program:"
 
 #: ui/main.qml:132
-#, kde-format
+#, fuzzy, kde-format
+#| msgid ""
+#| "Write apps' desktop file identifier or, on X11, executable names here "
+#| "(separated by commas or colons, for example 'xterm:org.kde.konsole."
+#| "desktop' or 'xterm,org.kde.konsole.desktop') to prevent them from "
+#| "autostarting along with other session-restored apps."
 msgctxt "@info:whatsthis contextualhelpbutton tooltip"
 msgid ""
 "Write apps' desktop file identifier or, on X11, executable names here "
@@ -178,16 +193,32 @@ msgid "After next restart:"
 msgstr "Efter nästa omstart:"
 
 #: ui/main.qml:145
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@option:check"
+#| msgid "Enter firmware setup screen"
 msgctxt "@option:check"
-msgid "Enter UEFI setup screen"
-msgstr "Gå till inställningsskärm för UEFI"
+msgid "Enter UEFI firmware settings"
+msgstr "Gå till inställningsskärm för fast programvara"
 
 #: ui/main.qml:146
 #, kde-format
 msgctxt "@option:check"
 msgid "Enter firmware setup screen"
 msgstr "Gå till inställningsskärm för fast programvara"
+
+#, fuzzy
+#~| msgid ""
+#~| "Next time the computer is restarted, it will enter the UEFI setup screen."
+#~ msgctxt "@info:status inlinemessage"
+#~ msgid ""
+#~ "Next time the computer is restarted, it will enter the UEFI setup screen."
+#~ msgstr ""
+#~ "Nästa gång datorn startas om kommer den att gå till inställningsskärmen "
+#~ "för UEFI."
+
+#~ msgctxt "@option:check"
+#~ msgid "Enter UEFI setup screen"
+#~ msgstr "Gå till inställningsskärm för UEFI"
 
 #~ msgid ""
 #~ "The system must be restarted before manual session saving becomes active."
