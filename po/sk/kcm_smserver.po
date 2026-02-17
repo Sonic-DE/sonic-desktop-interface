@@ -6,20 +6,20 @@
 # Michal Sulek <misurel@gmail.com>, 2009.
 # SPDX-FileCopyrightText: 2019, 2020, 2021, 2022, 2023, 2024 Matej Mrenica <matejm98mthw@gmail.com>
 # Ferdinand Galko <galko.ferdinand@gmail.com>, 2023.
-# SPDX-FileCopyrightText: 2025, 2026 Lucia Mrenica <lucia.mrenica@gmail.com>
+# SPDX-FileCopyrightText: 2025 Lucia Mrenica <lucia.mrenica@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: kcmsmserver\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-01-08 00:45+0000\n"
-"PO-Revision-Date: 2026-01-15 20:24+0100\n"
+"POT-Creation-Date: 2026-02-17 00:47+0000\n"
+"PO-Revision-Date: 2025-05-30 20:35+0200\n"
 "Last-Translator: Lucia Mrenica <lucia.mrenica@gmail.com>\n"
 "Language-Team: Slovak <kde-i18n-doc@kde.org>\n"
 "Language: sk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 25.12.1\n"
+"X-Generator: Lokalize 25.04.1\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 
 #. i18n: ectx: label, entry (confirmLogout), group (General)
@@ -47,21 +47,28 @@ msgid "Applications to be excluded from session"
 msgstr "Aplikácie vylúčené zo sedenia"
 
 #: ui/main.qml:30
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Failed to request restart to firmware setup: %1"
 msgctxt "@info:status inlinemessage"
 msgid "Failed to request restart to firmware setup: %1"
 msgstr "Zlyhalo vyžiadanie reštartovania do nastavení firmvéru: %1"
 
 #: ui/main.qml:31
-#, kde-format
+#, fuzzy, kde-format
+#| msgid ""
+#| "Next time the computer is restarted, it will enter the firmware setup "
+#| "screen."
 msgctxt "@info:status inlinemessage"
 msgid ""
-"Next time the computer is restarted, it will enter the UEFI setup screen."
+"Next time the computer is restarted, it will enter UEFI firmware settings."
 msgstr ""
-"Keď sa počítač najbližšie reštartuje, vojde na obrazovku nastavení UEFI."
+"Keď sa počítač najbližšie reštartuje, vojde na obrazovku nastavení firmvéru."
 
 #: ui/main.qml:32
-#, kde-format
+#, fuzzy, kde-format
+#| msgid ""
+#| "Next time the computer is restarted, it will enter the firmware setup "
+#| "screen."
 msgctxt "@info:status inlinemessage"
 msgid ""
 "Next time the computer is restarted, it will enter the firmware setup screen."
@@ -69,7 +76,8 @@ msgstr ""
 "Keď sa počítač najbližšie reštartuje, vojde na obrazovku nastavení firmvéru."
 
 #: ui/main.qml:37
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Restart Now"
 msgctxt "@action:button"
 msgid "Restart Now"
 msgstr "Reštartovať teraz"
@@ -103,7 +111,8 @@ msgid "Session Restore"
 msgstr "Obnoviť sedenie"
 
 #: ui/main.qml:71
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "On login, launch apps that were open:"
 msgctxt "@title:group prefix for radiobuttons"
 msgid "On login, launch apps that were open:"
 msgstr "Po prihlásení spustiť aplikácie, ktoré boli otvorené:"
@@ -144,13 +153,18 @@ msgid "Start with an empty session"
 msgstr "Spustiť prázdne sedenie"
 
 #: ui/main.qml:113
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Ignored applications:"
 msgctxt "@label:textbox"
 msgid "Ignored applications:"
 msgstr "Ignorované aplikácie:"
 
 #: ui/main.qml:132
-#, kde-format
+#, fuzzy, kde-format
+#| msgid ""
+#| "Write apps' executable names here (separated by commas or colons, for "
+#| "example 'xterm:konsole' or 'xterm,konsole') to prevent them from "
+#| "autostarting along with other session-restored apps."
 msgctxt "@info:whatsthis contextualhelpbutton tooltip"
 msgid ""
 "Write apps' desktop file identifier or, on X11, executable names here "
@@ -158,10 +172,10 @@ msgid ""
 "or 'xterm,org.kde.konsole.desktop') to prevent them from autostarting along "
 "with other session-restored apps."
 msgstr ""
-"Napíšte sem identifikátor súboru aplikácie na ploche alebo v prípade X11 "
-"názvy spustiteľných súborov (oddelené čiarkami alebo dvojbodkami, napríklad "
-"„xterm:org.kde.konsole.desktop“ alebo „xterm,org.kde.konsole.desktop“), aby "
-"sa nezapínali automaticky spolu s ostatnými aplikáciami obnovenými v relácii."
+"Sem napíšte názvy spustiteľných aplikácií (oddelené čiarkami alebo "
+"dvojbodkami, napríklad 'xterm:konsole' alebo 'xterm,konsole'), aby sa "
+"zabránilo ich automatickému spúšťaniu spolu s inými aplikáciami obnovenými v "
+"sedení."
 
 #: ui/main.qml:138
 #, kde-format
@@ -178,16 +192,31 @@ msgid "After next restart:"
 msgstr "Po ďalšom reštarte:"
 
 #: ui/main.qml:145
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@option:check"
+#| msgid "Enter firmware setup screen"
 msgctxt "@option:check"
-msgid "Enter UEFI setup screen"
-msgstr "Vstúpiť do obrazovky nastavenia UEFI"
+msgid "Enter UEFI firmware settings"
+msgstr "Vstúpiť do obrazovky nastavenia firmvéru"
 
 #: ui/main.qml:146
 #, kde-format
 msgctxt "@option:check"
 msgid "Enter firmware setup screen"
 msgstr "Vstúpiť do obrazovky nastavenia firmvéru"
+
+#, fuzzy
+#~| msgid ""
+#~| "Next time the computer is restarted, it will enter the UEFI setup screen."
+#~ msgctxt "@info:status inlinemessage"
+#~ msgid ""
+#~ "Next time the computer is restarted, it will enter the UEFI setup screen."
+#~ msgstr ""
+#~ "Keď sa počítač najbližšie reštartuje, vojde na obrazovku nastavení UEFI."
+
+#~ msgctxt "@option:check"
+#~ msgid "Enter UEFI setup screen"
+#~ msgstr "Vstúpiť do obrazovky nastavenia UEFI"
 
 #~ msgid ""
 #~ "The system must be restarted before manual session saving becomes active."
