@@ -703,6 +703,7 @@ ColumnLayout {
             Accessible.description: i18ndc("plasma_shell_org.kde.plasma.desktop", "@info:whatsthis Accessible description for button", "Button to set the shortcut for the panel to gain focus")
             Accessible.onPressAction: startCapturing()
 
+            patterns: ShortcutPattern.Modifier | ShortcutPattern.ModifierAndKey
             keySequence: plasmoid.globalShortcut
             onCaptureFinished: {
                 plasmoid.globalShortcut = button.keySequence
