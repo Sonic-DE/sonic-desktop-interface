@@ -10,7 +10,6 @@
 #include "windowmodel.h"
 
 #include <activityinfo.h>
-#include <virtualdesktopinfo.h>
 #include <windowtasksmodel.h>
 #include <xwindowtasksmodel.h>
 
@@ -54,7 +53,6 @@ public:
     QMetaObject::Connection activityNumberConn;
     QMetaObject::Connection activityNamesConn;
 
-    static VirtualDesktopInfo *virtualDesktopInfo;
     QMetaObject::Connection virtualDesktopNumberConn;
     QMetaObject::Connection virtualDesktopNamesConn;
     QMetaObject::Connection virtualDesktopPositionsConn;
@@ -69,7 +67,6 @@ private:
 
 int PagerModel::Private::instanceCount = 0;
 ActivityInfo *PagerModel::Private::activityInfo = nullptr;
-VirtualDesktopInfo *PagerModel::Private::virtualDesktopInfo = nullptr;
 
 PagerModel::Private::Private(PagerModel *q)
     : q(q)
@@ -82,12 +79,6 @@ PagerModel::Private::Private(PagerModel *q)
 
     QObject::connect(activityInfo, &ActivityInfo::numberOfRunningActivitiesChanged, q, &PagerModel::shouldShowPagerChanged);
 
-    if (!virtualDesktopInfo) {
-        virtualDesktopInfo = new VirtualDesktopInfo();
-    }
-
-    QObject::connect(virtualDesktopInfo, &VirtualDesktopInfo::numberOfDesktopsChanged, q, &PagerModel::shouldShowPagerChanged);
-
     QObject::connect(activityInfo, &ActivityInfo::currentActivityChanged, q, [this]() {
         if (pagerType == VirtualDesktops && windowModels.count()) {
             for (auto windowModel : std::as_const(windowModels)) {
@@ -95,8 +86,6 @@ PagerModel::Private::Private(PagerModel *q)
             }
         }
     });
-
-    QObject::connect(virtualDesktopInfo, &VirtualDesktopInfo::desktopLayoutRowsChanged, q, &PagerModel::layoutRowsChanged);
 }
 
 PagerModel::Private::~Private()
@@ -106,8 +95,6 @@ PagerModel::Private::~Private()
     if (!instanceCount) {
         delete activityInfo;
         activityInfo = nullptr;
-        delete virtualDesktopInfo;
-        virtualDesktopInfo = nullptr;
     }
 }
 
@@ -115,29 +102,12 @@ void PagerModel::Private::refreshDataSource()
 {
     if (pagerType == VirtualDesktops) {
         QObject::disconnect(virtualDesktopNumberConn);
-        virtualDesktopNumberConn = QObject::connect(virtualDesktopInfo, &VirtualDesktopInfo::numberOfDesktopsChanged, q, [this]() {
-            q->refresh();
-        });
-
         QObject::disconnect(virtualDesktopNamesConn);
-        virtualDesktopNamesConn = QObject::connect(virtualDesktopInfo, &VirtualDesktopInfo::desktopNamesChanged, q, [this]() {
-            if (q->rowCount()) {
-                Q_EMIT q->dataChanged(q->index(0, 0), q->index(q->rowCount() - 1, 0), QList<int>{Qt::DisplayRole});
-            }
-        });
-
         QObject::disconnect(virtualDesktopPositionsConn);
-        virtualDesktopPositionsConn = QObject::connect(virtualDesktopInfo, &VirtualDesktopInfo::desktopPositionsChanged, q, [this]() {
-            if (q->rowCount()) {
-                q->refresh();
-            }
-        });
-
         QObject::disconnect(activityNumberConn);
         QObject::disconnect(activityNamesConn);
 
         QObject::disconnect(activityInfo, &ActivityInfo::currentActivityChanged, q, &PagerModel::currentPageChanged);
-        QObject::connect(virtualDesktopInfo, &VirtualDesktopInfo::currentDesktopChanged, q, &PagerModel::currentPageChanged, Qt::UniqueConnection);
     } else {
         QObject::disconnect(activityNumberConn);
         activityNumberConn = QObject::connect(activityInfo, &ActivityInfo::numberOfRunningActivitiesChanged, q, [this]() {
@@ -153,7 +123,6 @@ void PagerModel::Private::refreshDataSource()
         QObject::disconnect(virtualDesktopNamesConn);
         QObject::disconnect(virtualDesktopPositionsConn);
 
-        QObject::disconnect(virtualDesktopInfo, &VirtualDesktopInfo::currentDesktopChanged, q, &PagerModel::currentPageChanged);
         QObject::connect(activityInfo, &ActivityInfo::currentActivityChanged, q, &PagerModel::currentPageChanged, Qt::UniqueConnection);
     }
 
@@ -212,7 +181,7 @@ QVariant PagerModel::data(const QModelIndex &index, int role) const
 
     if (role == Qt::DisplayRole) {
         if (d->pagerType == VirtualDesktops) {
-            return d->virtualDesktopInfo->desktopNames().at(index.row());
+            return QVariant();
         } else {
             QString activityId = d->activityInfo->runningActivities().at(index.row());
             return d->activityInfo->activityName(activityId);
@@ -275,7 +244,7 @@ void PagerModel::setEnabled(bool enabled)
 
 bool PagerModel::shouldShowPager() const
 {
-    return (d->pagerType == VirtualDesktops) ? d->virtualDesktopInfo->numberOfDesktops() > 1 : d->activityInfo->numberOfRunningActivities() > 1;
+    return d->activityInfo->numberOfRunningActivities() > 1;
 }
 
 bool PagerModel::showDesktop() const
@@ -334,17 +303,12 @@ void PagerModel::setScreenGeometry(const QRect &geometry)
 
 int PagerModel::currentPage() const
 {
-    if (d->pagerType == VirtualDesktops) {
-        return d->virtualDesktopInfo->desktopIds().indexOf(d->virtualDesktopInfo->currentDesktop());
-    } else {
-        return d->activityInfo->runningActivities().indexOf(d->activityInfo->currentActivity());
-    }
+    return d->activityInfo->runningActivities().indexOf(d->activityInfo->currentActivity());
 }
 
 int PagerModel::layoutRows() const
 {
-    const int rows = std::min(d->virtualDesktopInfo->desktopLayoutRows(), d->virtualDesktopInfo->numberOfDesktops());
-    return std::max(1, rows);
+    return 1;
 }
 
 QSize PagerModel::pagerItemSize() const
@@ -373,7 +337,7 @@ void PagerModel::refresh()
     d->refreshDataSource();
 
     int modelCount = d->windowModels.count();
-    const int modelsNeeded = ((d->pagerType == VirtualDesktops) ? d->virtualDesktopInfo->numberOfDesktops() : d->activityInfo->numberOfRunningActivities());
+    const int modelsNeeded = (d->activityInfo->numberOfRunningActivities());
 
     if (modelCount > modelsNeeded) {
         while (modelCount != modelsNeeded) {
@@ -397,7 +361,6 @@ void PagerModel::refresh()
         int virtualDesktop = 0;
 
         for (auto windowModel : std::as_const(d->windowModels)) {
-            windowModel->setVirtualDesktop(d->virtualDesktopInfo->desktopIds().at(virtualDesktop));
             ++virtualDesktop;
 
             windowModel->setActivity(d->activityInfo->currentActivity());
@@ -486,14 +449,10 @@ void PagerModel::changePage(int page)
                                                                                    QLatin1String("toggleDashboard")));
         }
     } else {
-        if (d->pagerType == VirtualDesktops) {
-            d->virtualDesktopInfo->requestActivate(d->virtualDesktopInfo->desktopIds().at(page));
-        } else {
-            const QStringList &runningActivities = d->activityInfo->runningActivities();
-            if (page < runningActivities.length()) {
-                KActivities::Controller activitiesController;
-                activitiesController.setCurrentActivity(runningActivities.at(page));
-            }
+        const QStringList &runningActivities = d->activityInfo->runningActivities();
+        if (page < runningActivities.length()) {
+            KActivities::Controller activitiesController;
+            activitiesController.setCurrentActivity(runningActivities.at(page));
         }
     }
 }
@@ -560,16 +519,10 @@ void PagerModel::drop(QMimeData *mimeData, int modifiers, const QVariant &itemId
 
 void PagerModel::addDesktop()
 {
-    d->virtualDesktopInfo->requestCreateDesktop(d->virtualDesktopInfo->numberOfDesktops());
 }
 
 void PagerModel::removeDesktop()
 {
-    if (d->virtualDesktopInfo->numberOfDesktops() == 1) {
-        return;
-    }
-
-    d->virtualDesktopInfo->requestRemoveDesktop(d->virtualDesktopInfo->numberOfDesktops() - 1);
 }
 
 void PagerModel::classBegin()
