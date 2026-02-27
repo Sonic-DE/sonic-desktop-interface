@@ -14,7 +14,7 @@
 #include <KSharedConfig>
 #include <QKeySequence>
 
-#include "devicesmodel.h"
+//#include "devicesmodel.h"
 
 class Touchscreen : public KQuickManagedConfigModule
 {

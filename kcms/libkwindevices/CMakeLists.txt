@@ -16,7 +16,7 @@ ecm_qt_declare_logging_category(kwindevices_SRCS
         libkwindevices
 )
 
-qt_add_dbus_interface(kwindevices_SRCS "${KWIN_INPUTDEVICE_INTERFACE}" InputDevice_interface)
+# qt_add_dbus_interface(kwindevices_SRCS "${KWIN_INPUTDEVICE_INTERFACE}" InputDevice_interface)
 
 add_library(kwindevices STATIC ${kwindevices_SRCS} devicesmodel.cpp inputdevice.cpp)
 set_property(TARGET kwindevices PROPERTY POSITION_INDEPENDENT_CODE ON)
