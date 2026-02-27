@@ -72,7 +72,7 @@ KCMUtils.AbstractKCM {
             icon: "cursor-arrow",
             title: i18nc("@title Category name in sidebar, shake pointer to find it", "Shake Pointer"),
             defaultnessKey: "shakeCursorIsDefaults",
-            available: KWindowSystem.isPlatformWayland
+            available: false
         }
     ]
 

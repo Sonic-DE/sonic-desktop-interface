@@ -440,9 +440,6 @@ bool SwitcherBackend::dragContainsWindows(QMimeData *mimeData) const
     if (KWindowSystem::isPlatformX11()) {
         return TaskManager::XWindowTasksModel::winIdsFromMimeData(mimeData).count();
     }
-    if (KWindowSystem::isPlatformWayland()) {
-        return TaskManager::WaylandTasksModel::winIdsFromMimeData(mimeData).count();
-    }
     return false;
 }
 
