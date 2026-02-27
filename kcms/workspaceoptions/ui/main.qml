@@ -244,7 +244,7 @@ KCM.SimpleKCM {
         QQC2.CheckBox {
             id: primarySelectionRadio
             Kirigami.FormData.label: i18nc("@label for checkbox, part of a complete sentence: 'Middle-click pastes selected text'", "Middle-click:")
-            visible: KWindowSystem.isPlatformWayland
+            visible: false
             text: i18nc("@option:check part of a complete sentence: 'Middle click pastes selected text'", "Pastes selected text")
             checked: kcm.kwinSettings.primarySelection
             onToggled: kcm.kwinSettings.primarySelection = checked
@@ -415,7 +415,7 @@ KCM.SimpleKCM {
         RowLayout {
             Kirigami.FormData.label: i18nc("@title:group prefix radiobutton group", "Enable Touch Mode:")
             QQC2.RadioButton {
-                text: KWindowSystem.isPlatformWayland ? i18nc("@option:radio As in: 'Touch Mode is automatically enabled as needed'", "Automatically enable as needed") : i18nc("option:radio As in: 'Touch Mode is never enabled'", "Never enabled")
+                text: false ? i18nc("@option:radio As in: 'Touch Mode is automatically enabled as needed'", "Automatically enable as needed") : i18nc("option:radio As in: 'Touch Mode is never enabled'", "Never enabled")
                 Accessible.description: touchModeAlwaysOffRadioButtonHelperText.text
                 checked: kcm.kwinSettings.tabletMode === "auto"
                 onToggled: {
@@ -431,7 +431,7 @@ KCM.SimpleKCM {
                 }
             }
             Kirigami.ContextualHelpButton {
-                visible: KWindowSystem.isPlatformWayland
+                visible: false
                 toolTipText: i18nc("@info:whatsthis contextualhelpbutton tooltip", "Touch Mode will be automatically activated whenever the system detects a touchscreen but no mouse or touchpad. For example: when a transformable laptop's keyboard is flipped around or detached.")
             }
         }
@@ -459,7 +459,7 @@ KCM.SimpleKCM {
 
             QQC2.RadioButton {
                 id: touchModeAlwaysOffRadioButton
-                visible: KWindowSystem.isPlatformWayland
+                visible: false
                 text: i18nc("As in: 'Touch Mode is never enabled'", "Disabled")
                 Accessible.description: touchModeAlwaysOffRadioButtonHelperText.text
                 checked: kcm.kwinSettings.tabletMode === "off"
