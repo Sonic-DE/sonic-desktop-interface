@@ -17,9 +17,6 @@
 
 enum class TouchpadInputBackendMode {
     Unset = 0,
-#if BUILD_KCM_TOUCHPAD_KWIN_WAYLAND
-    WaylandLibinput = 1,
-#endif
 #if BUILD_KCM_TOUCHPAD_X11
     XLibinput = 2,
 #endif
