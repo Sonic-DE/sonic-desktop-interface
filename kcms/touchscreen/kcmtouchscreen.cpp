@@ -79,13 +79,13 @@ public:
 
 Touchscreen::Touchscreen(QObject *parent, const KPluginMetaData &metaData)
     : KQuickManagedConfigModule(parent, metaData)
-    , m_touchscreensModel(new DevicesModel("touch", this))
+//    , m_touchscreensModel(new DevicesModel("touch", this))
 {
     const char *uri = "org.kde.plasma.touchscreen.kcm";
     qmlRegisterType<OutputsModel>(uri, 1, 0, "OutputsModel");
-    qmlRegisterUncreatableType<InputDevice>(uri, 1, 0, "InputDevice", u"Should be fetched from kcm.touchscreensModel"_s);
+//    qmlRegisterUncreatableType<InputDevice>(uri, 1, 0, "InputDevice", u"Should be fetched from kcm.touchscreensModel"_s);
 
-    connect(m_touchscreensModel, &DevicesModel::needsSaveChanged, this, &Touchscreen::refreshNeedsSave);
+//    connect(m_touchscreensModel, &DevicesModel::needsSaveChanged, this, &Touchscreen::refreshNeedsSave);
 }
 
 Touchscreen::~Touchscreen() = default;
@@ -97,33 +97,35 @@ void Touchscreen::refreshNeedsSave()
 
 bool Touchscreen::isSaveNeeded() const
 {
-    return m_touchscreensModel->isSaveNeeded();
+//    return m_touchscreensModel->isSaveNeeded();
+    return false;
 }
 
 bool Touchscreen::isDefaults() const
 {
-    return m_touchscreensModel->isDefaults();
+//    return m_touchscreensModel->isDefaults();
+    return false;
 }
 
 void Touchscreen::load()
 {
-    m_touchscreensModel->load();
+//    m_touchscreensModel->load();
 }
 
 void Touchscreen::save()
 {
-    m_touchscreensModel->save();
+//    m_touchscreensModel->save();
 }
 
 void Touchscreen::defaults()
 {
-    m_touchscreensModel->defaults();
+//    m_touchscreensModel->defaults();
 }
 
-DevicesModel *Touchscreen::touchscreensModel() const
-{
-    return m_touchscreensModel;
-}
+//DevicesModel *Touchscreen::touchscreensModel() const
+//{
+//    return m_touchscreensModel;
+//}
 
 #include "kcmtouchscreen.moc"
 
