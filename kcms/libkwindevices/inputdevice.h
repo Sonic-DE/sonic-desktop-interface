@@ -7,8 +7,6 @@
 
 #pragma once
 
-#include "InputDevice_interface.h"
-
 #include <QMatrix4x4>
 #include <QMetaProperty>
 #include <QObject>
@@ -71,21 +69,21 @@ public:
     }
     bool isLeftHanded() const
     {
-        return m_leftHanded.value();
+        return false;
     }
     bool supportsLeftHanded() const
     {
-        return m_leftHanded.isSupported();
+        return false;
     }
     void setLeftHanded(bool set);
 
     bool supportsOrientation() const
     {
-        return m_orientation.isSupported();
+        return false;
     }
     int orientation() const
     {
-        return m_orientation.value();
+        return false;
     }
     void setOrientation(int ori);
 
@@ -101,93 +99,87 @@ public:
 
     QRectF outputArea() const
     {
-        return m_outputArea.value();
+        return QRectF(0, 0, 1, 1);
     }
     void setOutputArea(const QRectF &outputArea);
 
     QRectF inputArea() const
     {
-        return m_inputArea.isSupported() ? m_inputArea.value() : QRectF(0, 0, 1, 1);
+        return QRectF(0, 0, 1, 1);
     }
     void setInputArea(const QRectF &inputArea);
     bool supportsInputArea() const
     {
-        return m_inputArea.isSupported();
+        return false;
     }
 
     bool supportsCalibrationMatrix() const
     {
-        return m_calibrationMatrix.isSupported();
+        return false;
     }
 
     bool isEnabled() const
     {
-        return m_enabled.value();
+        return false;
     }
 
     QMatrix4x4 defaultCalibrationMatrix() const
     {
-        return deserializeMatrix(m_calibrationMatrix.defaultValue());
+        return QMatrix4x4();
     }
 
     QMatrix4x4 calibrationMatrix() const
     {
-        return deserializeMatrix(m_calibrationMatrix.value());
+        return QMatrix4x4();
     }
 
     void setCalibrationMatrix(const QMatrix4x4 &matrix)
     {
-        m_calibrationMatrix.set(serializeMatrix(matrix));
-        m_calibrationMatrix.save();
     }
 
     Q_INVOKABLE void resetCalibrationMatrix()
     {
-        m_calibrationMatrix.resetFromDefaults();
-        m_calibrationMatrix.save();
     }
 
     bool calibrationMatrixIsDefault() const
     {
-        return m_calibrationMatrix.isDefaults();
+        return false;
     }
 
     void setEnabled(bool enabled);
 
     bool isMapToWorkspace() const
     {
-        return m_mapToWorkspace.value();
+        return false;
     }
     void setMapToWorkspace(bool mapToWorkspace);
 
     QString pressureCurve() const
     {
-        return m_pressureCurve.value();
+        return QString();
     }
     void setPressureCurve(const QString &curve);
     bool pressureCurveIsDefault() const;
 
     void setPressureRangeMin(double min)
     {
-        m_pressureRangeMin.set(min);
     }
     double pressureRangeMin() const
     {
-        return m_pressureRangeMin.value();
+        return 0;
     }
 
     void setPressureRangeMax(double max)
     {
-        m_pressureRangeMax.set(max);
     }
     double pressureRangeMax() const
     {
-        return m_pressureRangeMax.value();
+        return 0;
     }
 
     bool supportsPressureRange() const
     {
-        return m_pressureRangeMin.isSupported() && m_pressureRangeMax.isSupported();
+        return false;
     }
 
     quint32 tabletPadButtonCount() const
@@ -262,45 +254,24 @@ Q_SIGNALS:
 private:
     template<typename T>
     struct Prop {
-        typedef T (OrgKdeKWinInputDeviceInterface::*ValueFunction)() const;
-        typedef bool (OrgKdeKWinInputDeviceInterface::*SupportedFunction)() const;
-        typedef bool (OrgKdeKWinInputDeviceInterface::*SetterFunction)(const T &value);
         typedef void (InputDevice::*ChangedSignal)();
 
-        explicit Prop(InputDevice *device, const char *propName, ValueFunction defaultValueFunction, SupportedFunction supported, ChangedSignal changedSignal)
-            : m_defaultValueFunction(defaultValueFunction)
-            , m_supportedFunction(supported)
-            , m_changedSignalFunction(changedSignal)
+        explicit Prop(InputDevice *device, const char *propName, void* defaultValueFunction, void *supported, ChangedSignal changedSignal)
+            : m_changedSignalFunction(changedSignal)
             , m_device(device)
         {
-            int idx = OrgKdeKWinInputDeviceInterface::staticMetaObject.indexOfProperty(propName);
-            if (idx < 0) {
-                qCDebug(LIBKWINDEVICES) << "there is no" << propName;
-            }
-            Q_ASSERT(idx >= 0);
-            m_prop = OrgKdeKWinInputDeviceInterface::staticMetaObject.property(idx);
+            qCDebug(LIBKWINDEVICES) << "there is no" << propName;
         }
 
         explicit Prop(InputDevice *device, const char *propName)
-            : m_defaultValueFunction(nullptr)
-            , m_supportedFunction(nullptr)
-            , m_changedSignalFunction(nullptr)
+            : m_changedSignalFunction(nullptr)
             , m_device(device)
         {
             Q_ASSERT(m_device);
-            int idx = OrgKdeKWinInputDeviceInterface::staticMetaObject.indexOfProperty(propName);
-            Q_ASSERT(idx >= 0);
-            m_prop = OrgKdeKWinInputDeviceInterface::staticMetaObject.property(idx);
         }
 
         T value() const
         {
-            if (!m_value.has_value()) {
-                auto iface = m_device->m_iface.get();
-                if (isSupported()) {
-                    m_value = m_prop.read(iface).value<T>();
-                }
-            }
             return m_value ? m_value.value() : T();
         }
         void resetFromDefaults()
@@ -336,7 +307,7 @@ private:
 
         T defaultValue() const
         {
-            return m_defaultValueFunction ? (m_device->m_iface.get()->*m_defaultValueFunction)() : T();
+            return T();
         }
 
         bool changed() const
@@ -351,23 +322,12 @@ private:
 
         bool isSupported() const
         {
-            auto iface = m_device->m_iface.get();
-            return !m_supportedFunction || (iface->*m_supportedFunction)();
+            return false;
         }
 
-        bool save()
-        {
-            if (!isSupported() || !m_value || m_prop.isConstant()) {
-                qCDebug(LIBKWINDEVICES) << "skipping" << this << m_value.has_value() << isSupported() << m_prop.name();
-                return false;
-            }
-
-            auto iface = m_device->m_iface.get();
-            const bool ret = m_prop.write(iface, *m_value);
-            if (ret) {
-                m_configValue = *m_value;
-            }
-            return ret;
+        bool save() {
+            qCDebug(LIBKWINDEVICES) << "skipping" << this << m_value.has_value() << isSupported() << m_prop.name();
+            return false;
         }
 
         bool isDefaults() const
@@ -377,8 +337,6 @@ private:
 
     private:
         QMetaProperty m_prop;
-        const ValueFunction m_defaultValueFunction;
-        const SupportedFunction m_supportedFunction;
         const ChangedSignal m_changedSignalFunction;
         InputDevice *const m_device;
         mutable std::optional<T> m_configValue;
@@ -394,39 +352,8 @@ private:
     Prop<QSizeF> m_size = Prop<QSizeF>(this, "size");
     Prop<QString> m_sysName = Prop<QString>(this, "sysName");
 
-    Prop<bool> m_leftHanded = Prop<bool>(this,
-                                         "leftHanded",
-                                         &OrgKdeKWinInputDeviceInterface::leftHandedEnabledByDefault,
-                                         &OrgKdeKWinInputDeviceInterface::supportsLeftHanded,
-                                         &InputDevice::leftHandedChanged);
-    Prop<int> m_orientation =
-        Prop<int>(this, "orientationDBus", nullptr, &OrgKdeKWinInputDeviceInterface::supportsCalibrationMatrix, &InputDevice::orientationChanged);
-    Prop<bool> m_enabled = Prop<bool>(this, "enabled", &OrgKdeKWinInputDeviceInterface::enabledByDefault, nullptr, &InputDevice::enabledChanged);
-
     Prop<QString> m_outputName = Prop<QString>(this, "outputName", nullptr, nullptr, &InputDevice::outputNameChanged);
-    Prop<QRectF> m_outputArea = Prop<QRectF>(this,
-                                             "outputArea",
-                                             &OrgKdeKWinInputDeviceInterface::defaultOutputArea,
-                                             &OrgKdeKWinInputDeviceInterface::supportsOutputArea,
-                                             &InputDevice::outputAreaChanged);
-    Prop<QRectF> m_inputArea = Prop<QRectF>(this,
-                                            "inputArea",
-                                            &OrgKdeKWinInputDeviceInterface::defaultInputArea,
-                                            &OrgKdeKWinInputDeviceInterface::supportsInputArea,
-                                            &InputDevice::inputAreaChanged);
     Prop<bool> m_relative = Prop<bool>(this, "tabletToolIsRelative", nullptr, nullptr, &InputDevice::relativeChanged);
-
-    Prop<bool> m_mapToWorkspace =
-        Prop<bool>(this, "mapToWorkspace", &OrgKdeKWinInputDeviceInterface::defaultMapToWorkspace, nullptr, &InputDevice::mapToWorkspaceChanged);
-
-    Prop<QString> m_calibrationMatrix = Prop<QString>(this,
-                                                      "calibrationMatrix",
-                                                      &OrgKdeKWinInputDeviceInterface::defaultCalibrationMatrix,
-                                                      &OrgKdeKWinInputDeviceInterface::supportsCalibrationMatrix,
-                                                      &InputDevice::calibrationMatrixChanged);
-
-    Prop<QString> m_pressureCurve =
-        Prop<QString>(this, "pressureCurve", &OrgKdeKWinInputDeviceInterface::defaultPressureCurve, nullptr, &InputDevice::pressureCurveChanged);
 
     Prop<quint32> m_tabletPadButtonCount = Prop<quint32>(this, "tabletPadButtonCount");
     Prop<quint32> m_tabletPadDialCount = Prop<quint32>(this, "tabletPadDialCount");
@@ -434,21 +361,8 @@ private:
     Prop<QList<unsigned int>> m_numModes = Prop<QList<unsigned int>>(this, "numModes");
     Prop<QList<unsigned int>> m_currentModes = Prop<QList<unsigned int>>(this, "currentModes", nullptr, nullptr, &InputDevice::currentModesChanged);
 
-    Prop<double> m_pressureRangeMin = Prop<double>(this,
-                                                   "pressureRangeMin",
-                                                   &OrgKdeKWinInputDeviceInterface::defaultPressureRangeMin,
-                                                   &OrgKdeKWinInputDeviceInterface::supportsPressureRange,
-                                                   &InputDevice::pressureRangeMinChanged);
-    Prop<double> m_pressureRangeMax = Prop<double>(this,
-                                                   "pressureRangeMax",
-                                                   &OrgKdeKWinInputDeviceInterface::defaultPressureRangeMax,
-                                                   &OrgKdeKWinInputDeviceInterface::supportsPressureRange,
-                                                   &InputDevice::pressureRangeMaxChanged);
-
     Prop<QString> m_deviceGroup = Prop<QString>(this, "deviceGroupId");
     Prop<bool> m_tabletPad = Prop<bool>(this, "tabletPad");
     Prop<bool> m_tabletTool = Prop<bool>(this, "tabletTool");
     Prop<bool> m_isVirtual = Prop<bool>(this, "isVirtual");
-
-    std::unique_ptr<OrgKdeKWinInputDeviceInterface> m_iface;
 };
