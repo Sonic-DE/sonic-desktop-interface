@@ -12,6 +12,7 @@
 #include <QMatrix4x4>
 #include <QObject>
 #include <QString>
+#include <QMetaProperty>
 
 #include <optional>
 
