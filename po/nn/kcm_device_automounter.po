@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-01-23 00:45+0000\n"
-"PO-Revision-Date: 2022-01-15 18:09+0100\n"
+"PO-Revision-Date: 2026-03-01 20:16+0100\n"
 "Last-Translator: Karl Ove Hufthammer <karl@huftis.org>\n"
 "Language-Team: Norwegian Nynorsk <l10n-no@nuug.no>\n"
 "Language: nn\n"
@@ -31,12 +31,7 @@ msgstr "karl@huftis.org"
 
 #. i18n: ectx: property (whatsThis), widget (QTreeView, deviceView)
 #: DeviceAutomounterKCM.ui:17
-#, fuzzy, kde-format
-#| msgid ""
-#| "This list contains the storage devices known to the system. If "
-#| "\"Automount on Login\" is checked, the device will be automatically "
-#| "mounted even though \"Mount all removable media at login\" is unchecked. "
-#| "The same applies for \"Automount on Attach\"."
+#, kde-format
 msgid ""
 "This list contains the storage devices known to the system. If \"Automount "
 "on Login\" is checked, devices will be automatically mounted even though "
@@ -44,8 +39,8 @@ msgid ""
 "\"Automount on Attach\"."
 msgstr ""
 "Her er ei oversikt over lagringseiningar som systemet kjenner til. Viss du "
-"har kryssa av for «Automonter ved innlogging», vert eininga automatisk "
-"montert sjølv om du ikkje har kryssa av for «Monter alle flyttbare "
+"har kryssa av for «Automonter ved innlogging», vert einingar automatisk "
+"monterte sjølv om du ikkje har kryssa av for «Monter alle flyttbare "
 "lagringsmedium ved innlogging». Det same gjeld «Automonter ved tilkopling»."
 
 #. i18n: ectx: property (whatsThis), widget (QPushButton, forgetDevice)
