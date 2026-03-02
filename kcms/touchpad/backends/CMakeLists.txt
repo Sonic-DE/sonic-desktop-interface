@@ -1,4 +1,5 @@
 # // krazy:excludeall=copyright,license
+find_package(KF6I18n REQUIRED)
 
 target_sources(touchpad_common PUBLIC libinputcommon.cpp)
 
@@ -32,6 +33,7 @@ if (BUILD_KCM_TOUCHPAD_X11)
             X11::XCB
             PkgConfig::XORGSERVER
             PkgConfig::XORGLIBINPUT
+            KF6::I18n
     )
 
     add_executable(kcm-touchpad-list-devices x11/listdevices.cpp)
