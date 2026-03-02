@@ -33,11 +33,11 @@ if (KF6Baloo_FOUND)
 endif()
 add_subdirectory(solid_actions)
 
-if (BUILD_KCM_MOUSE_KWIN_WAYLAND OR BUILD_KCM_MOUSE_X11)
+if (BUILD_KCM_MOUSE_X11)
     add_subdirectory(mouse)
 endif()
 
-if (BUILD_KCM_TOUCHPAD_KWIN_WAYLAND OR BUILD_KCM_TOUCHPAD_X11)
+if (BUILD_KCM_TOUCHPAD_X11)
     add_subdirectory(touchpad)
 endif()
 

@@ -38,9 +38,7 @@ include(ECMQmlModule)
 include(ECMConfiguredInstall)
 
 option(BUILD_DOC "Whether to build the documentation" ON)
-option(BUILD_KCM_MOUSE_KWIN_WAYLAND "Build the Mouse KCM's KWin+Wayland backend" ON)
 option(BUILD_KCM_MOUSE_X11 "Build the Mouse KCM's X11 backend" ON)
-option(BUILD_KCM_TOUCHPAD_KWIN_WAYLAND "Build the Touchpad KCM's KWin+Wayland backend" ON)
 option(BUILD_KCM_TOUCHPAD_X11 "Build the Touchpad KCM's X11 backend" ON)
 option(BUILD_KCM_TABLET "Build the Tablet KCM" ON)
 
