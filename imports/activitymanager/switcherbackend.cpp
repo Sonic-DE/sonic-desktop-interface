@@ -363,11 +363,7 @@ void SwitcherBackend::removeActivity(const QString &activity)
 
 bool SwitcherBackend::dropEnabled() const
 {
-#if HAVE_X11
     return true;
-#else
-    return false;
-#endif
 }
 
 void SwitcherBackend::dropCopy(QMimeData *mimeData, const QVariant &activityId)
@@ -384,7 +380,6 @@ void SwitcherBackend::drop(QMimeData *mimeData, int modifiers, const QVariant &a
 {
     setDropMode(false);
 
-#if HAVE_X11
     if (KWindowSystem::isPlatformX11()) {
         bool ok = false;
         const QList<WId> &ids = TaskManager::XWindowTasksModel::winIdsFromMimeData(mimeData, &ok);
@@ -424,7 +419,6 @@ void SwitcherBackend::drop(QMimeData *mimeData, int modifiers, const QVariant &a
             KX11Extras::setOnActivities(id, activities);
         }
     }
-#endif
 }
 
 void SwitcherBackend::setDropMode(bool value)

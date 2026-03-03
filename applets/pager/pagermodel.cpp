@@ -351,11 +351,7 @@ int PagerModel::layoutRows() const
 QSize PagerModel::pagerItemSize() const
 {
     if (d->showOnlyCurrentScreen && d->screenGeometry.isValid()) {
-#if HAVE_X11
         const double devicePixelRatio = KWindowSystem::isPlatformWayland() ? 1.0 : qGuiApp->devicePixelRatio();
-#else
-        constexpr int devicePixelRatio = 1;
-#endif
         return d->screenGeometry.size() * devicePixelRatio;
     }
 
@@ -460,7 +456,7 @@ void PagerModel::moveWindow(const QModelIndex &index,
             }
         }
     }
-#if HAVE_X11
+
     if (KWindowSystem::isPlatformX11() && !index.data(TaskManager::AbstractTasksModel::IsFullScreen).toBool()
         && (targetItemId == sourceItemId || isOnAllDesktops)) {
         const auto winIds = index.data(TaskManager::AbstractTasksModel::WinIdList).toList();
@@ -479,7 +475,6 @@ void PagerModel::moveWindow(const QModelIndex &index,
         const QPoint &d = dest.toPoint();
         info.moveResizeWindowRequest(winIds[0].toUInt(), flags, d.x(), d.y(), 0, 0);
     }
-#endif
 }
 
 void PagerModel::changePage(int page)
@@ -596,11 +591,7 @@ void PagerModel::componentComplete()
 
 void PagerModel::computePagerItemSize()
 {
-#if HAVE_X11
     const double devicePixelRatio = KWindowSystem::isPlatformWayland() ? 1.0 : qGuiApp->devicePixelRatio();
-#else
-    constexpr int devicePixelRatio = 1;
-#endif
     QRect wholeScreen;
     for (const auto screens = qGuiApp->screens(); auto screen : screens) {
         const QRect geometry = screen->geometry();
