@@ -27,9 +27,7 @@ extern "C" {
 Q_DECL_EXPORT void kcminit()
 {
 #if BUILD_KCM_TOUCHPAD_X11
-    if (KWindowSystem::isPlatformX11()) {
-        KCMTouchpad::kcmInit();
-    }
+    KCMTouchpad::kcmInit();
 #endif
 }
 }

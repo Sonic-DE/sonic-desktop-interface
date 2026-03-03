@@ -34,7 +34,7 @@ Q_DECL_EXPORT void kcminit()
     }
 
 #if BUILD_KCM_MOUSE_X11
-    if (KWindowSystem::isPlatformX11()) {
+    {
         auto config = KSharedConfig::openConfig(u"kcminputrc"_s, KConfig::NoGlobals);
         KConfigGroup group = config->group(QStringLiteral("Mouse"));
         const QString theme = group.readEntry("cursorTheme", QStringLiteral("breeze_cursors"));

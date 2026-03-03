@@ -70,7 +70,7 @@ QVariant WindowModel::data(const QModelIndex &index, int role) const
         QRect windowGeo = TaskFilterProxyModel::data(index, role).toRect();
         const QRect clampingRect(QPoint(0, 0), d->pagerModel->pagerItemSize());
 
-        if (KWindowSystem::isPlatformX11() && KX11Extras::mapViewport()) {
+        if (KX11Extras::mapViewport()) {
             int x = windowGeo.center().x() % clampingRect.width();
             int y = windowGeo.center().y() % clampingRect.height();
 
