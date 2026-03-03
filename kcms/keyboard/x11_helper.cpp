@@ -26,9 +26,6 @@ const char X11Helper::RIGHT_VARIANT_STR[] = ")";
 
 bool X11Helper::xkbSupported(int *xkbOpcode)
 {
-    if (!QX11Info::isPlatformX11()) {
-        return false;
-    }
     // Verify the Xlib has matching XKB extension.
 
     int major = XkbMajorVersion;
@@ -105,9 +102,6 @@ bool X11Helper::isDefaultLayout()
 
 LayoutUnit X11Helper::getCurrentLayout()
 {
-    if (!QX11Info::isPlatformX11()) {
-        return LayoutUnit();
-    }
     QList<LayoutUnit> currentLayouts = getLayoutsList();
     unsigned int group = X11Helper::getGroup();
     if (group < static_cast<unsigned int>(currentLayouts.size()))
@@ -137,9 +131,6 @@ LayoutSet X11Helper::getCurrentLayouts()
 
 QList<LayoutUnit> X11Helper::getLayoutsList()
 {
-    if (!QX11Info::isPlatformX11()) {
-        return QList<LayoutUnit>();
-    }
     XkbConfig xkbConfig;
     QList<LayoutUnit> layouts;
     if (X11Helper::getGroupNames(QX11Info::display(), &xkbConfig, X11Helper::LAYOUTS_ONLY)) {

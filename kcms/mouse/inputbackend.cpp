@@ -22,7 +22,7 @@ std::unique_ptr<InputBackend> InputBackend::create()
 {
     // There are multiple possible backends
 #if BUILD_KCM_MOUSE_X11
-    if (KWindowSystem::isPlatformX11()) {
+    {
         qCDebug(KCM_MOUSE) << "Using X11 backend";
 
         Atom testAtom = XInternAtom(QX11Info::display(), LIBINPUT_PROP_ACCEL, True);

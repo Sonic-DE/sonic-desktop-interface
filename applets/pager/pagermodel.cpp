@@ -457,7 +457,7 @@ void PagerModel::moveWindow(const QModelIndex &index,
         }
     }
 
-    if (KWindowSystem::isPlatformX11() && !index.data(TaskManager::AbstractTasksModel::IsFullScreen).toBool()
+    if (!index.data(TaskManager::AbstractTasksModel::IsFullScreen).toBool()
         && (targetItemId == sourceItemId || isOnAllDesktops)) {
         const auto winIds = index.data(TaskManager::AbstractTasksModel::WinIdList).toList();
         if (winIds.isEmpty()) {
@@ -522,9 +522,8 @@ void PagerModel::drop(QMimeData *mimeData, int modifiers, const QVariant &itemId
 
     bool ok = false;
     QList<QModelIndex> indices;
-    if (KWindowSystem::isPlatformX11()) {
-        indices = findWindows(TaskManager::XWindowTasksModel::winIdsFromMimeData(mimeData, &ok));
-    }
+    indices = findWindows(TaskManager::XWindowTasksModel::winIdsFromMimeData(mimeData, &ok));
+
     if (!ok) {
         return;
     }
