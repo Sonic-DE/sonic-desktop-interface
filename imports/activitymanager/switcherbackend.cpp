@@ -380,7 +380,7 @@ void SwitcherBackend::drop(QMimeData *mimeData, int modifiers, const QVariant &a
 {
     setDropMode(false);
 
-    if (KWindowSystem::isPlatformX11()) {
+    {
         bool ok = false;
         const QList<WId> &ids = TaskManager::XWindowTasksModel::winIdsFromMimeData(mimeData, &ok);
 
@@ -437,10 +437,7 @@ void SwitcherBackend::setDropMode(bool value)
 
 bool SwitcherBackend::dragContainsWindows(QMimeData *mimeData) const
 {
-    if (KWindowSystem::isPlatformX11()) {
-        return TaskManager::XWindowTasksModel::winIdsFromMimeData(mimeData).count();
-    }
-    return false;
+    return TaskManager::XWindowTasksModel::winIdsFromMimeData(mimeData).count();
 }
 
 void SwitcherBackend::toggleActivityManager()

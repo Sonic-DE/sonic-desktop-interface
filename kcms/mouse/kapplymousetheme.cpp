@@ -25,11 +25,6 @@ int main(int argc, char *argv[])
     QString theme = QFile::decodeName(argv[1]);
     QString size = QFile::decodeName(argv[2]);
 
-    if (!KWindowSystem::isPlatformX11()) {
-        qDebug() << "X11 backend not detected. Exit.";
-        return 2;
-    }
-
     // Note: If you update this code, update kcm.cpp as well.
 
     CursorTheme::applyCursorTheme(theme, size.toInt());

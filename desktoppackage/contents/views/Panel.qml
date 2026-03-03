@@ -187,7 +187,7 @@ Item {
     property bool isTransparent: panel.opacityMode === Panel.Global.Translucent
     property bool isAdaptive: panel.opacityMode === Panel.Global.Adaptive
     property bool floating: panel.floating
-    property bool hasCompositing: KWindowSystem.isPlatformX11 ? KX11Extras.compositingActive : true
+    property bool hasCompositing: KX11Extras.compositingActive
     property var stateTriggers: [floating, touchingWindow, isOpaque, isAdaptive, isTransparent, hasCompositing, containment, panel.floatingApplets]
     onStateTriggersChanged: {
         let opaqueApplets = false

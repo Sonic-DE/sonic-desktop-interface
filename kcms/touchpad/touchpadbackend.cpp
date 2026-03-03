@@ -26,7 +26,7 @@ TouchpadBackend *TouchpadBackend::implementation()
 {
     // There are multiple possible backends
 #if BUILD_KCM_TOUCHPAD_X11
-    if (KWindowSystem::isPlatformX11()) {
+    {
         static QThreadStorage<std::shared_ptr<XlibBackend>> backend;
         if (!backend.hasLocalData()) {
             qCDebug(KCM_TOUCHPAD) << "Using X11 backend";
