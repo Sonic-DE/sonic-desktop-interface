@@ -196,17 +196,13 @@ set_package_properties(KF6Baloo PROPERTIES
     TYPE RECOMMENDED
 )
 
-find_package(X11)
+find_package(X11 REQUIRED)
 set_package_properties(X11 PROPERTIES
     DESCRIPTION "X11 libraries"
     URL "https://www.x.org"
     PURPOSE "Required for building the X11 based workspace"
     TYPE REQUIRED
 )
-
-if(X11_FOUND)
-  set(HAVE_X11 1)
-endif()
 
 find_package(Canberra)
 set_package_properties(Canberra PROPERTIES
