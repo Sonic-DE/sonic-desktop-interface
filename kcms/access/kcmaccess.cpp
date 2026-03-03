@@ -410,11 +410,6 @@ bool KAccessConfig::orcaInstalled()
     return tryOrcaRun != -2;
 }
 
-bool KAccessConfig::isPlatformX11() const
-{
-    return KWindowSystem::isPlatformX11();
-}
-
 MouseSettings *KAccessConfig::mouseSettings() const
 {
     return m_data->mouseSettings();

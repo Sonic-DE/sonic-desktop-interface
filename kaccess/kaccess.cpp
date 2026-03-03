@@ -129,11 +129,6 @@ KAccessApp::KAccessApp()
     requestedFeatures = 0;
     dialog = nullptr;
 
-    if (!QX11Info::isPlatformX11()) {
-        m_error = true;
-        return;
-    }
-
     initMasks();
     XkbStateRec state_return;
     XkbGetState(QX11Info::display(), XkbUseCoreKbd, &state_return);

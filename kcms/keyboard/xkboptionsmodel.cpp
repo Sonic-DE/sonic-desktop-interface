@@ -197,11 +197,6 @@ void XkbOptionsModel::navigateToGroup(const QString &group)
 
 void XkbOptionsModel::populateWithCurrentXkbOptions()
 {
-    if (!KWindowSystem::isPlatformX11()) {
-        // TODO: implement for Wayland - query dbus maybe?
-        return;
-    }
-
     XkbConfig xkbConfig;
     QStringList xkbOptions;
     if (X11Helper::getGroupNames(QX11Info::display(), &xkbConfig, X11Helper::ALL)) {
