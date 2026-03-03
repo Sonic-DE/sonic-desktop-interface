@@ -57,3 +57,4 @@ target_link_libraries(kcm_tablet PRIVATE
 if(BUILD_TESTING)
     add_subdirectory(tests)
 endif()
+
