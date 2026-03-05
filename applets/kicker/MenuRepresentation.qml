@@ -28,12 +28,18 @@ PlasmaComponents3.ScrollView {
 
     focus: true
 
+    // we never want a vertical scrollbar, the components handle those.
+    PlasmaComponents3.ScrollBar.vertical.policy: PlasmaComponents3.ScrollBar.AlwaysOff
+    // needs to be set explicitly as the default can cause loops
+    PlasmaComponents3.ScrollBar.horizontal.visible: contentWidth > (Screen.width - Kirigami.Units.largeSpacing * 4)
+
+    // ScrollBar's padding is only to make space for the scrollbar, so we don't need it here
     Layout.minimumWidth: Math.min(Math.max(mainRow.Layout.minimumWidth, mainRow.implicitWidth), Screen.width - Kirigami.Units.largeSpacing * 4)
     Layout.maximumWidth: Layout.minimumWidth
 
     contentWidth: mainRow.implicitWidth
 
-    Layout.minimumHeight: Math.min(Math.max(sideBar.implicitHeight, rootList.implicitHeight + rootList.Layout.bottomMargin), Math.round(Screen.height * 0.8))
+    Layout.minimumHeight: Math.min(Math.max(sideBar.implicitHeight, rootList.implicitHeight + rootList.Layout.bottomMargin), Math.round(Screen.height * 0.8)) + topPadding + bottomPadding
     Layout.maximumHeight: Layout.minimumHeight
 
     function ensureVisible(item: Item) : void {
@@ -101,7 +107,7 @@ PlasmaComponents3.ScrollView {
             Layout.fillHeight: true
             Layout.rightMargin: Kirigami.Units.smallSpacing
 
-            implicitWidth: Math.max(favoriteApps.implicitWidth, favoriteSystemActions.implicitWidth) + margins.left + margins.right + sideBarScrollView.actualScrollBarWidth
+            implicitWidth: Math.max(favoriteApps.implicitWidth, favoriteSystemActions.implicitWidth) + margins.left + margins.right + sideBarScrollView.leftPadding + sideBarScrollView.rightPadding
             implicitHeight: sideBarLayout.implicitHeight + margins.top + margins.bottom
 
             imagePath: "widgets/frame"
@@ -140,13 +146,7 @@ PlasmaComponents3.ScrollView {
                 anchors.fill: parent
 
                 PlasmaComponents3.ScrollBar.horizontal.policy: PlasmaComponents3.ScrollBar.AlwaysOff
-
-                readonly property int actualScrollBarWidth: scrollBarVisible ? sideBarScrollView.PlasmaComponents3.ScrollBar.vertical.width : 0
-                property bool scrollBarVisible
-                Binding on scrollBarVisible {
-                    value: sideBarScrollView.contentHeight > Screen.width - Kirigami.Units.largeSpacing * 4
-                    delayed: true // this needs to be delayed or it can get stuck in a resize loop
-                }
+                PlasmaComponents3.ScrollBar.vertical.visible: sideBarScrollView.contentHeight > Math.round(Screen.height * 0.8)
 
                 function ensureVisible(item: Item) {
                     let flickable = (contentItem as Flickable)

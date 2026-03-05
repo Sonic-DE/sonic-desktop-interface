@@ -22,13 +22,6 @@ PlasmaComponents3.ScrollView {
     signal navigateRightRequested
     signal interactionConcluded
 
-    // can't use effectiveScrollBarWidth, it causes binding loops
-    readonly property int actualScrollBarWidth: scrollBarVisible ? PlasmaComponents3.ScrollBar.vertical.width : 0
-    property bool scrollBarVisible
-    Binding on scrollBarVisible {
-        value: itemList.contentHeight > itemList.height
-        delayed: true // this needs to be delayed or it can get stuck in a resize loop
-    }
     property Item mainSearchField: null
     property Kicker.SubMenu dialog: null
     property Kicker.SubMenu childDialog: null
@@ -44,8 +37,8 @@ PlasmaComponents3.ScrollView {
     property alias showSeparators: listView.showSeparators
 
 
-    implicitWidth: listView.implicitWidth + actualScrollBarWidth
-    implicitHeight: listView.contentHeight
+    implicitWidth: listView.implicitWidth + leftPadding + rightPadding
+    implicitHeight: listView.contentHeight + topPadding + bottomPadding
 
     Layout.minimumWidth: Kirigami.Units.gridUnit * 14
     Layout.maximumWidth: Math.round(Layout.minimumWidth * 1.5)
@@ -122,7 +115,6 @@ PlasmaComponents3.ScrollView {
 
         Binding on implicitWidth {
             value: listView.maxDelegateImplicitWidth
-            delayed: true // only resize once all delegates are loaded
             when: listView.maxDelegateImplicitWidth > 0 && itemList.dynamicResize
         }
 
