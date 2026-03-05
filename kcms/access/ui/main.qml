@@ -67,12 +67,6 @@ KCMUtils.AbstractKCM {
             icon: "image-invert-symbolic",
             title: i18nc("@title Category name in sidebar, for inverting screen colors", "Invert"),
             defaultnessKey: "invertIsDefaults"
-        },
-        {
-            icon: "cursor-arrow",
-            title: i18nc("@title Category name in sidebar, shake pointer to find it", "Shake Pointer"),
-            defaultnessKey: "shakeCursorIsDefaults",
-            available: false
         }
     ]
 

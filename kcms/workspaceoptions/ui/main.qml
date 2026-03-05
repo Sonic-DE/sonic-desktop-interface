@@ -241,20 +241,6 @@ KCM.SimpleKCM {
             visible: primarySelectionRadio.visible
         }
 
-        QQC2.CheckBox {
-            id: primarySelectionRadio
-            Kirigami.FormData.label: i18nc("@label for checkbox, part of a complete sentence: 'Middle-click pastes selected text'", "Middle-click:")
-            visible: false
-            text: i18nc("@option:check part of a complete sentence: 'Middle click pastes selected text'", "Pastes selected text")
-            checked: kcm.kwinSettings.primarySelection
-            onToggled: kcm.kwinSettings.primarySelection = checked
-
-            KCM.SettingStateBinding {
-                configObject: kcm.kwinSettings
-                settingName: "primarySelection"
-            }
-        }
-
         // There is no label for what middle-clicking does when using the
         // "click to zoom the handle" behavior because Qt doesn't invert the
         // middle-click functionality when using this; see
@@ -415,7 +401,7 @@ KCM.SimpleKCM {
         RowLayout {
             Kirigami.FormData.label: i18nc("@title:group prefix radiobutton group", "Enable Touch Mode:")
             QQC2.RadioButton {
-                text: false ? i18nc("@option:radio As in: 'Touch Mode is automatically enabled as needed'", "Automatically enable as needed") : i18nc("option:radio As in: 'Touch Mode is never enabled'", "Never enabled")
+                text: i18nc("option:radio As in: 'Touch Mode is never enabled'", "Never enabled")
                 Accessible.description: touchModeAlwaysOffRadioButtonHelperText.text
                 checked: kcm.kwinSettings.tabletMode === "auto"
                 onToggled: {
@@ -429,10 +415,6 @@ KCM.SimpleKCM {
                     configObject: kcm.kwinSettings
                     settingName: "tabletMode"
                 }
-            }
-            Kirigami.ContextualHelpButton {
-                visible: false
-                toolTipText: i18nc("@info:whatsthis contextualhelpbutton tooltip", "Touch Mode will be automatically activated whenever the system detects a touchscreen but no mouse or touchpad. For example: when a transformable laptop's keyboard is flipped around or detached.")
             }
         }
 
@@ -457,24 +439,6 @@ KCM.SimpleKCM {
             Layout.fillWidth: true
             spacing: 0
 
-            QQC2.RadioButton {
-                id: touchModeAlwaysOffRadioButton
-                visible: false
-                text: i18nc("As in: 'Touch Mode is never enabled'", "Disabled")
-                Accessible.description: touchModeAlwaysOffRadioButtonHelperText.text
-                checked: kcm.kwinSettings.tabletMode === "off"
-                onToggled: {
-                    if (checked) {
-                        kcm.kwinSettings.tabletMode = "off"
-                    }
-                }
-                QQC2.ButtonGroup.group: tabletModeBehaviorGroup
-
-                KCM.SettingStateBinding {
-                    configObject: kcm.kwinSettings
-                    settingName: "tabletMode"
-                }
-            }
             QQC2.Label {
                 id: touchModeAlwaysOffRadioButtonHelperText
                 Layout.fillWidth: true

@@ -298,23 +298,6 @@ ColumnLayout {
         }
 
         Loader {
-            id: pipeWireLoader
-            anchors.fill: hoverHandler
-            // Indent a little bit so that neither the thumbnail nor the drop
-            // shadow can cover up the highlight
-            anchors.margins: thumbnailLoader.anchors.margins
-
-            active: Plasmoid.configuration.showToolTips
-                && !toolTipDelegate.isLauncher
-                && !albumArtImage.visible
-                && false
-                && root.index !== -1
-            asynchronous: true
-            //In a loader since we might not have PipeWire available yet (WITH_PIPEWIRE could be undefined in plasma-workspace/libtaskmanager/declarative/taskmanagerplugin.cpp)
-            source: "PipeWireThumbnail.qml"
-        }
-
-        Loader {
             active: Plasmoid.configuration.showToolTips
                 && (((pipeWireLoader.item as PipeWireThumbnail)?.hasThumbnail ?? false) || (thumbnailLoader.status === Loader.Ready && !root.isMinimized))
             asynchronous: true
