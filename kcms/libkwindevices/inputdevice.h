@@ -10,9 +10,9 @@
 #include "InputDevice_interface.h"
 
 #include <QMatrix4x4>
+#include <QMetaProperty>
 #include <QObject>
 #include <QString>
-#include <QMetaProperty>
 
 #include <optional>
 
@@ -319,7 +319,8 @@ private:
             }
         }
 
-        void set(T newVal) {
+        void set(T newVal)
+        {
             if (!m_value) {
                 value();
             }
@@ -338,7 +339,8 @@ private:
             return m_defaultValueFunction ? (m_device->m_iface.get()->*m_defaultValueFunction)() : T();
         }
 
-        bool changed() const {
+        bool changed() const
+        {
             return m_value.has_value() && m_value.value() != m_configValue;
         }
 
@@ -353,7 +355,8 @@ private:
             return !m_supportedFunction || (iface->*m_supportedFunction)();
         }
 
-        bool save() {
+        bool save()
+        {
             if (!isSupported() || !m_value || m_prop.isConstant()) {
                 qCDebug(LIBKWINDEVICES) << "skipping" << this << m_value.has_value() << isSupported() << m_prop.name();
                 return false;
