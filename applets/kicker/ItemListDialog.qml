@@ -26,7 +26,7 @@ Kicker.SubMenu {
 
     visible: false
     location: PlasmaCore.Types.Floating
-    offset: Kirigami.Units.smallSpacing
+    offset: 0 // slightly overlap submenu to match QtWidgets menu behavior
     LayoutMirroring.enabled: dialogMirrored
 
     onWindowDeactivated: {
