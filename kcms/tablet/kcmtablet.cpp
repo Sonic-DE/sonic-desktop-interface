@@ -242,11 +242,11 @@ private:
             qCWarning(KCM_TABLET()) << "Failed to find device in libwacom:" << libwacom_error_get_message(error);
         } else {
             int num_styli = 0;
-            const int *styli = libwacom_get_supported_styli(device, &num_styli);
+            const WacomStylus **styli = libwacom_get_styli(device, &num_styli);
             if (num_styli > 0) {
                 numButtons = 0; // if we have supported styli, do not use the fallback value
                 for (int i = 0; i < num_styli; i++) {
-                    const auto stylus = libwacom_stylus_get_for_id(m_db, styli[i]);
+                    const auto stylus = styli[i];
                     if (stylus != nullptr) {
                         numButtons = std::max(numButtons, libwacom_stylus_get_num_buttons(stylus));
                     }
