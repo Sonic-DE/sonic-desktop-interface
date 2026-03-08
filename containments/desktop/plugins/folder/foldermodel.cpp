@@ -341,7 +341,7 @@ void FolderModel::invalidateFilterIfComplete()
         return;
     }
 
-    invalidateFilter();
+    invalidate();
 }
 
 void FolderModel::newFileMenuItemCreationStarted(const QUrl &url)
