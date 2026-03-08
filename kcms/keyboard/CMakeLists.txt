@@ -97,6 +97,8 @@ kconfig_add_kcfg_files(kcm_keyboard_PART_SRCS workspace_options.kcfgc GENERATE_M
 kconfig_add_kcfg_files(kcm_keyboard_PART_SRCS keyboardsettings.kcfgc GENERATE_MOC)
 kconfig_add_kcfg_files(kcm_keyboard_PART_SRCS keyboardmiscsettings.kcfgc GENERATE_MOC)
 
+set(kcm_keyboard_STATIC_SRCS ${kcm_keyboard_PART_SRCS} ${CMAKE_CURRENT_BINARY_DIR}/keyboardsettingsdata.cpp)
+
 kcmutils_generate_module_data(kcm_keyboard
     MODULE_DATA_HEADER keyboardsettingsdata.h
     MODULE_DATA_CLASS_NAME KeyboardSettingsData
@@ -104,7 +106,7 @@ kcmutils_generate_module_data(kcm_keyboard
     SETTINGS_CLASSES WorkspaceOptions KeyboardMiscSettings KeyboardSettings
 )
 
-add_library(kcm_keyboard_static STATIC ${kcm_keyboard_PART_SRCS})
+add_library(kcm_keyboard_static STATIC ${kcm_keyboard_STATIC_SRCS})
 set_property(TARGET kcm_keyboard_static PROPERTY POSITION_INDEPENDENT_CODE ON)
 
 qt_extract_metatypes(kcm_keyboard_static)
