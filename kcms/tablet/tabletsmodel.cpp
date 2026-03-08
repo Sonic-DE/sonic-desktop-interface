@@ -78,7 +78,9 @@ QVariant TabletsModel::data(const QModelIndex &index, int role) const
             libwacom_error_free(&error);
         } else {
             libwacom_error_free(&error);
-            return libwacom_get_name(device);
+            const char *name = libwacom_get_name(device);
+            libwacom_destroy(device);
+            return name;
         }
 
         if (hasPenDevice) {
