@@ -167,6 +167,8 @@ public:
     }
     QString toString() const;
 
+    ~LayoutUnit() noexcept = default;
+
 private:
     QString displayName;
     QKeySequence shortcut;
@@ -181,6 +183,8 @@ struct LayoutSet {
     LayoutSet()
     {
     }
+
+    ~LayoutSet() noexcept = default;
 
     LayoutSet(const LayoutSet &other)
     {

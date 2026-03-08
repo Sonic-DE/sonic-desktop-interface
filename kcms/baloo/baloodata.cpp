@@ -24,7 +24,3 @@ BalooSettings *BalooData::settings() const
 {
     return m_settings;
 }
-
-#include "baloodata.moc"
-
-#include "moc_baloodata.cpp"

@@ -9,8 +9,9 @@
 
 #include <QObject>
 
+#include "x11_helper.h"
+
 class KeyboardSettings;
-class LayoutUnit;
 
 class KeyboardConfig final : public QObject
 {
