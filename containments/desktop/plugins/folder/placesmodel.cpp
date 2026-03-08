@@ -49,9 +49,9 @@ bool PlacesModel::showDesktopEntry() const
 void PlacesModel::setShowDesktopEntry(bool showDesktopEntry)
 {
     if (m_showDesktopEntry != showDesktopEntry) {
+        beginFilterChange();
         m_showDesktopEntry = showDesktopEntry;
-
-        invalidateFilter();
+        endFilterChange();
 
         Q_EMIT showDesktopEntryChanged();
     }

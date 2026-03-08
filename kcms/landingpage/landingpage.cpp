@@ -75,6 +75,7 @@ void MostUsedModel::setResultModel(ResultModel *model)
 
     auto updateModel = [this]() {
         auto oldModel = sourceModel();
+        beginFilterChange();
         if (m_resultModel->rowCount() >= 6) {
             setSourceModel(m_resultModel);
         } else {
@@ -83,7 +84,7 @@ void MostUsedModel::setResultModel(ResultModel *model)
         if (oldModel != sourceModel()) {
             ignoredKCMs.clear();
         }
-        invalidateFilter();
+        endFilterChange();
     };
 
     m_resultModel = model;

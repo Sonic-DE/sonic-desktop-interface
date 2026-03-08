@@ -23,8 +23,9 @@ QString FilterProxyModel::query() const
 void FilterProxyModel::setQuery(const QString &query)
 {
     if (m_query != query) {
+        beginFilterChange();
         m_query = query;
-        invalidateFilter();
+        endFilterChange();
         Q_EMIT queryChanged();
     }
 }
@@ -37,8 +38,9 @@ KDEDConfig::ModuleStatus FilterProxyModel::statusFilter() const
 void FilterProxyModel::setStatusFilter(KDEDConfig::ModuleStatus statusFilter)
 {
     if (m_statusFilter != statusFilter) {
+        beginFilterChange();
         m_statusFilter = statusFilter;
-        invalidateFilter();
+        endFilterChange();
         Q_EMIT statusFilterChanged();
     }
 }
