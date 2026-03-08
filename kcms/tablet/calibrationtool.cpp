@@ -28,6 +28,14 @@ CalibrationTool::CalibrationTool()
     });
 }
 
+CalibrationTool::~CalibrationTool()
+{
+    if (m_canberraContext) {
+        ca_context_destroy(m_canberraContext);
+        m_canberraContext = nullptr;
+    }
+}
+
 void CalibrationTool::setWidth(const float width)
 {
     if (m_width != width) {
