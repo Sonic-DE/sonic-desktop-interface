@@ -254,6 +254,9 @@ private:
             }
         }
         libwacom_error_free(&error);
+        if (device != nullptr) {
+            libwacom_destroy(device);
+        }
 
         // We currently don't support more than 3 stylus buttons, at the moment
         if (numButtons > 3) {
