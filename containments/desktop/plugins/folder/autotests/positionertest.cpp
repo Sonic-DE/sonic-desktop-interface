@@ -35,7 +35,9 @@ void PositionerTest::initTestCase()
     QFile f;
     for (int i = 1; i < 10; i++) {
         f.setFileName(QStringLiteral("%1/file%2.txt").arg(dir.path(), QString::number(i)));
-        f.open(QFile::WriteOnly);
+        if (!f.open(QFile::WriteOnly)) {
+            continue;
+        }
         f.close();
     }
 }
@@ -386,7 +388,9 @@ void PositionerTest::tst_insertFile()
     dir.cd(desktop);
     QFile f;
     f.setFileName(QStringLiteral("%1/NEWFILE.txt").arg(dir.path()));
-    f.open(QFile::WriteOnly);
+    if (!f.open(QFile::WriteOnly)) {
+        return;
+    }
     f.close();
 
     QVERIFY(itemInsertedSpy.wait());
