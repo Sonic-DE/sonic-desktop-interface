@@ -36,7 +36,9 @@ void FolderModelTest::createTestFolder(const QString &path)
             f.setFileName(QStringLiteral("%1/.file%2.txt").arg(dir.path(), QString::number(i - 9)));
         }
 
-        f.open(QFile::WriteOnly);
+        if (!f.open(QFile::WriteOnly)) {
+            continue;
+        }
         f.close();
     }
 }

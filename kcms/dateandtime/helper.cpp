@@ -38,7 +38,9 @@ int ClockHelper::ntp(const QStringList &ntpServers, bool ntpEnabled)
     // write to the system config file
     QFile config_file(KDE_CONFDIR "/kcmclockrc");
     if (!config_file.exists()) {
-        config_file.open(QIODevice::WriteOnly);
+        if (!config_file.open(QIODevice::WriteOnly)) {
+            return -1;
+        }
         config_file.close();
         config_file.setPermissions(QFile::ReadOwner | QFile::WriteOwner | QFile::ReadGroup | QFile::ReadOther);
     }
