@@ -128,6 +128,7 @@ void ActionEditor::manageControlStatus()
     switch (ui.CbParameterType->currentIndex()) {
     case Solid::Predicate::PropertyCheck:
         atomEnable = true;
+        [[fallthrough]];
     case Solid::Predicate::InterfaceCheck:
         isEnable = true;
         break;
