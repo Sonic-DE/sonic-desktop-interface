@@ -8,8 +8,9 @@
 
 #include <QAbstractListModel>
 
+#include "x11_helper.h"
+
 class KeyboardConfig;
-class LayoutUnit;
 class QItemSelectionModel;
 
 class UserLayoutModel final : public QAbstractListModel
@@ -40,6 +41,7 @@ public:
 
     Q_INVOKABLE void addLayout(const QString &layout, const QString &variant, const QKeySequence &shortcut, const QString &displayName = QString());
     Q_INVOKABLE void setSingleLayout(const QString &layout, const QString &variant, const QKeySequence &shortcut, const QString &displayName = QString());
+
 private:
     QItemSelectionModel *const m_selectionModel;
     KeyboardConfig *const m_config;

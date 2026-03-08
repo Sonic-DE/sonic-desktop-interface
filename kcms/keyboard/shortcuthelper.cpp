@@ -101,6 +101,3 @@ QKeySequence ShortcutHelper::getSequence(QAction *action)
     const auto &shortcuts = KGlobalAccel::self()->shortcut(action);
     return shortcuts.isEmpty() ? QKeySequence() : shortcuts.first();
 }
-
-#include "moc_shortcuthelper.cpp"
-#include "shortcuthelper.moc"

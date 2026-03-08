@@ -10,14 +10,16 @@
 
 #include <KQuickManagedConfigModule>
 
+#include "keyboardmiscsettings.h"
+#include "keyboardsettings.h"
+#include "shortcuthelper.h"
+#include "userlayoutmodel.h"
+#include "workspace_options.h"
+#include "xkboptionsmodel.h"
+
 class KeyboardSettingsData;
 class WorkspaceOptions;
-class KeyboardMiscSettings;
-class KeyboardSettings;
 class KeyboardConfig;
-class ShortcutHelper;
-class UserLayoutModel;
-class XkbOptionsModel;
 
 namespace NumLockState
 {
