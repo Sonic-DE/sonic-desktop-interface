@@ -161,11 +161,6 @@ if(BUILD_KCM_TABLET)
         PURPOSE "Collection of Wayland protocols that add functionality not available in the Wayland core protocol"
         URL "https://gitlab.freedesktop.org/wayland/wayland-protocols/"
     )
-    find_package(Wayland 1.2)
-    set_package_properties(Wayland PROPERTIES
-        TYPE REQUIRED
-        PURPOSE "Required for building Tablet input KCM"
-    )
     pkg_check_modules(LIBWACOM libwacom REQUIRED IMPORTED_TARGET)
 endif()
 
