@@ -153,6 +153,3 @@ void UserLayoutModel::setSingleLayout(const QString &layout, const QString &vari
     clear();
     addLayout(layout, variant, shortcut, displayName);
 }
-
-#include "moc_userlayoutmodel.cpp"
-#include "userlayoutmodel.moc"

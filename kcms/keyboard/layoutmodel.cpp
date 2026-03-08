@@ -58,6 +58,3 @@ QHash<int, QByteArray> LayoutModel::roleNames() const
         {Roles::VariantNameRole, QByteArrayLiteral("variantName")},
     };
 }
-
-#include "layoutmodel.moc"
-#include "moc_layoutmodel.cpp"
