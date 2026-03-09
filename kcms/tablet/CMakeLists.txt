@@ -20,10 +20,6 @@ ecm_qt_declare_logging_category(kcm_tablet
 if (Qt6_VERSION VERSION_GREATER_EQUAL "6.8.0")
     set(private_code_option  "PRIVATE_CODE")
 endif()
-qt6_generate_wayland_protocol_client_sources(kcm_tablet
-    ${private_code_option}
-    FILES ${WaylandProtocols_DATADIR}/stable/tablet/tablet-v2.xml
-)
 
 ecm_qt_install_logging_categories(
     EXPORT kcm_tablet
@@ -49,11 +45,13 @@ target_link_libraries(kcm_tablet PRIVATE
     KF6::KCMUtilsQuick
 
     Qt::DBus
-    Qt::WaylandClient
-    Wayland::Client
     kwindevices
     Canberra::Canberra
     PkgConfig::LIBWACOM
+
+    Qt::GuiPrivate
+    X11::X11
+    X11::Xi
 )
 
 if(BUILD_TESTING)
