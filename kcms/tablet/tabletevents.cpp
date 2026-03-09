@@ -1,234 +1,337 @@
 /*
     SPDX-FileCopyrightText: 2022 Aleix Pol Gonzalez <aleixpol@kde.org>
+    SPDX-FileCopyrightText: 2026 Joseph Crowell <joseph.w.crowell@gmail.com>
 
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 
 #include "tabletevents.h"
-#include "qwayland-tablet-v2.h"
-#include <QQuickWindow>
-#include <QWaylandClientExtensionTemplate>
-#include <qguiapplication.h>
-#include <qtwaylandclientversion.h>
 
-class TabletPadDial : public QObject, public QtWayland::zwp_tablet_pad_dial_v2
+#include <QGuiApplication>
+#include <QQuickWindow>
+
+#include <X11/X.h>
+#include <X11/Xlib.h>
+#include <X11/extensions/XInput.h>
+#include <X11/extensions/XInput2.h>
+
+class TabletPadDial : public QObject
 {
 public:
-    TabletPadDial(TabletEvents *events, ::zwp_tablet_pad_dial_v2 *t)
+    TabletPadDial(TabletEvents *events, int deviceId)
         : QObject(events)
-        , QtWayland::zwp_tablet_pad_dial_v2(t)
         , m_events(events)
+        , m_deviceId(deviceId)
     {
     }
 
-    ~TabletPadDial()
-    {
-        destroy();
-    }
-
-    void zwp_tablet_pad_dial_v2_delta(int32_t value120) override
+    void handleDelta(int32_t value120)
     {
         Q_EMIT m_events->dialDelta(value120);
     }
 
     TabletEvents *const m_events;
+    int m_deviceId;
 };
 
-class TabletPadGroup : public QObject, public QtWayland::zwp_tablet_pad_group_v2
+class TabletPadGroup : public QObject
 {
 public:
-    TabletPadGroup(TabletEvents *events, ::zwp_tablet_pad_group_v2 *t)
+    TabletPadGroup(TabletEvents *events, int deviceId)
         : QObject(events)
-        , QtWayland::zwp_tablet_pad_group_v2(t)
         , m_events(events)
+        , m_deviceId(deviceId)
     {
-    }
-
-    ~TabletPadGroup()
-    {
-        destroy();
-    }
-
-    void zwp_tablet_pad_group_v2_dial(zwp_tablet_pad_dial_v2 *dial) override
-    {
-        new TabletPadDial(m_events, dial);
     }
 
     TabletEvents *const m_events;
+    int m_deviceId;
+    TabletPadDial *m_dial = nullptr;
 };
 
-class TabletPad : public QObject, public QtWayland::zwp_tablet_pad_v2
+class TabletPad : public QObject
 {
 public:
-    TabletPad(TabletEvents *events, ::zwp_tablet_pad_v2 *t)
+    TabletPad(TabletEvents *events, int deviceId, const QString &path)
         : QObject(events)
-        , QtWayland::zwp_tablet_pad_v2(t)
         , m_events(events)
+        , m_deviceId(deviceId)
+        , m_path(path)
     {
     }
 
-    ~TabletPad()
-    {
-        destroy();
-    }
-
-    void zwp_tablet_pad_v2_path(const QString &path) override
-    {
-        m_path = path;
-    }
-
-    void zwp_tablet_pad_v2_buttons(uint32_t buttons) override
-    {
-        m_buttons = buttons;
-    }
-
-    void zwp_tablet_pad_v2_button(uint32_t /*time*/, uint32_t button, uint32_t state) override
+    void handleButton(uint32_t button, uint32_t state)
     {
         Q_EMIT m_events->padButtonReceived(m_path, button, state);
     }
 
-    void zwp_tablet_pad_v2_group(zwp_tablet_pad_group_v2 *pad_group) override
-    {
-        new TabletPadGroup(m_events, pad_group);
-    }
-
     TabletEvents *const m_events;
+    int m_deviceId;
     QString m_path;
     uint m_buttons = 0;
 };
 
-class Tool : public QObject, public QtWayland::zwp_tablet_tool_v2
+class TabletTool : public QObject
 {
 public:
-    Tool(TabletEvents *const events, ::zwp_tablet_tool_v2 *t)
+    TabletTool(TabletEvents *events, int deviceId)
         : QObject(events)
-        , QtWayland::zwp_tablet_tool_v2(t)
         , m_events(events)
+        , m_deviceId(deviceId)
     {
     }
 
-    ~Tool()
+    void setHardwareSerial(uint32_t hi, uint32_t lo)
     {
-        destroy();
+        m_hardware_serial_hi = hi;
+        m_hardware_serial_lo = lo;
     }
 
-    void zwp_tablet_tool_v2_hardware_serial(uint32_t hardware_serial_hi, uint32_t hardware_serial_lo) override
-    {
-        m_hardware_serial_hi = hardware_serial_hi;
-        m_hardware_serial_lo = hardware_serial_lo;
-    }
-
-    void zwp_tablet_tool_v2_button(uint32_t /*serial*/, uint32_t button, uint32_t state) override
+    void handleButton(uint32_t button, uint32_t state)
     {
         Q_EMIT m_events->toolButtonReceived(m_hardware_serial_hi, m_hardware_serial_lo, button, state);
     }
 
-    void zwp_tablet_tool_v2_motion(wl_fixed_t x, wl_fixed_t y) override
+    void handleMotion(double x, double y, double pressure, double tiltX, double tiltY)
     {
-        m_tool_x = x;
-        m_tool_y = y;
-        const double pressure = m_pressure / 65535.0;
-        Q_EMIT m_events->toolMotion(m_hardware_serial_hi,
-                                    m_hardware_serial_lo,
-                                    wl_fixed_to_double(m_tool_x),
-                                    wl_fixed_to_double(m_tool_y),
-                                    pressure,
-                                    wl_fixed_to_double(m_tilt_x),
-                                    wl_fixed_to_double(m_tilt_y));
-    }
-
-    void zwp_tablet_tool_v2_pressure(uint32_t pressure) override
-    {
+        m_x = x;
+        m_y = y;
         m_pressure = pressure;
+        m_tilt_x = tiltX;
+        m_tilt_y = tiltY;
+        Q_EMIT m_events->toolMotion(m_hardware_serial_hi, m_hardware_serial_lo, x, y, pressure, tiltX, tiltY);
     }
 
-    void zwp_tablet_tool_v2_tilt(wl_fixed_t tilt_x, wl_fixed_t tilt_y) override
-    {
-        m_tilt_x = tilt_x;
-        m_tilt_y = tilt_y;
-    }
-
-    void zwp_tablet_tool_v2_down(uint32_t serial) override
+    void handleDown(uint32_t serial)
     {
         Q_UNUSED(serial)
-        Q_EMIT m_events->toolDown(m_hardware_serial_hi, m_hardware_serial_lo, wl_fixed_to_double(m_tool_x), wl_fixed_to_double(m_tool_y));
+        Q_EMIT m_events->toolDown(m_hardware_serial_hi, m_hardware_serial_lo, m_x, m_y);
     }
 
-    void zwp_tablet_tool_v2_up() override
+    void handleUp()
     {
-        Q_EMIT m_events->toolUp(m_hardware_serial_hi, m_hardware_serial_lo, wl_fixed_to_double(m_tool_x), wl_fixed_to_double(m_tool_y));
+        Q_EMIT m_events->toolUp(m_hardware_serial_hi, m_hardware_serial_lo, m_x, m_y);
     }
 
     uint32_t m_hardware_serial_hi = 0;
     uint32_t m_hardware_serial_lo = 0;
-    uint32_t m_tool_x = 0;
-    uint32_t m_tool_y = 0;
-    uint32_t m_pressure = 0;
-    uint32_t m_tilt_x = 0;
-    uint32_t m_tilt_y = 0;
+    double m_x = 0;
+    double m_y = 0;
+    double m_pressure = 0;
+    double m_tilt_x = 0;
+    double m_tilt_y = 0;
     TabletEvents *const m_events;
+    int m_deviceId;
 };
 
-class TabletManager : public QWaylandClientExtensionTemplate<TabletManager>, public QtWayland::zwp_tablet_manager_v2
+class TabletSeat : public QObject
 {
 public:
-    explicit TabletManager(TabletEvents *q)
-        : QWaylandClientExtensionTemplate<TabletManager>(2)
-        , q(q)
-    {
-        setParent(q);
-        initialize();
-        Q_ASSERT(isInitialized());
-    }
-
-    ~TabletManager()
-    {
-        destroy();
-    }
-
-    TabletEvents *const q;
-};
-
-class TabletSeat : public QObject, public QtWayland::zwp_tablet_seat_v2
-{
-public:
-    TabletSeat(TabletEvents *events, ::zwp_tablet_seat_v2 *seat)
+    TabletSeat(TabletEvents *events)
         : QObject(events)
-        , QtWayland::zwp_tablet_seat_v2(seat)
         , m_events(events)
     {
     }
 
     ~TabletSeat()
     {
-        destroy();
+        qDeleteAll(m_tools);
+        qDeleteAll(m_pads);
     }
 
-    void zwp_tablet_seat_v2_tool_added(struct ::zwp_tablet_tool_v2 *id) override
+    TabletTool *addTool(int deviceId)
     {
-        new Tool(m_events, id);
+        auto tool = new TabletTool(m_events, deviceId);
+        m_tools.append(tool);
+        return tool;
     }
 
-    void zwp_tablet_seat_v2_pad_added(struct ::zwp_tablet_pad_v2 *id) override
+    TabletPad *addPad(int deviceId, const QString &path)
     {
-        new TabletPad(m_events, id);
+        auto pad = new TabletPad(m_events, deviceId, path);
+        m_pads.append(pad);
+        return pad;
+    }
+
+    TabletTool *findTool(int deviceId)
+    {
+        for (auto tool : m_tools) {
+            if (tool->m_deviceId == deviceId) {
+                return tool;
+            }
+        }
+        return nullptr;
+    }
+
+    TabletPad *findPad(int deviceId)
+    {
+        for (auto pad : m_pads) {
+            if (pad->m_deviceId == deviceId) {
+                return pad;
+            }
+        }
+        return nullptr;
     }
 
     TabletEvents *const m_events;
+    QList<TabletTool *> m_tools;
+    QList<TabletPad *> m_pads;
+};
+
+class TabletManager : public QObject
+{
+public:
+    explicit TabletManager(TabletEvents *q)
+        : QObject(q)
+        , m_events(q)
+        , m_seat(new TabletSeat(q))
+        , m_display(nullptr)
+        , m_rootWindow(0)
+    {
+        // Don't open display here - only initialize when a tablet is plugged in
+    }
+
+    ~TabletManager()
+    {
+        if (m_display) {
+            XCloseDisplay(m_display);
+        }
+    }
+
+    // Lazy initialization - only opens display and queries devices when needed
+    void ensureInitialized()
+    {
+        if (m_display) {
+            return; // Already initialized
+        }
+
+        // Get display from environment
+        const char *displayName = getenv("DISPLAY");
+        if (!displayName) {
+            return;
+        }
+
+        m_display = XOpenDisplay(displayName);
+        if (!m_display) {
+            return;
+        }
+
+        m_rootWindow = DefaultRootWindow(m_display);
+
+        // Query X Input devices to find tablets
+        queryDevices();
+    }
+
+    bool hasTablet()
+    {
+        ensureInitialized();
+        return m_seat->m_tools.size() > 0 || m_seat->m_pads.size() > 0;
+    }
+
+    TabletSeat *seat()
+    {
+        ensureInitialized();
+        return m_seat;
+    }
+
+    void queryDevices()
+    {
+        int ndevices = 0;
+        XDeviceInfo *devices = XListInputDevices(m_display, &ndevices);
+        if (!devices) {
+            return;
+        }
+
+        // Get the wacom tool type atom
+        Atom toolTypeAtom = XInternAtom(m_display, "Wacom Tool Type", True);
+        if (!toolTypeAtom) {
+            return;
+        }
+
+        for (int i = 0; i < ndevices; i++) {
+            XDeviceInfo &dev = devices[i];
+
+            // Query the Wacom Tool Type property to identify tablet devices
+            Atom actualType = None;
+            int actualFormat = 0;
+            unsigned long nitems = 0, bytesAfter = 0;
+            unsigned char *data = nullptr;
+
+            Status status =
+                XIGetProperty(m_display, dev.id, toolTypeAtom, 0, 100, False, AnyPropertyType, &actualType, &actualFormat, &nitems, &bytesAfter, &data);
+
+            if (status == Success && data && nitems > 0) {
+                // This is a Wacom tablet device - get the tool type from the atom
+                Atom *toolType = reinterpret_cast<Atom *>(data);
+                if (nitems > 0) {
+                    char *toolTypeName = XGetAtomName(m_display, toolType[0]);
+                    if (toolTypeName) {
+                        bool isPad = (strcmp(toolTypeName, "PAD") == 0);
+                        if (isPad) {
+                            m_seat->addPad(dev.id, QString::fromLatin1(dev.name));
+                        } else {
+                            m_seat->addTool(dev.id);
+                        }
+                        XFree(toolTypeName);
+
+                        // Select for events on this device
+                        selectEvents(dev.id);
+                    }
+                }
+                XFree(data);
+            }
+        }
+
+        if (devices) {
+            XFreeDeviceList(devices);
+        }
+    }
+
+    void selectEvents(int deviceId)
+    {
+        unsigned char mask[XI_LASTEVENT];
+        memset(mask, 0, sizeof(mask));
+
+        XISetMask(mask, XI_DeviceChanged);
+        XISetMask(mask, XI_ButtonPress);
+        XISetMask(mask, XI_ButtonRelease);
+        XISetMask(mask, XI_Motion);
+
+        XIEventMask eventMask;
+        eventMask.deviceid = deviceId;
+        eventMask.mask = mask;
+        eventMask.mask_len = sizeof(mask);
+
+        XISelectEvents(m_display, m_rootWindow, &eventMask, 1);
+    }
+
+    TabletEvents *const m_events;
+    TabletSeat *m_seat = nullptr;
+    Display *m_display = nullptr;
+    Window m_rootWindow = 0;
 };
 
 TabletEvents::TabletEvents(QQuickItem *parent)
     : QQuickItem(parent)
 {
-    auto waylandApp = qGuiApp->nativeInterface<QNativeInterface::QWaylandApplication>();
-    if (!waylandApp) {
+    if (qGuiApp->platformName() != QLatin1String("xcb")) {
         return;
     }
-    auto seat = waylandApp->seat();
 
+    // Create X11 tablet manager
     auto tabletClient = new TabletManager(this);
-    auto _seat = tabletClient->get_tablet_seat(seat);
-    new TabletSeat(this, _seat);
+
+    if (!tabletClient->hasTablet()) {
+        return;
+    }
+
+    // Install event filter to handle X11 events
+    QCoreApplication::instance()->installEventFilter(this);
 }
 
-#include "moc_tabletevents.cpp"
+TabletEvents::~TabletEvents() = default;
+
+bool TabletEvents::eventFilter(QObject *watched, QEvent *event)
+{
+    return QQuickItem::eventFilter(watched, event);
+}

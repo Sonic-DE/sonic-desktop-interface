@@ -58,10 +58,6 @@ if (Qt6Gui_VERSION VERSION_GREATER_EQUAL "6.10.0")
     find_package(Qt6GuiPrivate ${REQUIRED_QT_VERSION} REQUIRED NO_MODULE)
 endif()
 
-if(BUILD_KCM_TABLET)
-    find_package(Qt6WaylandClient ${QT_MIN_VERSION} CONFIG REQUIRED)
-endif()
-
 find_package(KF6 ${KF6_MIN_VERSION} REQUIRED COMPONENTS
     Auth
     Crash
@@ -155,12 +151,6 @@ set_package_properties(KF6QQC2DesktopStyle PROPERTIES
 )
 
 if(BUILD_KCM_TABLET)
-    find_package(WaylandProtocols 1.44)
-    set_package_properties(WaylandProtocols PROPERTIES
-        TYPE REQUIRED
-        PURPOSE "Collection of Wayland protocols that add functionality not available in the Wayland core protocol"
-        URL "https://gitlab.freedesktop.org/wayland/wayland-protocols/"
-    )
     pkg_check_modules(LIBWACOM libwacom REQUIRED IMPORTED_TARGET)
 endif()
 
