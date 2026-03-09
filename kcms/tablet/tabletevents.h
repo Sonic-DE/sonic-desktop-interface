@@ -1,11 +1,13 @@
 /*
     SPDX-FileCopyrightText: 2022 Aleix Pol Gonzalez <aleixpol@kde.org>
+    SPDX-FileCopyrightText: 2026 Joseph Crowell <joseph.w.crowell@gmail.com>
 
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 
 #pragma once
 
+#include <QObject>
 #include <QQuickItem>
 
 class TabletEvents : public QQuickItem
@@ -13,6 +15,10 @@ class TabletEvents : public QQuickItem
     Q_OBJECT
 public:
     TabletEvents(QQuickItem *parent = nullptr);
+    ~TabletEvents() override;
+
+protected:
+    bool eventFilter(QObject *watched, QEvent *event) override;
 
 Q_SIGNALS:
     void padButtonReceived(const QString &path, uint button, bool pressed);
