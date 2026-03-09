@@ -40,7 +40,6 @@ include(ECMConfiguredInstall)
 option(BUILD_DOC "Whether to build the documentation" ON)
 option(BUILD_KCM_MOUSE_X11 "Build the Mouse KCM's X11 backend" ON)
 option(BUILD_KCM_TOUCHPAD_X11 "Build the Touchpad KCM's X11 backend" ON)
-option(BUILD_KCM_TABLET "Build the Tablet KCM" ON)
 
 find_package(Qt6 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS
     Quick
@@ -56,10 +55,6 @@ find_package(Qt6 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS
 
 if (Qt6Gui_VERSION VERSION_GREATER_EQUAL "6.10.0")
     find_package(Qt6GuiPrivate ${REQUIRED_QT_VERSION} REQUIRED NO_MODULE)
-endif()
-
-if(BUILD_KCM_TABLET)
-    find_package(Qt6WaylandClient ${QT_MIN_VERSION} CONFIG REQUIRED)
 endif()
 
 find_package(KF6 ${KF6_MIN_VERSION} REQUIRED COMPONENTS
@@ -153,16 +148,6 @@ set_package_properties(KF6QQC2DesktopStyle PROPERTIES
     PURPOSE "Required at runtime by many KCMs"
     TYPE RUNTIME
 )
-
-if(BUILD_KCM_TABLET)
-    find_package(WaylandProtocols 1.44)
-    set_package_properties(WaylandProtocols PROPERTIES
-        TYPE REQUIRED
-        PURPOSE "Collection of Wayland protocols that add functionality not available in the Wayland core protocol"
-        URL "https://gitlab.freedesktop.org/wayland/wayland-protocols/"
-    )
-    pkg_check_modules(LIBWACOM libwacom REQUIRED IMPORTED_TARGET)
-endif()
 
 find_package(SDL2 2.0.16)
 set_package_properties(SDL2 PROPERTIES

@@ -40,7 +40,3 @@ endif()
 if (BUILD_KCM_TOUCHPAD_X11)
     add_subdirectory(touchpad)
 endif()
-
-if(BUILD_KCM_TABLET)
-    add_subdirectory(tablet)
-endif()
