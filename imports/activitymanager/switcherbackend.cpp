@@ -31,7 +31,6 @@
 #include <KWindowInfo>
 #include <KWindowSystem>
 #include <KX11Extras>
-#include <waylandtasksmodel.h>
 #include <windowtasksmodel.h>
 #include <xwindowtasksmodel.h>
 
