@@ -11,7 +11,6 @@
 
 #include <activityinfo.h>
 #include <virtualdesktopinfo.h>
-#include <waylandtasksmodel.h>
 #include <windowtasksmodel.h>
 #include <xwindowtasksmodel.h>
 
