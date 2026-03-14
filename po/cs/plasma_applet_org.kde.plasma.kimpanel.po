@@ -29,7 +29,7 @@ msgstr "(Prázdné)"
 #, kde-format
 msgctxt "@title:group for configuration dialog page"
 msgid "Appearance"
-msgstr ""
+msgstr "Vzhled"
 
 #: qml/ConfigAppearance.qml:31
 #, kde-format
