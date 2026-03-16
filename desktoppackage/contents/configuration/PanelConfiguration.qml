@@ -443,23 +443,38 @@ ColumnLayout {
         ColumnLayout {
             Layout.alignment: Qt.AlignHCenter
             spacing: Kirigami.Units.mediumSpacing
-            Kirigami.Heading {
+            RowLayout {
                 Layout.alignment: Qt.AlignTop | Qt.AlignHCenter
-                level: dialogRoot.headingLevel
-                text: i18ndc("plasma_shell_org.kde.plasma.desktop", "@title:group", "Opacity")
-                textFormat: Text.PlainText
+                spacing: 0
+
+                Kirigami.Heading {
+                    level: dialogRoot.headingLevel
+                    text: i18ndc("plasma_shell_org.kde.plasma.desktop", "@title:group", "Opacity")
+                    textFormat: Text.PlainText
+                }
+
+                PlasmaExtras.ContextualHelpButton {
+                    visible: !panel.adaptiveOpacityEnabled
+                    toolTipText: i18ndc("plasma_shell_org.kde.plasma.desktop", "@info:tooltip", "The current Plasma style does not support opacity options.")
+                }
             }
             PanelRepresentation {
                 id: opacityRepresentation
                 Layout.alignment: Qt.AlignHCenter
                 adaptivePanel: transparencyBox.previewIndex === 0
                 translucentPanel: transparencyBox.previewIndex === 2
-                onClicked: transparencyBox.popup.visible = true
+                onClicked: {
+                    if (panel.adaptiveOpacityEnabled) {
+                        transparencyBox.popup.visible = true
+                    }
+                }
                 isVertical: dialogRoot.vertical
                 alignment: positionRepresentation.alignment
+                opacity: panel.adaptiveOpacityEnabled ? 1.0 : 0.75
             }
             PC3.ComboBox {
                 id: transparencyBox
+                enabled: panel.adaptiveOpacityEnabled
                 readonly property int previewIndex: popup.visible ? highlightedIndex : currentIndex
                 model: [
                     i18ndc("plasma_shell_org.kde.plasma.desktop", "@item:inlistbox", "Adaptive"),
