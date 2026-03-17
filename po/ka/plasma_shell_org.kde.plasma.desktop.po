@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-desktop\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-03-13 00:45+0000\n"
+"POT-Creation-Date: 2026-03-17 00:45+0000\n"
 "PO-Revision-Date: 2026-01-14 05:18+0100\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
@@ -520,136 +520,142 @@ msgctxt "@item:inlistbox"
 msgid "Windows go below"
 msgstr "ფანჯრები ქვეშ ძვრებიან"
 
-#: contents/configuration/PanelConfiguration.qml:449
+#: contents/configuration/PanelConfiguration.qml:452
 #, kde-format
 msgctxt "@title:group"
 msgid "Opacity"
 msgstr "გაუმჭვირვალობა"
 
-#: contents/configuration/PanelConfiguration.qml:465
+#: contents/configuration/PanelConfiguration.qml:458
+#, kde-format
+msgctxt "@info:tooltip"
+msgid "The current Plasma style does not support opacity options."
+msgstr ""
+
+#: contents/configuration/PanelConfiguration.qml:480
 #, kde-format
 msgctxt "@item:inlistbox"
 msgid "Adaptive"
 msgstr "შეგუებადი"
 
-#: contents/configuration/PanelConfiguration.qml:466
+#: contents/configuration/PanelConfiguration.qml:481
 #, kde-format
 msgctxt "@item:inlistbox"
 msgid "Opaque"
 msgstr "გაუმჭვირვალე"
 
-#: contents/configuration/PanelConfiguration.qml:467
+#: contents/configuration/PanelConfiguration.qml:482
 #, kde-format
 msgctxt "@item:inlistbox"
 msgid "Translucent"
 msgstr "ნახევრადგამჭვირვალე"
 
-#: contents/configuration/PanelConfiguration.qml:499
+#: contents/configuration/PanelConfiguration.qml:514
 #, kde-format
 msgctxt "@title:group Degree of floatingness of panel and applets"
 msgid "Floating"
 msgstr "მცურავი"
 
-#: contents/configuration/PanelConfiguration.qml:515
+#: contents/configuration/PanelConfiguration.qml:530
 #, kde-format
 msgctxt "@item:inlistbox Option to disable floating panels or applets"
 msgid "Disabled"
 msgstr "გამორთულია"
 
-#: contents/configuration/PanelConfiguration.qml:516
+#: contents/configuration/PanelConfiguration.qml:531
 #, kde-format
 msgctxt "@item:inlistbox Option to make only panel applets always float"
 msgid "Applets only"
 msgstr "მხოლოდ აპლეტები"
 
-#: contents/configuration/PanelConfiguration.qml:517
+#: contents/configuration/PanelConfiguration.qml:532
 #, kde-format
 msgctxt "@item:inlistbox Option to make panel and applets floating"
 msgid "Panel and applets"
 msgstr "პანელი და აპლეტები"
 
-#: contents/configuration/PanelConfiguration.qml:560
+#: contents/configuration/PanelConfiguration.qml:575
 #, kde-format
 msgctxt ""
 "@action:button Revert an unsupported configuration back to the defaults"
 msgid "Fix it"
 msgstr "გაასწორეთ"
 
-#: contents/configuration/PanelConfiguration.qml:646
+#: contents/configuration/PanelConfiguration.qml:661
 #, kde-format
 msgctxt "@label:spinbox"
 msgid "Panel Width:"
 msgstr "პანელის სიგანე:"
 
-#: contents/configuration/PanelConfiguration.qml:647
+#: contents/configuration/PanelConfiguration.qml:662
 #, kde-format
 msgctxt "@label:spinbox"
 msgid "Panel Height:"
 msgstr "პანელის სიმაღლე:"
 
-#: contents/configuration/PanelConfiguration.qml:670
+#: contents/configuration/PanelConfiguration.qml:685
 #, kde-format
 msgctxt "@title:group shortcut that moves focus to the panel"
 msgid "Focus shortcut:"
 msgstr "ფოკუსის მალსახმობი:"
 
-#: contents/configuration/PanelConfiguration.qml:680
+#: contents/configuration/PanelConfiguration.qml:695
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "Press this keyboard shortcut to move focus to the Panel"
 msgstr ""
 "ფოკუსის პანელზე გადასატანად ეს კლავიატურის მალსახმობი შეგიძლიათ, გამოიყენოთ"
 
-#: contents/configuration/PanelConfiguration.qml:687
+#: contents/configuration/PanelConfiguration.qml:702
 #, kde-format
 msgctxt "@action:button accessible name"
 msgid "Focus Shortcut Setter"
 msgstr "ფოკუსის მალსახმობის დამყენებელი"
 
-#: contents/configuration/PanelConfiguration.qml:688
+#: contents/configuration/PanelConfiguration.qml:703
 #, kde-format
 msgctxt "@info:whatsthis Accessible description for button"
 msgid "Button to set the shortcut for the panel to gain focus"
 msgstr "ღილაკი მალსახმობის დასაყენებლად პანელზე ფოკუსის გადატანისთვის"
 
-#: contents/configuration/PanelConfiguration.qml:714
+#: contents/configuration/PanelConfiguration.qml:729
 #, kde-format
 msgctxt "@action:button Delete the panel"
 msgid "Delete Panel"
 msgstr "პანელის წაშლა"
 
-#: contents/configuration/PanelConfiguration.qml:717
+#: contents/configuration/PanelConfiguration.qml:732
 #, kde-format
 msgctxt "@info:tooltip for button"
 msgid "Remove this panel; this action can be undone"
 msgstr "ამ პანელის წაშლა. ეს ქმედება დაბრუნებადია"
 
-#: contents/configuration/PanelConfiguration.qml:726
+#: contents/configuration/PanelConfiguration.qml:741
 #, kde-format
 msgctxt "@action:button Clone the panel"
 msgid "Clone Panel"
 msgstr "პანელის დაკლონვა"
 
-#: contents/configuration/PanelConfiguration.qml:730
+#: contents/configuration/PanelConfiguration.qml:745
 #, kde-format
 msgctxt "@info:tooltip for button"
 msgid "Create a new panel with the same settings and applets"
 msgstr "ახალი პანელის შექმნა იგივე პარამეტრებითა და აპლეტებით"
 
-#: contents/configuration/PanelConfiguration.qml:739
+#: contents/configuration/PanelConfiguration.qml:754
 #, kde-format
 msgctxt "@action:button Close the panel configuration window"
 msgid "Close"
 msgstr "დახურვა"
 
-#: contents/configuration/PanelConfiguration.qml:739
+#: contents/configuration/PanelConfiguration.qml:754
 #, kde-format
 msgctxt ""
 "@action:button Close the panel configuration window and exit edit mode"
 msgid "Exit Edit Mode"
 msgstr "ჩასწორების რეჟიმიდან გასვლა"
 
-#: contents/configuration/PanelConfiguration.qml:742
+#: contents/configuration/PanelConfiguration.qml:757
 #, kde-format
 msgctxt "@info:tooltip for button"
 msgid "Close Panel Settings window and exit Edit Mode"
