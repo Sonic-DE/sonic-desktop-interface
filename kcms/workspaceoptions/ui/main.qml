@@ -413,7 +413,7 @@ KCM.SimpleKCM {
         QQC2.ButtonGroup { id: tabletModeBehaviorGroup }
 
         RowLayout {
-            Kirigami.FormData.label: i18nc("@title:group prefix radiobutton group", "Enable Touch Mode:")
+            Kirigami.FormData.label: i18nc("@title:group prefix radiobutton group", "Enable Tablet Mode:")
             QQC2.RadioButton {
                 text: false ? i18nc("@option:radio As in: 'Touch Mode is automatically enabled as needed'", "Automatically enable as needed") : i18nc("option:radio As in: 'Touch Mode is never enabled'", "Never enabled")
                 Accessible.description: touchModeAlwaysOffRadioButtonHelperText.text
@@ -437,7 +437,7 @@ KCM.SimpleKCM {
         }
 
         QQC2.RadioButton {
-            text: i18nc("As in: 'Touch Mode is always enabled'", "Always active")
+            text: i18nc("As in: 'Tablet Mode is always enabled'", "Always active")
             Accessible.description: touchModeAlwaysOffRadioButtonHelperText.text
             checked: kcm.kwinSettings.tabletMode === "on"
             onToggled: {
@@ -483,7 +483,7 @@ KCM.SimpleKCM {
                 touchModeAlwaysOffRadioButton.indicator.width + touchModeAlwaysOffRadioButton.spacing : touchModeAlwaysOffRadioButton.padding
                 rightPadding: Application.layoutDirection === Qt.RightToLeft ?
                 touchModeAlwaysOffRadioButton.indicator.width + touchModeAlwaysOffRadioButton.spacing : touchModeAlwaysOffRadioButtonHelperText.padding
-                text: i18nc("@info:usagetip", "In Touch Mode, many elements of the user interface will become larger to more easily accommodate touch interaction.")
+                text: i18nc("@info:usagetip", "In Tablet Mode, the virtual keyboard will appear when needed.")
                 textFormat: Text.PlainText
                 elide: Text.ElideRight
                 font: Kirigami.Theme.smallFont
@@ -492,3 +492,4 @@ KCM.SimpleKCM {
         }
     }
 }
+
