@@ -281,7 +281,7 @@ PlasmaComponents3.ScrollView {
 
             Layout.fillHeight: true
 
-            visible: searchField.text !== "" && root.runnerModel.count > 0 && !initialDelayTimer.active && root.runnerModel.resultsPresent
+            visible: searchField.text !== "" && root.runnerModel.count > 0 && (!initialDelayTimer.active || !root.runnerModel.querying || searchResultsPresent)
 
             spacing: Kirigami.Units.smallSpacing
 
@@ -291,7 +291,7 @@ PlasmaComponents3.ScrollView {
                 property bool active: false
                 id: initialDelayTimer
                 interval: 250 // match KRunner's delay for multi-runner queries
-                onRunningChanged: if (running && !root.runnerModel.resultsPresent) { active = true }
+                onRunningChanged: if (running) { active = true }
                 onTriggered: active = false
             }
 
@@ -345,32 +345,11 @@ PlasmaComponents3.ScrollView {
         PlasmaExtras.PlaceholderMessage {
             id: noMatchesPlaceholder
 
-            property bool searchRunning: false
-            property string lastQuery: "" // copy to avoid timing conflicts with visible binding
-
-            Layout.minimumWidth: mainRow.minimumMainWidth
             Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
 
-            visible: root.runnerModel.query !== "" && !root.runnerModel.resultsPresent && ((!root.runnerModel.querying && !initialDelayTimer.active) || visible)
+            visible: root.runnerModel.query !== "" && !runnerColumns.searchResultsPresent && ((!root.runnerModel.querying && !initialDelayTimer.active) || visible)
             iconName: "edit-none"
             text: i18nc("@info:status", "No matches")
-
-            Connections {
-                target: root.runnerModel
-
-                function onQueryFinished() {
-                    noMatchesPlaceholder.searchRunning = false
-                }
-            }
-
-            Connections {
-                target: searchField
-
-                function onTextChanged() {
-                    noMatchesPlaceholder.searchRunning = searchField.text !== ""
-                    noMatchesPlaceholder.lastQuery = searchField.text
-                }
-            }
 
             Binding {
                 searchField.width: noMatchesPlaceholder.width
@@ -397,6 +376,7 @@ PlasmaComponents3.ScrollView {
         focus: !Kirigami.InputMethod.willShowOnActive
 
         onTextChanged: {
+            initialDelayTimer.restart()
             root.runnerModel.query = text;
         }
 
@@ -558,4 +538,5 @@ PlasmaComponents3.ScrollView {
         }
     }
 }
+
 
