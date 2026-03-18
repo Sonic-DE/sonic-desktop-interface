@@ -85,8 +85,8 @@ find_package(KF6 ${KF6_MIN_VERSION} REQUIRED COMPONENTS
 )
 
 find_package(Plasma5Support ${PROJECT_DEP_VERSION} REQUIRED)
-find_package(Plasma ${PROJECT_DEP_VERSION} REQUIRED)
-find_package(PlasmaQuick ${PROJECT_DEP_VERSION} REQUIRED)
+find_package(Plasma 6.6.2 REQUIRED)
+find_package(PlasmaQuick 6.6.2 REQUIRED)
 find_package(PlasmaActivities ${PROJECT_DEP_VERSION} REQUIRED)
 find_package(PlasmaActivitiesStats ${PROJECT_DEP_VERSION} REQUIRED)
 
@@ -160,10 +160,10 @@ set_package_properties(SDL2 PROPERTIES
         PURPOSE "Required for building Game Controller KCM"
 )
 
-find_package(LibKLookAndFeel ${PROJECT_DEP_VERSION} CONFIG REQUIRED)
-find_package(LibKWorkspace ${PROJECT_DEP_VERSION} CONFIG REQUIRED)
-find_package(LibNotificationManager ${PROJECT_DEP_VERSION} CONFIG REQUIRED)
-find_package(LibTaskManager ${PROJECT_DEP_VERSION} CONFIG REQUIRED)
+find_package(LibKLookAndFeel 6.6.2 CONFIG REQUIRED)
+find_package(LibKWorkspace 6.6.2 CONFIG REQUIRED)
+find_package(LibNotificationManager 6.6.2 CONFIG REQUIRED)
+find_package(LibTaskManager 6.6.2 CONFIG REQUIRED)
 find_package(KWinX11DBusInterface CONFIG REQUIRED)
 find_package(ScreenSaverDBusInterface CONFIG REQUIRED)
 find_package(KRunnerAppDBusInterface CONFIG REQUIRED)
