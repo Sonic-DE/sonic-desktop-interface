@@ -27,6 +27,8 @@ PlasmaComponents3.ScrollView {
     property Kicker.SubMenu childDialog: null
     property bool iconsEnabled: false
     property bool dynamicResize : true
+    property int innerLeftMargin: 0
+    property int innerRightMargin: 0
 
     property alias currentIndex: listView.currentIndex
     property alias currentItem: listView.currentItem
@@ -109,6 +111,13 @@ PlasmaComponents3.ScrollView {
         implicitHeight: contentHeight
         implicitWidth: itemList.Layout.minimumWidth
 
+
+        anchors {
+            top: parent.top
+            left: parent.left
+            leftMargin: itemList.innerLeftMargin
+        }
+
         property int maxDelegateImplicitWidth: 0 // used to set implicitWidth
 
         Binding on implicitWidth {
@@ -138,6 +147,8 @@ PlasmaComponents3.ScrollView {
         }
 
         delegate: ItemListDelegate {
+            width: listView.width - itemList.innerRightMargin
+            anchors.left: listView.contentItem.left
             showIcons: itemList.iconsEnabled
             dialogDefaultRight: !itemList.LayoutMirroring.enabled
             hoverEnabled: itemList.hoverEnabled
@@ -158,7 +169,7 @@ PlasmaComponents3.ScrollView {
         }
 
         highlight: PlasmaExtras.Highlight {
-            width: listView.width
+            anchors.left: listView.contentItem.left
             visible: !(listView.currentItem as ItemListDelegate)?.isSeparator
             pressed: !!((listView.currentItem as ItemListDelegate)?.iconAndLabelsShouldlookSelected)
             active: !!(listView.currentItem as ItemListDelegate)?.hovered
