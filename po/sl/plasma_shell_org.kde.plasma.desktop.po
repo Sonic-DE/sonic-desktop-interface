@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-03-17 00:45+0000\n"
-"PO-Revision-Date: 2026-01-13 13:39+0100\n"
+"POT-Creation-Date: 2026-03-18 00:47+0000\n"
+"PO-Revision-Date: 2026-03-17 06:33+0100\n"
 "Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
 "Language: sl\n"
@@ -534,7 +534,7 @@ msgstr "Neprosojnost"
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "The current Plasma style does not support opacity options."
-msgstr ""
+msgstr "Trenutni slog Plasme ne podpira možnosti neprosojnosti."
 
 #: contents/configuration/PanelConfiguration.qml:480
 #, kde-format
@@ -621,44 +621,44 @@ msgctxt "@info:whatsthis Accessible description for button"
 msgid "Button to set the shortcut for the panel to gain focus"
 msgstr "Gumb za nastavitev bližnjice, s katero bo plošča dobila fokus"
 
-#: contents/configuration/PanelConfiguration.qml:729
+#: contents/configuration/PanelConfiguration.qml:730
 #, kde-format
 msgctxt "@action:button Delete the panel"
 msgid "Delete Panel"
 msgstr "Odstrani ploščo"
 
-#: contents/configuration/PanelConfiguration.qml:732
+#: contents/configuration/PanelConfiguration.qml:733
 #, kde-format
 msgctxt "@info:tooltip for button"
 msgid "Remove this panel; this action can be undone"
 msgstr "Odstrani to ploščo; tega dejanja ni mogoče razveljaviti"
 
-#: contents/configuration/PanelConfiguration.qml:741
+#: contents/configuration/PanelConfiguration.qml:742
 #, kde-format
 msgctxt "@action:button Clone the panel"
 msgid "Clone Panel"
 msgstr "Kloniraj ploščo"
 
-#: contents/configuration/PanelConfiguration.qml:745
+#: contents/configuration/PanelConfiguration.qml:746
 #, kde-format
 msgctxt "@info:tooltip for button"
 msgid "Create a new panel with the same settings and applets"
 msgstr "Ustvari novo ploščo z istimi nastavitvami in programčki"
 
-#: contents/configuration/PanelConfiguration.qml:754
+#: contents/configuration/PanelConfiguration.qml:755
 #, kde-format
 msgctxt "@action:button Close the panel configuration window"
 msgid "Close"
 msgstr "Zapri"
 
-#: contents/configuration/PanelConfiguration.qml:754
+#: contents/configuration/PanelConfiguration.qml:755
 #, kde-format
 msgctxt ""
 "@action:button Close the panel configuration window and exit edit mode"
 msgid "Exit Edit Mode"
 msgstr "Izhod iz načina urejanja"
 
-#: contents/configuration/PanelConfiguration.qml:757
+#: contents/configuration/PanelConfiguration.qml:758
 #, kde-format
 msgctxt "@info:tooltip for button"
 msgid "Close Panel Settings window and exit Edit Mode"
