@@ -16,11 +16,14 @@ import org.kde.iconthemes as KIconThemes
 import org.kde.config // for KAuthorized
 import org.kde.kirigami as Kirigami
 import org.kde.kcmutils as KCM
+import org.kde.private.desktopcontainment.folder as Folder
 
 KCM.SimpleKCM {
     id: configIcons
 
     property bool isPopup: (Plasmoid.location !== PlasmaCore.Types.Floating)
+
+    readonly property bool krunnerAvailable: Folder.KRunnerChecker.krunnerAvailable
 
     property string cfg_icon: Plasmoid.configuration.icon
     property alias cfg_useCustomIcon: useCustomIcon.checked
@@ -40,6 +43,7 @@ KCM.SimpleKCM {
     property alias cfg_iconSize: iconSize.value
     property alias cfg_labelWidth: labelWidth.currentIndex
     property alias cfg_textLines: textLines.value
+    property bool cfg_useTypeAhead: Plasmoid.configuration.useTypeAhead
 
     readonly property bool lockedByKiosk: !KAuthorized.authorize("editable_desktop_icons")
 
@@ -315,6 +319,36 @@ KCM.SimpleKCM {
         Item {
             Kirigami.FormData.isSection: true
         }
+
+
+        ColumnLayout {
+            // Only show if it's the desktop (not a popup) AND KRunner is present/running
+            visible: !configIcons.isPopup && configIcons.krunnerAvailable
+
+            Kirigami.FormData.label: i18nc("@title:group", "Typing on the desktop:")
+            Kirigami.FormData.buddyFor: typeAheadRadioButton
+            spacing: Kirigami.Units.smallSpacing
+
+            RadioButton {
+                id: typeAheadRadioButton
+                text: i18nc("@option:radio Typing on the desktop selects items", "Selects items")
+                checked: configIcons.cfg_useTypeAhead
+                onToggled: if (checked) configIcons.cfg_useTypeAhead = true
+            }
+
+            RadioButton {
+                text: i18nc("@option:radio Typing on the desktop activates KRunner", "Activates KRunner")
+                checked: !configIcons.cfg_useTypeAhead
+                onToggled: if (checked) configIcons.cfg_useTypeAhead = false
+            }
+        }
+
+        Item {
+            Kirigami.FormData.isSection: true
+            visible: !configIcons.isPopup && configIcons.krunnerAvailable
+            implicitHeight: Kirigami.Units.smallSpacing
+        }
+
 
         CheckBox {
             id: renameInline

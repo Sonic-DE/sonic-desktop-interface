@@ -54,9 +54,11 @@ FocusScope {
     property var history: []
     property var lastPosition: null
     property bool goingBack: false
+    readonly property bool krunnerAvailable: Folder.KRunnerChecker.krunnerAvailable
     property BackButtonItem backButton: null
     property var dialog: null
     property Item editor: null
+    property string searchString: ""
 
     property int previouslySelectedItemIndex: -1
 
@@ -1057,7 +1059,14 @@ FocusScope {
                     }
                 }
 
+                Timer {
+                    id: typeAheadTimer
+                    interval: 500 // Resets search string after 0.5 seconds of inactivity
+                    onTriggered: searchString = ""
+                }
+
                 Keys.onPressed: event => {
+                    // Start by assuming we might handle it
                     event.accepted = true;
 
                     if (event.key === Qt.Key_Control) {
@@ -1086,7 +1095,44 @@ FocusScope {
                         dir.refresh();
                     } else if (event.matches(StandardKey.SelectAll)) {
                         positioner.setRangeSelected(0, count - 1);
-                    } else {
+                    } else if ( (!Plasmoid.isContainment || !main.krunnerAvailable || Plasmoid.configuration.useTypeAhead) && event.text.length === 1 && event.modifiers === Qt.NoModifier) {
+                        // If View is not the Desktop there is no need to check if useTypeAhead is enabled.
+                        typeAheadTimer.restart();
+                        const charPressed = event.text.toLowerCase();
+
+                        if (searchString.length >= 1 && searchString.indexOf(charPressed) !== 0) {
+                            searchString += charPressed;
+                        } else if (searchString !== charPressed) {
+                            searchString = charPressed;
+                        }
+
+                        let matches = [];
+                        for (let i = 0; i < gridView.count; i++) {
+                            const itemData = positioner.data(positioner.index(i, 0), Qt.DisplayRole);
+                            if (itemData && itemData.toLowerCase().indexOf(searchString) === 0) {
+                                matches.push(i);
+                            }
+                        }
+
+                        if (matches.length > 0) {
+                            let nextIdx = matches[0];
+                            if (searchString.length === 1) {
+                                for (let j = 0; j < matches.length; j++) {
+                                    if (matches[j] > gridView.currentIndex) {
+                                        nextIdx = matches[j];
+                                        break;
+                                    }
+                                }
+                            }
+                            currentIndex = nextIdx;
+                            dir.clearSelection();
+                            dir.setSelected(positioner.map(nextIdx));
+                        } else {
+                            searchString = charPressed;
+                        }
+                    }
+                    // Fallback for everything else (Escape, Enter, or if Type-Ahead is disabled)
+                    else {
                         event.accepted = false;
                     }
                 }
