@@ -28,6 +28,11 @@ RowLayout {
     property alias mainSearchField: runnerMatches.mainSearchField
     property alias model: runnerMatches.model
 
+    readonly property bool isFirstColumn: runnerResultsList.parent.visibleChildren[0] === runnerResultsList
+    // the final visible child is the repeater, so need to subtract 2 to get the proper index
+    readonly property bool isLastColumn: runnerResultsList.parent.visibleChildren[runnerResultsList.parent.visibleChildren.length - 2] === runnerResultsList
+
+
     spacing: Kirigami.Units.smallSpacing
 
     function giveFocus(focusReason): void {
@@ -38,7 +43,7 @@ RowLayout {
         id: vertLine
 
         Layout.fillHeight: true
-        visible: runnerResultsList.parent.visibleChildren[0] !== runnerResultsList
+        visible: !runnerResultsList.isFirstColumn
 
         imagePath: "widgets/line"
         elementId: "vertical-line"
@@ -82,6 +87,7 @@ RowLayout {
             implicitWidth: Kirigami.Units.gridUnit * 17
             Layout.minimumWidth: implicitWidth
             Layout.maximumWidth: implicitWidth
+            innerRightMargin: runnerResultsList.isLastColumn ? 0 : Kirigami.Units.smallSpacing
 
             Accessible.name: header.text
 
@@ -118,7 +124,7 @@ RowLayout {
 
             implicitHeight: runnerResultsList.mainSearchField.height
             Layout.fillWidth: true
-            visible: runnerResultsList.parent.visibleChildren[0] === runnerResultsList
+            visible: runnerResultsList.isFirstColumn
         }
     }
 }
