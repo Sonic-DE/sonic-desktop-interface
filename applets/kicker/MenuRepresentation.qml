@@ -283,7 +283,7 @@ PlasmaComponents3.ScrollView {
 
             visible: searchField.text !== "" && root.runnerModel.count > 0 && (!initialDelayTimer.active || !root.runnerModel.querying || searchResultsPresent)
 
-            spacing: Kirigami.Units.smallSpacing
+            spacing: 0
 
             LayoutMirroring.enabled: mainRow.LayoutMirroring.enabled
 
@@ -369,7 +369,7 @@ PlasmaComponents3.ScrollView {
 
         readonly property real defaultWidth: Kirigami.Units.gridUnit * 14
 
-        width: runnerColumns.visible && root.runnerModel.resultsPresent
+        width: runnerColumns.visible && runnerColumns.searchResultsPresent
             ? runnerColumns.visibleChildren[0].width - (runnerColumns.visibleChildren.length > 2 ? Kirigami.Units.smallSpacing : 0)
             : (rootList.visible ? rootList.width : mainRow.minimumMainWidth)
 
@@ -538,5 +538,6 @@ PlasmaComponents3.ScrollView {
         }
     }
 }
+
 
 
