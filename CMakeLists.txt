@@ -322,6 +322,9 @@ endif()
 install(FILES org.kde.plasmashell.metainfo.xml DESTINATION ${KDE_INSTALL_METAINFODIR})
 install(FILES kde-mimeapps.list DESTINATION ${KDE_INSTALL_APPDIR})
 
+install(FILES kconf_update/50-krunner-activate-typing.upd DESTINATION ${KDE_INSTALL_KCONFUPDATEDIR})
+install(PROGRAMS kconf_update/50-krunner-activate-typing.sh DESTINATION ${KDE_INSTALL_KCONFUPDATEDIR})
+
 # add clang-format target for all our real source files
 file(GLOB_RECURSE ALL_CLANG_FORMAT_SOURCE_FILES *.cpp *.h)
 kde_clang_format(${ALL_CLANG_FORMAT_SOURCE_FILES})

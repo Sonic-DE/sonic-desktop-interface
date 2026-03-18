@@ -51,22 +51,6 @@ KCM.SimpleKCM {
             Kirigami.FormData.isSection: false
         }
 
-        QQC2.CheckBox {
-            Kirigami.FormData.label: i18nc("@label prefix for checkbutton", "Activation:")
-            checked: kcm.krunnerSettings.activateWhenTypingOnDesktop
-            onToggled: kcm.krunnerSettings.activateWhenTypingOnDesktop = checked
-            text: i18nc("@option:check", "Activate when pressing any key on the desktop")
-
-            KCM.SettingStateBinding {
-                configObject: kcm.krunnerSettings
-                settingName: "activateWhenTypingOnDesktop"
-            }
-        }
-
-        Item {
-            Kirigami.FormData.isSection: false
-        }
-
         QQC2.RadioButton {
             Kirigami.FormData.label: i18nc("@title:group prefix for radiobutton group", "History:")
             checked: kcm.krunnerSettings.historyBehavior === KRunnerSettings.Disabled

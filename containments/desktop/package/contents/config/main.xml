@@ -135,5 +135,9 @@
       <label>Show hidden files.</label>
       <default>false</default>
     </entry>
+    <entry name="useTypeAhead" type="Bool">
+      <label>Use type-ahead to select desktop icons in Folder View.</label>
+      <default>false</default>
+    </entry>
   </group>
 </kcfg>
