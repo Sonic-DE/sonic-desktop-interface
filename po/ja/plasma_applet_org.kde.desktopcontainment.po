@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma_applet_org.kde.desktopcontainment\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-02-28 00:46+0000\n"
+"POT-Creation-Date: 2026-03-19 00:48+0000\n"
 "PO-Revision-Date: 2024-05-04 22:45+0900\n"
 "Last-Translator: Ryuichi Yamada <ryuichi_ya220@outlook.jp>\n"
 "Language-Team: Japanese <kde-jp@kde.org>\n"
@@ -131,59 +131,59 @@ msgctxt "@action:button tooltip only, ascending/descending"
 msgid "Switch Sort Order"
 msgstr "ソート順を変更"
 
-#: package/contents/ui/ConfigIcons.qml:57
+#: package/contents/ui/ConfigIcons.qml:61
 #, fuzzy, kde-format
 #| msgid "Panel button:"
 msgctxt "@title:group prefix for checkbox + button"
 msgid "Panel button:"
 msgstr "パネルのボタン:"
 
-#: package/contents/ui/ConfigIcons.qml:63
+#: package/contents/ui/ConfigIcons.qml:67
 #, fuzzy, kde-format
 #| msgid "Use a custom icon"
 msgctxt "@option:check"
 msgid "Use a custom icon"
 msgstr "カスタムアイコンを使う"
 
-#: package/contents/ui/ConfigIcons.qml:96
+#: package/contents/ui/ConfigIcons.qml:100
 #, kde-format
 msgctxt "@item:inmenu Open icon chooser dialog"
 msgid "Choose…"
 msgstr "選択..."
 
-#: package/contents/ui/ConfigIcons.qml:102
+#: package/contents/ui/ConfigIcons.qml:106
 #, kde-format
 msgctxt "@item:inmenu Reset icon to default"
 msgid "Clear Icon"
 msgstr "アイコンをクリア"
 
-#: package/contents/ui/ConfigIcons.qml:122
+#: package/contents/ui/ConfigIcons.qml:126
 #, fuzzy, kde-format
 #| msgid "Arrangement:"
 msgctxt "@label:listbox columns/rows"
 msgid "Arrangement:"
 msgstr "配置:"
 
-#: package/contents/ui/ConfigIcons.qml:125
+#: package/contents/ui/ConfigIcons.qml:129
 #, kde-format
 msgctxt "@item:inlistbox arrangement of icons"
 msgid "In Columns"
 msgstr ""
 
-#: package/contents/ui/ConfigIcons.qml:126
+#: package/contents/ui/ConfigIcons.qml:130
 #, kde-format
 msgctxt "@item:inlistbox arrangement of icons"
 msgid "In Rows"
 msgstr ""
 
-#: package/contents/ui/ConfigIcons.qml:135
+#: package/contents/ui/ConfigIcons.qml:139
 #, fuzzy, kde-format
 #| msgid "Sorting:"
 msgctxt "@label:listbox, LtR/RtL"
 msgid "Sort Alignment:"
 msgstr "ソート:"
 
-#: package/contents/ui/ConfigIcons.qml:138
+#: package/contents/ui/ConfigIcons.qml:142
 #, fuzzy, kde-format
 #| msgctxt "@item:inlistbox arrangement of icons"
 #| msgid "Left to Right"
@@ -191,7 +191,7 @@ msgctxt "@item:inlistbox alignment of icons"
 msgid "Left-to-Right"
 msgstr "左から右"
 
-#: package/contents/ui/ConfigIcons.qml:139
+#: package/contents/ui/ConfigIcons.qml:143
 #, fuzzy, kde-format
 #| msgctxt "@item:inlistbox arrangement of icons"
 #| msgid "Right to Left"
@@ -199,88 +199,88 @@ msgctxt "@item:inlistbox alignment of icons"
 msgid "Right-to-Left"
 msgstr "右から左"
 
-#: package/contents/ui/ConfigIcons.qml:161
+#: package/contents/ui/ConfigIcons.qml:165
 #, fuzzy, kde-format
 #| msgid "Lock in place"
 msgctxt "@option:check lock icon positions"
 msgid "Lock in place"
 msgstr "位置を固定する"
 
-#: package/contents/ui/ConfigIcons.qml:175
+#: package/contents/ui/ConfigIcons.qml:179
 #, fuzzy, kde-format
 #| msgid "Sort By"
 msgctxt "@label:listbox sort items by field"
 msgid "Sort by:"
 msgstr "ソート基準"
 
-#: package/contents/ui/ConfigIcons.qml:183
+#: package/contents/ui/ConfigIcons.qml:187
 #, kde-format
 msgctxt "@item:inlistbox sort icons manually"
 msgid "Manual"
 msgstr "手動"
 
-#: package/contents/ui/ConfigIcons.qml:184
+#: package/contents/ui/ConfigIcons.qml:188
 #, kde-format
 msgctxt "@item:inlistbox sort icons by name"
 msgid "Name"
 msgstr "名前"
 
-#: package/contents/ui/ConfigIcons.qml:185
+#: package/contents/ui/ConfigIcons.qml:189
 #, kde-format
 msgctxt "@item:inlistbox sort icons by size"
 msgid "Size"
 msgstr "サイズ"
 
-#: package/contents/ui/ConfigIcons.qml:186
+#: package/contents/ui/ConfigIcons.qml:190
 #, kde-format
 msgctxt "@item:inlistbox sort icons by file type"
 msgid "Type"
 msgstr "種類"
 
-#: package/contents/ui/ConfigIcons.qml:187
+#: package/contents/ui/ConfigIcons.qml:191
 #, kde-format
 msgctxt "@item:inlistbox sort icons by date"
 msgid "Date"
 msgstr "日付"
 
-#: package/contents/ui/ConfigIcons.qml:198
+#: package/contents/ui/ConfigIcons.qml:202
 #, kde-format
 msgctxt "@option:check sort icons in descending order"
 msgid "Descending"
 msgstr "降順"
 
-#: package/contents/ui/ConfigIcons.qml:206
+#: package/contents/ui/ConfigIcons.qml:210
 #, kde-format
 msgctxt "@option:check sort icons with folders first"
 msgid "Folders first"
 msgstr "フォルダを先に"
 
-#: package/contents/ui/ConfigIcons.qml:220
+#: package/contents/ui/ConfigIcons.qml:224
 #, kde-format
 msgctxt "whether to use icon or list view"
 msgid "View mode:"
 msgstr "表示モード:"
 
-#: package/contents/ui/ConfigIcons.qml:222
+#: package/contents/ui/ConfigIcons.qml:226
 #, kde-format
 msgctxt "@item:inlistbox show icons in a list"
 msgid "List"
 msgstr "リスト"
 
-#: package/contents/ui/ConfigIcons.qml:223
+#: package/contents/ui/ConfigIcons.qml:227
 #, kde-format
 msgctxt "@item:inlistbox show icons in a grid"
 msgid "Grid"
 msgstr "グリッド"
 
-#: package/contents/ui/ConfigIcons.qml:234
+#: package/contents/ui/ConfigIcons.qml:238
 #, fuzzy, kde-format
 #| msgid "Icon size:"
 msgctxt "@label:slider"
 msgid "Icon size:"
 msgstr "アイコンサイズ:"
 
-#: package/contents/ui/ConfigIcons.qml:249
+#: package/contents/ui/ConfigIcons.qml:253
 #, fuzzy, kde-format
 #| msgctxt "@label:slider smallest icon size"
 #| msgid "Small"
@@ -288,7 +288,7 @@ msgctxt "@item:inrange smallest icon size"
 msgid "Small"
 msgstr "小"
 
-#: package/contents/ui/ConfigIcons.qml:258
+#: package/contents/ui/ConfigIcons.qml:262
 #, fuzzy, kde-format
 #| msgctxt "@label:slider largest icon size"
 #| msgid "Large"
@@ -296,95 +296,114 @@ msgctxt "@item:inrange largest icon size"
 msgid "Large"
 msgstr "大"
 
-#: package/contents/ui/ConfigIcons.qml:267
+#: package/contents/ui/ConfigIcons.qml:271
 #, fuzzy, kde-format
 #| msgid "Label width:"
 msgctxt "@label:listbox"
 msgid "Label width:"
 msgstr "ラベルの幅:"
 
-#: package/contents/ui/ConfigIcons.qml:270
+#: package/contents/ui/ConfigIcons.qml:274
 #, kde-format
 msgctxt "@item:inlistbox how long a text label should be"
 msgid "Narrow"
 msgstr "狭め"
 
-#: package/contents/ui/ConfigIcons.qml:271
+#: package/contents/ui/ConfigIcons.qml:275
 #, kde-format
 msgctxt "@item:inlistbox how long a text label should be"
 msgid "Medium"
 msgstr "普通"
 
-#: package/contents/ui/ConfigIcons.qml:272
+#: package/contents/ui/ConfigIcons.qml:276
 #, kde-format
 msgctxt "@item:inlistbox how long a text label should be"
 msgid "Wide"
 msgstr "広め"
 
-#: package/contents/ui/ConfigIcons.qml:280
+#: package/contents/ui/ConfigIcons.qml:284
 #, fuzzy, kde-format
 #| msgid "Text lines:"
 msgctxt "@label:spinbox"
 msgid "Text lines:"
 msgstr "テキスト行数:"
 
-#: package/contents/ui/ConfigIcons.qml:296
+#: package/contents/ui/ConfigIcons.qml:300
 #, fuzzy, kde-format
 #| msgid "When hovering over icons:"
 msgctxt "@title:group prefix for checkbox group"
 msgid "When hovering over icons:"
 msgstr "アイコンにカーソルを重ねたとき:"
 
-#: package/contents/ui/ConfigIcons.qml:298
+#: package/contents/ui/ConfigIcons.qml:302
 #, fuzzy, kde-format
 #| msgid "Show tooltips"
 msgctxt "@option:check When hovering over icons…"
 msgid "Show tooltips"
 msgstr "ツールチップを表示"
 
-#: package/contents/ui/ConfigIcons.qml:305
+#: package/contents/ui/ConfigIcons.qml:309
 #, fuzzy, kde-format
 #| msgid "Show selection markers"
 msgctxt "@option:check When hovering over icons…"
 msgid "Show selection markers"
 msgstr "選択マーカーを表示"
 
-#: package/contents/ui/ConfigIcons.qml:312
+#: package/contents/ui/ConfigIcons.qml:316
 #, fuzzy, kde-format
 #| msgid "Show folder preview popups"
 msgctxt "@option:check When hovering over icons…"
 msgid "Show folder preview popups"
 msgstr "フォルダプレビューポップアップを表示"
 
-#: package/contents/ui/ConfigIcons.qml:322
+#: package/contents/ui/ConfigIcons.qml:328
+#, kde-format
+msgctxt "@title:group"
+msgid "Typing on the desktop:"
+msgstr ""
+
+#: package/contents/ui/ConfigIcons.qml:334
+#, fuzzy, kde-format
+#| msgid "Select Folder"
+msgctxt "@option:radio Typing on the desktop selects items"
+msgid "Selects items"
+msgstr "フォルダを選択"
+
+#: package/contents/ui/ConfigIcons.qml:340
+#, kde-format
+msgctxt "@option:radio Typing on the desktop activates KRunner"
+msgid "Activates KRunner"
+msgstr ""
+
+#: package/contents/ui/ConfigIcons.qml:356
 #, fuzzy, kde-format
 #| msgid "Rename:"
 msgctxt "@label prefix for checkbox"
 msgid "Rename:"
 msgstr "名前変更:"
 
-#: package/contents/ui/ConfigIcons.qml:326
+#: package/contents/ui/ConfigIcons.qml:360
 #, fuzzy, kde-format
 #| msgid "Rename inline by clicking selected item's text"
 msgctxt "@option:check"
 msgid "Rename inline by clicking selected item's text"
 msgstr "選択されたアイテムのテキストをクリックして名前を変更"
 
-#: package/contents/ui/ConfigIcons.qml:337
+#: package/contents/ui/ConfigIcons.qml:371
 #, fuzzy, kde-format
 #| msgid "Previews:"
 msgctxt "@title:group prefix for checkbox and button"
 msgid "Previews:"
 msgstr "プレビュー:"
 
-#: package/contents/ui/ConfigIcons.qml:339
+#: package/contents/ui/ConfigIcons.qml:373
 #, fuzzy, kde-format
 #| msgid "Show preview thumbnails"
 msgctxt "@option:check"
 msgid "Show preview thumbnails"
 msgstr "プレビューのサムネイルを表示"
 
-#: package/contents/ui/ConfigIcons.qml:347
+#: package/contents/ui/ConfigIcons.qml:381
 #, fuzzy, kde-format
 #| msgid "Configure Preview Plugins…"
 msgctxt "@action:button opens dialog"
@@ -510,7 +529,7 @@ msgctxt "@title:window"
 msgid "Preview Plugins"
 msgstr "プラグインをプレビュー"
 
-#: package/contents/ui/FolderView.qml:1236
+#: package/contents/ui/FolderView.qml:1274
 #, kde-format
 msgctxt "@info"
 msgid ""
@@ -548,17 +567,17 @@ msgstr "デスクトップと壁紙"
 msgid "Select Folder"
 msgstr "フォルダを選択"
 
-#: plugins/folder/foldermodel.cpp:505
+#: plugins/folder/foldermodel.cpp:569
 #, kde-format
 msgid "&Refresh Desktop"
 msgstr "デスクトップを更新(&R)"
 
-#: plugins/folder/foldermodel.cpp:505 plugins/folder/foldermodel.cpp:1741
+#: plugins/folder/foldermodel.cpp:569 plugins/folder/foldermodel.cpp:1805
 #, kde-format
 msgid "&Refresh View"
 msgstr "ビューを更新(&R)"
 
-#: plugins/folder/foldermodel.cpp:868
+#: plugins/folder/foldermodel.cpp:932
 #, kde-format
 msgctxt ""
 "@title:notifications Here 'link' refers to a symbolic link to another file "
@@ -566,7 +585,7 @@ msgctxt ""
 msgid "Link Target Not Found"
 msgstr ""
 
-#: plugins/folder/foldermodel.cpp:870
+#: plugins/folder/foldermodel.cpp:934
 #, kde-kuit-format
 msgctxt "@info Body text of a system notification"
 msgid ""
@@ -574,23 +593,23 @@ msgid ""
 "not be found. It may have been moved or deleted."
 msgstr ""
 
-#: plugins/folder/foldermodel.cpp:1750
+#: plugins/folder/foldermodel.cpp:1814
 #, kde-format
 msgid "&Empty Trash"
 msgstr "ごみ箱を空にする(&E)"
 
-#: plugins/folder/foldermodel.cpp:1753
+#: plugins/folder/foldermodel.cpp:1817
 #, kde-format
 msgctxt "Restore from trash"
 msgid "Restore to Former Location"
 msgstr ""
 
-#: plugins/folder/foldermodel.cpp:1756
+#: plugins/folder/foldermodel.cpp:1820
 #, kde-format
 msgid "&Open"
 msgstr "開く(&O)"
 
-#: plugins/folder/foldermodel.cpp:1760
+#: plugins/folder/foldermodel.cpp:1824
 #, fuzzy, kde-format
 #| msgid "Show all"
 msgctxt ""
@@ -599,24 +618,24 @@ msgctxt ""
 msgid "Show Target"
 msgstr "すべて表示"
 
-#: plugins/folder/foldermodel.cpp:1861
+#: plugins/folder/foldermodel.cpp:1925
 #, kde-format
 msgctxt "@action:inmenu Removes the trash icon on the desktop"
 msgid "Remove Trash Icon"
 msgstr ""
 
-#: plugins/folder/foldermodel.cpp:1864
+#: plugins/folder/foldermodel.cpp:1928
 #, fuzzy, kde-format
 #| msgid "&Empty Trash"
 msgid "&Move to Trash"
 msgstr "ごみ箱を空にする(&E)"
 
-#: plugins/folder/foldermodel.cpp:1897
+#: plugins/folder/foldermodel.cpp:1961
 #, kde-format
 msgid "&Paste"
 msgstr "貼り付け(&P)"
 
-#: plugins/folder/foldermodel.cpp:2048
+#: plugins/folder/foldermodel.cpp:2112
 #, kde-format
 msgid "&Properties"
 msgstr "プロパティ(&P)"
