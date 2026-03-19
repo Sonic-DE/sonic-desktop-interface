@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-desktop\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-01-08 00:45+0000\n"
+"POT-Creation-Date: 2026-03-19 00:48+0000\n"
 "PO-Revision-Date: 2026-01-08 17:52+0100\n"
 "Last-Translator: Freek de Kruijf <freekdekruijf@kde.nl>\n"
 "Language-Team: \n"
@@ -38,69 +38,65 @@ msgstr "Midden"
 
 #: ui/main.qml:55
 #, kde-format
-msgctxt "@label prefix for checkbutton"
-msgid "Activation:"
-msgstr "Activering:"
-
-#: ui/main.qml:58
-#, kde-format
-msgctxt "@option:check"
-msgid "Activate when pressing any key on the desktop"
-msgstr "Activeren bij indrukken van een toets op het bureaublad"
-
-#: ui/main.qml:71
-#, kde-format
 msgctxt "@title:group prefix for radiobutton group"
 msgid "History:"
 msgstr "Geschiedenis:"
 
-#: ui/main.qml:74
+#: ui/main.qml:58
 #, kde-format
 msgctxt "@option:radio History is disabled"
 msgid "Disabled"
 msgstr "Uitgeschakeld"
 
-#: ui/main.qml:79
+#: ui/main.qml:63
 #, kde-format
 msgctxt "@option:radio The thing being enabled is search history"
 msgid "Enable suggestions"
 msgstr "Suggesties inschakelen"
 
-#: ui/main.qml:84
+#: ui/main.qml:68
 #, kde-format
 msgctxt "@option:radio The thing being enabled is search history"
 msgid "Enable auto-complete"
 msgstr "Automatisch aanvullen inschakelen"
 
-#: ui/main.qml:92
+#: ui/main.qml:76
 #, kde-format
 msgctxt "@action:button"
 msgid "Clear History…"
 msgstr "Geschiedenis wissen…"
 
-#: ui/main.qml:115
+#: ui/main.qml:99
 #, kde-format
 msgctxt "@item:inmenu delete krunner history for all activities"
 msgid "For all activities"
 msgstr "Voor alle activiteiten"
 
-#: ui/main.qml:127
+#: ui/main.qml:111
 #, kde-format
 msgctxt "@item:inmenu delete krunner history for this activity"
 msgid "For activity \"%1\""
 msgstr "Voor activiteit \"%1\""
 
-#: ui/main.qml:144
+#: ui/main.qml:128
 #, kde-format
 msgctxt "@label"
 msgid "Plugins:"
 msgstr "Plug-ins:"
 
-#: ui/main.qml:148
+#: ui/main.qml:132
 #, kde-format
 msgctxt "@action:button"
 msgid "Configure Enabled Search Plugins…"
 msgstr "Ingeschakelde plug-ins voor zoeken configureren…"
+
+#~ msgctxt "@label prefix for checkbutton"
+#~ msgid "Activation:"
+#~ msgstr "Activering:"
+
+#~ msgctxt "@option:check"
+#~ msgid "Activate when pressing any key on the desktop"
+#~ msgstr "Activeren bij indrukken van een toets op het bureaublad"
 
 #~ msgctxt "@option:check"
 #~ msgid "Remember past searches"

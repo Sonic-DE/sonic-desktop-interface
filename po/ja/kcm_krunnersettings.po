@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kcm_search\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-01-08 00:45+0000\n"
+"POT-Creation-Date: 2026-03-19 00:48+0000\n"
 "PO-Revision-Date: 2026-02-21 08:57+0900\n"
 "Last-Translator: Mint <5602mint@gmail.com>\n"
 "Language-Team: Japanese <kde-i18n-doc@kde.org>\n"
@@ -37,66 +37,62 @@ msgstr "中央"
 
 #: ui/main.qml:55
 #, kde-format
-msgctxt "@label prefix for checkbutton"
-msgid "Activation:"
-msgstr "起動:"
-
-#: ui/main.qml:58
-#, kde-format
-msgctxt "@option:check"
-msgid "Activate when pressing any key on the desktop"
-msgstr "デスクトップ上で任意のキーを押すとアクティブになる"
-
-#: ui/main.qml:71
-#, kde-format
 msgctxt "@title:group prefix for radiobutton group"
 msgid "History:"
 msgstr "履歴:"
 
-#: ui/main.qml:74
+#: ui/main.qml:58
 #, kde-format
 msgctxt "@option:radio History is disabled"
 msgid "Disabled"
 msgstr "無効"
 
-#: ui/main.qml:79
+#: ui/main.qml:63
 #, kde-format
 msgctxt "@option:radio The thing being enabled is search history"
 msgid "Enable suggestions"
 msgstr "提案を有効にする"
 
-#: ui/main.qml:84
+#: ui/main.qml:68
 #, kde-format
 msgctxt "@option:radio The thing being enabled is search history"
 msgid "Enable auto-complete"
 msgstr "オートコンプリートを有効にする"
 
-#: ui/main.qml:92
+#: ui/main.qml:76
 #, kde-format
 msgctxt "@action:button"
 msgid "Clear History…"
 msgstr "履歴を消去…"
 
-#: ui/main.qml:115
+#: ui/main.qml:99
 #, kde-format
 msgctxt "@item:inmenu delete krunner history for all activities"
 msgid "For all activities"
 msgstr "すべてのアクティビティ"
 
-#: ui/main.qml:127
+#: ui/main.qml:111
 #, kde-format
 msgctxt "@item:inmenu delete krunner history for this activity"
 msgid "For activity \"%1\""
 msgstr "アクティビティ \"%1\""
 
-#: ui/main.qml:144
+#: ui/main.qml:128
 #, kde-format
 msgctxt "@label"
 msgid "Plugins:"
 msgstr "プラグイン:"
 
-#: ui/main.qml:148
+#: ui/main.qml:132
 #, kde-format
 msgctxt "@action:button"
 msgid "Configure Enabled Search Plugins…"
 msgstr "有効な検索プラグインを設定…"
+
+#~ msgctxt "@label prefix for checkbutton"
+#~ msgid "Activation:"
+#~ msgstr "起動:"
+
+#~ msgctxt "@option:check"
+#~ msgid "Activate when pressing any key on the desktop"
+#~ msgstr "デスクトップ上で任意のキーを押すとアクティブになる"

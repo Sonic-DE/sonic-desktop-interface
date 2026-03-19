@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-02-28 00:46+0000\n"
+"POT-Creation-Date: 2026-03-19 00:48+0000\n"
 "PO-Revision-Date: 2025-09-15 10:18-0500\n"
 "Last-Translator: A S Alam <aalam@punlinux.org>\n"
 "Language-Team: Punjabi <kde-i18n-doc@kde.org>\n"
@@ -129,59 +129,59 @@ msgctxt "@action:button tooltip only, ascending/descending"
 msgid "Switch Sort Order"
 msgstr ""
 
-#: package/contents/ui/ConfigIcons.qml:57
+#: package/contents/ui/ConfigIcons.qml:61
 #, fuzzy, kde-format
 #| msgid "Panel button:"
 msgctxt "@title:group prefix for checkbox + button"
 msgid "Panel button:"
 msgstr "ਪੈਨਲ ਬਟਨ:"
 
-#: package/contents/ui/ConfigIcons.qml:63
+#: package/contents/ui/ConfigIcons.qml:67
 #, fuzzy, kde-format
 #| msgid "Use a custom icon"
 msgctxt "@option:check"
 msgid "Use a custom icon"
 msgstr "ਕਸਟਮ ਆਈਕਾਨ ਵਰਤੋਂ"
 
-#: package/contents/ui/ConfigIcons.qml:96
+#: package/contents/ui/ConfigIcons.qml:100
 #, kde-format
 msgctxt "@item:inmenu Open icon chooser dialog"
 msgid "Choose…"
 msgstr "…ਚੁਣੋ"
 
-#: package/contents/ui/ConfigIcons.qml:102
+#: package/contents/ui/ConfigIcons.qml:106
 #, kde-format
 msgctxt "@item:inmenu Reset icon to default"
 msgid "Clear Icon"
 msgstr "ਆਈਕਾਨ ਸਾਫ਼ ਕਰੋ"
 
-#: package/contents/ui/ConfigIcons.qml:122
+#: package/contents/ui/ConfigIcons.qml:126
 #, fuzzy, kde-format
 #| msgid "Arrangement:"
 msgctxt "@label:listbox columns/rows"
 msgid "Arrangement:"
 msgstr "ਇਕਸਾਰ:"
 
-#: package/contents/ui/ConfigIcons.qml:125
+#: package/contents/ui/ConfigIcons.qml:129
 #, kde-format
 msgctxt "@item:inlistbox arrangement of icons"
 msgid "In Columns"
 msgstr "ਕਾਲਮਾਂ ਵਿੱਚ"
 
-#: package/contents/ui/ConfigIcons.qml:126
+#: package/contents/ui/ConfigIcons.qml:130
 #, kde-format
 msgctxt "@item:inlistbox arrangement of icons"
 msgid "In Rows"
 msgstr "ਕਤਾਰਾਂ ਵਿੱਚ"
 
-#: package/contents/ui/ConfigIcons.qml:135
+#: package/contents/ui/ConfigIcons.qml:139
 #, fuzzy, kde-format
 #| msgid "Sorting:"
 msgctxt "@label:listbox, LtR/RtL"
 msgid "Sort Alignment:"
 msgstr "ਲੜੀਬੱਧ:"
 
-#: package/contents/ui/ConfigIcons.qml:138
+#: package/contents/ui/ConfigIcons.qml:142
 #, fuzzy, kde-format
 #| msgctxt "@item:inlistbox arrangement of icons"
 #| msgid "Left to Right"
@@ -189,7 +189,7 @@ msgctxt "@item:inlistbox alignment of icons"
 msgid "Left-to-Right"
 msgstr "ਖੱਬੇ ਤੋਂ ਸੱਜੇ"
 
-#: package/contents/ui/ConfigIcons.qml:139
+#: package/contents/ui/ConfigIcons.qml:143
 #, fuzzy, kde-format
 #| msgctxt "@item:inlistbox arrangement of icons"
 #| msgid "Right to Left"
@@ -197,88 +197,88 @@ msgctxt "@item:inlistbox alignment of icons"
 msgid "Right-to-Left"
 msgstr "ਸੱਜੇ ਤੋਂ ਖੱਬੇ"
 
-#: package/contents/ui/ConfigIcons.qml:161
+#: package/contents/ui/ConfigIcons.qml:165
 #, fuzzy, kde-format
 #| msgid "Lock in place"
 msgctxt "@option:check lock icon positions"
 msgid "Lock in place"
 msgstr "ਥਾਂ ਵਿੱਚ ਲਾਕ ਕਰੋ"
 
-#: package/contents/ui/ConfigIcons.qml:175
+#: package/contents/ui/ConfigIcons.qml:179
 #, fuzzy, kde-format
 #| msgid "Sort By"
 msgctxt "@label:listbox sort items by field"
 msgid "Sort by:"
 msgstr "ਲੜੀਬੱਧ"
 
-#: package/contents/ui/ConfigIcons.qml:183
+#: package/contents/ui/ConfigIcons.qml:187
 #, kde-format
 msgctxt "@item:inlistbox sort icons manually"
 msgid "Manual"
 msgstr "ਖੁਦ"
 
-#: package/contents/ui/ConfigIcons.qml:184
+#: package/contents/ui/ConfigIcons.qml:188
 #, kde-format
 msgctxt "@item:inlistbox sort icons by name"
 msgid "Name"
 msgstr "ਨਾਂ"
 
-#: package/contents/ui/ConfigIcons.qml:185
+#: package/contents/ui/ConfigIcons.qml:189
 #, kde-format
 msgctxt "@item:inlistbox sort icons by size"
 msgid "Size"
 msgstr "ਆਕਾਰ"
 
-#: package/contents/ui/ConfigIcons.qml:186
+#: package/contents/ui/ConfigIcons.qml:190
 #, kde-format
 msgctxt "@item:inlistbox sort icons by file type"
 msgid "Type"
 msgstr "ਕਿਸਮ"
 
-#: package/contents/ui/ConfigIcons.qml:187
+#: package/contents/ui/ConfigIcons.qml:191
 #, kde-format
 msgctxt "@item:inlistbox sort icons by date"
 msgid "Date"
 msgstr "ਤਾਰੀਖ"
 
-#: package/contents/ui/ConfigIcons.qml:198
+#: package/contents/ui/ConfigIcons.qml:202
 #, kde-format
 msgctxt "@option:check sort icons in descending order"
 msgid "Descending"
 msgstr "ਘੱਟਦਾ ਕਰਮ"
 
-#: package/contents/ui/ConfigIcons.qml:206
+#: package/contents/ui/ConfigIcons.qml:210
 #, kde-format
 msgctxt "@option:check sort icons with folders first"
 msgid "Folders first"
 msgstr "ਫੋਲਡਰ ਪਹਿਲਾਂ"
 
-#: package/contents/ui/ConfigIcons.qml:220
+#: package/contents/ui/ConfigIcons.qml:224
 #, kde-format
 msgctxt "whether to use icon or list view"
 msgid "View mode:"
 msgstr "ਝਲਕ ਢੰਗ:"
 
-#: package/contents/ui/ConfigIcons.qml:222
+#: package/contents/ui/ConfigIcons.qml:226
 #, kde-format
 msgctxt "@item:inlistbox show icons in a list"
 msgid "List"
 msgstr "ਸੂਚੀ"
 
-#: package/contents/ui/ConfigIcons.qml:223
+#: package/contents/ui/ConfigIcons.qml:227
 #, kde-format
 msgctxt "@item:inlistbox show icons in a grid"
 msgid "Grid"
 msgstr "ਗਰਿੱਡ"
 
-#: package/contents/ui/ConfigIcons.qml:234
+#: package/contents/ui/ConfigIcons.qml:238
 #, fuzzy, kde-format
 #| msgid "Icon size:"
 msgctxt "@label:slider"
 msgid "Icon size:"
 msgstr "ਆਈਕਾਨ ਆਕਾਰ:"
 
-#: package/contents/ui/ConfigIcons.qml:249
+#: package/contents/ui/ConfigIcons.qml:253
 #, fuzzy, kde-format
 #| msgctxt "@label:slider smallest icon size"
 #| msgid "Small"
@@ -286,7 +286,7 @@ msgctxt "@item:inrange smallest icon size"
 msgid "Small"
 msgstr "ਛੋਟਾ"
 
-#: package/contents/ui/ConfigIcons.qml:258
+#: package/contents/ui/ConfigIcons.qml:262
 #, fuzzy, kde-format
 #| msgctxt "@label:slider largest icon size"
 #| msgid "Large"
@@ -294,93 +294,112 @@ msgctxt "@item:inrange largest icon size"
 msgid "Large"
 msgstr "ਵੱਡਾ"
 
-#: package/contents/ui/ConfigIcons.qml:267
+#: package/contents/ui/ConfigIcons.qml:271
 #, fuzzy, kde-format
 #| msgid "Label width:"
 msgctxt "@label:listbox"
 msgid "Label width:"
 msgstr "ਲੇਬਲ ਚੌੜਾਈ:"
 
-#: package/contents/ui/ConfigIcons.qml:270
+#: package/contents/ui/ConfigIcons.qml:274
 #, kde-format
 msgctxt "@item:inlistbox how long a text label should be"
 msgid "Narrow"
 msgstr "ਸੌੜਾ"
 
-#: package/contents/ui/ConfigIcons.qml:271
+#: package/contents/ui/ConfigIcons.qml:275
 #, kde-format
 msgctxt "@item:inlistbox how long a text label should be"
 msgid "Medium"
 msgstr "ਮੱਧਮ"
 
-#: package/contents/ui/ConfigIcons.qml:272
+#: package/contents/ui/ConfigIcons.qml:276
 #, kde-format
 msgctxt "@item:inlistbox how long a text label should be"
 msgid "Wide"
 msgstr "ਚੌੜਾ"
 
-#: package/contents/ui/ConfigIcons.qml:280
+#: package/contents/ui/ConfigIcons.qml:284
 #, fuzzy, kde-format
 #| msgid "Text lines:"
 msgctxt "@label:spinbox"
 msgid "Text lines:"
 msgstr "ਲਿਖਤ ਲਾਈਨਾਂ:"
 
-#: package/contents/ui/ConfigIcons.qml:296
+#: package/contents/ui/ConfigIcons.qml:300
 #, kde-format
 msgctxt "@title:group prefix for checkbox group"
 msgid "When hovering over icons:"
 msgstr ""
 
-#: package/contents/ui/ConfigIcons.qml:298
+#: package/contents/ui/ConfigIcons.qml:302
 #, fuzzy, kde-format
 #| msgid "Show tooltips"
 msgctxt "@option:check When hovering over icons…"
 msgid "Show tooltips"
 msgstr "ਟੂਲ-ਟਿਪ ਵੇਖੋ"
 
-#: package/contents/ui/ConfigIcons.qml:305
+#: package/contents/ui/ConfigIcons.qml:309
 #, fuzzy, kde-format
 #| msgid "Show selection markers"
 msgctxt "@option:check When hovering over icons…"
 msgid "Show selection markers"
 msgstr "ਚੋਣ ਨਿਸ਼ਾਨ ਵੇਖੋ"
 
-#: package/contents/ui/ConfigIcons.qml:312
+#: package/contents/ui/ConfigIcons.qml:316
 #, fuzzy, kde-format
 #| msgid "Show folder preview popups"
 msgctxt "@option:check When hovering over icons…"
 msgid "Show folder preview popups"
 msgstr "ਫੋਲਡਰ ਝਲਕ ਪੌਪਅੱਪ ਵੇਖੋ"
 
-#: package/contents/ui/ConfigIcons.qml:322
+#: package/contents/ui/ConfigIcons.qml:328
+#, kde-format
+msgctxt "@title:group"
+msgid "Typing on the desktop:"
+msgstr ""
+
+#: package/contents/ui/ConfigIcons.qml:334
+#, fuzzy, kde-format
+#| msgid "Select Folder"
+msgctxt "@option:radio Typing on the desktop selects items"
+msgid "Selects items"
+msgstr "ਫੋਲਡਰ ਚੁਣੋ"
+
+#: package/contents/ui/ConfigIcons.qml:340
+#, kde-format
+msgctxt "@option:radio Typing on the desktop activates KRunner"
+msgid "Activates KRunner"
+msgstr ""
+
+#: package/contents/ui/ConfigIcons.qml:356
 #, fuzzy, kde-format
 #| msgid "Rename:"
 msgctxt "@label prefix for checkbox"
 msgid "Rename:"
 msgstr "ਨਾਂ-ਬਦਲੋ:"
 
-#: package/contents/ui/ConfigIcons.qml:326
+#: package/contents/ui/ConfigIcons.qml:360
 #, kde-format
 msgctxt "@option:check"
 msgid "Rename inline by clicking selected item's text"
 msgstr ""
 
-#: package/contents/ui/ConfigIcons.qml:337
+#: package/contents/ui/ConfigIcons.qml:371
 #, fuzzy, kde-format
 #| msgid "Previews:"
 msgctxt "@title:group prefix for checkbox and button"
 msgid "Previews:"
 msgstr "ਝਲਕਾਂ:"
 
-#: package/contents/ui/ConfigIcons.qml:339
+#: package/contents/ui/ConfigIcons.qml:373
 #, fuzzy, kde-format
 #| msgid "Show preview thumbnails"
 msgctxt "@option:check"
 msgid "Show preview thumbnails"
 msgstr "ਥੰਮਨੇਲ ਝਲਕ ਵੇਖੋ"
 
-#: package/contents/ui/ConfigIcons.qml:347
+#: package/contents/ui/ConfigIcons.qml:381
 #, fuzzy, kde-format
 #| msgid "Configure Preview Plugins…"
 msgctxt "@action:button opens dialog"
@@ -506,7 +525,7 @@ msgctxt "@title:window"
 msgid "Preview Plugins"
 msgstr "ਪਲੱਗਇਨ ਝਲਕ"
 
-#: package/contents/ui/FolderView.qml:1236
+#: package/contents/ui/FolderView.qml:1274
 #, kde-format
 msgctxt "@info"
 msgid ""
@@ -543,17 +562,17 @@ msgstr "ਡੈਸਕਟਾਪ ਅਤੇ ਵਾਲਪੇਪਰ"
 msgid "Select Folder"
 msgstr "ਫੋਲਡਰ ਚੁਣੋ"
 
-#: plugins/folder/foldermodel.cpp:505
+#: plugins/folder/foldermodel.cpp:569
 #, kde-format
 msgid "&Refresh Desktop"
 msgstr "ਡੈਸਕਟਾਪ ਤਾਜ਼ਾ ਕਰੋ(&R)"
 
-#: plugins/folder/foldermodel.cpp:505 plugins/folder/foldermodel.cpp:1741
+#: plugins/folder/foldermodel.cpp:569 plugins/folder/foldermodel.cpp:1805
 #, kde-format
 msgid "&Refresh View"
 msgstr "ਝਲਕ ਤਾਜ਼ਾ ਕਰੋ(&R)"
 
-#: plugins/folder/foldermodel.cpp:868
+#: plugins/folder/foldermodel.cpp:932
 #, kde-format
 msgctxt ""
 "@title:notifications Here 'link' refers to a symbolic link to another file "
@@ -561,7 +580,7 @@ msgctxt ""
 msgid "Link Target Not Found"
 msgstr ""
 
-#: plugins/folder/foldermodel.cpp:870
+#: plugins/folder/foldermodel.cpp:934
 #, kde-kuit-format
 msgctxt "@info Body text of a system notification"
 msgid ""
@@ -569,23 +588,23 @@ msgid ""
 "not be found. It may have been moved or deleted."
 msgstr ""
 
-#: plugins/folder/foldermodel.cpp:1750
+#: plugins/folder/foldermodel.cpp:1814
 #, kde-format
 msgid "&Empty Trash"
 msgstr "ਰੱਦੀ ਖਾਲੀ ਕਰੋ(&E)"
 
-#: plugins/folder/foldermodel.cpp:1753
+#: plugins/folder/foldermodel.cpp:1817
 #, kde-format
 msgctxt "Restore from trash"
 msgid "Restore to Former Location"
 msgstr "ਪੁਰਾਣਾ ਟਿਕਾਣੇ ਉੱਤੇ ਬਹਾਲ ਕਰੋ"
 
-#: plugins/folder/foldermodel.cpp:1756
+#: plugins/folder/foldermodel.cpp:1820
 #, kde-format
 msgid "&Open"
 msgstr "ਖੋਲ੍ਹੋ(&O)"
 
-#: plugins/folder/foldermodel.cpp:1760
+#: plugins/folder/foldermodel.cpp:1824
 #, kde-format
 msgctxt ""
 "@action:inmenu open file manager showing the target file or folder that this "
@@ -593,23 +612,23 @@ msgctxt ""
 msgid "Show Target"
 msgstr "ਟੀਚੇ ਨੂੰ ਵੇਖਾਓ"
 
-#: plugins/folder/foldermodel.cpp:1861
+#: plugins/folder/foldermodel.cpp:1925
 #, kde-format
 msgctxt "@action:inmenu Removes the trash icon on the desktop"
 msgid "Remove Trash Icon"
 msgstr "ਰੱਦੀ ਦੇ ਆਈਕਾਨ ਨੂੰ ਹਟਾਓ"
 
-#: plugins/folder/foldermodel.cpp:1864
+#: plugins/folder/foldermodel.cpp:1928
 #, kde-format
 msgid "&Move to Trash"
 msgstr "ਰੱਦੀ ਵਿੱਚ ਭੇਜੋ(&M)"
 
-#: plugins/folder/foldermodel.cpp:1897
+#: plugins/folder/foldermodel.cpp:1961
 #, kde-format
 msgid "&Paste"
 msgstr "ਚੇਪੋ(&P)"
 
-#: plugins/folder/foldermodel.cpp:2048
+#: plugins/folder/foldermodel.cpp:2112
 #, kde-format
 msgid "&Properties"
 msgstr "ਵਿਸ਼ੇਸ਼ਤਾਵਾਂ(&P)"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-01-08 00:45+0000\n"
+"POT-Creation-Date: 2026-03-19 00:48+0000\n"
 "PO-Revision-Date: 2026-03-12 21:44+0100\n"
 "Last-Translator: Kristof Kiszel <ulysses@fsf.hu>\n"
 "Language-Team: Hungarian <kde-l10n-hu@kde.org>\n"
@@ -39,69 +39,65 @@ msgstr "Középen"
 
 #: ui/main.qml:55
 #, kde-format
-msgctxt "@label prefix for checkbutton"
-msgid "Activation:"
-msgstr "Aktiválás:"
-
-#: ui/main.qml:58
-#, kde-format
-msgctxt "@option:check"
-msgid "Activate when pressing any key on the desktop"
-msgstr "Aktiválás bármely billentyű megnyomásakor az asztalon"
-
-#: ui/main.qml:71
-#, kde-format
 msgctxt "@title:group prefix for radiobutton group"
 msgid "History:"
 msgstr "Előzmények:"
 
-#: ui/main.qml:74
+#: ui/main.qml:58
 #, kde-format
 msgctxt "@option:radio History is disabled"
 msgid "Disabled"
 msgstr "Kikapcsolva"
 
-#: ui/main.qml:79
+#: ui/main.qml:63
 #, kde-format
 msgctxt "@option:radio The thing being enabled is search history"
 msgid "Enable suggestions"
 msgstr "Javaslatok bekapcsolása"
 
-#: ui/main.qml:84
+#: ui/main.qml:68
 #, kde-format
 msgctxt "@option:radio The thing being enabled is search history"
 msgid "Enable auto-complete"
 msgstr "Automatikus kiegészítés bekapcsolása"
 
-#: ui/main.qml:92
+#: ui/main.qml:76
 #, kde-format
 msgctxt "@action:button"
 msgid "Clear History…"
 msgstr "Előzmények törlése…"
 
-#: ui/main.qml:115
+#: ui/main.qml:99
 #, kde-format
 msgctxt "@item:inmenu delete krunner history for all activities"
 msgid "For all activities"
 msgstr "Az összes aktivitásról"
 
-#: ui/main.qml:127
+#: ui/main.qml:111
 #, kde-format
 msgctxt "@item:inmenu delete krunner history for this activity"
 msgid "For activity \"%1\""
 msgstr "A(z) „%1” aktivitásról"
 
-#: ui/main.qml:144
+#: ui/main.qml:128
 #, kde-format
 msgctxt "@label"
 msgid "Plugins:"
 msgstr "Bővítmények:"
 
-#: ui/main.qml:148
+#: ui/main.qml:132
 #, kde-format
 msgctxt "@action:button"
 msgid "Configure Enabled Search Plugins…"
 msgstr "Engedélyezett keresési bővítmények beállítása…"
+
+#~ msgctxt "@label prefix for checkbutton"
+#~ msgid "Activation:"
+#~ msgstr "Aktiválás:"
+
+#~ msgctxt "@option:check"
+#~ msgid "Activate when pressing any key on the desktop"
+#~ msgstr "Aktiválás bármely billentyű megnyomásakor az asztalon"
 
 #, fuzzy
 #~| msgid "Activity aware (previous search and history)"

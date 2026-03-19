@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma_applet_org.kde.desktopcontainment\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-02-28 00:46+0000\n"
+"POT-Creation-Date: 2026-03-19 00:48+0000\n"
 "PO-Revision-Date: 2017-12-15 12:38+0100\n"
 "Last-Translator: Chusslove Illich <caslav.ilic@gmx.net>\n"
 "Language-Team: Serbian <kde-i18n-sr@kde.org>\n"
@@ -134,21 +134,21 @@ msgctxt "@action:button tooltip only, ascending/descending"
 msgid "Switch Sort Order"
 msgstr ""
 
-#: package/contents/ui/ConfigIcons.qml:57
+#: package/contents/ui/ConfigIcons.qml:61
 #, fuzzy, kde-format
 #| msgid "Panel button:"
 msgctxt "@title:group prefix for checkbox + button"
 msgid "Panel button:"
 msgstr "Panelsko dugme:"
 
-#: package/contents/ui/ConfigIcons.qml:63
+#: package/contents/ui/ConfigIcons.qml:67
 #, fuzzy, kde-format
 #| msgid "Use a custom icon"
 msgctxt "@option:check"
 msgid "Use a custom icon"
 msgstr "Posebna ikonica"
 
-#: package/contents/ui/ConfigIcons.qml:96
+#: package/contents/ui/ConfigIcons.qml:100
 #, fuzzy, kde-format
 #| msgctxt "@item:inmenu Open icon chooser dialog"
 #| msgid "Choose..."
@@ -156,13 +156,13 @@ msgctxt "@item:inmenu Open icon chooser dialog"
 msgid "Choose…"
 msgstr "Izaberi..."
 
-#: package/contents/ui/ConfigIcons.qml:102
+#: package/contents/ui/ConfigIcons.qml:106
 #, kde-format
 msgctxt "@item:inmenu Reset icon to default"
 msgid "Clear Icon"
 msgstr "Očisti ikonicu"
 
-#: package/contents/ui/ConfigIcons.qml:122
+#: package/contents/ui/ConfigIcons.qml:126
 #, fuzzy, kde-format
 #| msgid "Arrangement:"
 msgctxt "@label:listbox columns/rows"
@@ -170,7 +170,7 @@ msgid "Arrangement:"
 msgstr "Raspored:"
 
 # >> @item:inlistbox Arrange in:
-#: package/contents/ui/ConfigIcons.qml:125
+#: package/contents/ui/ConfigIcons.qml:129
 #, fuzzy, kde-format
 #| msgid "Columns"
 msgctxt "@item:inlistbox arrangement of icons"
@@ -178,54 +178,54 @@ msgid "In Columns"
 msgstr "kolonama"
 
 # >> @item:inlistbox Arrange in:
-#: package/contents/ui/ConfigIcons.qml:126
+#: package/contents/ui/ConfigIcons.qml:130
 #, fuzzy, kde-format
 #| msgid "Rows"
 msgctxt "@item:inlistbox arrangement of icons"
 msgid "In Rows"
 msgstr "vrstama"
 
-#: package/contents/ui/ConfigIcons.qml:135
+#: package/contents/ui/ConfigIcons.qml:139
 #, fuzzy, kde-format
 #| msgid "Sorting:"
 msgctxt "@label:listbox, LtR/RtL"
 msgid "Sort Alignment:"
 msgstr "Ređanje:"
 
-#: package/contents/ui/ConfigIcons.qml:138
+#: package/contents/ui/ConfigIcons.qml:142
 #, kde-format
 msgctxt "@item:inlistbox alignment of icons"
 msgid "Left-to-Right"
 msgstr ""
 
-#: package/contents/ui/ConfigIcons.qml:139
+#: package/contents/ui/ConfigIcons.qml:143
 #, kde-format
 msgctxt "@item:inlistbox alignment of icons"
 msgid "Right-to-Left"
 msgstr ""
 
-#: package/contents/ui/ConfigIcons.qml:161
+#: package/contents/ui/ConfigIcons.qml:165
 #, fuzzy, kde-format
 #| msgid "Lock in place"
 msgctxt "@option:check lock icon positions"
 msgid "Lock in place"
 msgstr "Zaključaj na mestu"
 
-#: package/contents/ui/ConfigIcons.qml:175
+#: package/contents/ui/ConfigIcons.qml:179
 #, fuzzy, kde-format
 #| msgid "Sort By"
 msgctxt "@label:listbox sort items by field"
 msgid "Sort by:"
 msgstr "Poređaj po"
 
-#: package/contents/ui/ConfigIcons.qml:183
+#: package/contents/ui/ConfigIcons.qml:187
 #, kde-format
 msgctxt "@item:inlistbox sort icons manually"
 msgid "Manual"
 msgstr ""
 
 # >> @item:inlistbox Sorting:
-#: package/contents/ui/ConfigIcons.qml:184
+#: package/contents/ui/ConfigIcons.qml:188
 #, fuzzy, kde-format
 #| msgid "Name"
 msgctxt "@item:inlistbox sort icons by name"
@@ -233,7 +233,7 @@ msgid "Name"
 msgstr "ime"
 
 # >> @item:inlistbox Sorting:
-#: package/contents/ui/ConfigIcons.qml:185
+#: package/contents/ui/ConfigIcons.qml:189
 #, fuzzy, kde-format
 #| msgid "Size"
 msgctxt "@item:inlistbox sort icons by size"
@@ -241,7 +241,7 @@ msgid "Size"
 msgstr "veličina"
 
 # >> @item:inlistbox Sorting:
-#: package/contents/ui/ConfigIcons.qml:186
+#: package/contents/ui/ConfigIcons.qml:190
 #, fuzzy, kde-format
 #| msgid "Type"
 msgctxt "@item:inlistbox sort icons by file type"
@@ -249,7 +249,7 @@ msgid "Type"
 msgstr "tip"
 
 # >> @item:inlistbox Sorting:
-#: package/contents/ui/ConfigIcons.qml:187
+#: package/contents/ui/ConfigIcons.qml:191
 #, fuzzy, kde-format
 #| msgid "Date"
 msgctxt "@item:inlistbox sort icons by date"
@@ -257,7 +257,7 @@ msgid "Date"
 msgstr "datum"
 
 # >> @option:check
-#: package/contents/ui/ConfigIcons.qml:198
+#: package/contents/ui/ConfigIcons.qml:202
 #, fuzzy, kde-format
 #| msgid "Descending"
 msgctxt "@option:check sort icons in descending order"
@@ -265,14 +265,14 @@ msgid "Descending"
 msgstr "Opadajuće"
 
 # >> @option:check
-#: package/contents/ui/ConfigIcons.qml:206
+#: package/contents/ui/ConfigIcons.qml:210
 #, fuzzy, kde-format
 #| msgid "Folders first"
 msgctxt "@option:check sort icons with folders first"
 msgid "Folders first"
 msgstr "Prvo fascikle"
 
-#: package/contents/ui/ConfigIcons.qml:220
+#: package/contents/ui/ConfigIcons.qml:224
 #, fuzzy, kde-format
 #| msgctxt "whether to use icon or list view"
 #| msgid "View mode"
@@ -280,20 +280,20 @@ msgctxt "whether to use icon or list view"
 msgid "View mode:"
 msgstr "Režim prikaza"
 
-#: package/contents/ui/ConfigIcons.qml:222
+#: package/contents/ui/ConfigIcons.qml:226
 #, fuzzy, kde-format
 #| msgid "List"
 msgctxt "@item:inlistbox show icons in a list"
 msgid "List"
 msgstr "Spisak"
 
-#: package/contents/ui/ConfigIcons.qml:223
+#: package/contents/ui/ConfigIcons.qml:227
 #, kde-format
 msgctxt "@item:inlistbox show icons in a grid"
 msgid "Grid"
 msgstr ""
 
-#: package/contents/ui/ConfigIcons.qml:234
+#: package/contents/ui/ConfigIcons.qml:238
 #, fuzzy, kde-format
 #| msgid "Icon Size"
 msgctxt "@label:slider"
@@ -301,7 +301,7 @@ msgid "Icon size:"
 msgstr "Veličina ikonica"
 
 # >> @item:inrange Size:
-#: package/contents/ui/ConfigIcons.qml:249
+#: package/contents/ui/ConfigIcons.qml:253
 #, fuzzy, kde-format
 #| msgid "Small"
 msgctxt "@item:inrange smallest icon size"
@@ -309,54 +309,54 @@ msgid "Small"
 msgstr "male"
 
 # >> @item:inrange Size:
-#: package/contents/ui/ConfigIcons.qml:258
+#: package/contents/ui/ConfigIcons.qml:262
 #, fuzzy, kde-format
 #| msgid "Large"
 msgctxt "@item:inrange largest icon size"
 msgid "Large"
 msgstr "velike"
 
-#: package/contents/ui/ConfigIcons.qml:267
+#: package/contents/ui/ConfigIcons.qml:271
 #, kde-format
 msgctxt "@label:listbox"
 msgid "Label width:"
 msgstr ""
 
-#: package/contents/ui/ConfigIcons.qml:270
+#: package/contents/ui/ConfigIcons.qml:274
 #, kde-format
 msgctxt "@item:inlistbox how long a text label should be"
 msgid "Narrow"
 msgstr ""
 
 # >> @item:inmenu Icon Size
-#: package/contents/ui/ConfigIcons.qml:271
+#: package/contents/ui/ConfigIcons.qml:275
 #, fuzzy, kde-format
 #| msgid "Medium"
 msgctxt "@item:inlistbox how long a text label should be"
 msgid "Medium"
 msgstr "srednje"
 
-#: package/contents/ui/ConfigIcons.qml:272
+#: package/contents/ui/ConfigIcons.qml:276
 #, kde-format
 msgctxt "@item:inlistbox how long a text label should be"
 msgid "Wide"
 msgstr ""
 
-#: package/contents/ui/ConfigIcons.qml:280
+#: package/contents/ui/ConfigIcons.qml:284
 #, fuzzy, kde-format
 #| msgid "Text lines"
 msgctxt "@label:spinbox"
 msgid "Text lines:"
 msgstr "Redovi teksta"
 
-#: package/contents/ui/ConfigIcons.qml:296
+#: package/contents/ui/ConfigIcons.qml:300
 #, kde-format
 msgctxt "@title:group prefix for checkbox group"
 msgid "When hovering over icons:"
 msgstr ""
 
 # >> @option:check
-#: package/contents/ui/ConfigIcons.qml:298
+#: package/contents/ui/ConfigIcons.qml:302
 #, fuzzy, kde-format
 #| msgid "Tool tips"
 msgctxt "@option:check When hovering over icons…"
@@ -364,7 +364,7 @@ msgid "Show tooltips"
 msgstr "Oblačići"
 
 # >> @option:check
-#: package/contents/ui/ConfigIcons.qml:305
+#: package/contents/ui/ConfigIcons.qml:309
 #, fuzzy, kde-format
 #| msgid "Selection markers"
 msgctxt "@option:check When hovering over icons…"
@@ -372,26 +372,46 @@ msgid "Show selection markers"
 msgstr "Markeri izbora"
 
 # >> @option:check
-#: package/contents/ui/ConfigIcons.qml:312
+#: package/contents/ui/ConfigIcons.qml:316
 #, fuzzy, kde-format
 #| msgid "Folder preview popups"
 msgctxt "@option:check When hovering over icons…"
 msgid "Show folder preview popups"
 msgstr "Iskakači pregleda fascikle"
 
-#: package/contents/ui/ConfigIcons.qml:322
+#: package/contents/ui/ConfigIcons.qml:328
+#, kde-format
+msgctxt "@title:group"
+msgid "Typing on the desktop:"
+msgstr ""
+
+# >> @title:window
+#: package/contents/ui/ConfigIcons.qml:334
+#, fuzzy, kde-format
+#| msgid "Select Folder"
+msgctxt "@option:radio Typing on the desktop selects items"
+msgid "Selects items"
+msgstr "Izbor fascikle"
+
+#: package/contents/ui/ConfigIcons.qml:340
+#, kde-format
+msgctxt "@option:radio Typing on the desktop activates KRunner"
+msgid "Activates KRunner"
+msgstr ""
+
+#: package/contents/ui/ConfigIcons.qml:356
 #, kde-format
 msgctxt "@label prefix for checkbox"
 msgid "Rename:"
 msgstr ""
 
-#: package/contents/ui/ConfigIcons.qml:326
+#: package/contents/ui/ConfigIcons.qml:360
 #, kde-format
 msgctxt "@option:check"
 msgid "Rename inline by clicking selected item's text"
 msgstr ""
 
-#: package/contents/ui/ConfigIcons.qml:337
+#: package/contents/ui/ConfigIcons.qml:371
 #, fuzzy, kde-format
 #| msgid "Preview Plugins"
 msgctxt "@title:group prefix for checkbox and button"
@@ -399,14 +419,14 @@ msgid "Previews:"
 msgstr "Priključci za pregled"
 
 # >> @option:check
-#: package/contents/ui/ConfigIcons.qml:339
+#: package/contents/ui/ConfigIcons.qml:373
 #, fuzzy, kde-format
 #| msgid "Preview thumbnails"
 msgctxt "@option:check"
 msgid "Show preview thumbnails"
 msgstr "Sličice za pregled"
 
-#: package/contents/ui/ConfigIcons.qml:347
+#: package/contents/ui/ConfigIcons.qml:381
 #, fuzzy, kde-format
 #| msgid "More Preview Options..."
 msgctxt "@action:button opens dialog"
@@ -536,7 +556,7 @@ msgctxt "@title:window"
 msgid "Preview Plugins"
 msgstr "Priključci za pregled"
 
-#: package/contents/ui/FolderView.qml:1236
+#: package/contents/ui/FolderView.qml:1274
 #, kde-format
 msgctxt "@info"
 msgid ""
@@ -572,17 +592,17 @@ msgstr "Podesi površ"
 msgid "Select Folder"
 msgstr "Izbor fascikle"
 
-#: plugins/folder/foldermodel.cpp:505
+#: plugins/folder/foldermodel.cpp:569
 #, kde-format
 msgid "&Refresh Desktop"
 msgstr "&Osveži površ"
 
-#: plugins/folder/foldermodel.cpp:505 plugins/folder/foldermodel.cpp:1741
+#: plugins/folder/foldermodel.cpp:569 plugins/folder/foldermodel.cpp:1805
 #, kde-format
 msgid "&Refresh View"
 msgstr "&Osveži prikaz"
 
-#: plugins/folder/foldermodel.cpp:868
+#: plugins/folder/foldermodel.cpp:932
 #, kde-format
 msgctxt ""
 "@title:notifications Here 'link' refers to a symbolic link to another file "
@@ -590,7 +610,7 @@ msgctxt ""
 msgid "Link Target Not Found"
 msgstr ""
 
-#: plugins/folder/foldermodel.cpp:870
+#: plugins/folder/foldermodel.cpp:934
 #, kde-kuit-format
 msgctxt "@info Body text of a system notification"
 msgid ""
@@ -598,25 +618,25 @@ msgid ""
 "not be found. It may have been moved or deleted."
 msgstr ""
 
-#: plugins/folder/foldermodel.cpp:1750
+#: plugins/folder/foldermodel.cpp:1814
 #, fuzzy, kde-format
 #| msgid "&Empty Trash Bin"
 msgid "&Empty Trash"
 msgstr "&Isprazni smeće"
 
-#: plugins/folder/foldermodel.cpp:1753
+#: plugins/folder/foldermodel.cpp:1817
 #, kde-format
 msgctxt "Restore from trash"
 msgid "Restore to Former Location"
 msgstr ""
 
-#: plugins/folder/foldermodel.cpp:1756
+#: plugins/folder/foldermodel.cpp:1820
 #, kde-format
 msgid "&Open"
 msgstr "&Otvori"
 
 # >> @option:radio (that is, semantics thereof)
-#: plugins/folder/foldermodel.cpp:1760
+#: plugins/folder/foldermodel.cpp:1824
 #, fuzzy, kde-format
 #| msgid "Show All Files"
 msgctxt ""
@@ -625,24 +645,24 @@ msgctxt ""
 msgid "Show Target"
 msgstr "Prikaži sve fajlove"
 
-#: plugins/folder/foldermodel.cpp:1861
+#: plugins/folder/foldermodel.cpp:1925
 #, kde-format
 msgctxt "@action:inmenu Removes the trash icon on the desktop"
 msgid "Remove Trash Icon"
 msgstr ""
 
-#: plugins/folder/foldermodel.cpp:1864
+#: plugins/folder/foldermodel.cpp:1928
 #, fuzzy, kde-format
 #| msgid "&Empty Trash Bin"
 msgid "&Move to Trash"
 msgstr "&Isprazni smeće"
 
-#: plugins/folder/foldermodel.cpp:1897
+#: plugins/folder/foldermodel.cpp:1961
 #, kde-format
 msgid "&Paste"
 msgstr "&Nalepi"
 
-#: plugins/folder/foldermodel.cpp:2048
+#: plugins/folder/foldermodel.cpp:2112
 #, kde-format
 msgid "&Properties"
 msgstr "&Svojstva"

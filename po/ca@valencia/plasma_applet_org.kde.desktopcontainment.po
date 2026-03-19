@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-desktop\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-02-28 00:46+0000\n"
+"POT-Creation-Date: 2026-03-19 00:48+0000\n"
 "PO-Revision-Date: 2026-01-08 10:45+0100\n"
 "Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
@@ -118,236 +118,255 @@ msgctxt "@action:button tooltip only, ascending/descending"
 msgid "Switch Sort Order"
 msgstr "Canvia el sentit d'ordenació"
 
-#: package/contents/ui/ConfigIcons.qml:57
+#: package/contents/ui/ConfigIcons.qml:61
 #, kde-format
 msgctxt "@title:group prefix for checkbox + button"
 msgid "Panel button:"
 msgstr "Botó del quadro:"
 
-#: package/contents/ui/ConfigIcons.qml:63
+#: package/contents/ui/ConfigIcons.qml:67
 #, kde-format
 msgctxt "@option:check"
 msgid "Use a custom icon"
 msgstr "Utilitza una icona personalitzada"
 
-#: package/contents/ui/ConfigIcons.qml:96
+#: package/contents/ui/ConfigIcons.qml:100
 #, kde-format
 msgctxt "@item:inmenu Open icon chooser dialog"
 msgid "Choose…"
 msgstr "Tria…"
 
-#: package/contents/ui/ConfigIcons.qml:102
+#: package/contents/ui/ConfigIcons.qml:106
 #, kde-format
 msgctxt "@item:inmenu Reset icon to default"
 msgid "Clear Icon"
 msgstr "Neteja la icona"
 
-#: package/contents/ui/ConfigIcons.qml:122
+#: package/contents/ui/ConfigIcons.qml:126
 #, kde-format
 msgctxt "@label:listbox columns/rows"
 msgid "Arrangement:"
 msgstr "Organització:"
 
-#: package/contents/ui/ConfigIcons.qml:125
+#: package/contents/ui/ConfigIcons.qml:129
 #, kde-format
 msgctxt "@item:inlistbox arrangement of icons"
 msgid "In Columns"
 msgstr "En columnes"
 
-#: package/contents/ui/ConfigIcons.qml:126
+#: package/contents/ui/ConfigIcons.qml:130
 #, kde-format
 msgctxt "@item:inlistbox arrangement of icons"
 msgid "In Rows"
 msgstr "En files"
 
-#: package/contents/ui/ConfigIcons.qml:135
+#: package/contents/ui/ConfigIcons.qml:139
 #, kde-format
 msgctxt "@label:listbox, LtR/RtL"
 msgid "Sort Alignment:"
 msgstr "Alineació de l'ordenació:"
 
-#: package/contents/ui/ConfigIcons.qml:138
+#: package/contents/ui/ConfigIcons.qml:142
 #, kde-format
 msgctxt "@item:inlistbox alignment of icons"
 msgid "Left-to-Right"
 msgstr "D'esquerra a dreta"
 
-#: package/contents/ui/ConfigIcons.qml:139
+#: package/contents/ui/ConfigIcons.qml:143
 #, kde-format
 msgctxt "@item:inlistbox alignment of icons"
 msgid "Right-to-Left"
 msgstr "De dreta a esquerra"
 
-#: package/contents/ui/ConfigIcons.qml:161
+#: package/contents/ui/ConfigIcons.qml:165
 #, kde-format
 msgctxt "@option:check lock icon positions"
 msgid "Lock in place"
 msgstr "Bloqueja en la posició"
 
-#: package/contents/ui/ConfigIcons.qml:175
+#: package/contents/ui/ConfigIcons.qml:179
 #, kde-format
 msgctxt "@label:listbox sort items by field"
 msgid "Sort by:"
 msgstr "Ordena per:"
 
-#: package/contents/ui/ConfigIcons.qml:183
+#: package/contents/ui/ConfigIcons.qml:187
 #, kde-format
 msgctxt "@item:inlistbox sort icons manually"
 msgid "Manual"
 msgstr "Manual"
 
-#: package/contents/ui/ConfigIcons.qml:184
+#: package/contents/ui/ConfigIcons.qml:188
 #, kde-format
 msgctxt "@item:inlistbox sort icons by name"
 msgid "Name"
 msgstr "Nom"
 
-#: package/contents/ui/ConfigIcons.qml:185
+#: package/contents/ui/ConfigIcons.qml:189
 #, kde-format
 msgctxt "@item:inlistbox sort icons by size"
 msgid "Size"
 msgstr "Mida"
 
-#: package/contents/ui/ConfigIcons.qml:186
+#: package/contents/ui/ConfigIcons.qml:190
 #, kde-format
 msgctxt "@item:inlistbox sort icons by file type"
 msgid "Type"
 msgstr "Tipus"
 
-#: package/contents/ui/ConfigIcons.qml:187
+#: package/contents/ui/ConfigIcons.qml:191
 #, kde-format
 msgctxt "@item:inlistbox sort icons by date"
 msgid "Date"
 msgstr "Data"
 
-#: package/contents/ui/ConfigIcons.qml:198
+#: package/contents/ui/ConfigIcons.qml:202
 #, kde-format
 msgctxt "@option:check sort icons in descending order"
 msgid "Descending"
 msgstr "Descendent"
 
-#: package/contents/ui/ConfigIcons.qml:206
+#: package/contents/ui/ConfigIcons.qml:210
 #, kde-format
 msgctxt "@option:check sort icons with folders first"
 msgid "Folders first"
 msgstr "Primer les carpetes"
 
-#: package/contents/ui/ConfigIcons.qml:220
+#: package/contents/ui/ConfigIcons.qml:224
 #, kde-format
 msgctxt "whether to use icon or list view"
 msgid "View mode:"
 msgstr "Mode de vista:"
 
-#: package/contents/ui/ConfigIcons.qml:222
+#: package/contents/ui/ConfigIcons.qml:226
 #, kde-format
 msgctxt "@item:inlistbox show icons in a list"
 msgid "List"
 msgstr "Llista"
 
-#: package/contents/ui/ConfigIcons.qml:223
+#: package/contents/ui/ConfigIcons.qml:227
 #, kde-format
 msgctxt "@item:inlistbox show icons in a grid"
 msgid "Grid"
 msgstr "Quadrícula"
 
-#: package/contents/ui/ConfigIcons.qml:234
+#: package/contents/ui/ConfigIcons.qml:238
 #, kde-format
 msgctxt "@label:slider"
 msgid "Icon size:"
 msgstr "Mida de les icones:"
 
-#: package/contents/ui/ConfigIcons.qml:249
+#: package/contents/ui/ConfigIcons.qml:253
 #, kde-format
 msgctxt "@item:inrange smallest icon size"
 msgid "Small"
 msgstr "Xicoteta"
 
-#: package/contents/ui/ConfigIcons.qml:258
+#: package/contents/ui/ConfigIcons.qml:262
 #, kde-format
 msgctxt "@item:inrange largest icon size"
 msgid "Large"
 msgstr "Gran"
 
-#: package/contents/ui/ConfigIcons.qml:267
+#: package/contents/ui/ConfigIcons.qml:271
 #, kde-format
 msgctxt "@label:listbox"
 msgid "Label width:"
 msgstr "Amplària de les etiquetes:"
 
-#: package/contents/ui/ConfigIcons.qml:270
+#: package/contents/ui/ConfigIcons.qml:274
 #, kde-format
 msgctxt "@item:inlistbox how long a text label should be"
 msgid "Narrow"
 msgstr "Estreta"
 
-#: package/contents/ui/ConfigIcons.qml:271
+#: package/contents/ui/ConfigIcons.qml:275
 #, kde-format
 msgctxt "@item:inlistbox how long a text label should be"
 msgid "Medium"
 msgstr "Mitjana"
 
-#: package/contents/ui/ConfigIcons.qml:272
+#: package/contents/ui/ConfigIcons.qml:276
 #, kde-format
 msgctxt "@item:inlistbox how long a text label should be"
 msgid "Wide"
 msgstr "Ampla"
 
-#: package/contents/ui/ConfigIcons.qml:280
+#: package/contents/ui/ConfigIcons.qml:284
 #, kde-format
 msgctxt "@label:spinbox"
 msgid "Text lines:"
 msgstr "Línies de text:"
 
-#: package/contents/ui/ConfigIcons.qml:296
+#: package/contents/ui/ConfigIcons.qml:300
 #, kde-format
 msgctxt "@title:group prefix for checkbox group"
 msgid "When hovering over icons:"
 msgstr "En passar per damunt de les icones:"
 
-#: package/contents/ui/ConfigIcons.qml:298
+#: package/contents/ui/ConfigIcons.qml:302
 #, kde-format
 msgctxt "@option:check When hovering over icons…"
 msgid "Show tooltips"
 msgstr "Mostra els consells d'eina"
 
-#: package/contents/ui/ConfigIcons.qml:305
+#: package/contents/ui/ConfigIcons.qml:309
 #, kde-format
 msgctxt "@option:check When hovering over icons…"
 msgid "Show selection markers"
 msgstr "Mostra els marcadors de selecció"
 
-#: package/contents/ui/ConfigIcons.qml:312
+#: package/contents/ui/ConfigIcons.qml:316
 #, kde-format
 msgctxt "@option:check When hovering over icons…"
 msgid "Show folder preview popups"
 msgstr "Mostra una vista prèvia emergent de les carpetes"
 
-#: package/contents/ui/ConfigIcons.qml:322
+#: package/contents/ui/ConfigIcons.qml:328
+#, kde-format
+msgctxt "@title:group"
+msgid "Typing on the desktop:"
+msgstr ""
+
+#: package/contents/ui/ConfigIcons.qml:334
+#, fuzzy, kde-format
+#| msgid "Select Folder"
+msgctxt "@option:radio Typing on the desktop selects items"
+msgid "Selects items"
+msgstr "Trieu una carpeta"
+
+#: package/contents/ui/ConfigIcons.qml:340
+#, kde-format
+msgctxt "@option:radio Typing on the desktop activates KRunner"
+msgid "Activates KRunner"
+msgstr ""
+
+#: package/contents/ui/ConfigIcons.qml:356
 #, kde-format
 msgctxt "@label prefix for checkbox"
 msgid "Rename:"
 msgstr "Canvia el nom:"
 
-#: package/contents/ui/ConfigIcons.qml:326
+#: package/contents/ui/ConfigIcons.qml:360
 #, kde-format
 msgctxt "@option:check"
 msgid "Rename inline by clicking selected item's text"
 msgstr ""
 "Canvia el nom en línia clicant damunt del text de l'element seleccionat"
 
-#: package/contents/ui/ConfigIcons.qml:337
+#: package/contents/ui/ConfigIcons.qml:371
 #, kde-format
 msgctxt "@title:group prefix for checkbox and button"
 msgid "Previews:"
 msgstr "Vistes prèvies:"
 
-#: package/contents/ui/ConfigIcons.qml:339
+#: package/contents/ui/ConfigIcons.qml:373
 #, kde-format
 msgctxt "@option:check"
 msgid "Show preview thumbnails"
 msgstr "Mostra les miniatures de les vistes prèvies"
 
-#: package/contents/ui/ConfigIcons.qml:347
+#: package/contents/ui/ConfigIcons.qml:381
 #, kde-format
 msgctxt "@action:button opens dialog"
 msgid "Configure Preview Plugins…"
@@ -455,7 +474,7 @@ msgctxt "@title:window"
 msgid "Preview Plugins"
 msgstr "Connectors de vista prèvia"
 
-#: package/contents/ui/FolderView.qml:1236
+#: package/contents/ui/FolderView.qml:1274
 #, kde-format
 msgctxt "@info"
 msgid ""
@@ -488,17 +507,17 @@ msgstr "Escriptori i fons de pantalla"
 msgid "Select Folder"
 msgstr "Trieu una carpeta"
 
-#: plugins/folder/foldermodel.cpp:505
+#: plugins/folder/foldermodel.cpp:569
 #, kde-format
 msgid "&Refresh Desktop"
 msgstr "Act&ualitza l'escriptori"
 
-#: plugins/folder/foldermodel.cpp:505 plugins/folder/foldermodel.cpp:1741
+#: plugins/folder/foldermodel.cpp:569 plugins/folder/foldermodel.cpp:1805
 #, kde-format
 msgid "&Refresh View"
 msgstr "Act&ualitza la vista"
 
-#: plugins/folder/foldermodel.cpp:868
+#: plugins/folder/foldermodel.cpp:932
 #, kde-format
 msgctxt ""
 "@title:notifications Here 'link' refers to a symbolic link to another file "
@@ -506,7 +525,7 @@ msgctxt ""
 msgid "Link Target Not Found"
 msgstr "No s'ha trobat la destinació de l'enllaç"
 
-#: plugins/folder/foldermodel.cpp:870
+#: plugins/folder/foldermodel.cpp:934
 #, kde-kuit-format
 msgctxt "@info Body text of a system notification"
 msgid ""
@@ -516,23 +535,23 @@ msgstr ""
 "<filename>%1</filename> apunta cap a <filename>%2</filename>, però este no "
 "s'ha pogut trobar. Potser s'ha mogut o suprimit."
 
-#: plugins/folder/foldermodel.cpp:1750
+#: plugins/folder/foldermodel.cpp:1814
 #, kde-format
 msgid "&Empty Trash"
 msgstr "&Buida la paperera"
 
-#: plugins/folder/foldermodel.cpp:1753
+#: plugins/folder/foldermodel.cpp:1817
 #, kde-format
 msgctxt "Restore from trash"
 msgid "Restore to Former Location"
 msgstr "Restaura a la ubicació anterior"
 
-#: plugins/folder/foldermodel.cpp:1756
+#: plugins/folder/foldermodel.cpp:1820
 #, kde-format
 msgid "&Open"
 msgstr "O&bri"
 
-#: plugins/folder/foldermodel.cpp:1760
+#: plugins/folder/foldermodel.cpp:1824
 #, kde-format
 msgctxt ""
 "@action:inmenu open file manager showing the target file or folder that this "
@@ -540,23 +559,23 @@ msgctxt ""
 msgid "Show Target"
 msgstr "Mostra la destinació"
 
-#: plugins/folder/foldermodel.cpp:1861
+#: plugins/folder/foldermodel.cpp:1925
 #, kde-format
 msgctxt "@action:inmenu Removes the trash icon on the desktop"
 msgid "Remove Trash Icon"
 msgstr "Elimina la icona de la paperera"
 
-#: plugins/folder/foldermodel.cpp:1864
+#: plugins/folder/foldermodel.cpp:1928
 #, kde-format
 msgid "&Move to Trash"
 msgstr "&Mou cap a dins de la paperera"
 
-#: plugins/folder/foldermodel.cpp:1897
+#: plugins/folder/foldermodel.cpp:1961
 #, kde-format
 msgid "&Paste"
 msgstr "A&pega"
 
-#: plugins/folder/foldermodel.cpp:2048
+#: plugins/folder/foldermodel.cpp:2112
 #, kde-format
 msgid "&Properties"
 msgstr "&Propietats"

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma_applet_folderview\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-02-28 00:46+0000\n"
+"POT-Creation-Date: 2026-03-19 00:48+0000\n"
 "PO-Revision-Date: 2021-09-05 11:41-0700\n"
 "Last-Translator: Victor Ibragimov <victor.ibragimov@gmail.com>\n"
 "Language-Team: Tajik Language Support\n"
@@ -128,21 +128,21 @@ msgctxt "@action:button tooltip only, ascending/descending"
 msgid "Switch Sort Order"
 msgstr ""
 
-#: package/contents/ui/ConfigIcons.qml:57
+#: package/contents/ui/ConfigIcons.qml:61
 #, fuzzy, kde-format
 #| msgid "Panel button:"
 msgctxt "@title:group prefix for checkbox + button"
 msgid "Panel button:"
 msgstr "Тугмаи навор:"
 
-#: package/contents/ui/ConfigIcons.qml:63
+#: package/contents/ui/ConfigIcons.qml:67
 #, fuzzy, kde-format
 #| msgid "Use a custom icon"
 msgctxt "@option:check"
 msgid "Use a custom icon"
 msgstr "Истифодаи нишонаи шахсӣ"
 
-#: package/contents/ui/ConfigIcons.qml:96
+#: package/contents/ui/ConfigIcons.qml:100
 #, fuzzy, kde-format
 #| msgctxt "@item:inmenu Open icon chooser dialog"
 #| msgid "Choose..."
@@ -150,247 +150,266 @@ msgctxt "@item:inmenu Open icon chooser dialog"
 msgid "Choose…"
 msgstr "Интихоб кардан..."
 
-#: package/contents/ui/ConfigIcons.qml:102
+#: package/contents/ui/ConfigIcons.qml:106
 #, kde-format
 msgctxt "@item:inmenu Reset icon to default"
 msgid "Clear Icon"
 msgstr "Тоза кардани нишона"
 
-#: package/contents/ui/ConfigIcons.qml:122
+#: package/contents/ui/ConfigIcons.qml:126
 #, fuzzy, kde-format
 #| msgid "Arrangement:"
 msgctxt "@label:listbox columns/rows"
 msgid "Arrangement:"
 msgstr "Мураттабсозӣ:"
 
-#: package/contents/ui/ConfigIcons.qml:125
+#: package/contents/ui/ConfigIcons.qml:129
 #, fuzzy, kde-format
 #| msgid "Columns"
 msgctxt "@item:inlistbox arrangement of icons"
 msgid "In Columns"
 msgstr "Сутунҳо"
 
-#: package/contents/ui/ConfigIcons.qml:126
+#: package/contents/ui/ConfigIcons.qml:130
 #, fuzzy, kde-format
 #| msgid "Rows"
 msgctxt "@item:inlistbox arrangement of icons"
 msgid "In Rows"
 msgstr "Қаторҳо"
 
-#: package/contents/ui/ConfigIcons.qml:135
+#: package/contents/ui/ConfigIcons.qml:139
 #, fuzzy, kde-format
 #| msgid "Sorting:"
 msgctxt "@label:listbox, LtR/RtL"
 msgid "Sort Alignment:"
 msgstr "Тартибдиҳӣ:"
 
-#: package/contents/ui/ConfigIcons.qml:138
+#: package/contents/ui/ConfigIcons.qml:142
 #, fuzzy, kde-format
 #| msgid "Top to Bottom, Left to Right"
 msgctxt "@item:inlistbox alignment of icons"
 msgid "Left-to-Right"
 msgstr "Сверху вниз, слева направо"
 
-#: package/contents/ui/ConfigIcons.qml:139
+#: package/contents/ui/ConfigIcons.qml:143
 #, fuzzy, kde-format
 #| msgid "Top to Bottom, Right to Left"
 msgctxt "@item:inlistbox alignment of icons"
 msgid "Right-to-Left"
 msgstr "Сверху вниз, справа налево"
 
-#: package/contents/ui/ConfigIcons.qml:161
+#: package/contents/ui/ConfigIcons.qml:165
 #, fuzzy, kde-format
 #| msgid "Lock in place"
 msgctxt "@option:check lock icon positions"
 msgid "Lock in place"
 msgstr "Дар ин ҷо бастан"
 
-#: package/contents/ui/ConfigIcons.qml:175
+#: package/contents/ui/ConfigIcons.qml:179
 #, fuzzy, kde-format
 #| msgid "Sorting:"
 msgctxt "@label:listbox sort items by field"
 msgid "Sort by:"
 msgstr "Тартибдиҳӣ:"
 
-#: package/contents/ui/ConfigIcons.qml:183
+#: package/contents/ui/ConfigIcons.qml:187
 #, fuzzy, kde-format
 #| msgid "Manual"
 msgctxt "@item:inlistbox sort icons manually"
 msgid "Manual"
 msgstr "Ба таври дастӣ"
 
-#: package/contents/ui/ConfigIcons.qml:184
+#: package/contents/ui/ConfigIcons.qml:188
 #, fuzzy, kde-format
 #| msgid "Name"
 msgctxt "@item:inlistbox sort icons by name"
 msgid "Name"
 msgstr "Ном"
 
-#: package/contents/ui/ConfigIcons.qml:185
+#: package/contents/ui/ConfigIcons.qml:189
 #, fuzzy, kde-format
 #| msgid "Size"
 msgctxt "@item:inlistbox sort icons by size"
 msgid "Size"
 msgstr "Андоза"
 
-#: package/contents/ui/ConfigIcons.qml:186
+#: package/contents/ui/ConfigIcons.qml:190
 #, fuzzy, kde-format
 #| msgid "Type"
 msgctxt "@item:inlistbox sort icons by file type"
 msgid "Type"
 msgstr "Навъ"
 
-#: package/contents/ui/ConfigIcons.qml:187
+#: package/contents/ui/ConfigIcons.qml:191
 #, fuzzy, kde-format
 #| msgid "Date"
 msgctxt "@item:inlistbox sort icons by date"
 msgid "Date"
 msgstr "Сана"
 
-#: package/contents/ui/ConfigIcons.qml:198
+#: package/contents/ui/ConfigIcons.qml:202
 #, fuzzy, kde-format
 #| msgid "Descending"
 msgctxt "@option:check sort icons in descending order"
 msgid "Descending"
 msgstr "Пастшаванда"
 
-#: package/contents/ui/ConfigIcons.qml:206
+#: package/contents/ui/ConfigIcons.qml:210
 #, fuzzy, kde-format
 #| msgid "Folders first"
 msgctxt "@option:check sort icons with folders first"
 msgid "Folders first"
 msgstr "Аввал ҷузвадонҳо"
 
-#: package/contents/ui/ConfigIcons.qml:220
+#: package/contents/ui/ConfigIcons.qml:224
 #, kde-format
 msgctxt "whether to use icon or list view"
 msgid "View mode:"
 msgstr "Реҷаи намуд:"
 
-#: package/contents/ui/ConfigIcons.qml:222
+#: package/contents/ui/ConfigIcons.qml:226
 #, fuzzy, kde-format
 #| msgid "List"
 msgctxt "@item:inlistbox show icons in a list"
 msgid "List"
 msgstr "Рӯйхат"
 
-#: package/contents/ui/ConfigIcons.qml:223
+#: package/contents/ui/ConfigIcons.qml:227
 #, kde-format
 msgctxt "@item:inlistbox show icons in a grid"
 msgid "Grid"
 msgstr ""
 
-#: package/contents/ui/ConfigIcons.qml:234
+#: package/contents/ui/ConfigIcons.qml:238
 #, fuzzy, kde-format
 #| msgid "Icon size:"
 msgctxt "@label:slider"
 msgid "Icon size:"
 msgstr "Андозаи нишона:"
 
-#: package/contents/ui/ConfigIcons.qml:249
+#: package/contents/ui/ConfigIcons.qml:253
 #, fuzzy, kde-format
 #| msgid "Small"
 msgctxt "@item:inrange smallest icon size"
 msgid "Small"
 msgstr "Хурд"
 
-#: package/contents/ui/ConfigIcons.qml:258
+#: package/contents/ui/ConfigIcons.qml:262
 #, fuzzy, kde-format
 #| msgid "Large"
 msgctxt "@item:inrange largest icon size"
 msgid "Large"
 msgstr "Калон"
 
-#: package/contents/ui/ConfigIcons.qml:267
+#: package/contents/ui/ConfigIcons.qml:271
 #, fuzzy, kde-format
 #| msgid "Label width:"
 msgctxt "@label:listbox"
 msgid "Label width:"
 msgstr "Бари тамға:"
 
-#: package/contents/ui/ConfigIcons.qml:270
+#: package/contents/ui/ConfigIcons.qml:274
 #, fuzzy, kde-format
 #| msgid "Narrow"
 msgctxt "@item:inlistbox how long a text label should be"
 msgid "Narrow"
 msgstr "Танг"
 
-#: package/contents/ui/ConfigIcons.qml:271
+#: package/contents/ui/ConfigIcons.qml:275
 #, fuzzy, kde-format
 #| msgid "Medium"
 msgctxt "@item:inlistbox how long a text label should be"
 msgid "Medium"
 msgstr "Миёна"
 
-#: package/contents/ui/ConfigIcons.qml:272
+#: package/contents/ui/ConfigIcons.qml:276
 #, fuzzy, kde-format
 #| msgid "Wide"
 msgctxt "@item:inlistbox how long a text label should be"
 msgid "Wide"
 msgstr "Васеъ"
 
-#: package/contents/ui/ConfigIcons.qml:280
+#: package/contents/ui/ConfigIcons.qml:284
 #, fuzzy, kde-format
 #| msgid "Text lines:"
 msgctxt "@label:spinbox"
 msgid "Text lines:"
 msgstr "Сатрҳои матн:"
 
-#: package/contents/ui/ConfigIcons.qml:296
+#: package/contents/ui/ConfigIcons.qml:300
 #, kde-format
 msgctxt "@title:group prefix for checkbox group"
 msgid "When hovering over icons:"
 msgstr ""
 
-#: package/contents/ui/ConfigIcons.qml:298
+#: package/contents/ui/ConfigIcons.qml:302
 #, fuzzy, kde-format
 #| msgid "Tooltips"
 msgctxt "@option:check When hovering over icons…"
 msgid "Show tooltips"
 msgstr "Маслиҳатҳо"
 
-#: package/contents/ui/ConfigIcons.qml:305
+#: package/contents/ui/ConfigIcons.qml:309
 #, fuzzy, kde-format
 #| msgid "Selection markers"
 msgctxt "@option:check When hovering over icons…"
 msgid "Show selection markers"
 msgstr "Нишонагузори интихоб"
 
-#: package/contents/ui/ConfigIcons.qml:312
+#: package/contents/ui/ConfigIcons.qml:316
 #, fuzzy, kde-format
 #| msgid "Folder preview popups"
 msgctxt "@option:check When hovering over icons…"
 msgid "Show folder preview popups"
 msgstr "Пешнамоиши пайдошавандаи ҷузвадон"
 
-#: package/contents/ui/ConfigIcons.qml:322
+#: package/contents/ui/ConfigIcons.qml:328
+#, kde-format
+msgctxt "@title:group"
+msgid "Typing on the desktop:"
+msgstr ""
+
+#: package/contents/ui/ConfigIcons.qml:334
+#, fuzzy, kde-format
+#| msgid "Select Folder"
+msgctxt "@option:radio Typing on the desktop selects items"
+msgid "Selects items"
+msgstr "Интихоби ҷузвадон"
+
+#: package/contents/ui/ConfigIcons.qml:340
+#, kde-format
+msgctxt "@option:radio Typing on the desktop activates KRunner"
+msgid "Activates KRunner"
+msgstr ""
+
+#: package/contents/ui/ConfigIcons.qml:356
 #, fuzzy, kde-format
 #| msgid "&Rename"
 msgctxt "@label prefix for checkbox"
 msgid "Rename:"
 msgstr "&Ивази ном..."
 
-#: package/contents/ui/ConfigIcons.qml:326
+#: package/contents/ui/ConfigIcons.qml:360
 #, kde-format
 msgctxt "@option:check"
 msgid "Rename inline by clicking selected item's text"
 msgstr ""
 
-#: package/contents/ui/ConfigIcons.qml:337
+#: package/contents/ui/ConfigIcons.qml:371
 #, fuzzy, kde-format
 #| msgid "Previews:"
 msgctxt "@title:group prefix for checkbox and button"
 msgid "Previews:"
 msgstr "Пешнамоиш:"
 
-#: package/contents/ui/ConfigIcons.qml:339
+#: package/contents/ui/ConfigIcons.qml:373
 #, fuzzy, kde-format
 #| msgid "Preview thumbnails"
 msgctxt "@option:check"
 msgid "Show preview thumbnails"
 msgstr "Аксҳои пешнамоиш"
 
-#: package/contents/ui/ConfigIcons.qml:347
+#: package/contents/ui/ConfigIcons.qml:381
 #, fuzzy, kde-format
 #| msgid "Configure Preview Plugins..."
 msgctxt "@action:button opens dialog"
@@ -515,7 +534,7 @@ msgctxt "@title:window"
 msgid "Preview Plugins"
 msgstr "Пешнамоиши васлкунакҳо"
 
-#: package/contents/ui/FolderView.qml:1236
+#: package/contents/ui/FolderView.qml:1274
 #, kde-format
 msgctxt "@info"
 msgid ""
@@ -549,17 +568,17 @@ msgstr "Танзимоти мизи корӣ ва тасвири замина...
 msgid "Select Folder"
 msgstr "Интихоби ҷузвадон"
 
-#: plugins/folder/foldermodel.cpp:505
+#: plugins/folder/foldermodel.cpp:569
 #, kde-format
 msgid "&Refresh Desktop"
 msgstr "&Бозсозии мизи корӣ"
 
-#: plugins/folder/foldermodel.cpp:505 plugins/folder/foldermodel.cpp:1741
+#: plugins/folder/foldermodel.cpp:569 plugins/folder/foldermodel.cpp:1805
 #, kde-format
 msgid "&Refresh View"
 msgstr "&Бозсозии намоиш"
 
-#: plugins/folder/foldermodel.cpp:868
+#: plugins/folder/foldermodel.cpp:932
 #, kde-format
 msgctxt ""
 "@title:notifications Here 'link' refers to a symbolic link to another file "
@@ -567,7 +586,7 @@ msgctxt ""
 msgid "Link Target Not Found"
 msgstr ""
 
-#: plugins/folder/foldermodel.cpp:870
+#: plugins/folder/foldermodel.cpp:934
 #, kde-kuit-format
 msgctxt "@info Body text of a system notification"
 msgid ""
@@ -575,23 +594,23 @@ msgid ""
 "not be found. It may have been moved or deleted."
 msgstr ""
 
-#: plugins/folder/foldermodel.cpp:1750
+#: plugins/folder/foldermodel.cpp:1814
 #, kde-format
 msgid "&Empty Trash"
 msgstr "&Сабадро холӣ кардан"
 
-#: plugins/folder/foldermodel.cpp:1753
+#: plugins/folder/foldermodel.cpp:1817
 #, kde-format
 msgctxt "Restore from trash"
 msgid "Restore to Former Location"
 msgstr ""
 
-#: plugins/folder/foldermodel.cpp:1756
+#: plugins/folder/foldermodel.cpp:1820
 #, kde-format
 msgid "&Open"
 msgstr "&Кушодан"
 
-#: plugins/folder/foldermodel.cpp:1760
+#: plugins/folder/foldermodel.cpp:1824
 #, fuzzy, kde-format
 #| msgid "Show all"
 msgctxt ""
@@ -600,23 +619,23 @@ msgctxt ""
 msgid "Show Target"
 msgstr "Ҳамаро намоиш додан"
 
-#: plugins/folder/foldermodel.cpp:1861
+#: plugins/folder/foldermodel.cpp:1925
 #, kde-format
 msgctxt "@action:inmenu Removes the trash icon on the desktop"
 msgid "Remove Trash Icon"
 msgstr ""
 
-#: plugins/folder/foldermodel.cpp:1864
+#: plugins/folder/foldermodel.cpp:1928
 #, kde-format
 msgid "&Move to Trash"
 msgstr "&Таҳвил ба сабад"
 
-#: plugins/folder/foldermodel.cpp:1897
+#: plugins/folder/foldermodel.cpp:1961
 #, kde-format
 msgid "&Paste"
 msgstr "&Часпондан"
 
-#: plugins/folder/foldermodel.cpp:2048
+#: plugins/folder/foldermodel.cpp:2112
 #, kde-format
 msgid "&Properties"
 msgstr "&Хусусиятҳо"
