@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-desktop\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-01-08 00:45+0000\n"
+"POT-Creation-Date: 2026-03-19 00:48+0000\n"
 "PO-Revision-Date: 2026-01-08 10:45+0100\n"
 "Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
@@ -39,66 +39,62 @@ msgstr "En el centre"
 
 #: ui/main.qml:55
 #, kde-format
-msgctxt "@label prefix for checkbutton"
-msgid "Activation:"
-msgstr "Activació:"
-
-#: ui/main.qml:58
-#, kde-format
-msgctxt "@option:check"
-msgid "Activate when pressing any key on the desktop"
-msgstr "Activa en prémer qualsevol tecla en l'escriptori"
-
-#: ui/main.qml:71
-#, kde-format
 msgctxt "@title:group prefix for radiobutton group"
 msgid "History:"
 msgstr "Historial:"
 
-#: ui/main.qml:74
+#: ui/main.qml:58
 #, kde-format
 msgctxt "@option:radio History is disabled"
 msgid "Disabled"
 msgstr "Desactivat"
 
-#: ui/main.qml:79
+#: ui/main.qml:63
 #, kde-format
 msgctxt "@option:radio The thing being enabled is search history"
 msgid "Enable suggestions"
 msgstr "Activa els suggeriments"
 
-#: ui/main.qml:84
+#: ui/main.qml:68
 #, kde-format
 msgctxt "@option:radio The thing being enabled is search history"
 msgid "Enable auto-complete"
 msgstr "Activa la compleció automàtica"
 
-#: ui/main.qml:92
+#: ui/main.qml:76
 #, kde-format
 msgctxt "@action:button"
 msgid "Clear History…"
 msgstr "Neteja l'historial…"
 
-#: ui/main.qml:115
+#: ui/main.qml:99
 #, kde-format
 msgctxt "@item:inmenu delete krunner history for all activities"
 msgid "For all activities"
 msgstr "Per a totes les activitats"
 
-#: ui/main.qml:127
+#: ui/main.qml:111
 #, kde-format
 msgctxt "@item:inmenu delete krunner history for this activity"
 msgid "For activity \"%1\""
 msgstr "Per a l'activitat «%1»"
 
-#: ui/main.qml:144
+#: ui/main.qml:128
 #, kde-format
 msgctxt "@label"
 msgid "Plugins:"
 msgstr "Connectors:"
 
-#: ui/main.qml:148
+#: ui/main.qml:132
 #, kde-format
 msgctxt "@action:button"
 msgid "Configure Enabled Search Plugins…"
 msgstr "Configura els connectors de busca habilitats…"
+
+#~ msgctxt "@label prefix for checkbutton"
+#~ msgid "Activation:"
+#~ msgstr "Activació:"
+
+#~ msgctxt "@option:check"
+#~ msgid "Activate when pressing any key on the desktop"
+#~ msgstr "Activa en prémer qualsevol tecla en l'escriptori"

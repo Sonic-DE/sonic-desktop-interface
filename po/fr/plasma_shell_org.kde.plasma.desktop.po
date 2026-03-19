@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-03-18 00:47+0000\n"
-"PO-Revision-Date: 2026-01-14 08:32+0100\n"
+"PO-Revision-Date: 2026-03-18 11:41+0100\n"
 "Last-Translator: Xavier Besnard <xavier.besnard@kde.org>\n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -22,7 +22,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Accelerator-Marker: &\n"
 "X-Environment: kde\n"
-"X-Generator: Lokalize 25.12.1\n"
+"X-Generator: Lokalize 25.12.3\n"
 "X-Text-Markup: kde4\n"
 
 #: contents/activitymanager/ActivityItem.qml:203
@@ -541,6 +541,7 @@ msgstr "Opacité"
 msgctxt "@info:tooltip"
 msgid "The current Plasma style does not support opacity options."
 msgstr ""
+"Le style courant de Plasma ne prend pas en compte les options d’opacité."
 
 #: contents/configuration/PanelConfiguration.qml:480
 #, kde-format
