@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: plasma-desktop\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-03-19 00:48+0000\n"
-"PO-Revision-Date: 2026-01-08 10:45+0100\n"
+"PO-Revision-Date: 2026-03-19 11:24+0100\n"
 "Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
 "Language: ca\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Accelerator-Marker: &\n"
-"X-Generator: Lokalize 25.04.0\n"
+"X-Generator: Lokalize 25.12.3\n"
 
 #: package/contents/config/config.qml:17
 #, kde-format
@@ -326,20 +326,19 @@ msgstr "Mostra una vista prèvia emergent de les carpetes"
 #, kde-format
 msgctxt "@title:group"
 msgid "Typing on the desktop:"
-msgstr ""
+msgstr "En teclejar a l'escriptori:"
 
 #: package/contents/ui/ConfigIcons.qml:334
-#, fuzzy, kde-format
-#| msgid "Select Folder"
+#, kde-format
 msgctxt "@option:radio Typing on the desktop selects items"
 msgid "Selects items"
-msgstr "Selecció d'una carpeta"
+msgstr "Selecciona elements"
 
 #: package/contents/ui/ConfigIcons.qml:340
 #, kde-format
 msgctxt "@option:radio Typing on the desktop activates KRunner"
 msgid "Activates KRunner"
-msgstr ""
+msgstr "Activa el KRunner"
 
 #: package/contents/ui/ConfigIcons.qml:356
 #, kde-format

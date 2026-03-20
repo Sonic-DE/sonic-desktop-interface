@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: plasma_applet_org.kde.desktopcontainment\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-03-19 00:48+0000\n"
-"PO-Revision-Date: 2026-01-08 07:42-0300\n"
+"PO-Revision-Date: 2026-03-19 07:45-0300\n"
 "Last-Translator: Marcus Gama <marcus.gama@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <kde-i18n-pt_BR@kde.org>\n"
 "Language: pt_BR\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 25.12.0\n"
+"X-Generator: Lokalize 25.12.3\n"
 
 #: package/contents/config/config.qml:17
 #, kde-format
@@ -326,20 +326,19 @@ msgstr "Mostrar janelas instantâneas de visualização das pastas"
 #, kde-format
 msgctxt "@title:group"
 msgid "Typing on the desktop:"
-msgstr ""
+msgstr "Digitar na área de trabalho:"
 
 #: package/contents/ui/ConfigIcons.qml:334
-#, fuzzy, kde-format
-#| msgid "Select Folder"
+#, kde-format
 msgctxt "@option:radio Typing on the desktop selects items"
 msgid "Selects items"
-msgstr "Selecionar pasta"
+msgstr "Seleciona itens"
 
 #: package/contents/ui/ConfigIcons.qml:340
 #, kde-format
 msgctxt "@option:radio Typing on the desktop activates KRunner"
 msgid "Activates KRunner"
-msgstr ""
+msgstr "Ativa o KRunner"
 
 #: package/contents/ui/ConfigIcons.qml:356
 #, kde-format

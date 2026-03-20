@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-03-19 00:48+0000\n"
-"PO-Revision-Date: 2026-01-08 17:22+0300\n"
-"Last-Translator: Emir SARI <emir_sari@îcloud.com>\n"
+"PO-Revision-Date: 2026-03-19 14:50+0300\n"
+"Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 25.12.0\n"
+"X-Generator: Lokalize 25.12.3\n"
 
 #: package/contents/config/config.qml:17
 #, kde-format
@@ -322,20 +322,19 @@ msgstr "Klasör önizleme açılır pencerelerini göster"
 #, kde-format
 msgctxt "@title:group"
 msgid "Typing on the desktop:"
-msgstr ""
+msgstr "Masaüstündeyken yazmak:"
 
 #: package/contents/ui/ConfigIcons.qml:334
-#, fuzzy, kde-format
-#| msgid "Select Folder"
+#, kde-format
 msgctxt "@option:radio Typing on the desktop selects items"
 msgid "Selects items"
-msgstr "Klasör Seç"
+msgstr "Ögeleri seçer"
 
 #: package/contents/ui/ConfigIcons.qml:340
 #, kde-format
 msgctxt "@option:radio Typing on the desktop activates KRunner"
 msgid "Activates KRunner"
-msgstr ""
+msgstr "K Çalıştır’ı etkinleştirir"
 
 #: package/contents/ui/ConfigIcons.qml:356
 #, kde-format
