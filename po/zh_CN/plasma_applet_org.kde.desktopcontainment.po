@@ -325,11 +325,10 @@ msgid "Typing on the desktop:"
 msgstr ""
 
 #: package/contents/ui/ConfigIcons.qml:334
-#, fuzzy, kde-format
-#| msgid "Select Folder"
+#, kde-format
 msgctxt "@option:radio Typing on the desktop selects items"
 msgid "Selects items"
-msgstr "选择文件夹"
+msgstr ""
 
 #: package/contents/ui/ConfigIcons.qml:340
 #, kde-format

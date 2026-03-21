@@ -88,11 +88,3 @@ msgstr "插件："
 msgctxt "@action:button"
 msgid "Configure Enabled Search Plugins…"
 msgstr "配置已启用的搜索插件…"
-
-#~ msgctxt "@label prefix for checkbutton"
-#~ msgid "Activation:"
-#~ msgstr "激活："
-
-#~ msgctxt "@option:check"
-#~ msgid "Activate when pressing any key on the desktop"
-#~ msgstr "在桌面按下任意按键时激活"
