@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: l 10n\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-03-18 00:47+0000\n"
-"PO-Revision-Date: 2026-01-14 17:32+0200\n"
+"PO-Revision-Date: 2026-03-20 23:04+0200\n"
 "Last-Translator: Moo <<>>\n"
 "Language-Team: Lithuanian <kde-i18n-lt@kde.org>\n"
 "Language: lt\n"
@@ -533,7 +533,7 @@ msgstr "Nepermatomumas"
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "The current Plasma style does not support opacity options."
-msgstr ""
+msgstr "Dabartinis Plasma stilius nepalaiko nepermatomumo parinkčių."
 
 #: contents/configuration/PanelConfiguration.qml:480
 #, kde-format
