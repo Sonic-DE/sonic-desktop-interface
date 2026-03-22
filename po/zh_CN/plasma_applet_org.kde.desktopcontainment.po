@@ -322,19 +322,19 @@ msgstr "显示文件夹预览浮窗"
 #, kde-format
 msgctxt "@title:group"
 msgid "Typing on the desktop:"
-msgstr ""
+msgstr "在桌面上输入时："
 
 #: package/contents/ui/ConfigIcons.qml:334
 #, kde-format
 msgctxt "@option:radio Typing on the desktop selects items"
 msgid "Selects items"
-msgstr ""
+msgstr "选择项目"
 
 #: package/contents/ui/ConfigIcons.qml:340
 #, kde-format
 msgctxt "@option:radio Typing on the desktop activates KRunner"
 msgid "Activates KRunner"
-msgstr ""
+msgstr "激活 KRunner"
 
 #: package/contents/ui/ConfigIcons.qml:356
 #, kde-format
