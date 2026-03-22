@@ -107,7 +107,7 @@
         "Description[ug]": "Plasma بىرىكتۈرگۈچ بىلەن تەسىرلىشىدۇ",
         "Description[uk]": "Взаємодія із засобом композиції Плазми",
         "Description[vi]": "Tương tác với Trình kết hợp Plasma",
-        "Description[zh_CN]": "与 Plasma 显示特效合成器进行交互",
+        "Description[zh_CN]": "与 Plasma 显示合成器进行交互",
         "Description[zh_TW]": "與 Plasma 合成器互動",
         "EnabledByDefault": true,
         "Icon": "kwin",
