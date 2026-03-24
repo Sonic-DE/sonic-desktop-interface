@@ -106,7 +106,8 @@ FocusScope {
         anchors.fill: parent
 
         onPositionChanged: event => {
-            if (!itemGrid.dropEnabled || gridView.animating || !kicker.dragSource) {
+            let draggedItem = drag.source as ItemGridDelegate
+            if (!itemGrid.dropEnabled || gridView.animating || !draggedItem) {
                 return;
             }
 
@@ -115,12 +116,12 @@ FocusScope {
             var item = gridView.itemAt(cPos.x, cPos.y) as ItemGridDelegate;
 
             if (item) {
-                if (kicker.dragSource.parent === gridView.contentItem) {
-                    if (item !== kicker.dragSource) {
-                        item.GridView.view.model.moveRow(dragSource.itemIndex, item.itemIndex);
+                if (draggedItem.parent === gridView.contentItem) {
+                    if (item !== draggedItem) {
+                        item.GridView.view.model.moveRow(draggedItem.itemIndex, item.itemIndex);
                     }
-                } else if (kicker.dragSource.GridView.view.model.favoritesModel === itemGrid.model
-                    && !itemGrid.model.isFavorite(kicker.dragSource.favoriteId)) {
+                } else if (draggedItem.GridView.view.model.favoritesModel === itemGrid.model
+                    && !itemGrid.model.isFavorite(draggedItem.favoriteId)) {
                     var hasPlaceholder = (itemGrid.model.dropPlaceholderIndex !== -1);
 
                     itemGrid.model.dropPlaceholderIndex = item.itemIndex;
@@ -129,9 +130,9 @@ FocusScope {
                         gridView.currentIndex = (item.itemIndex - 1);
                     }
                 }
-            } else if (kicker.dragSource.parent !== gridView.contentItem
-                && kicker.dragSource.GridView.view.model.favoritesModel === itemGrid.model
-                && !itemGrid.model.isFavorite(kicker.dragSource.favoriteId)) {
+            } else if (draggedItem.parent !== gridView.contentItem
+                && draggedItem.GridView.view.model.favoritesModel === itemGrid.model
+                && !itemGrid.model.isFavorite(draggedItem.favoriteId)) {
                     var hasPlaceholder = (itemGrid.model.dropPlaceholderIndex !== -1);
 
                     itemGrid.model.dropPlaceholderIndex = hasPlaceholder ? itemGrid.model.count - 1 : itemGrid.model.count;
@@ -153,8 +154,9 @@ FocusScope {
         }
 
         onDropped: drop => {
-            if (kicker.dragSource && kicker.dragSource.parent !== gridView.contentItem && kicker.dragSource.GridView.view.model.favoritesModel === itemGrid.model) {
-                itemGrid.model.addFavorite(kicker.dragSource.favoriteId, itemGrid.model.dropPlaceholderIndex);
+            let draggedItem = drag.source as ItemGridDelegate
+            if (draggedItem && draggedItem.parent !== gridView.contentItem &&  draggedItem.GridView.view.model.favoritesModel === itemGrid.model) {
+                itemGrid.model.addFavorite(draggedItem.favoriteId, itemGrid.model.dropPlaceholderIndex);
                 gridView.currentIndex = -1;
             }
         }
@@ -237,16 +239,9 @@ FocusScope {
                         if (hovered) {
                             gridView.currentIndex = index
                         } else {
-                            if (!actionMenu.opened) {
+                            if (GridView.isCurrentItem && !actionMenu.opened) {
                                 gridView.currentIndex = -1;
                             }
-
-                            hoverArea.pressX = -1;
-                            hoverArea.pressY = -1;
-                            hoverArea.lastX = -1;
-                            hoverArea.lastY = -1;
-                            hoverArea.pressedItem = null;
-                            hoverArea.hoverEnabled = itemGrid.hoverEnabled;
                         }
                     }
                 }
@@ -258,7 +253,7 @@ FocusScope {
                     PlasmaExtras.Highlight {
                         visible: gridView.currentItem && !highlightItem.isDropPlaceHolder
                         hovered: true
-                        pressed: hoverArea.pressed
+                        pressed: (gridView.currentItem as ItemGridDelegate)?.pressed ?? false
 
                         anchors.fill: parent
                     }
@@ -295,7 +290,6 @@ FocusScope {
 
                 onCurrentIndexChanged: {
                     if (currentIndex !== -1) {
-                        hoverArea.hoverEnabled = false
                         focus = true;
                     }
                 }
@@ -367,107 +361,8 @@ FocusScope {
                         itemGrid.keyNavDown();
                     }
                 }
-            }
-        }
-
-        MouseArea {
-            id: hoverArea
-
-            anchors.fill: parent
-            anchors.rightMargin: scrollArea.effectiveScrollBarWidth
-
-            property int pressX: -1
-            property int pressY: -1
-            property int lastX: -1
-            property int lastY: -1
-            property ItemGridDelegate pressedItem: null
-
-            acceptedButtons: Qt.LeftButton | Qt.RightButton
-
-            hoverEnabled: itemGrid.hoverEnabled
-
-            function updatePositionProperties(x, y) {
-                // Prevent hover event synthesis in QQuickWindow interfering
-                // with keyboard navigation by ignoring repeated events with
-                // identical coordinates. As the work done here would be re-
-                // dundant in any case, these are safe to ignore.
-                if (lastX === x && lastY === y) {
-                    return;
-                }
-
-                lastX = x;
-                lastY = y;
-
-                var cPos = mapToItem(gridView.contentItem, x, y);
-                var item = gridView.itemAt(cPos.x, cPos.y) as ItemGridDelegate;
-
-                if (!item) {
-                    gridView.currentIndex = -1;
-                    pressedItem = null;
-                } else {
-                    itemGrid.focus = (item.itemIndex !== -1)
-                    gridView.currentIndex = item.itemIndex;
-                }
-
-                return item;
-            }
-
-            onPressed: mouse => {
-                mouse.accepted = true;
-
-                updatePositionProperties(mouse.x, mouse.y);
-
-                pressX = mouse.x;
-                pressY = mouse.y;
-
-                const currentDelegate = gridView.currentItem as ItemGridDelegate
-
-                if (mouse.button === Qt.RightButton) {
-                    if (currentDelegate) {
-                        if (currentDelegate.hasActionList) {
-                            var mapped = mapToItem(currentDelegate, mouse.x, mouse.y);
-                            currentDelegate.openActionMenu(mapped.x, mapped.y);
-                        }
-                    } else {
-                        var mapped = mapToItem(rootItem, mouse.x, mouse.y);
-                        contextMenu.open(mapped.x, mapped.y);
-                    }
-                } else {
-                    pressedItem = currentDelegate;
-                }
-            }
-
-            onReleased: mouse => {
-                mouse.accepted = true;
-                updatePositionProperties(mouse.x, mouse.y);
-
-                if (!dragHelper.dragging) {
-                    if (pressedItem) {
-                        if ("trigger" in gridView.model) {
-                            gridView.model.trigger(pressedItem.itemIndex, "", null);
-                            itemGrid.interactionConcluded()
-                        }
-                    } else if (mouse.button === Qt.LeftButton) {
-                        itemGrid.interactionConcluded()
-                    }
-                }
-
-                pressX = pressY = -1;
-                pressedItem = null;
-            }
-
-            onPositionChanged: mouse => {
-                var item = pressedItem ? pressedItem : updatePositionProperties(mouse.x, mouse.y);
-
-                if (gridView.currentIndex !== -1) {
-                    if (itemGrid.dragEnabled && pressX !== -1 && dragHelper.isDrag(pressX, pressY, mouse.x, mouse.y)) {
-                        dragHelper.startDrag(kicker, item.url, item.decoration);
-
-                        kicker.dragSource = item;
-
-                        pressX = -1;
-                        pressY = -1;
-                    }
+                TapHandler {
+                    onTapped: itemGrid.interactionConcluded()
                 }
             }
         }

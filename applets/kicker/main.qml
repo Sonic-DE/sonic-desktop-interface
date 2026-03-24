@@ -37,8 +37,6 @@ PlasmoidItem {
         ItemListDialog {}
     }
 
-    property Item dragSource: null
-
     property Kicker.KAStatsFavoritesModel globalFavorites: rootModel.favoritesModel as Kicker.KAStatsFavoritesModel
     property Kicker.SimpleFavoritesModel systemFavorites: rootModel.systemFavoritesModel as Kicker.SimpleFavoritesModel
 
@@ -203,10 +201,6 @@ PlasmoidItem {
         }
     }
 
-    function resetDragSource() {
-        dragSource = null;
-    }
-
     Plasmoid.contextualActions: [
         PlasmaCore.Action {
             text: i18nc("@action:inmenu launches kmenuedit", "Edit Applications…")
@@ -222,7 +216,5 @@ PlasmoidItem {
         }
 
         rootModel.refreshed.connect(modelRefreshed);
-
-        dragHelper.dropped.connect(resetDragSource);
     }
 }

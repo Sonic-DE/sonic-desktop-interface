@@ -28,9 +28,28 @@ ItemAbstractDelegate {
     Accessible.role: Accessible.MenuItem
     Accessible.name: model.display ?? ""
 
-    onClicked: {
-        item.baseModel.trigger(index, "", null);
-        item.interactionConcluded()
+    TapHandler {
+        // dedicated tapHandler as ItemDelegate's clicked conflicts with DragHandler
+        id: tapHandler
+        onTapped: {
+            item.baseModel.trigger(index, "", null);
+            item.interactionConcluded()
+        }
+    }
+
+    DragHandler {
+        id: dragHandler
+        target: null
+        onActiveChanged: if (active) {
+            item.contentItem.grabToImage(function(result) {
+                item.Drag.imageSource = result.url
+            })
+        }
+    }
+    Drag.active: dragHandler.active
+    Drag.dragType: Drag.Automatic
+    Drag.mimeData: {
+        "text/uri-list" : [item.url]
     }
 
     background.visible: false // we want the default background's spacing, but not the base color
