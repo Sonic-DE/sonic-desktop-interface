@@ -14,16 +14,16 @@ Item {
 
     readonly property int iconWidthDelta: (icon.width - icon.paintedWidth) / 2
     readonly property bool shiftBadgeDown: (Plasmoid.pluginName === "org.kde.plasma.icontasks") && task.audioStreamIcon !== null
+    readonly property int offset: Math.round(Math.max(Kirigami.Units.smallSpacing / 2, badgeMask.width / 32))
 
     Item {
         id: badgeMask
         anchors.fill: parent
 
         Rectangle {
-            readonly property int offset: Math.round(Math.max(Kirigami.Units.smallSpacing / 2, badgeMask.width / 32))
 
             anchors.right: parent.right
-            anchors.rightMargin: -offset
+            anchors.rightMargin: -root.offset
             y: root.shiftBadgeDown ? (icon.height / 2) : 0
 
             Behavior on y {
@@ -31,9 +31,9 @@ Item {
             }
 
             visible: task.smartLauncherItem.countVisible
-            width: badgeRect.width + offset * 2
-            height: badgeRect.height + offset * 2
-            radius: badgeRect.radius + offset * 2
+            width: badgeRect.width + root.offset * 2
+            height: badgeRect.height + root.offset * 2
+            radius: badgeRect.radius + root.offset * 2
 
             // Badge changes width based on number.
             onWidthChanged: maskShaderSource.scheduleUpdate()
@@ -70,10 +70,7 @@ Item {
         id: badgeRect
 
         anchors.right: parent.right
-        y: {
-            const offset = Math.round(Math.max(Kirigami.Units.smallSpacing / 2, badgeMask.width / 32));
-            return offset + (root.shiftBadgeDown ? (icon.height / 2) : 0);
-        }
+        y: root.offset + (root.shiftBadgeDown ? (icon.height / 2) : 0)
 
         Behavior on y {
             NumberAnimation { duration: Kirigami.Units.longDuration }
