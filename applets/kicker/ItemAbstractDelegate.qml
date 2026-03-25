@@ -29,8 +29,6 @@ PlasmaComponents3.ItemDelegate {
     required property var favoritesModel
     required property var baseModel
 
-    readonly property ActionMenu menu: actionMenu
-
     property bool dialogDefaultRight: Application.layoutDirection !== Qt.RightToLeft
 
     signal interactionConcluded
@@ -40,16 +38,15 @@ PlasmaComponents3.ItemDelegate {
     icon.name: decoration
     hoverEnabled: true
 
-    action: Kirigami.Action {
-        onTriggered: source => {
-            if (item.dragActive) { return }
-            if (!item.hasChildren) {
-                item.baseModel.trigger(item.index, "", null);
-                item.interactionConcluded()
-            } else {
-                item.openCategory(source instanceof KeyEvent)
-            }
+    function openActionMenu(x: real, y: real) : void {
+        const actionList = item.hasActionList ? item.actionList : [];
+        Tools.fillActionMenu(i18n, ActionMenu, actionList, item.favoritesModel, item.favoriteId);
+        if (!ActionMenu.actionList.length) {
+            return
         }
+        ActionMenu.visualParent = item;
+        ActionMenu.delegate = item;
+        ActionMenu.open(x, y);
     }
 
     MouseArea {
@@ -77,3 +74,4 @@ PlasmaComponents3.ItemDelegate {
         }
     }
 }
+
