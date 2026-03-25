@@ -97,6 +97,6 @@ ItemAbstractDelegate {
 
     PlasmaComponents3.ToolTip {
         text: item.model.description ?? ""
-        visible: item.hovered
+        visible: item.hovered && !ActionMenu.opened
     }
 }
