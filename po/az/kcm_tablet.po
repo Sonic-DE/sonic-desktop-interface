@@ -1,13 +1,13 @@
-# Copyright (C) YEAR This file is copyright:
+# Copyright (C) 2026 This file is copyright:
 # This file is distributed under the same license as the plasma-desktop package.
 #
-# Kheyyam Gojayev <xxmn77@gmail.com>, 2021, 2022, 2023.
+# SPDX-FileCopyrightText: 2021, 2022, 2023, 2026 Kheyyam Gojayev <xxmn77@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: plasma-desktop\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-02-24 00:47+0000\n"
-"PO-Revision-Date: 2023-02-19 16:39+0400\n"
+"PO-Revision-Date: 2026-03-25 02:10+0400\n"
 "Last-Translator: Kheyyam <xxmn77@gmail.com>\n"
 "Language-Team: Azerbaijani <kde-i18n-doc@kde.org>\n"
 "Language: az\n"
@@ -15,75 +15,72 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 22.12.2\n"
+"X-Generator: Lokalize 25.12.3\n"
 
 #: inputsequence.cpp:191
 #, kde-format
 msgctxt "@action:button This action is disabled"
 msgid "Disabled"
-msgstr ""
+msgstr "Söndürülüb"
 
 #: inputsequence.cpp:194
-#, fuzzy, kde-format
-#| msgid "None"
+#, kde-format
 msgctxt "@action:button There is no keybinding"
 msgid "None"
-msgstr "Heç nə"
+msgstr "Yoxdur"
 
 #: inputsequence.cpp:209
 #, kde-format
 msgctxt "@action:button Two keybinds for a dial, up & down"
 msgid "%1 && %2"
-msgstr ""
+msgstr "%1 && %2"
 
 #: inputsequence.cpp:216
-#, fuzzy, kde-format
-#| msgid "None"
+#, kde-format
 msgctxt "@action:button There is no keybindings"
 msgid "None"
-msgstr "Heç nə"
+msgstr "Yoxdur"
 
 #: inputsequence.cpp:221
 #, kde-format
 msgctxt "@action:button"
 msgid "Left mouse button"
-msgstr ""
+msgstr "Sol siçan düyməsi"
 
 #: inputsequence.cpp:223
 #, kde-format
 msgctxt "@action:button"
 msgid "Right mouse button"
-msgstr ""
+msgstr "Sağ siçan düyməsi"
 
 #: inputsequence.cpp:225
 #, kde-format
 msgctxt "@action:button"
 msgid "Middle mouse button"
-msgstr ""
+msgstr "Orta siçan düyməsi"
 
 #: inputsequence.cpp:231
 #, kde-format
 msgctxt "@action:button"
 msgid "Application-defined"
-msgstr ""
+msgstr "Tətbiq müəyyən edir"
 
 #: inputsequence.cpp:233
-#, fuzzy, kde-format
-#| msgid "Button %1:"
+#, kde-format
 msgctxt "@action:button"
 msgid "Pen Button %1"
-msgstr "Düymə %1:"
+msgstr "Qələm düymə %1"
 
 #: inputsequence.cpp:235
 #, kde-format
 msgctxt "@action:button"
 msgid "Scroll wheel"
-msgstr ""
+msgstr "Sürüşdürmə təkəri"
 
 #: kcmtablet.cpp:36
 #, kde-format
 msgid "Default"
-msgstr ""
+msgstr "İlkin vəziyyət"
 
 #: kcmtablet.cpp:37
 #, kde-format
@@ -98,23 +95,22 @@ msgstr "Albom"
 #: kcmtablet.cpp:39
 #, kde-format
 msgid "Inverted Portrait"
-msgstr "Portretin əksi"
+msgstr "Çevrilmiş portret"
 
 #: kcmtablet.cpp:40
 #, kde-format
 msgid "Inverted Landscape"
-msgstr "Albomun əksi"
+msgstr "Çevrilmiş albom"
 
 #: kcmtablet.cpp:90
-#, fuzzy, kde-format
-#| msgid "Follow the active screen"
+#, kde-format
 msgid "Follow the Current Screen"
-msgstr "Aktiv ekranı izləmək"
+msgstr "Hazırkı ekranı izləmək"
 
 #: kcmtablet.cpp:95
 #, kde-format
 msgid "All Screens"
-msgstr ""
+msgstr "Bütün ekranlar"
 
 #: kcmtablet.cpp:104
 #, kde-format
@@ -126,102 +122,99 @@ msgstr "%1 - (%2,%3 %4×%5)"
 #, kde-format
 msgctxt "@item:inlistbox Stretch and fill to the screen"
 msgid "Stretch and Fill"
-msgstr ""
+msgstr "Dartmaq və doldurmaq"
 
 #: kcmtablet.cpp:165 ui/DisplayTab.qml:99
 #, kde-format
 msgctxt "@item:inlistbox Keep aspect ratio and fit within the screen"
 msgid "Keep Aspect Ratio and Fit"
-msgstr ""
+msgstr "Tərəflərin nisbətini saxlamaqla doldurmaq"
 
 #: kcmtablet.cpp:166 ui/DisplayTab.qml:100
 #, kde-format
 msgctxt "@item:inlistbox Map to portion of the screen"
 msgid "Map to Portion"
-msgstr ""
+msgstr "Bir hissədə əks etdirmək"
 
 #: kcmtablet.cpp:269
-#, fuzzy, kde-format
-#| msgid "Button %1:"
+#, kde-format
 msgctxt "Stylus pen button"
 msgid "Pen button %1:"
-msgstr "Düymə %1:"
+msgstr "Qələm düyməsi %1:"
 
 #: kcmtablet.cpp:270
-#, fuzzy, kde-format
-#| msgid "Button %1:"
+#, kde-format
 msgctxt ""
 "@info Meant to be inserted into an existing sentence like 'configuring pen "
 "button X'"
 msgid "pen button %1"
-msgstr "Düymə %1:"
+msgstr "qələm düymə %1"
 
 #: ui/ActionDialog.qml:27
 #, kde-format
 msgctxt "@title Select the action for the tablet dial"
 msgid "Select Dial/Ring Action"
-msgstr ""
+msgstr "Nömrə yığımı üçün hərəkəti seçin"
 
 #: ui/ActionDialog.qml:28
 #, kde-format
 msgctxt "@title Select the action for the tablet button"
 msgid "Select Button Action"
-msgstr ""
+msgstr "Düymə hərəkətini seçin"
 
 #: ui/ActionDialog.qml:87
 #, kde-format
 msgctxt "@info %1 is the 'pad button %1' or 'pen button 1/2/3' strings"
 msgid "Choose what action will be taken when rotating %1:"
-msgstr ""
+msgstr "%1 dönməsi zamanı fəaliyyəti seçin:"
 
 #: ui/ActionDialog.qml:88
 #, kde-format
 msgctxt "@info %1 is the 'pad button %1' or 'pen button 1/2/3' strings"
 msgid "Choose what action will be taken when pressing %1:"
-msgstr ""
+msgstr "%1 basılan zaman fəaliyyəti seçin:"
 
 #: ui/ActionDialog.qml:102
 #, kde-format
 msgctxt "@option:radio Set this action to an application-defined type"
 msgid "Defer to application"
-msgstr ""
+msgstr "Tətbiq təyin edir"
 
 #: ui/ActionDialog.qml:117
 #, kde-format
 msgctxt "@option:radio Set this action to a keyboard type"
 msgid "Send keyboard key"
-msgstr ""
+msgstr "Düymə basılmasını göndərmək"
 
 #: ui/ActionDialog.qml:133
 #, kde-format
 msgctxt "@option:radio Set this action to a up/down keyboard type"
 msgid "Send keyboard keys"
-msgstr ""
+msgstr "Düyməyə basılmanı göndərmək"
 
 #: ui/ActionDialog.qml:148
 #, kde-format
 msgctxt "@option:radio Set this action to a mouse type"
 msgid "Send mouse button click"
-msgstr ""
+msgstr "Siçan düyməsi klikini göndərmək"
 
 #: ui/ActionDialog.qml:164
-#, fuzzy, kde-format
-#| msgid "Button %1:"
+#, kde-format
 msgctxt "@option:radio Set this action to a pen button type"
 msgid "Send pen button"
-msgstr "Düymə %1:"
+msgstr "Qələm düyməsinə basılmanı göndərmək"
 
 #: ui/ActionDialog.qml:181
 #, kde-format
 msgctxt "@option:radio Set this action to a scroll wheel type type"
 msgid "Act as scroll wheel"
-msgstr ""
+msgstr "Sürüşdürmə təkəri kimi"
 
 #: ui/ActionDialog.qml:199
 #, kde-format
 msgctxt "@option:radio Disable this action"
 msgid "Do nothing"
-msgstr ""
+msgstr "Heç nə etməmək"
 
 #: ui/ActionDialog.qml:219
 #, kde-format
@@ -230,6 +223,8 @@ msgid ""
 "This tablet button is forwarded to the focused application, which can decide "
 "how to handle it."
 msgstr ""
+"Bu planşet düyməsi fokuslanmış tətbiqi izləyir, hansı ki, onu necə işlətməyi "
+"müəyyən edir."
 
 #: ui/ActionDialog.qml:248
 #, kde-format
@@ -237,7 +232,7 @@ msgctxt ""
 "@label prefix for configuring Keybind to send when dial/ring is turned "
 "upwards"
 msgid "Up:"
-msgstr ""
+msgstr "Yuxarı:"
 
 #: ui/ActionDialog.qml:261
 #, kde-format
@@ -245,95 +240,92 @@ msgctxt ""
 "@label prefix for configuring Keybind to send when dial/ring is turned "
 "downwards"
 msgid "Down:"
-msgstr ""
+msgstr "Aşağı:"
 
 #: ui/ActionDialog.qml:274
 #, kde-format
 msgctxt ""
 "@label:slider Speed for how often this dial/ring should emit key events"
 msgid "Speed:"
-msgstr ""
+msgstr "Sürət:"
 
 #: ui/ActionDialog.qml:289
 #, kde-format
 msgctxt "@action:inmenu Left mouse click"
 msgid "Left-click"
-msgstr ""
+msgstr "Sol klik"
 
 #: ui/ActionDialog.qml:290
 #, kde-format
 msgctxt "@action:inmenu Middle mouse click"
 msgid "Middle-click"
-msgstr ""
+msgstr "Orta klik"
 
 #: ui/ActionDialog.qml:291
 #, kde-format
 msgctxt "@action:inmenu Right mouse click"
 msgid "Right-click"
-msgstr ""
+msgstr "Sağ klik"
 
 #: ui/ActionDialog.qml:318
 #, kde-format
 msgctxt "@option:check The ctrl modifier on the keyboard"
 msgid "Ctrl"
-msgstr ""
+msgstr "Ctrl"
 
 #: ui/ActionDialog.qml:325
 #, kde-format
 msgctxt "@option:check The alt modifier on the keyboard"
 msgid "Alt"
-msgstr ""
+msgstr "Alt"
 
 #: ui/ActionDialog.qml:332
 #, kde-format
 msgctxt "@option:check The meta modifier on the keyboard"
 msgid "Meta"
-msgstr ""
+msgstr "Meta"
 
 #: ui/ActionDialog.qml:339
 #, kde-format
 msgctxt "@option:check The shift modifier on the keyboard"
 msgid "Shift"
-msgstr ""
+msgstr "Shift"
 
 #: ui/ActionDialog.qml:355
-#, fuzzy, kde-format
-#| msgid "Tool Button 1"
+#, kde-format
 msgctxt "@action:inmenu Stylus button"
 msgid "Button 1"
-msgstr "Alət düyməsi 1"
+msgstr "Düymə 1"
 
 #: ui/ActionDialog.qml:356
-#, fuzzy, kde-format
-#| msgid "Tool Button 2"
+#, kde-format
 msgctxt "@action:inmenu Stylus button"
 msgid "Button 2"
-msgstr "Alət düyməsi 2"
+msgstr "Düymə 2"
 
 #: ui/ActionDialog.qml:357
-#, fuzzy, kde-format
-#| msgid "Tool Button 3"
+#, kde-format
 msgctxt "@action:inmenu Stylus button"
 msgid "Button 3"
-msgstr "Alət düyməsi 3"
+msgstr "Düymə 3"
 
 #: ui/ActionDialog.qml:366
 #, kde-format
 msgctxt "@info"
 msgid "Act like a scroll wheel on a mouse."
-msgstr ""
+msgstr "Siçanın sürüşdürmə təkəri kimi."
 
 #: ui/ActionDialog.qml:375
 #, kde-format
 msgctxt "@info"
 msgid "This button is disabled and will not do anything."
-msgstr ""
+msgstr "Bu düymə söndürülüb və heç nə etməyəcək."
 
 #: ui/Calibration.qml:30
 #, kde-format
 msgctxt "@title"
 msgid "Pen Calibration"
-msgstr ""
+msgstr "Qələmin kalibrlənməsi"
 
 #: ui/Calibration.qml:98
 #, kde-kuit-format
@@ -343,6 +335,8 @@ msgid ""
 "revert to default calibration in %1 seconds unless further action is taken.</"
 "b>"
 msgstr ""
+"Yeni kalibrləməni təsdiqləmək üçün yenidən hədəflərə vurun.<nl/><nl/><b>Əgər "
+"heç nə etməsəniz %1 saniyədən sonra ilkin kalibr dəyərinə qayıdacaq.</b>"
 
 #: ui/Calibration.qml:102
 #, kde-kuit-format
@@ -351,52 +345,53 @@ msgid ""
 "Calibration is completed and saved.<nl/><nl/>Refine the calibration further "
 "or close the window."
 msgstr ""
+"Kalibrləmə sona çatdı və saxlanıldı.<nl/><nl/>Yenidən kalibrləyin və ya "
+"pəncərəni bağlayın."
 
 #: ui/Calibration.qml:105
 #, kde-format
 msgctxt "@info"
 msgid "Tap the center of each target."
-msgstr ""
+msgstr "Hər hədəfin mərkəzinə vurun."
 
 #: ui/Calibration.qml:112
 #, kde-format
 msgctxt "@action:button"
 msgid "Refine Existing Calibration"
-msgstr ""
+msgstr "Mövcud kalibrləməni dəqiqləşdirin"
 
 #: ui/Calibration.qml:121
 #, kde-format
 msgctxt "@action:button"
 msgid "Reset and Try Again"
-msgstr ""
+msgstr "Sıfırlayın və yenidən cəhd edin"
 
 #: ui/Calibration.qml:121
 #, kde-format
 msgctxt "@action:button"
 msgid "Calibrate from Scratch"
-msgstr ""
+msgstr "Sıfırdan kalibrləmək"
 
 #: ui/Calibration.qml:135
 #, kde-format
 msgctxt "@action:button"
 msgid "Close"
-msgstr ""
+msgstr "Bağlamaq"
 
 #: ui/Calibration.qml:135
 #, kde-format
 msgctxt "@action:button"
 msgid "Cancel"
-msgstr ""
+msgstr "Ləğv edin"
 
 #: ui/DisplayTab.qml:46
 #, kde-format
 msgctxt "@label:listbox"
 msgid "Map to screen:"
-msgstr ""
+msgstr "Ekranda əks etdirmək"
 
 #: ui/DisplayTab.qml:73
-#, fuzzy, kde-format
-#| msgid "Orientation:"
+#, kde-format
 msgctxt "@label:listbox"
 msgid "Orientation:"
 msgstr "İstiqamət:"
@@ -405,19 +400,19 @@ msgstr "İstiqamət:"
 #, kde-format
 msgctxt "@label substitute for unavailable orientation change"
 msgid "Not Applicable"
-msgstr ""
+msgstr "Tətbiq edilə bilməz"
 
 #: ui/DisplayTab.qml:93
 #, kde-format
 msgctxt "@label:listbox"
 msgid "Mapped Area:"
-msgstr ""
+msgstr "Əks etdirmə sahəsi"
 
 #: ui/ExternalScreenMapping.qml:110
 #, kde-format
 msgctxt "@option:check"
 msgid "Lock aspect ratio"
-msgstr "Tərəflərin nisbətini kilidləyin"
+msgstr "Tərəflərin nisbətini kilidləmək"
 
 #: ui/ExternalScreenMapping.qml:151
 #, kde-format
@@ -426,47 +421,40 @@ msgid "%1,%2 - %3×%4"
 msgstr "%1,%2 - %3×%4"
 
 #: ui/ExternalScreenMapping.qml:190
-#, fuzzy, kde-format
-#| msgid "Resize the tablet area"
+#, kde-format
 msgctxt "@action:button"
 msgid "Resize the screen area"
-msgstr "Planşet sahəsininin ölçüsünü dəyişin"
+msgstr "Ekran sahəsinin olçüsünü dəyişmək"
 
 #: ui/ExternalScreenMapping.qml:267
-#, fuzzy, kde-format
-#| msgctxt "tablet area position - size"
-#| msgid "%1,%2 - %3×%4"
+#, kde-format
 msgctxt "tablet area position - size"
 msgid "%1%,%2% - %3%×%4%"
-msgstr "%1,%2 - %3×%4"
+msgstr "%1%,%2% - %3%×%4%"
 
 #: ui/ExternalScreenMapping.qml:301
-#, fuzzy, kde-format
-#| msgid "Resize the tablet area"
+#, kde-format
 msgctxt "@action:button"
 msgid "Resize the tablet area"
-msgstr "Planşet sahəsininin ölçüsünü dəyişin"
+msgstr "Sensor sahəsininin ölçüsünü dəyişmək"
 
 #: ui/main.qml:38
-#, fuzzy, kde-format
-#| msgid "No drawing tablets found."
+#, kde-format
 msgctxt "@info placeholdermessage text"
 msgid "No drawing tablets found"
-msgstr "Rəsm planşetləri tapılmadı."
+msgstr "Rəsm planşetləri tapılmadı"
 
 #: ui/main.qml:39
-#, fuzzy, kde-format
-#| msgid "Configure drawing tablets"
+#, kde-format
 msgctxt "@info:usagetip placeholdermessage explanation"
 msgid "Connect a drawing tablet"
-msgstr "Rəsm olanşetlərini tənzimləyin"
+msgstr "Rəsm planşetlərinə qoşmaq"
 
 #: ui/main.qml:47
-#, fuzzy, kde-format
-#| msgid "Tablet"
+#, kde-format
 msgctxt "Tests tablet functionality like the pen"
 msgid "Test Tablet…"
-msgstr "Planşet"
+msgstr "Planşeti yoxlamaq"
 
 #: ui/main.qml:87
 #, kde-format
