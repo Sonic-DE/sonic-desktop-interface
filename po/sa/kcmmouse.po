@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-desktop\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-01-14 00:46+0000\n"
+"POT-Creation-Date: 2026-03-26 00:46+0000\n"
 "PO-Revision-Date: 2024-12-20 21:53+0530\n"
 "Last-Translator: kali <skkalwar999@gmail.com>\n"
 "Language-Team: Sanskrit <kde-i18n-doc@kde.org>\n"
@@ -19,12 +19,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n>2);\n"
 "X-Generator: Lokalize 24.08.2\n"
 
-#: backends/kwin_wl/kwin_wl_backend.cpp:61
-#, kde-format
-msgid "Querying input devices failed. Please reopen this settings module."
-msgstr "निवेशयन्त्राणां पृच्छनं विफलम् अभवत् । कृपया एतत् सेटिङ्ग्स् मॉड्यूल् पुनः उद्घाटयन्तु ।"
-
-#: backends/kwin_wl/kwin_wl_backend.cpp:81
+#: backends/kwin_wl/kwin_wl_backend.cpp:44
 #, kde-format
 msgid "Critical error on reading fundamental device infos of %1."
 msgstr "%1 इत्यस्य मौलिकयन्त्रसूचनानां पठने गम्भीरदोषः ।"
@@ -256,6 +251,9 @@ msgid ""
 "device, but is intended primarily as a substitute for scroll wheels on "
 "devices that do not have any."
 msgstr ""
+
+#~ msgid "Querying input devices failed. Please reopen this settings module."
+#~ msgstr "निवेशयन्त्राणां पृच्छनं विफलम् अभवत् । कृपया एतत् सेटिङ्ग्स् मॉड्यूल् पुनः उद्घाटयन्तु ।"
 
 #~ msgid "Device enabled"
 #~ msgstr "यन्त्रं सक्षमम्"

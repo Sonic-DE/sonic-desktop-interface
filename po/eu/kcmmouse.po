@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-desktop\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-01-14 00:46+0000\n"
+"POT-Creation-Date: 2026-03-26 00:46+0000\n"
 "PO-Revision-Date: 2026-02-16 10:40+0100\n"
 "Last-Translator: Iñigo Salvador Azurmendi <xalba@ni.eus>\n"
 "Language-Team: Basque <kde-i18n-eu@kde.org>\n"
@@ -22,14 +22,7 @@ msgstr ""
 "X-Generator: Lokalize 25.12.2\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: backends/kwin_wl/kwin_wl_backend.cpp:61
-#, kde-format
-msgid "Querying input devices failed. Please reopen this settings module."
-msgstr ""
-"Ezin izan dira sarrera gailuak itaundu. Mesedez, berrireki ezarpen-modulu "
-"hau."
-
-#: backends/kwin_wl/kwin_wl_backend.cpp:81
+#: backends/kwin_wl/kwin_wl_backend.cpp:44
 #, kde-format
 msgid "Critical error on reading fundamental device infos of %1."
 msgstr "Errore larria %1 gailuaren funtsezko informazioak irakurtzean."
@@ -258,6 +251,11 @@ msgstr ""
 "edo bideo-jokoekin. Edozein gailutan erabil liteke, baina, batez ere "
 "gurpilik ez duten gailuetan kiribiltzeko gurpilen ordezko gisa pentsatuta "
 "dago."
+
+#~ msgid "Querying input devices failed. Please reopen this settings module."
+#~ msgstr ""
+#~ "Ezin izan dira sarrera gailuak itaundu. Mesedez, berrireki ezarpen-modulu "
+#~ "hau."
 
 #~ msgid "Device enabled"
 #~ msgstr "Gailua gaituta"

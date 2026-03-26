@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kcminput\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-01-14 00:46+0000\n"
+"POT-Creation-Date: 2026-03-26 00:46+0000\n"
 "PO-Revision-Date: 2026-02-01 18:40+0530\n"
 "Last-Translator: Kishore G <kishore96@gmail.com>\n"
 "Language-Team: Tamil <kde-l10n-ta@kde.org>\n"
@@ -16,14 +16,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Lokalize 25.12.1\n"
 
-#: backends/kwin_wl/kwin_wl_backend.cpp:61
-#, kde-format
-msgid "Querying input devices failed. Please reopen this settings module."
-msgstr ""
-"உள்ளீட்டு சாதனங்களை கண்டறிவது தோல்வியடைந்த‍து. இந்த அமைப்புக்கூறை மூடி மறுபடியும் "
-"திறக்கவும்."
-
-#: backends/kwin_wl/kwin_wl_backend.cpp:81
+#: backends/kwin_wl/kwin_wl_backend.cpp:44
 #, kde-format
 msgid "Critical error on reading fundamental device infos of %1."
 msgstr "%1 என்பதன் அடிப்படை விவரங்களை கண்டறிவதில் சிக்கல்."
@@ -247,6 +240,11 @@ msgstr ""
 "படத்திருத்திகள், ஆவணக்காட்டிகள், அல்லது விளையாட்டு செயலிகள்) இது குறுக்கிடும். "
 "இருப்பினும், உருள் சக்கரத்தைக் கொண்டிராத சுட்டிகளைப் பயன்படுத்துவோருக்கு உதவியாக இது "
 "இருக்கும்."
+
+#~ msgid "Querying input devices failed. Please reopen this settings module."
+#~ msgstr ""
+#~ "உள்ளீட்டு சாதனங்களை கண்டறிவது தோல்வியடைந்த‍து. இந்த அமைப்புக்கூறை மூடி மறுபடியும் "
+#~ "திறக்கவும்."
 
 #~ msgid "Device enabled"
 #~ msgstr "சாதனத்தை இயக்கு"

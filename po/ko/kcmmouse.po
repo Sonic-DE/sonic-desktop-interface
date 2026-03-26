@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kcminput\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-01-14 00:46+0000\n"
+"POT-Creation-Date: 2026-03-26 00:46+0000\n"
 "PO-Revision-Date: 2026-02-03 21:46+0100\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
@@ -18,12 +18,7 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Lokalize 25.08.1\n"
 
-#: backends/kwin_wl/kwin_wl_backend.cpp:61
-#, kde-format
-msgid "Querying input devices failed. Please reopen this settings module."
-msgstr "입력 장치를 조회할 수 없습니다. 설정 모듈을 다시 여십시오."
-
-#: backends/kwin_wl/kwin_wl_backend.cpp:81
+#: backends/kwin_wl/kwin_wl_backend.cpp:44
 #, kde-format
 msgid "Critical error on reading fundamental device infos of %1."
 msgstr "%1의 정보를 조회하는 중 치명적인 오류가 발생했습니다."
@@ -247,6 +242,9 @@ msgstr ""
 "일부 그림 편집기, 문서 뷰어, 게임 등 가운데 단추 드래그를 사용하는 앱에서는 "
 "의도한 대로 작동하지 않을 수도 있습니다. 장치에 관계 없이 사용할 수 있으나, "
 "스크롤 휠이 없는 장치에서 스크롤 휠 대체용으로 사용될 것을 가정했습니다."
+
+#~ msgid "Querying input devices failed. Please reopen this settings module."
+#~ msgstr "입력 장치를 조회할 수 없습니다. 설정 모듈을 다시 여십시오."
 
 #~ msgid "Device enabled"
 #~ msgstr "장치 활성화됨"

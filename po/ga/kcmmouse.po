@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kcminput\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-01-14 00:46+0000\n"
+"POT-Creation-Date: 2026-03-26 00:46+0000\n"
 "PO-Revision-Date: 2026-01-21 11:04+0000\n"
 "Last-Translator: Aindriú Mac Giolla Eoin <aindriu80@yahoo.com>\n"
 "Language-Team: Irish <http://weblate.amgelocalnet.duckdns.org/projects/kde-"
@@ -19,14 +19,7 @@ msgstr ""
 "Plural-Forms: nplurals=5; plural=n==1 ? 0 : n==2 ? 1 : n<7 ? 2 : n < 11 ? "
 "3 : 4\n"
 
-#: backends/kwin_wl/kwin_wl_backend.cpp:61
-#, kde-format
-msgid "Querying input devices failed. Please reopen this settings module."
-msgstr ""
-"Theip ar cheisteanna a chur ar ghléasanna ionchuir. Oscail an modúl "
-"socruithe seo arís, le do thoil."
-
-#: backends/kwin_wl/kwin_wl_backend.cpp:81
+#: backends/kwin_wl/kwin_wl_backend.cpp:44
 #, kde-format
 msgid "Critical error on reading fundamental device infos of %1."
 msgstr "Earráid chriticiúil agus faisnéis bhunúsach faoin ngléas %1 á léamh."
@@ -251,3 +244,8 @@ msgstr ""
 "amhail roinnt eagarthóirí íomhá, breathnóirí doiciméad, nó cluichí físeáin. "
 "Is féidir é a úsáid ar aon fheiste, ach tá sé beartaithe go príomha mar "
 "ionadach ar rothaí scrolla ar fheistí nach bhfuil aon cheann acu."
+
+#~ msgid "Querying input devices failed. Please reopen this settings module."
+#~ msgstr ""
+#~ "Theip ar cheisteanna a chur ar ghléasanna ionchuir. Oscail an modúl "
+#~ "socruithe seo arís, le do thoil."
