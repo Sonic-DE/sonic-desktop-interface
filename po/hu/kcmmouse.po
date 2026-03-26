@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: KDE 4.1\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-01-14 00:46+0000\n"
+"POT-Creation-Date: 2026-03-26 00:46+0000\n"
 "PO-Revision-Date: 2026-03-12 22:02+0100\n"
 "Last-Translator: Kristof Kiszel <ulysses@fsf.hu>\n"
 "Language-Team: Hungarian <kde-l10n-hu@kde.org>\n"
@@ -20,13 +20,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Lokalize 25.12.2\n"
 
-#: backends/kwin_wl/kwin_wl_backend.cpp:61
-#, kde-format
-msgid "Querying input devices failed. Please reopen this settings module."
-msgstr ""
-"Nem sikerült lekérdezni a beviteli eszközöket. Nyissa meg újra ezt a modult."
-
-#: backends/kwin_wl/kwin_wl_backend.cpp:81
+#: backends/kwin_wl/kwin_wl_backend.cpp:44
 #, kde-format
 msgid "Critical error on reading fundamental device infos of %1."
 msgstr "Kritikus hiba a(z) %1 eszközinformációinak olvasásakor."
@@ -253,6 +247,11 @@ msgstr ""
 "példáulegyes képszerkesztők, dokumentummegjelenítők vagy videojátékok. "
 "Bármilyen eszközön használható, de elsősorban a görgetőkerekek "
 "helyettesítésére szolgál olyan eszközökön, amelyek nem rendelkeznek azzal."
+
+#~ msgid "Querying input devices failed. Please reopen this settings module."
+#~ msgstr ""
+#~ "Nem sikerült lekérdezni a beviteli eszközöket. Nyissa meg újra ezt a "
+#~ "modult."
 
 #~ msgid "Device enabled"
 #~ msgstr "Eszköz bekapcsolva"

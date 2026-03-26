@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kcminput\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-01-14 00:46+0000\n"
+"POT-Creation-Date: 2026-03-26 00:46+0000\n"
 "PO-Revision-Date: 2024-08-12 22:00+0300\n"
 "Last-Translator: Αντώνης Γέραλης <capoiosct@gmail.com>\n"
 "Language-Team: Greek <kde-i18n-doc@kde.org>\n"
@@ -28,14 +28,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Lokalize 24.05.2\n"
 
-#: backends/kwin_wl/kwin_wl_backend.cpp:61
-#, kde-format
-msgid "Querying input devices failed. Please reopen this settings module."
-msgstr ""
-"Η αναζήτηση συσκευών εισόδου απέτυχε. Παρακαλούμε ανοίξτε ξανά αυτή τη "
-"μονάδα ρυθμίσεων."
-
-#: backends/kwin_wl/kwin_wl_backend.cpp:81
+#: backends/kwin_wl/kwin_wl_backend.cpp:44
 #, kde-format
 msgid "Critical error on reading fundamental device infos of %1."
 msgstr ""
@@ -277,6 +270,11 @@ msgid ""
 "device, but is intended primarily as a substitute for scroll wheels on "
 "devices that do not have any."
 msgstr ""
+
+#~ msgid "Querying input devices failed. Please reopen this settings module."
+#~ msgstr ""
+#~ "Η αναζήτηση συσκευών εισόδου απέτυχε. Παρακαλούμε ανοίξτε ξανά αυτή τη "
+#~ "μονάδα ρυθμίσεων."
 
 #~ msgid "Device enabled"
 #~ msgstr "Ενεργή συσκευή"

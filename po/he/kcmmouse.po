@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kcminput\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-01-14 00:46+0000\n"
+"POT-Creation-Date: 2026-03-26 00:46+0000\n"
 "PO-Revision-Date: 2026-01-08 18:00+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: צוות התרגום של KDE ישראל\n"
@@ -31,12 +31,7 @@ msgstr ""
 "n % 10 == 0) ? 2 : 3));\n"
 "X-Generator: Lokalize 25.12.0\n"
 
-#: backends/kwin_wl/kwin_wl_backend.cpp:61
-#, kde-format
-msgid "Querying input devices failed. Please reopen this settings module."
-msgstr "תשאול התקן הפלט נכשל. נא לפתוח את מודול ההגדרות הזה מחדש."
-
-#: backends/kwin_wl/kwin_wl_backend.cpp:81
+#: backends/kwin_wl/kwin_wl_backend.cpp:44
 #, kde-format
 msgid "Critical error on reading fundamental device infos of %1."
 msgstr "שגיאה משמעותית בקריאת פרטי התקן יסודיים של %1."
@@ -258,6 +253,9 @@ msgstr ""
 "זה יפריע ליישומים שמשתמשים בגרירה עם לחצן אמצעי, כגון עורכי תמונות, מציגי "
 "מסמכים או משחקי וידאו. אפשר להשתמש בזה בכל התקן שהוא אבל מיועד בעיקר להחלפת "
 "גלגלת העכבר בהתקנים שאין להם כזאת."
+
+#~ msgid "Querying input devices failed. Please reopen this settings module."
+#~ msgstr "תשאול התקן הפלט נכשל. נא לפתוח את מודול ההגדרות הזה מחדש."
 
 #~ msgid "Device enabled"
 #~ msgstr "התקן פעיל"

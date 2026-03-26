@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kcminput\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-01-14 00:46+0000\n"
+"POT-Creation-Date: 2026-03-26 00:46+0000\n"
 "PO-Revision-Date: 2026-03-01 20:17+0100\n"
 "Last-Translator: Karl Ove Hufthammer <karl@huftis.org>\n"
 "Language-Team: Norwegian Nynorsk <l10n-no@lister.huftis.org>\n"
@@ -20,14 +20,7 @@ msgstr ""
 "X-Accelerator-Marker: &\n"
 "X-Text-Markup: kde4\n"
 
-#: backends/kwin_wl/kwin_wl_backend.cpp:61
-#, kde-format
-msgid "Querying input devices failed. Please reopen this settings module."
-msgstr ""
-"Feil ved søk etter inn-einingar. Prøv å opna denne innstillingsmodulen på "
-"nytt."
-
-#: backends/kwin_wl/kwin_wl_backend.cpp:81
+#: backends/kwin_wl/kwin_wl_backend.cpp:44
 #, kde-format
 msgid "Critical error on reading fundamental device infos of %1."
 msgstr "Kritisk feil ved lesing av fundamental einingsinfo for %1."
@@ -253,3 +246,8 @@ msgstr ""
 "eksempel nokre biletredigerings­program, dokument­visarar og dataspel. "
 "Funksjonen kan brukast på alle einingar, men er hovudsakleg meint som "
 "erstatning for rullehjul på einingar som manglar dette."
+
+#~ msgid "Querying input devices failed. Please reopen this settings module."
+#~ msgstr ""
+#~ "Feil ved søk etter inn-einingar. Prøv å opna denne innstillingsmodulen på "
+#~ "nytt."

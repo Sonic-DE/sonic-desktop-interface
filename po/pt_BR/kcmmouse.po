@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kcminput\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-01-14 00:46+0000\n"
+"POT-Creation-Date: 2026-03-26 00:46+0000\n"
 "PO-Revision-Date: 2026-01-08 07:50-0300\n"
 "Last-Translator: Marcus Gama <marcus.gama@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <kde-i18n-pt_BR@kde.org>\n"
@@ -28,14 +28,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Lokalize 25.12.0\n"
 
-#: backends/kwin_wl/kwin_wl_backend.cpp:61
-#, kde-format
-msgid "Querying input devices failed. Please reopen this settings module."
-msgstr ""
-"Não foi possível consultar os dispositivos de entrada. Reabra este módulo de "
-"configurações."
-
-#: backends/kwin_wl/kwin_wl_backend.cpp:81
+#: backends/kwin_wl/kwin_wl_backend.cpp:44
 #, kde-format
 msgid "Critical error on reading fundamental device infos of %1."
 msgstr "Erro crítico ao ler as informações fundamentais de dispositivo de %1."
@@ -267,6 +260,11 @@ msgstr ""
 "como alguns editores de imagem, leitores de documentos ou jogos. Você pode "
 "utilizar essa função com qualquer dispositivo, mas seu principal uso é "
 "substituir rodas de rolagem em dispositivos que não a possuem."
+
+#~ msgid "Querying input devices failed. Please reopen this settings module."
+#~ msgstr ""
+#~ "Não foi possível consultar os dispositivos de entrada. Reabra este módulo "
+#~ "de configurações."
 
 #~ msgid "Device enabled"
 #~ msgstr "Dispositivo habilitado"

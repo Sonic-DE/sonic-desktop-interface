@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-01-14 00:46+0000\n"
+"POT-Creation-Date: 2026-03-26 00:46+0000\n"
 "PO-Revision-Date: 2026-01-30 09:42+0100\n"
 "Last-Translator: giovanni <g.sora@tiscali.it>\n"
 "Language-Team: Interlingua <kde-i18n-doc@kde.org>\n"
@@ -17,13 +17,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Lokalize 23.08.5\n"
 
-#: backends/kwin_wl/kwin_wl_backend.cpp:61
-#, kde-format
-msgid "Querying input devices failed. Please reopen this settings module."
-msgstr ""
-"Demandar dispositivos de ingresso falleva. Pro favor reaperi iste modulo"
-
-#: backends/kwin_wl/kwin_wl_backend.cpp:81
+#: backends/kwin_wl/kwin_wl_backend.cpp:44
 #, kde-format
 msgid "Critical error on reading fundamental device infos of %1."
 msgstr ""
@@ -253,6 +247,10 @@ msgstr ""
 "como alcun editores de imagine, visualisatores de documentos,o jocos video. "
 "Il pote esser usate sur ulle dispositivo, ma es intendite primariemente como "
 "un substituto per rolar rotas sur dispositivos que non ha ulle. "
+
+#~ msgid "Querying input devices failed. Please reopen this settings module."
+#~ msgstr ""
+#~ "Demandar dispositivos de ingresso falleva. Pro favor reaperi iste modulo"
 
 #~ msgid "Device enabled"
 #~ msgstr "Dispositivo habilitate"

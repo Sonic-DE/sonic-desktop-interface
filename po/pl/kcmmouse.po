@@ -1,4 +1,4 @@
-# Version: $Revision: 1728409 $
+# Version: $Revision: 1733139 $
 # translation of kcminput.po to
 # SPDX-FileCopyrightText: 2011, 2012, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026 Łukasz Wojniłowicz <lukasz.wojnilowicz@gmail.com>
 # Piotr Roszatycki <dexter@debian.org>, 1998-2000.
@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kcminput\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-01-14 00:46+0000\n"
+"POT-Creation-Date: 2026-03-26 00:46+0000\n"
 "PO-Revision-Date: 2026-01-24 10:20+0100\n"
 "Last-Translator: Łukasz Wojniłowicz <lukasz.wojnilowicz@gmail.com>\n"
 "Language-Team: pl\n"
@@ -22,14 +22,7 @@ msgstr ""
 "|| n%100>=20) ? 1 : 2);\n"
 "X-Generator: Lokalize 25.08.2\n"
 
-#: backends/kwin_wl/kwin_wl_backend.cpp:61
-#, kde-format
-msgid "Querying input devices failed. Please reopen this settings module."
-msgstr ""
-"Nie udało się odpytać urządzeń wejściowych. Otwórz ponownie ten moduł "
-"ustawień."
-
-#: backends/kwin_wl/kwin_wl_backend.cpp:81
+#: backends/kwin_wl/kwin_wl_backend.cpp:44
 #, kde-format
 msgid "Critical error on reading fundamental device infos of %1."
 msgstr ""
@@ -256,6 +249,11 @@ msgstr ""
 "środkowym, jak np. edytory obrazów, przeglądarki dokumentów, czy gry "
 "komputerowe. Można tego użyć na dowolnym urządzeniu, ale docelowo zostało "
 "przewidziane jako rolka do przewijania dla urządzeń, które takiej nie mają."
+
+#~ msgid "Querying input devices failed. Please reopen this settings module."
+#~ msgstr ""
+#~ "Nie udało się odpytać urządzeń wejściowych. Otwórz ponownie ten moduł "
+#~ "ustawień."
 
 #~ msgid "Device enabled"
 #~ msgstr "Urządzenie włączone"
