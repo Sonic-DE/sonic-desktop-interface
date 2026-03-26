@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kcminput\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-01-14 00:46+0000\n"
+"POT-Creation-Date: 2026-03-26 00:46+0000\n"
 "PO-Revision-Date: 2026-01-08 11:30+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
@@ -27,12 +27,7 @@ msgstr ""
 "&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
 "X-Generator: Lokalize 23.08.5\n"
 
-#: backends/kwin_wl/kwin_wl_backend.cpp:61
-#, kde-format
-msgid "Querying input devices failed. Please reopen this settings module."
-msgstr "فشل الاستعلام عن أجهزة الإدخال. يرجى إعادة فتح وحدة الإعدادات هذه."
-
-#: backends/kwin_wl/kwin_wl_backend.cpp:81
+#: backends/kwin_wl/kwin_wl_backend.cpp:44
 #, kde-format
 msgid "Critical error on reading fundamental device infos of %1."
 msgstr "خطأ فادح في قراءة معلومات الجهاز الأساسية لـ%1."
@@ -255,6 +250,9 @@ msgstr ""
 "تحرير الصور أو عارضات المستندات أو ألعاب الفيديو. يمكن استخدامه على أي جهاز، "
 "ولكنه مخصص بشكل أساسي كبديل لعجلات التمرير على الأجهزة التي لا تحتوي على أي "
 "منها."
+
+#~ msgid "Querying input devices failed. Please reopen this settings module."
+#~ msgstr "فشل الاستعلام عن أجهزة الإدخال. يرجى إعادة فتح وحدة الإعدادات هذه."
 
 #~ msgid "Device enabled"
 #~ msgstr "الجهاز ممكّن"

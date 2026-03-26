@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kcminput\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-01-14 00:46+0000\n"
+"POT-Creation-Date: 2026-03-26 00:46+0000\n"
 "PO-Revision-Date: 2026-02-09 03:25+0000\n"
 "Last-Translator: César A. P. Cláudio <cesarapclaudio@gmail.com>\n"
 "Language-Team: pt\n"
@@ -20,14 +20,7 @@ msgstr ""
 "X-POFile-SpellExtra: Fredrik KCM Roman Gilg tácteis\n"
 "X-Generator: Lokalize 25.12.2\n"
 
-#: backends/kwin_wl/kwin_wl_backend.cpp:61
-#, kde-format
-msgid "Querying input devices failed. Please reopen this settings module."
-msgstr ""
-"Falha ao consultar dispositivos de entrada. Reabra este módulo das "
-"definições."
-
-#: backends/kwin_wl/kwin_wl_backend.cpp:81
+#: backends/kwin_wl/kwin_wl_backend.cpp:44
 #, kde-format
 msgid "Critical error on reading fundamental device infos of %1."
 msgstr "Erro crítico ao ler informações fundamentais do dispositivo %1."
@@ -258,6 +251,11 @@ msgstr ""
 "como alguns editores de imagem, visualizadores de documentos ou jogos. Pode "
 "ser utilizado em qualquer dispositivo, mas destina-se sobretudo a substituir "
 "rodas de deslocamento em dispositivos que não as tenham."
+
+#~ msgid "Querying input devices failed. Please reopen this settings module."
+#~ msgstr ""
+#~ "Falha ao consultar dispositivos de entrada. Reabra este módulo das "
+#~ "definições."
 
 #~ msgid "Device enabled"
 #~ msgstr "Dispositivo activo"

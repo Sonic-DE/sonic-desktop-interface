@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kcminput\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-01-14 00:46+0000\n"
+"POT-Creation-Date: 2026-03-26 00:46+0000\n"
 "PO-Revision-Date: 2026-02-04 17:21+0000\n"
 "Last-Translator: Sergiu Bivol <sergiu@cip.md>\n"
 "Language-Team: Romanian <kde-i18n-ro@kde.org>\n"
@@ -23,14 +23,7 @@ msgstr ""
 "20)) ? 1 : 2;\n"
 "X-Generator: Lokalize 25.08.1\n"
 
-#: backends/kwin_wl/kwin_wl_backend.cpp:61
-#, kde-format
-msgid "Querying input devices failed. Please reopen this settings module."
-msgstr ""
-"Interogarea dispozitivelor de intrare a eșuat. Redeschideți acest modul de "
-"configurare."
-
-#: backends/kwin_wl/kwin_wl_backend.cpp:81
+#: backends/kwin_wl/kwin_wl_backend.cpp:44
 #, kde-format
 msgid "Critical error on reading fundamental device infos of %1."
 msgstr ""
@@ -259,6 +252,11 @@ msgstr ""
 "ar fi unii redactori de imagini, vizualizatori de documente, sau jocuri "
 "video. Poate fi folosită pe orice dispozitiv, dar e destinată în principal "
 "ca înlocuitor pentru roțile de derulare pe dispozitive ce nu le au."
+
+#~ msgid "Querying input devices failed. Please reopen this settings module."
+#~ msgstr ""
+#~ "Interogarea dispozitivelor de intrare a eșuat. Redeschideți acest modul "
+#~ "de configurare."
 
 #~ msgid "Device enabled"
 #~ msgstr "Dispozitiv activat"

@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kcminput\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-01-14 00:46+0000\n"
+"POT-Creation-Date: 2026-03-26 00:46+0000\n"
 "PO-Revision-Date: 2025-05-31 12:44+0200\n"
 "Last-Translator: Stefan Asserhäll <stefan.asserhall@gmail.com>\n"
 "Language-Team: Swedish <kde-i18n-doc@kde.org>\n"
@@ -22,14 +22,7 @@ msgstr ""
 "X-Generator: Lokalize 25.04.1\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
-#: backends/kwin_wl/kwin_wl_backend.cpp:61
-#, kde-format
-msgid "Querying input devices failed. Please reopen this settings module."
-msgstr ""
-"Förfrågan till inmatningsenheter misslyckades. Öppna inställningsmodulen "
-"igen."
-
-#: backends/kwin_wl/kwin_wl_backend.cpp:81
+#: backends/kwin_wl/kwin_wl_backend.cpp:44
 #, kde-format
 msgid "Critical error on reading fundamental device infos of %1."
 msgstr "Allvarligt fel vid läsning av grundläggande enhetsinformation för %1."
@@ -279,6 +272,11 @@ msgstr ""
 "bildeditorer, dokumentvisare eller videospel. Det kan användas på vilken "
 "enhet som helst, men är främst avsett som en ersättning för mushjul på "
 "enheter som inte har några."
+
+#~ msgid "Querying input devices failed. Please reopen this settings module."
+#~ msgstr ""
+#~ "Förfrågan till inmatningsenheter misslyckades. Öppna inställningsmodulen "
+#~ "igen."
 
 #~ msgid "Device enabled"
 #~ msgstr "Enhet aktiverad"

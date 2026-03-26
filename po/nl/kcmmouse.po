@@ -20,7 +20,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kcminput\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-01-14 00:46+0000\n"
+"POT-Creation-Date: 2026-03-26 00:46+0000\n"
 "PO-Revision-Date: 2026-01-08 17:58+0100\n"
 "Last-Translator: Freek de Kruijf <freekdekruijf@kde.nl>\n"
 "Language-Team: \n"
@@ -31,14 +31,7 @@ msgstr ""
 "X-Generator: Lokalize 25.12.0\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
-#: backends/kwin_wl/kwin_wl_backend.cpp:61
-#, kde-format
-msgid "Querying input devices failed. Please reopen this settings module."
-msgstr ""
-"Onderzoeken van invoerapparaten is mislukt. Heropen deze module voor "
-"instellingen."
-
-#: backends/kwin_wl/kwin_wl_backend.cpp:81
+#: backends/kwin_wl/kwin_wl_backend.cpp:44
 #, kde-format
 msgid "Critical error on reading fundamental device infos of %1."
 msgstr "Kritieke fout bij lezen van fundamentele apparaatinformatie van %1."
@@ -266,6 +259,11 @@ msgstr ""
 "gebruiken, zoals sommige afbeeldingsbewerkers, documentviewers of "
 "videogames. Het kan gebruikt worden op elke apparaat, maar is primair "
 "bedoeld als een vervanger voor draaiwielen op apparaten die er geen hebben."
+
+#~ msgid "Querying input devices failed. Please reopen this settings module."
+#~ msgstr ""
+#~ "Onderzoeken van invoerapparaten is mislukt. Heropen deze module voor "
+#~ "instellingen."
 
 #~ msgid "Device enabled"
 #~ msgstr "Apparaat ingeschakeld"

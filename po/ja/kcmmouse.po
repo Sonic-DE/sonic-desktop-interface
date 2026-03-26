@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kcminput\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-01-14 00:46+0000\n"
+"POT-Creation-Date: 2026-03-26 00:46+0000\n"
 "PO-Revision-Date: 2026-02-20 15:00+0900\n"
 "Last-Translator: Mint <5602mint@gmail.com>\n"
 "Language-Team: Japanese <kde-i18n-doc@kde.org>\n"
@@ -27,14 +27,7 @@ msgstr ""
 "X-Accelerator-Marker: &\n"
 "X-Text-Markup: kde4\n"
 
-#: backends/kwin_wl/kwin_wl_backend.cpp:61
-#, kde-format
-msgid "Querying input devices failed. Please reopen this settings module."
-msgstr ""
-"入力デバイスへのクエリに失敗しました。再度この設定モジュールを開いてくださ"
-"い。"
-
-#: backends/kwin_wl/kwin_wl_backend.cpp:81
+#: backends/kwin_wl/kwin_wl_backend.cpp:44
 #, kde-format
 msgid "Critical error on reading fundamental device infos of %1."
 msgstr "%1 の基本的なデバイス情報の読み込み中に深刻なエラーが発生しました。"
@@ -259,3 +252,8 @@ msgstr ""
 "この機能は中ボタンを使用するアプリに干渉することがあります。(例: 画像編集アプ"
 "リ、文書アプリ、ゲームなど) どのデバイスでもこの機能を使用できますが、主にス"
 "クロールホイールがないデバイスでの利用を想定しています。"
+
+#~ msgid "Querying input devices failed. Please reopen this settings module."
+#~ msgstr ""
+#~ "入力デバイスへのクエリに失敗しました。再度この設定モジュールを開いてくださ"
+#~ "い。"
