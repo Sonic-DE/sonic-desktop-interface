@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-03-26 00:46+0000\n"
-"PO-Revision-Date: 2026-02-06 16:40+0100\n"
+"PO-Revision-Date: 2026-03-26 10:16+0100\n"
 "Last-Translator: giovanni <g.sora@tiscali.it>\n"
 "Language-Team: Interlingua <kde-i18n-doc@kde.org>\n"
 "Language: ia\n"
@@ -52,7 +52,7 @@ msgstr "Non pote leger configuration predefinite de touchpad"
 #: kcm.cpp:69
 #, kde-format
 msgid "Not able to select appropriate backend"
-msgstr ""
+msgstr "Incapace a seliger retro-administration appropriate"
 
 #: kcm.cpp:126
 #, kde-format
@@ -64,10 +64,9 @@ msgstr ""
 "information. Pro favor reinitia iste modulo de configuration."
 
 #: kcm.cpp:129
-#, fuzzy, kde-format
-#| msgid "No touchpad found. Connect touchpad now."
+#, kde-format
 msgid "No pointer device found. Connect now."
-msgstr "Necun touchpad (pannello tactile) trovate. onnecte nunc le touchpad."
+msgstr "Necun dispositico de punctar esseva trovate. Nunc connecte."
 
 #: kcm.cpp:138
 #, kde-format
@@ -98,18 +97,16 @@ msgstr ""
 "reconnecte lo e restarta iste modulo de configuration."
 
 #: kcm.cpp:185
-#, fuzzy, kde-format
-#| msgid "Touchpad disconnected. Closed its setting dialog."
+#, kde-format
 msgid "Pointer device disconnected. Closed its setting dialog."
-msgstr "Touchpad disconnectite. Claudite su dialogo de preferentia."
+msgstr ""
+"Dispositivo de punctar disconnectite. Claudite su dialogo de preferentias."
 
 #: kcm.cpp:187
-#, fuzzy, kde-format
-#| msgid "Touchpad disconnected. No other touchpads found."
+#, kde-format
 msgid "Pointer device disconnected. No other devices found."
 msgstr ""
-"Touchpad (pannello tactile) disconnectite. Necun altere pannello tactile "
-"trovate."
+"Dispositivo de punctar disconnectite. Necun altere dispositivos trovate.."
 
 #: ui/main.qml:69
 #, kde-format

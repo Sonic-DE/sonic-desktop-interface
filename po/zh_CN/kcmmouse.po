@@ -231,6 +231,3 @@ msgid ""
 msgstr ""
 "这将干扰使用中键拖动的应用程序，例如某些图像编辑器、文档查看器或游戏。此功能"
 "在任意设备上均可使用，但主要用于在没有滚轮设备上替代滚轮的功能。"
-
-#~ msgid "Querying input devices failed. Please reopen this settings module."
-#~ msgstr "查询输入设备失败。请重新打开此设置模块。"

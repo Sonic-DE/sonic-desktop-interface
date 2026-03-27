@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: kcm_touchpad\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-03-26 00:46+0000\n"
-"PO-Revision-Date: 2026-01-08 08:43+0200\n"
+"PO-Revision-Date: 2026-03-26 12:57+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -55,7 +55,7 @@ msgstr "Не вдалося прочитати дані щодо типових 
 #: kcm.cpp:69
 #, kde-format
 msgid "Not able to select appropriate backend"
-msgstr ""
+msgstr "Не вдалося вибрати відповідний модуль обробки"
 
 #: kcm.cpp:126
 #, kde-format
@@ -67,11 +67,9 @@ msgstr ""
 "журналі. Будь ласка, перезапустіть модуль керування сенсорними панелями."
 
 #: kcm.cpp:129
-#, fuzzy, kde-format
-#| msgid "No touchpad found. Connect touchpad now."
+#, kde-format
 msgid "No pointer device found. Connect now."
-msgstr ""
-"Не знайдено сенсорної панелі. З’єднайте сенсорну панель із комп’ютером."
+msgstr "Не знайдено координатного пристрою. З'єднайте пристрій з комп'ютером."
 
 #: kcm.cpp:138
 #, kde-format
@@ -103,16 +101,15 @@ msgstr ""
 "керування сенсорними панелями."
 
 #: kcm.cpp:185
-#, fuzzy, kde-format
-#| msgid "Touchpad disconnected. Closed its setting dialog."
+#, kde-format
 msgid "Pointer device disconnected. Closed its setting dialog."
-msgstr "Сенсорну панель від’єднано. Діалогове вікно її параметрів закрито."
+msgstr ""
+"Координатний пристрій від’єднано. Діалогове вікно його параметрів закрито."
 
 #: kcm.cpp:187
-#, fuzzy, kde-format
-#| msgid "Touchpad disconnected. No other touchpads found."
+#, kde-format
 msgid "Pointer device disconnected. No other devices found."
-msgstr "Сенсорну панель від’єднано. Інших сенсорних панелей не виявлено."
+msgstr "Координатний пристрій від’єднано. Інших пристроїв не знайдено."
 
 #: ui/main.qml:69
 #, kde-format
