@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: kcm_touchpad\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-03-26 00:46+0000\n"
-"PO-Revision-Date: 2026-01-09 00:39+0100\n"
+"PO-Revision-Date: 2026-03-26 04:11+0100\n"
 "Last-Translator: Eloy Cuadra <ecuadra@eloihr.net>\n"
 "Language-Team: Spanish <kde-l10n-es@kde.org>\n"
 "Language: es\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 25.12.0\n"
+"X-Generator: Lokalize 25.12.3\n"
 
 #: backends/kwin_wayland/kwinwaylandbackend.cpp:46
 #, kde-format
@@ -54,7 +54,7 @@ msgstr "No se puede leer la configuración predeterminada del panel táctil"
 #: kcm.cpp:69
 #, kde-format
 msgid "Not able to select appropriate backend"
-msgstr ""
+msgstr "No se puede seleccionar el motor apropiado"
 
 #: kcm.cpp:126
 #, kde-format
@@ -66,10 +66,9 @@ msgstr ""
 "información. Por favor, reinicie este módulo de configuración."
 
 #: kcm.cpp:129
-#, fuzzy, kde-format
-#| msgid "No touchpad found. Connect touchpad now."
+#, kde-format
 msgid "No pointer device found. Connect now."
-msgstr "No se ha encontrado ningún panel táctil. Conecte uno ahora."
+msgstr "No se ha encontrado ningún dispositivo apuntador. Conecte uno ahora."
 
 #: kcm.cpp:138
 #, kde-format
@@ -100,16 +99,16 @@ msgstr ""
 "vuelva a conectarlo y reinicie este módulo de configuración."
 
 #: kcm.cpp:185
-#, fuzzy, kde-format
-#| msgid "Touchpad disconnected. Closed its setting dialog."
+#, kde-format
 msgid "Pointer device disconnected. Closed its setting dialog."
-msgstr "Panel táctil desconectado. Se ha cerrado su diálogo de preferencias."
+msgstr ""
+"Dispositivo apuntador desconectado. Se ha cerrado su diálogo de preferencias."
 
 #: kcm.cpp:187
-#, fuzzy, kde-format
-#| msgid "Touchpad disconnected. No other touchpads found."
+#, kde-format
 msgid "Pointer device disconnected. No other devices found."
-msgstr "Panel táctil desconectado. No se han encontrado más paneles táctiles."
+msgstr ""
+"Dispositivo apuntador desconectado. No se han encontrado otros dispositivos."
 
 #: ui/main.qml:69
 #, kde-format
@@ -398,8 +397,3 @@ msgstr "Clic central (toque con tres dedos para hacer un clic derecho)."
 msgctxt "@option:radio"
 msgid "Middle-click"
 msgstr "Clic central"
-
-#~ msgid "Querying input devices failed. Please reopen this settings module."
-#~ msgstr ""
-#~ "La consulta de los dispositivos de entrada ha fallado. Por favor, vuelva "
-#~ "a abrir este módulo de preferencias."

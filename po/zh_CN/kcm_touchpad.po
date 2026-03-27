@@ -60,10 +60,9 @@ msgid ""
 msgstr "加载数值时发生错误。请查看日志以获取更多信息。请重启此设置模块。"
 
 #: kcm.cpp:129
-#, fuzzy, kde-format
-#| msgid "No touchpad found. Connect touchpad now."
+#, kde-format
 msgid "No pointer device found. Connect now."
-msgstr "没有找到触摸板。请连接触摸板。"
+msgstr ""
 
 #: kcm.cpp:138
 #, kde-format
@@ -87,16 +86,14 @@ msgid ""
 msgstr "添加新连接的设备时出错。请重新连接，并重启此设置模块。"
 
 #: kcm.cpp:185
-#, fuzzy, kde-format
-#| msgid "Touchpad disconnected. Closed its setting dialog."
+#, kde-format
 msgid "Pointer device disconnected. Closed its setting dialog."
-msgstr "触摸板已断开连接。已关闭它的设置对话框。"
+msgstr ""
 
 #: kcm.cpp:187
-#, fuzzy, kde-format
-#| msgid "Touchpad disconnected. No other touchpads found."
+#, kde-format
 msgid "Pointer device disconnected. No other devices found."
-msgstr "触摸板已断开连接。没有找到其他触摸板。"
+msgstr ""
 
 #: ui/main.qml:69
 #, kde-format
@@ -382,6 +379,3 @@ msgstr "中键点击 (三指轻触时点击右键)"
 msgctxt "@option:radio"
 msgid "Middle-click"
 msgstr "中键点击"
-
-#~ msgid "Querying input devices failed. Please reopen this settings module."
-#~ msgstr "查询输入设备失败。请重新打开此设置模块。"
