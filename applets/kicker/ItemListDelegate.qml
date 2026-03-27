@@ -44,14 +44,8 @@ ItemAbstractDelegate {
         }
     }
 
-    Keys.onReturnPressed: event => {
-        if (!item.hasChildren) {
-            item.clicked()
-        } else {
-            event.accepted = false
-        }
-    }
-    Keys.onEnterPressed: event => item.Keys.returnPressed(event)
+    Keys.onReturnPressed: item.clicked()
+    Keys.onEnterPressed: item.clicked()
 
     contentItem: RowLayout {
         id: row
@@ -146,3 +140,4 @@ ItemAbstractDelegate {
         }
     }
 }
+
