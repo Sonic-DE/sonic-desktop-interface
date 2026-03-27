@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: plasma-desktop\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-03-26 00:46+0000\n"
-"PO-Revision-Date: 2026-01-08 10:45+0100\n"
+"PO-Revision-Date: 2026-03-26 11:26+0100\n"
 "Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
 "Language: ca\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Accelerator-Marker: &\n"
-"X-Generator: Lokalize 25.04.0\n"
+"X-Generator: Lokalize 25.12.3\n"
 
 #: backends/kwin_wayland/kwinwaylandbackend.cpp:46
 #, kde-format
@@ -57,7 +57,7 @@ msgstr "No s'ha pogut llegir la configuració predeterminada del ratolí tàctil
 #: kcm.cpp:69
 #, kde-format
 msgid "Not able to select appropriate backend"
-msgstr ""
+msgstr "No s'ha pogut seleccionar el dorsal adequat"
 
 #: kcm.cpp:126
 #, kde-format
@@ -69,10 +69,9 @@ msgstr ""
 "Torneu a iniciar aquest mòdul de configuració."
 
 #: kcm.cpp:129
-#, fuzzy, kde-format
-#| msgid "No touchpad found. Connect touchpad now."
+#, kde-format
 msgid "No pointer device found. Connect now."
-msgstr "No s'ha trobat cap ratolí tàctil. Connecteu ara el ratolí tàctil."
+msgstr "No s'ha trobat cap dispositiu apuntador. Connecteu-lo ara."
 
 #: kcm.cpp:138
 #, kde-format
@@ -103,18 +102,18 @@ msgstr ""
 "reinicieu aquest mòdul de configuració."
 
 #: kcm.cpp:185
-#, fuzzy, kde-format
-#| msgid "Touchpad disconnected. Closed its setting dialog."
+#, kde-format
 msgid "Pointer device disconnected. Closed its setting dialog."
 msgstr ""
-"S'ha desconnectat el ratolí tàctil. Es tanca el seu diàleg de configuració."
+"S'ha desconnectat el dispositiu apuntador. Es tanca el seu diàleg de "
+"configuració."
 
 #: kcm.cpp:187
-#, fuzzy, kde-format
-#| msgid "Touchpad disconnected. No other touchpads found."
+#, kde-format
 msgid "Pointer device disconnected. No other devices found."
 msgstr ""
-"S'ha desconnectat el ratolí tàctil. No s'ha trobat cap altre ratolí tàctil."
+"S'ha desconnectat el dispositiu apuntador. No s'ha trobat cap altre "
+"dispositiu."
 
 #: ui/main.qml:69
 #, kde-format

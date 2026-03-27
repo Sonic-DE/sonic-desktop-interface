@@ -53,7 +53,7 @@ msgstr "Výchozí konfiguraci touchpadu nelze načíst"
 #: kcm.cpp:69
 #, kde-format
 msgid "Not able to select appropriate backend"
-msgstr ""
+msgstr "Nelze vybrat vhodnou podpůrnou vrstvu"
 
 #: kcm.cpp:126
 #, kde-format
@@ -65,10 +65,9 @@ msgstr ""
 "Prosím restartujte tento nastavovací modul."
 
 #: kcm.cpp:129
-#, fuzzy, kde-format
-#| msgid "No touchpad found. Connect touchpad now."
+#, kde-format
 msgid "No pointer device found. Connect now."
-msgstr "Nebyl nalezen žádný touchpad. Připojte touchpad."
+msgstr "Žádné ukazovací zařízení nebylo nalezeno. Připojte zařízení."
 
 #: kcm.cpp:138
 #, kde-format
@@ -98,16 +97,15 @@ msgstr ""
 "znovu a restartujte tento konfigurační modul."
 
 #: kcm.cpp:185
-#, fuzzy, kde-format
-#| msgid "Touchpad disconnected. Closed its setting dialog."
+#, kde-format
 msgid "Pointer device disconnected. Closed its setting dialog."
-msgstr "Touchpad byl odpojen. Jeho nastavovací dialog byl uzavřen."
+msgstr "Ukazovací zařízení bylo odpojeno. Zavřete dialogové okno nastavení."
 
 #: kcm.cpp:187
-#, fuzzy, kde-format
-#| msgid "Touchpad disconnected. No other touchpads found."
+#, kde-format
 msgid "Pointer device disconnected. No other devices found."
-msgstr "Touchpad odpojen. Žádné další touchpady nebyly nalezeny."
+msgstr ""
+"Ukazovací zařízení bylo odpojeno. Žádná další zařízení nebyla nalezena."
 
 #: ui/main.qml:69
 #, kde-format

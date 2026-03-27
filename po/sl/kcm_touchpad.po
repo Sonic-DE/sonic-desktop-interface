@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-03-26 00:46+0000\n"
-"PO-Revision-Date: 2026-01-08 18:14+0100\n"
+"PO-Revision-Date: 2026-03-26 06:41+0100\n"
 "Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
 "Language: sl\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n"
 "%100==4 ? 3 : 0);\n"
 "Translator: Andrej Mernik <andrejm@ubuntu.si>\n"
-"X-Generator: Poedit 3.8\n"
+"X-Generator: Poedit 3.9\n"
 
 #: backends/kwin_wayland/kwinwaylandbackend.cpp:46
 #, kde-format
@@ -53,7 +53,7 @@ msgstr "Ni mogoče prebrati privzetih nastavitev sledilne ploščice"
 #: kcm.cpp:69
 #, kde-format
 msgid "Not able to select appropriate backend"
-msgstr ""
+msgstr "Ni mogoče izbrati ustreznega zaledja"
 
 #: kcm.cpp:126
 #, kde-format
@@ -65,10 +65,9 @@ msgstr ""
 "Znova zaženite ta nastavitveni modul."
 
 #: kcm.cpp:129
-#, fuzzy, kde-format
-#| msgid "No touchpad found. Connect touchpad now."
+#, kde-format
 msgid "No pointer device found. Connect now."
-msgstr "Najdene ni bilo nobene sledilne ploščice. Povežite jo zdaj."
+msgstr "Ni najdene nobene kazalne naprave. Povežite se zdaj."
 
 #: kcm.cpp:138
 #, kde-format
@@ -98,18 +97,15 @@ msgstr ""
 "zaženite ta nastavitveni modul."
 
 #: kcm.cpp:185
-#, fuzzy, kde-format
-#| msgid "Touchpad disconnected. Closed its setting dialog."
+#, kde-format
 msgid "Pointer device disconnected. Closed its setting dialog."
 msgstr ""
-"Sledilna ploščica je bila odklopljena, zato je bilo pogovorno okno z "
-"nastavitvami zaprto."
+"Kazalna naprava je odklopljena. Zaprto je bilo pogovorno okno z nastavitvami."
 
 #: kcm.cpp:187
-#, fuzzy, kde-format
-#| msgid "Touchpad disconnected. No other touchpads found."
+#, kde-format
 msgid "Pointer device disconnected. No other devices found."
-msgstr "Sledilna ploščica je bila odklopljena. Druge niso bile najdene."
+msgstr "Kazalna naprava odklopljena. Nobene druge naprave ni najdene."
 
 #: ui/main.qml:69
 #, kde-format
