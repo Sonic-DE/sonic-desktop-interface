@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: l 10n\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-03-26 00:46+0000\n"
-"PO-Revision-Date: 2026-01-12 23:56+0200\n"
+"PO-Revision-Date: 2026-03-27 21:33+0200\n"
 "Last-Translator: Moo\n"
 "Language-Team: lt <kde-i18n-lt@kde.org>\n"
 "Language: lt\n"
@@ -57,7 +57,7 @@ msgstr ""
 #: kcm.cpp:69
 #, kde-format
 msgid "Not able to select appropriate backend"
-msgstr ""
+msgstr "Nepavyksta pasirinkti tinkamos vidinės pusės"
 
 #: kcm.cpp:126
 #, kde-format
@@ -69,10 +69,9 @@ msgstr ""
 "Paleiskite šį konfigūracijos modulį iš naujo."
 
 #: kcm.cpp:129
-#, fuzzy, kde-format
-#| msgid "No touchpad found. Connect touchpad now."
+#, kde-format
 msgid "No pointer device found. Connect now."
-msgstr "Nerasta jokio jutiklinio kilimėlio. Prijunkite jį dabar."
+msgstr "Nerasta jokio rodomojo įrenginio. Prijunkite jį dabar."
 
 #: kcm.cpp:138
 #, kde-format
@@ -103,17 +102,14 @@ msgstr ""
 "paleiskite šį konfigūracijos modulį iš naujo."
 
 #: kcm.cpp:185
-#, fuzzy, kde-format
-#| msgid "Touchpad disconnected. Closed its setting dialog."
+#, kde-format
 msgid "Pointer device disconnected. Closed its setting dialog."
-msgstr "Jutiklinis kilimėlis atsijungė. Užvėrė savo nuostatos dialogą."
+msgstr "Rodomasis įrenginys atsijungė. Užvėrė savo nuostatos dialogą."
 
 #: kcm.cpp:187
-#, fuzzy, kde-format
-#| msgid "Touchpad disconnected. No other touchpads found."
+#, kde-format
 msgid "Pointer device disconnected. No other devices found."
-msgstr ""
-"Jutiklinis kilimėlis atsijungė. Jokių kitų jutiklinių kilimėlių nerasta."
+msgstr "Rodomasis įrenginys atsijungė. Jokių kitų įrenginių nerasta."
 
 #: ui/main.qml:69
 #, kde-format
