@@ -50,7 +50,7 @@ msgstr "无法读取默认触摸板配置"
 #: kcm.cpp:69
 #, kde-format
 msgid "Not able to select appropriate backend"
-msgstr ""
+msgstr "无法选择适合的后端程序"
 
 #: kcm.cpp:126
 #, kde-format
@@ -62,7 +62,7 @@ msgstr "加载数值时发生错误。请查看日志以获取更多信息。请
 #: kcm.cpp:129
 #, kde-format
 msgid "No pointer device found. Connect now."
-msgstr ""
+msgstr "没有找到指针设备。请现在连接它。"
 
 #: kcm.cpp:138
 #, kde-format
@@ -88,12 +88,12 @@ msgstr "添加新连接的设备时出错。请重新连接，并重启此设置
 #: kcm.cpp:185
 #, kde-format
 msgid "Pointer device disconnected. Closed its setting dialog."
-msgstr ""
+msgstr "指针设备已断开连接。已关闭它的设置对话框。"
 
 #: kcm.cpp:187
 #, kde-format
 msgid "Pointer device disconnected. No other devices found."
-msgstr ""
+msgstr "指针设备已断开连接。没有找到其他设备。"
 
 #: ui/main.qml:69
 #, kde-format
