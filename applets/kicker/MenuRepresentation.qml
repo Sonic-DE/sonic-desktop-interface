@@ -346,6 +346,7 @@ PlasmaComponents3.ScrollView {
         PlasmaExtras.PlaceholderMessage {
             id: noMatchesPlaceholder
 
+            Layout.minimumWidth: mainRow.minimumMainWidth
             Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
 
             visible: root.runnerModel.query !== "" && !runnerColumns.searchResultsPresent && ((!root.runnerModel.querying && !initialDelayTimer.active) || visible)
