@@ -355,13 +355,15 @@ void KCMKeys::requestKeySequence(QQuickItem *context, const QModelIndex &index, 
         return;
     }
 
-    if (conflicts.contains(index)) {
-        qCDebug(KCMKEYS) << "Ignoring conflict refers to the same action" << conflicts;
-        Q_EMIT shortcutChangeRejected();
+    if (conflict == index) {
+        qCDebug(KCMKEYS) << "Ignoring conflict refers to the same action" << conflict;
         return;
     }
 
-    qCDebug(KCMKEYS) << "Found conflict for" << newSequence << conflicts;
+    qCDebug(KCMKEYS) << "Found conflict for" << newSequence << conflict;
+    const bool isStandardAction = conflict.parent().data(BaseModel::SectionRole) == ComponentType::CommonAction;
+    const QString currentActionName = conflict.data().toString();
+    const QString currentComponentName = conflict.parent().data().toString();
     const QString newActionName = index.data().toString();
     const QString newComponentName = index.parent().data().toString();
     const QString keysString = newSequence.toString(QKeySequence::NativeText);
@@ -429,3 +431,4 @@ void KCMKeys::requestKeySequence(QQuickItem *context, const QModelIndex &index, 
 }
 
 #include "kcm_keys.moc"
+
