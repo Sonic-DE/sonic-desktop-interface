@@ -217,3 +217,4 @@ PlasmoidItem {
         rootModel.refreshed.connect(modelRefreshed);
     }
 }
+
