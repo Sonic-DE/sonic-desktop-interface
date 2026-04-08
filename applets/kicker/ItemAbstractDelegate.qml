@@ -20,6 +20,7 @@ PlasmaComponents3.ItemDelegate {
     required property bool isParent
     required property bool disabled
     required property bool hasActionList
+    required property bool isNewlyInstalled
     required property string favoriteId
     required property var /*QVariantList*/ actionList
     required property url url
