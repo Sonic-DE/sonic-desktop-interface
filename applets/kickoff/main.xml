@@ -69,7 +69,7 @@
             <default>false</default>
         </entry>
         <entry name="highlightNewlyInstalledApps" type="Bool">
-            <label>Whether to highlight newly installed applications</label>
+            <label>Whether to highlight newly-installed applications</label>
             <default>true</default>
         </entry>
     </group>
