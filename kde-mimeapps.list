@@ -7,10 +7,6 @@
 application/x-krita=org.kde.krita.desktop;org.kde.gwenview.desktop
 image/x-xcf=org.gimp.GIMP.desktop;org.kde.gwenview.desktop
 
-# Discover
-x-scheme-handler/appstream=org.kde.discover.urlhandler.desktop
-application/vnd.debian.binary-package=org.kde.discover.desktop
-
 # Archive Manager
 application/x-tar=org.kde.ark.desktop
 application/x-compressed-tar=org.kde.ark.desktop

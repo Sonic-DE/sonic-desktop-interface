@@ -22,5 +22,3 @@ target_link_libraries(attica_kde
 )
 
 install(TARGETS attica_kde                 DESTINATION ${KDE_INSTALL_PLUGINDIR})
-kaccounts_add_provider(opendesktop.provider.in)
-kaccounts_add_service(opendesktop-rating.service.in)
