@@ -43,7 +43,7 @@ using namespace KAStats::Terms;
 K_PLUGIN_FACTORY_WITH_JSON(KCMLandingPageFactory, "kcm_landingpage.json", registerPlugin<KCMLandingPage>(); registerPlugin<LandingPageData>();)
 
 // Program to icon hash
-static QHash<QString, QString> s_programs = {{"plasmashell", "plasmashell"}, {"plasma-discover", "plasmadiscover"}};
+static QHash<QString, QString> s_programs = {{"plasmashell", "plasmashell"}};
 
 MostUsedModel::MostUsedModel(QObject *parent)
     : QSortFilterProxyModel(parent)
