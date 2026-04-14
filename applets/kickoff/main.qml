@@ -145,7 +145,7 @@ PlasmoidItem {
         id: dragSource // BUG 449426
         property Item sourceItem
         Drag.dragType: Drag.Automatic
-        Drag.supportedActions: Qt.CopyAction | Qt.LinkAction
+        Drag.supportedActions: Qt.CopyAction | Qt.LinkAction | Qt.MoveAction
     }
     //END
 
