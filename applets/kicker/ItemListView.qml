@@ -90,14 +90,16 @@ PlasmaComponents3.ScrollView {
     Keys.forwardTo: [itemList.mainSearchField]
 
     onHoveredChanged: {
+        const parentItem = itemList.dialog?.visualParent as ItemListDelegate
+        if (hovered && parentItem) {
+            parentItem.ListView.view.currentIndex = parentItem.index
+        }
         Qt.callLater( () =>{
             if (ActionMenu.opened) {
                 return
             } else if (hovered) {
                 resetIndexTimer.stop();
-            } else if (itemList.childDialog && listView.currentIndex != itemList.childDialog?.index) {
-                listView.currentIndex = childDialog.index
-            } else if ((!itemList.childDialog || !itemList.dialog) && !itemList.currentItem) {
+            } else {
                 resetIndexTimer.start();
             }
         })
@@ -109,7 +111,6 @@ PlasmaComponents3.ScrollView {
         width: itemList.availableWidth
         implicitHeight: contentHeight
         implicitWidth: itemList.Layout.minimumWidth
-
 
         anchors {
             top: parent.top
