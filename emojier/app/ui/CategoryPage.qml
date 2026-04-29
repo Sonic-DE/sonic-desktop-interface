@@ -103,32 +103,32 @@ Kirigami.ScrollablePage {
         },
         Kirigami.Action {
             text: {
-                let example = "";
+                let result = i18nc("@action:button Button to open a menu that lets you choose a skin tone", "Skin tone: %1")
 
                 switch (view.model.skinTone) {
                 case SkinTone.Neutral:
-                    example = "🖐️";
+                    result = result.arg("🖐️")
                     break
                 case SkinTone.Light:
-                    example = "🖐🏻";
+                    result = result.arg("🖐🏻")
                     break
                 case SkinTone.MediumLight:
-                    example ="🖐🏼";
+                    result = result.arg("🖐🏼")
                     break
                 case SkinTone.Medium:
-                    example = "🖐🏽";
+                    result = result.arg("🖐🏽")
                     break
                 case SkinTone.MediumDark:
-                    example = "🖐🏾";
+                    result = result.arg("🖐🏾")
                     break
                 case SkinTone.Dark:
-                    example = "🖐🏿";
+                    result = result.arg("🖐🏿")
                     break
                 default:
                     break
                 }
 
-                return i18nc("@action:button Button to open a menu that lets you choose a skin tone", "Skin tone: %1", example);
+                return result
             }
             visible: view.category === "All" || view.category === "People and Body"
 
@@ -188,37 +188,6 @@ Kirigami.ScrollablePage {
             }
         }
     ]
-
-    Kirigami.Dialog {
-        id: variantDialog
-        title: i18nc("@title:window A two-tone skin variant can be selected here", "Select Variant")
-
-        ColumnLayout {
-            GridView {
-                id: dialogEmojiView
-
-                Layout.alignment: Qt.AlignHCenter
-                Layout.preferredHeight: contentHeight
-                readonly property real desiredSize: Kirigami.Units.gridUnit * 3
-
-                cellWidth: desiredSize
-                cellHeight: desiredSize
-                implicitWidth: (view.model.skinTone === SkinTone.Neutral ? 5 : 4) * desiredSize
-
-                model: emoji.twoToneEmojiModel
-                delegate: emojiDelegateComponent
-            }
-        }
-
-        onVisibleChanged: {
-            if (visible) {
-                dialogEmojiView.currentIndex = 0;
-                dialogEmojiView.forceActiveFocus();
-            }
-        }
-
-        onClosed: emojiView.currentItem?.forceActiveFocus()
-    }
 
     Kirigami.Dialog {
         id: variantDialog
