@@ -106,7 +106,7 @@ PlasmaComponents3.ScrollView {
 
         spacing: 0
 
-        readonly property int minimumMainWidth: Math.max(searchField.defaultWidth, root.runnerModel.resultsPresent ? 0 : Math.min(rootList.implicitWidth, rootList.Layout.maximumWidth))
+        readonly property int minimumMainWidth: Math.max(searchField.defaultWidth, runnerColumns.searchResultsPresent ? 0 : Math.min(rootList.implicitWidth, rootList.Layout.maximumWidth))
         Layout.minimumWidth: (sideBar.visible ? sideBar.implicitWidth + sideBar.Layout.rightMargin : 0) + minimumMainWidth
         LayoutMirroring.enabled: ((Plasmoid.location === PlasmaCore.Types.RightEdge)
             || (Application.layoutDirection === Qt.RightToLeft && Plasmoid.location !== PlasmaCore.Types.LeftEdge))
@@ -293,6 +293,8 @@ PlasmaComponents3.ScrollView {
         RowLayout {
             id: runnerColumns
 
+            readonly property bool searchResultsPresent: runnerColumns.visibleChildren[0] instanceof RunnerResultsList
+
             Layout.fillHeight: true
 
             visible: searchField.text !== "" && root.runnerModel.count > 0 && (!initialDelayTimer.active || !root.runnerModel.querying || searchResultsPresent)
@@ -473,31 +475,12 @@ PlasmaComponents3.ScrollView {
         }
 
         function launchBestMatch() : void  {
-            if (launchMatchTimer.running) {
-                launchMatchTimer.stop()
-                launchMatchTimer.triggered()
-                return
-            }
-            if (!root.runnerModel.querying || runnerColumns.visibleChildren[0]?.currentItem?.text.toLowerCase().includes(root.runnerModel.query.toLowerCase())) {
-                launchMatchTimer.triggered()
-                return
-            }
-            launchMatchTimer.start()
-        }
-
-        Timer {
-            id: launchMatchTimer
-            interval: 750
-            onTriggered: runnerColumns.visibleChildren[0]?.currentItem?.action.trigger()
-        }
-
-        Connections {
-            target: runnerColumns.visibleChildren[0] instanceof RunnerResultsList ? runnerColumns.visibleChildren[0] : null
-            enabled: launchMatchTimer.running
-            function onCurrentItemChanged() : void {
-                if (runnerColumns.visibleChildren[0]?.currentItem?.text.toLowerCase().includes(root.runnerModel.query.toLowerCase())) {
-                    launchMatchTimer.stop()
-                    launchMatchTimer.triggered()
+            if (runnerColumns.visible) {
+                for (let i = 0; i < root.runnerModel.count; ++i) {
+                    if (root.runnerModel.modelForRow(i).count) {
+                        root.runnerModel.modelForRow(i).trigger(0, "", null);
+                        break;
+                    }
                 }
             }
         }
@@ -544,6 +527,3 @@ PlasmaComponents3.ScrollView {
         }
     }
 }
-
-
-
