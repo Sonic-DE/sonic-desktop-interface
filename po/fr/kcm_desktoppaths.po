@@ -21,7 +21,7 @@ msgstr ""
 "Project-Id-Version: kcm_desktoppaths\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-04-30 00:45+0000\n"
-"PO-Revision-Date: 2024-08-31 09:56+0200\n"
+"PO-Revision-Date: 2026-05-01 17:34+0200\n"
 "Last-Translator: Xavier Besnard <xavier.besnard@kde.org>\n"
 "Language-Team: fr\n"
 "Language: fr\n"
@@ -145,21 +145,18 @@ msgstr ""
 "de modèles."
 
 #: ui/main.qml:165
-#, fuzzy, kde-format
-#| msgctxt "@label:textbox"
-#| msgid "Pictures folder:"
+#, kde-format
 msgctxt "@label:textbox"
 msgid "Projects folder:"
-msgstr "Dossier des images :"
+msgstr "Dossier de projets :"
 
 #: ui/main.qml:171
-#, fuzzy, kde-format
-#| msgctxt "@info:tooltip and accessible description"
-#| msgid "This folder will be used by default to open or save documents."
+#, kde-format
 msgctxt "@info:tooltip and accessible description"
 msgid "This folder will be used by default to open or save projects."
 msgstr ""
-"Ce dossier sera utilisé par défaut pour ouvrir ou enregistrer des documents."
+"Ce dossier sera utilisé par défaut pour l'ouverture ou l'enregistrement de "
+"projets."
 
 #: ui/UrlRequester.qml:74
 #, kde-format
