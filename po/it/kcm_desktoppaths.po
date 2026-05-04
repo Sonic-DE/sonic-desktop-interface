@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: kcm_desktoppaths\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-04-30 00:45+0000\n"
-"PO-Revision-Date: 2024-08-30 19:27+0200\n"
+"PO-Revision-Date: 2026-04-30 17:11+0200\n"
 "Last-Translator: Vincenzo Reale <smart2128vr@gmail.com>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
 "Language: it\n"
@@ -134,22 +134,18 @@ msgstr ""
 "salvare imodelli."
 
 #: ui/main.qml:165
-#, fuzzy, kde-format
-#| msgctxt "@label:textbox"
-#| msgid "Pictures folder:"
+#, kde-format
 msgctxt "@label:textbox"
 msgid "Projects folder:"
-msgstr "Cartella delle immagini:"
+msgstr "Cartella dei progetti:"
 
 #: ui/main.qml:171
-#, fuzzy, kde-format
-#| msgctxt "@info:tooltip and accessible description"
-#| msgid "This folder will be used by default to open or save documents."
+#, kde-format
 msgctxt "@info:tooltip and accessible description"
 msgid "This folder will be used by default to open or save projects."
 msgstr ""
-"Questa cartella sarà usata come cartella predefinita per aprire o salvare i "
-"documenti."
+"Questa cartella sarà utilizzata come predefinita per aprire o salvare i "
+"progetti."
 
 #: ui/UrlRequester.qml:74
 #, kde-format
