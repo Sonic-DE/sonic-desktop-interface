@@ -17,9 +17,6 @@ class GlobalAccelModel;
 class ShortcutsModel;
 class StandardShortcutsModel;
 
-#include "filteredmodel.h"
-#include "shortcutsmodel.h"
-
 class KCMKeys : public KQuickConfigModule
 {
     Q_OBJECT
@@ -62,7 +59,7 @@ Q_SIGNALS:
 
 private:
     void setError(const QString &errorMessage);
-    QList<QPersistentModelIndex> conflictingIndices(const QKeySequence &keySequence) const;
+    QList<QModelIndex> conflictingIndices(const QKeySequence &keySequence) const;
 
     QString m_lastError;
     FilteredShortcutsModel *m_filteredModel;
