@@ -34,27 +34,20 @@ PlasmaComponents3.ItemDelegate {
     property bool dialogDefaultRight: Application.layoutDirection !== Qt.RightToLeft
 
     signal interactionConcluded
+    signal openCategory(bool keyboardInitiated)
 
     text: model.display
     icon.name: decoration
     hoverEnabled: true
 
-    function openActionMenu(x: real, y: real) : void {
-        const actionList = item.hasActionList ? item.actionList : [];
-        Tools.fillActionMenu(i18n, actionMenu, actionList, item.favoritesModel, item.favoriteId);
-        if (!actionMenu.actionList.length) {
-            return
-        }
-        actionMenu.visualParent = item;
-        actionMenu.open(x, y);
-    }
-
-    ActionMenu {
-        id: actionMenu
-
-        onActionClicked: (actionId, actionArgument) => {
-            if (Tools.triggerAction(item.baseModel, item.index, actionId, actionArgument) === true) {
+    action: Kirigami.Action {
+        onTriggered: source => {
+            if (item.dragActive) { return }
+            if (!item.hasChildren) {
+                item.baseModel.trigger(item.index, "", null);
                 item.interactionConcluded()
+            } else {
+                item.openCategory(source instanceof KeyEvent)
             }
         }
     }
@@ -75,6 +68,9 @@ PlasmaComponents3.ItemDelegate {
 
     contentItem: null
 
+    Keys.onReturnPressed: event => action.trigger(event)
+    Keys.onEnterPressed: event => action.trigger(event)
+    Keys.onSpacePressed: event => action.trigger(event)
     Keys.onMenuPressed: {
         if (item.hasActionList || item.favoriteId !== null) {
             item.openActionMenu()
