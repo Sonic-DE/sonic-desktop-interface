@@ -52,7 +52,7 @@ PlasmaComponents3.ScrollView {
         listView.maxDelegateImplicitWidth = 0
     }
 
-    function subMenuForCurrentItem(focusOnSpawn=false) {
+    function subMenuForCurrentItem() {
         if (!kicker.expanded || !itemList.model || itemList.currentIndex === -1 || ActionMenu.opened) {
             return;
         }
@@ -149,6 +149,11 @@ PlasmaComponents3.ScrollView {
             showDescriptionInTooltip: itemList.showDescriptionInTooltip
             dialogDefaultRight: !itemList.LayoutMirroring.enabled
             onInteractionConcluded: itemList.interactionConcluded()
+            onOpenCategory: keyboardInitiated => {
+                listView.currentIndex = index
+                listView.openOrFocusSubmenu()
+                if (keyboardInitiated) { itemList.childDialog.mainItem.currentIndex = 0; }
+            }
             onContainsMouseChanged: {
                 if (containsMouse && itemList.hoverEnabled && !isSeparator && !ActionMenu.opened) {
                     listView.currentIndex = index
