@@ -1,4 +1,5 @@
 # vim:set softtabstop=3 shiftwidth=3 tabstop=3 expandtab:
+cmake_policy(SET CMP0177 NEW)
 add_definitions(-DTRANSLATION_DOMAIN=\"kcm_recentFiles\")
 
 find_package (Qt6 REQUIRED NO_MODULE COMPONENTS Core Quick Sql Qml DBus)
@@ -72,9 +73,7 @@ install (
 
 install (
    DIRECTORY
-
    qml/recentFiles
-
    DESTINATION ${KAMD_KCM_DATADIR}/qml
    )
 

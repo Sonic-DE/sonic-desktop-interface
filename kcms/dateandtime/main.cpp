@@ -18,7 +18,10 @@
 #include <QDBusConnection>
 
 #include "dtime.h"
+
 #include "helper.h"
+#include <KAuth/Action>
+#include <KAuth/ExecuteJob>
 
 #include "timedated_interface.h"
 
