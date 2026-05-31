@@ -27,4 +27,5 @@ plasma_add_applet(org.kde.plasma.kicker
 # Suppress warnings from auto-generated qmlcache files
 target_compile_options(org.kde.plasma.kicker PRIVATE -Wno-unused-parameter)
 
+set_source_files_properties(code/tools.js PROPERTIES QT_QML_SKIP_QMLDIR_ENTRY TRUE)
 ecm_target_qml_sources(org.kde.plasma.kicker SOURCES code/tools.js PATH code)

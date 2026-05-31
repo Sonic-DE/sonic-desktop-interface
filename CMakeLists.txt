@@ -58,6 +58,8 @@ if (Qt6Gui_VERSION VERSION_GREATER_EQUAL "6.10.0")
     find_package(Qt6GuiPrivate ${REQUIRED_QT_VERSION} REQUIRED NO_MODULE)
 endif()
 
+qt_policy(SET QTP0004 NEW)
+
 find_package(KF6 ${KF6_MIN_VERSION} REQUIRED COMPONENTS
     Auth
     Crash

@@ -5,6 +5,8 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
+.pragma library
+
 var layout;
 var root;
 var plasmoid;
