@@ -6,6 +6,8 @@ option(HAVE_XINPUT "X11 XInput" OFF)
 
 if (X11_Xinput_FOUND)
     set(HAVE_XINPUT ON)
+    message(STATUS "X11 XInput found - keyboard layout hotplugging support enabled")
+else()
     message(STATUS "X11 XInput is not found but required to keep layouts with keyboard hotplugging")
 endif()
 
