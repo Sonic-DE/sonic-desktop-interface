@@ -1,13 +1,13 @@
 # Copyright (C) 2023 This file is copyright:
 # This file is distributed under the same license as the plasma-desktop package.
 #
-# SPDX-FileCopyrightText: 2023, 2025 Toms Trasuns <toms.trasuns@posteo.net>
+# SPDX-FileCopyrightText: 2023, 2025, 2026 Toms Trasuns <toms.trasuns@posteo.net>
 msgid ""
 msgstr ""
 "Project-Id-Version: plasma-desktop\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-01-13 08:43+0000\n"
-"PO-Revision-Date: 2025-06-19 20:10+0300\n"
+"POT-Creation-Date: 2026-06-02 03:54+0000\n"
+"PO-Revision-Date: 2026-03-03 13:24+0200\n"
 "Last-Translator: Toms Trasuns <toms.trasuns@posteo.net>\n"
 "Language-Team: Latvian <kde-i18n-doc@kde.org>\n"
 "Language: lv\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : "
 "2);\n"
-"X-Generator: Lokalize 25.04.2\n"
+"X-Generator: Lokalize 25.12.2\n"
 
 #: app/emojier.cpp:43 app/emojier.cpp:45
 #, kde-format
@@ -45,135 +45,155 @@ msgstr "toms.trasuns@posteo.net"
 msgid "Replace an existing instance"
 msgstr "Aizvietot eksistējošu instanci"
 
-#: app/ui/CategoryPage.qml:112
+#: app/ui/CategoryPage.qml:41
 #, fuzzy, kde-format
-#| msgid "Clear History"
+#| msgid "Search"
+msgctxt "@action Search field action"
+msgid "Search"
+msgstr "Meklēt"
+
+#: app/ui/CategoryPage.qml:100
+#, kde-format
 msgctxt "@action:button clear emoji history"
 msgid "Clear History"
 msgstr "Notīrīt vēsturi"
 
-#: app/ui/CategoryPage.qml:124
-#, kde-format
+#: app/ui/CategoryPage.qml:131
+#, fuzzy, kde-format
+#| msgctxt ""
+#| "@action:button Button to open a menu that lets you choose a skin tone"
+#| msgid "Skin tone:"
 msgctxt "@action:button Button to open a menu that lets you choose a skin tone"
-msgid "Skin tone:"
-msgstr ""
+msgid "Skin tone: %1"
+msgstr "Ādas tonis:"
 
-#: app/ui/CategoryPage.qml:135 app/ui/Emojier.qml:73
-#, kde-format
-msgctxt "@title:page All emojis"
-msgid "All"
-msgstr "Visas"
-
-#: app/ui/CategoryPage.qml:189
+#: app/ui/CategoryPage.qml:137
 #, kde-format
 msgctxt "@action:inmenu Skin Tone"
 msgid "🖐️ Neutral"
-msgstr ""
+msgstr "🖐️ neitrāls"
 
-#: app/ui/CategoryPage.qml:190
+#: app/ui/CategoryPage.qml:138
 #, kde-format
 msgctxt "@action:inmenu Skin Tone"
 msgid "Neutral"
-msgstr ""
+msgstr "Neitrāls"
 
-#: app/ui/CategoryPage.qml:198
+#: app/ui/CategoryPage.qml:146
 #, kde-format
 msgctxt "@action:inmenu Skin Tone"
 msgid "🖐🏻 Light"
-msgstr ""
+msgstr "🖐🏻 gaišs"
 
-#: app/ui/CategoryPage.qml:199
+#: app/ui/CategoryPage.qml:147
 #, kde-format
 msgctxt "@action:inmenu Skin Tone"
 msgid "Light"
-msgstr ""
+msgstr "Gaišs"
 
-#: app/ui/CategoryPage.qml:207
+#: app/ui/CategoryPage.qml:155
 #, kde-format
 msgctxt "@action:inmenu Skin Tone"
 msgid "🖐🏼 Medium Light"
-msgstr ""
+msgstr "🖐🏼 vidēji gaišs"
 
-#: app/ui/CategoryPage.qml:208
+#: app/ui/CategoryPage.qml:156
 #, kde-format
 msgctxt "@action:inmenu Skin Tone"
 msgid "Medium Light"
-msgstr ""
+msgstr "Vidēji gaišs"
 
-#: app/ui/CategoryPage.qml:216
+#: app/ui/CategoryPage.qml:164
 #, kde-format
 msgctxt "@action:inmenu Skin Tone"
 msgid "🖐🏽 Medium"
-msgstr ""
+msgstr "🖐🏽 vidējs"
 
-#: app/ui/CategoryPage.qml:217
+#: app/ui/CategoryPage.qml:165
 #, kde-format
 msgctxt "@action:inmenu Skin Tone"
 msgid "Medium"
-msgstr ""
+msgstr "Vidējs"
 
-#: app/ui/CategoryPage.qml:225
+#: app/ui/CategoryPage.qml:173
 #, kde-format
 msgctxt "@action:inmenu Skin Tone"
 msgid "🖐🏾 Medium Dark"
-msgstr ""
+msgstr "🖐🏾 vidēji tumšs"
 
-#: app/ui/CategoryPage.qml:226
+#: app/ui/CategoryPage.qml:174
 #, kde-format
 msgctxt "@action:inmenu Skin Tone"
 msgid "Medium Dark"
-msgstr ""
+msgstr "Vidēji tumšs"
 
-#: app/ui/CategoryPage.qml:234
+#: app/ui/CategoryPage.qml:182
 #, kde-format
 msgctxt "@action:inmenu Skin Tone"
 msgid "🖐🏿 Dark"
-msgstr ""
+msgstr "🖐🏿 tumšs"
 
-#: app/ui/CategoryPage.qml:235
+#: app/ui/CategoryPage.qml:183
 #, kde-format
 msgctxt "@action:inmenu Skin Tone"
 msgid "Dark"
-msgstr ""
+msgstr "Tumšs"
 
-#: app/ui/CategoryPage.qml:264
+#: app/ui/CategoryPage.qml:194
+#, kde-format
+msgctxt "@title:window A two-tone skin variant can be selected here"
+msgid "Select Variant"
+msgstr "Atlasiet variantu"
+
+#: app/ui/CategoryPage.qml:242
 #, kde-format
 msgctxt "@item:inmenu"
 msgid "Copy Character"
-msgstr "Kopēt zīmi"
+msgstr "Kopēt rakstzīmi"
 
-#: app/ui/CategoryPage.qml:269
+#: app/ui/CategoryPage.qml:250
 #, kde-format
 msgctxt "@item:inmenu"
 msgid "Copy Description"
 msgstr "Kopēt aprakstu"
 
-#: app/ui/CategoryPage.qml:368
-#, fuzzy, kde-format
-#| msgid "No recent Emojis"
+#: app/ui/CategoryPage.qml:291
+#, kde-format
 msgctxt "@label placeholder for empty recent emoji list"
-msgid "No recent Emojis"
+msgid "No recent emojis"
 msgstr "Nav pēdējo lietoto emocijzīmju"
 
-#: app/ui/CategoryPage.qml:368
+#: app/ui/CategoryPage.qml:291
 #, kde-format
 msgctxt "@label placeholder for no emoji found in category"
 msgid "No matching emoji found"
-msgstr ""
+msgstr "Nav atrastas atbilstošas emocijzīmes"
+
+#: app/ui/CategoryPage.qml:339
+#, kde-format
+msgctxt ""
+"@action:button Opens a window where a two-tone skin variant can be selected. "
+"%1 is the emoji's name"
+msgid "Select Variant of \"%1\""
+msgstr "Atlasiet „%1“ variantu"
 
 #: app/ui/Emojier.qml:44
-#, fuzzy, kde-format
-#| msgid "%1 copied to the clipboard"
+#, kde-format
 msgctxt "@info:status passive notification as action feedback, %1 is an emoji"
 msgid "%1 copied to the clipboard"
-msgstr "%1 nokopēts starpliktuvē"
+msgstr "%1 ir nokopēts starpliktuvē"
 
 #: app/ui/Emojier.qml:58
-#, fuzzy, kde-format
-#| msgid "Recent"
+#, kde-format
 msgctxt "@title page title for Recent Emoji view, and sidebar label for it"
 msgid "Recent"
 msgstr "Pēdējās"
+
+#: app/ui/Emojier.qml:73
+#, kde-format
+msgctxt "@title:page All emojis"
+msgid "All"
+msgstr "Visi"
 
 #: emojicategory.cpp:14
 msgctxt "Emoji Category"
@@ -227,6 +247,3 @@ msgstr "Karogi"
 
 #~ msgid "Categories"
 #~ msgstr "Kategorijas"
-
-#~ msgid "Search"
-#~ msgstr "Meklēt"
