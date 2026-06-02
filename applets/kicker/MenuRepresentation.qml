@@ -284,11 +284,19 @@ PlasmaComponents3.ScrollView {
 
             Layout.fillHeight: true
 
-            visible: searchField.text !== "" && root.runnerModel.count > 0 && (!initialDelayTimer.active || !root.runnerModel.querying || root.runnerModel.resultsPresent)
+            visible: searchField.text !== "" && root.runnerModel.count > 0 && !initialDelayTimer.active && root.runnerModel.resultsPresent
 
             spacing: Kirigami.Units.smallSpacing
 
             LayoutMirroring.enabled: mainRow.LayoutMirroring.enabled
+
+            Timer {
+                property bool active: false
+                id: initialDelayTimer
+                interval: 250 // match KRunner's delay for multi-runner queries
+                onRunningChanged: if (running && !root.runnerModel.resultsPresent) { active = true }
+                onTriggered: active = false
+            }
 
             Repeater {
                 id: runnerColumnsRepeater
