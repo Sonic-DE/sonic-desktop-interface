@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdeplasma-addons\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-04-05 02:42+0000\n"
+"POT-Creation-Date: 2026-06-03 03:23+0000\n"
 "PO-Revision-Date: 2019-11-17 15:50+0530\n"
 "Last-Translator: Subin Siby <subins2000@gmail.com>\n"
 "Language-Team: SMC <smc.org.in>\n"
@@ -44,136 +44,157 @@ msgctxt "@title:group for configuration dialog page"
 msgid "General"
 msgstr "സാധാരണ"
 
-#: ConfigGeneral.qml:48
+#: ConfigGeneral.qml:50
 #, kde-format
 msgctxt "@label prefix for icon-only button"
 msgid "Icon:"
 msgstr ""
 
-#: ConfigGeneral.qml:133
+#: ConfigGeneral.qml:135
 #, kde-format
 msgctxt "@item:inmenu Open icon chooser dialog"
 msgid "Choose…"
 msgstr ""
 
-#: ConfigGeneral.qml:138
+#: ConfigGeneral.qml:140
 #, kde-format
 msgctxt "@item:inmenu Reset icon to default"
-msgid "Clear Icon"
+msgid "Reset to default icon"
 msgstr ""
 
-#: ConfigGeneral.qml:159
+#: ConfigGeneral.qml:161
 #, fuzzy, kde-format
 #| msgid "Show applications as:"
 msgctxt "@label:listbox"
 msgid "Show applications as:"
 msgstr "അപ്ലിക്കേഷനുകൾ ഇതായി കാണിക്കുക:"
 
-#: ConfigGeneral.qml:161
+#: ConfigGeneral.qml:163
 #, fuzzy, kde-format
 #| msgid "Name only"
 msgctxt "@item:inlistbox"
 msgid "Name only"
 msgstr "പേര് മാത്രം"
 
-#: ConfigGeneral.qml:161
+#: ConfigGeneral.qml:163
 #, fuzzy, kde-format
 #| msgid "Description only"
 msgctxt "@item:inlistbox"
 msgid "Description only"
 msgstr "വിവരണം മാത്രം"
 
-#: ConfigGeneral.qml:162
+#: ConfigGeneral.qml:164
 #, fuzzy, kde-format
 #| msgid "Name (Description)"
 msgctxt "@item:inlistbox"
 msgid "Name (Description)"
 msgstr "പേര് (വിവരണം)"
 
-#: ConfigGeneral.qml:162
+#: ConfigGeneral.qml:164
 #, fuzzy, kde-format
 #| msgid "Description (Name)"
 msgctxt "@item:inlistbox"
 msgid "Description (Name)"
 msgstr "വിവരണം (പേര്)"
 
-#: ConfigGeneral.qml:172
+#: ConfigGeneral.qml:174
 #, fuzzy, kde-format
 #| msgid "Behavior:"
 msgctxt "@title:group prefix for checkbox group"
 msgid "Behavior:"
 msgstr "പെരുമാറ്റം:"
 
-#: ConfigGeneral.qml:174
+#: ConfigGeneral.qml:176
 #, fuzzy, kde-format
 #| msgid "Sort applications alphabetically"
 msgctxt "@option:check"
 msgid "Sort applications alphabetically"
 msgstr "അപ്ലിക്കേഷനുകൾ അക്ഷരമാലാക്രമത്തിൽ അടുക്കുക"
 
-#: ConfigGeneral.qml:182
+#: ConfigGeneral.qml:184
 #, fuzzy, kde-format
 #| msgid "Flatten sub-menus to a single level"
 msgctxt "@option:check"
 msgid "Flatten sub-menus to a single level"
 msgstr "ഒരൊറ്റ തലത്തിലേക്ക് ഉപമെനു പരത്തുക"
 
-#: ConfigGeneral.qml:190
+#: ConfigGeneral.qml:192
 #, kde-format
 msgctxt "@option:check"
 msgid "Show icons on the root level of the menu"
 msgstr ""
 
-#: ConfigGeneral.qml:200
+#: ConfigGeneral.qml:198
+#, fuzzy, kde-format
+#| msgid "Often used applications"
+msgctxt "@option:check"
+msgid "Highlight newly-installed applications"
+msgstr "കൂടുതലായി ഉപയോഗിക്കുന്ന പ്രയോഗങ്ങൾ"
+
+#: ConfigGeneral.qml:208
 #, fuzzy, kde-format
 #| msgid "Show categories:"
 msgctxt "@title:group prefix for checkbox group"
 msgid "Show categories:"
 msgstr "വിഭാഗങ്ങൾ കാണിക്കുക:"
 
-#: ConfigGeneral.qml:203
+#: ConfigGeneral.qml:211
 #, fuzzy, kde-format
 #| msgid "Recent applications"
 msgctxt "@option:check"
 msgid "Recent applications"
 msgstr "സമീപകാല അപ്ലിക്കേഷനുകൾ"
 
-#: ConfigGeneral.qml:204
+#: ConfigGeneral.qml:212
 #, fuzzy, kde-format
 #| msgid "Often used applications"
 msgctxt "@option:check"
 msgid "Often used applications"
 msgstr "കൂടുതലായി ഉപയോഗിക്കുന്ന പ്രയോഗങ്ങൾ"
 
-#: ConfigGeneral.qml:211
+#: ConfigGeneral.qml:219
 #, fuzzy, kde-format
 #| msgid "Recent documents"
 msgctxt "@option:check"
 msgid "Recent files"
 msgstr "Recent documents"
 
-#: ConfigGeneral.qml:212
+#: ConfigGeneral.qml:220
 #, fuzzy, kde-format
 #| msgid "Often used documents"
 msgctxt "@option:check"
 msgid "Often used files"
 msgstr "കൂടുതലായി ഉപയോഗിക്കുന്ന പ്രമാണങ്ങൾ"
 
-#: ConfigGeneral.qml:218
+#: ConfigGeneral.qml:227
+#, fuzzy, kde-format
+#| msgid "Recent documents"
+msgctxt "@option:check"
+msgid "Recent places"
+msgstr "Recent documents"
+
+#: ConfigGeneral.qml:228
+#, fuzzy, kde-format
+#| msgid "Often used documents"
+msgctxt "@option:check"
+msgid "Often used places"
+msgstr "കൂടുതലായി ഉപയോഗിക്കുന്ന പ്രമാണങ്ങൾ"
+
+#: ConfigGeneral.qml:234
 #, fuzzy, kde-format
 #| msgid "Sort items in categories by:"
 msgctxt "@label:listbox"
 msgid "Sort items in categories by:"
 msgstr "വിഭാഗങ്ങളിൽ ഇനങ്ങൾ അടുക്കുക:"
 
-#: ConfigGeneral.qml:219
+#: ConfigGeneral.qml:235
 #, kde-format
 msgctxt ""
 "@item:inlistbox Sort items in categories by [Recently used | Often used]"
 msgid "Recently used"
 msgstr ""
 
-#: ConfigGeneral.qml:219
+#: ConfigGeneral.qml:235
 #, fuzzy, kde-format
 #| msgid "Often used documents"
 msgctxt ""
@@ -181,40 +202,40 @@ msgctxt ""
 msgid "Often used"
 msgstr "കൂടുതലായി ഉപയോഗിക്കുന്ന പ്രമാണങ്ങൾ"
 
-#: ConfigGeneral.qml:229
+#: ConfigGeneral.qml:245
 #, fuzzy, kde-format
 #| msgid "Search:"
 msgctxt "@title:group prefix for checkbox group"
 msgid "Search:"
 msgstr "തിരയുക:"
 
-#: ConfigGeneral.qml:231
+#: ConfigGeneral.qml:247
 #, fuzzy, kde-format
 #| msgid "Expand search to bookmarks, files and emails"
 msgctxt "@option:check"
 msgid "Expand search to bookmarks, files and emails"
 msgstr "ബുക്ക്മാർക്കുകൾ, ഫയലുകൾ, ഇമെയിലുകൾ എന്നിവയിലേക്ക് തിരയൽ വിപുലീകരിക്കുക"
 
-#: ConfigGeneral.qml:239
+#: ConfigGeneral.qml:255
 #, fuzzy, kde-format
 #| msgid "Align search results to bottom"
 msgctxt "@option:check"
 msgid "Align search results to bottom"
 msgstr "തിരയൽ ഫലങ്ങൾ താഴേക്ക് വിന്യസിക്കുക"
 
-#: ConfigGeneral.qml:244
+#: ConfigGeneral.qml:260
 #, kde-format
 msgctxt "@label prefix for a checkbox toggling Dark Mode"
 msgid "Appearance:"
 msgstr ""
 
-#: ConfigGeneral.qml:249
+#: ConfigGeneral.qml:265
 #, kde-format
 msgctxt "@option:check"
 msgid "Prefer Dark Mode when available"
 msgstr ""
 
-#: ConfigGeneral.qml:253
+#: ConfigGeneral.qml:269
 #, kde-kuit-format
 msgctxt "@info:tooltip"
 msgid ""
@@ -222,40 +243,72 @@ msgid ""
 "usually feature a dark background."
 msgstr ""
 
-#: DashboardRepresentation.qml:373
+#: DashboardRepresentation.qml:424
 #, fuzzy, kde-format
 #| msgid "Favorites"
 msgctxt "@title:group for column with app and system action grids"
 msgid "Favorites"
 msgstr "ഇഷ്ടപ്പെട്ടവ"
 
-#: ItemListDelegate.qml:31
+#: DashboardRepresentation.qml:950 ItemListDelegate.qml:97
+#, kde-format
+msgctxt "Newly-installed app, badge, keep short"
+msgid "New!"
+msgstr ""
+
+#: DashboardRepresentation.qml:951 ItemListDelegate.qml:98
+#, kde-format
+msgctxt "@info:whatsthis Accessible description for badge"
+msgid "There is a newly-installed application in this category"
+msgstr ""
+
+#: ItemGridDelegate.qml:81
+#, kde-format
+msgctxt "@label Newly-installed app, badge, keep short"
+msgid "New!"
+msgstr ""
+
+#: ItemGridDelegate.qml:83
+#, fuzzy, kde-format
+#| msgid "Often used applications"
+msgctxt "@label Accessible name for badge"
+msgid "Newly-installed application"
+msgstr "കൂടുതലായി ഉപയോഗിക്കുന്ന പ്രയോഗങ്ങൾ"
+
+#: ItemListDelegate.qml:40
 #, kde-format
 msgctxt "@action:inmenu accessible description for opening submenu"
 msgid "Open category"
 msgstr ""
 
-#: ItemListDelegate.qml:32
+#: ItemListDelegate.qml:41
 #, kde-format
 msgctxt "@action:inmenu accessible description for opening app or file"
 msgid "Launch"
 msgstr ""
 
-#: main.qml:211
+#: ItemListDelegate.qml:99
+#, fuzzy, kde-format
+#| msgid "Often used applications"
+msgctxt "@info:whatsthis Accessible description for badge"
+msgid "Newly-installed application"
+msgstr "കൂടുതലായി ഉപയോഗിക്കുന്ന പ്രയോഗങ്ങൾ"
+
+#: main.qml:208
 #, fuzzy, kde-format
 #| msgid "Edit Applications..."
 msgctxt "@action:inmenu launches kmenuedit"
 msgid "Edit Applications…"
 msgstr "പ്രയോഗങ്ങൾ തിരുത്തുക..."
 
-#: MenuRepresentation.qml:177
+#: MenuRepresentation.qml:191
 #, fuzzy, kde-format
 #| msgid "Favorites"
 msgctxt "@title:group accessible name for favorite group in sidebar"
 msgid "Favorites"
 msgstr "ഇഷ്ടപ്പെട്ടവ"
 
-#: MenuRepresentation.qml:353
+#: MenuRepresentation.qml:368
 #, kde-format
 msgctxt "@info:status"
 msgid "No matches"
