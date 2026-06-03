@@ -2,21 +2,21 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Volkan Gezer <volkangezer@gmail.com>, 2013, 2014, 2015, 2017, 2021.
-# SPDX-FileCopyrightText: 2022, 2023, 2024, 2025, 2026 Emir SARI <emir_sari@icloud.com>
+# SPDX-FileCopyrightText: 2022-2026 Emir SARI <emir_sari@icloud.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-04-05 02:42+0000\n"
-"PO-Revision-Date: 2026-01-08 17:15+0300\n"
-"Last-Translator: Emir SARI <emir_sari@îcloud.com>\n"
+"POT-Creation-Date: 2026-06-03 03:23+0000\n"
+"PO-Revision-Date: 2026-05-14 13:15+0300\n"
+"Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 25.12.0\n"
+"X-Generator: Lokalize 26.04.0\n"
 "X-POOTLE-MTIME: 1413102230.000000\n"
 
 #: code/tools.js:53
@@ -50,159 +50,177 @@ msgctxt "@title:group for configuration dialog page"
 msgid "General"
 msgstr "Genel"
 
-#: ConfigGeneral.qml:48
+#: ConfigGeneral.qml:50
 #, kde-format
 msgctxt "@label prefix for icon-only button"
 msgid "Icon:"
 msgstr "Simge:"
 
-#: ConfigGeneral.qml:133
+#: ConfigGeneral.qml:135
 #, kde-format
 msgctxt "@item:inmenu Open icon chooser dialog"
 msgid "Choose…"
 msgstr "Seç…"
 
-#: ConfigGeneral.qml:138
+#: ConfigGeneral.qml:140
 #, kde-format
 msgctxt "@item:inmenu Reset icon to default"
-msgid "Clear Icon"
-msgstr "Simgeyi Temizle"
+msgid "Reset to default icon"
+msgstr "Öntanımlı Simgeye Sıfırla"
 
-#: ConfigGeneral.qml:159
+#: ConfigGeneral.qml:161
 #, kde-format
 msgctxt "@label:listbox"
 msgid "Show applications as:"
 msgstr "Uygulamaları şöyle göster:"
 
-#: ConfigGeneral.qml:161
+#: ConfigGeneral.qml:163
 #, kde-format
 msgctxt "@item:inlistbox"
 msgid "Name only"
 msgstr "Yalnızca ad"
 
-#: ConfigGeneral.qml:161
+#: ConfigGeneral.qml:163
 #, kde-format
 msgctxt "@item:inlistbox"
 msgid "Description only"
 msgstr "Yalnızca açıklama"
 
-#: ConfigGeneral.qml:162
+#: ConfigGeneral.qml:164
 #, kde-format
 msgctxt "@item:inlistbox"
 msgid "Name (Description)"
 msgstr "Ad (açıklama)"
 
-#: ConfigGeneral.qml:162
+#: ConfigGeneral.qml:164
 #, kde-format
 msgctxt "@item:inlistbox"
 msgid "Description (Name)"
 msgstr "Açıklama (ad)"
 
-#: ConfigGeneral.qml:172
+#: ConfigGeneral.qml:174
 #, kde-format
 msgctxt "@title:group prefix for checkbox group"
 msgid "Behavior:"
 msgstr "Davranış:"
 
-#: ConfigGeneral.qml:174
+#: ConfigGeneral.qml:176
 #, kde-format
 msgctxt "@option:check"
 msgid "Sort applications alphabetically"
 msgstr "Uygulamaları abecesel olarak sırala"
 
-#: ConfigGeneral.qml:182
+#: ConfigGeneral.qml:184
 #, kde-format
 msgctxt "@option:check"
 msgid "Flatten sub-menus to a single level"
 msgstr "Tek bir düzeyde düzleştirilmiş alt menüler"
 
-#: ConfigGeneral.qml:190
+#: ConfigGeneral.qml:192
 #, kde-format
 msgctxt "@option:check"
 msgid "Show icons on the root level of the menu"
 msgstr "Menünün kök düzeyindeki simgeleri göster"
 
-#: ConfigGeneral.qml:200
+#: ConfigGeneral.qml:198
+#, kde-format
+msgctxt "@option:check"
+msgid "Highlight newly-installed applications"
+msgstr "Yeni kurulan uygulamaları vurgula"
+
+#: ConfigGeneral.qml:208
 #, kde-format
 msgctxt "@title:group prefix for checkbox group"
 msgid "Show categories:"
 msgstr "Kategorileri göster:"
 
-#: ConfigGeneral.qml:203
+#: ConfigGeneral.qml:211
 #, kde-format
 msgctxt "@option:check"
 msgid "Recent applications"
 msgstr "Son uygulamalar"
 
-#: ConfigGeneral.qml:204
+#: ConfigGeneral.qml:212
 #, kde-format
 msgctxt "@option:check"
 msgid "Often used applications"
 msgstr "Sık kullanılan uygulamalar"
 
-#: ConfigGeneral.qml:211
+#: ConfigGeneral.qml:219
 #, kde-format
 msgctxt "@option:check"
 msgid "Recent files"
 msgstr "Son dosyalar"
 
-#: ConfigGeneral.qml:212
+#: ConfigGeneral.qml:220
 #, kde-format
 msgctxt "@option:check"
 msgid "Often used files"
 msgstr "Sık kullanılan dosyalar"
 
-#: ConfigGeneral.qml:218
+#: ConfigGeneral.qml:227
+#, kde-format
+msgctxt "@option:check"
+msgid "Recent places"
+msgstr "Son yerler"
+
+#: ConfigGeneral.qml:228
+#, kde-format
+msgctxt "@option:check"
+msgid "Often used places"
+msgstr "Sık kullanılan yerler"
+
+#: ConfigGeneral.qml:234
 #, kde-format
 msgctxt "@label:listbox"
 msgid "Sort items in categories by:"
 msgstr "Ögeleri kategorilerde şuna göre sırala:"
 
-#: ConfigGeneral.qml:219
+#: ConfigGeneral.qml:235
 #, kde-format
 msgctxt ""
 "@item:inlistbox Sort items in categories by [Recently used | Often used]"
 msgid "Recently used"
 msgstr "Son kullanılanlar"
 
-#: ConfigGeneral.qml:219
+#: ConfigGeneral.qml:235
 #, kde-format
 msgctxt ""
 "@item:inlistbox Sort items in categories by [Recently used | Often used]"
 msgid "Often used"
 msgstr "Sıkça kullanılan"
 
-#: ConfigGeneral.qml:229
+#: ConfigGeneral.qml:245
 #, kde-format
 msgctxt "@title:group prefix for checkbox group"
 msgid "Search:"
 msgstr "Ara:"
 
-#: ConfigGeneral.qml:231
+#: ConfigGeneral.qml:247
 #, kde-format
 msgctxt "@option:check"
 msgid "Expand search to bookmarks, files and emails"
 msgstr "Aramayı yer imlerine, dosyalara ve e-postalara genişlet"
 
-#: ConfigGeneral.qml:239
+#: ConfigGeneral.qml:255
 #, kde-format
 msgctxt "@option:check"
 msgid "Align search results to bottom"
 msgstr "Arama sonuçlarını aşağıya hizala"
 
-#: ConfigGeneral.qml:244
+#: ConfigGeneral.qml:260
 #, kde-format
 msgctxt "@label prefix for a checkbox toggling Dark Mode"
 msgid "Appearance:"
 msgstr "Görünüş:"
 
-#: ConfigGeneral.qml:249
+#: ConfigGeneral.qml:265
 #, kde-format
 msgctxt "@option:check"
 msgid "Prefer Dark Mode when available"
 msgstr "Kullanılabildiği durumlarda Koyu Kip’i yeğle"
 
-#: ConfigGeneral.qml:253
+#: ConfigGeneral.qml:269
 #, kde-kuit-format
 msgctxt "@info:tooltip"
 msgid ""
@@ -212,41 +230,75 @@ msgstr ""
 "Bu özellik, renk şemanızdaki genelde bir koyu bir arka plana sahip yardımcı "
 "renkleri kullanır."
 
-#: DashboardRepresentation.qml:373
+#: DashboardRepresentation.qml:424
 #, kde-format
 msgctxt "@title:group for column with app and system action grids"
 msgid "Favorites"
 msgstr "Sık Kullanılanlar"
 
-#: ItemListDelegate.qml:31
+#: DashboardRepresentation.qml:950 ItemListDelegate.qml:97
+#, kde-format
+msgctxt "Newly-installed app, badge, keep short"
+msgid "New!"
+msgstr "Yeni!"
+
+#: DashboardRepresentation.qml:951 ItemListDelegate.qml:98
+#, kde-format
+msgctxt "@info:whatsthis Accessible description for badge"
+msgid "There is a newly-installed application in this category"
+msgstr "Bu kategori içinde yeni kurulmuş bir uygulama var"
+
+#: ItemGridDelegate.qml:81
+#, kde-format
+msgctxt "@label Newly-installed app, badge, keep short"
+msgid "New!"
+msgstr "Yeni!"
+
+#: ItemGridDelegate.qml:83
+#, kde-format
+msgctxt "@label Accessible name for badge"
+msgid "Newly-installed application"
+msgstr "Yeni kurulan uygulama"
+
+#: ItemListDelegate.qml:40
 #, kde-format
 msgctxt "@action:inmenu accessible description for opening submenu"
 msgid "Open category"
 msgstr "Kategori Aç"
 
-#: ItemListDelegate.qml:32
+#: ItemListDelegate.qml:41
 #, kde-format
 msgctxt "@action:inmenu accessible description for opening app or file"
 msgid "Launch"
 msgstr "Başlat"
 
-#: main.qml:211
+#: ItemListDelegate.qml:99
+#, kde-format
+msgctxt "@info:whatsthis Accessible description for badge"
+msgid "Newly-installed application"
+msgstr "Yeni kurulan uygulama"
+
+#: main.qml:208
 #, kde-format
 msgctxt "@action:inmenu launches kmenuedit"
 msgid "Edit Applications…"
 msgstr "Uygulamaları Düzenle…"
 
-#: MenuRepresentation.qml:177
+#: MenuRepresentation.qml:191
 #, kde-format
 msgctxt "@title:group accessible name for favorite group in sidebar"
 msgid "Favorites"
 msgstr "Sık Kullanılanlar"
 
-#: MenuRepresentation.qml:353
+#: MenuRepresentation.qml:368
 #, kde-format
 msgctxt "@info:status"
 msgid "No matches"
 msgstr "Eşleşme yok"
+
+#~ msgctxt "@item:inmenu Reset icon to default"
+#~ msgid "Clear Icon"
+#~ msgstr "Simgeyi Temizle"
 
 #~ msgid "Searching for '%1'"
 #~ msgstr "“%1” aranıyor"

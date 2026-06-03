@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-04-05 02:42+0000\n"
-"PO-Revision-Date: 2026-02-04 17:09+0000\n"
+"POT-Creation-Date: 2026-06-03 03:23+0000\n"
+"PO-Revision-Date: 2026-05-17 15:23+0100\n"
 "Last-Translator: Sergiu Bivol <sergiu@cip.md>\n"
 "Language-Team: Romanian <kde-i18n-ro@kde.org>\n"
 "Language: ro\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
 "20)) ? 1 : 2;\n"
-"X-Generator: Lokalize 25.08.1\n"
+"X-Generator: Lokalize 25.12.3\n"
 
 #: code/tools.js:53
 #, kde-format
@@ -50,159 +50,177 @@ msgctxt "@title:group for configuration dialog page"
 msgid "General"
 msgstr "Generale"
 
-#: ConfigGeneral.qml:48
+#: ConfigGeneral.qml:50
 #, kde-format
 msgctxt "@label prefix for icon-only button"
 msgid "Icon:"
 msgstr "Pictogramă:"
 
-#: ConfigGeneral.qml:133
+#: ConfigGeneral.qml:135
 #, kde-format
 msgctxt "@item:inmenu Open icon chooser dialog"
 msgid "Choose…"
 msgstr "Alege…"
 
-#: ConfigGeneral.qml:138
+#: ConfigGeneral.qml:140
 #, kde-format
 msgctxt "@item:inmenu Reset icon to default"
-msgid "Clear Icon"
-msgstr "Șterge pictograma"
+msgid "Reset to default icon"
+msgstr "Reinițializează la pictograma implicită"
 
-#: ConfigGeneral.qml:159
+#: ConfigGeneral.qml:161
 #, kde-format
 msgctxt "@label:listbox"
 msgid "Show applications as:"
 msgstr "Arată aplicațiile ca:"
 
-#: ConfigGeneral.qml:161
+#: ConfigGeneral.qml:163
 #, kde-format
 msgctxt "@item:inlistbox"
 msgid "Name only"
 msgstr "Doar denumirea"
 
-#: ConfigGeneral.qml:161
+#: ConfigGeneral.qml:163
 #, kde-format
 msgctxt "@item:inlistbox"
 msgid "Description only"
 msgstr "Doar descrierea"
 
-#: ConfigGeneral.qml:162
+#: ConfigGeneral.qml:164
 #, kde-format
 msgctxt "@item:inlistbox"
 msgid "Name (Description)"
 msgstr "Denumire (descriere)"
 
-#: ConfigGeneral.qml:162
+#: ConfigGeneral.qml:164
 #, kde-format
 msgctxt "@item:inlistbox"
 msgid "Description (Name)"
 msgstr "Descriere (denumire)"
 
-#: ConfigGeneral.qml:172
+#: ConfigGeneral.qml:174
 #, kde-format
 msgctxt "@title:group prefix for checkbox group"
 msgid "Behavior:"
 msgstr "Comportament:"
 
-#: ConfigGeneral.qml:174
+#: ConfigGeneral.qml:176
 #, kde-format
 msgctxt "@option:check"
 msgid "Sort applications alphabetically"
 msgstr "Sortează aplicațiile alfabetic"
 
-#: ConfigGeneral.qml:182
+#: ConfigGeneral.qml:184
 #, kde-format
 msgctxt "@option:check"
 msgid "Flatten sub-menus to a single level"
 msgstr "Aplatizează submeniurile la un singur nivel"
 
-#: ConfigGeneral.qml:190
+#: ConfigGeneral.qml:192
 #, kde-format
 msgctxt "@option:check"
 msgid "Show icons on the root level of the menu"
 msgstr "Arată pictogramele la nivelul-rădăcină al meniului"
 
-#: ConfigGeneral.qml:200
+#: ConfigGeneral.qml:198
+#, kde-format
+msgctxt "@option:check"
+msgid "Highlight newly-installed applications"
+msgstr "Evidențiază aplicațiile instalate recent"
+
+#: ConfigGeneral.qml:208
 #, kde-format
 msgctxt "@title:group prefix for checkbox group"
 msgid "Show categories:"
 msgstr "Arată categorii:"
 
-#: ConfigGeneral.qml:203
+#: ConfigGeneral.qml:211
 #, kde-format
 msgctxt "@option:check"
 msgid "Recent applications"
 msgstr "Aplicații recente"
 
-#: ConfigGeneral.qml:204
+#: ConfigGeneral.qml:212
 #, kde-format
 msgctxt "@option:check"
 msgid "Often used applications"
 msgstr "Aplicații folosite des"
 
-#: ConfigGeneral.qml:211
+#: ConfigGeneral.qml:219
 #, kde-format
 msgctxt "@option:check"
 msgid "Recent files"
 msgstr "Fișiere recente"
 
-#: ConfigGeneral.qml:212
+#: ConfigGeneral.qml:220
 #, kde-format
 msgctxt "@option:check"
 msgid "Often used files"
 msgstr "Fișiere folosite des"
 
-#: ConfigGeneral.qml:218
+#: ConfigGeneral.qml:227
+#, kde-format
+msgctxt "@option:check"
+msgid "Recent places"
+msgstr "Locuri recente"
+
+#: ConfigGeneral.qml:228
+#, kde-format
+msgctxt "@option:check"
+msgid "Often used places"
+msgstr "Locuri des folosite"
+
+#: ConfigGeneral.qml:234
 #, kde-format
 msgctxt "@label:listbox"
 msgid "Sort items in categories by:"
 msgstr "Sortează elementele în categorii după:"
 
-#: ConfigGeneral.qml:219
+#: ConfigGeneral.qml:235
 #, kde-format
 msgctxt ""
 "@item:inlistbox Sort items in categories by [Recently used | Often used]"
 msgid "Recently used"
 msgstr "Folosite recent"
 
-#: ConfigGeneral.qml:219
+#: ConfigGeneral.qml:235
 #, kde-format
 msgctxt ""
 "@item:inlistbox Sort items in categories by [Recently used | Often used]"
 msgid "Often used"
 msgstr "Folosite des"
 
-#: ConfigGeneral.qml:229
+#: ConfigGeneral.qml:245
 #, kde-format
 msgctxt "@title:group prefix for checkbox group"
 msgid "Search:"
 msgstr "Caută:"
 
-#: ConfigGeneral.qml:231
+#: ConfigGeneral.qml:247
 #, kde-format
 msgctxt "@option:check"
 msgid "Expand search to bookmarks, files and emails"
 msgstr "Extinde căutarea asupra semnelor de carte, fișierelor și scrisorilor"
 
-#: ConfigGeneral.qml:239
+#: ConfigGeneral.qml:255
 #, kde-format
 msgctxt "@option:check"
 msgid "Align search results to bottom"
 msgstr "Aliniază rezultatele căutării în partea de jos"
 
-#: ConfigGeneral.qml:244
+#: ConfigGeneral.qml:260
 #, kde-format
 msgctxt "@label prefix for a checkbox toggling Dark Mode"
 msgid "Appearance:"
 msgstr "Aspect:"
 
-#: ConfigGeneral.qml:249
+#: ConfigGeneral.qml:265
 #, kde-format
 msgctxt "@option:check"
 msgid "Prefer Dark Mode when available"
 msgstr "Preferă regimul întunecat când e disponibil"
 
-#: ConfigGeneral.qml:253
+#: ConfigGeneral.qml:269
 #, kde-kuit-format
 msgctxt "@info:tooltip"
 msgid ""
@@ -212,41 +230,75 @@ msgstr ""
 "Această caracteristică folosește culorile complementare din schema de culori "
 "care, de obicei, au un fundal întunecat."
 
-#: DashboardRepresentation.qml:373
+#: DashboardRepresentation.qml:424
 #, kde-format
 msgctxt "@title:group for column with app and system action grids"
 msgid "Favorites"
 msgstr "Favorite"
 
-#: ItemListDelegate.qml:31
+#: DashboardRepresentation.qml:950 ItemListDelegate.qml:97
+#, kde-format
+msgctxt "Newly-installed app, badge, keep short"
+msgid "New!"
+msgstr "Nouă!"
+
+#: DashboardRepresentation.qml:951 ItemListDelegate.qml:98
+#, kde-format
+msgctxt "@info:whatsthis Accessible description for badge"
+msgid "There is a newly-installed application in this category"
+msgstr "În această categorie este o aplicație instalată recent"
+
+#: ItemGridDelegate.qml:81
+#, kde-format
+msgctxt "@label Newly-installed app, badge, keep short"
+msgid "New!"
+msgstr "Nouă!"
+
+#: ItemGridDelegate.qml:83
+#, kde-format
+msgctxt "@label Accessible name for badge"
+msgid "Newly-installed application"
+msgstr "Aplicație instalată recent"
+
+#: ItemListDelegate.qml:40
 #, kde-format
 msgctxt "@action:inmenu accessible description for opening submenu"
 msgid "Open category"
 msgstr "Deschide categoria"
 
-#: ItemListDelegate.qml:32
+#: ItemListDelegate.qml:41
 #, kde-format
 msgctxt "@action:inmenu accessible description for opening app or file"
 msgid "Launch"
 msgstr "Lansează"
 
-#: main.qml:211
+#: ItemListDelegate.qml:99
+#, kde-format
+msgctxt "@info:whatsthis Accessible description for badge"
+msgid "Newly-installed application"
+msgstr "Aplicație instalată recent"
+
+#: main.qml:208
 #, kde-format
 msgctxt "@action:inmenu launches kmenuedit"
 msgid "Edit Applications…"
 msgstr "Modifică aplicațiile…"
 
-#: MenuRepresentation.qml:177
+#: MenuRepresentation.qml:191
 #, kde-format
 msgctxt "@title:group accessible name for favorite group in sidebar"
 msgid "Favorites"
 msgstr "Favorite"
 
-#: MenuRepresentation.qml:353
+#: MenuRepresentation.qml:368
 #, kde-format
 msgctxt "@info:status"
 msgid "No matches"
 msgstr "Nicio potrivire"
+
+#~ msgctxt "@item:inmenu Reset icon to default"
+#~ msgid "Clear Icon"
+#~ msgstr "Șterge pictograma"
 
 #~ msgid "Searching for '%1'"
 #~ msgstr "Se caută „%1”"
