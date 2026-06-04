@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-desktop\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-03-17 02:41+0000\n"
+"POT-Creation-Date: 2026-06-04 02:57+0000\n"
 "PO-Revision-Date: 2023-12-12 00:58+0100\n"
 "Last-Translator: Enol P. <enolp@softastur.org>\n"
 "Language-Team: Asturian <alministradores@softastur.org>\n"
@@ -89,18 +89,6 @@ msgstr ""
 #, kde-format
 msgctxt "@info:tooltip %1 is the window title"
 msgid "Mute %1"
-msgstr ""
-
-#: qml/Badge.qml:52
-#, kde-format
-msgctxt "Invalid number of new messages, overlay, keep short"
-msgid "—"
-msgstr "—"
-
-#: qml/Badge.qml:54
-#, kde-format
-msgctxt "Over 9999 new messages, overlay, keep short"
-msgid "9,999+"
 msgstr ""
 
 #: qml/config.qml:13
@@ -273,12 +261,6 @@ msgstr "Normal"
 #, kde-format
 msgctxt "@item:inlistbox Icon spacing"
 msgid "Large"
-msgstr ""
-
-#: qml/ConfigAppearance.qml:197
-#, kde-format
-msgctxt "@info:usagetip under a set of radio buttons when Touch Mode is on"
-msgid "Automatically set to Large when in Touch mode"
 msgstr ""
 
 #: qml/ConfigBehavior.qml:50
@@ -754,155 +736,155 @@ msgctxt "action:inmenu"
 msgid "Move &To Current Desktop"
 msgstr "Mover &al escritoriu actual"
 
-#: qml/ContextMenu.qml:332
+#: qml/ContextMenu.qml:345
 #, fuzzy, kde-format
 #| msgid "&All Desktops"
 msgctxt "action:inmenu"
 msgid "&All Desktops"
 msgstr "&Tolos escritorios"
 
-#: qml/ContextMenu.qml:360
+#: qml/ContextMenu.qml:373
 #, fuzzy, kde-format
 #| msgid "&New Desktop"
 msgctxt "action:inmenu"
 msgid "&New Desktop"
 msgstr "Escritoriu &nuevu"
 
-#: qml/ContextMenu.qml:380
+#: qml/ContextMenu.qml:393
 #, fuzzy, kde-format
 #| msgid "Show in &Activities"
 msgctxt "action:inmenu"
 msgid "Show in &Activities"
 msgstr "Amosar n'&Actividaes"
 
-#: qml/ContextMenu.qml:404
+#: qml/ContextMenu.qml:417
 #, fuzzy, kde-format
 #| msgid "Add To Current Activity"
 msgctxt "action:inmenu"
 msgid "Add To Current Activity"
 msgstr "Amestar a l'actividá actual"
 
-#: qml/ContextMenu.qml:414
+#: qml/ContextMenu.qml:427
 #, fuzzy, kde-format
 #| msgid "All Activities"
 msgctxt "action:inmenu"
 msgid "All Activities"
 msgstr "Toles actividaes"
 
-#: qml/ContextMenu.qml:470
+#: qml/ContextMenu.qml:483
 #, fuzzy, kde-format
 #| msgid "Move to %1"
 msgctxt "action:inmenu"
 msgid "Move to %1"
 msgstr "Mover a «%1»"
 
-#: qml/ContextMenu.qml:496 qml/ContextMenu.qml:512
+#: qml/ContextMenu.qml:509 qml/ContextMenu.qml:525
 #, fuzzy, kde-format
 #| msgid "&Pin to Task Manager"
 msgctxt "action:inmenu"
 msgid "&Pin to Task Manager"
 msgstr "&Fixar nel xestor de xeres"
 
-#: qml/ContextMenu.qml:564
+#: qml/ContextMenu.qml:577
 #, fuzzy, kde-format
 #| msgid "On All Activities"
 msgctxt "action:inmenu"
 msgid "On All Activities"
 msgstr "En toles actividaes"
 
-#: qml/ContextMenu.qml:570
+#: qml/ContextMenu.qml:583
 #, fuzzy, kde-format
 #| msgid "On The Current Activity"
 msgctxt "action:inmenu"
 msgid "On The Current Activity"
 msgstr "Na actividá actual"
 
-#: qml/ContextMenu.qml:594
+#: qml/ContextMenu.qml:607
 #, fuzzy, kde-format
 #| msgid "Unpin from Task Manager"
 msgctxt "action:inmenu"
 msgid "Unpin from Task Manager"
 msgstr "Soltar del xestor de xeres"
 
-#: qml/ContextMenu.qml:609
+#: qml/ContextMenu.qml:622
 #, fuzzy, kde-format
 #| msgid "More"
 msgctxt "item:inmenu opens submenu"
 msgid "More"
 msgstr "Más"
 
-#: qml/ContextMenu.qml:618
+#: qml/ContextMenu.qml:631
 #, fuzzy, kde-format
 #| msgid "&Move"
 msgctxt "action:inmenu"
 msgid "&Move"
 msgstr "&Mover"
 
-#: qml/ContextMenu.qml:627
+#: qml/ContextMenu.qml:640
 #, fuzzy, kde-format
 #| msgid "Re&size"
 msgctxt "action:inmenu"
 msgid "Re&size"
 msgstr "Re&dimensionar"
 
-#: qml/ContextMenu.qml:641
+#: qml/ContextMenu.qml:654
 #, fuzzy, kde-format
 #| msgid "Ma&ximize"
 msgctxt "action:inmenu"
 msgid "Ma&ximize"
 msgstr "Ma&ximizar"
 
-#: qml/ContextMenu.qml:655
+#: qml/ContextMenu.qml:668
 #, fuzzy, kde-format
 #| msgid "Mi&nimize"
 msgctxt "action:inmenu"
 msgid "Mi&nimize"
 msgstr "Mi&nimizar"
 
-#: qml/ContextMenu.qml:665
+#: qml/ContextMenu.qml:678
 #, kde-format
 msgctxt "action:inmenu"
 msgid "Keep &Above Others"
 msgstr ""
 
-#: qml/ContextMenu.qml:675
+#: qml/ContextMenu.qml:688
 #, kde-format
 msgctxt "action:inmenu"
 msgid "Keep &Below Others"
 msgstr ""
 
-#: qml/ContextMenu.qml:687
+#: qml/ContextMenu.qml:700
 #, kde-format
 msgctxt "action:inmenu"
 msgid "&Fullscreen"
 msgstr ""
 
-#: qml/ContextMenu.qml:700
+#: qml/ContextMenu.qml:713
 #, kde-format
 msgctxt "action:inmenu"
 msgid "&Shade"
 msgstr ""
 
-#: qml/ContextMenu.qml:712
+#: qml/ContextMenu.qml:725
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "&No Titlebar and Frame"
 msgstr ""
 
-#: qml/ContextMenu.qml:725
+#: qml/ContextMenu.qml:738
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "&Hide from Screencast"
 msgstr ""
 
-#: qml/ContextMenu.qml:741
+#: qml/ContextMenu.qml:754
 #, fuzzy, kde-format
 #| msgid "Allow this program to be grouped"
 msgctxt "@option:check inmenu"
 msgid "Allow this program to be grouped"
 msgstr "Permitir qu'esti programa s'agrupe"
 
-#: qml/ContextMenu.qml:787
+#: qml/ContextMenu.qml:800
 #, fuzzy, kde-format
 #| msgctxt "@item:inmenu"
 #| msgid "&Close All"
@@ -910,20 +892,20 @@ msgctxt "@action:inmenu"
 msgid "&Close All"
 msgstr "&Zarrar too"
 
-#: qml/ContextMenu.qml:787
+#: qml/ContextMenu.qml:800
 #, fuzzy, kde-format
 #| msgid "&Close"
 msgctxt "@action:inmenu"
 msgid "&Close"
 msgstr "&Zarrar"
 
-#: qml/Task.qml:155
+#: qml/Task.qml:157
 #, kde-format
 msgctxt "@info:usagetip %1 application name"
 msgid "Launch %1"
 msgstr "Llanzar «%1»"
 
-#: qml/Task.qml:160
+#: qml/Task.qml:162
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "There is %1 new message."
@@ -931,28 +913,34 @@ msgid_plural "There are %1 new messages."
 msgstr[0] "Hai %1 mensaxe nuevu."
 msgstr[1] "Hai %1 mensaxe nuevos."
 
-#: qml/Task.qml:168
+#: qml/Task.qml:170
 #, kde-format
 msgctxt "@info:usagetip %1 task name"
 msgid "Show Task tooltip for %1"
 msgstr ""
 
-#: qml/Task.qml:172
+#: qml/Task.qml:174
 #, kde-format
 msgctxt "@info:usagetip %1 task name"
 msgid "Show windows side by side for %1"
 msgstr ""
 
-#: qml/Task.qml:177
+#: qml/Task.qml:179
 #, kde-format
 msgctxt "@info:usagetip %1 task name"
 msgid "Open textual list of windows for %1"
 msgstr ""
 
-#: qml/Task.qml:181
+#: qml/Task.qml:183
 #, kde-format
 msgctxt "@info:usagetip %1 task name"
 msgid "Activate %1"
+msgstr ""
+
+#: qml/TaskBadgeOverlay.qml:95
+#, kde-format
+msgctxt "Over 9999 new messages, overlay, keep short"
+msgid "9,999+"
 msgstr ""
 
 #: qml/ToolTipInstance.qml:201
@@ -1023,6 +1011,10 @@ msgstr ""
 msgctxt "Which activities a window is currently on"
 msgid "Available on %1"
 msgstr ""
+
+#~ msgctxt "Invalid number of new messages, overlay, keep short"
+#~ msgid "—"
+#~ msgstr "—"
 
 #, fuzzy
 #~| msgctxt "Part of a sentence: 'Middle-clicking any task does nothing'"

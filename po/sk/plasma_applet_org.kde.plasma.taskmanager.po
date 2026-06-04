@@ -4,21 +4,21 @@
 # Matej Mrenica <matejm98mthw@gmail.com>, 2019, 2020, 2021, 2022, 2023.
 # Dušan Kazik <prescott66@gmail.com>, 2020.
 # Ferdinand Galko <galko.ferdinand@gmail.com>, 2023.
-# SPDX-FileCopyrightText: 2025, 2026 Lucia Mrenica <lucia.mrenica@gmail.com>
+# SPDX-FileCopyrightText: 2025 Lucia Mrenica <lucia.mrenica@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: plasma_applet_org.kde.plasma.taskmanager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-03-17 02:41+0000\n"
-"PO-Revision-Date: 2026-01-26 20:49+0100\n"
+"POT-Creation-Date: 2026-06-04 02:57+0000\n"
+"PO-Revision-Date: 2025-05-30 20:39+0200\n"
 "Last-Translator: Lucia Mrenica <lucia.mrenica@gmail.com>\n"
 "Language-Team: Slovak <kde-i18n-doc@kde.org>\n"
 "Language: sk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 25.12.1\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"X-Generator: Lokalize 25.04.1\n"
 
 #: backend.cpp:288
 #, kde-format
@@ -91,18 +91,6 @@ msgstr "Zrušiť stlmenie %1"
 msgctxt "@info:tooltip %1 is the window title"
 msgid "Mute %1"
 msgstr "Stlmiť %1"
-
-#: qml/Badge.qml:52
-#, kde-format
-msgctxt "Invalid number of new messages, overlay, keep short"
-msgid "—"
-msgstr "—"
-
-#: qml/Badge.qml:54
-#, kde-format
-msgctxt "Over 9999 new messages, overlay, keep short"
-msgid "9,999+"
-msgstr "9999+"
 
 #: qml/config.qml:13
 #, kde-format
@@ -257,12 +245,6 @@ msgstr "Normálne"
 msgctxt "@item:inlistbox Icon spacing"
 msgid "Large"
 msgstr "Veľké"
-
-#: qml/ConfigAppearance.qml:197
-#, kde-format
-msgctxt "@info:usagetip under a set of radio buttons when Touch Mode is on"
-msgid "Automatically set to Large when in Touch mode"
-msgstr "Automaticky nastaviť na Veľké v dotykovom režime"
 
 #: qml/ConfigBehavior.qml:50
 #, kde-format
@@ -681,157 +663,157 @@ msgctxt "action:inmenu"
 msgid "Move &To Current Desktop"
 msgstr "Presunúť na a&ktuálnu plochu"
 
-#: qml/ContextMenu.qml:332
+#: qml/ContextMenu.qml:345
 #, kde-format
 msgctxt "action:inmenu"
 msgid "&All Desktops"
 msgstr "&Všetky pracovné plochy"
 
-#: qml/ContextMenu.qml:360
+#: qml/ContextMenu.qml:373
 #, kde-format
 msgctxt "action:inmenu"
 msgid "&New Desktop"
 msgstr "Nová pracovná plocha"
 
-#: qml/ContextMenu.qml:380
+#: qml/ContextMenu.qml:393
 #, kde-format
 msgctxt "action:inmenu"
 msgid "Show in &Activities"
 msgstr "Zobraziť v ak&tivitách"
 
-#: qml/ContextMenu.qml:404
+#: qml/ContextMenu.qml:417
 #, kde-format
 msgctxt "action:inmenu"
 msgid "Add To Current Activity"
 msgstr "Pridať k aktuálnej aktivite"
 
-#: qml/ContextMenu.qml:414
+#: qml/ContextMenu.qml:427
 #, kde-format
 msgctxt "action:inmenu"
 msgid "All Activities"
 msgstr "Všetky aktivity"
 
-#: qml/ContextMenu.qml:470
+#: qml/ContextMenu.qml:483
 #, kde-format
 msgctxt "action:inmenu"
 msgid "Move to %1"
 msgstr "Presunúť na %1"
 
-#: qml/ContextMenu.qml:496 qml/ContextMenu.qml:512
+#: qml/ContextMenu.qml:509 qml/ContextMenu.qml:525
 #, kde-format
 msgctxt "action:inmenu"
 msgid "&Pin to Task Manager"
 msgstr "&Pripnúť k správcovi úloh"
 
-#: qml/ContextMenu.qml:564
+#: qml/ContextMenu.qml:577
 #, kde-format
 msgctxt "action:inmenu"
 msgid "On All Activities"
 msgstr "Na všetkých aktivitách"
 
-#: qml/ContextMenu.qml:570
+#: qml/ContextMenu.qml:583
 #, kde-format
 msgctxt "action:inmenu"
 msgid "On The Current Activity"
 msgstr "Na aktuálnej aktivite"
 
-#: qml/ContextMenu.qml:594
+#: qml/ContextMenu.qml:607
 #, kde-format
 msgctxt "action:inmenu"
 msgid "Unpin from Task Manager"
 msgstr "Odopnúť od správcu úloh"
 
-#: qml/ContextMenu.qml:609
+#: qml/ContextMenu.qml:622
 #, kde-format
 msgctxt "item:inmenu opens submenu"
 msgid "More"
 msgstr "Viac"
 
-#: qml/ContextMenu.qml:618
+#: qml/ContextMenu.qml:631
 #, kde-format
 msgctxt "action:inmenu"
 msgid "&Move"
 msgstr "&Presunúť"
 
-#: qml/ContextMenu.qml:627
+#: qml/ContextMenu.qml:640
 #, kde-format
 msgctxt "action:inmenu"
 msgid "Re&size"
 msgstr "Z&meniť veľkosť"
 
-#: qml/ContextMenu.qml:641
+#: qml/ContextMenu.qml:654
 #, kde-format
 msgctxt "action:inmenu"
 msgid "Ma&ximize"
 msgstr "Ma&ximalizovať"
 
-#: qml/ContextMenu.qml:655
+#: qml/ContextMenu.qml:668
 #, kde-format
 msgctxt "action:inmenu"
 msgid "Mi&nimize"
 msgstr "Mi&nimalizovať"
 
-#: qml/ContextMenu.qml:665
+#: qml/ContextMenu.qml:678
 #, kde-format
 msgctxt "action:inmenu"
 msgid "Keep &Above Others"
 msgstr "Držať na&d ostatnými"
 
-#: qml/ContextMenu.qml:675
+#: qml/ContextMenu.qml:688
 #, kde-format
 msgctxt "action:inmenu"
 msgid "Keep &Below Others"
 msgstr "Držať &pod ostatnými"
 
-#: qml/ContextMenu.qml:687
+#: qml/ContextMenu.qml:700
 #, kde-format
 msgctxt "action:inmenu"
 msgid "&Fullscreen"
 msgstr "&Na celú obrazovku"
 
-#: qml/ContextMenu.qml:700
+#: qml/ContextMenu.qml:713
 #, kde-format
 msgctxt "action:inmenu"
 msgid "&Shade"
 msgstr "Za&baliť"
 
-#: qml/ContextMenu.qml:712
+#: qml/ContextMenu.qml:725
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "&No Titlebar and Frame"
 msgstr "Žiadne záhlavie a rám"
 
-#: qml/ContextMenu.qml:725
+#: qml/ContextMenu.qml:738
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "&Hide from Screencast"
 msgstr "Skryť zo Screencastu"
 
-#: qml/ContextMenu.qml:741
+#: qml/ContextMenu.qml:754
 #, kde-format
 msgctxt "@option:check inmenu"
 msgid "Allow this program to be grouped"
 msgstr "Povoliť programu zoskupovanie"
 
-#: qml/ContextMenu.qml:787
+#: qml/ContextMenu.qml:800
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "&Close All"
 msgstr "Zavrieť všetko"
 
-#: qml/ContextMenu.qml:787
+#: qml/ContextMenu.qml:800
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "&Close"
 msgstr "&Zavrieť"
 
-#: qml/Task.qml:155
+#: qml/Task.qml:157
 #, kde-format
 msgctxt "@info:usagetip %1 application name"
 msgid "Launch %1"
 msgstr "Spustiť %1"
 
-#: qml/Task.qml:160
+#: qml/Task.qml:162
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "There is %1 new message."
@@ -840,29 +822,35 @@ msgstr[0] "Pribudla %1 nová správa."
 msgstr[1] "Pribudli %1 nové správy."
 msgstr[2] "Pribudli %1 nové správy."
 
-#: qml/Task.qml:168
+#: qml/Task.qml:170
 #, kde-format
 msgctxt "@info:usagetip %1 task name"
 msgid "Show Task tooltip for %1"
 msgstr "Zobraziť popis k úlohe pre %1"
 
-#: qml/Task.qml:172
+#: qml/Task.qml:174
 #, kde-format
 msgctxt "@info:usagetip %1 task name"
 msgid "Show windows side by side for %1"
 msgstr "Zobrazenie okien vedľa seba pre %1"
 
-#: qml/Task.qml:177
+#: qml/Task.qml:179
 #, kde-format
 msgctxt "@info:usagetip %1 task name"
 msgid "Open textual list of windows for %1"
 msgstr "Otvorenie textového zoznamu okien pre %1"
 
-#: qml/Task.qml:181
+#: qml/Task.qml:183
 #, kde-format
 msgctxt "@info:usagetip %1 task name"
 msgid "Activate %1"
 msgstr "Aktivovať %1"
+
+#: qml/TaskBadgeOverlay.qml:95
+#, kde-format
+msgctxt "Over 9999 new messages, overlay, keep short"
+msgid "9,999+"
+msgstr "9999+"
 
 #: qml/ToolTipInstance.qml:201
 #, kde-format
@@ -930,30 +918,32 @@ msgctxt "Which activities a window is currently on"
 msgid "Available on %1"
 msgstr "Dostupné na %1"
 
+#~ msgctxt "@info:usagetip under a set of radio buttons when Touch Mode is on"
+#~ msgid "Automatically set to Large when in Touch mode"
+#~ msgstr "Automaticky nastaviť na Veľké v dotykovom režime"
+
+#~ msgctxt "Invalid number of new messages, overlay, keep short"
+#~ msgid "—"
+#~ msgstr "—"
+
 #~ msgctxt ""
 #~ "@item:inlistbox Part of a sentence: 'Scrolling on any task does nothing'"
 #~ msgid "Does nothing"
 #~ msgstr "Nerobí nič"
 
 #, fuzzy
-#~| msgctxt "Part of a sentence: 'Mouse wheel cycles through tasks'"
-#~| msgid "Mouse wheel:"
 #~ msgctxt ""
 #~ "@label for checkbox Part of a sentence: 'Mouse wheel cycles through tasks'"
 #~ msgid "Mouse wheel:"
 #~ msgstr "Koliesko myši:"
 
 #, fuzzy
-#~| msgctxt ""
-#~| "Completes the sentence 'Clicking grouped task cycles through tasks' "
-#~| msgid "Cycles through tasks"
 #~ msgctxt ""
 #~ "@option:check Part of a sentence: 'Mouse wheel cycles through tasks'"
 #~ msgid "Cycles through tasks"
 #~ msgstr "Prepína medzi úlohami"
 
 #, fuzzy
-#~| msgid "Mark applications that play audio"
 #~ msgctxt "@option:check section General"
 #~ msgid "Mark applications that play audio"
 #~ msgstr "Označiť aplikácie, ktoré prehrávajú zvuk"
@@ -1045,7 +1035,6 @@ msgstr "Dostupné na %1"
 #~ msgstr "Vždy usporiadať úlohy do rovnakého stĺpcov ako riadkov"
 
 #, fuzzy
-#~| msgid "Move To &Activity"
 #~ msgid "Move to &Activity"
 #~ msgstr "Presunúť na aktivitu"
 

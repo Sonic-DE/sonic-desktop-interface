@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fc57ad16a28d02dea100ceb1c60de14e\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-03-17 02:41+0000\n"
+"POT-Creation-Date: 2026-06-04 02:57+0000\n"
 "PO-Revision-Date: 2024-11-21 20:40\n"
 "Last-Translator: Darafei Praliaskouski <komzpa@gmail.com>\n"
 "Language-Team: Belarusian\n"
@@ -97,18 +97,6 @@ msgstr "Уключыць гук для %1"
 msgctxt "@info:tooltip %1 is the window title"
 msgid "Mute %1"
 msgstr "Сцішыць %1"
-
-#: qml/Badge.qml:52
-#, kde-format
-msgctxt "Invalid number of new messages, overlay, keep short"
-msgid "—"
-msgstr "—"
-
-#: qml/Badge.qml:54
-#, kde-format
-msgctxt "Over 9999 new messages, overlay, keep short"
-msgid "9,999+"
-msgstr "9,999+"
 
 #: qml/config.qml:13
 #, fuzzy, kde-format
@@ -269,12 +257,6 @@ msgstr "Звычайны"
 msgctxt "@item:inlistbox Icon spacing"
 msgid "Large"
 msgstr "Вялікі"
-
-#: qml/ConfigAppearance.qml:197
-#, kde-format
-msgctxt "@info:usagetip under a set of radio buttons when Touch Mode is on"
-msgid "Automatically set to Large when in Touch mode"
-msgstr "Аўтаматычнае павелічэнне ў сэнсарным рэжыме"
 
 #: qml/ConfigBehavior.qml:50
 #, kde-format
@@ -721,159 +703,159 @@ msgctxt "action:inmenu"
 msgid "Move &To Current Desktop"
 msgstr "Перамясціць на &бягучы працоўны стол"
 
-#: qml/ContextMenu.qml:332
+#: qml/ContextMenu.qml:345
 #, fuzzy, kde-format
 #| msgid "&All Desktops"
 msgctxt "action:inmenu"
 msgid "&All Desktops"
 msgstr "&Усе працоўныя сталы"
 
-#: qml/ContextMenu.qml:360
+#: qml/ContextMenu.qml:373
 #, fuzzy, kde-format
 #| msgid "&New Desktop"
 msgctxt "action:inmenu"
 msgid "&New Desktop"
 msgstr "&Новы працоўны стол"
 
-#: qml/ContextMenu.qml:380
+#: qml/ContextMenu.qml:393
 #, fuzzy, kde-format
 #| msgid "Show in &Activities"
 msgctxt "action:inmenu"
 msgid "Show in &Activities"
 msgstr "Паказваць у пак&оях"
 
-#: qml/ContextMenu.qml:404
+#: qml/ContextMenu.qml:417
 #, fuzzy, kde-format
 #| msgid "Add To Current Activity"
 msgctxt "action:inmenu"
 msgid "Add To Current Activity"
 msgstr "Дадаць у бягучы пакой"
 
-#: qml/ContextMenu.qml:414
+#: qml/ContextMenu.qml:427
 #, fuzzy, kde-format
 #| msgid "All Activities"
 msgctxt "action:inmenu"
 msgid "All Activities"
 msgstr "Усе пакоі"
 
-#: qml/ContextMenu.qml:470
+#: qml/ContextMenu.qml:483
 #, fuzzy, kde-format
 #| msgid "Move to %1"
 msgctxt "action:inmenu"
 msgid "Move to %1"
 msgstr "Перамясціць у %1"
 
-#: qml/ContextMenu.qml:496 qml/ContextMenu.qml:512
+#: qml/ContextMenu.qml:509 qml/ContextMenu.qml:525
 #, fuzzy, kde-format
 #| msgid "&Pin to Task Manager"
 msgctxt "action:inmenu"
 msgid "&Pin to Task Manager"
 msgstr "&Замацаваць у кіраўніку задач"
 
-#: qml/ContextMenu.qml:564
+#: qml/ContextMenu.qml:577
 #, fuzzy, kde-format
 #| msgid "On All Activities"
 msgctxt "action:inmenu"
 msgid "On All Activities"
 msgstr "Ва ўсіх пакоях"
 
-#: qml/ContextMenu.qml:570
+#: qml/ContextMenu.qml:583
 #, fuzzy, kde-format
 #| msgid "On The Current Activity"
 msgctxt "action:inmenu"
 msgid "On The Current Activity"
 msgstr "У бягучым пакоі"
 
-#: qml/ContextMenu.qml:594
+#: qml/ContextMenu.qml:607
 #, fuzzy, kde-format
 #| msgid "Unpin from Task Manager"
 msgctxt "action:inmenu"
 msgid "Unpin from Task Manager"
 msgstr "Адмацаваць з кіраўніка задач"
 
-#: qml/ContextMenu.qml:609
+#: qml/ContextMenu.qml:622
 #, fuzzy, kde-format
 #| msgid "More"
 msgctxt "item:inmenu opens submenu"
 msgid "More"
 msgstr "Яшчэ"
 
-#: qml/ContextMenu.qml:618
+#: qml/ContextMenu.qml:631
 #, fuzzy, kde-format
 #| msgid "&Move"
 msgctxt "action:inmenu"
 msgid "&Move"
 msgstr "&Перамясціць"
 
-#: qml/ContextMenu.qml:627
+#: qml/ContextMenu.qml:640
 #, fuzzy, kde-format
 #| msgid "Re&size"
 msgctxt "action:inmenu"
 msgid "Re&size"
 msgstr "&Змяніць памер"
 
-#: qml/ContextMenu.qml:641
+#: qml/ContextMenu.qml:654
 #, fuzzy, kde-format
 #| msgid "Ma&ximize"
 msgctxt "action:inmenu"
 msgid "Ma&ximize"
 msgstr "&Разгарнуць"
 
-#: qml/ContextMenu.qml:655
+#: qml/ContextMenu.qml:668
 #, fuzzy, kde-format
 #| msgid "Mi&nimize"
 msgctxt "action:inmenu"
 msgid "Mi&nimize"
 msgstr "З&гарнуць"
 
-#: qml/ContextMenu.qml:665
+#: qml/ContextMenu.qml:678
 #, fuzzy, kde-format
 #| msgid "Keep &Above Others"
 msgctxt "action:inmenu"
 msgid "Keep &Above Others"
 msgstr "Размяшчаць &вышэй астатніх"
 
-#: qml/ContextMenu.qml:675
+#: qml/ContextMenu.qml:688
 #, fuzzy, kde-format
 #| msgid "Keep &Below Others"
 msgctxt "action:inmenu"
 msgid "Keep &Below Others"
 msgstr "Размяшчаць &ніжэй астатніх"
 
-#: qml/ContextMenu.qml:687
+#: qml/ContextMenu.qml:700
 #, fuzzy, kde-format
 #| msgid "&Fullscreen"
 msgctxt "action:inmenu"
 msgid "&Fullscreen"
 msgstr "&На ўвесь экран"
 
-#: qml/ContextMenu.qml:700
+#: qml/ContextMenu.qml:713
 #, fuzzy, kde-format
 #| msgid "&Shade"
 msgctxt "action:inmenu"
 msgid "&Shade"
 msgstr "&Цень"
 
-#: qml/ContextMenu.qml:712
+#: qml/ContextMenu.qml:725
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "&No Titlebar and Frame"
 msgstr ""
 
-#: qml/ContextMenu.qml:725
+#: qml/ContextMenu.qml:738
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "&Hide from Screencast"
 msgstr ""
 
-#: qml/ContextMenu.qml:741
+#: qml/ContextMenu.qml:754
 #, fuzzy, kde-format
 #| msgid "Allow this program to be grouped"
 msgctxt "@option:check inmenu"
 msgid "Allow this program to be grouped"
 msgstr "Дазволіць групаванне гэтай праграмы"
 
-#: qml/ContextMenu.qml:787
+#: qml/ContextMenu.qml:800
 #, fuzzy, kde-format
 #| msgctxt "@item:inmenu"
 #| msgid "&Close All"
@@ -881,20 +863,20 @@ msgctxt "@action:inmenu"
 msgid "&Close All"
 msgstr "&Закрыць усё"
 
-#: qml/ContextMenu.qml:787
+#: qml/ContextMenu.qml:800
 #, fuzzy, kde-format
 #| msgid "&Close"
 msgctxt "@action:inmenu"
 msgid "&Close"
 msgstr "За&крыць"
 
-#: qml/Task.qml:155
+#: qml/Task.qml:157
 #, kde-format
 msgctxt "@info:usagetip %1 application name"
 msgid "Launch %1"
 msgstr "Запусціць %1"
 
-#: qml/Task.qml:160
+#: qml/Task.qml:162
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "There is %1 new message."
@@ -904,30 +886,36 @@ msgstr[1] "Ёсць %1 новыя паведамленні."
 msgstr[2] "Ёсць %1 новых паведамленняў."
 msgstr[3] "Ёсць %1 новыя паведамленні."
 
-#: qml/Task.qml:168
+#: qml/Task.qml:170
 #, kde-format
 msgctxt "@info:usagetip %1 task name"
 msgid "Show Task tooltip for %1"
 msgstr "Паказаць падказку па задачы для %1"
 
-#: qml/Task.qml:172
+#: qml/Task.qml:174
 #, kde-format
 msgctxt "@info:usagetip %1 task name"
 msgid "Show windows side by side for %1"
 msgstr "Паказаць вокны побач адно з адным для %1"
 
-#: qml/Task.qml:177
+#: qml/Task.qml:179
 #, kde-format
 msgctxt "@info:usagetip %1 task name"
 msgid "Open textual list of windows for %1"
 msgstr "Адкрыць спіс акон для %1"
 
-#: qml/Task.qml:181
+#: qml/Task.qml:183
 #, fuzzy, kde-format
 #| msgid "Activate %1"
 msgctxt "@info:usagetip %1 task name"
 msgid "Activate %1"
 msgstr "Актываваць %1"
+
+#: qml/TaskBadgeOverlay.qml:95
+#, kde-format
+msgctxt "Over 9999 new messages, overlay, keep short"
+msgid "9,999+"
+msgstr "9,999+"
 
 #: qml/ToolTipInstance.qml:201
 #, fuzzy, kde-format
@@ -998,6 +986,14 @@ msgstr "Таксама даступна ў %1"
 msgctxt "Which activities a window is currently on"
 msgid "Available on %1"
 msgstr "Даступна ў %1"
+
+#~ msgctxt "@info:usagetip under a set of radio buttons when Touch Mode is on"
+#~ msgid "Automatically set to Large when in Touch mode"
+#~ msgstr "Аўтаматычнае павелічэнне ў сэнсарным рэжыме"
+
+#~ msgctxt "Invalid number of new messages, overlay, keep short"
+#~ msgid "—"
+#~ msgstr "—"
 
 #, fuzzy
 #~| msgctxt ""

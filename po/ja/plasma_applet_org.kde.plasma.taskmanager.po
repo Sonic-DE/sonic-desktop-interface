@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma_applet_tasks\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-03-17 02:41+0000\n"
+"POT-Creation-Date: 2026-06-04 02:57+0000\n"
 "PO-Revision-Date: 2026-03-27 23:51+0900\n"
 "Last-Translator: Mint <5602mint@gmail.com>\n"
 "Language-Team: Japanese <kde-i18n-doc@kde.org>\n"
@@ -93,18 +93,6 @@ msgstr "%1 をミュート解除"
 msgctxt "@info:tooltip %1 is the window title"
 msgid "Mute %1"
 msgstr "%1 をミュート"
-
-#: qml/Badge.qml:52
-#, kde-format
-msgctxt "Invalid number of new messages, overlay, keep short"
-msgid "—"
-msgstr "—"
-
-#: qml/Badge.qml:54
-#, kde-format
-msgctxt "Over 9999 new messages, overlay, keep short"
-msgid "9,999+"
-msgstr "9,999+"
 
 #: qml/config.qml:13
 #, kde-format
@@ -261,12 +249,6 @@ msgstr "普通"
 msgctxt "@item:inlistbox Icon spacing"
 msgid "Large"
 msgstr "大"
-
-#: qml/ConfigAppearance.qml:197
-#, kde-format
-msgctxt "@info:usagetip under a set of radio buttons when Touch Mode is on"
-msgid "Automatically set to Large when in Touch mode"
-msgstr "タッチモードのときは自動的に「大」に設定"
 
 #: qml/ConfigBehavior.qml:50
 #, kde-format
@@ -684,186 +666,192 @@ msgctxt "action:inmenu"
 msgid "Move &To Current Desktop"
 msgstr "現在のデスクトップに移動(&T)"
 
-#: qml/ContextMenu.qml:332
+#: qml/ContextMenu.qml:345
 #, kde-format
 msgctxt "action:inmenu"
 msgid "&All Desktops"
 msgstr "すべてのデスクトップ(&A)"
 
-#: qml/ContextMenu.qml:360
+#: qml/ContextMenu.qml:373
 #, kde-format
 msgctxt "action:inmenu"
 msgid "&New Desktop"
 msgstr "新しいデスクトップ(&N)"
 
-#: qml/ContextMenu.qml:380
+#: qml/ContextMenu.qml:393
 #, kde-format
 msgctxt "action:inmenu"
 msgid "Show in &Activities"
 msgstr "アクティビティに表示(&A)"
 
-#: qml/ContextMenu.qml:404
+#: qml/ContextMenu.qml:417
 #, kde-format
 msgctxt "action:inmenu"
 msgid "Add To Current Activity"
 msgstr "現在のアクティビティに追加"
 
-#: qml/ContextMenu.qml:414
+#: qml/ContextMenu.qml:427
 #, kde-format
 msgctxt "action:inmenu"
 msgid "All Activities"
 msgstr "すべてのアクティビティ"
 
-#: qml/ContextMenu.qml:470
+#: qml/ContextMenu.qml:483
 #, kde-format
 msgctxt "action:inmenu"
 msgid "Move to %1"
 msgstr "%1 に移動"
 
-#: qml/ContextMenu.qml:496 qml/ContextMenu.qml:512
+#: qml/ContextMenu.qml:509 qml/ContextMenu.qml:525
 #, kde-format
 msgctxt "action:inmenu"
 msgid "&Pin to Task Manager"
 msgstr "タスクマネージャにピン留め(&P)"
 
-#: qml/ContextMenu.qml:564
+#: qml/ContextMenu.qml:577
 #, kde-format
 msgctxt "action:inmenu"
 msgid "On All Activities"
 msgstr "すべてのアクティビティで"
 
-#: qml/ContextMenu.qml:570
+#: qml/ContextMenu.qml:583
 #, kde-format
 msgctxt "action:inmenu"
 msgid "On The Current Activity"
 msgstr "現在のアクティビティで"
 
-#: qml/ContextMenu.qml:594
+#: qml/ContextMenu.qml:607
 #, kde-format
 msgctxt "action:inmenu"
 msgid "Unpin from Task Manager"
 msgstr "タスクマネージャからピン留めを外す"
 
-#: qml/ContextMenu.qml:609
+#: qml/ContextMenu.qml:622
 #, kde-format
 msgctxt "item:inmenu opens submenu"
 msgid "More"
 msgstr "その他"
 
-#: qml/ContextMenu.qml:618
+#: qml/ContextMenu.qml:631
 #, kde-format
 msgctxt "action:inmenu"
 msgid "&Move"
 msgstr "移動(&M)"
 
-#: qml/ContextMenu.qml:627
+#: qml/ContextMenu.qml:640
 #, kde-format
 msgctxt "action:inmenu"
 msgid "Re&size"
 msgstr "サイズ変更(&S)"
 
-#: qml/ContextMenu.qml:641
+#: qml/ContextMenu.qml:654
 #, kde-format
 msgctxt "action:inmenu"
 msgid "Ma&ximize"
 msgstr "最大化(&X)"
 
-#: qml/ContextMenu.qml:655
+#: qml/ContextMenu.qml:668
 #, kde-format
 msgctxt "action:inmenu"
 msgid "Mi&nimize"
 msgstr "最小化(&N)"
 
-#: qml/ContextMenu.qml:665
+#: qml/ContextMenu.qml:678
 #, kde-format
 msgctxt "action:inmenu"
 msgid "Keep &Above Others"
 msgstr "常に最前面に表示(&A)"
 
-#: qml/ContextMenu.qml:675
+#: qml/ContextMenu.qml:688
 #, kde-format
 msgctxt "action:inmenu"
 msgid "Keep &Below Others"
 msgstr "常に最背面に表示(&B)"
 
-#: qml/ContextMenu.qml:687
+#: qml/ContextMenu.qml:700
 #, kde-format
 msgctxt "action:inmenu"
 msgid "&Fullscreen"
 msgstr "フルスクリーン(&F)"
 
-#: qml/ContextMenu.qml:700
+#: qml/ContextMenu.qml:713
 #, kde-format
 msgctxt "action:inmenu"
 msgid "&Shade"
 msgstr "シェード(&S)"
 
-#: qml/ContextMenu.qml:712
+#: qml/ContextMenu.qml:725
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "&No Titlebar and Frame"
 msgstr "タイトルバーとフレームを非表示(&N)"
 
-#: qml/ContextMenu.qml:725
+#: qml/ContextMenu.qml:738
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "&Hide from Screencast"
 msgstr "画面録画から消す(&H)"
 
-#: qml/ContextMenu.qml:741
+#: qml/ContextMenu.qml:754
 #, kde-format
 msgctxt "@option:check inmenu"
 msgid "Allow this program to be grouped"
 msgstr "このプログラムのグループ化を許可する"
 
-#: qml/ContextMenu.qml:787
+#: qml/ContextMenu.qml:800
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "&Close All"
 msgstr "すべて閉じる(&C)"
 
-#: qml/ContextMenu.qml:787
+#: qml/ContextMenu.qml:800
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "&Close"
 msgstr "閉じる(&C)"
 
-#: qml/Task.qml:155
+#: qml/Task.qml:157
 #, kde-format
 msgctxt "@info:usagetip %1 application name"
 msgid "Launch %1"
 msgstr "%1 を起動"
 
-#: qml/Task.qml:160
+#: qml/Task.qml:162
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "There is %1 new message."
 msgid_plural "There are %1 new messages."
 msgstr[0] "%1 件の新しいメッセージがあります。"
 
-#: qml/Task.qml:168
+#: qml/Task.qml:170
 #, kde-format
 msgctxt "@info:usagetip %1 task name"
 msgid "Show Task tooltip for %1"
 msgstr "%1 のツールチップを表示"
 
-#: qml/Task.qml:172
+#: qml/Task.qml:174
 #, kde-format
 msgctxt "@info:usagetip %1 task name"
 msgid "Show windows side by side for %1"
 msgstr "%1 のウィンドウを並べて表示"
 
-#: qml/Task.qml:177
+#: qml/Task.qml:179
 #, kde-format
 msgctxt "@info:usagetip %1 task name"
 msgid "Open textual list of windows for %1"
 msgstr "%1 のウィンドウのリストを開く"
 
-#: qml/Task.qml:181
+#: qml/Task.qml:183
 #, kde-format
 msgctxt "@info:usagetip %1 task name"
 msgid "Activate %1"
 msgstr "%1 を有効化"
+
+#: qml/TaskBadgeOverlay.qml:95
+#, kde-format
+msgctxt "Over 9999 new messages, overlay, keep short"
+msgid "9,999+"
+msgstr "9,999+"
 
 #: qml/ToolTipInstance.qml:201
 #, kde-format
