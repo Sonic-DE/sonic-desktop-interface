@@ -480,13 +480,31 @@ PlasmaComponents3.ScrollView {
         }
 
         function launchBestMatch() : void  {
-            if (runnerColumns.visible) {
-                for (let i = 0; i < root.runnerModel.count; ++i) {
-                    if (root.runnerModel.modelForRow(i).count) {
-                        root.runnerModel.modelForRow(i).trigger(0, "", null);
-                        onInteractionConcluded: root.interactionConcluded()
-                        break;
-                    }
+            if (launchMatchTimer.running) {
+                launchMatchTimer.stop()
+                launchMatchTimer.triggered()
+                return
+            }
+            if (!root.runnerModel.querying || runnerColumns.visibleChildren[0]?.currentItem?.text.toLowerCase().includes(root.runnerModel.query.toLowerCase())) {
+                launchMatchTimer.triggered()
+                return
+            }
+            launchMatchTimer.start()
+        }
+
+        Timer {
+            id: launchMatchTimer
+            interval: 750
+            onTriggered: runnerColumns.visibleChildren[0]?.currentItem?.action.trigger()
+        }
+
+        Connections {
+            target: runnerColumns.visibleChildren[0] instanceof RunnerResultsList ? runnerColumns.visibleChildren[0] : null
+            enabled: launchMatchTimer.running
+            function onCurrentItemChanged() : void {
+                if (runnerColumns.visibleChildren[0]?.currentItem?.text.toLowerCase().includes(root.runnerModel.query.toLowerCase())) {
+                    launchMatchTimer.stop()
+                    launchMatchTimer.triggered()
                 }
             }
         }
