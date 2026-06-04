@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma_applet_tasks\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-03-17 02:41+0000\n"
+"POT-Creation-Date: 2026-06-04 02:57+0000\n"
 "PO-Revision-Date: 2026-01-28 23:01+0000\n"
 "Last-Translator: Sergiu Bivol <sergiu@cip.md>\n"
 "Language-Team: Romanian <kde-i18n-ro@kde.org>\n"
@@ -93,18 +93,6 @@ msgstr "Sonorizează %1"
 msgctxt "@info:tooltip %1 is the window title"
 msgid "Mute %1"
 msgstr "Muțește %1"
-
-#: qml/Badge.qml:52
-#, kde-format
-msgctxt "Invalid number of new messages, overlay, keep short"
-msgid "—"
-msgstr "—"
-
-#: qml/Badge.qml:54
-#, kde-format
-msgctxt "Over 9999 new messages, overlay, keep short"
-msgid "9,999+"
-msgstr "9,999+"
 
 #: qml/config.qml:13
 #, kde-format
@@ -260,12 +248,6 @@ msgstr "Normală"
 msgctxt "@item:inlistbox Icon spacing"
 msgid "Large"
 msgstr "Mare"
-
-#: qml/ConfigAppearance.qml:197
-#, kde-format
-msgctxt "@info:usagetip under a set of radio buttons when Touch Mode is on"
-msgid "Automatically set to Large when in Touch mode"
-msgstr "Treci automat la Mare în regim tactil"
 
 #: qml/ConfigBehavior.qml:50
 #, kde-format
@@ -684,157 +666,157 @@ msgctxt "action:inmenu"
 msgid "Move &To Current Desktop"
 msgstr "Mu&tă la biroul actual"
 
-#: qml/ContextMenu.qml:332
+#: qml/ContextMenu.qml:345
 #, kde-format
 msgctxt "action:inmenu"
 msgid "&All Desktops"
 msgstr "To&ate birourile"
 
-#: qml/ContextMenu.qml:360
+#: qml/ContextMenu.qml:373
 #, kde-format
 msgctxt "action:inmenu"
 msgid "&New Desktop"
 msgstr "Birou &nou"
 
-#: qml/ContextMenu.qml:380
+#: qml/ContextMenu.qml:393
 #, kde-format
 msgctxt "action:inmenu"
 msgid "Show in &Activities"
 msgstr "&Arată în activități"
 
-#: qml/ContextMenu.qml:404
+#: qml/ContextMenu.qml:417
 #, kde-format
 msgctxt "action:inmenu"
 msgid "Add To Current Activity"
 msgstr "Adaugă la activitatea actuală"
 
-#: qml/ContextMenu.qml:414
+#: qml/ContextMenu.qml:427
 #, kde-format
 msgctxt "action:inmenu"
 msgid "All Activities"
 msgstr "Toate activitățile"
 
-#: qml/ContextMenu.qml:470
+#: qml/ContextMenu.qml:483
 #, kde-format
 msgctxt "action:inmenu"
 msgid "Move to %1"
 msgstr "Mută la %1"
 
-#: qml/ContextMenu.qml:496 qml/ContextMenu.qml:512
+#: qml/ContextMenu.qml:509 qml/ContextMenu.qml:525
 #, kde-format
 msgctxt "action:inmenu"
 msgid "&Pin to Task Manager"
 msgstr "&Fixează la gestionarul de sarcini"
 
-#: qml/ContextMenu.qml:564
+#: qml/ContextMenu.qml:577
 #, kde-format
 msgctxt "action:inmenu"
 msgid "On All Activities"
 msgstr "Pe toate activitățile"
 
-#: qml/ContextMenu.qml:570
+#: qml/ContextMenu.qml:583
 #, kde-format
 msgctxt "action:inmenu"
 msgid "On The Current Activity"
 msgstr "Pe activitatea actuală"
 
-#: qml/ContextMenu.qml:594
+#: qml/ContextMenu.qml:607
 #, kde-format
 msgctxt "action:inmenu"
 msgid "Unpin from Task Manager"
 msgstr "Desprinde de la gestionarul de sarcini"
 
-#: qml/ContextMenu.qml:609
+#: qml/ContextMenu.qml:622
 #, kde-format
 msgctxt "item:inmenu opens submenu"
 msgid "More"
 msgstr "Mai multe"
 
-#: qml/ContextMenu.qml:618
+#: qml/ContextMenu.qml:631
 #, kde-format
 msgctxt "action:inmenu"
 msgid "&Move"
 msgstr "&Mută"
 
-#: qml/ContextMenu.qml:627
+#: qml/ContextMenu.qml:640
 #, kde-format
 msgctxt "action:inmenu"
 msgid "Re&size"
 msgstr "Redimen&sionează"
 
-#: qml/ContextMenu.qml:641
+#: qml/ContextMenu.qml:654
 #, kde-format
 msgctxt "action:inmenu"
 msgid "Ma&ximize"
 msgstr "Ma&ximizează"
 
-#: qml/ContextMenu.qml:655
+#: qml/ContextMenu.qml:668
 #, kde-format
 msgctxt "action:inmenu"
 msgid "Mi&nimize"
 msgstr "Mi&nimizează"
 
-#: qml/ContextMenu.qml:665
+#: qml/ContextMenu.qml:678
 #, kde-format
 msgctxt "action:inmenu"
 msgid "Keep &Above Others"
 msgstr "Ține de&asupra celorlalte"
 
-#: qml/ContextMenu.qml:675
+#: qml/ContextMenu.qml:688
 #, kde-format
 msgctxt "action:inmenu"
 msgid "Keep &Below Others"
 msgstr "Ține su&b celelalte"
 
-#: qml/ContextMenu.qml:687
+#: qml/ContextMenu.qml:700
 #, kde-format
 msgctxt "action:inmenu"
 msgid "&Fullscreen"
 msgstr "&Ecran complet"
 
-#: qml/ContextMenu.qml:700
+#: qml/ContextMenu.qml:713
 #, kde-format
 msgctxt "action:inmenu"
 msgid "&Shade"
 msgstr "&Strânge"
 
-#: qml/ContextMenu.qml:712
+#: qml/ContextMenu.qml:725
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "&No Titlebar and Frame"
 msgstr "Fără &bară de titlu și cadru"
 
-#: qml/ContextMenu.qml:725
+#: qml/ContextMenu.qml:738
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "&Hide from Screencast"
 msgstr "Asc&unde din înregistrare"
 
-#: qml/ContextMenu.qml:741
+#: qml/ContextMenu.qml:754
 #, kde-format
 msgctxt "@option:check inmenu"
 msgid "Allow this program to be grouped"
 msgstr "Permite acestui program să fie grupat"
 
-#: qml/ContextMenu.qml:787
+#: qml/ContextMenu.qml:800
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "&Close All"
 msgstr "În&chide toate"
 
-#: qml/ContextMenu.qml:787
+#: qml/ContextMenu.qml:800
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "&Close"
 msgstr "În&chide"
 
-#: qml/Task.qml:155
+#: qml/Task.qml:157
 #, kde-format
 msgctxt "@info:usagetip %1 application name"
 msgid "Launch %1"
 msgstr "Lansează %1"
 
-#: qml/Task.qml:160
+#: qml/Task.qml:162
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "There is %1 new message."
@@ -843,29 +825,35 @@ msgstr[0] "Este %1 mesaj nou."
 msgstr[1] "Sunt %1 mesaje noi."
 msgstr[2] "Sunt %1 de mesaje noi."
 
-#: qml/Task.qml:168
+#: qml/Task.qml:170
 #, kde-format
 msgctxt "@info:usagetip %1 task name"
 msgid "Show Task tooltip for %1"
 msgstr "Arată indiciile sarcinii %1"
 
-#: qml/Task.qml:172
+#: qml/Task.qml:174
 #, kde-format
 msgctxt "@info:usagetip %1 task name"
 msgid "Show windows side by side for %1"
 msgstr "Arată ferestrele una lângă alta pentru %1"
 
-#: qml/Task.qml:177
+#: qml/Task.qml:179
 #, kde-format
 msgctxt "@info:usagetip %1 task name"
 msgid "Open textual list of windows for %1"
 msgstr "Deschide lista textuală a ferestrelor pentru %1"
 
-#: qml/Task.qml:181
+#: qml/Task.qml:183
 #, kde-format
 msgctxt "@info:usagetip %1 task name"
 msgid "Activate %1"
 msgstr "Activează %1"
+
+#: qml/TaskBadgeOverlay.qml:95
+#, kde-format
+msgctxt "Over 9999 new messages, overlay, keep short"
+msgid "9,999+"
+msgstr "9,999+"
 
 #: qml/ToolTipInstance.qml:201
 #, kde-format
@@ -932,6 +920,14 @@ msgstr "Disponibilă și pe %1"
 msgctxt "Which activities a window is currently on"
 msgid "Available on %1"
 msgstr "Disponibilă pe %1"
+
+#~ msgctxt "@info:usagetip under a set of radio buttons when Touch Mode is on"
+#~ msgid "Automatically set to Large when in Touch mode"
+#~ msgstr "Treci automat la Mare în regim tactil"
+
+#~ msgctxt "Invalid number of new messages, overlay, keep short"
+#~ msgid "—"
+#~ msgstr "—"
 
 #, fuzzy
 #~| msgctxt "Part of a sentence: 'Middle-clicking any task does nothing'"
