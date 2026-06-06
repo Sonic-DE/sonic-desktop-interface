@@ -29,11 +29,18 @@
 #include <QSessionManager>
 
 #include "config-workspace.h"
+#include "messagehandler.h"
+
+static void emojierMessageHandler(QtMsgType type, const QMessageLogContext &, const QString &msg)
+{
+    messageHandler(type, QStringLiteral("PLASMA-EMOJIER"), msg);
+}
 
 int main(int argc, char **argv)
 {
     QCoreApplication::setAttribute(Qt::AA_DisableSessionManager);
     QApplication app(argc, argv);
+    qInstallMessageHandler(emojierMessageHandler);
     app.setWindowIcon(QIcon::fromTheme(QStringLiteral("preferences-desktop-emoticons")));
     KCrash::initialize();
 

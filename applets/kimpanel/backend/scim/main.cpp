@@ -22,6 +22,7 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
+#include "messagehandler.h"
 #include <QCoreApplication>
 #include <QDBusConnection>
 #include <QDBusMessage>
@@ -974,6 +975,11 @@ static void signalhandler(int sig)
         _panel_agent->stop();
 }
 
+static void scimPanelMessageHandler(QtMsgType type, const QMessageLogContext &, const QString &msg)
+{
+    messageHandler(type, QStringLiteral("KIMPANEL-SCIM"), msg);
+}
+
 int main(int argc, char *argv[])
 {
     std::vector<String> config_list;
@@ -1172,6 +1178,7 @@ int main(int argc, char *argv[])
     start_auto_start_helpers();
 
     QCoreApplication app(argc, argv);
+    qInstallMessageHandler(scimPanelMessageHandler);
     app.exec();
 
     _panel_agent_thread->wait();

@@ -6,12 +6,17 @@
 */
 
 #include "app.h"
+#include "messagehandler.h"
 #include "panel.h"
 #include <QSessionManager>
 #include <ibus.h>
 #include <locale.h>
 #include <stdlib.h>
 
+static void kimpanelIbusMessageHandler(QtMsgType type, const QMessageLogContext &, const QString &msg)
+{
+    messageHandler(type, QStringLiteral("KIMPANEL-IBUS"), msg);
+}
 int main(int argc, char *argv[])
 {
     ibus_init();
@@ -19,6 +24,7 @@ int main(int argc, char *argv[])
     qputenv("QT_IM_MODULE", "compose");
     QCoreApplication::setAttribute(Qt::AA_DisableSessionManager);
     App app(argc, argv);
+    qInstallMessageHandler(kimpanelIbusMessageHandler);
 
     return app.exec();
 }

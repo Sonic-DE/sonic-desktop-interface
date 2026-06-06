@@ -20,6 +20,7 @@
 #include "config-workspace.h"
 #include "doodad.h"
 #include "geometry.h"
+#include "messagehandler.h"
 
 // kind-of copy from xkb_rules.cpp (less complicated)
 static QString getRulesName()
@@ -42,10 +43,16 @@ static QString findXkbRulesFile()
     return QStringLiteral("%1/rules/%2").arg(XKBDIR, rulesName);
 }
 
+static void tastenbrettMessageHandler(QtMsgType type, const QMessageLogContext &, const QString &msg)
+{
+    messageHandler(type, QStringLiteral("TASTENBRETT"), msg);
+}
+
 int main(int argc, char *argv[])
 {
     setenv("QT_QPA_PLATFORM", "xcb", 1);
     Application app(argc, argv);
+    qInstallMessageHandler(tastenbrettMessageHandler);
     Q_ASSERT(app.platformName() == QStringLiteral("xcb"));
 
     KAboutData aboutData(QStringLiteral("tastenbrett"),

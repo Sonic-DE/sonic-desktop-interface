@@ -22,6 +22,12 @@
 #endif
 #include "ScriptJob.h"
 #include "ZypperRPMJob.h"
+#include "messagehandler.h"
+
+static void krunnerPluginInstallerMessageHandler(QtMsgType type, const QMessageLogContext &, const QString &msg)
+{
+    messageHandler(type, QStringLiteral("KRUNNER-PLUGININSTALLER"), msg);
+}
 
 void fail(const QString &str)
 {
@@ -38,6 +44,7 @@ void fail(const QString &str)
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
+    qInstallMessageHandler(krunnerPluginInstallerMessageHandler);
     app.setQuitOnLastWindowClosed(false);
 
     if (qEnvironmentVariableIsSet("PLUGININSTALLER_TEST_MODE")) {
