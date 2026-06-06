@@ -17,6 +17,8 @@ class ClockHelper : public QObject
     Q_OBJECT
 
 public:
+    ClockHelper();
+
     enum {
         CallError = 1 << 0,
         TimezoneError = 1 << 1,

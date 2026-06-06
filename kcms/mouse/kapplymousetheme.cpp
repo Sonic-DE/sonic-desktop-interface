@@ -11,15 +11,21 @@
 
 #include <KWindowSystem>
 
+#include "messagehandler.h"
 #include <QDebug>
 #include <QFile>
 #include <QGuiApplication>
 
+static void kapplymousethemeMessageHandler(QtMsgType type, const QMessageLogContext &, const QString &msg)
+{
+    messageHandler(type, QStringLiteral("KAPPLYMOUSETHEME"), msg);
+}
 int main(int argc, char *argv[])
 {
     int ret = 0;
     QGuiApplication::setDesktopSettingsAware(false);
     QGuiApplication app(argc, argv);
+    qInstallMessageHandler(kapplymousethemeMessageHandler);
     if (argc != 3)
         return 1;
     QString theme = QFile::decodeName(argv[1]);

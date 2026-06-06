@@ -15,7 +15,13 @@
 #include <QDebug>
 #include <QtGui/private/qtx11extras_p.h>
 
+#include "messagehandler.h"
 #include <plasma_version.h>
+
+static void kaccessMessageHandler(QtMsgType type, const QMessageLogContext &, const QString &msg)
+{
+    messageHandler(type, QStringLiteral("KACCESS"), msg);
+}
 
 int main(int argc, char *argv[])
 {
@@ -36,6 +42,7 @@ int main(int argc, char *argv[])
 
     // we need an application object for QX11Info
     QApplication app(argc, argv);
+    qInstallMessageHandler(kaccessMessageHandler);
 
     KAboutData about(QStringLiteral("kaccess"),
                      i18n("Accessibility"),

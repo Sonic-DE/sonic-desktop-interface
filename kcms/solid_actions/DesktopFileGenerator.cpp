@@ -14,10 +14,17 @@
 #include <KDesktopFile>
 
 #include "SolidActionData.h"
+#include "messagehandler.h"
+
+static void desktopFileGeneratorMessageHandler(QtMsgType type, const QMessageLogContext &, const QString &msg)
+{
+    messageHandler(type, QStringLiteral("SOLID-ACTION-DESKTOP-GEN"), msg);
+}
 
 int main(int argc, char *argv[])
 {
     QCoreApplication application(argc, argv);
+    qInstallMessageHandler(desktopFileGeneratorMessageHandler);
     KLocalizedString::setApplicationDomain(QByteArrayLiteral("kcm_solid_actions"));
 
     // About data

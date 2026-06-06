@@ -11,10 +11,17 @@
 #include <QCommandLineParser>
 
 #include "knetattach.h"
+#include "messagehandler.h"
+
+static void knetattachMessageHandler(QtMsgType type, const QMessageLogContext &, const QString &msg)
+{
+    messageHandler(type, QStringLiteral("KNETATTACH"), msg);
+}
 
 int main(int argc, char **argv)
 {
     QApplication app(argc, argv);
+    qInstallMessageHandler(knetattachMessageHandler);
     KLocalizedString::setApplicationDomain(QByteArrayLiteral("knetattach"));
 
     KAboutData aboutData(QLatin1String("knetattach"),

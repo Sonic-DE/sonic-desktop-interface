@@ -20,6 +20,8 @@
 #include <QFile>
 #include <QRegularExpression>
 
+#include "messagehandler.h"
+
 #if defined(USE_SOLARIS)
 #include <KTemporaryFile>
 #include <sys/param.h>
@@ -30,6 +32,16 @@
 // We cannot rely on the $PATH environment variable, because D-Bus activation
 // clears it. So we have to use a reasonable default.
 static const QString exePath = QStringLiteral("/usr/sbin:/usr/bin:/sbin:/bin");
+
+static void kcmdatetimehelperMessageHandler(QtMsgType type, const QMessageLogContext &, const QString &msg)
+{
+    messageHandler(type, QStringLiteral("KCMDATETIME-HELPER"), msg);
+}
+
+ClockHelper::ClockHelper()
+{
+    qInstallMessageHandler(kcmdatetimehelperMessageHandler);
+}
 
 int ClockHelper::ntp(const QStringList &ntpServers, bool ntpEnabled)
 {
