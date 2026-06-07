@@ -1,13 +1,13 @@
 # Copyright (C) 2024 This file is copyright:
 # This file is distributed under the same license as the plasma-desktop package.
 #
-# SPDX-FileCopyrightText: 2024, 2026 Stefan Asserhäll <stefan.asserhall@gmail.com>
+# SPDX-FileCopyrightText: 2024 Stefan Asserhäll <stefan.asserhall@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: plasma-desktop\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-01-13 08:43+0000\n"
-"PO-Revision-Date: 2026-01-18 08:41+0100\n"
+"POT-Creation-Date: 2026-06-07 02:48+0000\n"
+"PO-Revision-Date: 2024-06-21 11:32+0200\n"
 "Last-Translator: Stefan Asserhäll <stefan.asserhall@gmail.com>\n"
 "Language-Team: Swedish <kde-i18n-doc@kde.org>\n"
 "Language: sv\n"
@@ -15,27 +15,29 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 25.12.1\n"
+"X-Generator: Lokalize 23.08.5\n"
 
-#: kcmtouchscreen.cpp:47
+#: kcmtouchscreen.cpp:49
 #, kde-format
 msgid "Automatic"
 msgstr "Automatisk"
 
-#: kcmtouchscreen.cpp:53
+#: kcmtouchscreen.cpp:55
 #, kde-format
 msgctxt "model - (x,y widthxheight)"
 msgid "%1 - (%2,%3 %4×%5)"
 msgstr "%1 - (%2,%3 %4×%5)"
 
 #: ui/main.qml:29
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "No touchscreens found"
 msgctxt "@info:status placeholdermessage text"
 msgid "No touchscreens found"
 msgstr "Inga pekskärmar hittades"
 
 #: ui/main.qml:30
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Connect an external touchscreen"
 msgctxt "@info:usagetip placeholdermessage explanation"
 msgid "Connect an external touchscreen"
 msgstr "Anslut en extern pekskärm"
@@ -47,13 +49,15 @@ msgid "Device:"
 msgstr "Enhet:"
 
 #: ui/main.qml:59
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Enabled:"
 msgctxt "@option:check prefix touchscreen device is enabled"
 msgid "Enabled:"
 msgstr "Aktiverad:"
 
 #: ui/main.qml:67
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Target display:"
 msgctxt "@label:listbox this is a compound noun"
 msgid "Target display:"
 msgstr "Målskärm:"
