@@ -517,5 +517,3 @@ qint64 Backend::parentPid(qint64 pid) const
 
     return -1;
 }
-
-#include "moc_backend.cpp"

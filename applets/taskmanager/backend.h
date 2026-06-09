@@ -8,7 +8,9 @@
 
 #include <KConfigWatcher>
 
+#include <QAction>
 #include <QObject>
+#include <QQuickItem>
 #include <QRect>
 
 #include <netwm.h>
@@ -19,7 +21,6 @@
 
 class QAction;
 class QActionGroup;
-class QQuickItem;
 class QQuickWindow;
 class QJsonArray;
 
