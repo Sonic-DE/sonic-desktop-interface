@@ -71,4 +71,3 @@ QString DesktopSchemeHelper::getFileUrl(const QString &UrlRelativeToDesktopStrin
     }
     return absoluteFileUrl.replace(QStringLiteral("desktop:"), absoluteDesktopString + QStringLiteral("/"));
 }
-#include "moc_desktopschemehelper.cpp"

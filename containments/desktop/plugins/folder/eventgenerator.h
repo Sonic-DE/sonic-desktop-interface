@@ -9,9 +9,8 @@
 #define EventGenerator_H
 
 #include <QObject>
+#include <QQuickItem>
 #include <qqmlregistration.h>
-
-class QQuickItem;
 
 class EventGenerator : public QObject
 {

@@ -6,10 +6,9 @@
 
 #pragma once
 
+#include <QAction>
 #include <QObject>
 #include <QQmlEngine>
-
-class QAction;
 
 class MenuHelper : public QObject
 {
