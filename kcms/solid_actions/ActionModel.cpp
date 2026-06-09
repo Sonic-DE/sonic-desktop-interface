@@ -118,5 +118,3 @@ QList<ActionItem *> ActionModel::actionList() const
 {
     return d->actions;
 }
-
-#include "moc_ActionModel.cpp"

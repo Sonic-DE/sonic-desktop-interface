@@ -163,5 +163,3 @@ void PredicateModel::childrenChanging(const QModelIndex &item, Solid::Predicate:
         endInsertRows();
     }
 }
-
-#include "moc_PredicateModel.cpp"

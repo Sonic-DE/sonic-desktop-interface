@@ -180,5 +180,3 @@ void ActionEditor::accept()
 
     QDialog::accept();
 }
-
-#include "moc_ActionEditor.cpp"
