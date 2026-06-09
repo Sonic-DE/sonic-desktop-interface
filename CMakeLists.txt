@@ -1,3 +1,5 @@
+set(CMAKE_AUTOMOC ON)
+
 cmake_minimum_required(VERSION 3.16)
 
 project(plasma-desktop)
