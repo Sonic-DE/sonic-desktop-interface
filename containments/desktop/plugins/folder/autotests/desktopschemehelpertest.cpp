@@ -59,5 +59,3 @@ void DesktopSchemeHelperTest::returnsExpectedValues()
     // LabelGenerator expects a leading slash
     QCOMPARE(DesktopSchemeHelper::getFileUrl(QStringLiteral("desktop:Productivity/")), childOfDesktop);
 }
-
-#include "moc_desktopschemehelpertest.cpp"
