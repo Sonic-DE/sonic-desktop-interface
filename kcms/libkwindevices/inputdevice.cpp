@@ -165,5 +165,3 @@ void InputDevice::setRelative(bool relative)
 {
     m_relative.set(relative);
 }
-
-#include "moc_inputdevice.cpp"
