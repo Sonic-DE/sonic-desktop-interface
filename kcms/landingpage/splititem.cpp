@@ -93,5 +93,3 @@ QSGNode *SplitItem::updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *)
         return node;
     }
 }
-
-#include "moc_splititem.cpp"

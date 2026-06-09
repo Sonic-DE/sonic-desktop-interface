@@ -114,5 +114,3 @@ void LookAndFeelModel::reload()
     m_lnfs = lnfs;
     endResetModel();
 }
-
-#include "moc_lookandfeelmodel.cpp"
