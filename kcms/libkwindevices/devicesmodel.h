@@ -8,11 +8,12 @@
 
 #include <QAbstractListModel>
 
+#include "inputdevice.h"
+
 #include <memory>
 #include <vector>
 
 class QDBusInterface;
-class InputDevice;
 
 class DevicesModel : public QAbstractListModel
 {
