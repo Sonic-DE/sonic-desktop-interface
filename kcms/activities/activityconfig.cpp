@@ -178,5 +178,3 @@ void ActivityConfig::createActivity()
         save();
     });
 }
-
-#include "moc_activityconfig.cpp"
