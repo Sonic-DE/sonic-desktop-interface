@@ -35,6 +35,10 @@ add_library(touchpad_common STATIC
     ${TOUCHPAD_DBUS_SRCS}
 )
 set_property(TARGET touchpad_common PROPERTY POSITION_INDEPENDENT_CODE ON)
+# touchpadbackend.h is private to touchpad_common. Consumers (kcm_touchpad,
+# kded_touchpad) must not see it, so AUTOMOC for those targets does not scan
+# it. This prevents duplicate moc_touchpadbackend.cpp generation across targets.
+target_include_directories(touchpad_common PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 
 target_link_libraries(touchpad_common
     PUBLIC
@@ -45,12 +49,29 @@ target_link_libraries(touchpad_common
     KF6::WindowSystem
     KF6::I18n
 )
+if (BUILD_KCM_TOUCHPAD_X11)
+    # touchpadbackend.cpp includes xlibbackend.h under the X11 guard, which
+    # pulls in X11 system headers. Link the X11 deps privately so they
+    # don't propagate to consumers.
+    target_link_libraries(touchpad_common
+        PRIVATE
+            Qt::GuiPrivate
+            XCB::ATOM
+            XCB::RECORD
+            X11::X11
+            X11::Xi
+            X11::XCB
+            PkgConfig::XORGSERVER
+            PkgConfig::XORGLIBINPUT
+    )
+endif()
 
 add_subdirectory(backends)
 add_subdirectory(kded)
 
 kcmutils_add_qml_kcm(kcm_touchpad)
 target_sources(kcm_touchpad PRIVATE kcm.cpp)
+target_include_directories(kcm_touchpad PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 
 target_link_libraries(kcm_touchpad
     PRIVATE
@@ -64,6 +85,7 @@ target_link_libraries(kcm_touchpad
     Plasma::Plasma
     KF6::WindowSystem
     touchpad_common
+    touchpad_x11_backends
 )
 
 add_custom_command(TARGET kcm_touchpad POST_BUILD

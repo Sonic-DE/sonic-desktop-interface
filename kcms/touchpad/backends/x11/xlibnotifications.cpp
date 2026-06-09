@@ -132,5 +132,3 @@ XlibNotifications::~XlibNotifications()
     xcb_destroy_window(m_connection, m_inputWindow);
     xcb_flush(m_connection);
 }
-
-#include "moc_xlibnotifications.cpp"
