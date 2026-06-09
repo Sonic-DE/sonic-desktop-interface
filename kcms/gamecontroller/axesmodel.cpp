@@ -127,5 +127,3 @@ QVariant AxesModel::headerData(int section, Qt::Orientation orientation, int rol
 
     return {};
 }
-
-#include "moc_axesmodel.cpp"

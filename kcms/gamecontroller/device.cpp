@@ -396,5 +396,3 @@ void Device::onHatEvent(const SDL_JoyHatEvent &event)
 {
     Q_EMIT hatPositionChanged(event.hat);
 }
-
-#include "moc_device.cpp"

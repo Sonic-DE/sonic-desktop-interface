@@ -185,5 +185,3 @@ int DeviceModel::count() const
 {
     return m_devices.size();
 }
-
-#include "moc_devicemodel.cpp"
