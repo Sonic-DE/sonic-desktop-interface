@@ -287,5 +287,3 @@ void SoftwareSplitNode::markMaterialDirty()
 {
     markDirty(DirtyMaterial);
 }
-
-#include "moc_splitnode.cpp"

@@ -59,5 +59,3 @@ void LookAndFeelMetaData::setPreview(const QUrl &url)
         Q_EMIT previewChanged();
     }
 }
-
-#include "moc_lookandfeelmetadata.cpp"
