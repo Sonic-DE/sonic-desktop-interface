@@ -6,11 +6,10 @@
 
 #pragma once
 
+#include "shape.h"
 #include "xkbobject.h"
 
 #include <QColor>
-
-class Shape;
 
 // This is a fairly opinionated model of a key cap. We assume there won't
 // be any more than 4 levels.

@@ -18,5 +18,3 @@ Row::Row(XkbRowPtr row_, XkbDescPtr xkb_, QObject *parent)
         keys.push_back(new Key(row->keys + i, xkb, this));
     }
 }
-
-#include "moc_row.cpp"

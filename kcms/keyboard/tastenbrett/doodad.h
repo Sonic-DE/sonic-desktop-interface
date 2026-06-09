@@ -8,9 +8,8 @@
 
 #include <QColor>
 
+#include "shape.h"
 #include "xkbobject.h"
-
-class Shape;
 
 class Doodad : public XkbObject
 {
