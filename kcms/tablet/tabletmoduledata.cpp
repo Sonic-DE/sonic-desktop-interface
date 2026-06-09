@@ -36,5 +36,3 @@ void TabletModuleData::updateRelevance()
     }
     setRelevant(relevant);
 }
-
-#include "moc_tabletmoduledata.cpp"
