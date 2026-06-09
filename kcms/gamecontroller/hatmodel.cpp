@@ -85,5 +85,3 @@ QVariant HatModel::headerData(int section, Qt::Orientation orientation, int role
 
     return {};
 }
-
-#include "moc_hatmodel.cpp"

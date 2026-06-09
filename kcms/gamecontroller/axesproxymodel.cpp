@@ -39,5 +39,3 @@ QVariant AxesProxyModel::headerData(int section, Qt::Orientation orientation, in
 
     return QConcatenateTablesProxyModel::headerData(section, orientation, role);
 }
-
-#include "moc_axesproxymodel.cpp"

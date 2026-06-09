@@ -86,5 +86,3 @@ QVariant ButtonModel::headerData(int section, Qt::Orientation orientation, int r
 
     return {};
 }
-
-#include "moc_buttonmodel.cpp"
