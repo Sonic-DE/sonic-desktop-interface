@@ -29,5 +29,3 @@ Shape::Shape(XkbShapePtr shape_, XkbDescPtr xkb_, QObject *parent)
         outlines.push_back(new Outline(shape->outlines + i, xkb, this));
     }
 }
-
-#include "moc_shape.cpp"

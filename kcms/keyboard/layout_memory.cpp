@@ -180,5 +180,3 @@ void LayoutMemory::desktopChanged(int /*desktop*/)
 {
     setCurrentLayoutFromMap();
 }
-
-#include "moc_layout_memory.cpp"

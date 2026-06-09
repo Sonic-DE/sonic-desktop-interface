@@ -75,5 +75,3 @@ LogoDoodad::LogoDoodad(XkbDoodadPtr doodad_, XkbDescPtr xkb_, QObject *parent)
     : ShapeDoodad(doodad_, xkb_, parent)
 {
 }
-
-#include "moc_doodad.cpp"

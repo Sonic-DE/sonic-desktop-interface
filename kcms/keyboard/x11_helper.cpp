@@ -385,5 +385,3 @@ QString LayoutUnit::toString() const
 }
 
 const int LayoutUnit::MAX_LABEL_LENGTH = 3;
-
-#include "moc_x11_helper.cpp"
