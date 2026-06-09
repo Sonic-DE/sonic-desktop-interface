@@ -23,5 +23,3 @@ void TouchscreenModuleData::updateRelevance()
     bool relevant = m_devices->rowCount(QModelIndex()) > 0;
     setRelevant(relevant);
 }
-
-#include "moc_touchscreenmoduledata.cpp"
