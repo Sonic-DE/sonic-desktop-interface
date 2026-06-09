@@ -397,5 +397,3 @@ void DeviceModel::updateCheckedColumns(int column)
                            {Qt::CheckStateRole, Qt::ToolTipRole});
     }
 }
-
-#include "moc_DeviceModel.cpp"
