@@ -45,5 +45,3 @@ void InputBackend::registerImplementationTypes(const char *uri)
 }
 
 #include <fixx11h.h>
-
-#include "moc_inputbackend.cpp"

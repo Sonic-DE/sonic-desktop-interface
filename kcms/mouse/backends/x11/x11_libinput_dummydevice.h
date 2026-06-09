@@ -19,7 +19,7 @@
 
 using namespace Qt::StringLiterals;
 
-struct LibinputSettings;
+#include "libinput_settings.h"
 
 class X11LibinputDummyDevice : public InputDevice
 {
