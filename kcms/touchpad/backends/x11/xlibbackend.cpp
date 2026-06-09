@@ -238,5 +238,3 @@ void XlibBackend::watchForEvents()
         connect(m_notifications.get(), &XlibNotifications::propertyChanged, this, &XlibBackend::propertyChanged);
     }
 }
-
-#include "moc_xlibbackend.cpp"

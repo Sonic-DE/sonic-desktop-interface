@@ -38,5 +38,3 @@ TouchpadBackend *TouchpadBackend::implementation()
     qCCritical(KCM_TOUCHPAD) << "Not able to select appropriate backend.";
     return nullptr;
 }
-
-#include "moc_touchpadbackend.cpp"
