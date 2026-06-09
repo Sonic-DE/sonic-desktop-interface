@@ -5,5 +5,3 @@
 */
 
 // All methods are virtual+abstract.
-
-#include "moc_inputdevice.cpp"

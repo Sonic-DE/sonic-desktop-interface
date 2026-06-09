@@ -273,5 +273,3 @@ bool X11LibinputDummyDevice::isSaveNeeded() const
 }
 
 #include <fixx11h.h>
-
-#include "moc_x11_libinput_dummydevice.cpp"

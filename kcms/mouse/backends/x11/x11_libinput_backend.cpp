@@ -60,5 +60,3 @@ QList<InputDevice *> X11LibinputBackend::inputDevices() const
 {
     return {m_device.get()};
 }
-
-#include "moc_x11_libinput_backend.cpp"
