@@ -231,7 +231,3 @@ void ExcludedApplicationsModel::setEnabled(bool enabled)
     d->enabled = enabled;
     Q_EMIT enabledChanged(enabled);
 }
-
-// #include <ExcludedApplicationsModel.moc>
-
-#include "moc_ExcludedApplicationsModel.cpp"
