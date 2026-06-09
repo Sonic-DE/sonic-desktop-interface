@@ -30,5 +30,3 @@ bool KDEDConfigData::isDefaults() const
 
     return true;
 }
-
-#include "moc_kdedconfigdata.cpp"
