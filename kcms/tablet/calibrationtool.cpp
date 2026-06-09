@@ -304,5 +304,3 @@ ca_context *CalibrationTool::canberraContext()
 
     return m_canberraContext;
 }
-
-#include "moc_calibrationtool.cpp"

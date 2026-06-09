@@ -313,5 +313,3 @@ QHash<int, QByteArray> TabletsModel::roleNames() const
         {Qt::DisplayRole, QByteArrayLiteral("display")},
     };
 }
-
-#include "moc_tabletsmodel.cpp"
