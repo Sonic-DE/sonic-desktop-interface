@@ -300,5 +300,3 @@ QHash<int, QByteArray> BaseModel::roleNames() const
         {IsRemovableRole, QByteArrayLiteral("isRemovable")},
     };
 }
-
-#include "moc_basemodel.cpp"

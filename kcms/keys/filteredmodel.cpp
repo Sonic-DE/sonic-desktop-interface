@@ -88,5 +88,3 @@ void FilteredShortcutsModel::setShowsLaunchAction(bool value)
     endFilterChange();
     Q_EMIT showsLaunchActionChanged();
 }
-
-#include "moc_filteredmodel.cpp"
