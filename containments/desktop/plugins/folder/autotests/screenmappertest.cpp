@@ -289,5 +289,3 @@ void ScreenMapperTest::addScreens(const QUrl &path, const QString &activity)
         m_screenMapper->addScreen(screen, activity, path);
     }
 }
-
-#include "moc_screenmappertest.cpp"

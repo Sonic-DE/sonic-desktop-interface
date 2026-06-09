@@ -423,5 +423,3 @@ void FolderModelTest::tst_initializeOnCorrectScreens()
     // Now that the screen_1 is enabled again, the item should be back on the screen_1
     QCOMPARE(screenMapper->screenMapping(), newMap);
 }
-
-#include "moc_foldermodeltest.cpp"

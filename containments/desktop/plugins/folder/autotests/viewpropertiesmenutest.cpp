@@ -22,5 +22,3 @@ void ViewPropertiesMenuTest::shouldHaveDefaultValues()
     QVERIFY(!m.sortDesc());
     QVERIFY(!m.sortDirsFirst());
 }
-
-#include "moc_viewpropertiesmenutest.cpp"

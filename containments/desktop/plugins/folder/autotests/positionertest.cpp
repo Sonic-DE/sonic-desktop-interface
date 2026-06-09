@@ -487,5 +487,3 @@ void PositionerTest::changeResolution(const QSize &resolution)
     m_folderModel->setScreenResolution(resolution);
     m_positioner->setPerStripe(m_positioner->m_perStripe);
 }
-
-#include "moc_positionertest.cpp"
