@@ -247,5 +247,3 @@ void Backend::onServiceUnregistered(const QString &service)
     m_launchers.remove(storageId);
     Q_EMIT launcherRemoved(storageId);
 }
-
-#include "moc_smartlauncherbackend.cpp"

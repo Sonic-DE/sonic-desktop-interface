@@ -6,11 +6,12 @@
 #pragma once
 
 #include <QAbstractListModel>
+#include <QMimeData>
 #include <QQmlParserStatus>
+#include <QRect>
+#include <QSize>
 #include <memory>
 #include <qqmlregistration.h>
-
-class QMimeData;
 
 class PagerModel : public QAbstractListModel, public QQmlParserStatus
 {

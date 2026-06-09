@@ -599,5 +599,3 @@ void PagerModel::computePagerItemSize()
         Q_EMIT pagerItemSizeChanged();
     }
 }
-
-#include "moc_pagermodel.cpp"

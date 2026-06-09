@@ -196,5 +196,3 @@ void DirModel::previewFailed(const KFileItem &item)
 {
     m_previewJobs.remove(item.url());
 }
-
-#include "moc_dirmodel.cpp"
