@@ -69,5 +69,3 @@ bool KeysData::isDefaults() const
 {
     return m_isDefault;
 }
-
-#include "moc_keysdata.cpp"

@@ -122,3 +122,37 @@ private:
     friend class ShortcutsModelPrivate;
     const std::unique_ptr<ShortcutsModelPrivate> d;
 };
+
+class ShortcutsModelPrivate
+{
+public:
+    explicit ShortcutsModelPrivate(ShortcutsModel *model)
+        : q(model)
+    {
+    }
+
+    int computeRowsPrior(const QAbstractItemModel *sourceModel) const;
+    QAbstractItemModel *sourceModelForRow(int row, int *sourceRow) const;
+
+    void slotRowsAboutToBeInserted(const QModelIndex &, int start, int end);
+    void slotRowsInserted(const QModelIndex &, int start, int end);
+    void slotRowsAboutToBeRemoved(const QModelIndex &, int start, int end);
+    void slotRowsRemoved(const QModelIndex &, int start, int end);
+    void slotColumnsAboutToBeInserted(const QModelIndex &parent, int start, int end);
+    void slotColumnsInserted(const QModelIndex &parent, int, int);
+    void slotColumnsAboutToBeRemoved(const QModelIndex &parent, int start, int end);
+    void slotColumnsRemoved(const QModelIndex &parent, int, int);
+    void slotDataChanged(const QModelIndex &from, const QModelIndex &to, const QList<int> &roles);
+    void slotSourceLayoutAboutToBeChanged(const QList<QPersistentModelIndex> &sourceParents, QAbstractItemModel::LayoutChangeHint hint);
+    void slotSourceLayoutChanged(const QList<QPersistentModelIndex> &sourceParents, QAbstractItemModel::LayoutChangeHint hint);
+    void slotModelAboutToBeReset();
+    void slotModelReset();
+
+    ShortcutsModel *const q;
+    QList<QAbstractItemModel *> m_models;
+    int m_rowCount = 0; // have to maintain it here since we can't compute during model destruction
+
+    // for layoutAboutToBeChanged/layoutChanged
+    QList<QPersistentModelIndex> layoutChangePersistentIndexes;
+    QModelIndexList proxyIndexes;
+};
