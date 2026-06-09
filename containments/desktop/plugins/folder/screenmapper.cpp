@@ -482,5 +482,3 @@ void ScreenMapper::saveDisabledScreensMap() const
 
     group.writeEntry(QStringLiteral("itemsOnDisabledScreens"), serializedMap);
 }
-
-#include "moc_screenmapper.cpp"

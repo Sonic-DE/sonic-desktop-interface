@@ -6,12 +6,11 @@
 
 #pragma once
 
+#include <QAction>
+#include <QActionGroup>
+#include <QMenu>
 #include <QObject>
 #include <qqmlregistration.h>
-
-class QAction;
-class QActionGroup;
-class QMenu;
 
 class ViewPropertiesMenu : public QObject
 {

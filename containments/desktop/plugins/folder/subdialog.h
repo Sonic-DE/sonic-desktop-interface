@@ -8,6 +8,8 @@
 #pragma once
 
 #include <PlasmaQuick/Dialog>
+#include <QRect>
+#include <QSize>
 #include <qqmlregistration.h>
 
 class SubDialog : public PlasmaQuick::Dialog

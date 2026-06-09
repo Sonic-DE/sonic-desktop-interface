@@ -10,8 +10,9 @@
 #include <QPointer>
 #include <qqmlregistration.h>
 
+#include "foldermodel.h"
+
 class KFilePlacesModel;
-class FolderModel;
 
 class LabelGenerator : public QObject
 {

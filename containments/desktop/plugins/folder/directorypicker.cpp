@@ -50,5 +50,3 @@ void DirectoryPicker::dialogAccepted()
         Q_EMIT urlChanged();
     }
 }
-
-#include "moc_directorypicker.cpp"

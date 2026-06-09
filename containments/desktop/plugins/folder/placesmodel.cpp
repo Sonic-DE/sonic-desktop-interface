@@ -95,5 +95,3 @@ bool PlacesModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParen
 
     return !m_sourceModel->isHidden(index);
 }
-
-#include "moc_placesmodel.cpp"

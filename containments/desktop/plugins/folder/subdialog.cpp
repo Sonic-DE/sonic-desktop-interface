@@ -80,5 +80,3 @@ void SubDialog::setAllowClosing(bool allow)
         Q_EMIT allowClosingChanged();
     }
 }
-
-#include "moc_subdialog.cpp"

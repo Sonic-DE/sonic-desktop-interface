@@ -50,5 +50,3 @@ void EventGenerator::sendMouseEvent(QQuickItem *item,
 
     QGuiApplication::sendEvent(item, &ev);
 }
-
-#include "moc_eventgenerator.cpp"

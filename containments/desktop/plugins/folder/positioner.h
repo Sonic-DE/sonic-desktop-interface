@@ -10,7 +10,7 @@
 #include <QAbstractItemModel>
 #include <qqmlregistration.h>
 
-class FolderModel;
+#include "foldermodel.h"
 
 class QTimer;
 

@@ -111,5 +111,3 @@ void ItemViewAdapter::setAdapterVisibleArea(QRect rect)
         Q_EMIT adapterVisibleAreaChanged();
     }
 }
-
-#include "moc_itemviewadapter.cpp"
