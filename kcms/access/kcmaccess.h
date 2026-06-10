@@ -11,6 +11,17 @@
 #include <QColor>
 #include <QString>
 
+#include "kcmaccessibilityactivationgestures.h"
+#include "kcmaccessibilitybell.h"
+#include "kcmaccessibilitycolorblindnesscorrection.h"
+#include "kcmaccessibilityinvert.h"
+#include "kcmaccessibilitykeyboard.h"
+#include "kcmaccessibilitykeyboardfilters.h"
+#include "kcmaccessibilitymouse.h"
+#include "kcmaccessibilityscreenreader.h"
+#include "kcmaccessibilityshakecursor.h"
+#include "kcmaccessibilityzoommagnifier.h"
+
 class MouseSettings;
 class BellSettings;
 class KeyboardSettings;

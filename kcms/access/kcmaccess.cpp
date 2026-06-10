@@ -511,4 +511,3 @@ bool KAccessConfig::zoomMagnifierIsDefaults() const
 }
 
 #include "kcmaccess.moc"
-#include "moc_kcmaccess.cpp"
