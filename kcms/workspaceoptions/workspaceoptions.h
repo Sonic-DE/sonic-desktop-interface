@@ -9,6 +9,10 @@
 
 #include <KQuickManagedConfigModule>
 
+#include "workspaceoptions_kdeglobalssettings.h"
+#include "workspaceoptions_kwinsettings.h"
+#include "workspaceoptions_plasmasettings.h"
+
 class WorkspaceOptionsData;
 class WorkspaceOptionsGlobalsSettings;
 class WorkspaceOptionsPlasmaSettings;
