@@ -15,7 +15,9 @@ class KConfig;
 class KPluginMetaData;
 
 class ModulesModel;
+Q_DECLARE_OPAQUE_POINTER(ModulesModel *)
 class FilterProxyModel;
+Q_DECLARE_OPAQUE_POINTER(FilterProxyModel *)
 
 class OrgKdeKded6Interface;
 
