@@ -12,7 +12,8 @@
 #include <KConfigGroup>
 #include <KQuickManagedConfigModule>
 
-class KRunnerSettingsBase;
+#include "krunnersettingsbase.h"
+
 class KRunnerSettingsData;
 
 class KRunnerSettings : public KQuickManagedConfigModule

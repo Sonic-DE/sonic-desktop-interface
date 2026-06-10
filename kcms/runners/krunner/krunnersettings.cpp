@@ -86,4 +86,3 @@ void KRunnerSettings::save()
 }
 
 #include "krunnersettings.moc"
-#include "moc_krunnersettings.cpp"
