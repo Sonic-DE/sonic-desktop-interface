@@ -13,10 +13,11 @@
 #include <KQuickManagedConfigModule>
 #include <QAbstractProxyModel>
 
+#include "splashscreensettings.h"
+
 class QStandardItemModel;
 class QSortFilterProxyModel;
 class QProcess;
-class SplashScreenSettings;
 class SplashScreenData;
 
 class KCMSplashScreen : public KQuickManagedConfigModule
