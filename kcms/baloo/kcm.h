@@ -12,8 +12,8 @@
 #include <KQuickManagedConfigModule>
 
 #include "filteredfoldermodel.h"
+#include <baloo/baloosettings.h>
 
-class BalooSettings;
 class BalooData;
 
 namespace Baloo
