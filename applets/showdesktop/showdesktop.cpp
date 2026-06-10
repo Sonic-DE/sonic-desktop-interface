@@ -43,5 +43,3 @@ void ShowDesktop::toggleDesktop()
 {
     setShowingDesktop(!showingDesktop());
 }
-
-#include "moc_showdesktop.cpp"
