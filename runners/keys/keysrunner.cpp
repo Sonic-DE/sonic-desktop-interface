@@ -178,4 +178,3 @@ void KeysRunner::onPrepare()
 K_PLUGIN_CLASS_WITH_JSON(KeysRunner, "plasma-runner-keys.json")
 
 #include "keysrunner.moc"
-#include "moc_keysrunner.cpp"
