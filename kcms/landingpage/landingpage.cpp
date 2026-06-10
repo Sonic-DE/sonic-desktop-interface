@@ -244,4 +244,3 @@ QAction *KCMLandingPage::kcmAction(const QString &storageId)
 }
 
 #include "landingpage.moc"
-#include "moc_landingpage.cpp"
