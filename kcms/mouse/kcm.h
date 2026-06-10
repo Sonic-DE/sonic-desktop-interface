@@ -7,7 +7,15 @@
 
 #pragma once
 
+// <X11/X.h> (included transitively by the X11 backend moc in this target's
+// AUTOMOC mocs_compilation.cpp) #defines `None` as 0L, which collides with
+// `None` enumerators in Qt headers pulled in below (e.g. QUrl) and with
+// moc-generated references such as `MessageType::None`. Undef it so the
+// moc compilation unit can include both this header and the X11 backends.
+#undef None
+
 #include <KQuickManagedConfigModule>
+#include <QObject>
 #include <memory>
 
 class KMessageWidget;

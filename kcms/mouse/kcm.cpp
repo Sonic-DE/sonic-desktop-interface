@@ -225,4 +225,3 @@ void KCMMouse::setHotplugMessage(const Message &message)
 }
 
 #include "kcm.moc"
-#include "moc_kcm.cpp"
