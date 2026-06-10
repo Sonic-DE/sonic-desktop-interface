@@ -239,4 +239,3 @@ void KDEDConfig::defaults()
 }
 
 #include "kcmkded.moc"
-#include "moc_kcmkded.cpp"
