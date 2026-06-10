@@ -96,5 +96,3 @@ void ActivitiesModule::handleArgument(const QString &argument)
 }
 
 #include "kcm_activities.moc"
-
-#include "moc_kcm_activities.cpp"
