@@ -447,5 +447,3 @@ void SwitcherBackend::toggleActivityManager()
                                                   QStringLiteral("toggleActivityManager"));
     QDBusConnection::sessionBus().call(message, QDBus::NoBlock);
 }
-
-#include "moc_switcherbackend.cpp"
