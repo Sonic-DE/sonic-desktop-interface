@@ -178,5 +178,3 @@ void SearchConfigModule::setDefaultIndicatorVisible(QWidget *widget, bool visibl
 }
 
 #include "kcm.moc"
-
-#include "moc_kcm.cpp"
