@@ -12,9 +12,9 @@
 
 #include <KQuickManagedConfigModule>
 
-class QAction;
+#include "smserversettings.h"
 
-class SMServerSettings;
+class QAction;
 
 class OrgFreedesktopLogin1ManagerInterface;
 

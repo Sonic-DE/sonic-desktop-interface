@@ -167,5 +167,3 @@ void SMServerConfig::save()
 }
 
 #include "kcmsmserver.moc"
-
-#include "moc_kcmsmserver.cpp"
