@@ -114,5 +114,3 @@ SpellCheckingSkeleton *SonnetSpellCheckingModule::skeleton() const
 }
 
 #include "spellchecking.moc"
-
-#include "moc_spellchecking.cpp"
