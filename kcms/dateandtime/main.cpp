@@ -183,5 +183,3 @@ void KclockModule::load()
 }
 
 #include "main.moc"
-
-#include "moc_main.cpp"
