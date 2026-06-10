@@ -17,6 +17,9 @@ class GlobalAccelModel;
 class ShortcutsModel;
 class StandardShortcutsModel;
 
+#include "filteredmodel.h"
+#include "shortcutsmodel.h"
+
 class KCMKeys : public KQuickConfigModule
 {
     Q_OBJECT

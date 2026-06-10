@@ -436,4 +436,3 @@ void KCMKeys::requestKeySequence(QQuickItem *context, const QModelIndex &index, 
 }
 
 #include "kcm_keys.moc"
-#include "moc_kcm_keys.cpp"
