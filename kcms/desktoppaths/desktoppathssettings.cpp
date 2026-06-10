@@ -324,5 +324,3 @@ QUrl DesktopPathsSettings::defaultTemplatesLocation() const
 }
 
 #include "desktoppathssettings.moc"
-
-#include "moc_desktoppathssettings.cpp"
