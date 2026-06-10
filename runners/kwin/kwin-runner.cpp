@@ -74,5 +74,3 @@ void KWinRunner::checkAvailability(const QString &name, const QString & /*oldOwn
 }
 
 #include "kwin-runner.moc"
-
-#include "moc_kwin-runner.cpp"

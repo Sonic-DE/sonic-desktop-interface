@@ -8,6 +8,8 @@
 
 #include <KRunner/AbstractRunner>
 
+#include <QKeySequence>
+
 class GlobalAccelModel;
 class FilteredShortcutsModel;
 

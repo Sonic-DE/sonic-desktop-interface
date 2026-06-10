@@ -63,5 +63,3 @@ void PlasmaDesktopRunner::run(const RunnerContext &context, const QueryMatch & /
 }
 
 #include "plasma-desktop-runner.moc"
-
-#include "moc_plasma-desktop-runner.cpp"
