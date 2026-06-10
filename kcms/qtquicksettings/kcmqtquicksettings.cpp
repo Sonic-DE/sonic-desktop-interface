@@ -29,5 +29,3 @@ KCMQtQuickSettingsModule::~KCMQtQuickSettingsModule()
 }
 
 #include "kcmqtquicksettings.moc"
-
-#include "moc_kcmqtquicksettings.cpp"
