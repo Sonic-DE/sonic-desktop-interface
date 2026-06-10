@@ -275,5 +275,3 @@ void Attica::KdePlatformDependent::loadAccessToken()
         });
     }
 }
-
-#include "moc_kdeplatformdependent.cpp"
