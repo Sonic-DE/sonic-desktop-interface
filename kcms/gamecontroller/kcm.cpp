@@ -77,5 +77,3 @@ void KCMGameController::setPluginEnabled(bool enabled)
 }
 
 #include "kcm.moc"
-
-#include "moc_kcm.cpp"
