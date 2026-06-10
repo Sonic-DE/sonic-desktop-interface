@@ -14,10 +14,11 @@
 #include <QJsonValue>
 #include <QSortFilterProxyModel>
 
+#include "landingpage_kdeglobalssettings.h"
+
 class QStandardItemModel;
 
 class LandingPageData;
-class LandingPageGlobalsSettings;
 
 namespace KActivities
 {
