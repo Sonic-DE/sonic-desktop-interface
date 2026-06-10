@@ -198,5 +198,3 @@ void TouchpadDisabler::showOsd()
 }
 
 #include "kded.moc"
-
-#include "moc_kded.cpp"
