@@ -212,5 +212,3 @@ void SolidActions::toggleEditDelete()
 }
 
 #include "SolidActions.moc"
-
-#include "moc_SolidActions.cpp"
