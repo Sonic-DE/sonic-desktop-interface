@@ -40,5 +40,3 @@ bool DesktopPathConfig::isDefaults() const
 }
 
 #include "globalpaths.moc"
-
-#include "moc_globalpaths.cpp"
