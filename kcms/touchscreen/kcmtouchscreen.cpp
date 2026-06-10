@@ -126,5 +126,3 @@ DevicesModel *Touchscreen::touchscreensModel() const
 }
 
 #include "kcmtouchscreen.moc"
-
-#include "moc_kcmtouchscreen.cpp"
