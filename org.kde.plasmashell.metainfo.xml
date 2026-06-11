@@ -185,10 +185,11 @@
   </screenshots>
   <compulsory_for_desktop>KDE</compulsory_for_desktop>
   <releases>
-    <release version="6.6.5" date="2026-05-12"/>
-    <release version="6.6.4" date="2026-04-06"/>
-    <release version="6.6.3" date="2026-03-17"/>
-    <release version="6.6.2" date="2026-03-03"/>
+    <release version="6.7.0" date="2026-06-16"/>
+    <release version="6.3.90" date="2025-05-15"/>
+    <release version="6.2.0" date="2024-10-08"/>
+    <release version="6.1.0" date="2024-06-18"/>
   </releases>
 </component>
+
 
