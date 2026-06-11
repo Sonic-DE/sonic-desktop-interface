@@ -183,7 +183,12 @@ private:
 
     QHash<int, int> m_proxyToSource;
     QHash<int, int> m_sourceToProxy;
+    int m_preLayoutRowCount = -1;
     bool m_beginInsertRowsCalled = false; // used to sync the amount of begin/endInsertRows calls
+    // Snapshot of URL -> proxy taken in sourceLayoutAboutToBeChanged so that
+    // sourceLayoutChanged can preserve user-applied mappings across a sort/layout
+    // change instead of clobbering them with a KDirModel-row-based identity rebuild.
+    QHash<QString, int> m_preLayoutUrlToProxy;
 
     QString m_resolution;
 
