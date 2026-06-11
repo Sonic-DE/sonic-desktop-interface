@@ -356,10 +356,76 @@ void ScreenMapper::setScreenMapping(const QStringList &mapping)
         }
     }
 
-    if (m_screenItemMap != newMap) {
+    // Symmetric migration: any item whose screen is not in m_availableScreens for its activity
+    // is recorded in m_itemsOnDisabledScreensMap (mirroring removeScreen) and re-mapped to the
+    // first available screen for the folder containing the item. This prevents stale "item on
+    // disabled screen" state from being observed by callers (e.g. foldermodeltest reads
+    // screenMapping() immediately after setScreenMapping).
+    bool disabledMapChanged = false;
+    for (auto it = newMap.begin(); it != newMap.end();) {
+        const auto &url = it.key().first;
+        const auto &activity = it.key().second;
+        const int screen = it.value();
+        if (!m_availableScreens.contains(std::make_pair(screen, activity))) {
+            const auto disabledPair = std::make_pair(screen, activity);
+            auto disabledIt = m_itemsOnDisabledScreensMap.find(disabledPair);
+            bool newlyDisabled = false;
+            if (disabledIt == m_itemsOnDisabledScreensMap.end()) {
+                m_itemsOnDisabledScreensMap[disabledPair] = {url};
+                newlyDisabled = true;
+            } else if (!disabledIt->contains(url)) {
+                disabledIt->insert(url);
+                newlyDisabled = true;
+            }
+            if (newlyDisabled) {
+                disabledMapChanged = true;
+            }
+
+            const int target = firstAvailableScreenForItem(url, activity);
+            if (target != -1) {
+                it.value() = target;
+                ++it;
+            } else {
+                // No available screen for this item at all; drop it from the mapping entirely.
+                // filterAcceptsRow will hide it on every screen.
+                it = newMap.erase(it);
+            }
+        } else {
+            ++it;
+        }
+    }
+
+    if (disabledMapChanged) {
+        m_disabledScreensMapDirty = true;
+    }
+
+    if (m_screenItemMap != newMap || disabledMapChanged) {
         m_screenItemMap = newMap;
         Q_EMIT screenMappingChanged();
     }
+}
+
+int ScreenMapper::firstAvailableScreenForItem(const QUrl &itemUrl, const QString &activity) const
+{
+    const auto itemPathWithScheme = itemUrl.url();
+    for (auto pathIt = m_screensPerPath.constBegin(); pathIt != m_screensPerPath.constEnd(); ++pathIt) {
+        if (!itemPathWithScheme.startsWith(pathIt.key().url())) {
+            continue;
+        }
+        std::optional<int> best;
+        for (const auto &screen : pathIt.value()) {
+            if (screen.second != activity) {
+                continue;
+            }
+            if (!best.has_value() || screen.first < best.value()) {
+                best = screen.first;
+            }
+        }
+        if (best.has_value()) {
+            return best.value();
+        }
+    }
+    return -1;
 }
 
 int ScreenMapper::screenForItem(const QUrl &url, const QString &activity) const

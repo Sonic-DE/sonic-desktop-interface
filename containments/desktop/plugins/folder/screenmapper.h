@@ -74,6 +74,7 @@ Q_SIGNALS:
 
 private:
     void processScreenTransition();
+    int firstAvailableScreenForItem(const QUrl &itemUrl, const QString &activity) const;
 
     /**
      * The format of DisabledScreensMap is:
