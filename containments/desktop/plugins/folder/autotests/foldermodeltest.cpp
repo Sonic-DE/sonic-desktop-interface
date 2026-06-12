@@ -7,8 +7,12 @@
 
 #include "foldermodeltest.h"
 #include "foldermodel.h"
+#include "positioner.h"
 #include "screenmapper.h"
 
+#include <QEvent>
+#include <QMimeData>
+#include <QQuickItem>
 #include <QSignalSpy>
 #include <QTemporaryDir>
 #include <QTest>
@@ -422,4 +426,78 @@ void FolderModelTest::tst_initializeOnCorrectScreens()
 
     // Now that the screen_1 is enabled again, the item should be back on the screen_1
     QCOMPARE(screenMapper->screenMapping(), newMap);
+}
+
+void FolderModelTest::tst_userCrossScreenDrag()
+{
+    auto *applet = new Plasma::Applet(this, KPluginMetaData(), QVariantList{});
+    applet->config().deleteGroup(QStringLiteral("General"));
+
+    const QString path = m_folderDir->path() + QDir::separator() + desktop;
+    const QUrl desktopUrl = QUrl::fromLocalFile(path);
+
+    auto *screenMapper = ScreenMapper::instance();
+    const QStringList originalMapping = screenMapper->screenMapping();
+
+    auto *model0 = new FolderModel(this);
+    model0->classBegin();
+    model0->setUrl(path);
+    model0->setUsedByContainment(true);
+    model0->setScreen(0);
+    model0->componentComplete();
+    QVERIFY(QSignalSpy(model0, &FolderModel::listingCompleted).wait(1000));
+
+    auto *model1 = new FolderModel(this);
+    model1->classBegin();
+    model1->setUrl(path);
+    model1->setUsedByContainment(true);
+    model1->setScreen(1);
+    model1->componentComplete();
+    QVERIFY(QSignalSpy(model1, &FolderModel::listingCompleted).wait(1000));
+
+    auto *positioner1 = new Positioner(this);
+    positioner1->setApplet(applet);
+    positioner1->setEnabled(true);
+    positioner1->setFolderModel(model1);
+    positioner1->setPerStripe(3);
+
+    QCOMPARE(model0->rowCount(), 10);
+    QCOMPARE(model1->rowCount(), 0);
+
+    const QUrl file1Url = model0->index(0, 0).data(FolderModel::UrlRole).toUrl();
+
+    auto *mimeData = new QMimeData();
+    mimeData->setUrls({file1Url});
+
+    auto *dropEventObj = new QObject(this);
+    dropEventObj->setProperty("mimeData", QVariant::fromValue<QObject *>(mimeData));
+    dropEventObj->setProperty("x", 480);
+    dropEventObj->setProperty("y", 270);
+    dropEventObj->setProperty("proposedAction", (int)Qt::MoveAction);
+    dropEventObj->setProperty("possibleActions", (int)(Qt::MoveAction | Qt::CopyAction));
+    dropEventObj->setProperty("buttons", (int)Qt::LeftButton);
+    dropEventObj->setProperty("modifiers", (int)Qt::NoModifier);
+
+    auto *target = new QQuickItem();
+
+    model1->drop(target, dropEventObj, -1);
+
+    QTest::qWait(2000);
+
+    QCOMPARE(model1->rowCount(), 1);
+    QCOMPARE(model1->index(0, 0).data(FolderModel::UrlRole).toUrl(), file1Url);
+    QCOMPARE(model0->rowCount(), 9);
+
+    const int proxyIndex1 = positioner1->indexForUrl(file1Url);
+    QVERIFY(proxyIndex1 >= 0);
+    QVERIFY(!positioner1->isBlank(proxyIndex1));
+    QCOMPARE(positioner1->data(positioner1->index(proxyIndex1, 0), FolderModel::UrlRole).toUrl(), file1Url);
+
+    delete model0;
+    delete model1;
+    delete positioner1;
+    delete applet;
+    screenMapper->removeScreen(0, m_currentActivity, desktopUrl);
+    screenMapper->removeScreen(1, m_currentActivity, desktopUrl);
+    screenMapper->setScreenMapping(originalMapping);
 }
