@@ -34,6 +34,7 @@ private Q_SLOTS:
     void tst_multiScreen();
     void tst_multiScreenDifferenPath();
     void tst_initializeOnCorrectScreens();
+    void tst_userCrossScreenDrag();
 
 private:
     void createTestFolder(const QString &path);
