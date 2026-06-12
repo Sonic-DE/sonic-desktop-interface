@@ -210,7 +210,7 @@ FolderModel::FolderModel(QObject *parent)
      * adding an entry in the map and it showing up in the model should be
      * small, this should rarely, if ever happen.
      */
-    m_dropTargetPositionsCleanup->setInterval(10s);
+    m_dropTargetPositionsCleanup->setInterval(1s);
     m_dropTargetPositionsCleanup->setSingleShot(true);
     connect(m_dropTargetPositionsCleanup, &QTimer::timeout, this, [this]() {
         if (!m_dropTargetPositions.isEmpty()) {
@@ -277,6 +277,10 @@ FolderModel::~FolderModel()
         // removeScreen is called
         m_screenMapper->disconnect(this);
         m_screenMapper->removeScreen(m_screen, m_currentActivity, resolvedUrl());
+    }
+
+    if (m_positioner) {
+        m_positioner->setFolderModel(nullptr);
     }
 }
 
@@ -803,6 +807,16 @@ void FolderModel::cd(int row)
     }
 }
 
+Positioner *FolderModel::positioner() const
+{
+    return m_positioner.data();
+}
+
+void FolderModel::setPositioner(Positioner *p)
+{
+    m_positioner = p;
+}
+
 void FolderModel::run(int row)
 {
     if (row < 0) {
@@ -1320,6 +1334,14 @@ void FolderModel::drop(QQuickItem *target, QObject *dropEvent, int row, bool sho
                 m_screenMapper->addMapping(mappable, m_screen, m_currentActivity, ScreenMapper::DelayedSignal);
                 m_screenMapper->removeItemFromDisabledScreen(mappable);
             }
+            qCInfo(FOLDERMODEL) << "drop: cross-screen flush" << m_screen << "urls" << mimeData->urls();
+            m_screenMapper->flushDelayedSignal();
+            for (const auto &url : urls) {
+                if (m_positioner) {
+                    m_positioner->bootstrapUrl(mappableUrl(url));
+                }
+            }
+            Q_EMIT move(x, y, mimeData->urls());
             m_dropTargetPositionsCleanup->start();
             return;
         }

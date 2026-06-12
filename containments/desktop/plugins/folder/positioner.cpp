@@ -6,6 +6,7 @@
 
 #include "positioner.h"
 #include "foldermodel.h"
+#include "screenmapper.h"
 
 #include <cstdlib>
 #include <ranges>
@@ -43,6 +44,9 @@ Positioner::Positioner(QObject *parent)
 
 Positioner::~Positioner()
 {
+    if (m_folderModel) {
+        m_folderModel->setPositioner(nullptr);
+    }
     // Clear position hashes to release memory
     m_positions.clear();
     m_changedPositions.clear();
@@ -86,12 +90,14 @@ void Positioner::setFolderModel(QObject *folderModel)
 
         if (m_folderModel) {
             disconnectSignals(m_folderModel);
+            m_folderModel->setPositioner(nullptr);
         }
 
         m_folderModel = qobject_cast<FolderModel *>(folderModel);
 
         if (m_folderModel) {
             connectSignals(m_folderModel);
+            m_folderModel->setPositioner(this);
             if (m_enabled) {
                 initMaps();
             }
@@ -298,6 +304,36 @@ int Positioner::indexForUrl(const QUrl &url) const
     }
 
     return m_sourceToProxy.value(sourceIndex, -1);
+}
+
+void Positioner::bootstrapUrl(const QUrl &url)
+{
+    if (!m_folderModel || !m_enabled) {
+        return;
+    }
+    const int rowCount = m_folderModel->rowCount();
+    int proxyRow = -1;
+    for (int i = 0; i < rowCount; ++i) {
+        if (m_folderModel->data(m_folderModel->index(i, 0), FolderModel::UrlRole).toUrl() == url) {
+            proxyRow = i;
+            break;
+        }
+    }
+    if (proxyRow < 0) {
+        return;
+    }
+    if (!m_proxyToSource.contains(proxyRow)) {
+        updateMaps(proxyRow, proxyRow);
+    }
+    if (!m_positions.contains(url.toString())) {
+        m_positions[url.toString()] = GridPosition{
+            .stripe = qMax(0, proxyRow / m_perStripe),
+            .pos = qMax(0, proxyRow % m_perStripe),
+        };
+    }
+    qDebug() << this << "diag bootstrapUrl" << url << "row" << proxyRow;
+    Q_EMIT dataChanged(this->index(proxyRow, 0), this->index(proxyRow, 0), {FolderModel::BlankRole, FolderModel::UrlRole});
+    savePositionsConfig();
 }
 
 void Positioner::setRangeSelected(int anchor, int to)
@@ -627,6 +663,13 @@ void Positioner::sourceModelReset()
     }
 
     endResetModel();
+
+    if (screenInUse()) {
+        m_positions.clear();
+        m_changedPositions.clear();
+        updatePositionsList();
+        qDebug() << this << "diag sourceModelReset: cleared and rebuilt" << m_positions.size();
+    }
 }
 
 void Positioner::sourceRowsAboutToBeInserted(const QModelIndex &parent, int start, int end)
@@ -1427,6 +1470,53 @@ void Positioner::onListingCompleted()
     savePositionsConfig();
 }
 
+void Positioner::onScreenMappingChanged()
+{
+    if (!m_folderModel || !m_enabled) {
+        return;
+    }
+    QMetaObject::invokeMethod(
+        this,
+        [this]() {
+            if (!m_folderModel || !m_enabled) {
+                return;
+            }
+            ScreenMapper *mapper = ScreenMapper::instance();
+            const int myScreen = m_folderModel->screen();
+            const QString activity = m_folderModel->currentActivity();
+            const int rowCount = m_folderModel->rowCount();
+            QList<int> proxyRowsToRemove;
+            for (auto it = m_proxyToSource.cbegin(); it != m_proxyToSource.cend(); ++it) {
+                const int sourceRow = it.value();
+                if (sourceRow < 0 || sourceRow >= rowCount) {
+                    proxyRowsToRemove.append(it.key());
+                    continue;
+                }
+                const QUrl url = m_folderModel->data(m_folderModel->index(sourceRow, 0), FolderModel::UrlRole).toUrl();
+                if (!url.isValid()) {
+                    continue;
+                }
+                if (mapper->screenForItem(url, activity) != myScreen) {
+                    proxyRowsToRemove.append(it.key());
+                }
+            }
+            if (proxyRowsToRemove.isEmpty()) {
+                return;
+            }
+            std::sort(proxyRowsToRemove.begin(), proxyRowsToRemove.end(), std::greater<int>());
+            for (int proxyRow : std::as_const(proxyRowsToRemove)) {
+                const int sourceRow = m_proxyToSource.value(proxyRow, -1);
+                beginRemoveRows(QModelIndex(), proxyRow, proxyRow);
+                m_proxyToSource.remove(proxyRow);
+                if (sourceRow >= 0) {
+                    m_sourceToProxy.remove(sourceRow);
+                }
+                endRemoveRows();
+            }
+        },
+        Qt::QueuedConnection);
+}
+
 void Positioner::connectSignals(FolderModel *model)
 {
     connect(model, &QAbstractItemModel::dataChanged, this, &Positioner::sourceDataChanged, Qt::UniqueConnection);
@@ -1442,6 +1532,7 @@ void Positioner::connectSignals(FolderModel *model)
     connect(m_folderModel, &FolderModel::statusChanged, this, &Positioner::sourceStatusChanged, Qt::UniqueConnection);
     connect(m_folderModel, &FolderModel::itemRenamed, this, &Positioner::onItemRenamed, Qt::UniqueConnection);
     connect(m_folderModel, &FolderModel::listingCompleted, this, &Positioner::onListingCompleted, Qt::UniqueConnection);
+    connect(ScreenMapper::instance(), &ScreenMapper::screenMappingChanged, this, &Positioner::onScreenMappingChanged, Qt::UniqueConnection);
 }
 
 void Positioner::disconnectSignals(FolderModel *model)
@@ -1459,4 +1550,5 @@ void Positioner::disconnectSignals(FolderModel *model)
     disconnect(m_folderModel, &FolderModel::statusChanged, this, &Positioner::sourceStatusChanged);
     disconnect(m_folderModel, &FolderModel::itemRenamed, this, &Positioner::onItemRenamed);
     disconnect(m_folderModel, &FolderModel::listingCompleted, this, &Positioner::onListingCompleted);
+    disconnect(ScreenMapper::instance(), &ScreenMapper::screenMappingChanged, this, &Positioner::onScreenMappingChanged);
 }

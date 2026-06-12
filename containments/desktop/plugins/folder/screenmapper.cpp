@@ -131,8 +131,23 @@ void ScreenMapper::addScreen(int screenId, const QString &activity, const QUrl &
 {
     const std::pair<int, QString> pair = std::make_pair(screenId, activity);
 
-    if (screenId < 0 || m_availableScreens.contains(pair))
+    if (screenId < 0)
         return;
+
+    const bool isNewScreen = !m_availableScreens.contains(pair);
+    if (!isNewScreen) {
+        // Screen pair already known. Still ensure this path is registered so that
+        // firstAvailableScreen() can resolve a screen for fresh folder URLs.
+        if (!screenUrl.isEmpty()) {
+            auto pathIt = m_screensPerPath.find(screenUrl);
+            if (pathIt == m_screensPerPath.end()) {
+                m_screensPerPath[screenUrl] = {pair};
+            } else {
+                pathIt->append(pair);
+            }
+        }
+        return;
+    }
 
     const auto screenPathWithScheme = screenUrl.url();
     // restore the stored locations
@@ -231,6 +246,15 @@ void ScreenMapper::removeFromMap(const QUrl &url, const QString &activity)
     m_lruList.removeOne(key);
 
     m_screenMappingChangedTimer->start();
+}
+
+void ScreenMapper::flushDelayedSignal()
+{
+    qDebug() << "diag flushDelayedSignal";
+    if (m_screenMappingChangedTimer->isActive()) {
+        m_screenMappingChangedTimer->stop();
+        Q_EMIT screenMappingChanged();
+    }
 }
 
 int ScreenMapper::firstAvailableScreen(const QUrl &screenUrl, const QString &activity) const
