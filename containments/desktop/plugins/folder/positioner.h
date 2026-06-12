@@ -8,6 +8,7 @@
 
 #include <Plasma/Applet>
 #include <QAbstractItemModel>
+#include <QPointer>
 #include <qqmlregistration.h>
 
 #include "foldermodel.h"
@@ -63,6 +64,7 @@ public:
 
     Q_INVOKABLE bool isBlank(int row) const;
     Q_INVOKABLE int indexForUrl(const QUrl &url) const;
+    Q_INVOKABLE void bootstrapUrl(const QUrl &url);
 
     Q_INVOKABLE void setRangeSelected(int anchor, int to);
 
@@ -143,6 +145,7 @@ private Q_SLOTS:
     void sourceLayoutChanged(const QList<QPersistentModelIndex> &parents, QAbstractItemModel::LayoutChangeHint hint);
     void onItemRenamed(const QString &filename, const QString &newFilename);
     void onListingCompleted();
+    void onScreenMappingChanged();
 
 private:
     void initMaps(int size = -1);
@@ -165,7 +168,7 @@ private:
     void maybeRestoreAndApplyChangedPositions(bool forceConvertAndSave);
 
     bool m_enabled;
-    FolderModel *m_folderModel;
+    QPointer<FolderModel> m_folderModel;
 
     int m_perStripe;
     int m_optimalStripes = 0;

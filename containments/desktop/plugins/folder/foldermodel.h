@@ -48,6 +48,7 @@ class StatJob;
 }
 
 class ScreenMapper;
+class Positioner;
 
 class DirLister : public KDirLister
 {
@@ -202,6 +203,9 @@ public:
     Q_INVOKABLE void up();
     Q_INVOKABLE void cd(int row);
 
+    Positioner *positioner() const;
+    void setPositioner(Positioner *p);
+
     Q_INVOKABLE void run(int row);
     Q_INVOKABLE void runSelected();
     Q_INVOKABLE void showTarget();
@@ -255,6 +259,15 @@ public:
     Q_INVOKABLE void createFolder();
 
     bool screenUsed();
+
+    int screen() const
+    {
+        return m_screen;
+    }
+    QString currentActivity() const
+    {
+        return m_currentActivity;
+    }
 
     void setScreen(int screen, SetScreenActions screenActions = SetScreenActions::None);
 
@@ -360,6 +373,7 @@ private:
     KActionCollection m_actionCollection;
     KNewFileMenu *m_newMenu;
     KFileItemActions *m_fileItemActions;
+    QPointer<Positioner> m_positioner;
     KFileCopyToMenu *m_copyToMenu;
     Status m_status = Status::None;
     QString m_errorString;

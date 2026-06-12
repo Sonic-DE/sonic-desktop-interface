@@ -56,6 +56,8 @@ public:
 
     void addScreenTransition(int screenSrc, int screenDst, const QString &activity);
 
+    void flushDelayedSignal();
+
     bool sharedDesktops() const
     {
         return m_sharedDesktops;
