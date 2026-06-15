@@ -151,8 +151,8 @@ PlasmaComponents3.ScrollView {
                 listView.openOrFocusSubmenu()
                 if (keyboardInitiated) { itemList.childDialog.mainItem.currentIndex = 0; }
             }
-            onContainsMouseChanged: {
-                if (containsMouse && itemList.hoverEnabled && !isSeparator && !ActionMenu.opened) {
+            onHoveredChanged: {
+                if (hovered && itemList.hoverEnabled && !isSeparator && !ActionMenu.opened) {
                     listView.currentIndex = index
                     itemList.forceActiveFocus()
                     dialogSpawnTimer.restart()
