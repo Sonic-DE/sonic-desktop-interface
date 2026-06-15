@@ -32,6 +32,14 @@
 #include <syslog.h>
 #include <unistd.h>
 
+// In debug builds, enable all Qt logging categories at debug level
+#ifndef QT_NO_DEBUG
+static const bool s_debugLoggingEnabled = []() {
+    QLoggingCategory::setFilterRules(QStringLiteral("*.debug=true"));
+    return true;
+}();
+#endif
+
 inline void rotateLogFile(const QString &s_logFilePath)
 {
     static bool isLogRotationDone = false;
@@ -80,6 +88,16 @@ static void messageHandler(QtMsgType type, const QString &category, const QStrin
 
     if (!loggingCapabilityChecked) {
         loggingCapabilityChecked = true;
+    }
+
+    // Filter out noisy low-level X11 / XCB / XInput events that flood the
+    // log when debug categories are enabled. These come from categories
+    // like "libkwin" / "kwin_wayland_drm" / Qt internal xcb handlers and
+    // are not useful for application debugging.
+    if (type == QtDebugMsg) {
+        if (msg.contains(QStringLiteral("XCB_")) || msg.contains(QStringLiteral("XInput Event("))) {
+            return;
+        }
     }
 
     const QString timestamp = QDateTime::currentDateTime().toString(Qt::ISODateWithMs);
