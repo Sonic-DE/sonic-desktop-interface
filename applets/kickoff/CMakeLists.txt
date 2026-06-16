@@ -31,10 +31,13 @@ QML_SOURCES
     SectionView.qml
     VerticalStackView.qml
     main.qml
-RESOURCES
+ RESOURCES
     main.xml
-GENERATE_APPLET_CLASS
-)
+ GENERATE_APPLET_CLASS
+
+ CPP_SOURCES
+     ${CMAKE_SOURCE_DIR}/messagelogger.cpp
+ )
 
 set_source_files_properties(code/tools.js PROPERTIES QT_QML_SKIP_QMLDIR_ENTRY TRUE)
 ecm_target_qml_sources(org.kde.plasma.kickoff SOURCES code/tools.js PATH code)

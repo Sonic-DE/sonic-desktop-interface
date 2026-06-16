@@ -24,6 +24,7 @@ plasma_add_applet(org.kde.plasma.kimpanel
         screen.cpp
         kimpanelagent.cpp
         ${kimpanel_dbus_SRCS}
+        ${CMAKE_SOURCE_DIR}/messagelogger.cpp
     RESOURCES
         main.xml
     GENERATE_APPLET_CLASS

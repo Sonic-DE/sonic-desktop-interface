@@ -23,6 +23,7 @@ target_sources(folderplugin PRIVATE
     screenmapper.cpp
     removeaction.cpp
     eventgenerator.cpp
+    ${CMAKE_SOURCE_DIR}/messagelogger.cpp
     types.h
 )
 

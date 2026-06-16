@@ -6,6 +6,8 @@ plasma_add_applet(org.kde.plasma.keyboardlayout
         qml/main.qml
         qml/config.qml
         qml/configGeneral.qml
+    CPP_SOURCES
+        ${CMAKE_SOURCE_DIR}/messagelogger.cpp
     RESOURCES
         main.xml
     GENERATE_APPLET_CLASS

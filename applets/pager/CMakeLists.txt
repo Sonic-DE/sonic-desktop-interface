@@ -7,6 +7,7 @@ plasma_add_applet(org.kde.plasma.pager
     CPP_SOURCES
         pagermodel.cpp
         windowmodel.cpp
+        ${CMAKE_SOURCE_DIR}/messagelogger.cpp
     RESOURCES
         main.xml
     GENERATE_APPLET_CLASS

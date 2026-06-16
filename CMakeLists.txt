@@ -41,6 +41,12 @@ include(ECMConfiguredInstall)
 
 include_directories(${CMAKE_SOURCE_DIR})
 
+# Populate QMessageLogContext::category / file / line in Qt log messages.
+# This is required for the project-wide message handler (see messagelogger.cpp)
+# to record the originating QLoggingCategory per line. See:
+# https://doc.qt.io/qt-6/qmessagelogcontext.html
+add_compile_definitions(QT_MESSAGELOGCONTEXT)
+
 option(BUILD_DOC "Whether to build the documentation" ON)
 option(BUILD_KCM_MOUSE_X11 "Build the Mouse KCM's X11 backend" ON)
 option(BUILD_KCM_TOUCHPAD_X11 "Build the Touchpad KCM's X11 backend" ON)
