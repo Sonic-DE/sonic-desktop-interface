@@ -1281,23 +1281,23 @@ void FolderModel::drop(QQuickItem *target, QObject *dropEvent, int row, bool sho
     const int y = dropEvent->property("y").toInt();
     const QPoint dropPos = {x, y};
 
-    qCInfo(FOLDERMODEL) << "drop: screen" << m_screen << "dragging()" << dragging() << "dragOwner"
-                        << (DragTracker::self()->dragOwner() ? DragTracker::self()->dragOwner()->m_url.toUtf8().constData() : "none") << "row" << row << "urls"
-                        << mimeData->urls() << "lock" << m_locked;
+    qCDebug(FOLDERMODEL) << "drop: screen" << m_screen << "dragging()" << dragging() << "dragOwner"
+                         << (DragTracker::self()->dragOwner() ? DragTracker::self()->dragOwner()->m_url.toUtf8().constData() : "none") << "row" << row << "urls"
+                         << mimeData->urls() << "lock" << m_locked;
 
-    qCInfo(FOLDERMODEL) << "drop: screen" << m_screen << "dragging()" << dragging() << "dragOwner"
-                        << (DragTracker::self()->dragOwner() ? DragTracker::self()->dragOwner()->m_url.toUtf8().constData() : "none") << "lock" << m_locked
-                        << "m_urlChangedWhileDragging" << m_urlChangedWhileDragging << "mime urls" << mimeData->urls() << "row" << row << "idx" << idx;
+    qCDebug(FOLDERMODEL) << "drop: screen" << m_screen << "dragging()" << dragging() << "dragOwner"
+                         << (DragTracker::self()->dragOwner() ? DragTracker::self()->dragOwner()->m_url.toUtf8().constData() : "none") << "lock" << m_locked
+                         << "m_urlChangedWhileDragging" << m_urlChangedWhileDragging << "mime urls" << mimeData->urls() << "row" << row << "idx" << idx;
 
     if (dragging() && row == -1 && !m_urlChangedWhileDragging) {
         if (m_locked || mimeData->urls().isEmpty()) {
-            qCInfo(FOLDERMODEL) << "drop: internal drag drop branch blocked by lock or empty urls";
+            qCDebug(FOLDERMODEL) << "drop: internal drag drop branch blocked by lock or empty urls";
             return;
         }
 
         setUnsortedModeOnDrop();
-        qCInfo(FOLDERMODEL) << "drop: internal drag drop accepted on screen" << m_screen << "processing" << mimeData->urls().count() << "urls"
-                            << mimeData->urls() << "dropPos" << dropPos;
+        qCDebug(FOLDERMODEL) << "drop: internal drag drop accepted on screen" << m_screen << "processing" << mimeData->urls().count() << "urls"
+                             << mimeData->urls() << "dropPos" << dropPos;
 
         for (const auto &url : mimeData->urls()) {
             m_dropTargetPositions.insert(url.fileName(), dropPos);
@@ -1321,20 +1321,20 @@ void FolderModel::drop(QQuickItem *target, QObject *dropEvent, int row, bool sho
 
     if (m_usedByContainment && !m_screenMapper->sharedDesktops()) {
         const bool isBetweenShared = isDropBetweenSharedViews(mimeData->urls(), dropTargetFolderUrl);
-        qCInfo(FOLDERMODEL) << "drop: shared-desktop cross-screen check on screen" << m_screen << "isBetweenShared" << isBetweenShared << "urls"
-                            << mimeData->urls() << "dropTargetFolderUrl" << dropTargetFolderUrl;
+        qCDebug(FOLDERMODEL) << "drop: shared-desktop cross-screen check on screen" << m_screen << "isBetweenShared" << isBetweenShared << "urls"
+                             << mimeData->urls() << "dropTargetFolderUrl" << dropTargetFolderUrl;
         if (isBetweenShared) {
             setUnsortedModeOnDrop();
             const QList<QUrl> urls = mimeData->urls();
-            qCInfo(FOLDERMODEL) << "drop: isDropBetweenSharedViews on screen" << m_screen << "urls" << urls << "dropTargetUrl" << dropTargetUrl;
+            qCDebug(FOLDERMODEL) << "drop: isDropBetweenSharedViews on screen" << m_screen << "urls" << urls << "dropTargetUrl" << dropTargetUrl;
             for (const auto &url : urls) {
                 m_dropTargetPositions.insert(url.fileName(), dropPos);
                 const auto mappable = mappableUrl(url);
-                qCInfo(FOLDERMODEL) << "drop: adding mapping for" << mappable << "to screen" << m_screen;
+                qCDebug(FOLDERMODEL) << "drop: adding mapping for" << mappable << "to screen" << m_screen;
                 m_screenMapper->addMapping(mappable, m_screen, m_currentActivity, ScreenMapper::DelayedSignal);
                 m_screenMapper->removeItemFromDisabledScreen(mappable);
             }
-            qCInfo(FOLDERMODEL) << "drop: cross-screen flush" << m_screen << "urls" << mimeData->urls();
+            qCDebug(FOLDERMODEL) << "drop: cross-screen flush" << m_screen << "urls" << mimeData->urls();
             m_screenMapper->flushDelayedSignal();
             for (const auto &url : urls) {
                 if (m_positioner) {
@@ -1407,7 +1407,7 @@ void FolderModel::drop(QQuickItem *target, QObject *dropEvent, int row, bool sho
             m_dropTargetPositions.insert(targetUrl.fileName(), dropPos);
             m_dropTargetPositionsCleanup->start();
 
-            qCInfo(FOLDERMODEL) << "drop: copyJob started for" << targetUrl << "on screen" << m_screen;
+            qCDebug(FOLDERMODEL) << "drop: copyJob started for" << targetUrl << "on screen" << m_screen;
 
             if (m_usedByContainment && !m_screenMapper->sharedDesktops()) {
                 // assign a screen for the item before the copy is actually done, so
@@ -1417,19 +1417,19 @@ void FolderModel::drop(QQuickItem *target, QObject *dropEvent, int row, bool sho
                 // note: resolvedUrl() may use the desktop:/ scheme while targetUrl is a file:// path,
                 // so convert it to a file path for a reliable comparison
                 const QString desktopPath = DesktopSchemeHelper::getFileUrl(url.toString());
-                qCInfo(FOLDERMODEL) << "drop: desktopPath" << desktopPath << "dropTargetUrl" << dropTargetUrl << "resolvedUrl" << url;
+                qCDebug(FOLDERMODEL) << "drop: desktopPath" << desktopPath << "dropTargetUrl" << dropTargetUrl << "resolvedUrl" << url;
                 if (targetUrl.toString().startsWith(desktopPath)) {
-                    qCInfo(FOLDERMODEL) << "drop: adding mapping via desktopPath branch for" << targetUrl << "to screen" << m_screen;
+                    qCDebug(FOLDERMODEL) << "drop: adding mapping via desktopPath branch for" << targetUrl << "to screen" << m_screen;
                     m_screenMapper->addMapping(targetUrl, m_screen, m_currentActivity, ScreenMapper::DelayedSignal);
                 } else if (targetUrl.toString().startsWith(dropTargetUrl.toString())) {
                     // if the folderview's folder is a special path, like desktop:// , we need to convert
                     // the targetUrl file:// path to a desktop:/ path for mapping
                     auto destPath = dropTargetUrl.path();
                     auto filePath = targetUrl.path();
-                    qCInfo(FOLDERMODEL) << "drop: checking dropTarget branch destPath" << destPath << "filePath" << filePath;
+                    qCDebug(FOLDERMODEL) << "drop: checking dropTarget branch destPath" << destPath << "filePath" << filePath;
                     if (filePath.startsWith(destPath)) {
                         url.setPath(filePath.remove(0, destPath.length()));
-                        qCInfo(FOLDERMODEL) << "drop: adding mapping via dropTarget branch for" << url << "to screen" << m_screen;
+                        qCDebug(FOLDERMODEL) << "drop: adding mapping via dropTarget branch for" << url << "to screen" << m_screen;
                         m_screenMapper->addMapping(url, m_screen, m_currentActivity, ScreenMapper::DelayedSignal);
                     }
                 }

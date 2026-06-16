@@ -6,6 +6,7 @@ plasma_add_applet(org.kde.plasma.trash
         dirmodel.cpp
         trash.h
         trash.cpp
+        ${CMAKE_SOURCE_DIR}/messagelogger.cpp
     GENERATE_APPLET_CLASS
 )
 

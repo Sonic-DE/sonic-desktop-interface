@@ -144,6 +144,7 @@ ecm_add_qml_module(kcm_keyboard_declarative
         keyboardmodel.cpp
         layoutmodel.cpp
         types.h
+        ${CMAKE_SOURCE_DIR}/messagelogger.cpp
     DEPENDENCIES
         QtCore
 )

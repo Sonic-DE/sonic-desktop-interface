@@ -5,6 +5,7 @@ target_sources(EmojierDeclarativePlugin PRIVATE
     emojierplugin.cpp
     emojidict.cpp
     emojicategory.cpp
+    ${CMAKE_SOURCE_DIR}/messagelogger.cpp
 )
 
 kconfig_add_kcfg_files(EmojierDeclarativePlugin emojiersettings.kcfgc GENERATE_MOC)

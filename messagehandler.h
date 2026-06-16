@@ -20,6 +20,7 @@
 
 #include <QDateTime>
 #include <QDir>
+#include <QElapsedTimer>
 #include <QFile>
 #include <QFileInfo>
 #include <QLoggingCategory>
@@ -42,16 +43,18 @@ static const bool s_debugLoggingEnabled = []() {
 
 inline void rotateLogFile(const QString &s_logFilePath)
 {
-    static bool isLogRotationDone = false;
-
-    if (isLogRotationDone) {
-        return; // Only do this once per application run
+    // Throttle the size check to once per 60 seconds to avoid an extra
+    // stat(2) syscall on every log call.
+    static QElapsedTimer lastCheck;
+    if (!lastCheck.isValid() || lastCheck.elapsed() >= 60000) {
+        lastCheck.restart();
+    } else {
+        return;
     }
-    isLogRotationDone = true;
 
     QFileInfo logFileInfo(s_logFilePath);
-    // Don't rotate if the file doesn't exist or is less than a day old or it is less than 512kb in size
-    if (!logFileInfo.exists() || logFileInfo.lastModified().secsTo(QDateTime::currentDateTime()) < 86400 || logFileInfo.size() <= 524288) {
+    // Don't rotate if the file doesn't exist or is below the 2MB threshold.
+    if (!logFileInfo.exists() || logFileInfo.size() <= 2097152) {
         return;
     }
 

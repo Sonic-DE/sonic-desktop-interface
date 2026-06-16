@@ -11,6 +11,7 @@ plasma_add_applet(org.kde.plasma.showdesktop
     CPP_SOURCES
         showdesktop.cpp
         ${showdesktop_SRCS}
+        ${CMAKE_SOURCE_DIR}/messagelogger.cpp
     RESOURCES
         main.xml
     GENERATE_APPLET_CLASS

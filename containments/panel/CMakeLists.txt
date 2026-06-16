@@ -6,6 +6,8 @@ plasma_add_applet(org.kde.panel
         ConfigOverlay.qml
         main.qml
         LayoutManager.js
+    CPP_SOURCES
+        ${CMAKE_SOURCE_DIR}/messagelogger.cpp
     RESOURCES
         main.xml
     GENERATE_CONTAINMENT_CLASS

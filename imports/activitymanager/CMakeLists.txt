@@ -5,6 +5,7 @@ ecm_add_qml_module(activityswitcherextensionplugin URI org.kde.plasma.activitysw
 target_sources(activityswitcherextensionplugin PRIVATE
    switcherbackend.cpp
    sortedactivitiesmodel.cpp
+   ${CMAKE_SOURCE_DIR}/messagelogger.cpp
 )
 
 target_link_libraries(activityswitcherextensionplugin PRIVATE

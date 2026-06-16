@@ -4,6 +4,8 @@
 plasma_add_applet(org.kde.plasma.marginsseparator
     QML_SOURCES
         qml/main.qml
+    CPP_SOURCES
+        ${CMAKE_SOURCE_DIR}/messagelogger.cpp
     RESOURCES
         main.xml
     GENERATE_APPLET_CLASS

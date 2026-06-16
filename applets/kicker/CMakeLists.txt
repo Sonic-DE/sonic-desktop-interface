@@ -21,6 +21,9 @@ plasma_add_applet(org.kde.plasma.kicker
     RESOURCES
     main.xml
 
+    CPP_SOURCES
+        ${CMAKE_SOURCE_DIR}/messagelogger.cpp
+
     GENERATE_APPLET_CLASS
 )
 
