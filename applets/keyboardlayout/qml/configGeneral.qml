@@ -25,11 +25,20 @@ SimpleKCM {
                                                                             : ""
     KeyboardLayout { id: keyboardLayout }
 
+    // Fall back to the system default layout's country code when the
+    // user has not configured any layouts (layoutShortName is empty).
+    function countryCode() {
+        if (root.layoutShortName.length >= 2) {
+            return root.layoutShortName;
+        }
+        return KCMKeyboard.Flags.getDefaultCountryCode();
+    }
+
     Kirigami.FormLayout {
         RadioButton {
             id: showLabel
             Kirigami.FormData.label: i18nc("@title:group of radio buttons, options are language codes or images", "Display style:") // qmllint disable unqualified
-            text: root.displayName.length > 0 ? root.displayName: root.layoutShortName
+            text: root.countryCode().toUpperCase()
             checked: root.cfg_displayStyle === 0
             onToggled: root.cfg_displayStyle = 0;
         }
@@ -38,58 +47,17 @@ SimpleKCM {
             id: showFlag
             checked: root.cfg_displayStyle === 1
             onToggled: root.cfg_displayStyle = 1;
-            contentItem: RowLayout {
-                id: flagMissing
-                spacing: Kirigami.Units.smallSpacing
+            contentItem: Text {
                 anchors.left: parent.left
                 anchors.leftMargin: showFlag.indicator.width + showFlag.spacing
-
-                // Deliberately using this instead of Image to preserve visual fidelity
-                // with what the widget will show
-                Kirigami.Icon {
-                    id: flagImage
-                    implicitWidth: Kirigami.Units.iconSizes.medium
-                    implicitHeight: Kirigami.Units.iconSizes.medium
-                    source: KCMKeyboard.Flags.getIcon(root.layoutShortName)
-                    visible: valid
-                }
-
-                Kirigami.Icon {
-                    implicitWidth: Kirigami.Units.iconSizes.smallMedium
-                    implicitHeight: Kirigami.Units.iconSizes.smallMedium
-                    source: "emblem-warning"
-                    visible: !flagImage.visible
-
-                }
-                Label {
-                    text: i18nc("@info:placeholder Make this translation as short as possible", "No flag available") // qmllint disable unqualified
-                    visible: !flagImage.visible
-
-                }
-            }
-        }
-
-        RadioButton {
-            id: showLabelOverFlag
-            checked: root.cfg_displayStyle === 2
-            onToggled: root.cfg_displayStyle = 2;
-            contentItem: Kirigami.Icon {
-                // Deliberately using this instead of Image to preserve visual fidelity
-                // with what the widget will show
-                id: labelOverFlagImage
-                width: Kirigami.Units.iconSizes.medium
-                height: Kirigami.Units.iconSizes.medium
-                anchors.left: parent.left
-                anchors.leftMargin: showLabelOverFlag.indicator.width + showLabelOverFlag.spacing
-                source: KCMKeyboard.Flags.getIcon(root.layoutShortName)
-                visible: valid
-
-                WorkspaceComponents.BadgeOverlay {
-                    anchors.bottom: parent.bottom
-                    anchors.right: parent.right
-
-                    text: showLabel.text
-                    icon: parent
+                anchors.verticalCenter: parent.verticalCenter
+                font.family: "Noto Color Emoji"
+                font.pixelSize: Kirigami.Units.iconSizes.medium
+                text: {
+                    const cc = root.countryCode().toUpperCase();
+                    if (cc.length < 2) return "\u2328";
+                    return String.fromCodePoint(0x1F1E6 + cc.charCodeAt(0) - 65,
+                                                0x1F1E6 + cc.charCodeAt(1) - 65);
                 }
             }
         }

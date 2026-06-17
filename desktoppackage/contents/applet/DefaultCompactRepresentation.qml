@@ -112,7 +112,6 @@ Kirigami.Icon {
 
         sourceComponent: WorkspaceComponents.BadgeOverlay {
             text: defaultCompactRepresentation.plasmoidItem.badgeText
-            icon: defaultCompactRepresentation
         }
 
         // Non-default state to center if the badge is wider than the icon

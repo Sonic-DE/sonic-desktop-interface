@@ -10,6 +10,7 @@
 #include <KCountryFlagEmojiIconEngine>
 #include <KLocalizedString>
 
+#include <QImage>
 #include <QPainter>
 #include <QPixmap>
 #include <QStandardPaths>
@@ -20,17 +21,30 @@
 #include "x11_helper.h"
 #include "xkb_rules.h"
 
+#include <QLoggingCategory>
+
+Q_LOGGING_CATEGORY(KCM_KEYBOARD_FLAGS, "org.kde.kcm_keyboard.flags", QtWarningMsg)
+
 QIcon Flags::getIcon(const QString &layout)
 {
     if (!iconMap.contains(layout)) {
         iconMap[layout] = createIcon(layout);
+        const QIcon &icon = iconMap[layout];
+        const QString country = getCountryFromLayoutName(layout);
+        qCDebug(KCM_KEYBOARD_FLAGS) << "getIcon: layout=" << layout << "country=" << country << "isNull=" << icon.isNull()
+                                    << "availableSizes=" << icon.availableSizes();
+        // Probe a pixmap to see if the engine actually paints something.
+        const QPixmap probe = icon.pixmap(32, 32);
+        qCDebug(KCM_KEYBOARD_FLAGS) << "  probe pixmap 32x32: isNull=" << probe.isNull() << "size=" << probe.size();
     }
     return iconMap[layout];
 }
 
 QIcon Flags::createIcon(const QString &layout)
 {
-    return QIcon(new KCountryFlagEmojiIconEngine(getCountryFromLayoutName(layout)));
+    const QString country = getCountryFromLayoutName(layout);
+    qCDebug(KCM_KEYBOARD_FLAGS) << "createIcon: layout=" << layout << "-> country=" << country;
+    return QIcon(new KCountryFlagEmojiIconEngine(country));
 }
 
 // static
@@ -41,9 +55,23 @@ QString Flags::getCountryFromLayoutName(const QString &layout) const
     QString countryCode = layout;
 
     if (countryCode == QLatin1String("nec_vndr/jp"))
-        return QStringLiteral("jp");
+        return QStringLiteral("JP");
 
-    return countryCode;
+    // KCountryFlagEmojiIconEngine requires an uppercase ISO 3166-1 alpha-2
+    // country code; xkeyboard-config layout names are lowercase.
+    return countryCode.toUpper();
+}
+
+QString Flags::getDefaultCountryCode() const
+{
+    // The system default layout is whatever X11 reports as the current
+    // layout when the user has not configured any overrides. Map it to
+    // an ISO 3166-1 alpha-2 country code using the same rules as getIcon.
+    const LayoutUnit defaultLayout = X11Helper::getCurrentLayout();
+    if (defaultLayout.layout().isEmpty()) {
+        return QString();
+    }
+    return getCountryFromLayoutName(defaultLayout.layout());
 }
 
 // TODO: move this to some other class?
