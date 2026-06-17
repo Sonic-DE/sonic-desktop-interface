@@ -22,6 +22,12 @@ public:
     using QObject::QObject;
 
     Q_INVOKABLE QIcon getIcon(const QString &layout);
+    // Returns the ISO 3166-1 alpha-2 country code for the system default
+    // layout, used by the applet and KCM when no user-configured layouts
+    // are available. Returns the country code (uppercased) of the layout
+    // that X11 considers the current default, or an empty string if it
+    // cannot be determined.
+    Q_INVOKABLE QString getDefaultCountryCode() const;
 
     static QString getLongText(const LayoutUnit &layoutUnit);
     static QString getShortText(const LayoutUnit &layoutUnit, const KeyboardConfig &keyboardConfig);

@@ -7,11 +7,10 @@
 
   <group name="General">
     <entry name="displayStyle" type="Enum">
-      <label>Whether to show text, a flag, or both on the compact representation.</label>
+      <label>Whether to show text or a flag on the compact representation.</label>
       <choices>
         <choice name="Label"/>
         <choice name="Flag"/>
-        <choice name="LabelOverFlag"/>
       </choices>
       <default>0</default>
     </entry>
