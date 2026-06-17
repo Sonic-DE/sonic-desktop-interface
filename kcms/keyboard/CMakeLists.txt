@@ -81,11 +81,17 @@ set( kcm_keyboard_PART_SRCS
     layoutsearchmodel.cpp
 )
 
+if(CMAKE_BUILD_TYPE STREQUAL "Debug" OR CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
+    set(_KCM_KEYBOARD_DEFAULT_SEVERITY "Debug")
+else()
+    set(_KCM_KEYBOARD_DEFAULT_SEVERITY "Warning")
+endif()
+
 ecm_qt_declare_logging_category(kcm_keyboard_PART_SRCS
     HEADER debug.h
     IDENTIFIER KCM_KEYBOARD
     CATEGORY_NAME org.kde.kcm_keyboard
-    DEFAULT_SEVERITY Warning
+    DEFAULT_SEVERITY ${_KCM_KEYBOARD_DEFAULT_SEVERITY}
     DESCRIPTION "KCM and KDED for keyboard layouts"
     EXPORT kcm_keyboard
 )
