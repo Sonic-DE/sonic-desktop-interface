@@ -6,9 +6,10 @@
 
 #pragma once
 
-#include <KConfigWatcher>
 #include <KDEDModule>
+#include <QFileSystemWatcher>
 #include <QStringList>
+#include <QTimer>
 #include <optional>
 
 #include "bindings.h"
@@ -18,19 +19,25 @@
 class XInputEventNotifier;
 class KeyboardConfig;
 class KeyboardSettings;
+class KeyboardIpcServer;
 
 class Q_DECL_EXPORT KeyboardDaemon : public KDEDModule
 {
     Q_OBJECT
-    Q_CLASSINFO("D-Bus Interface", "org.kde.KeyboardLayouts")
 
     KeyboardSettings *keyboardSettings;
-    KConfigWatcher::Ptr keyboardSettingsWatcher;
     KeyboardConfig *keyboardConfig;
     KeyboardLayoutActionCollection *actionCollection;
     XInputEventNotifier *xEventNotifier;
     LayoutMemory layoutMemory;
     std::optional<uint> lastUsedLayout;
+
+    QFileSystemWatcher *keyboardFileWatcher = nullptr;
+    QTimer *keyboardFileDebounce = nullptr;
+    QTimer *layoutMapDebounce = nullptr;
+    KeyboardIpcServer *m_ipcServer = nullptr;
+
+    QString kxkbrcPath() const;
 
     void registerListeners();
     void registerShortcut();
@@ -38,24 +45,27 @@ class Q_DECL_EXPORT KeyboardDaemon : public KDEDModule
     void unregisterShortcut();
     void setLastUsedLayoutValue(uint newValue);
 
+    void broadcastLayoutsChanged();
+    void broadcastLayoutChanged(uint index);
+
 private Q_SLOTS:
     void configureKeyboard();
     void configureInput();
     void layoutChangedSlot();
-    void layoutMapChanged();
     bool setLayout(QAction *action);
-    void configChanged(const KConfigGroup &group, const QByteArrayList &names);
+    void kxkbrcChanged(const QString &path);
+    void kxkbrcDebounceTimeout();
 
 public Q_SLOTS:
-    Q_SCRIPTABLE void switchToNextLayout();
-    Q_SCRIPTABLE void switchToPreviousLayout();
-    Q_SCRIPTABLE bool setLayout(uint index);
-    Q_SCRIPTABLE uint getLayout() const;
-    Q_SCRIPTABLE QList<LayoutNames> getLayoutsList() const;
+    void switchToNextLayout();
+    void switchToPreviousLayout();
+    bool setLayout(uint index);
+    uint getLayout() const;
+    QList<LayoutNames> getLayoutsList() const;
 
 Q_SIGNALS:
-    Q_SCRIPTABLE void layoutChanged(uint index);
-    Q_SCRIPTABLE void layoutListChanged();
+    void layoutChanged(uint index);
+    void layoutListChanged();
 
 public:
     KeyboardDaemon(QObject *parent, const QList<QVariant> &);

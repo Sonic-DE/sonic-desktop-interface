@@ -6,7 +6,12 @@
 
 // #include <kapplication.h>
 
+#include <QDir>
+#include <QFile>
 #include <QIcon>
+#include <QSignalSpy>
+#include <QStandardPaths>
+#include <QTemporaryDir>
 #include <QTest>
 
 #include "../flags.h"
@@ -19,11 +24,22 @@ class KeyboardDaemonTest : public QObject
     Q_OBJECT
 
     KeyboardDaemon *keyboardDaemon;
+    QTemporaryDir tempDir;
     //    KApplication* kapplication;
 
 private Q_SLOTS:
     void initTestCase()
     {
+        QVERIFY(tempDir.isValid());
+        qputenv("XDG_CONFIG_HOME", tempDir.path().toUtf8());
+        qputenv("XDG_DATA_HOME", QDir(tempDir.path()).filePath(QStringLiteral("data")).toUtf8());
+
+        const QString kxkbrc = QDir(tempDir.path()).filePath(QStringLiteral("kxkbrc"));
+        QFile file(kxkbrc);
+        QVERIFY(file.open(QIODevice::WriteOnly | QIODevice::Text));
+        file.write(QByteArrayLiteral("[Layout]\nLayoutList=us\nUse=false\n"));
+        file.close();
+
         //    	kapplication = new KApplication();
         //    	const KAboutData* kAboutData = new KAboutData(i18n("a").toLatin1(), i18n("a").toLatin1(), KLocalizedString(), i18n("a").toLatin1());
         //    	KCmdLineArgs::init(kAboutData);
@@ -81,6 +97,22 @@ private Q_SLOTS:
     //    		delete flags;
     //    	}
     //    }
+
+    void testKxkbrcChangeEmitsLayoutListChanged()
+    {
+        QSignalSpy spy(keyboardDaemon, &KeyboardDaemon::layoutListChanged);
+        QVERIFY(spy.isValid());
+        QCOMPARE(spy.count(), 0);
+
+        const QString kxkbrc = QStandardPaths::writableLocation(QStandardPaths::GenericConfigLocation) + QStringLiteral("/kxkbrc");
+        QFile file(kxkbrc);
+        QVERIFY(file.open(QIODevice::WriteOnly | QIODevice::Text));
+        file.write(QByteArrayLiteral("[Layout]\nLayoutList=gb\nUse=false\n"));
+        file.close();
+
+        QVERIFY(spy.wait(1000));
+        QCOMPARE(spy.count(), 1);
+    }
 };
 
 // need GUI for xkb protocol in xkb_rules.cpp

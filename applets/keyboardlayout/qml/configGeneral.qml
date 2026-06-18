@@ -3,15 +3,13 @@
     SPDX-FileCopyrightText: 2022 Nate Graham <nate@kde.org>
     SPDX-License-Identifier: GPL-2.0-or-later
 */
-
+// qmllint disable unqualified
 import QtQuick
-import QtQuick.Layouts
 import QtQuick.Controls
 
 import org.kde.kirigami as Kirigami
-import org.kde.plasma.workspace.keyboardlayout
-import org.kde.plasma.workspace.components as WorkspaceComponents
 import org.kde.plasma.private.kcm_keyboard as KCMKeyboard
+import org.kde.plasma.keyboardlayout.ipc as KCMKeyboardIPC
 import org.kde.kcmutils
 
 SimpleKCM {
@@ -19,11 +17,14 @@ SimpleKCM {
 
     property int cfg_displayStyle
 
-    readonly property string layoutShortName: keyboardLayout.layoutsList.length ? keyboardLayout.layoutsList[keyboardLayout.layout].shortName
-                                                                            : ""
-    readonly property string displayName: keyboardLayout.layoutsList.length ? keyboardLayout.layoutsList[keyboardLayout.layout].displayName
-                                                                            : ""
-    KeyboardLayout { id: keyboardLayout }
+    readonly property string layoutShortName:
+        KCMKeyboardIPC.KeyboardLayoutSocket.layoutsList.length
+            ? KCMKeyboardIPC.KeyboardLayoutSocket.layoutsList[KCMKeyboardIPC.KeyboardLayoutSocket.layout].shortName
+            : ""
+    readonly property string displayName:
+        KCMKeyboardIPC.KeyboardLayoutSocket.layoutsList.length
+            ? KCMKeyboardIPC.KeyboardLayoutSocket.layoutsList[KCMKeyboardIPC.KeyboardLayoutSocket.layout].displayName
+            : ""
 
     // Fall back to the system default layout's country code when the
     // user has not configured any layouts (layoutShortName is empty).
@@ -37,7 +38,7 @@ SimpleKCM {
     Kirigami.FormLayout {
         RadioButton {
             id: showLabel
-            Kirigami.FormData.label: i18nc("@title:group of radio buttons, options are language codes or images", "Display style:") // qmllint disable unqualified
+            Kirigami.FormData.label: i18nc("@title:group of radio buttons, options are language codes or images", "Display style:")
             text: root.countryCode().toUpperCase()
             checked: root.cfg_displayStyle === 0
             onToggled: root.cfg_displayStyle = 0;
@@ -67,8 +68,8 @@ SimpleKCM {
         }
 
         Button {
-            Kirigami.FormData.label: i18nc("@label prefixed to button, as in 'keyboard layouts'", "Layouts:") // qmllint disable unqualified
-            text: i18nc("@action:button opens kcm_keyboard", "Configure…") // qmllint disable unqualified
+            Kirigami.FormData.label: i18nc("@label prefixed to button, as in 'keyboard layouts'", "Layouts:")
+            text: i18nc("@action:button opens kcm_keyboard", "Configure…")
             icon.name: "configure"
             onClicked: KCMLauncher.openSystemSettings("kcm_keyboard", "--tab=layouts")
         }

@@ -8,9 +8,6 @@
 
 #include "kcm_keyboard.h"
 
-#include <QDBusConnection>
-#include <QDBusMessage>
-
 #include <qqml.h>
 
 #include <KGlobalAccel>

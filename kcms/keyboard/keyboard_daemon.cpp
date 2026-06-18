@@ -11,11 +11,15 @@
 #include <QDBusConnection>
 #include <QDBusMessage>
 #include <QDBusPendingCall>
+#include <QDir>
+#include <QFile>
 #include <QProcess>
+#include <QStandardPaths>
 
 #include <KPluginFactory>
 
 #include "flags.h"
+#include "ipc/KeyboardIpcServer.h"
 #include "keyboard_hardware.h"
 #include "keyboardsettings.h"
 #include "layout_memory_persister.h"
@@ -25,13 +29,9 @@
 
 K_PLUGIN_CLASS_WITH_JSON(KeyboardDaemon, "kded_keyboard.json")
 
-static const QString s_keyboardService = QStringLiteral("org.kde.keyboard");
-static const QString s_keyboardObject = QStringLiteral("/Layouts");
-
 KeyboardDaemon::KeyboardDaemon(QObject *parent, const QList<QVariant> &)
     : KDEDModule(parent)
     , keyboardSettings(new KeyboardSettings(this))
-    , keyboardSettingsWatcher(KConfigWatcher::create(keyboardSettings->sharedConfig()))
     , keyboardConfig(new KeyboardConfig(keyboardSettings, this))
     , actionCollection(nullptr)
     , xEventNotifier(nullptr)
@@ -40,14 +40,26 @@ KeyboardDaemon::KeyboardDaemon(QObject *parent, const QList<QVariant> &)
     if (!X11Helper::xkbSupported(nullptr))
         return;
 
-    QDBusConnection dbus = QDBusConnection::sessionBus();
-    dbus.registerService(s_keyboardService);
-    dbus.registerObject(s_keyboardObject, this, QDBusConnection::ExportScriptableSlots | QDBusConnection::ExportScriptableSignals);
-
-    LayoutNames::registerMetaType();
-
     configureKeyboard();
     registerListeners();
+
+    m_ipcServer = new KeyboardIpcServer(
+        this,
+        [this]() {
+            return getLayoutsList();
+        },
+        [this]() {
+            return getLayout();
+        },
+        [this]() {
+            switchToNextLayout();
+        },
+        [this]() {
+            switchToPreviousLayout();
+        },
+        [this](uint i) {
+            setLayout(i);
+        });
 
     LayoutMemoryPersister layoutMemoryPersister(layoutMemory);
     if (layoutMemoryPersister.restore()) {
@@ -63,9 +75,8 @@ KeyboardDaemon::~KeyboardDaemon()
     layoutMemoryPersister.setGlobalLayout(X11Helper::getCurrentLayout());
     layoutMemoryPersister.save();
 
-    QDBusConnection dbus = QDBusConnection::sessionBus();
-    dbus.unregisterObject(s_keyboardObject);
-    dbus.unregisterService(s_keyboardService);
+    delete m_ipcServer;
+    m_ipcServer = nullptr;
 
     unregisterListeners();
     unregisterShortcut();
@@ -78,12 +89,18 @@ void KeyboardDaemon::configureKeyboard()
     qCDebug(KCM_KEYBOARD) << "Configuring keyboard";
     init_keyboard_hardware();
 
+    // Force the shared KConfig to re-read kxkbrc from disk
+    keyboardSettings->sharedConfig()->reparseConfiguration();
     keyboardConfig->load();
     XkbHelper::initializeKeyboardLayouts(*keyboardConfig);
     layoutMemory.configChanged();
 
     unregisterShortcut();
     registerShortcut();
+
+    qCDebug(KCM_KEYBOARD) << "Emitting layoutListChanged (from configureKeyboard)";
+    Q_EMIT layoutListChanged();
+    broadcastLayoutsChanged();
 }
 
 void KeyboardDaemon::configureInput()
@@ -158,10 +175,49 @@ void KeyboardDaemon::registerListeners()
     }
     connect(xEventNotifier, &XInputEventNotifier::newPointerDevice, this, &KeyboardDaemon::configureInput);
     connect(xEventNotifier, &XInputEventNotifier::newKeyboardDevice, this, &KeyboardDaemon::configureKeyboard);
-    connect(xEventNotifier, &XEventNotifier::layoutMapChanged, this, &KeyboardDaemon::layoutMapChanged);
+    connect(xEventNotifier, &XEventNotifier::layoutMapChanged, this, [this]() {
+        layoutMapDebounce->start();
+    });
     connect(xEventNotifier, &XEventNotifier::layoutChanged, this, &KeyboardDaemon::layoutChangedSlot);
-    connect(keyboardSettingsWatcher.data(), &KConfigWatcher::configChanged, this, &KeyboardDaemon::configChanged);
     xEventNotifier->start();
+
+    const QString kxkbrc = kxkbrcPath();
+    if (kxkbrc.isEmpty()) {
+        qCWarning(KCM_KEYBOARD) << "Could not determine config directory; kxkbrc will not be watched";
+        return;
+    }
+
+    if (!keyboardFileWatcher) {
+        keyboardFileWatcher = new QFileSystemWatcher(this);
+        connect(keyboardFileWatcher, &QFileSystemWatcher::fileChanged, this, &KeyboardDaemon::kxkbrcChanged);
+    }
+    if (!keyboardFileDebounce) {
+        keyboardFileDebounce = new QTimer(this);
+        keyboardFileDebounce->setSingleShot(true);
+        keyboardFileDebounce->setInterval(1000);
+        connect(keyboardFileDebounce, &QTimer::timeout, this, &KeyboardDaemon::kxkbrcDebounceTimeout);
+    }
+
+    if (!layoutMapDebounce) {
+        layoutMapDebounce = new QTimer(this);
+        layoutMapDebounce->setSingleShot(true);
+        layoutMapDebounce->setInterval(1000);
+        connect(layoutMapDebounce, &QTimer::timeout, this, [this]() {
+            keyboardSettings->sharedConfig()->reparseConfiguration();
+            keyboardConfig->load();
+            layoutMemory.layoutMapChanged();
+            Q_EMIT layoutListChanged();
+            broadcastLayoutsChanged();
+        });
+    }
+
+    if (!keyboardFileWatcher->files().contains(kxkbrc)) {
+        if (!keyboardFileWatcher->addPath(kxkbrc)) {
+            qCWarning(KCM_KEYBOARD) << "Failed to watch kxkbrc at" << kxkbrc;
+        } else {
+            qCDebug(KCM_KEYBOARD) << "Watching kxkbrc at" << kxkbrc;
+        }
+    }
 }
 
 void KeyboardDaemon::unregisterListeners()
@@ -171,15 +227,67 @@ void KeyboardDaemon::unregisterListeners()
         disconnect(xEventNotifier, &XInputEventNotifier::newPointerDevice, this, &KeyboardDaemon::configureInput);
         disconnect(xEventNotifier, &XInputEventNotifier::newKeyboardDevice, this, &KeyboardDaemon::configureKeyboard);
         disconnect(xEventNotifier, &XEventNotifier::layoutChanged, this, &KeyboardDaemon::layoutChangedSlot);
-        disconnect(xEventNotifier, &XEventNotifier::layoutMapChanged, this, &KeyboardDaemon::layoutMapChanged);
+        disconnect(xEventNotifier, &XEventNotifier::layoutMapChanged, this, nullptr);
     }
-    disconnect(keyboardSettingsWatcher.data(), &KConfigWatcher::configChanged, this, &KeyboardDaemon::configChanged);
+    if (keyboardFileWatcher != nullptr) {
+        disconnect(keyboardFileWatcher, &QFileSystemWatcher::fileChanged, this, &KeyboardDaemon::kxkbrcChanged);
+    }
+    if (keyboardFileDebounce != nullptr) {
+        disconnect(keyboardFileDebounce, &QTimer::timeout, this, &KeyboardDaemon::kxkbrcDebounceTimeout);
+        keyboardFileDebounce->stop();
+    }
+    if (layoutMapDebounce != nullptr) {
+        layoutMapDebounce->stop();
+    }
 }
 
-void KeyboardDaemon::configChanged(const KConfigGroup &group, const QByteArrayList & /*names*/)
+QString KeyboardDaemon::kxkbrcPath() const
 {
-    if (group.name() == QLatin1String("Layout")) {
-        configureKeyboard();
+    const QString configDir = QStandardPaths::writableLocation(QStandardPaths::GenericConfigLocation);
+    if (configDir.isEmpty()) {
+        return QString();
+    }
+    return QDir(configDir).filePath(QStringLiteral("kxkbrc"));
+}
+
+void KeyboardDaemon::kxkbrcChanged(const QString &path)
+{
+    Q_UNUSED(path);
+    qCDebug(KCM_KEYBOARD) << "kxkbrc changed, restarting 1000 ms debounce timer";
+
+    // QSaveFile replaces the file by rename, which can drop the watch.
+    // Re-add immediately so we do not miss subsequent saves.
+    const QString kxkbrc = kxkbrcPath();
+    if (!kxkbrc.isEmpty() && !keyboardFileWatcher->files().contains(kxkbrc)) {
+        if (!keyboardFileWatcher->addPath(kxkbrc)) {
+            qCWarning(KCM_KEYBOARD) << "Failed to re-add kxkbrc watch at" << kxkbrc;
+        } else {
+            qCDebug(KCM_KEYBOARD) << "Re-added kxkbrc watch at" << kxkbrc;
+        }
+    }
+
+    keyboardFileDebounce->start();
+}
+
+void KeyboardDaemon::kxkbrcDebounceTimeout()
+{
+    const QString kxkbrc = kxkbrcPath();
+    if (kxkbrc.isEmpty() || !QFile::exists(kxkbrc)) {
+        qCWarning(KCM_KEYBOARD) << "kxkbrc is missing at debounce timeout; skipping configureKeyboard";
+        if (!kxkbrc.isEmpty() && !keyboardFileWatcher->files().contains(kxkbrc)) {
+            keyboardFileWatcher->addPath(kxkbrc); // re-arm for when the file reappears
+        }
+        return;
+    }
+
+    qCDebug(KCM_KEYBOARD) << "kxkbrc debounce timer fired, calling configureKeyboard";
+    configureKeyboard();
+
+    // After configureKeyboard returns, make sure the watch is still in place.
+    if (!keyboardFileWatcher->files().contains(kxkbrc)) {
+        if (!keyboardFileWatcher->addPath(kxkbrc)) {
+            qCWarning(KCM_KEYBOARD) << "Failed to re-add kxkbrc watch after configureKeyboard at" << kxkbrc;
+        }
     }
 }
 
@@ -188,25 +296,37 @@ void KeyboardDaemon::layoutChangedSlot()
     layoutMemory.layoutChanged();
 
     Q_EMIT layoutChanged(getLayout());
-}
-
-void KeyboardDaemon::layoutMapChanged()
-{
-    keyboardConfig->load();
-    layoutMemory.layoutMapChanged();
-    Q_EMIT layoutListChanged();
+    broadcastLayoutChanged(getLayout());
 }
 
 void KeyboardDaemon::switchToNextLayout()
 {
     setLastUsedLayoutValue(getLayout());
     X11Helper::scrollLayouts(1);
+    Q_EMIT layoutChanged(getLayout());
+    broadcastLayoutChanged(getLayout());
 }
 
 void KeyboardDaemon::switchToPreviousLayout()
 {
     setLastUsedLayoutValue(getLayout());
     X11Helper::scrollLayouts(-1);
+    Q_EMIT layoutChanged(getLayout());
+    broadcastLayoutChanged(getLayout());
+}
+
+void KeyboardDaemon::broadcastLayoutsChanged()
+{
+    if (m_ipcServer) {
+        m_ipcServer->broadcastLayoutsChanged(getLayoutsList());
+    }
+}
+
+void KeyboardDaemon::broadcastLayoutChanged(uint index)
+{
+    if (m_ipcServer) {
+        m_ipcServer->broadcastLayoutChanged(index);
+    }
 }
 
 bool KeyboardDaemon::setLayout(QAction *action)
