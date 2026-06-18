@@ -1,3 +1,4 @@
+// qmllint disable unqualified
 import QtQuick
 import org.kde.plasma.configuration
 

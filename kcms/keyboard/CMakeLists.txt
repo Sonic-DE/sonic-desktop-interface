@@ -27,6 +27,7 @@ set( kded_keyboard_SRCS
     flags.cpp
     xkb_rules.cpp
     layoutnames.cpp
+    ipc/KeyboardIpcServer.cpp
 )
 
 kconfig_add_kcfg_files(kded_keyboard_SRCS keyboardsettings.kcfgc GENERATE_MOC)
@@ -40,6 +41,7 @@ target_link_libraries(kded_keyboard
     Qt::Concurrent
     Qt::Widgets
     Qt::Xml
+    Qt::Network
     KF6::ConfigCore
     KF6::CoreAddons
     KF6::KCMUtils
@@ -57,7 +59,12 @@ target_link_libraries(kded_keyboard
     X11::xkbfile
     PkgConfig::XKBREGISTRY
  )
+target_include_directories(kded_keyboard PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/ipc
+    ${CMAKE_SOURCE_DIR}/applets/keyboardlayout/ipc
+)
 target_link_libraries(kded_keyboard Qt::GuiPrivate)
+target_link_libraries(kded_keyboard keyboardlayout_ipc_protocol)
 
 if (HAVE_XINPUT)
     target_link_libraries(kded_keyboard X11::Xi)
@@ -156,6 +163,7 @@ ecm_add_qml_module(kcm_keyboard_declarative
 )
 
 target_link_libraries(kcm_keyboard_declarative PRIVATE kcm_keyboard_static)
+target_link_libraries(kcm_keyboard_declarative PRIVATE Qt::Network)
 
 ecm_finalize_qml_module(kcm_keyboard_declarative)
 
