@@ -1,7 +1,7 @@
 # KDE3 - kcmaccess.po Russian translation
 # Copyright (C) 2005, KDE Team.
 #
-# SPDX-FileCopyrightText: 2019, 2021, 2022, 2023, 2024, 2025, 2026 Alexander Yavorsky <kekcuha@gmail.com>
+# SPDX-FileCopyrightText: 2019, 2021-2026 Alexander Yavorsky <kekcuha@gmail.com>
 # SPDX-FileCopyrightText: 2024 Olesya Gerasimenko <translation-team@basealt.ru>
 # Hermann Zheboldov <Hermann.Zheboldov@shq.ru>, 2000.
 # Leonid Kanter <leon@asplinux.ru>, 2005.
@@ -15,15 +15,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kcmaccess\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-01-08 00:45+0000\n"
-"PO-Revision-Date: 2026-01-28 16:58+0200\n"
+"POT-Creation-Date: 2026-05-22 02:48+0000\n"
+"PO-Revision-Date: 2026-06-18 19:29+0200\n"
 "Last-Translator: Alexander Yavorskiy <kekcuha@gmail.com>\n"
 "Language-Team: Russian <kde-russian@lists.kde.ru>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 25.12.1\n"
+"X-Generator: Lokalize 26.04.2\n"
 "Plural-Forms: nplurals=4; plural=n==1 ? 3 : n%10==1 && n%100!=11 ? 0 : n"
 "%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Environment: kde\n"
@@ -624,7 +624,7 @@ msgstr ""
 "Используйте комбинации клавиш для переключения инвертирования цветов дисплея "
 "и окна"
 
-#: ui/Invert.qml:49 ui/ZoomMagnifier.qml:376
+#: ui/Invert.qml:49 ui/ZoomMagnifier.qml:388
 #, kde-format
 msgctxt "@action:button"
 msgid "Configure Shortcuts…"
@@ -902,18 +902,22 @@ msgstr "Включить"
 #, kde-kuit-format
 msgctxt "@info:tooltip"
 msgid ""
-"The numpad key <shortcut>5</shortcut> functions as a mouse click. The keys "
-"<shortcut>2</shortcut>, <shortcut>4</shortcut>, <shortcut>6</shortcut>, and "
-"<shortcut>8</shortcut> allow for cardinal movement (down, left, right, and "
-"up). The keys <shortcut>1</shortcut>, <shortcut>3</shortcut>, <shortcut>7</"
-"shortcut>, and <shortcut>9</shortcut> allow for diagonal movement."
+"The numpad key <shortcut>5</shortcut> functions as a mouse click, toggled by "
+"<shortcut>/</shortcut> for middle click, <shortcut>*</shortcut> for right "
+"click and <shortcut>NumLock</shortcut> for left click. The keys <shortcut>2</"
+"shortcut>, <shortcut>4</shortcut>, <shortcut>6</shortcut>, and <shortcut>8</"
+"shortcut> allow for cardinal movement (down, left, right, and up). The keys "
+"<shortcut>1</shortcut>, <shortcut>3</shortcut>, <shortcut>7</shortcut>, and "
+"<shortcut>9</shortcut> allow for diagonal movement."
 msgstr ""
-"Клавиша <shortcut>5</shortcut> цифровой клавиатуры соответствует щелчку "
-"мышью. Клавиши <shortcut>2</shortcut>, <shortcut>4</shortcut>, <shortcut>6</"
-"shortcut> и <shortcut>8</shortcut> позволяют перемещаться в разные стороны "
-"(вниз, влево, вправо и вверх). Клавиши <shortcut>1</shortcut>, <shortcut>3</"
-"shortcut>, <shortcut>7</shortcut> и <shortcut>9</shortcut> позволяют "
-"перемещаться по диагонали."
+"Клавиша <shortcut>5</shortcut> цифровой клавиатуры выполняет функции кнопок "
+"мыши. Для выполнения щелчка средней кнопкой нажимайте её совместно с "
+"клавишей <shortcut>/</shortcut>, правой кнопкой — <shortcut>*</shortcut>, "
+"левой кнопку — <shortcut>NumLock</shortcut>. Клавиши <shortcut>2</shortcut>, "
+"<shortcut>4</shortcut>, <shortcut>6</shortcut> и <shortcut>8</shortcut> "
+"позволяют перемещать курсор в разные стороны (вниз, влево, вправо и вверх). "
+"Клавиши <shortcut>1</shortcut>, <shortcut>3</shortcut>, <shortcut>7</"
+"shortcut> и <shortcut>9</shortcut> позволяют перемещаться по диагонали."
 
 #: ui/MouseNavigation.qml:39
 #, kde-format
@@ -1028,13 +1032,13 @@ msgctxt "@label Pointer magnification level"
 msgid "Magnification:"
 msgstr "Увеличение курсора:"
 
-#: ui/ShakeCursor.qml:55
+#: ui/ShakeCursor.qml:56
 #, kde-format
 msgctxt "@label Normal pointer size"
 msgid "Normal"
 msgstr "Обычное"
 
-#: ui/ShakeCursor.qml:62
+#: ui/ShakeCursor.qml:63
 #, kde-format
 msgctxt "@label Large pointer size"
 msgid "Large"
@@ -1082,98 +1086,104 @@ msgctxt "@item:inlistbox"
 msgid "Hide"
 msgstr "Скрыть"
 
-#: ui/ZoomMagnifier.qml:123
+#: ui/ZoomMagnifier.qml:124
 #, kde-format
 msgctxt "@label:listbox"
 msgid "Pointer tracking:"
 msgstr "Отслеживание курсора мыши:"
 
-#: ui/ZoomMagnifier.qml:128
+#: ui/ZoomMagnifier.qml:129
 #, kde-format
 msgctxt "@item:inlistbox"
 msgid "Proportional"
 msgstr "Пропорционально"
 
-#: ui/ZoomMagnifier.qml:129
+#: ui/ZoomMagnifier.qml:130
 #, kde-format
 msgctxt "@item:inlistbox"
 msgid "Zoom area moves in sync with pointer"
 msgstr "Область масштабирования следует за курсором"
 
-#: ui/ZoomMagnifier.qml:133
+#: ui/ZoomMagnifier.qml:134
 #, kde-format
 msgctxt "@item:inlistbox"
 msgid "Centered"
 msgstr "По центру"
 
-#: ui/ZoomMagnifier.qml:134
+#: ui/ZoomMagnifier.qml:135
 #, kde-format
 msgctxt "@item:inlistbox"
 msgid "Pointer stays centered on-screen, except near screen edges"
 msgstr ""
 "Курсор остаётся в центре экрана, за исключением областей вблизи краёв экрана"
 
-#: ui/ZoomMagnifier.qml:138
+#: ui/ZoomMagnifier.qml:139
 #, kde-format
 msgctxt "@item:inlistbox"
 msgid "Centered (Strict)"
 msgstr "По центру"
 
-#: ui/ZoomMagnifier.qml:139
+#: ui/ZoomMagnifier.qml:140
 #, kde-format
 msgctxt "@item:inlistbox"
 msgid "Pointer stays centered on-screen, even near screen edges"
 msgstr "Курсор остаётся в центре экрана, даже при перемещении к краям экрана"
 
-#: ui/ZoomMagnifier.qml:143
+#: ui/ZoomMagnifier.qml:144
 #, kde-format
 msgctxt "@item:inlistbox"
 msgid "Push"
 msgstr "Выдвижением"
 
-#: ui/ZoomMagnifier.qml:144
+#: ui/ZoomMagnifier.qml:145
 #, kde-format
 msgctxt "@item:inlistbox"
 msgid "Pointer pushes zoom area at screen edges"
 msgstr "Курсор сдвигает область масштабирования у краёв экран"
 
-#: ui/ZoomMagnifier.qml:148
+#: ui/ZoomMagnifier.qml:149
 #, kde-format
 msgctxt "@item:inlistbox"
 msgid "Disabled"
 msgstr "Отключено"
 
-#: ui/ZoomMagnifier.qml:149
+#: ui/ZoomMagnifier.qml:150
 #, kde-format
 msgctxt "@item:inlistbox"
 msgid "Zoom area doesn't follow pointer"
 msgstr "Область масштабирования не следует за курсором"
 
-#: ui/ZoomMagnifier.qml:166
+#: ui/ZoomMagnifier.qml:167
+#, kde-format
+msgctxt "@option:check"
+msgid "Sharpen screen content while zoomed in"
+msgstr "Повышать резкость содержимого экрана при увеличении"
+
+#: ui/ZoomMagnifier.qml:178
 #, kde-format
 msgctxt "@option:check"
 msgid "Enable focus tracking"
 msgstr "Включить слежение за фокусом"
 
-#: ui/ZoomMagnifier.qml:178
+#: ui/ZoomMagnifier.qml:190
 #, kde-format
 msgctxt "@option:check"
 msgid "Enable text caret tracking"
 msgstr "Включить слежение за текстовым курсором"
 
-#: ui/ZoomMagnifier.qml:194
+#: ui/ZoomMagnifier.qml:206
 #, kde-format
 msgctxt "@option:check, enable magnify effect, following 'Zoom:'"
 msgid "Magnify region"
 msgstr "Область масштабирования"
 
-#: ui/ZoomMagnifier.qml:221
+#: ui/ZoomMagnifier.qml:233
 #, kde-format
 msgctxt "@label:spinbox"
 msgid "Width:"
 msgstr "Ширина:"
 
-#: ui/ZoomMagnifier.qml:232 ui/ZoomMagnifier.qml:257
+#: ui/ZoomMagnifier.qml:244 ui/ZoomMagnifier.qml:269
 #, kde-format
 msgctxt "short for pixel(s)"
 msgid "%1 px"
@@ -1183,37 +1193,37 @@ msgstr[1] "%1 пикс."
 msgstr[2] "%1 пикс."
 msgstr[3] "%1 пикс."
 
-#: ui/ZoomMagnifier.qml:233 ui/ZoomMagnifier.qml:258
+#: ui/ZoomMagnifier.qml:245 ui/ZoomMagnifier.qml:270
 #, kde-format
 msgctxt "short for pixel(s)"
 msgid "px"
 msgstr "пикс."
 
-#: ui/ZoomMagnifier.qml:246
+#: ui/ZoomMagnifier.qml:258
 #, kde-format
 msgctxt "@label:spinbox"
 msgid "Height:"
 msgstr "Высота:"
 
-#: ui/ZoomMagnifier.qml:275
+#: ui/ZoomMagnifier.qml:287
 #, kde-format
 msgctxt "@option:check, disable zoom/magnify effect"
 msgid "Disabled"
 msgstr "Отключено"
 
-#: ui/ZoomMagnifier.qml:288
+#: ui/ZoomMagnifier.qml:300
 #, kde-format
 msgctxt "@label:spinbox"
 msgid "Zoom factor:"
 msgstr "Коэффициент масштабирования:"
 
-#: ui/ZoomMagnifier.qml:321
+#: ui/ZoomMagnifier.qml:333
 #, kde-format
 msgctxt "@label"
 msgid "Scroll gesture modifier keys:"
 msgstr "Клавиши-модификаторы жеста прокрутки:"
 
-#: ui/ZoomMagnifier.qml:359
+#: ui/ZoomMagnifier.qml:371
 #, kde-format
 msgctxt "@info:tooltip, indicates feature unavailable on X11"
 msgid "Zoom scroll gestures are only available on Wayland."
@@ -1221,7 +1231,7 @@ msgstr ""
 "Жесты масштабирования прокручиванием доступны только при использовании "
 "Wayland."
 
-#: ui/ZoomMagnifier.qml:365
+#: ui/ZoomMagnifier.qml:377
 #, kde-format
 msgctxt "@label Hint for scroll gestures"
 msgid "Scroll while modifier keys are pressed to zoom"
@@ -1229,7 +1239,7 @@ msgstr ""
 "Выполнять масштабирование при прокручивании с зажатыми клавишами-"
 "модификаторами"
 
-#: ui/ZoomMagnifier.qml:386
+#: ui/ZoomMagnifier.qml:398
 #, kde-format
 msgctxt "@label Hint for zoom/magnify effect usage"
 msgid "Use shortcuts to control zoom"
