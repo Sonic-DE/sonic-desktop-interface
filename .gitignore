@@ -28,3 +28,4 @@ cmake-build-debug*
 .clangd
 .cache
 *.qmlls.ini
+.ccls-cache
