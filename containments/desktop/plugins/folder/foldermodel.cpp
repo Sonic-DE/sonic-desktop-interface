@@ -36,11 +36,6 @@
 #include <qplatformdefs.h>
 
 #include <KAuthorized>
-#include <QDBusConnection>
-#include <QDBusConnectionInterface>
-#include <QStandardPaths>
-#include <QQmlEngine>
-#include <QJSEngine>
 #include <KConfigGroup>
 #include <KCoreDirLister>
 #include <KDesktopFile>
@@ -73,6 +68,11 @@
 #include <KShell>
 #include <KStringHandler>
 #include <KUrlMimeData>
+#include <QDBusConnection>
+#include <QDBusConnectionInterface>
+#include <QJSEngine>
+#include <QQmlEngine>
+#include <QStandardPaths>
 
 #include <Plasma/Applet>
 #include <Plasma/Containment>
@@ -96,8 +96,8 @@ class KRunnerChecker : public QObject
 
 public:
     explicit KRunnerChecker(QObject *parent = nullptr)
-    : QObject(parent)
-    , m_krunnerAvailable(false)
+        : QObject(parent)
+        , m_krunnerAvailable(false)
     {
         const QString serviceName = QStringLiteral("org.kde.krunner");
         const QString serviceFile = QStringLiteral("dbus-1/services/org.kde.krunner.service");
@@ -108,25 +108,31 @@ public:
         m_krunnerAvailable = isRunning || isInstalled;
 
         auto iface = QDBusConnection::sessionBus().interface();
-        connect(iface, &QDBusConnectionInterface::serviceOwnerChanged, this, [this, serviceName, serviceFile](const QString &name, const QString &/*oldOwner*/, const QString &newOwner) {
-            if (name == serviceName) {
-                bool currentlyActive = !newOwner.isEmpty();
-                bool stillAvailable = currentlyActive;
+        connect(iface,
+                &QDBusConnectionInterface::serviceOwnerChanged,
+                this,
+                [this, serviceName, serviceFile](const QString &name, const QString & /*oldOwner*/, const QString &newOwner) {
+                    if (name == serviceName) {
+                        bool currentlyActive = !newOwner.isEmpty();
+                        bool stillAvailable = currentlyActive;
 
-                // Fallback: If it stopped running, check if the service file still exists
-                if (!stillAvailable) {
-                    stillAvailable = !QStandardPaths::locate(QStandardPaths::GenericDataLocation, serviceFile).isEmpty();
-                }
+                        // Fallback: If it stopped running, check if the service file still exists
+                        if (!stillAvailable) {
+                            stillAvailable = !QStandardPaths::locate(QStandardPaths::GenericDataLocation, serviceFile).isEmpty();
+                        }
 
-                if (stillAvailable != m_krunnerAvailable) {
-                    m_krunnerAvailable = stillAvailable;
-                    Q_EMIT krunnerAvailableChanged();
-                }
-            }
-        });
+                        if (stillAvailable != m_krunnerAvailable) {
+                            m_krunnerAvailable = stillAvailable;
+                            Q_EMIT krunnerAvailableChanged();
+                        }
+                    }
+                });
     }
 
-    bool krunnerAvailable() const { return m_krunnerAvailable; }
+    bool krunnerAvailable() const
+    {
+        return m_krunnerAvailable;
+    }
 
 Q_SIGNALS:
     void krunnerAvailableChanged();
@@ -2518,4 +2524,4 @@ bool FolderModel::isDeleteCommandShown()
     return cg.readEntry("ShowDeleteCommand", false);
 }
 
-
+#include "foldermodel.moc"
