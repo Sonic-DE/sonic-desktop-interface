@@ -22,6 +22,7 @@
 #include "axesproxymodel.h"
 #include "buttonmodel.h"
 #include "devicemodel.h"
+#include "gamecontrolleremulationsettings.h"
 #include "gamecontrollermoduledata.h"
 #include "hatmodel.h"
 
