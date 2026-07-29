@@ -124,5 +124,7 @@ int main(int argc, char *argv[])
 
     job->executeOperation(fileInfo, mimeType, install);
 
-    return app.exec();
+    const int result = app.exec();
+    qInstallMessageHandler(nullptr);
+    return result;
 }
