@@ -20,6 +20,7 @@
 
 class LibinputTouchpad;
 class XlibNotifications;
+class XRecordKeyboardMonitor;
 
 class XlibBackend : public TouchpadBackend
 {
@@ -47,6 +48,7 @@ public:
     void setTouchpadSuspended(bool) override;
 
     void watchForEvents() override;
+    bool externalMousePresent() const override;
 
     QList<LibinputCommon *> inputDevices() const override;
 
@@ -67,11 +69,16 @@ protected:
 
     XcbAtom m_enabledAtom;
     XcbAtom m_touchpadAtom;
+    XcbAtom m_mouseAtom;
     XcbAtom m_libinputIdentifierAtom;
+#if HAVE_SYNAPTICS
+    XcbAtom m_synapticsIdentifierAtom;
+#endif
 
     LibinputTouchpad *findTouchpad();
     std::unique_ptr<LibinputTouchpad> m_device;
 
     QString m_errorString;
     std::unique_ptr<XlibNotifications> m_notifications;
+    std::unique_ptr<XRecordKeyboardMonitor> m_keyboardMonitor;
 };

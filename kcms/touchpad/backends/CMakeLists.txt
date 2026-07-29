@@ -15,8 +15,13 @@ if (BUILD_KCM_TOUCHPAD_X11)
         x11/xlibtouchpad.cpp
         x11/xcbatom.cpp
         x11/xlibnotifications.cpp
+        x11/xrecordkeyboardmonitor.cpp
         x11/libinputtouchpad.cpp
     )
+    if (TARGET XOrg::Synaptics)
+        target_sources(touchpad_x11_backends PRIVATE x11/synapticstouchpad.cpp)
+        target_link_libraries(touchpad_x11_backends PRIVATE XOrg::Synaptics)
+    endif()
     set_property(TARGET touchpad_x11_backends PROPERTY POSITION_INDEPENDENT_CODE ON)
     target_include_directories(touchpad_x11_backends PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}
@@ -29,6 +34,7 @@ if (BUILD_KCM_TOUCHPAD_X11)
         PRIVATE
             Qt::GuiPrivate
             XCB::ATOM
+            XCB::RECORD
             XCB::RECORD
             X11::X11
             X11::Xi

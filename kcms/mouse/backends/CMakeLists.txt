@@ -8,10 +8,12 @@ if (BUILD_KCM_MOUSE_X11)
 
     target_link_libraries(kcm_mouse
         PUBLIC
-            PkgConfig::XORGLIBINPUT
             X11::X11
             X11::Xi
             X11::Xcursor
             Qt::GuiPrivate
     )
+    if (TARGET XOrg::Evdev)
+        target_link_libraries(kcm_mouse PRIVATE XOrg::Evdev)
+    endif()
 endif()

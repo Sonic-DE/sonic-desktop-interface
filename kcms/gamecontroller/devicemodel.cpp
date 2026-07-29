@@ -20,10 +20,18 @@ const int kShortPollTime = 100;
 // 2 seconds while we don't have any devices
 const int kLongPollTime = 2000;
 
-static bool initialized = false;
+static int s_sdlLeaseCount = 0;
 
-DeviceModel::DeviceModel()
+DeviceModel::DeviceModel(QObject *parent)
+    : QAbstractListModel(parent)
 {
+    if (s_sdlLeaseCount > 0 || SDL_InitSubSystem(SDL_INIT_GAMECONTROLLER) == 0) {
+        ++s_sdlLeaseCount;
+        m_hasSdlLease = true;
+    } else {
+        qCWarning(KCM_GAMECONTROLLER) << "Could not initialise SDL game controller subsystem:" << SDL_GetError();
+    }
+
     m_timer = new QTimer(this);
     connect(m_timer, &QTimer::timeout, this, &DeviceModel::poll);
     // Only poll once per 2 seconds until we have a device
@@ -36,11 +44,11 @@ DeviceModel::DeviceModel()
 
 DeviceModel::~DeviceModel()
 {
-    if (initialized) {
-        qCDebug(KCM_GAMECONTROLLER) << "Calling SDL_Quit";
-        qDeleteAll(m_devices);
-        SDL_Quit();
-        initialized = false;
+    qDeleteAll(m_devices);
+    m_devices.clear();
+    if (m_hasSdlLease && --s_sdlLeaseCount == 0) {
+        qCDebug(KCM_GAMECONTROLLER) << "Releasing SDL game controller subsystem";
+        SDL_QuitSubSystem(SDL_INIT_GAMECONTROLLER);
     }
 }
 
@@ -51,13 +59,12 @@ Device *DeviceModel::device(SDL_JoystickID id) const
 
 int DeviceModel::rowCount(const QModelIndex &parent) const
 {
-    Q_UNUSED(parent)
-    return m_devices.count();
+    return parent.isValid() ? 0 : m_devices.count();
 }
 
 QVariant DeviceModel::data(const QModelIndex &index, int role) const
 {
-    if (!checkIndex(index)) {
+    if (!checkIndex(index, QAbstractItemModel::CheckIndexOption::IndexIsValid | QAbstractItemModel::CheckIndexOption::ParentIsInvalid)) {
         return {};
     }
 
@@ -80,13 +87,8 @@ QHash<int, QByteArray> DeviceModel::roleNames() const
 
 void DeviceModel::poll()
 {
-    if (!initialized) {
-        qCDebug(KCM_GAMECONTROLLER) << "Calling SDL_Init";
-        if (SDL_Init(SDL_INIT_GAMECONTROLLER) != 0) {
-            qCWarning(KCM_GAMECONTROLLER) << "Could not initialise SDL. No controllers will be shown: " << qPrintable(SDL_GetError());
-            return;
-        }
-        initialized = true;
+    if (!m_hasSdlLease) {
+        return;
     }
 
     SDL_Event event{};
@@ -100,7 +102,7 @@ void DeviceModel::poll()
             break;
         case SDL_JOYBUTTONDOWN:
         case SDL_JOYBUTTONUP:
-            if (m_devices.contains(event.jbutton.which) && !m_devices.value(event.jaxis.which)->isController()) {
+            if (m_devices.contains(event.jbutton.which) && !m_devices.value(event.jbutton.which)->isController()) {
                 m_devices.value(event.jbutton.which)->onButtonEvent(event.jbutton);
             }
             break;
@@ -172,9 +174,9 @@ void DeviceModel::removeDevice(const SDL_JoystickID id)
     qCDebug(KCM_GAMECONTROLLER) << "Removing device with ID" << id;
 
     beginRemoveRows(QModelIndex(), index, index);
-    m_devices.value(id)->deleteLater();
-    m_devices.remove(id);
+    Device *device = m_devices.take(id);
     endRemoveRows();
+    device->deleteLater();
 
     if (m_devices.count() == 0) {
         // Go back to long timeout polling now that we don't have a device
@@ -187,5 +189,3 @@ int DeviceModel::count() const
 {
     return m_devices.size();
 }
-
-

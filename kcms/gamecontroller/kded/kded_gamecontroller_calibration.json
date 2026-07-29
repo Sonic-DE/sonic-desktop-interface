@@ -1,0 +1,8 @@
+{
+    "KPlugin": {
+        "Name": "Game Controller Calibration",
+        "Description": "Reapplies saved game controller calibration"
+    },
+    "X-KDE-Kded-autoload": true,
+    "X-KDE-Kded-load-on-demand": true
+}

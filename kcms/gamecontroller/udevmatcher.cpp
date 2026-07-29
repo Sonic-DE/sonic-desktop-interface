@@ -19,7 +19,7 @@ static std::string kDevicePathKey = "DEVPATH";
 std::string UDevMatcher::deviceToUdevId(const std::string &device_path)
 {
     std::string devicePath;
-    char sys_path[256];
+    char sys_path[256] = {};
 
     size_t lastSlash = device_path.find_last_of('/');
 
@@ -31,6 +31,8 @@ std::string UDevMatcher::deviceToUdevId(const std::string &device_path)
     } else if (lastPart.starts_with("event")) {
         // input devpaths end with eventXY
         snprintf(sys_path, sizeof(sys_path), "/sys/class/input/%s", lastPart.c_str());
+    } else {
+        return devicePath;
     }
     std::unique_ptr<struct udev, decltype(&udev_unref)> udev(udev_new(), &udev_unref);
     if (!udev) {
@@ -44,7 +46,11 @@ std::string UDevMatcher::deviceToUdevId(const std::string &device_path)
         return devicePath;
     }
 
-    devicePath = udev_device_get_property_value(udevice.get(), kDevicePathKey.c_str());
+    const char *property = udev_device_get_property_value(udevice.get(), kDevicePathKey.c_str());
+    if (!property) {
+        return devicePath;
+    }
+    devicePath = property;
 
     // Walk the devpath looking for the ID
     size_t slash = devicePath.find_last_of('/');
@@ -52,13 +58,17 @@ std::string UDevMatcher::deviceToUdevId(const std::string &device_path)
     qCDebug(KCM_GAMECONTROLLER) << "Looking for ID of " << devicePath;
 
     // If the bit after the last / is a digit, stop, we found it
-    while (!std::isdigit(devicePath.at(slash + 1))) {
+    while (slash != std::string::npos && slash + 1 < devicePath.size() && !std::isdigit(static_cast<unsigned char>(devicePath[slash + 1]))) {
         // Remove the last bit
         devicePath = devicePath.substr(0, slash);
 
         slash = devicePath.find_last_of('/');
 
         qCDebug(KCM_GAMECONTROLLER) << "Last part isn't an id, moving up: " << devicePath;
+    }
+
+    if (slash == std::string::npos || slash + 1 >= devicePath.size()) {
+        return {};
     }
 
     // Now remove the prefix

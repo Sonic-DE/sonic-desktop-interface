@@ -45,9 +45,7 @@ void ButtonModel::onButtonStateChanged(int index)
 
 int ButtonModel::rowCount(const QModelIndex &parent) const
 {
-    Q_UNUSED(parent);
-
-    if (m_device == nullptr) {
+    if (parent.isValid() || m_device == nullptr) {
         return 0;
     }
 
@@ -56,13 +54,12 @@ int ButtonModel::rowCount(const QModelIndex &parent) const
 
 int ButtonModel::columnCount(const QModelIndex &parent) const
 {
-    Q_UNUSED(parent);
-    return 1;
+    return parent.isValid() ? 0 : 1;
 }
 
 QVariant ButtonModel::data(const QModelIndex &index, int role) const
 {
-    if (!checkIndex(index) || m_device == nullptr) {
+    if (m_device == nullptr || !checkIndex(index, QAbstractItemModel::CheckIndexOption::IndexIsValid | QAbstractItemModel::CheckIndexOption::ParentIsInvalid)) {
         return {};
     }
 
@@ -79,7 +76,7 @@ QVariant ButtonModel::headerData(int section, Qt::Orientation orientation, int r
     if (role == Qt::DisplayRole) {
         if (orientation == Qt::Horizontal && section == 0) {
             return i18nc("@label Button state", "State");
-        } else if (orientation == Qt::Vertical) {
+        } else if (orientation == Qt::Vertical && m_device && section >= 0 && section < m_device->buttonCount()) {
             return m_device->buttonName(section);
         }
     }

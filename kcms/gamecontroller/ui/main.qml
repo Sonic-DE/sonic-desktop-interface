@@ -22,6 +22,9 @@ KCM.SimpleKCM {
     readonly property var deviceType: device?.type ?? ""
     readonly property var deviceControllerType: device?.controllerTypeName ?? ""
     readonly property var deviceConnectionType: device?.connectionType ?? ""
+    readonly property CalibrationController calibration: kcm.calibrationController
+
+    onDeviceChanged: calibration.setDevice(device)
 
     actions: [
         Kirigami.Action {
@@ -108,6 +111,44 @@ KCM.SimpleKCM {
 
                 Layout.fillWidth: true
             }
+        }
+
+        Kirigami.InlineMessage {
+            Layout.fillWidth: true
+            visible: calibration.state !== CalibrationController.Idle || calibration.supported
+            type: calibration.state === CalibrationController.Error ? Kirigami.MessageType.Error
+                : calibration.state === CalibrationController.Completed ? Kirigami.MessageType.Positive
+                : Kirigami.MessageType.Information
+            text: calibration.instruction
+
+            actions: [
+                Kirigami.Action {
+                    text: i18nc("@action:button", "Calibrate")
+                    visible: calibration.state === CalibrationController.Idle
+                        || calibration.state === CalibrationController.Completed
+                        || calibration.state === CalibrationController.Error
+                    enabled: calibration.supported
+                    onTriggered: calibration.start()
+                },
+                Kirigami.Action {
+                    text: i18nc("@action:button", "Finish")
+                    visible: calibration.state === CalibrationController.CollectingExtrema
+                    onTriggered: calibration.finish()
+                },
+                Kirigami.Action {
+                    text: i18nc("@action:button", "Cancel")
+                    visible: calibration.state === CalibrationController.Centering
+                        || calibration.state === CalibrationController.CollectingExtrema
+                        || calibration.state === CalibrationController.Applying
+                    onTriggered: calibration.cancel()
+                },
+                Kirigami.Action {
+                    text: i18nc("@action:button", "Reset Calibration")
+                    visible: calibration.state === CalibrationController.Completed
+                        || calibration.state === CalibrationController.Error
+                    onTriggered: calibration.reset()
+                }
+            ]
         }
 
         RowLayout {

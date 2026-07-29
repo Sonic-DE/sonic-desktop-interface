@@ -16,8 +16,13 @@
 
 // Includes are ordered this way because of #defines in Xorg's headers
 #include "libinputtouchpad.h"
+#if HAVE_SYNAPTICS
+#include "synapticstouchpad.h"
+#include <synaptics-properties.h>
+#endif
 #include "xlibbackend.h" // krazy:exclude=includes
 #include "xlibnotifications.h" // krazy:exclude=includes
+#include "xrecordkeyboardmonitor.h"
 
 #include <X11/Xatom.h>
 #include <X11/Xlib-xcb.h>
@@ -71,14 +76,19 @@ XlibBackend::XlibBackend(QObject *parent)
     }
 
     m_touchpadAtom.intern(m_connection, XI_TOUCHPAD);
+    m_mouseAtom.intern(m_connection, XI_MOUSE);
     m_enabledAtom.intern(m_connection, XI_PROP_ENABLED);
 
     m_libinputIdentifierAtom.intern(m_connection, "libinput Send Events Modes Available");
+#if HAVE_SYNAPTICS
+    m_synapticsIdentifierAtom.intern(m_connection, SYNAPTICS_PROP_CAPABILITIES);
+#endif
 
     m_device.reset(findTouchpad());
     if (!m_device) {
         m_errorString = i18n("No touchpad found");
     }
+    watchForEvents();
 }
 
 LibinputTouchpad *XlibBackend::findTouchpad()
@@ -101,6 +111,12 @@ LibinputTouchpad *XlibBackend::findTouchpad()
             if (*atom == m_libinputIdentifierAtom.atom()) {
                 setMode(TouchpadInputBackendMode::XLibinput);
                 return new LibinputTouchpad(m_display.get(), info->id);
+            }
+#endif
+#if HAVE_SYNAPTICS
+            if (*atom == m_synapticsIdentifierAtom.atom()) {
+                setMode(TouchpadInputBackendMode::XSynaptics);
+                return new SynapticsTouchpad(m_display.get(), info->id, QString::fromLocal8Bit(info->name));
             }
 #endif
         }
@@ -193,6 +209,7 @@ void XlibBackend::touchpadDetached()
     qWarning() << "Touchpad detached";
     m_device.reset();
     Q_EMIT touchpadReset();
+    Q_EMIT inputDevicesChanged();
 }
 
 void XlibBackend::devicePlugged(int /*device*/)
@@ -205,6 +222,7 @@ void XlibBackend::devicePlugged(int /*device*/)
             m_notifications.release()->deleteLater();
             watchForEvents();
             Q_EMIT touchpadReset();
+            Q_EMIT inputDevicesChanged();
         }
     }
 }
@@ -220,13 +238,28 @@ QList<LibinputCommon *> XlibBackend::inputDevices() const
 {
     QList<LibinputCommon *> touchpads;
 
-#if HAVE_XORGLIBINPUT
     if (m_device) {
         touchpads.push_back(m_device.get());
     }
-#endif
 
     return touchpads;
+}
+
+bool XlibBackend::externalMousePresent() const
+{
+    int count = 0;
+    std::unique_ptr<XDeviceInfo, DeviceListDeleter> devices(XListInputDevices(m_display.get(), &count));
+    for (int i = 0; devices && i < count; ++i) {
+        const XDeviceInfo &device = devices.get()[i];
+        if (device.use != IsXExtensionPointer || device.type != const_cast<XcbAtom &>(m_mouseAtom).atom()) {
+            continue;
+        }
+        PropertyInfo enabled(m_display.get(), device.id, const_cast<XcbAtom &>(m_enabledAtom).atom(), 0);
+        if (enabled.value(0).toBool()) {
+            return true;
+        }
+    }
+    return false;
 }
 
 void XlibBackend::watchForEvents()
@@ -237,4 +270,15 @@ void XlibBackend::watchForEvents()
         connect(m_notifications.get(), &XlibNotifications::touchpadDetached, this, &XlibBackend::touchpadDetached);
         connect(m_notifications.get(), &XlibNotifications::propertyChanged, this, &XlibBackend::propertyChanged);
     }
+#if HAVE_SYNAPTICS
+    if (getMode() == TouchpadInputBackendMode::XSynaptics && !m_keyboardMonitor) {
+        m_keyboardMonitor = std::make_unique<XRecordKeyboardMonitor>(XDisplayString(m_display.get()));
+        if (m_keyboardMonitor->isValid()) {
+            connect(m_keyboardMonitor.get(), &XRecordKeyboardMonitor::keyboardActivityStarted, this, &TouchpadBackend::keyboardActivityStarted);
+            connect(m_keyboardMonitor.get(), &XRecordKeyboardMonitor::keyboardActivityFinished, this, &TouchpadBackend::keyboardActivityFinished);
+        } else {
+            m_keyboardMonitor.reset();
+        }
+    }
+#endif
 }

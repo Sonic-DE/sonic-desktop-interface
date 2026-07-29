@@ -44,9 +44,7 @@ void HatModel::onHatPositionChanged(int index)
 
 int HatModel::rowCount(const QModelIndex &parent) const
 {
-    Q_UNUSED(parent);
-
-    if (m_device == nullptr) {
+    if (parent.isValid() || m_device == nullptr) {
         return 0;
     }
 
@@ -55,13 +53,12 @@ int HatModel::rowCount(const QModelIndex &parent) const
 
 int HatModel::columnCount(const QModelIndex &parent) const
 {
-    Q_UNUSED(parent);
-    return 1;
+    return parent.isValid() ? 0 : 1;
 }
 
 QVariant HatModel::data(const QModelIndex &index, int role) const
 {
-    if (!checkIndex(index) || m_device == nullptr) {
+    if (m_device == nullptr || !checkIndex(index, QAbstractItemModel::CheckIndexOption::IndexIsValid | QAbstractItemModel::CheckIndexOption::ParentIsInvalid)) {
         return {};
     }
 

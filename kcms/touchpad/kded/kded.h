@@ -28,6 +28,7 @@ public Q_SLOTS:
     Q_SCRIPTABLE Q_NOREPLY void toggle();
     Q_SCRIPTABLE Q_NOREPLY void disable();
     Q_SCRIPTABLE Q_NOREPLY void enable();
+    Q_SCRIPTABLE Q_NOREPLY void reloadSettings();
 
 private Q_SLOTS:
     void updateCurrentState();
@@ -35,10 +36,13 @@ private Q_SLOTS:
     void handleReset();
     void serviceNameFetchFinished(QDBusPendingCallWatcher *);
     void onPrepareForSleep(bool sleep);
+    void keyboardActivityStarted();
+    void keyboardActivityFinished();
 
 private:
     void lateInit();
     void showOsd();
+    void applySuspendReasons();
 
     TouchpadBackend *m_backend;
     QDBusServiceWatcher m_dependencies;
@@ -47,4 +51,11 @@ private:
     bool m_userRequestedSuspend = false;
 
     bool m_preparingForSleep = false;
+    bool m_disableOnKeyboardActivity = false;
+    bool m_keyboardActivitySuspend = false;
+    bool m_disableWhenMousePluggedIn = false;
+    bool m_externalMouseSuspend = false;
+    int m_keyboardActivityTimeoutMs = 300;
+    QTimer m_keyboardActivityTimer;
+    QTimer m_externalMouseTimer;
 };

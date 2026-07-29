@@ -11,7 +11,9 @@
 #include <SDL2/SDL_hidapi.h>
 
 #include "logging.h"
+#if HAVE_UDEV
 #include "udevmatcher.h"
+#endif
 
 // NOTE: Keep in sync with SDL_JoystickType from SDL_joystick.h
 static QStringList kJoystickTypeNames = {i18n("Unknown"),
@@ -93,7 +95,8 @@ SDL_hid_device_info getJoystickHidInfo(short vendor, short product, std::string 
 
     qCDebug(KCM_GAMECONTROLLER) << "Checking for hidapi with vendor: " << vendor << " and product: " << product;
 
-    SDL_hid_device_info result;
+    SDL_hid_device_info result{};
+    result.interface_number = -2;
     if (info) {
         if (!info->next) {
             // We found our device, so copy the data we are interested in.
@@ -108,6 +111,7 @@ SDL_hid_device_info getJoystickHidInfo(short vendor, short product, std::string 
             // There are more than one device with the same vendor and product
             // so iterate through them looking for ours.
             qCDebug(KCM_GAMECONTROLLER) << "Found multiple hidapi data with that vendor and product id";
+#if HAVE_UDEV
             auto to_match = UDevMatcher::deviceToUdevId(path);
 
             qCDebug(KCM_GAMECONTROLLER) << "Looking for device with this udev id: " << to_match;
@@ -125,6 +129,9 @@ SDL_hid_device_info getJoystickHidInfo(short vendor, short product, std::string 
                     current = current->next;
                 }
             }
+#else
+            Q_UNUSED(path);
+#endif
         }
         SDL_hid_free_enumeration(info);
     } else {
@@ -153,6 +160,11 @@ bool Device::open()
     }
 
     m_joystick = SDL_JoystickOpen(m_deviceIndex);
+
+    if (!m_joystick) {
+        qCWarning(KCM_GAMECONTROLLER) << "Failed to open joystick" << m_deviceIndex << SDL_GetError();
+        return false;
+    }
 
     short vendor = SDL_JoystickGetVendor(m_joystick);
     short product = SDL_JoystickGetProduct(m_joystick);
@@ -217,17 +229,20 @@ SDL_JoystickID Device::id() const
 
 QString Device::name() const
 {
-    return QString::fromLocal8Bit(SDL_JoystickName(m_joystick));
+    const char *value = m_joystick ? SDL_JoystickName(m_joystick) : nullptr;
+    return value ? QString::fromLocal8Bit(value) : QString();
 }
 
 QString Device::path() const
 {
-    return QString::fromLocal8Bit(SDL_JoystickPath(m_joystick));
+    const char *value = m_joystick ? SDL_JoystickPath(m_joystick) : nullptr;
+    return value ? QString::fromLocal8Bit(value) : QString();
 }
 
 QString Device::type() const
 {
-    return kJoystickTypeNames.at(SDL_JoystickGetType(m_joystick));
+    const int type = m_joystick ? SDL_JoystickGetType(m_joystick) : SDL_JOYSTICK_TYPE_UNKNOWN;
+    return type >= 0 && type < kJoystickTypeNames.size() ? kJoystickTypeNames.at(type) : i18n("Unknown");
 }
 
 SDL_GameControllerType Device::controllerType() const
@@ -236,13 +251,13 @@ SDL_GameControllerType Device::controllerType() const
         return SDL_GameControllerGetType(m_controller);
     }
     return SDL_CONTROLLER_TYPE_UNKNOWN;
-
 }
 
 QString Device::controllerTypeName() const
 {
     if (m_controller) {
-        return kControllerTypeNames.at(SDL_GameControllerGetType(m_controller));
+        const int type = SDL_GameControllerGetType(m_controller);
+        return type >= 0 && type < kControllerTypeNames.size() ? kControllerTypeNames.at(type) : i18n("Unknown");
     } else {
         return i18n("Not a controller");
     }
@@ -250,7 +265,8 @@ QString Device::controllerTypeName() const
 
 QString Device::connectionType() const
 {
-    return kConnectionTypeString.at(m_connectionType);
+    const int type = static_cast<int>(m_connectionType);
+    return type >= 0 && type < kConnectionTypeString.size() ? kConnectionTypeString.at(type) : i18n("Unknown");
 }
 
 bool Device::isVirtual() const
@@ -266,7 +282,7 @@ int Device::buttonCount() const
 bool Device::buttonState(int index) const
 {
     // Invalid index
-    if (index < 0 || index > m_buttonCount)
+    if (index < 0 || index >= m_buttonCount)
         return false;
 
     // If we are a game controller, use that api to get button state
@@ -316,6 +332,9 @@ int Device::hatCount() const
 
 QVector2D Device::hatPosition(int index) const
 {
+    if (!m_joystick || index < 0 || index >= hatCount()) {
+        return {};
+    }
     const Uint8 hat = SDL_JoystickGetHat(m_joystick, index);
     QVector2D position;
 
