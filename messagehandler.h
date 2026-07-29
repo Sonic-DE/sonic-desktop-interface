@@ -132,7 +132,7 @@ static void messageHandler(QtMsgType type, const QString &category, const QStrin
     // If stdout/stderr are unhandled, try to use manual file
     rotateLogFile(s_logFilePath);
     ensureLogFileExists(s_logFilePath);
-    static QFile logFile(s_logFilePath);
+    QFile logFile(s_logFilePath);
     if (logFile.open(QIODevice::Append | QIODevice::WriteOnly | QIODevice::Text)) {
         QTextStream out(&logFile);
 

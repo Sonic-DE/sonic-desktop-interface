@@ -43,6 +43,7 @@ private Q_SLOTS:
 
         installProcess.waitForFinished();
         qDebug() << installProcess.readAllStandardError();
+        QCOMPARE(installProcess.exitStatus(), QProcess::NormalExit);
         QCOMPARE(installProcess.exitCode(), 0);
 
         const QString dataLocation = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation);
