@@ -35,6 +35,24 @@ public:
     bool isSaveNeeded() const;
 
     void defaultsFromX();
+    void setLegacySupport(bool supported)
+    {
+        m_supportsLegacy = supported;
+    }
+    void loadLegacySettings(bool leftHanded, bool naturalScroll)
+    {
+        if (m_leftHanded.atom == None)
+            m_leftHanded.reset(leftHanded);
+        if (m_naturalScroll.atom == None)
+            m_naturalScroll.reset(naturalScroll);
+    }
+    void commitLegacySettings()
+    {
+        if (m_leftHanded.atom == None)
+            m_leftHanded.old = m_leftHanded.val;
+        if (m_naturalScroll.atom == None)
+            m_naturalScroll.old = m_naturalScroll.val;
+    }
 
     //
     // general
@@ -67,7 +85,7 @@ public:
     // advanced
     bool supportsLeftHanded() const override
     {
-        return s_supportsLeftHanded;
+        return m_leftHanded.atom != None || m_supportsLegacy;
     }
 
     bool leftHandedEnabledByDefault() const override
@@ -87,7 +105,7 @@ public:
 
     bool supportsMiddleEmulation() const override
     {
-        return s_supportsMiddleEmulation;
+        return m_middleEmulation.atom != None;
     }
 
     bool middleEmulationEnabledByDefault() const override
@@ -109,7 +127,7 @@ public:
     // acceleration speed and profile
     bool supportsPointerAcceleration() const override
     {
-        return s_supportsPointerAcceleration;
+        return m_pointerAcceleration.atom != None;
     }
 
     qreal pointerAcceleration() const override
@@ -124,7 +142,7 @@ public:
 
     bool supportsPointerAccelerationProfileFlat() const override
     {
-        return s_supportsPointerAccelerationProfileFlat;
+        return m_pointerAccelerationProfileFlat.atom != None;
     }
 
     bool defaultPointerAccelerationProfileFlat() const override
@@ -144,7 +162,7 @@ public:
 
     bool supportsPointerAccelerationProfileAdaptive() const override
     {
-        return s_supportsPointerAccelerationProfileAdaptive;
+        return m_pointerAccelerationProfileFlat.atom != None;
     }
 
     bool defaultPointerAccelerationProfileAdaptive() const override
@@ -166,7 +184,7 @@ public:
     // scrolling
     bool supportsNaturalScroll() const override
     {
-        return s_supportsNaturalScroll;
+        return m_naturalScroll.atom != None || m_supportsLegacy;
     }
 
     bool naturalScrollEnabledByDefault() const override
@@ -195,7 +213,7 @@ public:
 
     bool supportsScrollOnButtonDown() const override
     {
-        return s_supportsScrollOnButtonDown;
+        return m_scrollOnButtonDown.atom != None;
     }
 
     bool scrollOnButtonDownEnabledByDefault() const override
@@ -318,6 +336,7 @@ private:
     static constexpr bool s_supportsScrollOnButtonDown = true;
     static constexpr bool s_scrollOnButtonDownEnabledByDefault = false;
     Prop<bool> m_scrollOnButtonDown{this, &X11LibinputDummyDevice::scrollOnButtonDownChanged, u"XLbInptScrollOnButtonDown"_s};
+    bool m_supportsLegacy = false;
 
     std::unique_ptr<LibinputSettings> m_settings;
     Display *m_dpy = nullptr;

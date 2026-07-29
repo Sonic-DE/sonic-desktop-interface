@@ -12,11 +12,13 @@
 #include <KQuickConfigModule>
 
 class GameControllerEmulationSettings;
+class CalibrationController;
 
 class KCMGameController : public KQuickConfigModule
 {
     Q_OBJECT
     Q_PROPERTY(bool pluginEnabled READ isPluginEnabled WRITE setPluginEnabled NOTIFY pluginEnabledChanged FINAL)
+    Q_PROPERTY(CalibrationController *calibrationController READ calibrationController CONSTANT FINAL)
 
 public:
     KCMGameController(QObject *parent, const KPluginMetaData &metaData);
@@ -24,10 +26,12 @@ public:
 
     bool isPluginEnabled() const;
     void setPluginEnabled(bool enabled);
+    CalibrationController *calibrationController() const;
 
 Q_SIGNALS:
     void pluginEnabledChanged();
 
 private:
     std::unique_ptr<GameControllerEmulationSettings> m_emulationSettings;
+    CalibrationController *m_calibrationController = nullptr;
 };

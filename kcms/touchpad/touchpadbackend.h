@@ -9,6 +9,7 @@
 
 #include "backends/libinputcommon.h"
 
+#include <config-X11.h>
 #include <config-build-options.h>
 
 #include <QList>
@@ -19,6 +20,9 @@ enum class TouchpadInputBackendMode {
     Unset = 0,
 #if BUILD_KCM_TOUCHPAD_X11
     XLibinput = 2,
+#if HAVE_SYNAPTICS
+    XSynaptics = 3,
+#endif
 #endif
 };
 
@@ -89,6 +93,10 @@ public:
 
     virtual void watchForEvents()
     {
+    }
+    virtual bool externalMousePresent() const
+    {
+        return false;
     }
 
 private:

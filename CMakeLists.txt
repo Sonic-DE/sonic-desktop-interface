@@ -234,12 +234,52 @@ add_feature_info("libxft" X11_Xft_FOUND "X FreeType interface library required f
 
 pkg_check_modules(XORGLIBINPUT xorg-libinput IMPORTED_TARGET)
 pkg_check_modules(XORGSERVER xorg-server IMPORTED_TARGET)
+pkg_check_modules(XORGSYNAPTICS xorg-synaptics QUIET IMPORTED_TARGET)
+pkg_check_modules(XORGEVDEV xorg-evdev QUIET IMPORTED_TARGET)
+
+# XLibre installs the public property headers with the input drivers but does
+# not currently ship the historical xorg-synaptics/xorg-evdev pkg-config
+# files.  Fall back to the headers so both Xorg and XLibre are supported.
+find_path(SYNAPTICS_INCLUDE_DIR synaptics-properties.h
+    HINTS ${XORGSERVER_INCLUDE_DIRS}
+    PATH_SUFFIXES xorg
+)
+find_path(EVDEV_INCLUDE_DIR evdev-properties.h
+    HINTS ${XORGSERVER_INCLUDE_DIRS}
+    PATH_SUFFIXES xorg
+)
+
+if(NOT TARGET XOrg::Synaptics AND (XORGSYNAPTICS_FOUND OR SYNAPTICS_INCLUDE_DIR))
+    add_library(XOrg::Synaptics INTERFACE IMPORTED)
+    if(XORGSYNAPTICS_FOUND)
+        target_link_libraries(XOrg::Synaptics INTERFACE PkgConfig::XORGSYNAPTICS)
+    else()
+        set_property(TARGET XOrg::Synaptics PROPERTY INTERFACE_INCLUDE_DIRECTORIES "${SYNAPTICS_INCLUDE_DIR}")
+        message(STATUS "Found Synaptics property headers: ${SYNAPTICS_INCLUDE_DIR} (XLibre header-only package metadata)")
+    endif()
+endif()
+
+if(NOT TARGET XOrg::Evdev AND (XORGEVDEV_FOUND OR EVDEV_INCLUDE_DIR))
+    add_library(XOrg::Evdev INTERFACE IMPORTED)
+    if(XORGEVDEV_FOUND)
+        target_link_libraries(XOrg::Evdev INTERFACE PkgConfig::XORGEVDEV)
+    else()
+        set_property(TARGET XOrg::Evdev PROPERTY INTERFACE_INCLUDE_DIRECTORIES "${EVDEV_INCLUDE_DIR}")
+        message(STATUS "Found evdev property headers: ${EVDEV_INCLUDE_DIR} (XLibre header-only package metadata)")
+    endif()
+endif()
 pkg_check_modules(XKBREGISTRY xkbregistry REQUIRED IMPORTED_TARGET)
 
 ecm_find_qmlmodule(org.kde.pipewire 0.1)
 
 if(XORGLIBINPUT_FOUND)
   set(HAVE_XORGLIBINPUT 1)
+endif()
+if(TARGET XOrg::Synaptics)
+  set(HAVE_SYNAPTICS 1)
+endif()
+if(TARGET XOrg::Evdev)
+  set(HAVE_EVDEV 1)
 endif()
 
 include(ConfigureChecks.cmake)
@@ -351,5 +391,3 @@ if(BUILD_DOC)
 endif()
 
 ki18n_install(po)
-
-

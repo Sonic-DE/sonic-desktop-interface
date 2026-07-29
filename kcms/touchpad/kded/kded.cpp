@@ -93,6 +93,23 @@ TouchpadDisabler::TouchpadDisabler(QObject *parent, const QVariantList &)
 
     connect(m_backend, &TouchpadBackend::touchpadStateChanged, this, &TouchpadDisabler::updateCurrentState);
     connect(m_backend, &TouchpadBackend::touchpadReset, this, &TouchpadDisabler::handleReset);
+    connect(m_backend, &TouchpadBackend::keyboardActivityStarted, this, &TouchpadDisabler::keyboardActivityStarted);
+    connect(m_backend, &TouchpadBackend::keyboardActivityFinished, this, &TouchpadDisabler::keyboardActivityFinished);
+    m_keyboardActivityTimer.setSingleShot(true);
+    connect(&m_keyboardActivityTimer, &QTimer::timeout, this, [this] {
+        m_keyboardActivitySuspend = false;
+        applySuspendReasons();
+    });
+    m_externalMouseTimer.setInterval(1000);
+    connect(&m_externalMouseTimer, &QTimer::timeout, this, [this] {
+        const bool present = m_disableWhenMousePluggedIn && m_backend->externalMousePresent();
+        if (present != m_externalMouseSuspend) {
+            m_externalMouseSuspend = present;
+            applySuspendReasons();
+        }
+    });
+    m_externalMouseTimer.start();
+    reloadSettings();
 
     updateCurrentState();
     m_userRequestedSuspend = m_touchpadSuspended;
@@ -140,8 +157,8 @@ void TouchpadDisabler::updateCurrentState()
 
 void TouchpadDisabler::toggle()
 {
-    m_userRequestedSuspend = !m_touchpadSuspended;
-    m_backend->setTouchpadSuspended(m_userRequestedSuspend);
+    m_userRequestedSuspend = !m_userRequestedSuspend;
+    applySuspendReasons();
 
     showOsd();
 }
@@ -149,7 +166,7 @@ void TouchpadDisabler::toggle()
 void TouchpadDisabler::disable()
 {
     m_userRequestedSuspend = true;
-    m_backend->setTouchpadSuspended(true);
+    applySuspendReasons();
 
     showOsd();
 }
@@ -157,7 +174,7 @@ void TouchpadDisabler::disable()
 void TouchpadDisabler::enable()
 {
     m_userRequestedSuspend = false;
-    m_backend->setTouchpadSuspended(false);
+    applySuspendReasons();
 
     showOsd();
 }
@@ -173,7 +190,41 @@ void TouchpadDisabler::handleReset()
     if (!m_backend->isTouchpadAvailable()) {
         return;
     }
-    m_backend->setTouchpadSuspended(m_userRequestedSuspend);
+    applySuspendReasons();
+}
+
+void TouchpadDisabler::reloadSettings()
+{
+#if BUILD_KCM_TOUCHPAD_X11 && HAVE_SYNAPTICS
+    if (m_backend->getMode() == TouchpadInputBackendMode::XSynaptics) {
+        KConfigGroup group(KSharedConfig::openConfig(u"touchpadrc"_s), u"autodisable"_s);
+        m_disableOnKeyboardActivity = group.readEntry("DisableOnKeyboardActivity", true);
+        m_disableWhenMousePluggedIn = group.readEntry("DisableWhenMousePluggedIn", false);
+        m_keyboardActivityTimeoutMs = qMax(0, group.readEntry("KeyboardActivityTimeoutMs", 300));
+    }
+#endif
+}
+
+void TouchpadDisabler::keyboardActivityStarted()
+{
+    if (!m_disableOnKeyboardActivity) {
+        return;
+    }
+    m_keyboardActivityTimer.stop();
+    m_keyboardActivitySuspend = true;
+    applySuspendReasons();
+}
+
+void TouchpadDisabler::keyboardActivityFinished()
+{
+    if (m_keyboardActivitySuspend) {
+        m_keyboardActivityTimer.start(m_keyboardActivityTimeoutMs);
+    }
+}
+
+void TouchpadDisabler::applySuspendReasons()
+{
+    m_backend->setTouchpadSuspended(m_userRequestedSuspend || m_keyboardActivitySuspend || m_externalMouseSuspend);
 }
 
 void TouchpadDisabler::onPrepareForSleep(bool sleep)

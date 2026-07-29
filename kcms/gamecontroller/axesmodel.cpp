@@ -10,10 +10,10 @@
 
 #include <KLocalizedString>
 
-constexpr int kLeftAxisIndex=0;
-constexpr int kRightAxisIndex=2;
-constexpr int kLeftTriggerIndex=4;
-constexpr int kRightTriggerIndex=5;
+constexpr int kLeftAxisIndex = 0;
+constexpr int kRightAxisIndex = 2;
+constexpr int kLeftTriggerIndex = 4;
+constexpr int kRightTriggerIndex = 5;
 
 AxesModel::AxesModel(QObject *parent)
     : QAbstractTableModel(parent)
@@ -78,9 +78,7 @@ void AxesModel::onRightTriggerChanged()
 
 int AxesModel::rowCount(const QModelIndex &parent) const
 {
-    Q_UNUSED(parent);
-
-    if (m_device == nullptr) {
+    if (parent.isValid() || m_device == nullptr) {
         return 0;
     }
 
@@ -89,13 +87,12 @@ int AxesModel::rowCount(const QModelIndex &parent) const
 
 int AxesModel::columnCount(const QModelIndex &parent) const
 {
-    Q_UNUSED(parent);
-    return 1;
+    return parent.isValid() ? 0 : 1;
 }
 
 QVariant AxesModel::data(const QModelIndex &index, int role) const
 {
-    if (!checkIndex(index) || m_device == nullptr) {
+    if (m_device == nullptr || !checkIndex(index, QAbstractItemModel::CheckIndexOption::IndexIsValid | QAbstractItemModel::CheckIndexOption::ParentIsInvalid)) {
         return {};
     }
 

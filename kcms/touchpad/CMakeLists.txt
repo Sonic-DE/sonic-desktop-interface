@@ -2,8 +2,8 @@
 add_definitions(-DTRANSLATION_DOMAIN=\"kcm_touchpad\")
 
 if (BUILD_KCM_TOUCHPAD_X11)
-    if (NOT XORGLIBINPUT_FOUND)
-        list(APPEND MISSING_DEPS "xorg-libinput")
+    if (NOT XORGLIBINPUT_FOUND AND NOT TARGET XOrg::Synaptics)
+        list(APPEND MISSING_DEPS "xorg-libinput or Synaptics property headers")
     endif()
     if (NOT X11_XCB_FOUND)
         list(APPEND MISSING_DEPS "X11_XCB")
@@ -57,13 +57,17 @@ if (BUILD_KCM_TOUCHPAD_X11)
         PRIVATE
             Qt::GuiPrivate
             XCB::ATOM
-            XCB::RECORD
             X11::X11
             X11::Xi
             X11::XCB
             PkgConfig::XORGSERVER
-            PkgConfig::XORGLIBINPUT
     )
+    if (TARGET XCB::RECORD)
+        target_link_libraries(touchpad_common PRIVATE XCB::RECORD)
+    endif()
+    if (XORGLIBINPUT_FOUND)
+        target_link_libraries(touchpad_common PRIVATE PkgConfig::XORGLIBINPUT)
+    endif()
 endif()
 
 add_subdirectory(backends)
@@ -93,4 +97,3 @@ add_custom_command(TARGET kcm_touchpad POST_BUILD
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/kcm_touchpad_init.so DESTINATION ${KDE_INSTALL_PLUGINDIR}/plasma/kcminit)
 
 install(FILES org.kde.touchpadshortcuts.desktop DESTINATION ${KDE_INSTALL_DATADIR}/kglobalaccel)
-

@@ -5,8 +5,7 @@
 */
 #include "x11_libinput_dummydevice.h"
 #include "libinput_settings.h"
-
-#include <libinput-properties.h>
+#include "x11_input_properties.h"
 
 #include <X11/Xatom.h>
 #include <X11/extensions/XInput.h>

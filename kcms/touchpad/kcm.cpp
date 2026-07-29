@@ -16,6 +16,9 @@
 #include <KPluginFactory>
 #include <KWindowSystem>
 
+#include <QDBusConnection>
+#include <QDBusMessage>
+#include <QDBusPendingCall>
 #include <QQmlContext>
 #include <QQmlEngine>
 #include <QQmlProperty>
@@ -118,6 +121,11 @@ void KCMTouchpad::save()
         Q_EMIT showMessage(i18n("Not able to save all changes. See logs for more information. Please restart this configuration module and try again."));
     } else {
         Q_EMIT showMessage(QString());
+        QDBusMessage reload = QDBusMessage::createMethodCall(QStringLiteral("org.kde.touchpad"),
+                                                             QStringLiteral("/modules/touchpad"),
+                                                             QStringLiteral("org.kde.touchpad"),
+                                                             QStringLiteral("reloadSettings"));
+        QDBusConnection::sessionBus().asyncCall(reload);
     }
 
     // load newly written values

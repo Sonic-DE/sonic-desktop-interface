@@ -11,7 +11,7 @@
 GameControllerModuleData::GameControllerModuleData(QObject *parent)
     : KCModuleData(parent)
 {
-    m_deviceModel = new DeviceModel();
+    m_deviceModel = new DeviceModel(this);
     connect(m_deviceModel, &DeviceModel::devicesChanged, this, &GameControllerModuleData::updateRelevance);
     updateRelevance();
 }

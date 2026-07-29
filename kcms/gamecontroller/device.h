@@ -96,8 +96,8 @@ private:
     int m_deviceIndex = -1;
     QVector2D m_leftAxis;
     QVector2D m_rightAxis;
-    float m_leftTrigger;
-    float m_rightTrigger;
+    float m_leftTrigger = 0.0f;
+    float m_rightTrigger = 0.0f;
     SDL_Joystick *m_joystick = nullptr;
     SDL_GameController *m_controller = nullptr;
     // Map of index to SDL_CONTROLLER button type for all buttons this gamecontroller has

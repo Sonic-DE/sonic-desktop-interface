@@ -349,5 +349,71 @@ KCMUtils.SimpleKCM {
                 }
             }
         }
+
+        Kirigami.FormGroup {
+            visible: root.backend.legacySettingsAvailable
+
+            Kirigami.FormEntry {
+                contentItem: QQC2.SpinBox {
+                    Kirigami.FormData.label: i18ndc("kcmmouse", "@label", "Legacy X11 acceleration:")
+                    from: 1
+                    to: 200
+                    value: Math.round(root.backend.legacyAcceleration * 10)
+                    textFromValue: (value, locale) => Number(value / 10).toLocaleString(locale, "f", 1) + "×"
+                    valueFromText: (text, locale) => Number.fromLocaleString(locale, text.replace("×", "")) * 10
+                    onValueModified: root.backend.legacyAcceleration = value / 10
+                }
+            }
+
+            Kirigami.FormEntry {
+                contentItem: QQC2.SpinBox {
+                    Kirigami.FormData.label: i18ndc("kcmmouse", "@label", "Acceleration threshold:")
+                    from: 0
+                    to: 20
+                    value: root.backend.legacyThreshold
+                    onValueModified: root.backend.legacyThreshold = value
+                }
+            }
+
+            Kirigami.FormEntry {
+                contentItem: QQC2.SpinBox {
+                    Kirigami.FormData.label: i18ndc("kcmmouse", "@label", "Double-click interval:")
+                    from: 100
+                    to: 2000
+                    value: root.backend.doubleClickInterval
+                    onValueModified: root.backend.doubleClickInterval = value
+                }
+            }
+
+            Kirigami.FormEntry {
+                contentItem: QQC2.SpinBox {
+                    Kirigami.FormData.label: i18ndc("kcmmouse", "@label", "Drag start time:")
+                    from: 100
+                    to: 2000
+                    value: root.backend.dragStartTime
+                    onValueModified: root.backend.dragStartTime = value
+                }
+            }
+
+            Kirigami.FormEntry {
+                contentItem: QQC2.SpinBox {
+                    Kirigami.FormData.label: i18ndc("kcmmouse", "@label", "Drag start distance:")
+                    from: 1
+                    to: 20
+                    value: root.backend.dragStartDistance
+                    onValueModified: root.backend.dragStartDistance = value
+                }
+            }
+
+            Kirigami.FormEntry {
+                contentItem: QQC2.SpinBox {
+                    Kirigami.FormData.label: i18ndc("kcmmouse", "@label", "Mouse wheel scrolls by:")
+                    from: 1
+                    to: 12
+                    value: root.backend.wheelScrollLines
+                    onValueModified: root.backend.wheelScrollLines = value
+                }
+            }
+        }
     }
 }

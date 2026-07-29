@@ -30,8 +30,8 @@ public:
         TypeRole,
     };
 
-    DeviceModel();
-    virtual ~DeviceModel();
+    explicit DeviceModel(QObject *parent = nullptr);
+    ~DeviceModel() override;
 
     Q_INVOKABLE Device *device(SDL_JoystickID id) const;
 
@@ -54,4 +54,5 @@ private:
     // Map of sdl indexes to Gamepad devices
     QMap<SDL_JoystickID, Device *> m_devices;
     QPointer<QTimer> m_timer;
+    bool m_hasSdlLease = false;
 };

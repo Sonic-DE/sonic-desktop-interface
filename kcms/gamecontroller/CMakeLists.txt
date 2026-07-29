@@ -33,8 +33,9 @@ target_sources(kcm_gamecontroller PRIVATE
     buttonmodel.cpp
     hatmodel.cpp
     kcm.cpp
-    udevmatcher.cpp
     gamecontrollermoduledata.cpp
+    calibrationcontroller.cpp
+    calibrationcontroller.h
 )
 
 kconfig_target_kcfg_file(kcm_gamecontroller
@@ -52,5 +53,18 @@ target_link_libraries(kcm_gamecontroller PRIVATE
     Qt6::QuickWidgets
     SDL2::SDL2
     Qt::DBus
-    UDev::UDev
 )
+
+if (CMAKE_SYSTEM_NAME STREQUAL "Linux" AND UDev_FOUND)
+    target_sources(kcm_gamecontroller PRIVATE udevmatcher.cpp udevmatcher.h)
+    target_link_libraries(kcm_gamecontroller PRIVATE UDev::UDev)
+    target_compile_definitions(kcm_gamecontroller PRIVATE HAVE_UDEV=1)
+else()
+    target_compile_definitions(kcm_gamecontroller PRIVATE HAVE_UDEV=0)
+endif()
+
+add_subdirectory(kded)
+
+if (BUILD_TESTING AND CMAKE_SYSTEM_NAME STREQUAL "Linux" AND UDev_FOUND)
+    add_subdirectory(tests)
+endif()

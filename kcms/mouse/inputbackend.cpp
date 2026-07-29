@@ -14,7 +14,6 @@
 #if BUILD_KCM_MOUSE_X11
 #include "backends/x11/x11_libinput_backend.h"
 #include <X11/Xlib.h>
-#include <libinput-properties.h>
 #include <private/qtx11extras_p.h>
 #endif
 
@@ -25,10 +24,7 @@ std::unique_ptr<InputBackend> InputBackend::create()
     {
         qCDebug(KCM_MOUSE) << "Using X11 backend";
 
-        Atom testAtom = XInternAtom(QX11Info::display(), LIBINPUT_PROP_ACCEL, True);
-
-        if (testAtom) {
-            qCDebug(KCM_MOUSE) << "Using libinput driver on X11.";
+        if (QX11Info::display()) {
             return std::make_unique<X11LibinputBackend>();
         }
     }

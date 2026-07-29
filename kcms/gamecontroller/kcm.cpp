@@ -21,18 +21,21 @@
 #include "axesmodel.h"
 #include "axesproxymodel.h"
 #include "buttonmodel.h"
+#include "calibrationcontroller.h"
 #include "devicemodel.h"
 #include "gamecontrolleremulationsettings.h"
 #include "gamecontrollermoduledata.h"
 #include "hatmodel.h"
 
-K_PLUGIN_FACTORY_WITH_JSON(KCMGameControllerFactory, "kcm_gamecontroller.json", registerPlugin<KCMGameController>(); registerPlugin<GameControllerModuleData>();)
+K_PLUGIN_FACTORY_WITH_JSON(KCMGameControllerFactory, "kcm_gamecontroller.json", registerPlugin<KCMGameController>();
+                           registerPlugin<GameControllerModuleData>();)
 
 static const QString s_kwinPluginId = QStringLiteral("gamecontroller");
 
 KCMGameController::KCMGameController(QObject *parent, const KPluginMetaData &metaData)
     : KQuickConfigModule(parent, metaData)
     , m_emulationSettings(std::make_unique<GameControllerEmulationSettings>())
+    , m_calibrationController(new CalibrationController(this))
 {
     setButtons(Help);
 
@@ -44,6 +47,12 @@ KCMGameController::KCMGameController(QObject *parent, const KPluginMetaData &met
     qmlRegisterType<AxesProxyModel>(uri, 1, 0, "AxesProxyModel");
     qmlRegisterType<ButtonModel>(uri, 1, 0, "ButtonModel");
     qmlRegisterType<HatModel>(uri, 1, 0, "HatModel");
+    qmlRegisterUncreatableType<CalibrationController>(uri, 1, 0, "CalibrationController", QStringLiteral("Access through the KCM"));
+}
+
+CalibrationController *KCMGameController::calibrationController() const
+{
+    return m_calibrationController;
 }
 
 KCMGameController::~KCMGameController()
@@ -79,4 +88,3 @@ void KCMGameController::setPluginEnabled(bool enabled)
 }
 
 #include "kcm.moc"
-

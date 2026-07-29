@@ -2,9 +2,6 @@
 add_definitions(-DTRANSLATION_DOMAIN=\"kcmmouse\")
 
 if (BUILD_KCM_MOUSE_X11)
-    if (NOT XORGLIBINPUT_FOUND)
-        list(APPEND MISSING_DEPS "xorg-libinput")
-    endif()
     if (NOT X11_Xi_FOUND)
         list(APPEND MISSING_DEPS "X11_Xi")
     endif()
