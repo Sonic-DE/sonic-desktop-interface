@@ -74,20 +74,26 @@ inline void rotateLogFile(const QString &s_logFilePath)
 
 inline void ensureLogFileExists(const QString &s_logFilePath)
 {
-    // Only check/create the file, not the directory (directory is created at install time)
+    // Per-user state directories are created on demand.
+    const QString logDirectory = QFileInfo(s_logFilePath).absolutePath();
+    QDir().mkpath(logDirectory);
+    // Directory traversal requires the execute bit; the log file itself is non-executable.
+    QFile::setPermissions(logDirectory, QFileDevice::ReadOwner | QFileDevice::WriteOwner | QFileDevice::ExeOwner);
+
     QFile logFile(s_logFilePath);
     if (!logFile.exists()) {
         if (logFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
             logFile.close();
         }
-        chmod(s_logFilePath.toUtf8().constData(), 0666);
+        chmod(s_logFilePath.toUtf8().constData(), 0600);
     }
 }
 
 static void messageHandler(QtMsgType type, const QString &category, const QString &msg)
 {
     static bool loggingCapabilityChecked = false;
-    static const QString s_logFilePath = QStringLiteral("/var/log/sonic/desktop-interface.log");
+    static const QString s_logFilePath =
+        QStandardPaths::writableLocation(QStandardPaths::GenericStateLocation) + QStringLiteral("/sonic/desktop-interface.log");
 
     if (!loggingCapabilityChecked) {
         loggingCapabilityChecked = true;
