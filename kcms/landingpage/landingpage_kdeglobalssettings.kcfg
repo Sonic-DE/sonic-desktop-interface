@@ -7,7 +7,7 @@
   <group name="General">
     <entry name="colorScheme" key="ColorScheme" type="String">
       <label>Color scheme name</label>
-      <default>BreezeLight</default>
+      <default>SilverLight</default>
     </entry>
   </group>
   <group name="KDE">
@@ -21,15 +21,15 @@
     </entry>
     <entry name="lookAndFeelPackage" key="LookAndFeelPackage" type="String">
       <label>Global Look and Feel package</label>
-      <default>org.kde.breeze.desktop</default>
+      <default>org.kde.silver.desktop</default>
     </entry>
     <entry name="defaultLightLookAndFeel" key="DefaultLightLookAndFeel" type="String">
       <label>Global Look and Feel package, alternate</label>
-      <default>org.kde.breeze.desktop</default>
+      <default>org.kde.silverlightbottompanel.desktop</default>
     </entry>
     <entry name="defaultDarkLookAndFeel" key="DefaultDarkLookAndFeel" type="String">
       <label>Global Look and Feel package, alternate</label>
-      <default>org.kde.breezedark.desktop</default>
+      <default>org.kde.silverdarkbottompanel.desktop</default>
     </entry>
     <entry name="animationDurationFactor" key="AnimationDurationFactor" type="Double">
       <label>Animation speed</label>
