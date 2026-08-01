@@ -38,7 +38,7 @@ Q_DECL_EXPORT void kcminit()
     {
         auto config = KSharedConfig::openConfig(u"kcminputrc"_s, KConfig::NoGlobals);
         KConfigGroup group = config->group(QStringLiteral("Mouse"));
-        const QString theme = group.readEntry("cursorTheme", QStringLiteral("breeze_cursors"));
+        const QString theme = group.readEntry("cursorTheme", QStringLiteral("silver_cursors_light"));
         const int size = group.readEntry("cursorSize", 24);
 
         // Note: If you update this code, update kapplymousetheme as well.
