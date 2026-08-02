@@ -110,7 +110,7 @@
         "Description[zh_CN]": "基于层叠弹出菜单设计的启动器",
         "Description[zh_TW]": "基於彈出式串連選單的啟動器",
         "EnabledByDefault": true,
-        "Icon": "start-here-kde",
+        "Icon": "start-here-sonicde",
         "License": "GPL-2.0+",
         "Name": "Application Menu",
         "Name[ar]": "قائمة التّطبيقات",

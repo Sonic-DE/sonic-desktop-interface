@@ -367,7 +367,7 @@ PlasmoidItem {
             } else if (tasksModel.activeTask.valid) {
                 return tasksModel.data(tasksModel.activeTask, 1 /* decorationrole */)
             } else {
-                return "start-here-kde-symbolic"
+                return "start-here-sonicde-symbolic"
             }
 
             Timer {

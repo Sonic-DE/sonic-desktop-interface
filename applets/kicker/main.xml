@@ -7,7 +7,7 @@
   <group name="General">
     <entry name="icon" type="String">
       <label>The name of the icon to use for the compact representation (e.g. on a small panel).</label>
-      <default>start-here-kde-symbolic</default>
+      <default>start-here-sonicde-symbolic</default>
     </entry>
     <entry name="useCustomButtonImage" type="Bool">
       <label>Whether to use a custom image instead of an icon in the compact representation (e.g. on a small panel).</label>

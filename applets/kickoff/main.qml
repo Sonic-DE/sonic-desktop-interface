@@ -173,7 +173,7 @@ PlasmoidItem {
         index: -1
         text: "asdf"
         url: ""
-        decoration: "start-here-kde"
+        decoration: "start-here-sonicde"
         description: "asdf"
         action: null
         indicator: null
