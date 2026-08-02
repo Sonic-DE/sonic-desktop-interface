@@ -96,7 +96,7 @@ KCMUtils.SimpleKCM {
                 id: iconDialog
 
                 function setCustomButtonImage(image) {
-                    configGeneral.cfg_customButtonImage = image || configGeneral.cfg_icon || "start-here-kde-symbolic"
+                    configGeneral.cfg_customButtonImage = image || configGeneral.cfg_icon || "start-here-sonicde-symbolic"
                     configGeneral.cfg_useCustomButtonImage = true;
                 }
 
@@ -140,7 +140,7 @@ KCMUtils.SimpleKCM {
                     text: i18nc("@item:inmenu Reset icon to default", "Reset to default icon")
                     icon.name: "edit-clear"
                     onClicked: {
-                        configGeneral.cfg_icon = "start-here-kde-symbolic"
+                        configGeneral.cfg_icon = "start-here-sonicde-symbolic"
                         configGeneral.cfg_customButtonImage = ""
                         configGeneral.cfg_useCustomButtonImage = false
                     }

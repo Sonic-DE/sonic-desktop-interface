@@ -65,7 +65,7 @@ Item {
         index: -1
         text: "asdf"
         url: ""
-        decoration: "start-here-kde"
+        decoration: "start-here-sonicde"
         description: "asdf"
         PC3.ToolTip.text: ""
         width: implicitHeight
@@ -82,7 +82,7 @@ Item {
         index: -1
         text: "asdf"
         url: ""
-        decoration: "start-here-kde"
+        decoration: "start-here-sonicde"
         PC3.ToolTip.text: ""
         description: "asdf"
         action: null
