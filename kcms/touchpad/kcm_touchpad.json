@@ -1,6 +1,6 @@
 {
     "KPlugin": {
-        "BugReportUrl": "https://bugs.kde.org/enter_bug.cgi?product=systemsettings&component=kcm_touchpad",
+        "BugReportUrl": "https://github.com/Sonic-DE/sonic-desktop-interface/issues",
         "Description": "Touchpad settings",
         "Description[ar]": "إعدادات لوحة اللمس",
         "Description[az]": "Toxunma paneli ayarları",

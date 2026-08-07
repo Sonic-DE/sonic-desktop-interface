@@ -56,15 +56,11 @@ if (BUILD_KCM_TOUCHPAD_X11)
     target_link_libraries(touchpad_common
         PRIVATE
             Qt::GuiPrivate
-            XCB::ATOM
             X11::X11
             X11::Xi
             X11::XCB
             PkgConfig::XORGSERVER
     )
-    if (TARGET XCB::RECORD)
-        target_link_libraries(touchpad_common PRIVATE XCB::RECORD)
-    endif()
     if (XORGLIBINPUT_FOUND)
         target_link_libraries(touchpad_common PRIVATE PkgConfig::XORGLIBINPUT)
     endif()
@@ -79,12 +75,12 @@ target_sources(kcm_touchpad PRIVATE kcm.cpp touchpadmoduledata.cpp)
 target_link_libraries(kcm_touchpad
     PRIVATE
     Qt::Core
-    Qt::Widgets
-    Qt::Quick
-    Qt::QuickWidgets
+    Qt::DBus
+    Qt::Qml
     KF6::CoreAddons
     KF6::I18n
     KF6::KCMUtils
+    KF6::KCMUtilsQuick
     Plasma::Plasma
     KF6::WindowSystem
     touchpad_common
@@ -97,3 +93,7 @@ add_custom_command(TARGET kcm_touchpad POST_BUILD
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/kcm_touchpad_init.so DESTINATION ${KDE_INSTALL_PLUGINDIR}/plasma/kcminit)
 
 install(FILES org.kde.touchpadshortcuts.desktop DESTINATION ${KDE_INSTALL_DATADIR}/kglobalaccel)
+
+if(BUILD_TESTING)
+    add_subdirectory(tests)
+endif()

@@ -7,7 +7,6 @@
 #pragma once
 
 #include <QSocketNotifier>
-#include <QWidget>
 #include <QtGui/private/qtx11extras_p.h>
 
 #include <X11/Xlib.h>
@@ -20,6 +19,11 @@ public:
     XlibNotifications(Display *display, int device);
     ~XlibNotifications();
 
+    bool isValid() const
+    {
+        return m_valid;
+    }
+
 Q_SIGNALS:
     void propertyChanged(xcb_atom_t);
     void devicePlugged(int);
@@ -31,10 +35,10 @@ private Q_SLOTS:
 private:
     void processEvent(XEvent *);
 
-    Display *m_display;
-    xcb_connection_t *m_connection;
-    QSocketNotifier *m_notifier;
-    xcb_window_t m_inputWindow;
-    uint8_t m_inputOpcode;
-    int m_device;
+    Display *m_display = nullptr;
+    xcb_connection_t *m_connection = nullptr;
+    QSocketNotifier *m_notifier = nullptr;
+    uint8_t m_inputOpcode = 0;
+    int m_device = 0; // XIAllDevices = 0
+    bool m_valid = false;
 };

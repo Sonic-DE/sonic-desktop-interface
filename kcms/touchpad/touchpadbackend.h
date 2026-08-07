@@ -69,6 +69,10 @@ public:
     {
         return QString();
     }
+    virtual QString eventWatchingErrorString() const
+    {
+        return QString();
+    }
 
     virtual QList<LibinputCommon *> inputDevices() const
     {
@@ -111,4 +115,5 @@ Q_SIGNALS:
     void inputDevicesChanged();
     void deviceAdded(bool success);
     void deviceRemoved(int index);
+    void needsSaveChanged();
 };

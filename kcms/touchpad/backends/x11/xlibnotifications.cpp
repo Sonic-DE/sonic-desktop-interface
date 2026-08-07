@@ -8,7 +8,10 @@
 #include "c_ptr.h"
 
 #include <cstring>
+#include <vector>
 
+// X11 headers must be included before Qt headers because X11 #defines Status
+// as a macro, which conflicts with QTextStream::Status enum.
 #include <X11/Xlib-xcb.h>
 #include <X11/extensions/XI.h>
 #include <X11/extensions/XI2proto.h>
@@ -18,44 +21,68 @@ XlibNotifications::XlibNotifications(Display *display, int device)
     : m_display(display)
     , m_device(device)
 {
-    m_connection = XGetXCBConnection(display);
+    if (!display) {
+        return;
+    }
 
-    m_notifier = new QSocketNotifier(xcb_get_file_descriptor(m_connection), QSocketNotifier::Read, this);
+    m_connection = XGetXCBConnection(display);
+    if (!m_connection || xcb_connection_has_error(m_connection)) {
+        return;
+    }
+
+    const int fd = xcb_get_file_descriptor(m_connection);
+    if (fd < 0) {
+        return;
+    }
 
     xcb_query_extension_cookie_t inputExtCookie = xcb_query_extension(m_connection, std::strlen(INAME), INAME);
     std::unique_ptr<xcb_query_extension_reply_t, CDeleter> inputExt(xcb_query_extension_reply(m_connection, inputExtCookie, nullptr));
-    if (!inputExt) {
+    if (!inputExt || !inputExt->present) {
         return;
     }
     m_inputOpcode = inputExt->major_opcode;
 
-    const xcb_setup_t *setup = xcb_get_setup(m_connection);
-    xcb_screen_iterator_t iter = xcb_setup_roots_iterator(setup);
-    xcb_screen_t *screen = iter.data;
+    // Select events on the root window (not on a separate input-only window)
+    const int maskLen = XIMaskLen(XI_LASTEVENT);
 
-    m_inputWindow = xcb_generate_id(m_connection);
-    xcb_create_window(m_connection, 0, m_inputWindow, screen->root, 0, 0, 1, 1, 0, XCB_WINDOW_CLASS_INPUT_ONLY, 0, 0, nullptr);
-    xcb_flush(m_connection);
+    if (device != XIAllDevices && device >= 0) {
+        // Tracked device: select hierarchy + property events
+        XIEventMask masks[2];
 
-    XIEventMask masks[2];
+        // Property event mask for the tracked device
+        std::vector<unsigned char> touchpadMask(maskLen, 0);
+        masks[0].deviceid = device;
+        masks[0].mask = touchpadMask.data();
+        masks[0].mask_len = maskLen;
+        XISetMask(touchpadMask.data(), XI_PropertyEvent);
 
-    unsigned char touchpadMask[] = {0, 0, 0, 0};
-    masks[0].deviceid = device;
-    masks[0].mask = touchpadMask;
-    masks[0].mask_len = sizeof(touchpadMask);
-    XISetMask(touchpadMask, XI_PropertyEvent);
+        // Hierarchy mask for all devices
+        std::vector<unsigned char> allMask(maskLen, 0);
+        masks[1].deviceid = XIAllDevices;
+        masks[1].mask = allMask.data();
+        masks[1].mask_len = maskLen;
+        XISetMask(allMask.data(), XI_HierarchyChanged);
 
-    unsigned char allMask[] = {0, 0, 0, 0};
-    masks[1].deviceid = XIAllDevices;
-    masks[1].mask = allMask;
-    masks[1].mask_len = sizeof(allMask);
-    XISetMask(allMask, XI_HierarchyChanged);
+        XISelectEvents(display, XDefaultRootWindow(display), masks, 2);
+    } else {
+        // No tracked device: select only hierarchy events on all devices
+        XIEventMask mask;
+        std::vector<unsigned char> allMask(maskLen, 0);
+        mask.deviceid = XIAllDevices;
+        mask.mask = allMask.data();
+        mask.mask_len = maskLen;
+        XISetMask(allMask.data(), XI_HierarchyChanged);
 
-    XISelectEvents(display, XDefaultRootWindow(display), masks, sizeof(masks) / sizeof(XIEventMask));
+        XISelectEvents(display, XDefaultRootWindow(display), &mask, 1);
+    }
+
     XFlush(display);
 
+    m_notifier = new QSocketNotifier(fd, QSocketNotifier::Read, this);
     connect(m_notifier, &QSocketNotifier::activated, this, &XlibNotifications::processEvents);
     m_notifier->setEnabled(true);
+
+    m_valid = true;
 }
 
 void XlibNotifications::processEvents()
@@ -120,7 +147,9 @@ void XlibNotifications::processEvent(XEvent *event)
             if (hierarchyEvent->info[i].use != XISlavePointer) {
                 continue;
             }
-            if (hierarchyEvent->info[i].flags & (XIDeviceEnabled | XIDeviceDisabled)) {
+            // Request rescan for slave additions and device enables.
+            // Do not treat XIDeviceDisabled as physical removal.
+            if (hierarchyEvent->info[i].flags & (XISlaveAdded | XIDeviceEnabled)) {
                 Q_EMIT devicePlugged(hierarchyEvent->info[i].deviceid);
             }
         }
@@ -129,6 +158,7 @@ void XlibNotifications::processEvent(XEvent *event)
 
 XlibNotifications::~XlibNotifications()
 {
-    xcb_destroy_window(m_connection, m_inputWindow);
-    xcb_flush(m_connection);
+    // No input-only window to destroy anymore. The notifier is parented to
+    // this QObject and deleted automatically. The XCB connection is borrowed
+    // from the owning Xlib display and must not be disconnected here.
 }

@@ -306,7 +306,7 @@ bool LibinputTouchpad::defaults()
 {
     m_enabled.set(m_enabledDefault);
     m_tapToClick.set(m_tapToClickEnabledByDefault);
-    m_lrmTapButtonMap.set(m_lrmTapButtonMap);
+    m_lrmTapButtonMap.set(m_lrmTapButtonMapEnabledByDefault.val);
     m_lmrTapButtonMap.set(m_lmrTapButtonMapEnabledByDefault);
     m_tapAndDrag.set(m_tapAndDragEnabledByDefault);
     m_tapDragLock.set(m_tapDragLockEnabledByDefault);
