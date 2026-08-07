@@ -451,6 +451,8 @@ public:
 
 Q_SIGNALS:
     void enabledChanged();
+    // Generic change signal for any property modification
+    void changed();
     // Tapping
     void tapToClickChanged();
     void lmrTapButtonMapChanged();
@@ -502,6 +504,7 @@ protected:
                     Q_EMIT (device->*changedSignalFunction)();
                     // clang-format on
                 }
+                Q_EMIT device->changed();
             }
         }
         void set(const Prop<T> &p)

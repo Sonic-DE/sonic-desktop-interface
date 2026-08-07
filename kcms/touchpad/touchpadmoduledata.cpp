@@ -12,13 +12,15 @@ TouchpadModuleData::TouchpadModuleData(QObject *parent)
     : KCModuleData(parent)
 {
     m_backend = TouchpadBackend::implementation();
-    connect(m_backend, &TouchpadBackend::inputDevicesChanged, this, &TouchpadModuleData::updateRelevance);
+    if (m_backend) {
+        connect(m_backend, &TouchpadBackend::inputDevicesChanged, this, &TouchpadModuleData::updateRelevance);
+    }
     updateRelevance();
 }
 
 void TouchpadModuleData::updateRelevance()
 {
-    bool relevant = m_backend->deviceCount() > 0;
+    const bool relevant = m_backend && m_backend->deviceCount() > 0;
     setRelevant(relevant);
 }
 

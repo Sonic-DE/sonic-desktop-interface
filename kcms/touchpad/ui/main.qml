@@ -21,11 +21,13 @@ import org.kde.plasma.private.kcm_touchpad as Touchpad
 KCMUtils.SimpleKCM {
     id: root
 
-    readonly property Touchpad.TouchpadBackend backend: KCMUtils.ConfigModule.backend
+    readonly property Touchpad.TouchpadBackend backend: KCMUtils.ConfigModule.backend ?? null
 
     spacing: Kirigami.Units.smallSpacing
 
-    property Touchpad.InputDevice device: root.backend.inputDevices[KCMUtils.ConfigModule.currentDeviceIndex] ?? null
+    readonly property var deviceList: root.backend?.inputDevices ?? []
+    readonly property bool hasDevices: deviceList.length > 0
+    property Touchpad.InputDevice device: deviceList[KCMUtils.ConfigModule.currentDeviceIndex] ?? null
 
     LayoutMirroring.enabled: Application.layoutDirection === Qt.RightToLeft
     LayoutMirroring.childrenInherit: true
@@ -43,6 +45,11 @@ KCMUtils.SimpleKCM {
             Layout.fillWidth: true
             message: root.KCMUtils.ConfigModule.hotplugMessage
             showCloseButton: true
+        }
+
+        Message {
+            Layout.fillWidth: true
+            message: root.KCMUtils.ConfigModule.uiRuntimeMessage
         }
     }
 
@@ -67,16 +74,16 @@ KCMUtils.SimpleKCM {
     Kirigami.PlaceholderMessage {
         icon.name: "input-touchpad"
         text: i18ndc("kcm_touchpad", "@info:status placeholdermessage text", "No touchpad found")
-        explanation: i18ndc("kcm_touchpad", "@info:usagetip placeholdermessage explanation", "Connect an external touchpad");
+        explanation: i18ndc("kcm_touchpad", "@info:usagetip placeholdermessage explanation", "Connect an external touchpad")
         anchors.centerIn: parent
-        visible: !root.backend.inputDevices?.length
+        visible: !root.hasDevices
         width: parent.width - (Kirigami.Units.largeSpacing * 4)
     }
 
     Kirigami.Form {
         id: formLayout
 
-        visible: root.backend.inputDevices?.length > 0
+        visible: root.hasDevices
         enabled: visible
 
         Kirigami.FormGroup {
@@ -88,7 +95,7 @@ KCMUtils.SimpleKCM {
                     id: deviceSelector
 
                     Layout.fillWidth: true
-                    model: root.backend.inputDevices
+                    model: root.deviceList
                     textRole: "name"
 
                     Component.onCompleted: {
@@ -578,11 +585,11 @@ KCMUtils.SimpleKCM {
 
             Kirigami.FormEntry {
                 title: i18ndc("kcm_touchpad", "@title:group", "Two-finger tap:")
-                visible: root.device?.supportsLmrTapButtonMap
-                enabled: root.device?.supportsLmrTapButtonMap && tapToClick.checked
+                visible: root.device?.supportsLmrTapButtonMap ?? false
+                enabled: (root.device?.supportsLmrTapButtonMap ?? false) && tapToClick.checked
                 contentItem: QQC2.RadioButton {
                     id: multiTapRightClick
-                    text: (root.device?.tapFingerCount > 2
+                    text: ((root.device?.tapFingerCount ?? 0) > 2
                         ? i18ndc("kcm_touchpad", "@option:radio", "Right-click (three-finger tap to middle-click)")
                         : i18ndc("kcm_touchpad", "@option:radio", "Right-click")
                     )
@@ -600,11 +607,11 @@ KCMUtils.SimpleKCM {
             }
 
             Kirigami.FormEntry {
-                visible: root.device?.supportsLmrTapButtonMap
-                enabled: root.device?.supportsLmrTapButtonMap && tapToClick.checked
+                visible: root.device?.supportsLmrTapButtonMap ?? false
+                enabled: (root.device?.supportsLmrTapButtonMap ?? false) && tapToClick.checked
                 contentItem: QQC2.RadioButton {
                     id: multiTapMiddleClick
-                    text: (root.device?.tapFingerCount > 2
+                    text: ((root.device?.tapFingerCount ?? 0) > 2
                         ? i18ndc("kcm_touchpad", "@option:radio", "Middle-click (three-finger tap to right-click)")
                         : i18ndc("kcm_touchpad", "@option:radio", "Middle-click")
                     )

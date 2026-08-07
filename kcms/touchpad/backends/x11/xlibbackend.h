@@ -38,6 +38,10 @@ public:
     {
         return m_errorString;
     }
+    QString eventWatchingErrorString() const override
+    {
+        return m_eventWatchingErrorString;
+    }
     int deviceCount() const override
     {
         return m_device ? 1 : 0;
@@ -79,6 +83,7 @@ protected:
     std::unique_ptr<LibinputTouchpad> m_device;
 
     QString m_errorString;
+    QString m_eventWatchingErrorString;
     std::unique_ptr<XlibNotifications> m_notifications;
     std::unique_ptr<XRecordKeyboardMonitor> m_keyboardMonitor;
 };

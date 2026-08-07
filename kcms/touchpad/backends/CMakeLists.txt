@@ -17,6 +17,8 @@ if (BUILD_KCM_TOUCHPAD_X11)
         x11/xlibnotifications.cpp
         x11/xrecordkeyboardmonitor.cpp
         x11/libinputtouchpad.cpp
+        x11/touchpadclassifier.cpp
+        x11/udevresolver.cpp
     )
     if (TARGET XOrg::Synaptics)
         target_sources(touchpad_x11_backends PRIVATE x11/synapticstouchpad.cpp)
@@ -33,8 +35,6 @@ if (BUILD_KCM_TOUCHPAD_X11)
             touchpad_common
         PRIVATE
             Qt::GuiPrivate
-            XCB::ATOM
-            XCB::RECORD
             XCB::RECORD
             X11::X11
             X11::Xi
@@ -43,6 +43,13 @@ if (BUILD_KCM_TOUCHPAD_X11)
             PkgConfig::XORGLIBINPUT
             KF6::I18n
     )
+
+    if (UDev_FOUND)
+        target_link_libraries(touchpad_x11_backends PRIVATE UDev::UDev)
+        target_compile_definitions(touchpad_x11_backends PRIVATE HAVE_UDEV=1)
+    else()
+        target_compile_definitions(touchpad_x11_backends PRIVATE HAVE_UDEV=0)
+    endif()
 
     target_link_libraries(touchpad_common PRIVATE touchpad_x11_backends)
 

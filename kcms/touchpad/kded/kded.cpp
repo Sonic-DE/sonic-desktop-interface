@@ -190,6 +190,17 @@ void TouchpadDisabler::handleReset()
     if (!m_backend->isTouchpadAvailable()) {
         return;
     }
+    // Apply persisted configuration to a newly attached XLibinput device
+    // that was connected after session kcminit.
+#if BUILD_KCM_TOUCHPAD_X11
+    if (m_backend->getMode() == TouchpadInputBackendMode::XLibinput) {
+        if (!m_backend->load()) {
+            qWarning() << "Failed to load touchpad config on attach";
+        } else if (!m_backend->save()) {
+            qWarning() << "Failed to save touchpad config on attach";
+        }
+    }
+#endif
     applySuspendReasons();
 }
 
