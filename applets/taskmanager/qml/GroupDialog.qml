@@ -28,19 +28,60 @@ PlasmaCore.PopupPlasmaWindow {
 
     margin: (Plasmoid.containmentDisplayHints & PlasmaCore.Types.ContainmentPrefersFloatingApplets) ? Kirigami.Units.largeSpacing : 0
 
+    // Closes the dialog after the window loses active focus, with a short
+    // grace period so a drag can cross the gap created by floating panels.
     Timer {
         id: closeOnTimer
         interval: 100
         onTriggered: {
-            if (!active && !mouseHandler.containsDrag) {
-                visible = false;
+            if (!mouseHandler.containsDrag) {
+                groupDialog.visible = false;
             }
         }
     }
 
     onActiveChanged: {
-        if (!active) {
+        if (!groupDialog.active) {
             closeOnTimer.restart();
+        }
+    }
+
+    // Separate grace timer for pointer-leave dismissal. This is independent
+    // from closeOnTimer so focus-loss closure stays pending even if the
+    // transient-parent chain reports active again.
+    Timer {
+        id: hoverLeaveTimer
+        interval: 100
+        onTriggered: {
+            const parentTask = groupDialog.visualParent as Task;
+            const taskHovered = parentTask && parentTask.containsMouse;
+            if (!taskHovered && !popupHoverHandler.hovered && !mouseHandler.containsDrag) {
+                groupDialog.visible = false;
+            }
+        }
+    }
+
+    function restartHoverLeaveTimer(): void {
+        const parentTask = groupDialog.visualParent as Task;
+        if (parentTask && parentTask.containsMouse) {
+            hoverLeaveTimer.stop();
+            return;
+        }
+        if (popupHoverHandler.hovered || mouseHandler.containsDrag) {
+            hoverLeaveTimer.stop();
+            return;
+        }
+        if (!groupDialog.visible) {
+            return;
+        }
+        hoverLeaveTimer.restart();
+    }
+
+    Connections {
+        target: groupDialog.visualParent
+        ignoreUnknownSignals: true
+        function onContainsMouseChanged(): void {
+            groupDialog.restartHoverLeaveTimer();
         }
     }
 
@@ -91,12 +132,20 @@ PlasmaCore.PopupPlasmaWindow {
         handleWheelEvents: !scrollView.overflowing
         isGroupDialog: true
 
-        Keys.onEscapePressed: event => {
-            groupDialog.visible = false;
+        Shortcut {
+            sequences: [StandardKey.Cancel]
+            context: Qt.WindowShortcut
+            autoRepeat: false
+            onActivated: groupDialog.visible = false
+        }
+
+        HoverHandler {
+            id: popupHoverHandler
+            onHoveredChanged: groupDialog.restartHoverLeaveTimer()
         }
 
         onContainsDragChanged: {
-            if (!active && !containsDrag) {
+            if (!groupDialog.active && !containsDrag) {
                 groupDialog.visible = false;
             }
         }
@@ -209,6 +258,7 @@ PlasmaCore.PopupPlasmaWindow {
             groupListView.forceActiveFocus(); // Active focus on ListView so keyboard navigation can work.
             Qt.callLater(findActiveTaskIndex);
         } else {
+            hoverLeaveTimer.stop();
             Plasmoid.status = _oldAppletStatus;
             tasks.groupDialog = null;
             destroy();
