@@ -52,6 +52,25 @@ PlasmoidItem {
         }
     }
 
+    // Close a grouped-task preview tooltip (groupedTaskVisualization mode 1)
+    // on the platform Cancel shortcut. The preview tooltip window is created
+    // with Qt::WindowDoesNotAcceptFocus, so it cannot rely on key-event
+    // delivery; a Qt.WindowShortcut on the applet's active window is the
+    // documented mechanism that does not depend on tooltip-window focus.
+    Shortcut {
+        sequences: [StandardKey.Cancel]
+        context: Qt.WindowShortcut
+        autoRepeat: false
+        enabled: tasks.toolTipAreaItem
+                 && tasks.toolTipAreaItem.toolTipOpen
+                 && tasks.toolTipAreaItem.model.IsGroupParent
+                 && Plasmoid.configuration.groupedTaskVisualization === 1
+        onActivated: {
+            tasks.toolTipAreaItem.hideImmediately();
+            tasks.cancelHighlightWindows();
+        }
+    }
+
     Layout.fillWidth: vertical ? true : Plasmoid.configuration.fill
     Layout.fillHeight: !vertical ? true : Plasmoid.configuration.fill
     Layout.minimumWidth: {
