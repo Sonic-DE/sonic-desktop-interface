@@ -352,6 +352,8 @@ private:
     void setStatus(Status status);
     static bool isTrashEmpty();
     static bool isDeleteCommandShown();
+    static void registerContainmentModel(FolderModel *model);
+    static void unregisterContainmentModel(FolderModel *model);
     QList<QUrl> selectedUrls() const;
     KDirModel *m_dirModel;
     KDirWatch *m_dirWatch;
@@ -375,6 +377,7 @@ private:
     KFileItemActions *m_fileItemActions;
     QPointer<Positioner> m_positioner;
     KFileCopyToMenu *m_copyToMenu;
+    static QList<FolderModel *> s_containmentModels;
     Status m_status = Status::None;
     QString m_errorString;
     bool m_usedByContainment;

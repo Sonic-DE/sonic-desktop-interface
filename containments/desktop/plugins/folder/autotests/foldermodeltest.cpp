@@ -501,3 +501,287 @@ void FolderModelTest::tst_userCrossScreenDrag()
     screenMapper->removeScreen(1, m_currentActivity, desktopUrl);
     screenMapper->setScreenMapping(originalMapping);
 }
+
+void FolderModelTest::tst_userCrossScreenDragMultiple()
+{
+    auto *applet = new Plasma::Applet(this, KPluginMetaData(), QVariantList{});
+    applet->config().deleteGroup(QStringLiteral("General"));
+
+    const QString path = m_folderDir->path() + QDir::separator() + desktop;
+    const QUrl desktopUrl = QUrl::fromLocalFile(path);
+
+    auto *screenMapper = ScreenMapper::instance();
+    const QStringList originalMapping = screenMapper->screenMapping();
+
+    auto *model0 = new FolderModel(this);
+    model0->classBegin();
+    model0->setUrl(path);
+    model0->setUsedByContainment(true);
+    model0->setScreen(0);
+    model0->componentComplete();
+    QVERIFY(QSignalSpy(model0, &FolderModel::listingCompleted).wait(1000));
+
+    auto *model1 = new FolderModel(this);
+    model1->classBegin();
+    model1->setUrl(path);
+    model1->setUsedByContainment(true);
+    model1->setScreen(1);
+    model1->componentComplete();
+    QVERIFY(QSignalSpy(model1, &FolderModel::listingCompleted).wait(1000));
+
+    auto *positioner1 = new Positioner(this);
+    positioner1->setApplet(applet);
+    positioner1->setEnabled(true);
+    positioner1->setFolderModel(model1);
+    positioner1->setPerStripe(3);
+
+    QCOMPARE(model0->rowCount(), 10);
+    QCOMPARE(model1->rowCount(), 0);
+
+    auto dropUrls = [&](const QList<QUrl> &urls) {
+        auto *mimeData = new QMimeData();
+        mimeData->setUrls(urls);
+        auto *dropEventObj = new QObject(this);
+        dropEventObj->setProperty("mimeData", QVariant::fromValue<QObject *>(mimeData));
+        dropEventObj->setProperty("x", 480);
+        dropEventObj->setProperty("y", 270);
+        dropEventObj->setProperty("proposedAction", (int)Qt::MoveAction);
+        dropEventObj->setProperty("possibleActions", (int)(Qt::MoveAction | Qt::CopyAction));
+        dropEventObj->setProperty("buttons", (int)Qt::LeftButton);
+        dropEventObj->setProperty("modifiers", (int)Qt::NoModifier);
+        auto *target = new QQuickItem();
+        model1->drop(target, dropEventObj, -1);
+        QTest::qWait(2000);
+        delete target;
+        delete dropEventObj;
+        delete mimeData;
+    };
+
+    auto assertMapIntegrity = [&]() {
+        const auto p2s = positioner1->proxyToSourceMapping();
+        const auto s2p = positioner1->sourceToProxyMapping();
+        QCOMPARE(p2s.size(), model1->rowCount());
+        QCOMPARE(s2p.size(), model1->rowCount());
+        QList<int> sourceValues = p2s.values();
+        std::sort(sourceValues.begin(), sourceValues.end());
+        QList<int> uniqueSources = sourceValues;
+        uniqueSources.erase(std::unique(uniqueSources.begin(), uniqueSources.end()), uniqueSources.end());
+        QCOMPARE(sourceValues, uniqueSources);
+        for (auto it = p2s.cbegin(); it != p2s.cend(); ++it) {
+            QCOMPARE(s2p.value(it.value()), it.key());
+        }
+    };
+
+    const QList<QUrl> firstBatch = {
+        model0->index(0, 0).data(FolderModel::UrlRole).toUrl(),
+        model0->index(1, 0).data(FolderModel::UrlRole).toUrl(),
+        model0->index(2, 0).data(FolderModel::UrlRole).toUrl(),
+    };
+    dropUrls(firstBatch);
+
+    QCOMPARE(model1->rowCount(), 3);
+    QCOMPARE(model0->rowCount(), 7);
+    assertMapIntegrity();
+
+    positioner1->move({0, 10});
+    QVERIFY(positioner1->isBlank(0));
+    assertMapIntegrity();
+
+    const QList<QUrl> secondBatch = {
+        model0->index(0, 0).data(FolderModel::UrlRole).toUrl(),
+        model0->index(1, 0).data(FolderModel::UrlRole).toUrl(),
+        model0->index(2, 0).data(FolderModel::UrlRole).toUrl(),
+    };
+    dropUrls(secondBatch);
+
+    QCOMPARE(model1->rowCount(), 6);
+    QCOMPARE(model0->rowCount(), 4);
+    assertMapIntegrity();
+
+    QSet<int> proxyCells;
+    for (const QUrl &url : firstBatch + secondBatch) {
+        const int proxy = positioner1->indexForUrl(url);
+        QVERIFY2(proxy >= 0, qPrintable(QStringLiteral("no proxy for %1").arg(url.toString())));
+        QVERIFY(!positioner1->isBlank(proxy));
+        QCOMPARE(positioner1->data(positioner1->index(proxy, 0), FolderModel::UrlRole).toUrl(), url);
+        QVERIFY2(!proxyCells.contains(proxy), qPrintable(QStringLiteral("duplicate proxy cell %1").arg(proxy)));
+        proxyCells.insert(proxy);
+    }
+
+    delete model0;
+    delete model1;
+    delete positioner1;
+    delete applet;
+    screenMapper->removeScreen(0, m_currentActivity, desktopUrl);
+    screenMapper->removeScreen(1, m_currentActivity, desktopUrl);
+    screenMapper->setScreenMapping(originalMapping);
+}
+
+void FolderModelTest::tst_userCrossScreenRoundTrip()
+{
+    auto *applet = new Plasma::Applet(this, KPluginMetaData(), QVariantList{});
+    applet->config().deleteGroup(QStringLiteral("General"));
+
+    const QString path = m_folderDir->path() + QDir::separator() + desktop;
+    const QUrl desktopUrl = QUrl::fromLocalFile(path);
+
+    auto *screenMapper = ScreenMapper::instance();
+    const QStringList originalMapping = screenMapper->screenMapping();
+
+    auto *model0 = new FolderModel(this);
+    model0->classBegin();
+    model0->setUrl(path);
+    model0->setUsedByContainment(true);
+    model0->setScreen(0);
+    model0->componentComplete();
+    QVERIFY(QSignalSpy(model0, &FolderModel::listingCompleted).wait(1000));
+
+    auto *model1 = new FolderModel(this);
+    model1->classBegin();
+    model1->setUrl(path);
+    model1->setUsedByContainment(true);
+    model1->setScreen(1);
+    model1->componentComplete();
+    QVERIFY(QSignalSpy(model1, &FolderModel::listingCompleted).wait(1000));
+
+    auto *positioner0 = new Positioner(this);
+    positioner0->setApplet(applet);
+    positioner0->setEnabled(true);
+    positioner0->setFolderModel(model0);
+    positioner0->setPerStripe(3);
+
+    auto *positioner1 = new Positioner(this);
+    positioner1->setApplet(applet);
+    positioner1->setEnabled(true);
+    positioner1->setFolderModel(model1);
+    positioner1->setPerStripe(3);
+
+    QCOMPARE(model0->rowCount(), 10);
+    QCOMPARE(model1->rowCount(), 0);
+
+    auto dropUrls = [](FolderModel *target, const QList<QUrl> &urls) {
+        auto *mimeData = new QMimeData();
+        mimeData->setUrls(urls);
+        auto *dropEventObj = new QObject();
+        dropEventObj->setProperty("mimeData", QVariant::fromValue<QObject *>(mimeData));
+        dropEventObj->setProperty("x", 480);
+        dropEventObj->setProperty("y", 270);
+        dropEventObj->setProperty("proposedAction", (int)Qt::MoveAction);
+        dropEventObj->setProperty("possibleActions", (int)(Qt::MoveAction | Qt::CopyAction));
+        dropEventObj->setProperty("buttons", (int)Qt::LeftButton);
+        dropEventObj->setProperty("modifiers", (int)Qt::NoModifier);
+        auto *targetItem = new QQuickItem();
+        target->drop(targetItem, dropEventObj, -1);
+        QTest::qWait(2000);
+        delete targetItem;
+        delete dropEventObj;
+        delete mimeData;
+    };
+
+    auto assertIntegrity = [](Positioner *p, FolderModel *m) {
+        const auto p2s = p->proxyToSourceMapping();
+        const auto s2p = p->sourceToProxyMapping();
+        QCOMPARE(p2s.size(), m->rowCount());
+        QCOMPARE(s2p.size(), m->rowCount());
+        QList<int> sourceValues = p2s.values();
+        std::sort(sourceValues.begin(), sourceValues.end());
+        QList<int> uniqueSources = sourceValues;
+        uniqueSources.erase(std::unique(uniqueSources.begin(), uniqueSources.end()), uniqueSources.end());
+        QCOMPARE(sourceValues, uniqueSources);
+        for (auto it = p2s.cbegin(); it != p2s.cend(); ++it) {
+            QCOMPARE(s2p.value(it.value()), it.key());
+        }
+    };
+
+    const QList<QUrl> moved = {
+        model0->index(0, 0).data(FolderModel::UrlRole).toUrl(),
+        model0->index(1, 0).data(FolderModel::UrlRole).toUrl(),
+    };
+
+    dropUrls(model1, moved);
+    QCOMPARE(model1->rowCount(), 2);
+    QCOMPARE(model0->rowCount(), 8);
+    assertIntegrity(positioner0, model0);
+    assertIntegrity(positioner1, model1);
+
+    const QList<QUrl> returning = {
+        model1->index(0, 0).data(FolderModel::UrlRole).toUrl(),
+        model1->index(1, 0).data(FolderModel::UrlRole).toUrl(),
+    };
+
+    dropUrls(model0, returning);
+    QCOMPARE(model0->rowCount(), 10);
+    QCOMPARE(model1->rowCount(), 0);
+    assertIntegrity(positioner0, model0);
+    assertIntegrity(positioner1, model1);
+
+    QSet<QUrl> screen0Urls;
+    for (int i = 0; i < model0->rowCount(); ++i) {
+        const QUrl url = model0->index(i, 0).data(FolderModel::UrlRole).toUrl();
+        QVERIFY2(!screen0Urls.contains(url), qPrintable(QStringLiteral("duplicate url on screen0: %1").arg(url.toString())));
+        screen0Urls.insert(url);
+    }
+    for (const QUrl &url : moved) {
+        QVERIFY2(screen0Urls.contains(url), qPrintable(QStringLiteral("lost url on return: %1").arg(url.toString())));
+    }
+
+    delete model0;
+    delete model1;
+    delete positioner0;
+    delete positioner1;
+    delete applet;
+    screenMapper->removeScreen(0, m_currentActivity, desktopUrl);
+    screenMapper->removeScreen(1, m_currentActivity, desktopUrl);
+    screenMapper->setScreenMapping(originalMapping);
+}
+
+void FolderModelTest::tst_crossScreenSelectionClears()
+{
+    const QString path = m_folderDir->path() + QDir::separator() + desktop;
+    const QUrl desktopUrl = QUrl::fromLocalFile(path);
+
+    auto *screenMapper = ScreenMapper::instance();
+    const QStringList originalMapping = screenMapper->screenMapping();
+
+    auto *model0 = new FolderModel(this);
+    model0->classBegin();
+    model0->setUrl(path);
+    model0->setUsedByContainment(true);
+    model0->setScreen(0);
+    model0->componentComplete();
+    QVERIFY(QSignalSpy(model0, &FolderModel::listingCompleted).wait(1000));
+
+    auto *model1 = new FolderModel(this);
+    model1->classBegin();
+    model1->setUrl(path);
+    model1->setUsedByContainment(true);
+    model1->setScreen(1);
+    model1->componentComplete();
+    QVERIFY(QSignalSpy(model1, &FolderModel::listingCompleted).wait(1000));
+
+    screenMapper->addMapping(model0->index(1, 0).data(FolderModel::UrlRole).toUrl(), 1, m_currentActivity);
+    screenMapper->addMapping(model0->index(2, 0).data(FolderModel::UrlRole).toUrl(), 1, m_currentActivity);
+    QTest::qWait(200);
+    QVERIFY(model1->rowCount() >= 1);
+
+    model0->setSelected(0);
+    QVERIFY(model0->hasSelection());
+    QVERIFY(model0->isSelected(0));
+    QVERIFY(!model1->hasSelection());
+
+    model1->setSelected(0);
+    QVERIFY(model1->hasSelection());
+    QVERIFY(model1->isSelected(0));
+    QVERIFY2(!model0->hasSelection(), "selecting on screen 1 should clear screen 0 selection");
+
+    model0->setSelected(0);
+    QVERIFY(model0->hasSelection());
+    QVERIFY(model0->isSelected(0));
+    QVERIFY2(!model1->hasSelection(), "selecting on screen 0 should clear screen 1 selection");
+
+    delete model0;
+    delete model1;
+    screenMapper->removeScreen(0, m_currentActivity, desktopUrl);
+    screenMapper->removeScreen(1, m_currentActivity, desktopUrl);
+    screenMapper->setScreenMapping(originalMapping);
+}

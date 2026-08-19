@@ -343,6 +343,7 @@ FolderModel::~FolderModel()
     m_dragIndexes.clear();
 
     if (m_usedByContainment) {
+        unregisterContainmentModel(this);
         // disconnect so we don't handle signals from the screen mapper when
         // removeScreen is called
         m_screenMapper->disconnect(this);
@@ -581,6 +582,12 @@ void FolderModel::setUsedByContainment(bool used)
 {
     if (m_usedByContainment != used) {
         m_usedByContainment = used;
+
+        if (m_usedByContainment) {
+            registerContainmentModel(this);
+        } else {
+            unregisterContainmentModel(this);
+        }
 
         QAction *action = m_actionCollection.action(QStringLiteral("refresh"));
 
@@ -1101,6 +1108,20 @@ void FolderModel::clearSelection()
     }
 }
 
+QList<FolderModel *> FolderModel::s_containmentModels;
+
+void FolderModel::registerContainmentModel(FolderModel *model)
+{
+    if (!s_containmentModels.contains(model)) {
+        s_containmentModels.append(model);
+    }
+}
+
+void FolderModel::unregisterContainmentModel(FolderModel *model)
+{
+    s_containmentModels.removeAll(model);
+}
+
 void FolderModel::pinSelection()
 {
     m_pinnedSelection = m_selectionModel->selection();
@@ -1549,6 +1570,13 @@ void FolderModel::changeSelection(const QItemSelection &selected, const QItemSel
         const QModelIndexList deselectedIndices = deselected.indexes();
         for (const QModelIndex &index : deselectedIndices) {
             delete m_dragImages.take(index.row());
+        }
+        // A selection on this containment must clear the selection on every other
+        // containment's FolderModel so only one desktop view holds a selection.
+        for (FolderModel *other : s_containmentModels) {
+            if (other != this && other->m_selectionModel && other->m_selectionModel->hasSelection()) {
+                other->clearSelection();
+            }
         }
     }
 
