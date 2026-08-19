@@ -7,10 +7,13 @@
 
 #include "positionertest.h"
 
+#include <QAbstractItemModelTester>
 #include <QJsonDocument>
+#include <QSet>
 #include <QSignalSpy>
 #include <QTemporaryDir>
 #include <QTest>
+#include <QUrl>
 
 #include "foldermodel.h"
 #include "positioner.h"
@@ -21,35 +24,94 @@ QTEST_MAIN(PositionerTest)
 static const QLatin1String desktop(QLatin1String("Desktop"));
 static constexpr QSize defaultResolution(1920, 1080);
 
+namespace {
+enum class DesktopSnapshot {
+    Initial,
+    AfterRename,
+    AfterInsert,
+};
+
+QSet<QString> snapshotFiles(DesktopSnapshot snapshot)
+{
+    QSet<QString> files;
+    files.insert(QStringLiteral("firstDir"));
+    switch (snapshot) {
+    case DesktopSnapshot::Initial:
+        for (int i = 1; i < 10; ++i) {
+            files.insert(QStringLiteral("file%1.txt").arg(i));
+        }
+        break;
+    case DesktopSnapshot::AfterRename:
+        files.insert(QStringLiteral("NEWNAME.txt"));
+        for (int i = 2; i < 10; ++i) {
+            files.insert(QStringLiteral("file%1.txt").arg(i));
+        }
+        break;
+    case DesktopSnapshot::AfterInsert:
+        files.insert(QStringLiteral("NEWNAME.txt"));
+        files.insert(QStringLiteral("NEWFILE.txt"));
+        for (int i = 2; i < 10; ++i) {
+            files.insert(QStringLiteral("file%1.txt").arg(i));
+        }
+        break;
+    }
+    return files;
+}
+} // namespace
+
 void PositionerTest::initTestCase()
 {
     m_applet = new Plasma::Applet(this, KPluginMetaData(), QVariantList{});
 
     m_currentActivity = QStringLiteral("00000000-0000-0000-0000-000000000000");
-    m_folderDir = new QTemporaryDir();
-
-    QDir dir(m_folderDir->path());
-    dir.mkdir(desktop);
-    dir.cd(desktop);
-    dir.mkdir(QStringLiteral("firstDir"));
-    QFile f;
-    for (int i = 1; i < 10; i++) {
-        f.setFileName(QStringLiteral("%1/file%2.txt").arg(dir.path(), QString::number(i)));
-        if (!f.open(QFile::WriteOnly)) {
-            continue;
-        }
-        f.close();
-    }
 }
 
 void PositionerTest::cleanupTestCase()
 {
-    delete m_folderDir;
+    delete m_applet;
+    m_applet = nullptr;
 }
 
 void PositionerTest::init()
 {
+    ScreenMapper::instance()->cleanup();
     m_applet->config().deleteGroup(QStringLiteral("General"));
+
+    m_folderDir = new QTemporaryDir();
+    QVERIFY2(m_folderDir->isValid(), "Failed to create temporary desktop directory");
+
+    // Select the historical filesystem snapshot for this test function.
+    const char *const testFunction = QTest::currentTestFunction();
+    DesktopSnapshot snapshot = DesktopSnapshot::Initial;
+    if (testFunction) {
+        const QString name = QString::fromLatin1(testFunction);
+        if (name == QLatin1String("tst_insertFile")) {
+            snapshot = DesktopSnapshot::AfterRename;
+        } else if (name == QLatin1String("tst_dontSaveWithoutScreen")) {
+            snapshot = DesktopSnapshot::AfterInsert;
+        }
+    }
+    const QSet<QString> expectedFiles = snapshotFiles(snapshot);
+
+    QDir dir(m_folderDir->path());
+    QVERIFY(dir.mkdir(desktop));
+    QVERIFY(dir.cd(desktop));
+    QVERIFY(dir.mkdir(QStringLiteral("firstDir")));
+    for (const QString &fileName : expectedFiles) {
+        if (fileName == QLatin1String("firstDir")) {
+            continue;
+        }
+        QFile f(QStringLiteral("%1/%2").arg(dir.path(), fileName));
+        QVERIFY2(f.open(QFile::WriteOnly), qPrintable(QStringLiteral("Failed to create %1").arg(fileName)));
+        f.close();
+    }
+
+    const QStringList entries = dir.entryList(QDir::AllEntries | QDir::NoDotAndDotDot);
+    QSet<QString> actualFiles;
+    for (const QString &entry : entries) {
+        actualFiles.insert(entry);
+    }
+    QVERIFY2(actualFiles == expectedFiles, "Desktop snapshot does not match expected state");
 
     m_folderModel = new FolderModel(this);
     m_folderModel->classBegin();
@@ -63,9 +125,12 @@ void PositionerTest::init()
     m_positioner->setFolderModel(m_folderModel);
     m_positioner->setPerStripe(3);
 
+    QSignalSpy listingCompletedSpy(m_folderModel, &FolderModel::listingCompleted);
     m_folderModel->setUrl(m_folderDir->path() + QDir::separator() + desktop);
-    QSignalSpy s(m_folderModel, &FolderModel::listingCompleted);
-    s.wait(1000);
+    if (listingCompletedSpy.isEmpty()) {
+        QVERIFY(listingCompletedSpy.wait());
+    }
+    QCOMPARE(m_folderModel->status(), FolderModel::Ready);
 }
 
 void PositionerTest::cleanup()
@@ -74,6 +139,13 @@ void PositionerTest::cleanup()
     m_folderModel = nullptr;
     delete m_positioner;
     m_positioner = nullptr;
+
+    ScreenMapper::instance()->flushDelayedSignal();
+    ScreenMapper::instance()->cleanup();
+    QVERIFY(ScreenMapper::instance()->screenMapping().isEmpty());
+
+    delete m_folderDir;
+    m_folderDir = nullptr;
 }
 
 void PositionerTest::tst_default_positions_data()
@@ -420,6 +492,192 @@ void PositionerTest::tst_dontSaveWithoutScreen()
 
     // Removing a row should not save without a screen, so config should be equal
     QCOMPARE(baselineConfig, getCurrentConfig());
+}
+
+void PositionerTest::tst_unsortedInsertionPreservesPositions_data()
+{
+    QTest::addColumn<int>("fileCount");
+    QTest::newRow("single-file") << 1;
+    QTest::newRow("two-files") << 2;
+}
+
+void PositionerTest::tst_unsortedInsertionPreservesPositions()
+{
+    QFETCH(int, fileCount);
+
+    ensureFolderModelReady();
+    m_positioner->setEnabled(false);
+    m_folderModel->setSortMode(-1);
+    m_positioner->setEnabled(true);
+    QCOMPARE(m_folderModel->sortMode(), -1);
+    QVERIFY(m_positioner->enabled());
+
+    m_positioner->move({1, 2, 2, 1});
+    m_positioner->move({0, 10});
+
+    m_positioner->savePositionsConfig();
+    m_positioner->move({3, 5, 5, 3}, false);
+
+    const int folderRowCount = m_folderModel->rowCount();
+    QCOMPARE(m_positioner->rowCount(), 11);
+
+    QHash<int, int> sourceToProxy;
+    const auto s2p = m_positioner->sourceToProxyMapping();
+    for (int i = 0; i < folderRowCount; ++i) {
+        sourceToProxy[i] = s2p.value(i, -1);
+    }
+    const auto p2s = m_positioner->proxyToSourceMapping();
+
+    QCOMPARE(sourceToProxy.size(), folderRowCount);
+    QCOMPARE(p2s.size(), folderRowCount);
+    QList<int> proxyValues;
+    for (int i = 0; i < folderRowCount; ++i) {
+        const int proxy = sourceToProxy.value(i);
+        QVERIFY(proxy >= 0);
+        QVERIFY(proxy < m_positioner->rowCount());
+        QCOMPARE(p2s.value(proxy), i);
+        proxyValues.append(proxy);
+    }
+    {
+        QList<int> sorted = proxyValues;
+        std::sort(sorted.begin(), sorted.end());
+        QList<int> unique = sorted;
+        unique.erase(std::unique(unique.begin(), unique.end()), unique.end());
+        QCOMPARE(unique, sorted);
+    }
+
+    QAbstractItemModelTester tester(m_positioner, QAbstractItemModelTester::FailureReportingMode::QtTest);
+
+    QSignalSpy rowsInsertedSpy(m_folderModel, &FolderModel::rowsInserted);
+    QSignalSpy modelResetSpy(m_positioner, &Positioner::modelReset);
+    QSignalSpy configNeedsSavingSpy(m_applet, &Plasma::Applet::configNeedsSaving);
+
+    QDir dir(m_folderDir->path());
+    QVERIFY(dir.cd(desktop));
+    {
+        QFile f(QStringLiteral("%1/NEWINSERT1.txt").arg(dir.path()));
+        QVERIFY2(f.open(QIODevice::WriteOnly), "Failed to create NEWINSERT1.txt");
+    }
+    if (fileCount == 2) {
+        QFile f(QStringLiteral("%1/NEWINSERT2.txt").arg(dir.path()));
+        QVERIFY2(f.open(QIODevice::WriteOnly), "Failed to create NEWINSERT2.txt");
+    }
+
+    if (rowsInsertedSpy.isEmpty()) {
+        QVERIFY(rowsInsertedSpy.wait());
+    }
+    const QUrl url1 = QUrl::fromLocalFile(QStringLiteral("%1/NEWINSERT1.txt").arg(dir.path()));
+    const QUrl url2 = QUrl::fromLocalFile(QStringLiteral("%1/NEWINSERT2.txt").arg(dir.path()));
+    QTRY_VERIFY(m_positioner->indexForUrl(url1) >= 0);
+    if (fileCount == 2) {
+        QTRY_VERIFY(m_positioner->indexForUrl(url2) >= 0);
+    }
+
+    if (configNeedsSavingSpy.isEmpty()) {
+        QVERIFY(configNeedsSavingSpy.wait());
+    }
+
+    QCOMPARE(modelResetSpy.count(), 0);
+
+    const auto s2pAfter = m_positioner->sourceToProxyMapping();
+    const auto p2sAfter = m_positioner->proxyToSourceMapping();
+    QCOMPARE(s2pAfter.size(), p2sAfter.size());
+    QCOMPARE(s2pAfter.size(), m_folderModel->rowCount());
+    for (int i = 0; i < folderRowCount; ++i) {
+        QVERIFY(sourceToProxy.contains(i));
+        QCOMPARE(s2pAfter.value(i), sourceToProxy.value(i));
+    }
+    QList<int> proxyValuesAfter;
+    for (int i = 0; i < m_folderModel->rowCount(); ++i) {
+        const int proxy = s2pAfter.value(i, -1);
+        QVERIFY(proxy >= 0);
+        QCOMPARE(p2sAfter.value(proxy), i);
+        proxyValuesAfter.append(proxy);
+    }
+    {
+        QList<int> sorted = proxyValuesAfter;
+        std::sort(sorted.begin(), sorted.end());
+        QList<int> unique = sorted;
+        unique.erase(std::unique(unique.begin(), unique.end()), unique.end());
+        QCOMPARE(unique, sorted);
+    }
+
+    QSet<int> expectedNewCells;
+    if (fileCount == 1) {
+        expectedNewCells.insert(0);
+        QCOMPARE(m_positioner->rowCount(), 11);
+    } else {
+        expectedNewCells.insert(0);
+        expectedNewCells.insert(11);
+        QCOMPARE(m_positioner->rowCount(), 12);
+    }
+    QSet<int> actualNewCells;
+    for (int i = folderRowCount; i < m_folderModel->rowCount(); ++i) {
+        actualNewCells.insert(s2pAfter.value(i, -1));
+    }
+    QVERIFY(actualNewCells == expectedNewCells);
+
+    const int perStripe = m_positioner->m_perStripe;
+    auto savedPositionsMatch = [&]() -> bool {
+        const auto doc = getCurrentConfig();
+        const auto positions = doc[m_positioner->m_resolution].toVariant().toStringList();
+        if (positions.isEmpty()) {
+            return false;
+        }
+        const QHash<QString, Pos> hash = getPositionHash(positions);
+        const int settledRowCount = m_folderModel->rowCount();
+        if (hash.size() != settledRowCount) {
+            return false;
+        }
+        for (int i = 0; i < settledRowCount; ++i) {
+            const QString url = m_folderModel->data(m_folderModel->index(i, 0), FolderModel::UrlRole).toString();
+            if (!hash.contains(url)) {
+                return false;
+            }
+            const int proxy = s2pAfter.value(i, -1);
+            if (proxy < 0) {
+                return false;
+            }
+            const Pos saved = hash.value(url);
+            const int expectedStripe = proxy / perStripe;
+            const int expectedPos = proxy % perStripe;
+            if (saved.x != expectedStripe || saved.y != expectedPos) {
+                return false;
+            }
+        }
+        return true;
+    };
+    QTRY_VERIFY(savedPositionsMatch());
+
+    QCOMPARE(modelResetSpy.count(), 0);
+}
+
+void PositionerTest::tst_bootstrapUrlNoDuplicatePointer()
+{
+    ensureFolderModelReady();
+    m_positioner->setEnabled(false);
+    m_folderModel->setSortMode(-1);
+    m_positioner->setEnabled(true);
+
+    m_positioner->move({0, 10});
+    QVERIFY(m_positioner->isBlank(0));
+
+    const QUrl url0 = m_folderModel->index(0, 0).data(FolderModel::UrlRole).toUrl();
+    QCOMPARE(m_positioner->sourceToProxyMapping().value(0), 10);
+
+    m_positioner->bootstrapUrl(url0);
+
+    const auto p2s = m_positioner->proxyToSourceMapping();
+    const auto s2p = m_positioner->sourceToProxyMapping();
+    QCOMPARE(s2p.value(0), 10);
+    QList<int> sourceValues = p2s.values();
+    std::sort(sourceValues.begin(), sourceValues.end());
+    QList<int> uniqueSources = sourceValues;
+    uniqueSources.erase(std::unique(uniqueSources.begin(), uniqueSources.end()), uniqueSources.end());
+    QCOMPARE(sourceValues, uniqueSources);
+    for (auto it = p2s.cbegin(); it != p2s.cend(); ++it) {
+        QCOMPARE(s2p.value(it.value()), it.key());
+    }
 }
 
 // Test utilities

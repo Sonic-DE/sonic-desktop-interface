@@ -48,6 +48,9 @@ private Q_SLOTS:
     void tst_renameFile();
     void tst_insertFile();
     void tst_dontSaveWithoutScreen();
+    void tst_unsortedInsertionPreservesPositions_data();
+    void tst_unsortedInsertionPreservesPositions();
+    void tst_bootstrapUrlNoDuplicatePointer();
 
 private:
     void checkDefaultPositions(int perStripe);
@@ -57,8 +60,8 @@ private:
     void changeResolution(const QSize &resolution);
 
     QString m_currentActivity;
-    Positioner *m_positioner;
-    FolderModel *m_folderModel;
-    QTemporaryDir *m_folderDir;
+    Positioner *m_positioner = nullptr;
+    FolderModel *m_folderModel = nullptr;
+    QTemporaryDir *m_folderDir = nullptr;
     Plasma::Applet *m_applet = nullptr;
 };

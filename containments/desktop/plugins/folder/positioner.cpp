@@ -312,19 +312,38 @@ void Positioner::bootstrapUrl(const QUrl &url)
         return;
     }
     const int rowCount = m_folderModel->rowCount();
-    int proxyRow = -1;
+    int sourceRow = -1;
     for (int i = 0; i < rowCount; ++i) {
         if (m_folderModel->data(m_folderModel->index(i, 0), FolderModel::UrlRole).toUrl() == url) {
-            proxyRow = i;
+            sourceRow = i;
             break;
         }
     }
-    if (proxyRow < 0) {
+    if (sourceRow < 0) {
         return;
     }
-    if (!m_proxyToSource.contains(proxyRow)) {
-        updateMaps(proxyRow, proxyRow);
+
+    // Never create a second proxy cell for a source row that is already mapped.
+    int proxyRow = m_sourceToProxy.value(sourceRow, -1);
+    if (proxyRow < 0) {
+        proxyRow = firstFreeRow();
+        if (proxyRow == -1) {
+            proxyRow = lastRow() + 1;
+            const int oldRowCount = this->rowCount();
+            if (proxyRow >= oldRowCount) {
+                beginInsertRows(QModelIndex(), oldRowCount, proxyRow);
+                m_beginInsertRowsCalled = true;
+                updateMaps(proxyRow, sourceRow);
+                endInsertRows();
+                m_beginInsertRowsCalled = false;
+            } else {
+                updateMaps(proxyRow, sourceRow);
+            }
+        } else {
+            updateMaps(proxyRow, sourceRow);
+        }
     }
+
     if (!m_positions.contains(url.toString())) {
         m_positions[url.toString()] = GridPosition{
             .stripe = qMax(0, proxyRow / m_perStripe),
@@ -848,8 +867,10 @@ void Positioner::sourceRowsInserted(const QModelIndex &parent, int first, int la
     // Don't generate new positions data if we're waiting for listing to
     // complete to apply initial positions.
     if (!m_deferApplyPositions && screenInUse()) {
-        // Load current config
-        loadAndApplyPositionsConfig();
+        if (!m_enabled || m_folderModel->sortMode() != -1) {
+            // Load current config
+            loadAndApplyPositionsConfig();
+        }
         // Update positions to append the missing items
         updatePositionsList();
         if (m_deferRestoreChangedPositions) {
@@ -903,9 +924,14 @@ void Positioner::sourceLayoutChanged(const QList<QPersistentModelIndex> &parents
              << "m_sourceToProxy.isEmpty=" << m_sourceToProxy.isEmpty() << "m_preLayoutUrlToProxy=" << m_preLayoutUrlToProxy
              << "m_sourceToProxy(before)=" << m_sourceToProxy;
 
-    // Only reinitialize maps when in sorted mode. In unsorted mode, we want to preserve
-    // manual icon positions even after layout changes (e.g., after drag and drop).
-    if (m_enabled && m_folderModel->sortMode() != -1) {
+    // Rebuild the positioner maps by translating user-applied proxy arrangements
+    // through file URLs rather than rebuilding from raw KDirModel source rows.
+    // This preserves manual moves/swaps (e.g. via tst_move/tst_proxyMapping) when
+    // a layout change (e.g. a sort, a delayed screenMappingChanged-driven filter
+    // re-evaluation) causes KDirModel to reorder its rows, and surfaces icons that
+    // re-enter this screen's filter (e.g. a cross-screen move back) even in
+    // unsorted mode, where the snapshot equals the live manual map.
+    if (m_enabled) {
         // Rebuild the positioner maps by translating user-applied proxy arrangements
         // through file URLs rather than rebuilding from raw KDirModel source rows.
         // This preserves manual moves/swaps (e.g. via tst_move/tst_proxyMapping) when
