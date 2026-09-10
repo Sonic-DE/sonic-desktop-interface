@@ -171,8 +171,8 @@ PlasmoidItem {
         
             Connections {
                 target: root
-                function onExpandedChanged(expanded) {
-                    if (expanded) {
+                function onExpandedChanged() {
+                    if (root.expanded) {
                         windowListView.currentIndex = -1
 
                         // Needed for when for expanded with Global Shortcut
@@ -180,12 +180,14 @@ PlasmoidItem {
                             root.lastActiveTaskName = tasksModel.data(tasksModel.activeTask, TaskManager.AbstractTasksModel.AppName) ||
                             tasksModel.data(tasksModel.activeTask, 0 /* display name, window title if app name not present */)
                             root.lastActiveTaskIcon = tasksModel.data(tasksModel.activeTask, 1 /* decorationrole */)
-                        } else {
+                        }
+                        root.updateLongestWindowTitle();
+                    }  else {
+                        Qt.callLater( () => { // give the previous window a chance to gain focus
                             root.lastActiveTaskName = ""
                             root.lastActiveTaskIcon = ""
-                        }
-
-                        root.updateLongestWindowTitle();
+                            root.updateLongestWindowTitle();
+                        })
                     }
                 }
             }
@@ -340,20 +342,13 @@ PlasmoidItem {
             Layout.fillHeight: Plasmoid.formFactor === PlasmaCore.Types.Horizontal
             Layout.fillWidth: Plasmoid.formFactor === PlasmaCore.Types.Vertical
 
-            onClicked: {
-                if (tasksModel.activeTask.valid) {
-                    root.lastActiveTaskName = tasksModel.data(tasksModel.activeTask, TaskManager.AbstractTasksModel.AppName) ||
-                       tasksModel.data(tasksModel.activeTask, 0 /* display name, window title if app name not present */)
-                    root.lastActiveTaskIcon = tasksModel.data(tasksModel.activeTask, 1 /* decorationrole */)
-                }
-                root.expanded = !root.expanded
-            }
+            onClicked: root.expanded = !root.expanded
             down: pressed || root.expanded
 
             Accessible.name: Plasmoid.title
             Accessible.description: root.toolTipSubText
 
-            text: if (root.expanded && root.lastActiveTaskName !== "") {
+            text: if (root.lastActiveTaskName !== "") {
                 return root.lastActiveTaskName
             } else if (tasksModel.activeTask.valid) {
                 return tasksModel.data(tasksModel.activeTask, TaskManager.AbstractTasksModel.AppName) ||
@@ -362,7 +357,7 @@ PlasmoidItem {
                 return i18nc("@title:window title shown e.g. for desktop and expanded widgets", "Plasma Desktop")
             }
 
-            iconSource: if (expanded && root.lastActiveTaskIcon) {
+            iconSource: if (root.lastActiveTaskIcon) {
                 return root.lastActiveTaskIcon
             } else if (tasksModel.activeTask.valid) {
                 return tasksModel.data(tasksModel.activeTask, 1 /* decorationrole */)
@@ -381,11 +376,6 @@ PlasmoidItem {
 
             onHoveredChanged: {
                 if (hovered) {
-                    if (tasksModel.activeTask.valid) {
-                        root.lastActiveTaskName = tasksModel.data(tasksModel.activeTask, TaskManager.AbstractTasksModel.AppName) ||
-                       tasksModel.data(tasksModel.activeTask, 0 /* display name, window title if app name not present */)
-                       root.lastActiveTaskIcon = tasksModel.data(tasksModel.activeTask, 1 /* decorationrole */)
-                    }
                     if (Plasmoid.configuration.openOnHover) {
                         hoverOpenTimer.start()
                     }
