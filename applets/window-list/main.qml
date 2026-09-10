@@ -308,6 +308,7 @@ PlasmoidItem {
                 onClicked: {
                     windowListView.currentIndex = model.index
                     tasksModel.requestActivate(tasksModel.makeModelIndex(model.index))
+                    focus = false // or it persists invisibly after closing
                 }
 
                 TapHandler {
