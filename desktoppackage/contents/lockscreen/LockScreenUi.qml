@@ -367,19 +367,9 @@ Item {
             }
         }
 
-        // Note: Containment masks stretch clickable area of their buttons to
-        // the screen edges, essentially making them adhere to Fitts's law.
-        // Due to virtual keyboard button having an icon, buttons may have
-        // different heights, so fillHeight is required.
-        //
-        // Note for contributors: Keep this in sync with SDDM Main.qml footer.
-        RowLayout {
-            id: footer
-            anchors {
-                bottom: parent.bottom
-                left: parent.left
-                right: parent.right
-                margins: Kirigami.Units.smallSpacing
+        LoginLockScreen.Footer {
+            onOskActivated: {
+                mainBlock.mainPasswordBox.forceActiveFocus();
             }
             spacing: Kirigami.Units.smallSpacing
 
