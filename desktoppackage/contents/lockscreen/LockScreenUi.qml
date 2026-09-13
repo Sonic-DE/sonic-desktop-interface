@@ -11,7 +11,9 @@ import QtQuick.Layouts
 import QtQuick.Effects
 
 import org.kde.plasma.components as PlasmaComponents3
+import org.kde.plasma.private.accessibility
 import org.kde.plasma.workspace.components as PW
+import org.kde.plasma.workspace.keyboardlayout as Keyboards
 import org.kde.plasma.private.keyboardindicator as KeyboardIndicator
 import org.kde.kirigami as Kirigami
 import org.kde.kscreenlocker as ScreenLocker
@@ -367,9 +369,19 @@ Item {
             }
         }
 
-        LoginLockScreen.Footer {
-            onOskActivated: {
-                mainBlock.mainPasswordBox.forceActiveFocus();
+        // Note: Containment masks stretch clickable area of their buttons to
+        // the screen edges, essentially making them adhere to Fitts's law.
+        // Due to virtual keyboard button having an icon, buttons may have
+        // different heights, so fillHeight is required.
+        //
+        // Note for contributors: Keep this in sync with SDDM Main.qml footer.
+        RowLayout {
+            id: footer
+            anchors {
+                bottom: parent.bottom
+                left: parent.left
+                right: parent.right
+                margins: Kirigami.Units.smallSpacing
             }
             spacing: Kirigami.Units.smallSpacing
 
@@ -378,15 +390,17 @@ Item {
 
                 focusPolicy: Qt.TabFocus
                 text: i18ndc("plasma_shell_org.kde.plasma.desktop", "Button to show/hide virtual keyboard", "Virtual Keyboard")
-                icon.name: inputPanel.keyboardActive ? "input-keyboard-virtual-on" : "input-keyboard-virtual-off"
+                icon.name: Keyboards.KWinVirtualKeyboard.visible ? "input-keyboard-virtual-on" : "input-keyboard-virtual-off"
                 onClicked: {
-                    // Otherwise the password field loses focus and virtual keyboard
-                    // keystrokes get eaten
-                    mainBlock.mainPasswordBox.forceActiveFocus();
-                    inputPanel.showHide()
+                    if (Keyboards.KWinVirtualKeyboard.visible) {
+                        Keyboards.KWinVirtualKeyboard.active = false;
+                    } else {
+                        // Otherwise the password field loses focus and on-screen keyboard
+                        // keystrokes get eaten
+                        mainBlock.mainPasswordBox.forceActiveFocus();
+                        Keyboards.KWinVirtualKeyboard.forceActivate();
+                    }
                 }
-
-                visible: inputPanel.status === Loader.Ready
 
                 Layout.fillHeight: true
                 containmentMask: Item {
