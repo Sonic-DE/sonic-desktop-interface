@@ -11,7 +11,6 @@ plasma_add_applet(org.kde.plasma.taskmanager
         qml/GroupExpanderOverlay.qml
         qml/main.qml
         qml/MouseHandler.qml
-        qml/PipeWireThumbnail.qml
         qml/PlayerController.qml
         qml/PulseAudio.qml
         qml/ScrollableTextWrapper.qml

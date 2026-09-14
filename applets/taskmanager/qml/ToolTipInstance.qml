@@ -19,8 +19,6 @@ import org.kde.plasma.core as PlasmaCore
 import org.kde.plasma.components as PlasmaComponents3
 import org.kde.plasma.extras as PlasmaExtras
 import org.kde.kirigami as Kirigami
-import org.kde.kwindowsystem
-
 ColumnLayout {
     id: root
 
@@ -256,8 +254,7 @@ ColumnLayout {
             id: thumbnailLoader
             active: !toolTipDelegate.isLauncher
                 && !albumArtImage.visible
-                && (Number.isInteger(thumbnailSourceItem.winId) || pipeWireLoader.item
-                && !(pipeWireLoader.item as PipeWireThumbnail).hasThumbnail)
+                && Number.isInteger(thumbnailSourceItem.winId)
                 && root.index !== -1 // Avoid loading when the instance is going to be destroyed
             asynchronous: true
             visible: active
@@ -266,7 +263,7 @@ ColumnLayout {
             // shadow can cover up the highlight
             anchors.margins: Kirigami.Units.smallSpacing * 2
 
-            sourceComponent: root.isMinimized || pipeWireLoader.active ? iconItem : x11Thumbnail
+            sourceComponent: root.isMinimized ? iconItem : x11Thumbnail
 
             Component {
                 id: x11Thumbnail
@@ -285,7 +282,7 @@ ColumnLayout {
                     source: toolTipDelegate.icon
                     animated: false
                     visible: valid
-                    opacity: pipeWireLoader.active ? 0 : 1
+                    opacity: 1
 
                     SequentialAnimation {
                         running: true
@@ -309,28 +306,12 @@ ColumnLayout {
         }
 
         Loader {
-            id: pipeWireLoader
-            anchors.fill: hoverHandler
-            // Indent a little bit so that neither the thumbnail nor the drop
-            // shadow can cover up the highlight
-            anchors.margins: thumbnailLoader.anchors.margins
-
             active: Plasmoid.configuration.showToolTips
-                && !toolTipDelegate.isLauncher
-                && !albumArtImage.visible
-                && toolTipDelegate.isReadyForPainting
-                && root.index !== -1
-            asynchronous: true
-            //In a loader since we might not have PipeWire available yet (WITH_PIPEWIRE could be undefined in plasma-workspace/libtaskmanager/declarative/taskmanagerplugin.cpp)
-            source: "PipeWireThumbnail.qml"
-        }
-
-        Loader {
-            active: Plasmoid.configuration.showToolTips
-                && (((pipeWireLoader.item as PipeWireThumbnail)?.hasThumbnail ?? false) || (thumbnailLoader.status === Loader.Ready && !root.isMinimized))
+                && thumbnailLoader.status === Loader.Ready
+                && !root.isMinimized
             asynchronous: true
             visible: active
-            anchors.fill: pipeWireLoader.active ? pipeWireLoader : thumbnailLoader
+            anchors.fill: thumbnailLoader
 
             sourceComponent: Effects.MultiEffect {
                 shadowEnabled: true
@@ -339,7 +320,7 @@ ColumnLayout {
                 shadowColor: "Black"
                 shadowBlur: 1
                 blurMax: 8
-                source: pipeWireLoader.active ? pipeWireLoader.item : thumbnailLoader.item
+                source: thumbnailLoader.item
             }
         }
 
