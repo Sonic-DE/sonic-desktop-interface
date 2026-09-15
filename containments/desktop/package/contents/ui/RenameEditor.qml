@@ -43,6 +43,8 @@ PlasmaComponents.ScrollView {
 
         Kirigami.SpellCheck.enabled: false
 
+        color: Kirigami.Theme.textColor
+
         background: Rectangle {
             color: Kirigami.Theme.backgroundColor
             radius: Kirigami.Units.cornerRadius
