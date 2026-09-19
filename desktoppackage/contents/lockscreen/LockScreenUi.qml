@@ -1,8 +1,11 @@
 /*
     SPDX-FileCopyrightText: 2014 Aleix Pol Gonzalez <aleixpol@blue-systems.com>
+    SPDX-FileCopyrightText: 2026 Kristen McWilliam <kristen@kde.org>
 
     SPDX-License-Identifier: GPL-2.0-or-later
 */
+
+pragma ComponentBehavior: Bound
 
 import QtQml
 import QtQuick
@@ -11,9 +14,7 @@ import QtQuick.Layouts
 import QtQuick.Effects
 
 import org.kde.plasma.components as PlasmaComponents3
-import org.kde.plasma.private.accessibility
 import org.kde.plasma.workspace.components as PW
-import org.kde.plasma.workspace.keyboardlayout as Keyboards
 import org.kde.plasma.private.keyboardindicator as KeyboardIndicator
 import org.kde.kirigami as Kirigami
 import org.kde.kscreenlocker as ScreenLocker
@@ -28,6 +29,11 @@ Item {
     // If we're using software rendering, draw outlines instead of shadows
     // See https://bugs.kde.org/show_bug.cgi?id=398317
     readonly property bool softwareRendering: GraphicsInfo.api === GraphicsInfo.Software
+    // Whether we expect a given authenticator to prompt for a credential at all.
+    // This is a shortcut around the NoPasswordUnlock.qml screen when dealing with prompt-less authenticators.
+    property bool expectingPrompt: false // this is set for real when an authenticator is selected
+    // <!* Whether we are expected to visualize the prompt message for the authenticator *>
+    property bool showPrompt: false // this is set for real when an authenticator is selected
 
     function handleMessage(msg) {
         if (!root.notification) {
@@ -37,6 +43,7 @@ Item {
         } else {
             root.notification += "\n" + msg
         }
+        lockScreenRoot.uiVisible = true
     }
 
     function prepareForSuspend() {
@@ -67,6 +74,9 @@ Item {
         }
 
         function onSucceeded() {
+            if (!lockScreenUi.expectingPrompt) {
+                Qt.quit()
+            }
             if (authenticator.hadPrompt) {
                 Qt.quit();
             } else {
@@ -88,12 +98,17 @@ Item {
             lockScreenUi.handleMessage(authenticator.errorMessage);
         }
 
-        function onPromptChanged(msg) {
+        function onPromptChanged() {
             lockScreenUi.handleMessage(authenticator.prompt);
         }
-        function onPromptForSecretChanged(msg) {
+        function onPromptForSecretChanged() {
             mainBlock.showPassword = false;
-            mainBlock.mainPasswordBox.forceActiveFocus();
+            if (mainBlock.passwordInputVisible && !mainBlock.submissionBlocked) {
+                mainBlock.mainPasswordBox.forceActiveFocus();
+            }
+            if (lockScreenUi.showPrompt) {
+                lockScreenUi.handleMessage(authenticator.promptForSecret);
+            }
         }
     }
 
@@ -157,10 +172,18 @@ Item {
             } else if (uiVisible) {
                 fadeoutTimer.restart();
             }
-            if (!authenticator.suspended) {
+            if (!authenticator.suspended && !authenticator.unlocked) {
                 authenticator.startAuthenticating();
             }
         }
+
+        Timer { // heart beat keeping the backend active for as long as we are in visible state
+            interval: 1000
+            running: lockScreenRoot.uiVisible && !authenticator.suspended && !authenticator.unlocked
+            repeat: true
+            onTriggered: authenticator.startAuthenticating()
+        }
+
         onBlockUIChanged: {
             if (blockUI) {
                 fadeoutTimer.running = false;
@@ -283,7 +306,7 @@ Item {
             initialItem: MainBlock {
                 id: mainBlock
                 lockScreenUiVisible: lockScreenRoot.uiVisible
-                submissionBlocked: authenticator.hasPendingResponse || authenticator.suspended
+                submissionBlocked: authenticator.hasPendingResponse || authenticator.suspended || authenticator.unlocked
 
                 showUserList: userList.y + mainStack.y > 0
 
@@ -297,6 +320,61 @@ Item {
                 }
                 userListModel: users
 
+                authenticationTypeItem: RowLayout {
+                    Layout.alignment: Qt.AlignHCenter
+                    Layout.fillWidth: true
+                    visible: authenticationTypeRepeater.count > 1
+
+                    Repeater {
+                        id: authenticationTypeRepeater
+                        model: ScreenLocker.AuthenticatorModel
+
+                        delegate: PlasmaComponents3.Button {
+                            required property int type
+                            required property string iconName
+                            required property bool passwordField
+                            required property bool expectingPrompt
+                            required property string tooltip
+                            required property bool showPrompt
+                            required property bool functional
+
+                            onFunctionalChanged: {
+                                if (functional) {
+                                    return
+                                }
+                                root.notification = ""
+                                mainBlock.passwordInputVisible = false
+                                lockScreenUi.handleMessage(i18ndc(
+                                    "plasma_shell_org.kde.plasma.desktop",
+                                    "@info:status",
+                                    "This authentication method is not functioning correctly. Please try another method, and check your system configuration."))
+                            }
+
+                            // Be careful if you remove this to ensure defunct handling is present in all scenarios (e.g. onClicked)
+                            enabled: functional
+                            icon.name: iconName
+                            icon.color: functional ? undefined : Kirigami.Theme.negativeTextColor
+                            checked: authenticator.authenticator === type
+                            onClicked: {
+                                authenticator.authenticator = type
+                                root.notification = ""
+                                mainBlock.passwordInputVisible = passwordField
+                                lockScreenUi.expectingPrompt = expectingPrompt
+                                lockScreenUi.showPrompt = showPrompt
+                            }
+
+                            PlasmaComponents3.ToolTip.text: tooltip
+                            PlasmaComponents3.ToolTip.delay: Kirigami.Units.toolTipDelay
+                            PlasmaComponents3.ToolTip.visible: hovered
+
+                            Component.onCompleted: {
+                                if (checked) {
+                                    clicked()
+                                }
+                            }
+                        }
+                    }
+                }
 
                 notificationMessage: {
                     const parts = [];
@@ -315,18 +393,21 @@ Item {
 
                 actionItems: [
                     ActionButton {
+                        Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
                         text: i18ndc("plasma_shell_org.kde.plasma.desktop", "@action:button", "Slee&p")
                         icon.name: "system-suspend"
                         onClicked: sessionManagement.suspend()
                         visible: sessionManagement.canSuspend
                     },
                     ActionButton {
+                        Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
                         text: i18ndc("plasma_shell_org.kde.plasma.desktop", "@action:button", "&Hibernate")
                         icon.name: "system-suspend-hibernate"
                         onClicked: sessionManagement.hibernate()
                         visible: sessionManagement.canHibernate
                     },
                     ActionButton {
+                        Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
                         text: i18ndc("plasma_shell_org.kde.plasma.desktop", "@action:button", "Switch &User")
                         icon.name: "system-switch-user"
                         onClicked: {
@@ -390,16 +471,14 @@ Item {
 
                 focusPolicy: Qt.TabFocus
                 text: i18ndc("plasma_shell_org.kde.plasma.desktop", "Button to show/hide virtual keyboard", "Virtual Keyboard")
-                icon.name: Keyboards.KWinVirtualKeyboard.visible ? "input-keyboard-virtual-on" : "input-keyboard-virtual-off"
+                icon.name: inputPanel.keyboardActive ? "input-keyboard-virtual-on" : "input-keyboard-virtual-off"
                 onClicked: {
-                    if (Keyboards.KWinVirtualKeyboard.visible) {
-                        Keyboards.KWinVirtualKeyboard.active = false;
-                    } else {
+                    if (!inputPanel.keyboardActive) {
                         // Otherwise the password field loses focus and on-screen keyboard
                         // keystrokes get eaten
                         mainBlock.mainPasswordBox.forceActiveFocus();
-                        Keyboards.KWinVirtualKeyboard.forceActivate();
                     }
+                    inputPanel.showHide();
                 }
 
                 Layout.fillHeight: true
