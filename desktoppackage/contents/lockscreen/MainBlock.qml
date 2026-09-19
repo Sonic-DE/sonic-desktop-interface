@@ -22,6 +22,8 @@ SessionManagementScreen {
     readonly property alias mainPasswordBox: passwordBox
     property bool lockScreenUiVisible: false
     property bool submissionBlocked: false
+    property bool passwordInputVisible: true
+    property Item authenticationTypeItem: null
     onSubmissionBlockedChanged: {
         if (!submissionBlocked && lockScreenUiVisible) {
             passwordBox.forceActiveFocus();
@@ -62,6 +64,26 @@ SessionManagementScreen {
         passwordResult(password);
     }
 
+    Item {
+        id: authenticationTypeContainer
+        Layout.fillWidth: true
+        implicitHeight: sessionManager.authenticationTypeItem?.implicitHeight ?? 0
+        visible: sessionManager.authenticationTypeItem !== null
+
+        Binding {
+            target: sessionManager.authenticationTypeItem
+            property: "parent"
+            value: authenticationTypeContainer
+            when: sessionManager.authenticationTypeItem !== null
+        }
+        Binding {
+            target: sessionManager.authenticationTypeItem
+            property: "width"
+            value: authenticationTypeContainer.width
+            when: sessionManager.authenticationTypeItem !== null
+        }
+    }
+
     RowLayout {
         Layout.fillWidth: true
 
@@ -69,6 +91,7 @@ SessionManagementScreen {
             id: passwordBox
             objectName: "passwordBox"
             enabled: !sessionManager.submissionBlocked
+            visible: sessionManager.passwordInputVisible
             font.pointSize: Kirigami.Theme.defaultFont.pointSize + 1
             Layout.fillWidth: true
             text: PasswordSync.password
