@@ -21,6 +21,12 @@ SessionManagementScreen {
 
     readonly property alias mainPasswordBox: passwordBox
     property bool lockScreenUiVisible: false
+    property bool submissionBlocked: false
+    onSubmissionBlockedChanged: {
+        if (!submissionBlocked && lockScreenUiVisible) {
+            passwordBox.forceActiveFocus();
+        }
+    }
     property alias showPassword: passwordBox.showPassword
 
     //the y position that should be ensured visible when the on screen keyboard is visible
@@ -42,6 +48,9 @@ SessionManagementScreen {
     }
 
     function startLogin() {
+        if (submissionBlocked) {
+            return;
+        }
         const password = passwordBox.text
 
         // This is partly because it looks nicer, but more importantly it
@@ -58,6 +67,8 @@ SessionManagementScreen {
 
         PlasmaExtras.PasswordField {
             id: passwordBox
+            objectName: "passwordBox"
+            enabled: !sessionManager.submissionBlocked
             font.pointSize: Kirigami.Theme.defaultFont.pointSize + 1
             Layout.fillWidth: true
             text: PasswordSync.password
@@ -110,6 +121,8 @@ SessionManagementScreen {
 
         PlasmaComponents3.Button {
             id: loginButton
+            objectName: "loginButton"
+            enabled: !sessionManager.submissionBlocked
             Accessible.name: i18ndc("plasma_shell_org.kde.plasma.desktop", "@action:button accessible only", "Unlock")
             Layout.preferredHeight: passwordBox.implicitHeight
             Layout.preferredWidth: loginButton.Layout.preferredHeight
