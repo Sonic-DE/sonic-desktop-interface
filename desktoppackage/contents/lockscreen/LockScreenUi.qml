@@ -21,6 +21,7 @@ import org.kde.breeze.components
 
 Item {
     id: lockScreenUi
+    objectName: "lockScreenUi"
 
     // If we're using software rendering, draw outlines instead of shadows
     // See https://bugs.kde.org/show_bug.cgi?id=398317
@@ -36,7 +37,15 @@ Item {
         }
     }
 
-    property string pendingPassword
+    function prepareForSuspend() {
+        authenticator.setSuspended(true);
+        root.clearPassword();
+    }
+
+    function resumeAfterSuspend() {
+        root.clearPassword();
+        authenticator.setSuspended(false);
+    }
 
     Kirigami.Theme.inherit: false
     Kirigami.Theme.colorSet: Kirigami.Theme.Complementary
@@ -98,7 +107,17 @@ Item {
     Connections {
         target: sessionManagement
         function onAboutToSuspend() {
-            root.clearPassword();
+            lockScreenUi.prepareForSuspend();
+        }
+        function onResumingFromSuspend() {
+            lockScreenUi.resumeAfterSuspend();
+        }
+    }
+
+    Connections {
+        target: root
+        function onClearPassword() {
+            authenticator.discardPendingResponse();
         }
     }
 
@@ -136,7 +155,9 @@ Item {
             } else if (uiVisible) {
                 fadeoutTimer.restart();
             }
-            authenticator.startAuthenticating();
+            if (!authenticator.suspended) {
+                authenticator.startAuthenticating();
+            }
         }
         onBlockUIChanged: {
             if (blockUI) {
@@ -245,17 +266,6 @@ Item {
             }
         }
 
-        Connections {
-            target: authenticator
-            function onPamTimeoutChanged(): void {
-                if (!authenticator.pamTimeout && lockScreenUi.pendingPassword.length > 0) {
-                    authenticator.respond(lockScreenUi.pendingPassword);
-                    lockScreenUi.pendingPassword = "";
-                    mainBlock.enabled = true;
-                }
-            }
-        }
-
         StackView {
             id: mainStack
             anchors {
@@ -271,6 +281,7 @@ Item {
             initialItem: MainBlock {
                 id: mainBlock
                 lockScreenUiVisible: lockScreenRoot.uiVisible
+                submissionBlocked: authenticator.hasPendingResponse || authenticator.suspended
 
                 showUserList: userList.y + mainStack.y > 0
 
@@ -297,12 +308,7 @@ Item {
                 }
 
                 onPasswordResult: password => {
-                    if (authenticator.pamTimeout) {
-                        lockScreenUi.pendingPassword = password
-                        mainBlock.enabled = false
-                    } else {
-                        authenticator.respond(password)
-                    }
+                    authenticator.submitResponse(password, lockScreenUi);
                 }
 
                 actionItems: [
@@ -322,6 +328,7 @@ Item {
                         text: i18ndc("plasma_shell_org.kde.plasma.desktop", "@action:button", "Switch &User")
                         icon.name: "system-switch-user"
                         onClicked: {
+                            root.clearPassword();
                             sessionManagement.switchUser();
                         }
                         visible: sessionManagement.canSwitchUser
