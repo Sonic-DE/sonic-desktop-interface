@@ -74,6 +74,9 @@ Item {
         }
 
         function onSucceeded() {
+            // Stop pending authentication processes so they cannot time out after success.
+            authenticator.stopAuthenticating();
+
             if (!lockScreenUi.expectingPrompt) {
                 Qt.quit()
             }
