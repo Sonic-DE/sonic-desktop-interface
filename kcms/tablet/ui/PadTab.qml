@@ -160,7 +160,7 @@ Kirigami.FormLayout {
             Connections {
                 target: kcm
                 function onSettingsRestored() {
-                    refreshInputSequence();
+                    seq.refreshInputSequence();
                 }
             }
 

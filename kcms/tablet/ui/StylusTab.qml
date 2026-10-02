@@ -337,7 +337,7 @@ Item {
                         target: root
 
                         function onSettingsRestored(): void {
-                            refreshInputSequence();
+                            seq.refreshInputSequence();
                         }
                     }
 
