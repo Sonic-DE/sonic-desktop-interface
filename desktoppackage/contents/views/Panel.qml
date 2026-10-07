@@ -91,6 +91,7 @@ Item {
     // Examples of such windows: properties of a file on desktop, or portal "open with" dialog
     property bool touchingWindow: false
     property bool touchingWindowDirect: visibleWindowsModel.count > 0
+    readonly property bool touchingWindowOrKeyboard: touchingWindow || (bottomEdge && Qt.inputMethod.visible)
     property bool showingDesktop: KWindowSystem.showingDesktop
     Timer {
         id: touchingWindowDebounceTimer
@@ -151,7 +152,7 @@ Item {
         visible: root.floatingness === 0 && root.panelOpacity !== 1
         enabledBorders: panel.enabledBorders
         anchors.fill: floatingTranslucentItem
-        imagePath: containment?.plasmoid?.backgroundHints === PlasmaCore.Types.NoBackground ? "" : "widgets/panel-background"
+        imagePath: root.containment?.plasmoid?.backgroundHints === PlasmaCore.Types.NoBackground ? "" : "widgets/panel-background"
     }
     KSvg.FrameSvgItem {
         id: floatingTranslucentItem
@@ -161,14 +162,14 @@ Item {
         width: root.verticalPanel ? panel.thickness : parent.width - root.leftFloatingPadding - root.rightFloatingPadding
         height: root.verticalPanel ? parent.height - root.topFloatingPadding - root.bottomFloatingPadding : panel.thickness
 
-        imagePath: containment?.plasmoid?.backgroundHints === PlasmaCore.Types.NoBackground ? "" : "widgets/panel-background"
+        imagePath: root.containment?.plasmoid?.backgroundHints === PlasmaCore.Types.NoBackground ? "" : "widgets/panel-background"
     }
     KSvg.FrameSvgItem {
         id: floatingOpaqueItem
         visible: root.floatingness !== 0 && root.panelOpacity !== 0
         opacity: root.panelOpacity
         anchors.fill: floatingTranslucentItem
-        imagePath: containment?.plasmoid?.backgroundHints === PlasmaCore.Types.NoBackground ? "" : "solid/widgets/panel-background"
+        imagePath: root.containment?.plasmoid?.backgroundHints === PlasmaCore.Types.NoBackground ? "" : "solid/widgets/panel-background"
     }
     KSvg.FrameSvgItem {
         id: opaqueItem
@@ -176,7 +177,7 @@ Item {
         opacity: root.panelOpacity
         enabledBorders: panel.enabledBorders
         anchors.fill: floatingTranslucentItem
-        imagePath: containment?.plasmoid?.backgroundHints === PlasmaCore.Types.NoBackground ? "" : "solid/widgets/panel-background"
+        imagePath: root.containment?.plasmoid?.backgroundHints === PlasmaCore.Types.NoBackground ? "" : "solid/widgets/panel-background"
     }
 
     Keys.onEscapePressed: {
@@ -188,24 +189,24 @@ Item {
     property bool isAdaptive: panel.opacityMode === Panel.Global.Adaptive
     property bool floating: panel.floating
     property bool hasCompositing: KX11Extras.compositingActive
-    property var stateTriggers: [floating, touchingWindow, isOpaque, isAdaptive, isTransparent, hasCompositing, containment, panel.floatingApplets]
+    property var stateTriggers: [floating, touchingWindowOrKeyboard, isOpaque, isAdaptive, isTransparent, hasCompositing, containment, panel.floatingApplets]
     onStateTriggersChanged: {
         let opaqueApplets = false
         let floatingApplets = false
-        if ((!floating || touchingWindow) && (isOpaque || (touchingWindow && isAdaptive))) {
+        if ((!floating || touchingWindowOrKeyboard) && (isOpaque || (touchingWindowOrKeyboard && isAdaptive))) {
             panelOpacity = 1
             opaqueApplets = true
             floatingnessTarget = 0
             floatingApplets = (panel.floatingApplets && !floating)
-        } else if ((!floating || touchingWindow) && (isTransparent || (!touchingWindow && isAdaptive))) {
+        } else if ((!floating || touchingWindowOrKeyboard) && (isTransparent || (!touchingWindowOrKeyboard && isAdaptive))) {
             panelOpacity = 0
             floatingnessTarget = 0
             floatingApplets = (panel.floatingApplets && !floating)
-        } else if ((floating && !touchingWindow) && (isTransparent || isAdaptive)) {
+        } else if ((floating && !touchingWindowOrKeyboard) && (isTransparent || isAdaptive)) {
             panelOpacity = 0
             floatingnessTarget = 1
             floatingApplets = true
-        } else if (floating && !touchingWindow && isOpaque) {
+        } else if (floating && !touchingWindowOrKeyboard && isOpaque) {
             panelOpacity = 1
             opaqueApplets = true
             floatingnessTarget = 1
@@ -219,7 +220,7 @@ Item {
             floatingnessTarget = 1
             floatingApplets = true
         }
-        if (!KX11Extras.compositingActive) {
+        if (!hasCompositing) {
             opaqueApplets = false
             panelOpacity = 0
         }
@@ -279,29 +280,29 @@ Item {
     Binding {
         target: panel
         property: "length"
-        when: containment
+        when: root.containment
         value: {
-            if (!containment) {
+            if (!root.containment) {
                 return;
             }
             if (root.verticalPanel) {
-                if (containment.Layout.fillHeight) {
+                if (root.containment.Layout.fillHeight) {
                     if (panel.lengthMode == Panel.Global.Custom) {
                         return panel.maximumHeight
                     } else {
                         return panel.screenGeometry.height
                     }
                 }
-                return containment.Layout.preferredHeight
+                return root.containment.Layout.preferredHeight
             } else {
-                if (containment.Layout.fillWidth) {
+                if (root.containment.Layout.fillWidth) {
                     if (panel.lengthMode == Panel.Global.Custom) {
                         return panel.maximumWidth
                     } else {
                         return panel.screenGeometry.width
                     }
                 }
-                return containment.Layout.preferredWidth
+                return root.containment.Layout.preferredWidth
             }
         }
         restoreMode: Binding.RestoreBinding
@@ -310,13 +311,13 @@ Item {
     Binding {
         target: panel
         property: "backgroundHints"
-        when: containment
+        when: root.containment
         value: {
-            if (!containment) {
+            if (!root.containment) {
                 return;
             }
 
-            return containment.plasmoid.backgroundHints;
+            return root.containment.plasmoid.backgroundHints;
         }
         restoreMode: Binding.RestoreBinding
     }
