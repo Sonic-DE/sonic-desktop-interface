@@ -15,9 +15,11 @@ class KConfig;
 class KPluginMetaData;
 
 class ModulesModel;
-Q_DECLARE_OPAQUE_POINTER(ModulesModel *)
 class FilterProxyModel;
-Q_DECLARE_OPAQUE_POINTER(FilterProxyModel *)
+
+// These Q_OBJECT types must be complete when moc generates property metatypes.
+Q_MOC_INCLUDE("modulesmodel.h")
+Q_MOC_INCLUDE("filterproxymodel.h")
 
 class OrgKdeKded6Interface;
 
