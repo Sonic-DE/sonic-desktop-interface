@@ -113,6 +113,10 @@ Qt::MouseButtons maskBtns(Display *display, XIButtonClassInfo *buttonInfo)
 {
     Qt::MouseButtons buttons = Qt::NoButton;
     for (int i = 0; i < buttonInfo->num_buttons; ++i) {
+        // XInput permits unlabeled buttons (including Xvfb's virtual devices).
+        if (buttonInfo->labels[i] == None) {
+            continue;
+        }
         QByteArray reply = XGetAtomName(display, buttonInfo->labels[i]);
 
         if (reply == BTN_LABEL_PROP_BTN_LEFT) {
