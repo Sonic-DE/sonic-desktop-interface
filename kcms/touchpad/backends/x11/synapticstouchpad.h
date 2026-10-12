@@ -110,4 +110,5 @@ private:
     XcbAtom m_touchpadOffAtom;
     int m_verticalDistance = 0;
     int m_horizontalDistance = 0;
+    bool m_tapActionsNeedApply = false;
 };
