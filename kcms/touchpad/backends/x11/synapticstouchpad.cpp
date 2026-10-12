@@ -116,15 +116,31 @@ bool SynapticsTouchpad::load()
     const QVariant middleTimeout = propertyValue(SYNAPTICS_PROP_MIDDLE_TIMEOUT, 0);
 
     resetBool(m_tapToClick, group.readEntry("OneFingerTapButton", oneTap.toInt()) != 0, oneTap.isValid());
+    // Keep the live driver value as the baseline, not the saved preference.
+    // Session initialization must be able to apply settings after a driver reset.
+    m_tapToClick.old = oneTap.toInt() != 0;
     m_tapToClickEnabledByDefault.avail = oneTap.isValid();
     m_tapToClickEnabledByDefault.old = m_tapToClickEnabledByDefault.val = m_tapToClick.val;
     resetBool(m_tapAndDrag, group.readEntry("TapAndDragGesture", gestures.toBool()), gestures.isValid());
+    m_tapAndDrag.old = gestures.toBool();
     resetBool(m_tapDragLock, group.readEntry("LockedDrags", locked.toBool()), locked.isValid());
+    m_tapDragLock.old = locked.toBool();
     resetBool(m_lmrTapButtonMap,
-              group.readEntry("LmrTapButtonMap", oneTap.toInt() == 1 && twoTap.toInt() == 3 && threeTap.toInt() == 2),
+              group.readEntry("LmrTapButtonMap",
+                              group.readEntry("TwoFingerTapButton", twoTap.toInt()) == 2 && group.readEntry("ThreeFingerTapButton", threeTap.toInt()) == 3),
               oneTap.isValid() && twoTap.isValid() && threeTap.isValid());
+    // LMR means left/middle/right: X11 buttons 1/2/3, not 1/3/2.
+    // Disabled tapping has no live button order; retain the saved preference.
+    m_lmrTapButtonMap.old = oneTap.toInt() != 0 ? (twoTap.toInt() == 2 && threeTap.toInt() == 3) : m_lmrTapButtonMap.val;
     m_lmrTapButtonMapEnabledByDefault.avail = m_lmrTapButtonMap.avail;
     m_lmrTapButtonMapEnabledByDefault.old = m_lmrTapButtonMapEnabledByDefault.val = true;
+    const bool hasSavedTapActions =
+        group.hasKey("OneFingerTapButton") || group.hasKey("TwoFingerTapButton") || group.hasKey("ThreeFingerTapButton") || group.hasKey("LmrTapButtonMap");
+    const int desiredOne = m_tapToClick.val ? 1 : 0;
+    const int desiredTwo = m_tapToClick.val ? (m_lmrTapButtonMap.val ? 2 : 3) : 0;
+    const int desiredThree = m_tapToClick.val ? (m_lmrTapButtonMap.val ? 3 : 2) : 0;
+    m_tapActionsNeedApply =
+        m_lmrTapButtonMap.avail && hasSavedTapActions && (oneTap.toInt() != desiredOne || twoTap.toInt() != desiredTwo || threeTap.toInt() != desiredThree);
     resetBool(m_isScrollTwoFinger, group.readEntry("VertTwoFingerScroll", twoFinger.toBool()), twoFinger.isValid());
     resetBool(m_isScrollEdge, group.readEntry("VertEdgeScroll", edge.toBool()), edge.isValid());
     m_supportsScrollTwoFinger.avail = true;
@@ -156,25 +172,17 @@ bool SynapticsTouchpad::save()
     KConfigGroup group(config, QStringLiteral("parameters"));
     KConfigGroup autoDisable(config, QStringLiteral("autodisable"));
     bool ok = true;
-    if (m_tapToClick.changed()) {
+    if (m_tapToClick.changed() || m_lmrTapButtonMap.changed() || m_tapActionsNeedApply) {
         const int one = m_tapToClick.val ? 1 : 0;
-        const int two = m_tapToClick.val ? (m_lmrTapButtonMap.val ? 3 : 2) : 0;
-        const int three = m_tapToClick.val ? (m_lmrTapButtonMap.val ? 2 : 3) : 0;
+        const int two = m_tapToClick.val ? (m_lmrTapButtonMap.val ? 2 : 3) : 0;
+        const int three = m_tapToClick.val ? (m_lmrTapButtonMap.val ? 3 : 2) : 0;
         ok &= writeProperty(SYNAPTICS_PROP_TAP_ACTION, 4, one);
         ok &= writeProperty(SYNAPTICS_PROP_TAP_ACTION, 5, two);
         ok &= writeProperty(SYNAPTICS_PROP_TAP_ACTION, 6, three);
         group.writeEntry("OneFingerTapButton", one);
         group.writeEntry("TwoFingerTapButton", two);
         group.writeEntry("ThreeFingerTapButton", three);
-    }
-    if (m_lmrTapButtonMap.changed()) {
-        ok &= writeProperty(SYNAPTICS_PROP_TAP_ACTION, 4, 1);
-        ok &= writeProperty(SYNAPTICS_PROP_TAP_ACTION, 5, m_lmrTapButtonMap.val ? 3 : 2);
-        ok &= writeProperty(SYNAPTICS_PROP_TAP_ACTION, 6, m_lmrTapButtonMap.val ? 2 : 3);
         group.writeEntry("LmrTapButtonMap", m_lmrTapButtonMap.val);
-        group.writeEntry("OneFingerTapButton", 1);
-        group.writeEntry("TwoFingerTapButton", m_lmrTapButtonMap.val ? 3 : 2);
-        group.writeEntry("ThreeFingerTapButton", m_lmrTapButtonMap.val ? 2 : 3);
     }
     if (m_tapAndDrag.changed()) {
         ok &= writeProperty(SYNAPTICS_PROP_GESTURES, 0, m_tapAndDrag.val);
@@ -242,7 +250,7 @@ bool SynapticsTouchpad::defaults()
 
 bool SynapticsTouchpad::isSaveNeeded() const
 {
-    return m_tapToClick.changed() || m_lmrTapButtonMap.changed() || m_tapAndDrag.changed() || m_tapDragLock.changed() || m_isScrollTwoFinger.changed()
-        || m_isScrollEdge.changed() || m_naturalScroll.changed() || m_horizontalScrolling.changed() || m_middleEmulation.changed()
-        || m_pointerAcceleration.changed() || m_disableWhileTyping.changed() || m_disableEventsOnExternalMouse.changed();
+    return m_tapToClick.changed() || m_lmrTapButtonMap.changed() || m_tapActionsNeedApply || m_tapAndDrag.changed() || m_tapDragLock.changed()
+        || m_isScrollTwoFinger.changed() || m_isScrollEdge.changed() || m_naturalScroll.changed() || m_horizontalScrolling.changed()
+        || m_middleEmulation.changed() || m_pointerAcceleration.changed() || m_disableWhileTyping.changed() || m_disableEventsOnExternalMouse.changed();
 }
