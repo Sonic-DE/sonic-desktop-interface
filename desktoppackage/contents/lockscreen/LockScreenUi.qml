@@ -391,7 +391,11 @@ Item {
                 }
 
                 onPasswordResult: password => {
-                    authenticator.submitResponse(password, lockScreenUi);
+                    authenticator.startAuthenticating();
+                    if (authenticator.submitResponse(password, lockScreenUi)) {
+                        // root.clearPassword() also cancels backend-owned submissions.
+                        mainBlock.clearPasswordInput();
+                    }
                 }
 
                 actionItems: [
