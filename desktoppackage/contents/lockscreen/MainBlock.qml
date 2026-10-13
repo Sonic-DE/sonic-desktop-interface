@@ -104,9 +104,11 @@ SessionManagementScreen {
             Connections {
                 target: root
                 function onClearPassword() {
-                    passwordBox.forceActiveFocus()
                     passwordBox.text = "";
                     passwordBox.text = Qt.binding(() => PasswordSync.password);
+                    if (sessionManager.lockScreenUiVisible && !sessionManager.submissionBlocked) {
+                        passwordBox.forceActiveFocus();
+                    }
                 }
                 function onNotificationRepeated() {
                     sessionManager.playHighlightAnimation();

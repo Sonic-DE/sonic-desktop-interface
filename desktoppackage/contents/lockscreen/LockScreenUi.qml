@@ -48,8 +48,6 @@ Item {
         lockScreenRoot.uiVisible = true
     }
 
-    property string pendingPassword
-
     Kirigami.Theme.inherit: false
     Kirigami.Theme.colorSet: Kirigami.Theme.Complementary
 
@@ -123,7 +121,11 @@ Item {
     Connections {
         target: sessionManagement
         function onAboutToSuspend() {
+            authenticator.setSuspended(true);
             root.clearPassword();
+        }
+        function onResumingFromSuspend() {
+            authenticator.setSuspended(false);
         }
     }
 
@@ -166,7 +168,7 @@ Item {
 
         Timer { // heart beat keeping the backend active for as long as we are in visible state
             interval: 1000
-            running: !authenticator.unlocked && parent.uiVisible
+            running: !authenticator.unlocked && !authenticator.suspended && parent.uiVisible
             repeat: true
             onTriggered: authenticator.startAuthenticating()
         }
@@ -283,17 +285,6 @@ Item {
             }
         }
 
-        Connections {
-            target: authenticator
-            function onPamTimeoutChanged(): void {
-                if (!authenticator.pamTimeout && lockScreenUi.pendingPassword.length > 0) {
-                    authenticator.respond(lockScreenUi.pendingPassword);
-                    lockScreenUi.pendingPassword = "";
-                    mainBlock.enabled = true;
-                }
-            }
-        }
-
         StackView {
             id: mainStack
             anchors {
@@ -309,6 +300,7 @@ Item {
             initialItem: MainBlock {
                 id: mainBlock
                 lockScreenUiVisible: lockScreenRoot.uiVisible
+                submissionBlocked: authenticator.hasPendingResponse || authenticator.suspended || authenticator.unlocked
 
                 showUserList: userList.y + mainStack.y > 0
 
@@ -393,11 +385,9 @@ Item {
                 }
 
                 onPasswordResult: password => {
-                    if (authenticator.pamTimeout) {
-                        lockScreenUi.pendingPassword = password
-                        mainBlock.enabled = false
-                    } else {
-                        authenticator.respond(password)
+                    authenticator.startAuthenticating();
+                    if (authenticator.submitResponse(password, lockScreenUi)) {
+                        root.clearPassword();
                     }
                 }
 
