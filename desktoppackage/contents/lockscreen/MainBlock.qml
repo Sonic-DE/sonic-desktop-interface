@@ -25,7 +25,7 @@ SessionManagementScreen {
     property bool passwordInputVisible: true
     property Item authenticationTypeItem: null
     onSubmissionBlockedChanged: {
-        if (!submissionBlocked && lockScreenUiVisible) {
+        if (!submissionBlocked && lockScreenUiVisible && passwordInputVisible) {
             passwordBox.forceActiveFocus();
         }
     }
@@ -62,6 +62,15 @@ SessionManagementScreen {
         // See https://bugreports.qt.io/browse/QTBUG-55460
         loginButton.forceActiveFocus();
         passwordResult(password);
+    }
+
+    // Clear the shared input without cancelling a submission accepted by the backend.
+    function clearPasswordInput() {
+        passwordBox.text = "";
+        passwordBox.text = Qt.binding(() => PasswordSync.password);
+        if (lockScreenUiVisible && passwordInputVisible && !submissionBlocked) {
+            passwordBox.forceActiveFocus();
+        }
     }
 
     Item {
@@ -127,9 +136,7 @@ SessionManagementScreen {
             Connections {
                 target: root
                 function onClearPassword() {
-                    passwordBox.forceActiveFocus()
-                    passwordBox.text = "";
-                    passwordBox.text = Qt.binding(() => PasswordSync.password);
+                    sessionManager.clearPasswordInput();
                 }
                 function onNotificationRepeated() {
                     sessionManager.playHighlightAnimation();
