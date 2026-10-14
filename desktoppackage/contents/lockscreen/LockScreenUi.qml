@@ -14,7 +14,7 @@ import QtQuick.Layouts
 import QtQuick.Effects
 
 import org.kde.plasma.components as PlasmaComponents3
-import org.kde.plasma.workspace.components as PW
+import org.kde.plasma.workspace.loginlockscreen as LoginLockScreen
 import org.kde.plasma.private.keyboardindicator as KeyboardIndicator
 import org.kde.kirigami as Kirigami
 import org.kde.kscreenlocker as ScreenLocker
@@ -151,7 +151,7 @@ Item {
 
         property bool uiVisible: false
         property bool seenPositionChange: false
-        property bool blockUI: containsMouse && (mainStack.depth > 1 || mainBlock.mainPasswordBox.text.length > 0 || inputPanel.keyboardActive)
+        property bool blockUI: containsMouse && (mainStack.depth > 1 || mainBlock.mainPasswordBox.text.length > 0 || footer.virtualKeyboardVisible)
 
         x: parent.x
         y: parent.y
@@ -203,8 +203,8 @@ Item {
             // We do not want to show the password prompt in this case.
             if (uiVisible) {
                 uiVisible = false;
-                if (inputPanel.keyboardActive) {
-                    inputPanel.showHide();
+                if (footer.virtualKeyboardVisible) {
+                    footer.hideVirtualKeyboard();
                 }
                 root.clearPassword();
             }
@@ -274,7 +274,7 @@ Item {
         Clock {
             id: clock
             property Item shadow: clockShadow
-            visible: y > 0 && config.alwaysShowClock
+            visible: y > 0 && config.alwaysShowClock && !footer.virtualKeyboardVisible
             anchors.horizontalCenter: parent.horizontalCenter
             y: (mainBlock.userList.y + mainStack.y)/2 - height/2
             Layout.alignment: Qt.AlignBaseline
@@ -309,6 +309,7 @@ Item {
             initialItem: MainBlock {
                 id: mainBlock
                 lockScreenUiVisible: lockScreenRoot.uiVisible
+                keyboardActive: footer.virtualKeyboardVisible
                 submissionBlocked: authenticator.hasPendingResponse || authenticator.suspended || authenticator.unlocked
 
                 showUserList: userList.y + mainStack.y > 0
@@ -435,17 +436,6 @@ Item {
             }
         }
 
-        VirtualKeyboardLoader {
-            id: inputPanel
-
-            z: 1
-
-            screenRoot: lockScreenRoot
-            mainStack: mainStack
-            mainBlock: mainBlock
-            passwordField: mainBlock.mainPasswordBox
-        }
-
         Loader {
             z: 2
             active: root.viewVisible
@@ -457,79 +447,14 @@ Item {
             }
         }
 
-        // Note: Containment masks stretch clickable area of their buttons to
-        // the screen edges, essentially making them adhere to Fitts's law.
-        // Due to virtual keyboard button having an icon, buttons may have
-        // different heights, so fillHeight is required.
-        //
-        // Note for contributors: Keep this in sync with SDDM Main.qml footer.
-        RowLayout {
+        LoginLockScreen.Footer {
             id: footer
-            anchors {
-                bottom: parent.bottom
-                left: parent.left
-                right: parent.right
-                margins: Kirigami.Units.smallSpacing
-            }
-            spacing: Kirigami.Units.smallSpacing
-
-            PlasmaComponents3.ToolButton {
-                id: virtualKeyboardButton
-
-                focusPolicy: Qt.TabFocus
-                text: i18ndc("plasma_shell_org.kde.plasma.desktop", "Button to show/hide virtual keyboard", "Virtual Keyboard")
-                icon.name: inputPanel.keyboardActive ? "input-keyboard-virtual-on" : "input-keyboard-virtual-off"
-                onClicked: {
-                    if (!inputPanel.keyboardActive) {
-                        // Otherwise the password field loses focus and on-screen keyboard
-                        // keystrokes get eaten
-                        mainBlock.mainPasswordBox.forceActiveFocus();
-                    }
-                    inputPanel.showHide();
-                }
-
-                Layout.fillHeight: true
-                containmentMask: Item {
-                    parent: virtualKeyboardButton
-                    anchors.fill: parent
-                    anchors.leftMargin: -footer.anchors.margins
-                    anchors.bottomMargin: -footer.anchors.margins
+            onOskActivated: {
+                // Focus the input before the shared footer activates the on-screen keyboard.
+                if (mainBlock.passwordInputVisible && !mainBlock.submissionBlocked) {
+                    mainBlock.mainPasswordBox.forceActiveFocus();
                 }
             }
-
-            PlasmaComponents3.ToolButton {
-                id: keyboardButton
-
-                focusPolicy: Qt.TabFocus
-                Accessible.description: i18ndc("plasma_shell_org.kde.plasma.desktop", "Button to change keyboard layout", "Switch layout")
-                icon.name: "input-keyboard"
-
-                PW.KeyboardLayoutSwitcher {
-                    id: keyboardLayoutSwitcher
-
-                    anchors.fill: parent
-                    acceptedButtons: Qt.NoButton
-                }
-
-                text: keyboardLayoutSwitcher.layoutNames.longName
-                onClicked: keyboardLayoutSwitcher.keyboardLayout.switchToNextLayout()
-
-                visible: keyboardLayoutSwitcher.hasMultipleKeyboardLayouts
-
-                Layout.fillHeight: true
-                containmentMask: Item {
-                    parent: keyboardButton
-                    anchors.fill: parent
-                    anchors.leftMargin: virtualKeyboardButton.visible ? 0 : -footer.anchors.margins
-                    anchors.bottomMargin: -footer.anchors.margins
-                }
-            }
-
-            Item {
-                Layout.fillWidth: true
-            }
-
-            Battery {}
         }
     }
 }
