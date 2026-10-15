@@ -1114,7 +1114,7 @@ void Positioner::convertFolderModelData()
 
     // Restore positions for items that still fit.
     for (auto &&[name, gridPos] : std::as_const(m_positions).asKeyValueRange()) {
-        if (gridPos.pos <= m_perStripe) {
+        if (gridPos.pos < m_perStripe) {
             if (!sourceIndices.contains(name)) {
                 continue;
             }
@@ -1134,7 +1134,7 @@ void Positioner::convertFolderModelData()
 
     // Find new positions for items that didn't fit.
     for (auto &&[name, gridPos] : std::as_const(m_positions).asKeyValueRange()) {
-        if (gridPos.pos > m_perStripe) {
+        if (gridPos.pos >= m_perStripe) {
             if (!sourceIndices.contains(name)) {
                 continue;
             }

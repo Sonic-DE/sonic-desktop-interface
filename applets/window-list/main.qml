@@ -113,7 +113,7 @@ PlasmoidItem {
 
     Connections {
         target: tasksModel
-        function onModelReset() { updateLongestWindowTitle(); }
+        function onModelReset() { root.updateLongestWindowTitle(); }
     }
 
     Component {
@@ -131,48 +131,48 @@ PlasmoidItem {
             Binding {
                 target: windowListView
                 property: "Layout.preferredWidth"
-                when: !inPanel
+                when: !root.inPanel
                 value: Kirigami.Units.gridUnit * 28
             }
 
             Binding {
                 target: windowListView
                 property: "Layout.preferredHeight"
-                when: !inPanel
+                when: !root.inPanel
                 value: Kirigami.Units.gridUnit * 24
             }
 
             Binding {
                 target: windowListView
                 property: "Layout.maximumHeight"
-                when: inPanel
-                value: contentHeight
+                when: root.inPanel
+                value: windowListView.contentHeight
             }
             Binding {
                 target: windowListView
                 property: "Layout.minimumHeight"
-                when: inPanel
-                value: contentHeight
+                when: root.inPanel
+                value: windowListView.contentHeight
             }
             Binding {
                 target: windowListView
                 property: "Layout.maximumWidth"
-                when: inPanel
+                when: root.inPanel
                 value: root.fullRepresentationDynamicWidth
             }
             Binding {
                 target: windowListView
                 property: "Layout.minimumWidth"
-                when: inPanel
+                when: root.inPanel
                 value: root.fullRepresentationDynamicWidth
             }
 
-            model: inPanel && tasksModel.count === 0 ? noWindowModel : tasksModel
+            model: root.inPanel && tasksModel.count === 0 ? root.noWindowModel : tasksModel
         
             Connections {
                 target: root
-                function onExpandedChanged(expanded) {
-                    if (expanded) {
+                function onExpandedChanged() {
+                    if (root.expanded) {
                         windowListView.currentIndex = -1
 
                         // Needed for when for expanded with Global Shortcut
@@ -180,12 +180,14 @@ PlasmoidItem {
                             root.lastActiveTaskName = tasksModel.data(tasksModel.activeTask, TaskManager.AbstractTasksModel.AppName) ||
                             tasksModel.data(tasksModel.activeTask, 0 /* display name, window title if app name not present */)
                             root.lastActiveTaskIcon = tasksModel.data(tasksModel.activeTask, 1 /* decorationrole */)
-                        } else {
+                        }
+                        root.updateLongestWindowTitle();
+                    }  else {
+                        Qt.callLater( () => { // give the previous window a chance to gain focus
                             root.lastActiveTaskName = ""
                             root.lastActiveTaskIcon = ""
-                        }
-
-                        root.updateLongestWindowTitle();
+                            root.updateLongestWindowTitle();
+                        })
                     }
                 }
             }
@@ -202,18 +204,6 @@ PlasmoidItem {
 
             highlightMoveDuration: 0
             highlightResizeDuration: 0
-
-            Keys.onEnterPressed: {
-                if (currentIndex >= 0 && currentIndex < windowListView.count) {
-                    tasksModel.requestActivate(tasksModel.makeModelIndex(currentIndex));
-                }
-            }
-
-            Keys.onReturnPressed: {
-                if (currentIndex >= 0 && currentIndex < windowListView.count) {
-                    tasksModel.requestActivate(tasksModel.makeModelIndex(currentIndex));
-                }
-            }
 
             Keys.onTabPressed: {
                 incrementCurrentIndex();
@@ -260,7 +250,7 @@ PlasmoidItem {
                 required property var decoration
 
                 width: {
-                    if (inPanel) {
+                    if (root.inPanel) {
                         return root.fullRepresentationDynamicWidth 
                     } else {
                         return ListView.view.width;
@@ -306,7 +296,11 @@ PlasmoidItem {
                 onClicked: {
                     windowListView.currentIndex = model.index
                     tasksModel.requestActivate(tasksModel.makeModelIndex(model.index))
+                    focus = false // or it persists invisibly after closing
                 }
+
+                Keys.onReturnPressed: animateClick()
+                Keys.onEnterPressed: animateClick()
 
                 TapHandler {
                     acceptedButtons: Qt.RightButton
@@ -317,7 +311,7 @@ PlasmoidItem {
             Kirigami.PlaceholderMessage {
                 anchors.centerIn: parent
                 width: parent.width - (Kirigami.Units.largeSpacing * 2)
-                visible: !inPanel && windowListView.count === 0
+                visible: !root.inPanel && windowListView.count === 0
                 icon.source: "edit-none"
                 text: placeholderMetrics.text
             }
@@ -340,20 +334,13 @@ PlasmoidItem {
             Layout.fillHeight: Plasmoid.formFactor === PlasmaCore.Types.Horizontal
             Layout.fillWidth: Plasmoid.formFactor === PlasmaCore.Types.Vertical
 
-            onClicked: {
-                if (tasksModel.activeTask.valid) {
-                    root.lastActiveTaskName = tasksModel.data(tasksModel.activeTask, TaskManager.AbstractTasksModel.AppName) ||
-                       tasksModel.data(tasksModel.activeTask, 0 /* display name, window title if app name not present */)
-                    root.lastActiveTaskIcon = tasksModel.data(tasksModel.activeTask, 1 /* decorationrole */)
-                }
-                root.expanded = !root.expanded
-            }
+            onClicked: root.expanded = !root.expanded
             down: pressed || root.expanded
 
             Accessible.name: Plasmoid.title
             Accessible.description: root.toolTipSubText
 
-            text: if (root.expanded && root.lastActiveTaskName !== "") {
+            text: if (root.lastActiveTaskName !== "") {
                 return root.lastActiveTaskName
             } else if (tasksModel.activeTask.valid) {
                 return tasksModel.data(tasksModel.activeTask, TaskManager.AbstractTasksModel.AppName) ||
@@ -362,7 +349,7 @@ PlasmoidItem {
                 return i18nc("@title:window title shown e.g. for desktop and expanded widgets", "Plasma Desktop")
             }
 
-            iconSource: if (expanded && root.lastActiveTaskIcon) {
+            iconSource: if (root.lastActiveTaskIcon) {
                 return root.lastActiveTaskIcon
             } else if (tasksModel.activeTask.valid) {
                 return tasksModel.data(tasksModel.activeTask, 1 /* decorationrole */)
@@ -381,11 +368,6 @@ PlasmoidItem {
 
             onHoveredChanged: {
                 if (hovered) {
-                    if (tasksModel.activeTask.valid) {
-                        root.lastActiveTaskName = tasksModel.data(tasksModel.activeTask, TaskManager.AbstractTasksModel.AppName) ||
-                       tasksModel.data(tasksModel.activeTask, 0 /* display name, window title if app name not present */)
-                       root.lastActiveTaskIcon = tasksModel.data(tasksModel.activeTask, 1 /* decorationrole */)
-                    }
                     if (Plasmoid.configuration.openOnHover) {
                         hoverOpenTimer.start()
                     }

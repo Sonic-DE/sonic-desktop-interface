@@ -14,14 +14,15 @@ import org.kde.ksvg as KSvg
 import org.kde.taskmanager as TaskManager
 import org.kde.kwindowsystem
 import org.kde.kirigami as Kirigami
-import org.kde.plasma.shell.panel as Panel
+import org.kde.plasma.shell
+import org.kde.plasma.workspace.keyboardlayout as Keyboards
 
 import org.kde.plasma.plasmoid
 
 Item {
     id: root
 
-    property Item containment
+    property ContainmentItem containment
 
     property bool floatingPrefix: floatingPanelSvg.usedPrefix === "floating"
     readonly property bool verticalPanel: containment?.plasmoid?.formFactor === PlasmaCore.Types.Vertical
@@ -91,6 +92,7 @@ Item {
     // Examples of such windows: properties of a file on desktop, or portal "open with" dialog
     property bool touchingWindow: false
     property bool touchingWindowDirect: visibleWindowsModel.count > 0
+    readonly property bool touchingWindowOrKeyboard: touchingWindow || (bottomEdge && Keyboards.KWinVirtualKeyboard.visible)
     property bool showingDesktop: KWindowSystem.showingDesktop
     Timer {
         id: touchingWindowDebounceTimer
@@ -102,7 +104,7 @@ Item {
 
     TaskManager.TasksModel {
         id: visibleWindowsModel
-        filterByVirtualDesktop: true
+        filterByCurrentVirtualDesktop: true
         filterByActivity: true
         filterByScreen: false
         filterByRegion: TaskManager.RegionFilterMode.Intersect
@@ -110,14 +112,13 @@ Item {
         filterMinimized: true
 
         screenGeometry: panel.screenGeometry
-        virtualDesktop: virtualDesktopInfo.currentDesktop
         activity: activityInfo.currentActivity
 
         groupMode: TaskManager.TasksModel.GroupDisabled
 
         Binding on regionGeometry {
             delayed: true
-            value: panel.width, panel.height, panel.x, panel.y, panel.dogdeGeometryByDistance(panel.visibilityMode === Panel.Global.DodgeWindows ? -1 : 1) // +1 is for overlap detection, -1 is for snapping to panel
+            value: panel.width, panel.height, panel.x, panel.y, panel.dogdeGeometryByDistance(panel.visibilityMode === Panel.DodgeWindows ? -1 : 1) // +1 is for overlap detection, -1 is for snapping to panel
         }
     }
 
@@ -151,7 +152,7 @@ Item {
         visible: root.floatingness === 0 && root.panelOpacity !== 1
         enabledBorders: panel.enabledBorders
         anchors.fill: floatingTranslucentItem
-        imagePath: containment?.plasmoid?.backgroundHints === PlasmaCore.Types.NoBackground ? "" : "widgets/panel-background"
+        imagePath: root.containment?.plasmoid?.backgroundHints === PlasmaCore.Types.NoBackground ? "" : "widgets/panel-background"
     }
     KSvg.FrameSvgItem {
         id: floatingTranslucentItem
@@ -161,14 +162,14 @@ Item {
         width: root.verticalPanel ? panel.thickness : parent.width - root.leftFloatingPadding - root.rightFloatingPadding
         height: root.verticalPanel ? parent.height - root.topFloatingPadding - root.bottomFloatingPadding : panel.thickness
 
-        imagePath: containment?.plasmoid?.backgroundHints === PlasmaCore.Types.NoBackground ? "" : "widgets/panel-background"
+        imagePath: root.containment?.plasmoid?.backgroundHints === PlasmaCore.Types.NoBackground ? "" : "widgets/panel-background"
     }
     KSvg.FrameSvgItem {
         id: floatingOpaqueItem
         visible: root.floatingness !== 0 && root.panelOpacity !== 0
         opacity: root.panelOpacity
         anchors.fill: floatingTranslucentItem
-        imagePath: containment?.plasmoid?.backgroundHints === PlasmaCore.Types.NoBackground ? "" : "solid/widgets/panel-background"
+        imagePath: root.containment?.plasmoid?.backgroundHints === PlasmaCore.Types.NoBackground ? "" : "solid/widgets/panel-background"
     }
     KSvg.FrameSvgItem {
         id: opaqueItem
@@ -176,36 +177,35 @@ Item {
         opacity: root.panelOpacity
         enabledBorders: panel.enabledBorders
         anchors.fill: floatingTranslucentItem
-        imagePath: containment?.plasmoid?.backgroundHints === PlasmaCore.Types.NoBackground ? "" : "solid/widgets/panel-background"
+        imagePath: root.containment?.plasmoid?.backgroundHints === PlasmaCore.Types.NoBackground ? "" : "solid/widgets/panel-background"
     }
 
     Keys.onEscapePressed: {
         root.parent.focus = false
     }
 
-    property bool isOpaque: panel.opacityMode === Panel.Global.Opaque
-    property bool isTransparent: panel.opacityMode === Panel.Global.Translucent
-    property bool isAdaptive: panel.opacityMode === Panel.Global.Adaptive
+    property bool isOpaque: panel.opacityMode === Panel.Opaque
+    property bool isTransparent: panel.opacityMode === Panel.Translucent
+    property bool isAdaptive: panel.opacityMode === Panel.Adaptive
     property bool floating: panel.floating
-    property bool hasCompositing: KX11Extras.compositingActive
-    property var stateTriggers: [floating, touchingWindow, isOpaque, isAdaptive, isTransparent, hasCompositing, containment, panel.floatingApplets]
+    property var stateTriggers: [floating, touchingWindowOrKeyboard, isOpaque, isAdaptive, isTransparent, containment, panel.floatingApplets]
     onStateTriggersChanged: {
         let opaqueApplets = false
         let floatingApplets = false
-        if ((!floating || touchingWindow) && (isOpaque || (touchingWindow && isAdaptive))) {
+        if ((!floating || touchingWindowOrKeyboard) && (isOpaque || (touchingWindowOrKeyboard && isAdaptive))) {
             panelOpacity = 1
             opaqueApplets = true
             floatingnessTarget = 0
             floatingApplets = (panel.floatingApplets && !floating)
-        } else if ((!floating || touchingWindow) && (isTransparent || (!touchingWindow && isAdaptive))) {
+        } else if ((!floating || touchingWindowOrKeyboard) && (isTransparent || (!touchingWindowOrKeyboard && isAdaptive))) {
             panelOpacity = 0
             floatingnessTarget = 0
             floatingApplets = (panel.floatingApplets && !floating)
-        } else if ((floating && !touchingWindow) && (isTransparent || isAdaptive)) {
+        } else if ((floating && !touchingWindowOrKeyboard) && (isTransparent || isAdaptive)) {
             panelOpacity = 0
             floatingnessTarget = 1
             floatingApplets = true
-        } else if (floating && !touchingWindow && isOpaque) {
+        } else if (floating && !touchingWindowOrKeyboard && isOpaque) {
             panelOpacity = 1
             opaqueApplets = true
             floatingnessTarget = 1
@@ -215,13 +215,9 @@ Item {
         // Exceptions: panels with not NormalPanel visibilityMode
         // should never de-float, and we should not have transparent
         // panels when on X11 with compositing not active.
-        if (panel.visibilityMode != Panel.Global.NormalPanel && floating) {
+        if (panel.visibilityMode != Panel.NormalPanel && floating) {
             floatingnessTarget = 1
             floatingApplets = true
-        }
-        if (!KX11Extras.compositingActive) {
-            opaqueApplets = false
-            panelOpacity = 0
         }
 
         // Not using panelOpacity to check as it has a NumberAnimation, and it will thus
@@ -279,29 +275,29 @@ Item {
     Binding {
         target: panel
         property: "length"
-        when: containment
+        when: root.containment
         value: {
-            if (!containment) {
+            if (!root.containment) {
                 return;
             }
             if (root.verticalPanel) {
-                if (containment.Layout.fillHeight) {
-                    if (panel.lengthMode == Panel.Global.Custom) {
+                if (root.containment.Layout.fillHeight) {
+                    if (panel.lengthMode == Panel.Custom) {
                         return panel.maximumHeight
                     } else {
                         return panel.screenGeometry.height
                     }
                 }
-                return containment.Layout.preferredHeight
+                return root.containment.Layout.preferredHeight
             } else {
-                if (containment.Layout.fillWidth) {
-                    if (panel.lengthMode == Panel.Global.Custom) {
+                if (root.containment.Layout.fillWidth) {
+                    if (panel.lengthMode == Panel.Custom) {
                         return panel.maximumWidth
                     } else {
                         return panel.screenGeometry.width
                     }
                 }
-                return containment.Layout.preferredWidth
+                return root.containment.Layout.preferredWidth
             }
         }
         restoreMode: Binding.RestoreBinding
@@ -310,13 +306,13 @@ Item {
     Binding {
         target: panel
         property: "backgroundHints"
-        when: containment
+        when: root.containment
         value: {
-            if (!containment) {
+            if (!root.containment) {
                 return;
             }
 
-            return containment.plasmoid.backgroundHints;
+            return root.containment.plasmoid.backgroundHints;
         }
         restoreMode: Binding.RestoreBinding
     }

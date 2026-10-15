@@ -337,7 +337,7 @@ Item {
                         target: root
 
                         function onSettingsRestored(): void {
-                            refreshInputSequence();
+                            seq.refreshInputSequence();
                         }
                     }
 
@@ -345,7 +345,7 @@ Item {
                         seq.inputSequence = kcm.toolButtonMapping(root.device.name, seq.value);
                     }
 
-                    Component.onCompleted: refreshInputSequence()
+                    Component.onCompleted: seq.refreshInputSequence()
 
                     onGotInputSequence: sequence => {
                         kcm.assignToolButtonMapping(root.device.name, seq.value, sequence);

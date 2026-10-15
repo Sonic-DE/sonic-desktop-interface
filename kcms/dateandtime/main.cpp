@@ -13,8 +13,12 @@
 #include <QVBoxLayout>
 
 #include <KAboutData>
+#include <KAuth/Action>
+#include <KAuth/ExecuteJob>
 #include <KMessageBox>
 #include <KPluginFactory>
+#include <PolkitQt1/Authority>
+#include <PolkitQt1/Subject>
 #include <QDBusConnection>
 
 #include "dtime.h"
@@ -41,9 +45,26 @@ KclockModule::KclockModule(QObject *parent, const KPluginMetaData &metaData)
 
 bool KclockModule::timedatedSave()
 {
+    const qint64 timeDiff = dtime->userTime().toMSecsSinceEpoch() - QDateTime::currentMSecsSinceEpoch();
+
     OrgFreedesktopTimedate1Interface timedateIface(QStringLiteral("org.freedesktop.timedate1"),
                                                    QStringLiteral("/org/freedesktop/timedate1"),
                                                    QDBusConnection::systemBus());
+
+    // Auth manually for "set-time", this implies authroization for all the other actions => the user only sees one popup
+    // HACK  First We use KAuth here just so it sidechannels parent window and activation token for us, everything else is noop because no helper
+    KAuth::Action action(authActionName());
+    action.setParentWindow(widget()->window()->windowHandle());
+    auto job = action.execute();
+    job->exec();
+    // Second do the actual authorization manually
+    auto authority = PolkitQt1::Authority::instance();
+    auto authorized = authority->checkAuthorizationSync(authActionName(),
+                                                        PolkitQt1::SystemBusNameSubject(QDBusConnection::systemBus().baseService()),
+                                                        PolkitQt1::Authority::AllowUserInteraction);
+    if (authorized != PolkitQt1::Authority::Yes) {
+        return false;
+    }
 
     // final arg in each method is "user-interaction" i.e whether it's OK for polkit to ask for auth
 
@@ -59,9 +80,7 @@ bool KclockModule::timedatedSave()
         qWarning() << "Failed to enable NTP" << reply.error().name() << reply.error().message();
         return false;
     }
-
     if (!dtime->ntpEnabled()) {
-        qint64 timeDiff = dtime->userTime().toMSecsSinceEpoch() - QDateTime::currentMSecsSinceEpoch();
         //*1000 for milliseconds -> microseconds
         auto reply = timedateIface.SetTime(timeDiff * 1000, true, true);
         reply.waitForFinished();
