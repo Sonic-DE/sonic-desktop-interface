@@ -77,7 +77,7 @@ SessionManagementScreen {
         id: authenticationTypeContainer
         Layout.fillWidth: true
         implicitHeight: sessionManager.authenticationTypeItem?.implicitHeight ?? 0
-        visible: sessionManager.authenticationTypeItem !== null
+        visible: !sessionManager.keyboardActive && sessionManager.authenticationTypeItem !== null
 
         Binding {
             target: sessionManager.authenticationTypeItem
@@ -170,7 +170,7 @@ SessionManagementScreen {
         required property int kind
         required property string label
 
-        visible: authenticator.authenticatorTypes & kind
+        visible: !sessionManager.keyboardActive && (authenticator.authenticatorTypes & kind)
         text: label
         textFormat: Text.PlainText
         horizontalAlignment: Text.AlignHCenter
