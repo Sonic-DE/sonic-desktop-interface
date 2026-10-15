@@ -16,7 +16,6 @@ import Qt5Compat.GraphicalEffects
 import org.kde.plasma.components as PlasmaComponents3
 import org.kde.plasma.private.accessibility
 import org.kde.plasma.workspace.loginlockscreen as LoginLockScreen
-import org.kde.plasma.workspace.keyboardlayout as Keyboards
 import org.kde.plasma.private.keyboardindicator as KeyboardIndicator
 import org.kde.kirigami as Kirigami
 import org.kde.kscreenlocker as ScreenLocker
@@ -27,6 +26,7 @@ import org.kde.breeze.components
 
 Item {
     id: lockScreenUi
+    readonly property bool keyboardActive: footer.virtualKeyboardVisible
 
     // If we're using software rendering, draw outlines instead of shadows
     // See https://bugs.kde.org/show_bug.cgi?id=398317
@@ -139,7 +139,7 @@ Item {
 
         property bool uiVisible: false
         property bool seenPositionChange: false
-        property bool blockUI: containsMouse && (mainStack.depth > 1 || mainBlock.mainPasswordBox.text.length > 0 || Keyboards.KWinVirtualKeyboard.visible)
+        property bool blockUI: lockScreenUi.keyboardActive || (containsMouse && (mainStack.depth > 1 || mainBlock.mainPasswordBox.text.length > 0))
 
         x: parent.x
         y: parent.y
@@ -196,9 +196,7 @@ Item {
             // We do not want to show the password prompt in this case.
             if (uiVisible) {
                 uiVisible = false;
-                if (Keyboards.KWinVirtualKeyboard.visible) {
-                    Keyboards.KWinVirtualKeyboard.active = false;
-                }
+                footer.hideVirtualKeyboard();
                 root.clearPassword();
             }
         }
@@ -247,7 +245,7 @@ Item {
             id: clockShadow
             anchors.fill: clock
             source: clock
-            visible: !lockScreenUi.softwareRendering && config.alwaysShowClock
+            visible: !lockScreenUi.keyboardActive && !lockScreenUi.softwareRendering && config.alwaysShowClock
             radius: 7
             verticalOffset: 0.8
             samples: 15
@@ -265,7 +263,7 @@ Item {
         Clock {
             id: clock
             property Item shadow: clockShadow
-            visible: y > 0 && config.alwaysShowClock
+            visible: !lockScreenUi.keyboardActive && y > 0 && config.alwaysShowClock
             anchors.horizontalCenter: parent.horizontalCenter
             y: (mainBlock.userList.y + mainStack.y)/2 - height/2
             Layout.alignment: Qt.AlignBaseline
@@ -299,6 +297,7 @@ Item {
 
             initialItem: MainBlock {
                 id: mainBlock
+                keyboardActive: lockScreenUi.keyboardActive
                 lockScreenUiVisible: lockScreenRoot.uiVisible
                 submissionBlocked: authenticator.hasPendingResponse || authenticator.suspended || authenticator.unlocked
 
@@ -317,7 +316,7 @@ Item {
                 authenticationTypeItem: RowLayout {
                     Layout.alignment: Qt.AlignHCenter
                     Layout.fillWidth: true
-                    visible: authenticationTypeRepeater.count > 1
+                    visible: !lockScreenUi.keyboardActive && authenticationTypeRepeater.count > 1
 
                     Repeater {
                         id: authenticationTypeRepeater
@@ -421,7 +420,7 @@ Item {
                     Layout.topMargin: Kirigami.Units.smallSpacing // some distance to the password field
                     Layout.fillWidth: true
                     Layout.preferredHeight: item ? item.implicitHeight : 0
-                    active: config.showMediaControls
+                    active: config.showMediaControls && !lockScreenUi.keyboardActive
                     source: "MediaControls.qml"
                 }
             }
@@ -429,6 +428,7 @@ Item {
 
         Loader {
             z: 2
+            visible: !lockScreenUi.keyboardActive
             active: root.viewVisible
             source: "LockOsd.qml"
             anchors {
@@ -440,6 +440,7 @@ Item {
 
         LoginLockScreen.Footer {
             id: footer
+            visible: !lockScreenUi.keyboardActive
             onOskActivated: {
                 // Focus the input before the shared footer activates the on-screen keyboard.
                 if (mainBlock.passwordInputVisible && !mainBlock.submissionBlocked) {
