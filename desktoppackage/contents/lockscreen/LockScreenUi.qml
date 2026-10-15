@@ -25,6 +25,7 @@ import org.kde.breeze.components
 Item {
     id: lockScreenUi
     objectName: "lockScreenUi"
+    readonly property bool keyboardActive: footer.virtualKeyboardVisible
 
     // If we're using software rendering, draw outlines instead of shadows
     // See https://bugs.kde.org/show_bug.cgi?id=398317
@@ -151,7 +152,7 @@ Item {
 
         property bool uiVisible: false
         property bool seenPositionChange: false
-        property bool blockUI: containsMouse && (mainStack.depth > 1 || mainBlock.mainPasswordBox.text.length > 0 || footer.virtualKeyboardVisible)
+        property bool blockUI: lockScreenUi.keyboardActive || (containsMouse && (mainStack.depth > 1 || mainBlock.mainPasswordBox.text.length > 0))
 
         x: parent.x
         y: parent.y
@@ -162,7 +163,7 @@ Item {
         drag.filterChildren: true
         onPressed: uiVisible = true;
         onPositionChanged: {
-            uiVisible = seenPositionChange;
+            uiVisible = lockScreenUi.keyboardActive || seenPositionChange;
             seenPositionChange = true;
         }
         onUiVisibleChanged: {
@@ -196,16 +197,16 @@ Item {
             }
         }
         onExited: {
-            uiVisible = false;
+            if (!lockScreenUi.keyboardActive) {
+                uiVisible = false;
+            }
         }
         Keys.onEscapePressed: {
             // If the escape key is pressed, kscreenlocker will turn off the screen.
             // We do not want to show the password prompt in this case.
             if (uiVisible) {
                 uiVisible = false;
-                if (footer.virtualKeyboardVisible) {
-                    footer.hideVirtualKeyboard();
-                }
+                footer.hideVirtualKeyboard();
                 root.clearPassword();
             }
         }
@@ -254,7 +255,7 @@ Item {
             id: clockShadow
             anchors.fill: clock
             source: clock
-            visible: !lockScreenUi.softwareRendering && config.alwaysShowClock
+            visible: !lockScreenUi.keyboardActive && !lockScreenUi.softwareRendering && config.alwaysShowClock
             shadowEnabled: true
             shadowHorizontalOffset: 0
             shadowVerticalOffset: 0.8
@@ -274,7 +275,7 @@ Item {
         Clock {
             id: clock
             property Item shadow: clockShadow
-            visible: y > 0 && config.alwaysShowClock && !footer.virtualKeyboardVisible
+            visible: !lockScreenUi.keyboardActive && y > 0 && config.alwaysShowClock
             anchors.horizontalCenter: parent.horizontalCenter
             y: (mainBlock.userList.y + mainStack.y)/2 - height/2
             Layout.alignment: Qt.AlignBaseline
@@ -308,8 +309,8 @@ Item {
 
             initialItem: MainBlock {
                 id: mainBlock
+                keyboardActive: lockScreenUi.keyboardActive
                 lockScreenUiVisible: lockScreenRoot.uiVisible
-                keyboardActive: footer.virtualKeyboardVisible
                 submissionBlocked: authenticator.hasPendingResponse || authenticator.suspended || authenticator.unlocked
 
                 showUserList: userList.y + mainStack.y > 0
@@ -327,7 +328,7 @@ Item {
                 authenticationTypeItem: RowLayout {
                     Layout.alignment: Qt.AlignHCenter
                     Layout.fillWidth: true
-                    visible: authenticationTypeRepeater.count > 1
+                    visible: !lockScreenUi.keyboardActive && authenticationTypeRepeater.count > 1
 
                     Repeater {
                         id: authenticationTypeRepeater
@@ -430,7 +431,7 @@ Item {
                     Layout.topMargin: Kirigami.Units.smallSpacing // some distance to the password field
                     Layout.fillWidth: true
                     Layout.preferredHeight: item ? item.implicitHeight : 0
-                    active: config.showMediaControls
+                    active: config.showMediaControls && !lockScreenUi.keyboardActive
                     source: "MediaControls.qml"
                 }
             }
@@ -438,6 +439,7 @@ Item {
 
         Loader {
             z: 2
+            visible: !lockScreenUi.keyboardActive
             active: root.viewVisible
             source: "LockOsd.qml"
             anchors {
@@ -449,6 +451,7 @@ Item {
 
         LoginLockScreen.Footer {
             id: footer
+            visible: !lockScreenUi.keyboardActive
             onOskActivated: {
                 // Focus the input before the shared footer activates the on-screen keyboard.
                 if (mainBlock.passwordInputVisible && !mainBlock.submissionBlocked) {
