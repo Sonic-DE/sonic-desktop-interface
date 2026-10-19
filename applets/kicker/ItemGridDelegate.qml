@@ -45,11 +45,15 @@ ItemAbstractDelegate {
         }
     }
     Drag.dragType: Drag.Automatic
-    Drag.mimeData: root.isDraggableFavorite ? {
-        'favoritedrag': '',
-        "text/uri-list" : [root.url]
-    } : {
-        "text/uri-list" : [root.url]
+    Drag.mimeData: {
+        let mimeData = {}
+        if (root.isDraggableFavorite) {
+            mimeData["favoritedrag"] = ""
+        }
+        if (root.url.toString().length > 0) {
+            mimeData["text/uri-list"] = [root.url]
+        }
+        return mimeData
     }
     Keys.onReturnPressed: item.clicked()
     Keys.onEnterPressed: Keys.returnPressed()
