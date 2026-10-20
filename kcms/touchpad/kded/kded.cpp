@@ -193,7 +193,11 @@ void TouchpadDisabler::handleReset()
     // Apply persisted configuration to a newly attached X11 device
     // that was connected after session kcminit.
 #if BUILD_KCM_TOUCHPAD_X11
-    if (m_backend->getMode() == TouchpadInputBackendMode::XLibinput || m_backend->getMode() == TouchpadInputBackendMode::XSynaptics) {
+    if (m_backend->getMode() == TouchpadInputBackendMode::XLibinput
+#if HAVE_SYNAPTICS
+        || m_backend->getMode() == TouchpadInputBackendMode::XSynaptics
+#endif
+    ) {
         if (!m_backend->load()) {
             qWarning() << "Failed to load touchpad config on attach";
         } else if (!m_backend->save()) {

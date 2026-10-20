@@ -130,7 +130,11 @@ void KCMTouchpad::kcmInit()
     if (!backend) {
         return;
     }
-    if (backend->getMode() == TouchpadInputBackendMode::XLibinput || backend->getMode() == TouchpadInputBackendMode::XSynaptics) {
+    if (backend->getMode() == TouchpadInputBackendMode::XLibinput
+#if HAVE_SYNAPTICS
+        || backend->getMode() == TouchpadInputBackendMode::XSynaptics
+#endif
+    ) {
         if (!backend->load()) {
             qCWarning(KCM_TOUCHPAD) << "Failed to load touchpad config at session initialization";
         } else if (!backend->save()) {
