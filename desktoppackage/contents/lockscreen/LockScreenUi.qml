@@ -26,6 +26,15 @@ Item {
     id: lockScreenUi
     objectName: "lockScreenUi"
     readonly property bool keyboardActive: footer.virtualKeyboardVisible
+    readonly property real availableUnlockHeight: {
+        const keyboard = Qt.inputMethod.keyboardRectangle;
+        if (!keyboardActive || keyboard.width <= 0 || keyboard.height <= 0
+            || keyboard.x >= width || keyboard.x + keyboard.width <= 0
+            || keyboard.y >= height || keyboard.y + keyboard.height <= 0) {
+            return height;
+        }
+        return Math.max(0, Math.min(height, keyboard.y));
+    }
 
     // If we're using software rendering, draw outlines instead of shadows
     // See https://bugs.kde.org/show_bug.cgi?id=398317
@@ -301,7 +310,7 @@ Item {
                 left: parent.left
                 right: parent.right
             }
-            height: lockScreenRoot.height + Kirigami.Units.gridUnit * 3
+            height: lockScreenUi.keyboardActive ? lockScreenUi.availableUnlockHeight : lockScreenRoot.height + Kirigami.Units.gridUnit * 3
             focus: true //StackView is an implicit focus scope, so we need to give this focus so the item inside will have it
 
             // this isn't implicit, otherwise items still get processed for the scenegraph
@@ -313,7 +322,7 @@ Item {
                 lockScreenUiVisible: lockScreenRoot.uiVisible
                 submissionBlocked: authenticator.hasPendingResponse || authenticator.suspended || authenticator.unlocked
 
-                showUserList: userList.y + mainStack.y > 0
+                showUserList: lockScreenUi.keyboardActive || userList.y + mainStack.y > 0
 
                 StackView.onStatusChanged: {
                     // prepare for presenting again to the user

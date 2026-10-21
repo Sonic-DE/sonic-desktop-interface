@@ -18,6 +18,7 @@ import org.kde.breeze.components
 
 SessionManagementScreen {
     id: sessionManager
+    showUserListWithKeyboard: true
 
     readonly property alias mainPasswordBox: passwordBox
     property bool lockScreenUiVisible: false
