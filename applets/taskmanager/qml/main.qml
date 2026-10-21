@@ -108,6 +108,7 @@ PlasmoidItem {
 //END TODO
 
     property Item dragSource
+    property var hoveredWinIds
 
     signal requestLayout
 
@@ -121,6 +122,13 @@ PlasmoidItem {
         if (!Plasmoid.configuration.highlightWindows) {
             return;
         }
+        // If the hover leave event comes after something else was already hovered, don't cancel the new highlight
+        if (!hovered && !(winIds.every(winId => hoveredWinIds.includes(winId)) &&
+                          hoveredWinIds.every(winId => winIds.includes(winId)))) {
+            return
+        }
+        hoveredWinIds = winIds
+
         return DBus.SessionBus.asyncCall({service: "org.kde.KWin.HighlightWindow", path: "/org/kde/KWin/HighlightWindow", iface: "org.kde.KWin.HighlightWindow", member: "highlightWindows", arguments: [hovered ? winIds : []], signature: "(as)"});
     }
 
