@@ -18,8 +18,7 @@
 
 class QTimer;
 
-class DeviceModel : public QAbstractListModel
-{
+class DeviceModel : public QAbstractListModel {
     Q_OBJECT
     Q_PROPERTY(int count READ count NOTIFY devicesChanged)
 
@@ -48,6 +47,8 @@ private Q_SLOTS:
     void poll();
 
 private:
+    void refreshDevices();
+    void processEvent(const SDL_Event &event);
     void addDevice(const int deviceIndex);
     void removeDevice(const SDL_JoystickID id);
 
