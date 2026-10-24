@@ -67,7 +67,9 @@ Item {
     }
 
     Kirigami.Theme.inherit: false
-    Kirigami.Theme.colorSet: Kirigami.Theme.Complementary
+    // Use the selected desktop appearance, not the independent opposite-tone
+    // palette. Controls retain their own Button/View color sets.
+    Kirigami.Theme.colorSet: Kirigami.Theme.Window
 
     Connections {
         target: authenticator
