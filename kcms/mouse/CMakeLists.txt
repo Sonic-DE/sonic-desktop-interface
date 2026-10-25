@@ -65,6 +65,10 @@ if (BUILD_KCM_MOUSE_X11)
         X11::Xcursor
     )
     install(TARGETS kapplymousetheme ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
+
+    if (BUILD_TESTING)
+        add_subdirectory(autotests)
+    endif()
 endif()
 
 target_link_libraries(kcm_mouse PRIVATE
