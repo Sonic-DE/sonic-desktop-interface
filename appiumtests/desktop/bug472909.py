@@ -48,7 +48,7 @@ class Bug472909Test(unittest.TestCase):
         """
         Make sure to terminate the driver again, lest it dangles.
         """
-        subprocess.check_output(["kquitapp6", "plasmashell"], stderr=sys.stderr)
+        subprocess.check_output(["kquitapp6", "--service", "org.sonicde.sonicshell", "sonicshell"], stderr=sys.stderr)
         cls.plasmashell.wait()
         if cls.kded:
             cls.kded.terminate()
@@ -64,7 +64,7 @@ class Bug472909Test(unittest.TestCase):
 
         # The driver doesn't support sending global keyboard shortcuts
         session_bus: Gio.DBusConnection = Gio.bus_get_sync(Gio.BusType.SESSION)
-        message = Gio.DBusMessage.new_method_call("org.kde.kglobalaccel", "/component/plasmashell", "org.kde.kglobalaccel.Component", "allShortcutInfos")
+        message = Gio.DBusMessage.new_method_call("org.kde.kglobalaccel", "/component/sonicshell", "org.kde.kglobalaccel.Component", "allShortcutInfos")
         reply, _ = session_bus.send_message_with_reply_sync(message, Gio.DBusSendMessageFlags.NONE, 1000)
         shortcut_list = reply.get_body().get_child_value(0)
         launcher_shortcut_id: str = ""
@@ -85,7 +85,7 @@ class Bug472909Test(unittest.TestCase):
         self.addCleanup(test_window.terminate)
 
         def activate_shortcut() -> None:
-            message = Gio.DBusMessage.new_method_call("org.kde.kglobalaccel", "/component/plasmashell", "org.kde.kglobalaccel.Component", "invokeShortcut")
+            message = Gio.DBusMessage.new_method_call("org.kde.kglobalaccel", "/component/sonicshell", "org.kde.kglobalaccel.Component", "invokeShortcut")
             message.set_body(GLib.Variant("(s)", [launcher_shortcut_id]))
             session_bus.send_message_with_reply_sync(message, Gio.DBusSendMessageFlags.NONE, 1000)
 
@@ -101,5 +101,5 @@ class Bug472909Test(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    assert subprocess.call(["pidof", "plasmashell"]) != 0, "The test requires plasmashell to quit"
+    assert subprocess.call(["pidof", "sonicshell"]) != 0, "The test requires sonicshell to quit"
     unittest.main()

@@ -184,8 +184,8 @@ QQC2.Control {
 
                                 QQC2.MenuItem {
                                     text: edge == "floating"
-                                        ? i18ndc("plasma_shell_org.kde.plasma.desktop", "@action:inmenu", "Swap with Desktop on Screen %1", model.screenName)
-                                        : i18ndc("plasma_shell_org.kde.plasma.desktop", "@action:inmenu", "Move to Screen %1", model.screenName)
+                                        ? i18ndc("plasma_shell_org.sonicde.desktop", "@action:inmenu", "Swap with Desktop on Screen %1", model.screenName)
+                                        : i18ndc("plasma_shell_org.sonicde.desktop", "@action:inmenu", "Move to Screen %1", model.screenName)
                                     visible: model.screenName !== delegate.screenName
                                     height: visible ? implicitHeight : 0
                                     onTriggered: {
@@ -199,8 +199,8 @@ QQC2.Control {
                             QQC2.MenuItem {
                                 id: removeItem
                                 text: contRect.state === "floating"
-                                    ? i18ndc("plasma_shell_org.kde.plasma.desktop", "@action:inmenu", "Remove Desktop")
-                                    : i18ndc("plasma_shell_org.kde.plasma.desktop", "@action:inmenu", "Remove Panel")
+                                    ? i18ndc("plasma_shell_org.sonicde.desktop", "@action:inmenu", "Remove Desktop")
+                                    : i18ndc("plasma_shell_org.sonicde.desktop", "@action:inmenu", "Remove Panel")
                                 icon.name: "edit-delete"
                                 onTriggered: {
                                     if (contRect.state === "floating") {
@@ -276,7 +276,7 @@ QQC2.Control {
             horizontalAlignment: Text.AlignHCenter
             wrapMode: Text.WordWrap
             text: model.isPrimary
-                ? i18ndc("plasma_shell_org.kde.plasma.desktop", "@info % is screen name", "%1 (primary)", model.screenName)
+                ? i18ndc("plasma_shell_org.sonicde.desktop", "@info % is screen name", "%1 (primary)", model.screenName)
                 : model.screenName
             textFormat: Text.PlainText
         }

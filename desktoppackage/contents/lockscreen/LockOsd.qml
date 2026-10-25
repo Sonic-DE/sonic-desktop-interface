@@ -7,7 +7,7 @@
 import QtQuick
 import org.kde.ksvg as KSvg
 import org.kde.kirigami as Kirigami
-import org.kde.plasma.workspace.osd
+import org.sonicde.sonicshell.osd
 
 KSvg.FrameSvgItem {
     id: osd

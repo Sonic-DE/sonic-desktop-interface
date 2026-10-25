@@ -25,7 +25,7 @@
 #include <KLocalizedString>
 #include <KSharedConfig>
 
-static const char *s_plasma_config = "plasma-org.kde.plasma.desktop-appletsrc";
+static const char *s_plasma_config = "sonic-org.sonicde.desktop-appletsrc";
 
 using namespace Qt::Literals;
 

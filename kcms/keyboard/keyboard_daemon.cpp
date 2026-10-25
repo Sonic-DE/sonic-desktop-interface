@@ -121,9 +121,9 @@ void KeyboardDaemon::registerShortcut()
             switchToNextLayout();
 
             LayoutUnit newLayout = X11Helper::getCurrentLayout();
-            QDBusMessage msg = QDBusMessage::createMethodCall(QStringLiteral("org.kde.plasmashell"),
-                                                              QStringLiteral("/org/kde/osdService"),
-                                                              QStringLiteral("org.kde.osdService"),
+            QDBusMessage msg = QDBusMessage::createMethodCall(QStringLiteral("org.sonicde.sonicshell"),
+                                                              QStringLiteral("/org/sonicde/osdService"),
+                                                              QStringLiteral("org.sonicde.osdService"),
                                                               QStringLiteral("kbdLayoutChanged"));
             msg << Flags::getLongText(newLayout);
             QDBusConnection::sessionBus().asyncCall(msg);
@@ -139,9 +139,9 @@ void KeyboardDaemon::registerShortcut()
             }
 
             LayoutUnit newLayout = X11Helper::getCurrentLayout();
-            QDBusMessage msg = QDBusMessage::createMethodCall(QStringLiteral("org.kde.plasmashell"),
-                                                              QStringLiteral("/org/kde/osdService"),
-                                                              QStringLiteral("org.kde.osdService"),
+            QDBusMessage msg = QDBusMessage::createMethodCall(QStringLiteral("org.sonicde.sonicshell"),
+                                                              QStringLiteral("/org/sonicde/osdService"),
+                                                              QStringLiteral("org.sonicde.osdService"),
                                                               QStringLiteral("kbdLayoutChanged"));
             msg << Flags::getLongText(newLayout);
             QDBusConnection::sessionBus().asyncCall(msg);

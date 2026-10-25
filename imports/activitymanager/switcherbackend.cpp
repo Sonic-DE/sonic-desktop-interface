@@ -441,9 +441,9 @@ bool SwitcherBackend::dragContainsWindows(QMimeData *mimeData) const
 
 void SwitcherBackend::toggleActivityManager()
 {
-    auto message = QDBusMessage::createMethodCall(QStringLiteral("org.kde.plasmashell"),
-                                                  QStringLiteral("/PlasmaShell"),
-                                                  QStringLiteral("org.kde.PlasmaShell"),
+    auto message = QDBusMessage::createMethodCall(QStringLiteral("org.sonicde.sonicshell"),
+                                                  QStringLiteral("/SonicShell"),
+                                                  QStringLiteral("org.sonicde.SonicShell"),
                                                   QStringLiteral("toggleActivityManager"));
     QDBusConnection::sessionBus().call(message, QDBus::NoBlock);
 }

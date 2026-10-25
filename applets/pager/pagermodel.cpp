@@ -480,9 +480,9 @@ void PagerModel::changePage(int page)
 {
     if (currentPage() == page) {
         if (d->showDesktop) {
-            QDBusConnection::sessionBus().asyncCall(QDBusMessage::createMethodCall(QLatin1String("org.kde.plasmashell"),
-                                                                                   QLatin1String("/PlasmaShell"),
-                                                                                   QLatin1String("org.kde.PlasmaShell"),
+            QDBusConnection::sessionBus().asyncCall(QDBusMessage::createMethodCall(QLatin1String("org.sonicde.sonicshell"),
+                                                                                   QLatin1String("/SonicShell"),
+                                                                                   QLatin1String("org.sonicde.SonicShell"),
                                                                                    QLatin1String("toggleDashboard")));
         }
     } else {

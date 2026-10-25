@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <component>
-  <id>org.kde.plasmashell</id>
+  <id>org.sonicde.sonicshell</id>
   <developer id="org.kde">
     <name translate="no">KDE</name>
   </developer>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-2.0+</project_license>
-  <name>KDE Plasma Desktop</name>
+  <name translate="no">Sonic Shell</name>
+  <!-- Historical upstream product-name translations, not names for Sonic Shell.
   <name xml:lang="ar">سطح مكتب بلازما كِيدِي</name>
   <name xml:lang="az">KDE Plasma İş masası</name>
   <name xml:lang="be">Абалонка працоўнага стала KDE Plasma</name>
@@ -61,6 +62,7 @@
   <name xml:lang="vi">Bàn làm việc Plasma KDE</name>
   <name xml:lang="zh-CN">KDE Plasma 桌面</name>
   <name xml:lang="zh-TW">KDE Plasma 桌面</name>
+  -->
   <summary>KDE's complete desktop experience. Simple by default, powerful when needed</summary>
   <summary xml:lang="ar">تجربة سطح مكتب كِيدِي الكاملة. بسيط ابتداءً وفعّال عند الحاجة</summary>
   <summary xml:lang="az">Tam KDE İş masası. Başlanğıcda sadə görünsə də lazım gəldikdə çox güclüdür</summary>
@@ -119,9 +121,9 @@
   <url type="homepage">https://www.kde.org/plasma-desktop</url>
   <url type="bugtracker">https://bugs.kde.org/enter_bug.cgi?format=guided&amp;product=plasmashell</url>
   <url type="vcs-browser">https://invent.kde.org/plasma/plasma-desktop</url>
-  <project_group>KDE</project_group>
+  <project_group>SonicDE</project_group>
   <provides>
-    <binary>plasmashell</binary>
+    <binary>sonicshell</binary>
   </provides>
   <screenshots>
     <screenshot type="default">
@@ -183,7 +185,7 @@
       <image type="source">https://cdn.kde.org/screenshots/plasma/plasma.png</image>
     </screenshot>
   </screenshots>
-  <compulsory_for_desktop>KDE</compulsory_for_desktop>
+  <compulsory_for_desktop>SonicDE</compulsory_for_desktop>
   <releases>
     <release version="6.7.4" date="2026-08-04"/>
     <release version="6.7.3" date="2026-07-14"/>
@@ -191,5 +193,4 @@
     <release version="6.7.1" date="2026-06-23"/>
   </releases>
 </component>
-
 

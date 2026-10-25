@@ -33,7 +33,7 @@ class Bug476968Test(unittest.TestCase):
         cls.kded = start_kded()
 
         options = AppiumOptions()
-        options.set_capability("app", "plasmashell -p org.kde.plasma.desktop --no-respawn")
+        options.set_capability("app", "sonicshell -p org.sonicde.desktop --no-respawn")
         options.set_capability("timeouts", {'implicit': 30000})
         cls.driver = webdriver.Remote(command_executor='http://127.0.0.1:4723', options=options)
 
@@ -49,7 +49,7 @@ class Bug476968Test(unittest.TestCase):
         """
         Make sure to terminate the driver again, lest it dangles.
         """
-        subprocess.check_output(["kquitapp6", "plasmashell"], stderr=sys.stderr)
+        subprocess.check_output(["kquitapp6", "--service", "org.sonicde.sonicshell", "sonicshell"], stderr=sys.stderr)
         if cls.kded:
             cls.kded.kill()
         if cls.kactivitymanagerd:
@@ -68,5 +68,5 @@ class Bug476968Test(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    assert subprocess.call(["pidof", "plasmashell"]) != 0, "The test requires plasmashell to quit"
+    assert subprocess.call(["pidof", "sonicshell"]) != 0, "The test requires sonicshell to quit"
     unittest.main()

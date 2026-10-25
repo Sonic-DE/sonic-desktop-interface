@@ -193,7 +193,7 @@ Item {
 
                 type: (running && delegate.GridView.isCurrentItem) ? Kirigami.Badge.Type.Information : Kirigami.Badge.Type.Positive
 
-                text: (running && delegate.GridView.isCurrentItem) ? running : i18ndc("plasma_shell_org.kde.plasma.desktop", "Text displayed on top of newly-installed widgets", "New!")
+                text: (running && delegate.GridView.isCurrentItem) ? running : i18ndc("plasma_shell_org.sonicde.desktop", "Text displayed on top of newly-installed widgets", "New!")
                 Accessible.name: running
                     ? i18ncp("@info:other accessible for badge showing applet count", "%1 widget active", "%1 widgets active", running)
                     : i18nc(" @info:other accessible for badge indicating new widget", "Recently installed")
@@ -209,8 +209,8 @@ Item {
                     top: parent.top
                     right: parent.right
                 }
-                text: delegate.pendingUninstall ? i18ndc("plasma_shell_org.kde.plasma.desktop", "@action:button tooltip and accessible cancel uninstall widget", "Cancel Uninstallation")
-                    : i18ndc("plasma_shell_org.kde.plasma.desktop","@action:button tooltip and accessible uninstall widget", "Mark for Uninstallation")
+                text: delegate.pendingUninstall ? i18ndc("plasma_shell_org.sonicde.desktop", "@action:button tooltip and accessible cancel uninstall widget", "Cancel Uninstallation")
+                    : i18ndc("plasma_shell_org.sonicde.desktop","@action:button tooltip and accessible uninstall widget", "Mark for Uninstallation")
                 icon.name: delegate.pendingUninstall ? "edit-undo" : "edit-delete"
                 display: PlasmaComponents.AbstractButton.IconOnly
                 Accessible.description: delegate.pendingUninstall
@@ -257,7 +257,7 @@ Item {
                     right: uninstallButton.visible ? uninstallButton.left : parent.right
                     rightMargin: uninstallButton.visible ? Kirigami.Units.smallSpacing : 0
                 }
-                text: i18ndc("plasma_shell_org.kde.plasma.desktop", "@action:button", "Remove all instances")
+                text: i18ndc("plasma_shell_org.sonicde.desktop", "@action:button", "Remove all instances")
                 display: PlasmaComponents.AbstractButton.IconOnly
                 icon.name: "edit-clear-all"
                 Accessible.description: i18ncp("@action:button accessible description, %1 number of instances %2 is widget name",

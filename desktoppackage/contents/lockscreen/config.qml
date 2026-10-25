@@ -18,10 +18,10 @@ Kirigami.FormLayout {
     twinFormLayouts: parentLayout
 
     QQC2.RadioButton {
-        Kirigami.FormData.label: i18ndc("plasma_shell_org.kde.plasma.desktop",
+        Kirigami.FormData.label: i18ndc("plasma_shell_org.sonicde.desktop",
                                         "@title: group",
                                         "Show clock:")
-        text: i18ndc("plasma_shell_org.kde.plasma.desktop", "@option:radio Clock always shown", "Always")
+        text: i18ndc("plasma_shell_org.sonicde.desktop", "@option:radio Clock always shown", "Always")
         Accessible.name: i18nc("@option:radio", "Always show clock")
         checked: configForm.cfg_alwaysShowClock && !configForm.cfg_hideClockWhenIdle
         onToggled: {
@@ -37,7 +37,7 @@ Kirigami.FormLayout {
     }
 
     QQC2.RadioButton {
-        text: i18ndc("plasma_shell_org.kde.plasma.desktop", "@option:radio Clock shown only while unlock prompt is visible", "On unlocking prompt")
+        text: i18ndc("plasma_shell_org.sonicde.desktop", "@option:radio Clock shown only while unlock prompt is visible", "On unlocking prompt")
         Accessible.name: i18nc("@option:radio", "Show clock only on unlocking prompt")
         checked: configForm.cfg_alwaysShowClock && configForm.cfg_hideClockWhenIdle
         onToggled: {
@@ -51,7 +51,7 @@ Kirigami.FormLayout {
     }
 
     QQC2.RadioButton {
-        text: i18ndc("plasma_shell_org.kde.plasma.desktop", "@option:radio Clock never shown", "Never")
+        text: i18ndc("plasma_shell_org.sonicde.desktop", "@option:radio Clock never shown", "Never")
         Accessible.name: i18nc("@option:radio", "Never show clock")
         checked: !configForm.cfg_alwaysShowClock
         onToggled: {
@@ -65,10 +65,10 @@ Kirigami.FormLayout {
 
     QQC2.CheckBox {
         id: showMediaControls
-        Kirigami.FormData.label: i18ndc("plasma_shell_org.kde.plasma.desktop",
+        Kirigami.FormData.label: i18ndc("plasma_shell_org.sonicde.desktop",
                                         "@title: group UI controls for playback of multimedia content",
                                         "Media controls:")
-        text: i18ndc("plasma_shell_org.kde.plasma.desktop",
+        text: i18ndc("plasma_shell_org.sonicde.desktop",
                      "@option:check",
                      "Show under unlocking prompt")
 

@@ -68,7 +68,7 @@ const QDBusArgument &operator>>(const QDBusArgument &argument, QKeySequence &seq
 KeysRunner::KeysRunner(QObject *parent, const KPluginMetaData &metaData)
     : KRunner::AbstractRunner(parent, metaData)
     , m_isKRunner(KLocalizedString::applicationDomain() == QByteArrayView("krunner"))
-    , m_isPlasmashell(KLocalizedString::applicationDomain() == QByteArrayView("plasmashell"))
+    , m_isPlasmashell(KLocalizedString::applicationDomain() == QByteArrayView("sonicshell"))
 {
     addSyntax(u":q:"_s, i18nc("@info:usagetip", "Finds shortcuts with names or descriptions matching :q: or gets the name of a shortcut"));
 }
@@ -111,7 +111,7 @@ void KeysRunner::match(KRunner::RunnerContext &context)
         const QString componentUniqueName = componentIdx.data(BaseModel::ComponentRole).toString();
         if (m_isKRunner && componentUniqueName == u"org.kde.krunner.desktop") {
             continue;
-        } else if (m_isPlasmashell && componentUniqueName == u"plasmashell") {
+        } else if (m_isPlasmashell && componentUniqueName == u"sonicshell") {
             continue;
         }
 

@@ -41,18 +41,18 @@ if grep -q '^[[:space:]]*ActivateWhenTypingOnDesktop[[:space:]]*=' "$CONFIG_FILE
 
         # Prefer the standard applets file in $HOME/.config if present
         candidates=()
-        if [ -f "$HOME/.config/plasma-org.kde.plasma.desktop-appletsrc" ]; then
-            candidates+=("$HOME/.config/plasma-org.kde.plasma.desktop-appletsrc")
+        if [ -f "$HOME/.config/sonic-org.sonicde.desktop-appletsrc" ]; then
+            candidates+=("$HOME/.config/sonic-org.sonicde.desktop-appletsrc")
         fi
-        if [ -n "${XDG_CONFIG_HOME:-}" ] && [ -f "${XDG_CONFIG_HOME}/plasma-org.kde.plasma.desktop-appletsrc" ]; then
-            candidates+=("${XDG_CONFIG_HOME}/plasma-org.kde.plasma.desktop-appletsrc")
+        if [ -n "${XDG_CONFIG_HOME:-}" ] && [ -f "${XDG_CONFIG_HOME}/sonic-org.sonicde.desktop-appletsrc" ]; then
+            candidates+=("${XDG_CONFIG_HOME}/sonic-org.sonicde.desktop-appletsrc")
         fi
 
         # If none of the standard locations exist, search the config dir for matching files
         if [ ${#candidates[@]} -eq 0 ]; then
             while IFS= read -r -d '' f; do
                 candidates+=("$f")
-            done < <(find "$SEARCH_DIR" -type f -name 'plasma-org.kde.plasma.desktop-appletsrc*' -print0 2>/dev/null)
+            done < <(find "$SEARCH_DIR" -type f -name 'sonic-org.sonicde.desktop-appletsrc*' -print0 2>/dev/null)
         fi
 
         for f in "${candidates[@]:-}"

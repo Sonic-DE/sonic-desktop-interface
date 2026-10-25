@@ -10,14 +10,14 @@ import QtQuick.Controls as QQC2
 
 QQC2.Button {
     id: mouseInputButton
-    property string defaultText: i18ndc("plasma_shell_org.kde.plasma.desktop", "@action:button inactive state for button recording mouse input" ,"Add Action")
+    property string defaultText: i18ndc("plasma_shell_org.sonicde.desktop", "@action:button inactive state for button recording mouse input" ,"Add Action")
     text: defaultText
     checkable: true
     property string eventString
 
     onCheckedChanged: {
         if (checked) {
-            text = i18ndc("plasma_shell_org.kde.plasma.desktop", "@action:button active state for button recording mouse input", "Input Here");
+            text = i18ndc("plasma_shell_org.sonicde.desktop", "@action:button active state for button recording mouse input", "Input Here");
             mouseInputArea.enabled = true;
         }
     }

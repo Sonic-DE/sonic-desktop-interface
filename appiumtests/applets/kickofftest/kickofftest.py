@@ -37,7 +37,7 @@ class KickoffTests(unittest.TestCase):
         options.set_capability("environ", {
             "LC_ALL": "en_US.UTF-8",
         })
-        options.set_capability("app", f"plasmawindowed -p org.kde.plasma.desktop {WIDGET_ID}")
+        options.set_capability("app", f"plasmawindowed -p org.sonicde.desktop {WIDGET_ID}")
         options.set_capability("timeouts", {'implicit': 10000})
         cls.driver = webdriver.Remote(command_executor='http://127.0.0.1:4723', options=options)
 

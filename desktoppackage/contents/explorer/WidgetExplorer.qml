@@ -143,7 +143,7 @@ PC3.Page {
         onClicked: model => {
             list.contentX = 0
             list.contentY = 0
-            categoryButton.text = (model.filterData ? model.display : i18ndc("plasma_shell_org.kde.plasma.desktop", "@action:button like listbox, switches category to all widgets", "All Widgets"))
+            categoryButton.text = (model.filterData ? model.display : i18ndc("plasma_shell_org.sonicde.desktop", "@action:button like listbox, switches category to all widgets", "All Widgets"))
             widgetExplorer.widgetsModel.filterQuery = model.filterData
             widgetExplorer.widgetsModel.filterType = model.filterType
         }
@@ -172,7 +172,7 @@ PC3.Page {
                 Kirigami.Heading {
                     id: heading
                     level: 1
-                    text: i18ndc("plasma_shell_org.kde.plasma.desktop", "@title:group for widget grid", "Widgets")
+                    text: i18ndc("plasma_shell_org.sonicde.desktop", "@title:group for widget grid", "Widgets")
                     textFormat: Text.PlainText
                     elide: Text.ElideRight
 
@@ -181,8 +181,8 @@ PC3.Page {
                 PC3.ToolButton {
                     id: getWidgetsButton
                     icon.name: "get-hot-new-stuff"
-                    text: i18ndc("plasma_shell_org.kde.plasma.desktop", "@action:button The word 'new' refers to widgets", "Get New…")
-                    Accessible.name: i18ndc("plasma_shell_org.kde.plasma.desktop", "@action:button", "Get New Widgets…")
+                    text: i18ndc("plasma_shell_org.sonicde.desktop", "@action:button The word 'new' refers to widgets", "Get New…")
+                    Accessible.name: i18ndc("plasma_shell_org.sonicde.desktop", "@action:button", "Get New Widgets…")
 
 
                     KeyNavigation.right: closeButton
@@ -226,7 +226,7 @@ PC3.Page {
                 }
                 PC3.ToolButton {
                     id: categoryButton
-                    text: i18ndc("plasma_shell_org.kde.plasma.desktop", "@action:button like listbox, switches category to all widgets", "All Widgets")
+                    text: i18ndc("plasma_shell_org.sonicde.desktop", "@action:button like listbox, switches category to all widgets", "All Widgets")
                     icon.name: "view-filter"
 
                     Accessible.role: Accessible.ButtonMenu
@@ -240,7 +240,7 @@ PC3.Page {
                     }
 
                     PC3.ToolTip {
-                        text: i18ndc("plasma_shell_org.kde.plasma.desktop", "@action:button tooltip only", "Categories")
+                        text: i18ndc("plasma_shell_org.sonicde.desktop", "@action:button tooltip only", "Categories")
                     }
                 }
             }
@@ -262,7 +262,7 @@ PC3.Page {
         contentItem: PC3.Button {
             id: uninstallButton
             icon.name: "delete"
-            text: i18ndcp("plasma_shell_org.kde.plasma.desktop", "@action:button uninstall widgets in widget explorer", "Uninstall (%1 Widget)", "Uninstall (%1 Widgets)", pendingUninstallTimer.applets.length)
+            text: i18ndcp("plasma_shell_org.sonicde.desktop", "@action:button uninstall widgets in widget explorer", "Uninstall (%1 Widget)", "Uninstall (%1 Widgets)", pendingUninstallTimer.applets.length)
             onClicked: pendingUninstallTimer.uninstall()
         }
     }
@@ -392,7 +392,7 @@ PC3.Page {
         anchors.centerIn: parent
         width: parent.width - (Kirigami.Units.gridUnit * 4)
         iconName: "edit-none"
-        text: searchInput.text.length > 0 ? i18ndc("plasma_shell_org.kde.plasma.desktop", "@info placeholdermessage", "No widgets matched the search terms") : i18ndc("plasma_shell_org.kde.plasma.desktop", "@info placeholdermessage", "No widgets available")
+        text: searchInput.text.length > 0 ? i18ndc("plasma_shell_org.sonicde.desktop", "@info placeholdermessage", "No widgets matched the search terms") : i18ndc("plasma_shell_org.sonicde.desktop", "@info placeholdermessage", "No widgets available")
         visible: list.count == 0 && !setModelTimer.running
     }
 }

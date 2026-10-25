@@ -17,7 +17,7 @@
 
 K_PLUGIN_CLASS_WITH_JSON(PlasmaDesktopRunner, "plasma-runner-plasma-desktop.json")
 
-static const QString s_plasmaService = QLatin1String("org.kde.plasmashell");
+static const QString s_plasmaService = QLatin1String("org.sonicde.sonicshell");
 
 PlasmaDesktopRunner::PlasmaDesktopRunner(QObject *parent, const KPluginMetaData &metaData)
     : AbstractRunner(parent, metaData)

@@ -77,7 +77,7 @@ Item {
             if (kind != 0) { // if this is coming from the noninteractive authenticators
                 return;
             }
-            const msg = i18ndc("plasma_shell_org.kde.plasma.desktop", "@info:status", "Unlocking failed");
+            const msg = i18ndc("plasma_shell_org.sonicde.desktop", "@info:status", "Unlocking failed");
             lockScreenUi.handleMessage(msg);
             root.clearPassword();
             authenticator.startAuthenticating();
@@ -361,7 +361,7 @@ Item {
                                 root.notification = ""
                                 mainBlock.passwordInputVisible = false
                                 lockScreenUi.handleMessage(i18ndc(
-                                    "plasma_shell_org.kde.plasma.desktop",
+                                    "plasma_shell_org.sonicde.desktop",
                                     "@info:status",
                                     "This authentication method is not functioning correctly. Please try another method, and check your system configuration."))
                             }
@@ -395,7 +395,7 @@ Item {
                 notificationMessage: {
                     const parts = [];
                     if (capsLockState.locked) {
-                        parts.push(i18ndc("plasma_shell_org.kde.plasma.desktop", "@info:status", "Caps Lock is on"));
+                        parts.push(i18ndc("plasma_shell_org.sonicde.desktop", "@info:status", "Caps Lock is on"));
                     }
                     if (root.notification) {
                         parts.push(root.notification);
@@ -414,21 +414,21 @@ Item {
                 actionItems: [
                     ActionButton {
                         Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
-                        text: i18ndc("plasma_shell_org.kde.plasma.desktop", "@action:button", "Slee&p")
+                        text: i18ndc("plasma_shell_org.sonicde.desktop", "@action:button", "Slee&p")
                         icon.name: "system-suspend"
                         onClicked: sessionManagement.suspend()
                         visible: sessionManagement.canSuspend
                     },
                     ActionButton {
                         Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
-                        text: i18ndc("plasma_shell_org.kde.plasma.desktop", "@action:button", "&Hibernate")
+                        text: i18ndc("plasma_shell_org.sonicde.desktop", "@action:button", "&Hibernate")
                         icon.name: "system-suspend-hibernate"
                         onClicked: sessionManagement.hibernate()
                         visible: sessionManagement.canHibernate
                     },
                     ActionButton {
                         Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
-                        text: i18ndc("plasma_shell_org.kde.plasma.desktop", "@action:button", "Switch &User")
+                        text: i18ndc("plasma_shell_org.sonicde.desktop", "@action:button", "Switch &User")
                         icon.name: "system-switch-user"
                         onClicked: {
                             root.clearPassword();

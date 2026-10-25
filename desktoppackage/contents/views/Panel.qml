@@ -14,7 +14,7 @@ import org.kde.ksvg as KSvg
 import org.kde.taskmanager as TaskManager
 import org.kde.kwindowsystem
 import org.kde.kirigami as Kirigami
-import org.kde.plasma.shell.panel as Panel
+import org.sonicde.sonicshell.panel as Panel
 
 import org.kde.plasma.plasmoid
 

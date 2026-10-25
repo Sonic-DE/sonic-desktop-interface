@@ -15,7 +15,7 @@ import org.kde.plasma.plasmoid
 import org.kde.kirigami as Kirigami
 
 import org.kde.plasma.private.shell
-import org.kde.plasma.shell
+import org.sonicde.sonicshell
 
 PlasmaCore.Dialog {
     id: dialog
@@ -67,7 +67,7 @@ PlasmaCore.Dialog {
         PlasmaExtras.PlasmoidHeading {
             Kirigami.Heading {
                 id: heading
-                text: i18ndc("plasma_shell_org.kde.plasma.desktop", "@title:window for widget alternatives explorer", "Alternative Widgets")
+                text: i18ndc("plasma_shell_org.sonicde.desktop", "@title:window for widget alternatives explorer", "Alternative Widgets")
                 textFormat: Text.PlainText
             }
         }

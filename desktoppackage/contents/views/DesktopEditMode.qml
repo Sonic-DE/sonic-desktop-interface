@@ -132,7 +132,7 @@ Item {
                     visible: Kirigami.Settings.hasTransientTouchInput || Kirigami.Settings.tabletMode
 
                     icon.name: "overflow-menu"
-                    text: i18ndc("plasma_shell_org.kde.plasma.desktop", "@action:button", "More")
+                    text: i18ndc("plasma_shell_org.sonicde.desktop", "@action:button", "More")
 
                     onClicked: {
                         containment.openContextMenu(mapToGlobal(0, height));
@@ -141,7 +141,7 @@ Item {
                 PC.ToolButton {
                     Layout.alignment: Qt.AlignTop
                     icon.name: "dialog-ok-symbolic"
-                    text: i18ndc("plasma_shell_org.kde.plasma.desktop", "@action:button", "Exit Edit Mode")
+                    text: i18ndc("plasma_shell_org.sonicde.desktop", "@action:button", "Exit Edit Mode")
                     onClicked: containment.plasmoid.corona.editMode = false
                 }
             }

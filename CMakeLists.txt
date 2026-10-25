@@ -316,7 +316,7 @@ configure_file(config-workspace.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-works
 configure_file(config-X11.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-X11.h)
 configure_file(config-build-options.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-build-options.h)
 
-plasma_install_package(desktoppackage org.kde.plasma.desktop shells shell)
+plasma_install_package(desktoppackage org.sonicde.desktop shells shell)
 
 add_subdirectory(layout-templates)
 
@@ -335,7 +335,7 @@ add_subdirectory(emojier)
 if(X11_Xkb_FOUND AND XCB_XKB_FOUND)
     add_subdirectory(kaccess)
 endif()
-install(FILES org.kde.plasmashell.metainfo.xml DESTINATION ${KDE_INSTALL_METAINFODIR})
+install(FILES org.sonicde.sonicshell.metainfo.xml DESTINATION ${KDE_INSTALL_METAINFODIR})
 install(FILES kde-mimeapps.list DESTINATION ${KDE_INSTALL_APPDIR})
 
 install(FILES kconf_update/50-krunner-activate-typing.upd DESTINATION ${KDE_INSTALL_KCONFUPDATEDIR})
@@ -370,4 +370,9 @@ if(BUILD_DOC)
     kdoctools_install(po)
 endif()
 
+# Avoid reinstalling the previous package domain from an incremental build tree.
+file(GLOB obsolete_shell_catalogs "${CMAKE_CURRENT_BINARY_DIR}/locale/*/LC_MESSAGES/plasma_shell_org.kde.plasma.desktop.mo")
+if(obsolete_shell_catalogs)
+    file(REMOVE ${obsolete_shell_catalogs})
+endif()
 ki18n_install(po)

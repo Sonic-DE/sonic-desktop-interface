@@ -106,7 +106,7 @@ SessionManagementScreen {
             Layout.fillWidth: true
             text: PasswordSync.password
 
-            placeholderText: i18ndc("plasma_shell_org.kde.plasma.desktop", "@info:placeholder in text field", "Password")
+            placeholderText: i18ndc("plasma_shell_org.sonicde.desktop", "@info:placeholder in text field", "Password")
             focus: true
 
             // In Qt this is implicitly active based on focus rather than visibility
@@ -154,7 +154,7 @@ SessionManagementScreen {
             id: loginButton
             objectName: "loginButton"
             enabled: !sessionManager.submissionBlocked
-            Accessible.name: i18ndc("plasma_shell_org.kde.plasma.desktop", "@action:button accessible only", "Unlock")
+            Accessible.name: i18ndc("plasma_shell_org.sonicde.desktop", "@action:button accessible only", "Unlock")
             Layout.preferredHeight: passwordBox.implicitHeight
             Layout.preferredWidth: loginButton.Layout.preferredHeight
 
@@ -203,10 +203,10 @@ SessionManagementScreen {
 
     FailableLabel {
         kind: ScreenLocker.Authenticator.Fingerprint
-        label: i18ndc("plasma_shell_org.kde.plasma.desktop", "@info:usagetip", "(or scan your fingerprint on the reader)")
+        label: i18ndc("plasma_shell_org.sonicde.desktop", "@info:usagetip", "(or scan your fingerprint on the reader)")
     }
     FailableLabel {
         kind: ScreenLocker.Authenticator.Smartcard
-        label: i18ndc("plasma_shell_org.kde.plasma.desktop", "@info:usagetip", "(or scan your smartcard)")
+        label: i18ndc("plasma_shell_org.sonicde.desktop", "@info:usagetip", "(or scan your smartcard)")
     }
 }

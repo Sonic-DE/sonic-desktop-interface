@@ -56,7 +56,7 @@ Item {
                 anchors.fill: parent
 
                 level: 1
-                text: i18ndc("plasma_shell_org.kde.plasma.desktop", "@title:window", "Activities")
+                text: i18ndc("plasma_shell_org.sonicde.desktop", "@title:window", "Activities")
                 textFormat: Text.PlainText
                 elide: Text.ElideRight
 

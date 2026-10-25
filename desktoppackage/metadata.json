@@ -111,7 +111,7 @@
         "Description[zh_CN]": "桌面视图小工具",
         "Description[zh_TW]": "桌面檢視設備",
         "Icon": "user-desktop",
-        "Id": "org.kde.plasma.desktop",
+        "Id": "org.sonicde.desktop",
         "License": "GPL-2.0+",
         "Name": "Desktop",
         "Name[af]": "Werkskerm",
@@ -210,6 +210,6 @@
         "Website": "https://www.kde.org/plasma-desktop"
     },
     "Keywords": "",
-    "X-KDE-ParentApp": "org.kde.plasmashell",
+    "X-KDE-ParentApp": "org.sonicde.sonicshell",
     "X-Plasma-APIVersion": "2"
 }

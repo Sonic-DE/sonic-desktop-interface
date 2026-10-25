@@ -37,7 +37,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 KACTIVITYMANAGERD_PATH: Final = os.environ.get("KACTIVITYMANAGERD_PATH", "/usr/libexec/kactivitymanagerd")
 KACTIVITYMANAGERD_SERVICE_NAME: Final = "org.kde.ActivityManager"
-PLASMASHELL_SERVICE_NAME: Final = "org.kde.plasmashell"
+PLASMASHELL_SERVICE_NAME: Final = "org.sonicde.sonicshell"
 KDE_VERSION: Final = 6
 
 
@@ -105,7 +105,7 @@ def start_plasmashell() -> tuple:
     kded = start_kded()
     eng_env = os.environ.copy()
     eng_env["LC_ALL"] = "en_US.UTF-8"
-    plasmashell = subprocess.Popen(["plasmashell", "-p", "org.kde.plasma.desktop", "--no-respawn"], stdout=sys.stderr, stderr=sys.stderr, env=eng_env)
+    plasmashell = subprocess.Popen(["sonicshell", "-p", "org.sonicde.desktop", "--no-respawn"], stdout=sys.stderr, stderr=sys.stderr, env=eng_env)
 
     return (kactivitymanagerd, kded, plasmashell)
 
@@ -144,7 +144,7 @@ class DesktopTest(unittest.TestCase):
         Make sure to terminate the driver again, lest it dangles.
         """
         if cls.plasmashell is not None:
-            subprocess.check_output(["kquitapp6", "plasmashell"], stderr=sys.stderr)
+            subprocess.check_output(["kquitapp6", "--service", "org.sonicde.sonicshell", "sonicshell"], stderr=sys.stderr)
             assert cls.plasmashell.wait(30) == 0, cls.plasmashell.returncode
 
         if cls.kded:
@@ -243,7 +243,7 @@ class DesktopTest(unittest.TestCase):
             session_bus = Gio.bus_get_sync(Gio.BusType.SESSION)
 
             # Add a new launcher item
-            message: Gio.DBusMessage = Gio.DBusMessage.new_method_call(PLASMASHELL_SERVICE_NAME, "/PlasmaShell", "org.kde.PlasmaShell", "evaluateScript")
+            message: Gio.DBusMessage = Gio.DBusMessage.new_method_call(PLASMASHELL_SERVICE_NAME, "/SonicShell", "org.sonicde.SonicShell", "evaluateScript")
             message.set_body(GLib.Variant("(s)", [f"panels().forEach(containment => containment.widgets('org.kde.plasma.icontasks').forEach(widget => {{widget.currentConfigGroup = ['General'];widget.writeConfig('launchers', 'file://{wrapper.path}');}}))"]))
             session_bus.send_message_with_reply_sync(message, Gio.DBusSendMessageFlags.NONE, 1000)
 
@@ -252,7 +252,7 @@ class DesktopTest(unittest.TestCase):
 
             # Activate the first launcher
             # ActionChains(self.driver).key_down(Keys.META).send_keys("1").key_up(Keys.META) # FIXME Meta modifier doesn't work
-            message = Gio.DBusMessage.new_method_call("org.kde.kglobalaccel", "/component/plasmashell", "org.kde.kglobalaccel.Component", "invokeShortcut")
+            message = Gio.DBusMessage.new_method_call("org.kde.kglobalaccel", "/component/sonicshell", "org.kde.kglobalaccel.Component", "invokeShortcut")
             message.set_body(GLib.Variant("(s)", ["activate task manager entry 1"]))
             session_bus.send_message_with_reply_sync(message, Gio.DBusSendMessageFlags.NONE, 1000)
             wait.until(EC.presence_of_element_located((AppiumBy.NAME, "Install Software")))
@@ -266,7 +266,7 @@ class DesktopTest(unittest.TestCase):
         kickoff_element = self.driver.find_element(AppiumBy.NAME, "Application Launcher")
         session_bus = Gio.bus_get_sync(Gio.BusType.SESSION)
         # LookAndFeelManager::save
-        message: Gio.DBusMessage = Gio.DBusMessage.new_method_call(PLASMASHELL_SERVICE_NAME, "/PlasmaShell", "org.kde.PlasmaShell", "loadLookAndFeelDefaultLayout")
+        message: Gio.DBusMessage = Gio.DBusMessage.new_method_call(PLASMASHELL_SERVICE_NAME, "/SonicShell", "org.sonicde.SonicShell", "loadLookAndFeelDefaultLayout")
         message.set_body(GLib.Variant("(s)", ["org.kde.silverdarkbottompanel.desktop"]))
         session_bus.send_message_with_reply_sync(message, Gio.DBusSendMessageFlags.NONE, 10000)
         self.assertFalse(kickoff_element.is_displayed())
@@ -289,7 +289,7 @@ class DesktopTest(unittest.TestCase):
         # Send the same request twice to check binding loop
         for i in range(2):
             print(f"sending message {i}", file=sys.stderr)
-            message: Gio.DBusMessage = Gio.DBusMessage.new_method_call(PLASMASHELL_SERVICE_NAME, "/PlasmaShell", "org.kde.PlasmaShell", "color")
+            message: Gio.DBusMessage = Gio.DBusMessage.new_method_call(PLASMASHELL_SERVICE_NAME, "/SonicShell", "org.sonicde.SonicShell", "color")
             reply, _ = session_bus.send_message_with_reply_sync(message, Gio.DBusSendMessageFlags.NONE, 1000)
             self.assertEqual(reply.get_signature(), "u")
             self.assertGreater(reply.get_body().get_child_value(0).get_uint32(), 0)
@@ -370,7 +370,7 @@ class DesktopTest(unittest.TestCase):
         self.driver.find_element(AppiumBy.NAME, "Application Launcher")
         # Set color wallpaper and defloat all panels to test the bug
         session_bus = Gio.bus_get_sync(Gio.BusType.SESSION)
-        message = Gio.DBusMessage.new_method_call(PLASMASHELL_SERVICE_NAME, "/PlasmaShell", "org.kde.PlasmaShell", "setWallpaper")
+        message = Gio.DBusMessage.new_method_call(PLASMASHELL_SERVICE_NAME, "/SonicShell", "org.sonicde.SonicShell", "setWallpaper")
         params: dict[str, GLib.Variant] = {
             "Color": GLib.Variant("(u)", [4294901760]),  # RGBA value
         }
@@ -379,7 +379,7 @@ class DesktopTest(unittest.TestCase):
         reply, _ = session_bus.send_message_with_reply_sync(message, Gio.DBusSendMessageFlags.NONE, 100000)
         self.assertEqual(reply.get_message_type(), Gio.DBusMessageType.METHOD_RETURN)
 
-        message = Gio.DBusMessage.new_method_call(PLASMASHELL_SERVICE_NAME, "/PlasmaShell", "org.kde.PlasmaShell", "evaluateScript")
+        message = Gio.DBusMessage.new_method_call(PLASMASHELL_SERVICE_NAME, "/SonicShell", "org.sonicde.SonicShell", "evaluateScript")
         message.set_body(GLib.Variant("(s)", ["panels().forEach(containment => containment.floating = false)"]))
         reply, _ = session_bus.send_message_with_reply_sync(message, Gio.DBusSendMessageFlags.NONE, 10000)
         self.assertEqual(reply.get_message_type(), Gio.DBusMessageType.METHOD_RETURN)
@@ -414,5 +414,5 @@ class DesktopTest(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    assert subprocess.call(["pidof", "plasmashell"]) != 0, "The test requires plasmashell to quit"
+    assert subprocess.call(["pidof", "sonicshell"]) != 0, "The test requires sonicshell to quit"
     unittest.main()

@@ -88,7 +88,7 @@ TouchpadDisabler::TouchpadDisabler(QObject *parent, const QVariantList &)
 
     QDBusConnection::sessionBus().registerService(u"org.kde.touchpad"_s);
 
-    m_dependencies.addWatchedService("org.kde.plasmashell");
+    m_dependencies.addWatchedService("org.sonicde.sonicshell");
     connect(&m_dependencies, &QDBusServiceWatcher::serviceRegistered, this, &TouchpadDisabler::serviceRegistered);
 
     connect(m_backend, &TouchpadBackend::touchpadStateChanged, this, &TouchpadDisabler::updateCurrentState);
@@ -253,9 +253,9 @@ void TouchpadDisabler::showOsd()
         return;
     }
 
-    QDBusMessage msg = QDBusMessage::createMethodCall(QStringLiteral("org.kde.plasmashell"),
-                                                      QStringLiteral("/org/kde/osdService"),
-                                                      QStringLiteral("org.kde.osdService"),
+    QDBusMessage msg = QDBusMessage::createMethodCall(QStringLiteral("org.sonicde.sonicshell"),
+                                                      QStringLiteral("/org/sonicde/osdService"),
+                                                      QStringLiteral("org.sonicde.osdService"),
                                                       QStringLiteral("touchpadEnabledChanged"));
 
     msg.setArguments({!m_backend->isTouchpadSuspended()});

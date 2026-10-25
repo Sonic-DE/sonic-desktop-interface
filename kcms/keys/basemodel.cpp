@@ -190,6 +190,9 @@ QVariant BaseModel::data(const QModelIndex &index, int role) const
         if (component.id == QLatin1String("kwin")) {
             return i18nc("@item:intable", "Window Management");
         }
+        if (component.id == QLatin1String("sonicshell")) {
+            return i18nc("@item:intable", "Sonic Shell");
+        }
         if (component.id == QLatin1String("plasmashell")) {
             return i18nc("@item:intable", "Plasma Workspace");
         }

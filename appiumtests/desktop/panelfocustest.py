@@ -80,7 +80,7 @@ class PanelFocusTest(unittest.TestCase):
 
         # The driver doesn't support sending global keyboard shortcuts
         session_bus: Gio.DBusConnection = Gio.bus_get_sync(Gio.BusType.SESSION)
-        message = Gio.DBusMessage.new_method_call("org.kde.kglobalaccel", "/component/plasmashell", "org.kde.kglobalaccel.Component", "allShortcutInfos")
+        message = Gio.DBusMessage.new_method_call("org.kde.kglobalaccel", "/component/sonicshell", "org.kde.kglobalaccel.Component", "allShortcutInfos")
         reply, _ = session_bus.send_message_with_reply_sync(message, Gio.DBusSendMessageFlags.NONE, 1000)
         shortcut_list = reply.get_body().get_child_value(0)
         before = set(shortcut_list.get_child_value(i).get_child_value(0).get_string() for i in range(shortcut_list.n_children()))
@@ -114,7 +114,7 @@ class PanelFocusTest(unittest.TestCase):
         actions.pause(1)
         actions.perform()
 
-        message = Gio.DBusMessage.new_method_call("org.kde.kglobalaccel", "/component/plasmashell", "org.kde.kglobalaccel.Component", "allShortcutInfos")
+        message = Gio.DBusMessage.new_method_call("org.kde.kglobalaccel", "/component/sonicshell", "org.kde.kglobalaccel.Component", "allShortcutInfos")
         reply, _ = session_bus.send_message_with_reply_sync(message, Gio.DBusSendMessageFlags.NONE, 1000)
         shortcut_list = reply.get_body().get_child_value(0)
         after = set(shortcut_list.get_child_value(i).get_child_value(0).get_string() for i in range(shortcut_list.n_children()))
@@ -123,7 +123,7 @@ class PanelFocusTest(unittest.TestCase):
         self.assertTrue(len(difference) == 1)
         launcher_shortcut_id = difference.pop()
 
-        message = Gio.DBusMessage.new_method_call("org.kde.kglobalaccel", "/component/plasmashell", "org.kde.kglobalaccel.Component", "invokeShortcut")
+        message = Gio.DBusMessage.new_method_call("org.kde.kglobalaccel", "/component/sonicshell", "org.kde.kglobalaccel.Component", "invokeShortcut")
         message.set_body(GLib.Variant("(s)", [launcher_shortcut_id]))
         session_bus.send_message_with_reply_sync(message, Gio.DBusSendMessageFlags.NONE, 1000)
 
@@ -131,5 +131,5 @@ class PanelFocusTest(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    assert subprocess.call(["pidof", "plasmashell"]) != 0, "The test requires plasmashell to quit"
+    assert subprocess.call(["pidof", "sonicshell"]) != 0, "The test requires sonicshell to quit"
     unittest.main()

@@ -7,7 +7,7 @@
 import QtQuick
 import org.kde.kirigami as Kirigami
 import org.kde.ksvg as KSvg
-import org.kde.plasma.shell.panel as Panel
+import org.sonicde.sonicshell.panel as Panel
 
 KSvg.FrameSvgItem {
     id: root
@@ -22,14 +22,14 @@ KSvg.FrameSvgItem {
 
     property string maximumText: (
         dialogRoot.vertical
-            ? i18ndc("plasma_shell_org.kde.plasma.desktop", "@info:tooltip slider handle", "Drag to change maximum height.")
-            : i18ndc("plasma_shell_org.kde.plasma.desktop", "@info:tooltip slider handle", "Drag to change maximum width.")
-        ) + "\n" + i18ndc("plasma_shell_org.kde.plasma.desktop", "@info:tooltip slider handle", "Double-click to reset.")
+            ? i18ndc("plasma_shell_org.sonicde.desktop", "@info:tooltip slider handle", "Drag to change maximum height.")
+            : i18ndc("plasma_shell_org.sonicde.desktop", "@info:tooltip slider handle", "Drag to change maximum width.")
+        ) + "\n" + i18ndc("plasma_shell_org.sonicde.desktop", "@info:tooltip slider handle", "Double-click to reset.")
     property string minimumText: (
         dialogRoot.vertical
-            ? i18ndc("plasma_shell_org.kde.plasma.desktop", "@info:tooltip slider handle", "Drag to change minimum height.")
-            : i18ndc("plasma_shell_org.kde.plasma.desktop", "@info:tooltip slider handle", "Drag to change minimum width.")
-        ) + "\n" + i18ndc("plasma_shell_org.kde.plasma.desktop", "@info:tooltip slider handle", "Double-click to reset.")
+            ? i18ndc("plasma_shell_org.sonicde.desktop", "@info:tooltip slider handle", "Drag to change minimum height.")
+            : i18ndc("plasma_shell_org.sonicde.desktop", "@info:tooltip slider handle", "Drag to change minimum width.")
+        ) + "\n" + i18ndc("plasma_shell_org.sonicde.desktop", "@info:tooltip slider handle", "Double-click to reset.")
 
     imagePath: "widgets/containment-controls"
     implicitWidth: Math.max(offsetHandle.width, rightMinimumLengthHandle.width + rightMaximumLengthHandle.width)
@@ -76,7 +76,7 @@ KSvg.FrameSvgItem {
             bottom: root.isHorizontal ? root.bottom : undefined
         }
         graphicElementName: "offsetslider"
-        description: i18ndc("plasma_shell_org.kde.plasma.desktop", "@info:tooltip slider handle",
+        description: i18ndc("plasma_shell_org.sonicde.desktop", "@info:tooltip slider handle",
                            "Drag to change position on this screen edge.\nDouble-click to reset.")
         offset: panel.alignment === Qt.AlignCenter ? 0 : (dialogRoot.vertical ? panel.height : panel.width) / 2
         property int position: (dialogRoot.vertical) ? y + height / 2 : x + width / 2
