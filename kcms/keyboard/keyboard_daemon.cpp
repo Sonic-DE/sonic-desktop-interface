@@ -13,6 +13,7 @@
 #include <QDBusPendingCall>
 #include <QDir>
 #include <QFile>
+#include <QFileInfo>
 #include <QProcess>
 #include <QStandardPaths>
 
@@ -190,6 +191,7 @@ void KeyboardDaemon::registerListeners()
     if (!keyboardFileWatcher) {
         keyboardFileWatcher = new QFileSystemWatcher(this);
         connect(keyboardFileWatcher, &QFileSystemWatcher::fileChanged, this, &KeyboardDaemon::kxkbrcChanged);
+        connect(keyboardFileWatcher, &QFileSystemWatcher::directoryChanged, this, &KeyboardDaemon::kxkbrcDirectoryChanged);
     }
     if (!keyboardFileDebounce) {
         keyboardFileDebounce = new QTimer(this);
@@ -231,6 +233,7 @@ void KeyboardDaemon::unregisterListeners()
     }
     if (keyboardFileWatcher != nullptr) {
         disconnect(keyboardFileWatcher, &QFileSystemWatcher::fileChanged, this, &KeyboardDaemon::kxkbrcChanged);
+        disconnect(keyboardFileWatcher, &QFileSystemWatcher::directoryChanged, this, &KeyboardDaemon::kxkbrcDirectoryChanged);
     }
     if (keyboardFileDebounce != nullptr) {
         disconnect(keyboardFileDebounce, &QTimer::timeout, this, &KeyboardDaemon::kxkbrcDebounceTimeout);
@@ -266,6 +269,22 @@ void KeyboardDaemon::kxkbrcChanged(const QString &path)
         }
     }
 
+    keyboardFileDebounce->start();
+}
+
+void KeyboardDaemon::kxkbrcDirectoryChanged(const QString &path)
+{
+    Q_UNUSED(path);
+    // Once kxkbrc is watched, its own events cover it; only a newly created file matters here.
+    const QString kxkbrc = kxkbrcPath();
+    if (kxkbrc.isEmpty() || keyboardFileWatcher->files().contains(kxkbrc) || !QFile::exists(kxkbrc)) {
+        return;
+    }
+    if (!keyboardFileWatcher->addPath(kxkbrc)) {
+        qCWarning(KCM_KEYBOARD) << "kxkbrc appeared but could not be watched at" << kxkbrc;
+    } else {
+        qCDebug(KCM_KEYBOARD) << "kxkbrc appeared at" << kxkbrc << "; now watching it";
+    }
     keyboardFileDebounce->start();
 }
 

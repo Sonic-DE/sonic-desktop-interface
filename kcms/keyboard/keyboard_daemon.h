@@ -54,6 +54,7 @@ private Q_SLOTS:
     void layoutChangedSlot();
     bool setLayout(QAction *action);
     void kxkbrcChanged(const QString &path);
+    void kxkbrcDirectoryChanged(const QString &path);
     void kxkbrcDebounceTimeout();
 
 public Q_SLOTS:

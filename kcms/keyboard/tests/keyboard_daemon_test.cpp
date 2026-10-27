@@ -44,6 +44,10 @@ private Q_SLOTS:
         //    	const KAboutData* kAboutData = new KAboutData(i18n("a").toLatin1(), i18n("a").toLatin1(), KLocalizedString(), i18n("a").toLatin1());
         //    	KCmdLineArgs::init(kAboutData);
         keyboardDaemon = new KeyboardDaemon(this, QList<QVariant>());
+        // Startup configuration can make the X server report a layout map change,
+        // whose 1000 ms debounce emits layoutListChanged; let it fire before the
+        // tests start counting emissions.
+        QTest::qWait(2000);
     }
 
     void cleanupTestCase()
@@ -110,8 +114,41 @@ private Q_SLOTS:
         file.write(QByteArrayLiteral("[Layout]\nLayoutList=gb\nUse=false\n"));
         file.close();
 
-        QVERIFY(spy.wait(1000));
+        // Longer than the daemon's 1000 ms debounce.
+        QVERIFY(spy.wait(3000));
         QCOMPARE(spy.count(), 1);
+    }
+
+    // A user who has never configured layouts has no kxkbrc when the daemon
+    // starts; the first save must still be picked up, and so must later ones.
+    void testKxkbrcCreatedLaterIsWatched()
+    {
+        QSignalSpy spy(keyboardDaemon, &KeyboardDaemon::layoutListChanged);
+        QVERIFY(spy.isValid());
+
+        const QString kxkbrc = QStandardPaths::writableLocation(QStandardPaths::GenericConfigLocation) + QStringLiteral("/kxkbrc");
+        QVERIFY(QFile::remove(kxkbrc));
+        // Let the debounce started by the removal run out before creating the file again.
+        QTest::qWait(2000);
+        spy.clear();
+
+        // Created by rename, the way KConfig saves through QSaveFile.
+        const QString staged = kxkbrc + QStringLiteral(".new");
+        QFile created(staged);
+        QVERIFY(created.open(QIODevice::WriteOnly | QIODevice::Text));
+        created.write(QByteArrayLiteral("[Layout]\nLayoutList=de\nUse=false\n"));
+        created.close();
+        QVERIFY(QFile::rename(staged, kxkbrc));
+        QVERIFY(spy.wait(3000));
+        spy.clear();
+
+        // Rewritten in place: no directory entry changes, so only a watch
+        // on the file itself sees this.
+        QFile rewritten(kxkbrc);
+        QVERIFY(rewritten.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text));
+        rewritten.write(QByteArrayLiteral("[Layout]\nLayoutList=fr\nUse=false\n"));
+        rewritten.close();
+        QVERIFY(spy.wait(3000));
     }
 };
 
