@@ -1235,6 +1235,9 @@ void Positioner::loadAndApplyPositionsConfig(const QString &resolution)
                     bool okStripe = false;
                     bool okPos = false;
                     const auto name = positions[offset + PositionsConstants::filenameOffset];
+                    if (m_folderModel && !m_folderModel->desktopFileExists(name)) {
+                        continue;
+                    }
                     const auto stripe = positions[offset + PositionsConstants::stripeOffset].toInt(&okStripe);
                     const auto pos = positions[offset + PositionsConstants::posOffset].toInt(&okPos);
                     if (!name.isEmpty() && okStripe && okPos) {
@@ -1326,8 +1329,14 @@ void Positioner::loadChangedPositions()
     m_changedPositions.clear();
     m_changedPositions.reserve(jsonArr.size());
 
-    for (auto it = jsonArr.begin(), itEnd = jsonArr.end(); it != itEnd; ++it) {
+    // Entries left out here are dropped from the config on the next save.
+    for (auto it = jsonArr.constBegin(), itEnd = jsonArr.constEnd(); it != itEnd; ++it) {
         const auto filename = it.key();
+
+        if (m_folderModel && !m_folderModel->desktopFileExists(filename)) {
+            continue;
+        }
+
         if (filename.isEmpty()) {
             continue;
         }
@@ -1344,6 +1353,7 @@ void Positioner::loadChangedPositions()
             .visitedResolutions = {visitedResolutions.constBegin(), visitedResolutions.constEnd()},
             .gridPosition = {.stripe = values[1].toInt(&okStripeOffset), .pos = values[2].toInt(&okPosOffset)},
         };
+
         if (!okStripeOffset || !okPosOffset) {
             continue;
         }
