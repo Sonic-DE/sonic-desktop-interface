@@ -18,6 +18,7 @@ target_include_directories(keyboardlayout_ipc_protocol
 target_link_libraries(keyboardlayout_ipc_protocol
     PUBLIC
         Qt::Core
+        Sonic::Ipc
 )
 
 ecm_add_qml_module(org.kde.plasma.keyboardlayout_ipc
@@ -31,7 +32,9 @@ ecm_add_qml_module(org.kde.plasma.keyboardlayout_ipc
 target_sources(org.kde.plasma.keyboardlayout_ipc PRIVATE
     ipc/KeyboardLayoutSocket.cpp
     ipc/KeyboardLayoutSocket.h
+    ${CMAKE_SOURCE_DIR}/sonic_logging_autoinstall.cpp
 )
+sonic_logging_plugin(org.kde.plasma.keyboardlayout_ipc org.sonicde.desktopinterface.keyboardlayout)
 
 target_link_libraries(org.kde.plasma.keyboardlayout_ipc
     PUBLIC
@@ -54,10 +57,11 @@ plasma_add_applet(org.kde.plasma.keyboardlayout
         qml/config.qml
         qml/configGeneral.qml
     CPP_SOURCES
-        ${CMAKE_SOURCE_DIR}/messagelogger.cpp
+        ${CMAKE_SOURCE_DIR}/sonic_logging_autoinstall.cpp
     RESOURCES
         main.xml
     GENERATE_APPLET_CLASS
 )
+sonic_logging_plugin(org.kde.plasma.keyboardlayout org.sonicde.desktopinterface.keyboardlayout)
 
 add_dependencies(org.kde.plasma.keyboardlayout org.kde.plasma.keyboardlayout_ipc)

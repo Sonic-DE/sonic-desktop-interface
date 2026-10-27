@@ -19,6 +19,7 @@ target_link_libraries(krunner-plugininstaller
   KF6::Service
   KF6::KIOCore
   KF6::KIOWidgets
+  Sonic::Logging
 )
 if(HAVE_PACKAGEKIT)
     target_link_libraries(krunner-plugininstaller PK::packagekitqt6)

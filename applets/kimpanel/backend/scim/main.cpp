@@ -22,7 +22,6 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-#include "messagehandler.h"
 #include <QCoreApplication>
 #include <QDBusConnection>
 #include <QDBusMessage>
@@ -32,6 +31,10 @@
 #include <QString>
 #include <QStringList>
 #include <QThread>
+
+#include <Sonic/Logging/Logging>
+
+SONIC_LOGGING_COMPONENT("org.sonicde.desktopinterface.kimpanel-scim-panel")
 
 #define Uses_C_STDIO
 #define Uses_C_STDLIB
@@ -975,10 +978,6 @@ static void signalhandler(int sig)
         _panel_agent->stop();
 }
 
-static void scimPanelMessageHandler(QtMsgType type, const QMessageLogContext &, const QString &msg)
-{
-    messageHandler(type, QStringLiteral("KIMPANEL-SCIM"), msg);
-}
 
 int main(int argc, char *argv[])
 {
@@ -1178,7 +1177,7 @@ int main(int argc, char *argv[])
     start_auto_start_helpers();
 
     QCoreApplication app(argc, argv);
-    qInstallMessageHandler(scimPanelMessageHandler);
+    Sonic::Logging::install();
     app.exec();
 
     _panel_agent_thread->wait();

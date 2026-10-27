@@ -63,6 +63,7 @@ if (BUILD_KCM_MOUSE_X11)
         Qt::Gui
         Qt::GuiPrivate
         X11::Xcursor
+        Sonic::Logging
     )
     install(TARGETS kapplymousetheme ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 

@@ -7,15 +7,15 @@
 #include "KeyboardLayoutSocket.h"
 
 #include <QDataStream>
-#include <QLocalSocket>
-#include <QLoggingCategory>
+#include <QIODevice>
 
-#include "debug.h"
+#include <Sonic/Ipc/Client>
+#include <Sonic/Ipc/Connection>
+#include <Sonic/Logging/Log>
 
 KeyboardLayoutSocket::KeyboardLayoutSocket(QObject *parent)
     : QObject(parent)
-    , m_socket(nullptr)
-    , m_reconnectTimer(nullptr)
+    , m_client(new Sonic::Ipc::Client(protocolVersion, maxFramePayload, this))
     , m_layout(0)
     , m_helloAccepted(false)
 {
@@ -23,17 +23,21 @@ KeyboardLayoutSocket::KeyboardLayoutSocket(QObject *parent)
     // connections. Q_DECLARE_METATYPE alone is not enough.
     qRegisterMetaType<LayoutEntry>("LayoutEntry");
 
-    m_socket = new QLocalSocket(this);
-    m_reconnectTimer = new QTimer(this);
-    m_reconnectTimer->setInterval(2000);
+    // Follows kded across restarts; stops for good if kded rejects this protocol version.
+    m_client->setReconnectInterval(2000);
+    connect(m_client, &Sonic::Ipc::Client::connected, this, &KeyboardLayoutSocket::onConnected);
+    connect(m_client, &Sonic::Ipc::Client::versionRejected, this, [this](quint16 serverVersion) {
+        sonicWarning() << "KeyboardLayoutSocket: the keyboard daemon speaks protocol" << serverVersion << "; layout switching is unavailable";
+        m_layoutsList.clear();
+        Q_EMIT layoutsListChanged();
+    });
 
-    connect(m_socket, &QLocalSocket::connected, this, &KeyboardLayoutSocket::onConnected);
-    connect(m_socket, &QLocalSocket::readyRead, this, &KeyboardLayoutSocket::onReadyRead);
-    connect(m_socket, &QLocalSocket::disconnected, this, &KeyboardLayoutSocket::onDisconnected);
-    connect(m_socket, &QLocalSocket::errorOccurred, this, &KeyboardLayoutSocket::onErrorOccurred);
-    connect(m_reconnectTimer, &QTimer::timeout, this, &KeyboardLayoutSocket::reconnect);
-
-    m_socket->connectToServer(serverPath());
+    const QString path = serverPath();
+    if (path.isEmpty()) {
+        sonicWarning() << "KeyboardLayoutSocket: no safe location for the IPC socket; not connecting";
+        return;
+    }
+    m_client->connectToServer(path);
 }
 
 QString KeyboardLayoutSocket::serverPath()
@@ -58,22 +62,12 @@ bool KeyboardLayoutSocket::hasMultipleLayouts() const
 
 void KeyboardLayoutSocket::switchToNextLayout()
 {
-    QByteArray payload;
-    {
-        QDataStream s(&payload, QIODevice::WriteOnly);
-        s << qint32(SWITCH_NEXT);
-    }
-    sendFrame(payload);
+    send(SWITCH_NEXT);
 }
 
 void KeyboardLayoutSocket::switchToPreviousLayout()
 {
-    QByteArray payload;
-    {
-        QDataStream s(&payload, QIODevice::WriteOnly);
-        s << qint32(SWITCH_PREVIOUS);
-    }
-    sendFrame(payload);
+    send(SWITCH_PREVIOUS);
 }
 
 void KeyboardLayoutSocket::setLayout(uint index)
@@ -81,103 +75,42 @@ void KeyboardLayoutSocket::setLayout(uint index)
     QByteArray payload;
     {
         QDataStream s(&payload, QIODevice::WriteOnly);
-        s << qint32(SET_LAYOUT);
         s << quint32(index);
     }
-    sendFrame(payload);
+    send(SET_LAYOUT, payload);
 }
 
-void KeyboardLayoutSocket::sendFrame(const QByteArray &payload)
+void KeyboardLayoutSocket::send(Msg message, const QByteArray &payload)
 {
-    if (!m_socket || m_socket->state() != QLocalSocket::ConnectedState) {
-        return;
+    if (m_connection) {
+        m_connection->send(message, payload);
     }
-    QDataStream socketStream(m_socket);
-    socketStream << qint64(payload.size());
-    m_socket->write(payload.constData(), payload.size());
 }
 
-void KeyboardLayoutSocket::sendHello()
+void KeyboardLayoutSocket::onConnected(Sonic::Ipc::Connection *connection)
 {
-    QByteArray payload;
-    {
-        QDataStream s(&payload, QIODevice::WriteOnly);
-        s << qint32(HELLO);
-        s << qint32(protocolVersion);
-    }
-    sendFrame(payload);
-}
-
-void KeyboardLayoutSocket::onConnected()
-{
-    m_reconnectTimer->stop();
+    m_connection = connection;
     m_helloAccepted = false;
-    sendHello();
+    connect(connection, &Sonic::Ipc::Connection::frameReceived, this, &KeyboardLayoutSocket::handleFrame);
+    connect(connection, &Sonic::Ipc::Connection::disconnected, this, [this, connection] {
+        if (m_connection == connection) {
+            m_connection = nullptr;
+        }
+    });
+    send(HELLO);
 }
 
-void KeyboardLayoutSocket::reconnect()
+void KeyboardLayoutSocket::handleFrame(quint32 type, const QByteArray &payload)
 {
-    if (m_socket) {
-        m_socket->connectToServer(serverPath());
-    }
-}
+    QDataStream in(payload);
 
-void KeyboardLayoutSocket::onReadyRead()
-{
-    while (m_socket && m_socket->bytesAvailable() > 0) {
-        QDataStream in(m_socket);
-        in.startTransaction();
-        qint64 payloadSize = 0;
-        in >> payloadSize;
-        if (!in.commitTransaction()) {
-            return; // wait for more data
-        }
-        if (payloadSize < 0 || payloadSize > 64 * 1024 * 1024) {
-            qCWarning(KCM_KEYBOARD) << "KeyboardLayoutSocket: refusing frame with implausible size" << payloadSize;
-            m_socket->abort();
-            return;
-        }
-
-        QByteArray payload(payloadSize, Qt::Uninitialized);
-        in.startTransaction();
-        if (in.readRawData(payload.data(), payloadSize) != payloadSize) {
-            if (!in.commitTransaction()) {
-                return; // wait for more data
-            }
-            qCWarning(KCM_KEYBOARD) << "KeyboardLayoutSocket: short read of payload";
-            m_socket->abort();
-            return;
-        }
-        if (!in.commitTransaction()) {
-            return; // wait for more data
-        }
-
-        if (in.status() == QDataStream::ReadCorruptData) {
-            qCWarning(KCM_KEYBOARD) << "KeyboardLayoutSocket: corrupt frame from server";
-            m_socket->abort();
-            return;
-        }
-
-        handleFrame(payload);
-    }
-}
-
-void KeyboardLayoutSocket::handleFrame(QByteArray &payload)
-{
-    QDataStream in(&payload, QIODevice::ReadOnly);
-    qint32 msgInt = MSG_UNKNOWN;
-    in >> msgInt;
-    const Msg msg = static_cast<Msg>(msgInt);
-
-    switch (msg) {
+    switch (Msg(type)) {
     case HELLO_REPLY: {
-        qint32 version = 0;
         bool accepted = false;
-        in >> version >> accepted;
+        in >> accepted;
         m_helloAccepted = accepted;
         if (!accepted) {
-            qCWarning(KCM_KEYBOARD) << "KeyboardLayoutSocket: server rejected HELLO version" << version;
-            m_socket->abort();
+            sonicWarning() << "KeyboardLayoutSocket: server rejected HELLO";
         }
         break;
     }
@@ -209,22 +142,7 @@ void KeyboardLayoutSocket::handleFrame(QByteArray &payload)
         break;
     }
     default:
-        qCWarning(KCM_KEYBOARD) << "KeyboardLayoutSocket: unknown message" << msgInt;
+        sonicWarning() << "KeyboardLayoutSocket: unknown message" << type;
         break;
     }
-}
-
-void KeyboardLayoutSocket::onDisconnected()
-{
-    m_reconnectTimer->start();
-}
-
-void KeyboardLayoutSocket::onErrorOccurred(QLocalSocket::LocalSocketError socketError)
-{
-    Q_UNUSED(socketError);
-    qCWarning(KCM_KEYBOARD) << "KeyboardLayoutSocket error:" << (m_socket ? m_socket->errorString() : QString());
-    if (m_socket) {
-        m_socket->abort();
-    }
-    m_reconnectTimer->start();
 }

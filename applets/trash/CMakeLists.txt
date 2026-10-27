@@ -6,9 +6,10 @@ plasma_add_applet(org.kde.plasma.trash
         dirmodel.cpp
         trash.h
         trash.cpp
-        ${CMAKE_SOURCE_DIR}/messagelogger.cpp
+        ${CMAKE_SOURCE_DIR}/sonic_logging_autoinstall.cpp
     GENERATE_APPLET_CLASS
 )
+sonic_logging_plugin(org.kde.plasma.trash org.sonicde.desktopinterface.trash)
 
 target_link_libraries(org.kde.plasma.trash PRIVATE
         Qt::Core

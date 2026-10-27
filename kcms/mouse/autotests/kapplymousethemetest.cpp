@@ -8,6 +8,7 @@
 #include <QCoreApplication>
 #include <QDebug>
 #include <QFile>
+#include <QFileInfo>
 #include <QProcess>
 #include <QProcessEnvironment>
 #include <QTemporaryDir>
@@ -96,10 +97,11 @@ private:
         QVERIFY2(helper.exitCode() == 0, diagnostics.constData());
 
         if (validArguments) {
-            QFile log(state.filePath(QStringLiteral("sonic/desktop-interface.log")));
+            // Sonic Logging writes one file per executable, named after the process.
+            const QString binary = QFileInfo(QCoreApplication::applicationFilePath()).fileName();
+            QFile log(state.filePath(QStringLiteral("sonic/%1.log").arg(binary)));
             QVERIFY2(log.open(QIODevice::ReadOnly), qPrintable(log.errorString()));
-            QVERIFY(log.readAll().contains("cursor backend regression probe"));
-            QVERIFY(output.contains("[KAPPLYMOUSETHEME]"));
+            QVERIFY(log.readAll().contains(QByteArray("(WW) [" + binary.toUtf8() + "] cursor backend regression probe")));
         }
     }
 

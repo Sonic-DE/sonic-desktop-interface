@@ -5,12 +5,15 @@
 */
 
 #include "config-kimpanel.h"
-#include "messagehandler.h"
 #include <QCoreApplication>
 #include <QDBusConnection>
 #include <QDBusConnectionInterface>
 #include <QDBusServiceWatcher>
 #include <QProcess>
+
+#include <Sonic/Logging/Logging>
+
+SONIC_LOGGING_COMPONENT("org.sonicde.desktopinterface.kimpanel-ibus-panel-launcher")
 
 class IBusPanelLauncher : public QCoreApplication
 {
@@ -80,15 +83,10 @@ private:
     QDBusServiceWatcher *m_watcher;
 };
 
-static void ibusPanelLauncherMessageHandler(QtMsgType type, const QMessageLogContext &, const QString &msg)
-{
-    messageHandler(type, QStringLiteral("IBUS-PANEL-LAUNCHER"), msg);
-}
-
 int main(int argc, char *argv[])
 {
     IBusPanelLauncher app(argc, argv);
-    qInstallMessageHandler(ibusPanelLauncherMessageHandler);
+    Sonic::Logging::install();
 
     return app.exec();
 }

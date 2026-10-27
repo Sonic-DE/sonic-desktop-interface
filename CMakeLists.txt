@@ -40,11 +40,27 @@ include(ECMConfiguredInstall)
 
 include_directories(${CMAKE_SOURCE_DIR})
 
-# Populate QMessageLogContext::category / file / line in Qt log messages.
-# This is required for the project-wide message handler (see messagelogger.cpp)
-# to record the originating QLoggingCategory per line. See:
+# Populate QMessageLogContext file / line / function in Qt log messages, so
+# Sonic Logging can record CODE_* fields in release builds too. See:
 # https://doc.qt.io/qt-6/qmessagelogcontext.html
 add_compile_definitions(QT_MESSAGELOGCONTEXT)
+
+find_package(SonicIpc ${KF6_MIN_VERSION} REQUIRED)
+find_package(SonicLogging ${KF6_MIN_VERSION} REQUIRED)
+
+# For a plugin that compiles ${CMAKE_SOURCE_DIR}/sonic_logging_autoinstall.cpp:
+# it installs Sonic Logging in a host that has no handler of its own
+# (sonicshell) and logs under the plugin's own ID. Pass PLAIN for a target
+# whose other target_link_libraries() calls use the plain signature.
+function(sonic_logging_plugin target component_id)
+    cmake_parse_arguments(ARG "PLAIN" "" "" ${ARGN})
+    target_compile_definitions(${target} PRIVATE SONIC_LOGGING_COMPONENT_ID="${component_id}")
+    if(ARG_PLAIN)
+        target_link_libraries(${target} Sonic::Logging)
+    else()
+        target_link_libraries(${target} PRIVATE Sonic::Logging)
+    endif()
+endfunction()
 
 option(BUILD_DOC "Whether to build the documentation" ON)
 option(BUILD_KCM_MOUSE_X11 "Build the Mouse KCM's X11 backend" ON)

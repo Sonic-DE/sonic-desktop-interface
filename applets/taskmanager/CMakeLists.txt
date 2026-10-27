@@ -27,11 +27,12 @@ plasma_add_applet(org.kde.plasma.taskmanager
         backend.cpp
         smartlauncherbackend.cpp
         smartlauncheritem.cpp
-        ${CMAKE_SOURCE_DIR}/messagelogger.cpp
+        ${CMAKE_SOURCE_DIR}/sonic_logging_autoinstall.cpp
     RESOURCES
         main.xml
     GENERATE_APPLET_CLASS
 )
+sonic_logging_plugin(org.kde.plasma.taskmanager org.sonicde.desktopinterface.taskmanager)
 
 kconfig_add_kcfg_files(org.kde.plasma.taskmanager ${CMAKE_SOURCE_DIR}/kcms/recentFiles/kactivitymanagerd_plugins_settings.kcfgc)
 

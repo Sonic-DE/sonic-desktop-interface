@@ -7,8 +7,9 @@ plasma_add_applet(org.kde.panel
         main.qml
         LayoutManager.js
     CPP_SOURCES
-        ${CMAKE_SOURCE_DIR}/messagelogger.cpp
+        ${CMAKE_SOURCE_DIR}/sonic_logging_autoinstall.cpp
     RESOURCES
         main.xml
     GENERATE_CONTAINMENT_CLASS
 )
+sonic_logging_plugin(org.kde.panel org.sonicde.desktopinterface.panel)

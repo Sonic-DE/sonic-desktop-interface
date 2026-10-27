@@ -19,6 +19,7 @@ target_link_libraries(kaccess
     KF6::DBusAddons
     KF6::Crash
     X11::X11
+    Sonic::Logging
 )
 target_link_libraries(kaccess Qt::GuiPrivate)
 

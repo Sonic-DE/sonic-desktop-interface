@@ -26,10 +26,11 @@ plasma_add_applet(org.kde.plasma.kicker
     main.xml
 
     CPP_SOURCES
-        ${CMAKE_SOURCE_DIR}/messagelogger.cpp
+        ${CMAKE_SOURCE_DIR}/sonic_logging_autoinstall.cpp
 
     GENERATE_APPLET_CLASS
 )
+sonic_logging_plugin(org.kde.plasma.kicker org.sonicde.desktopinterface.kicker)
 
 # Suppress warnings from auto-generated qmlcache files
 target_compile_options(org.kde.plasma.kicker PRIVATE -Wno-unused-parameter)

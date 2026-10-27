@@ -6,16 +6,19 @@
 
 #pragma once
 
-#include <QLocalSocket>
 #include <QMetaType>
 #include <QObject>
 #include <QString>
-#include <QTimer>
 #include <QVariantList>
 #include <QVariantMap>
 #include <qqmlregistration.h>
 
 #include "IpcProtocol.h"
+
+namespace Sonic::Ipc {
+class Client;
+class Connection;
+}
 
 class KeyboardLayoutSocket : public QObject
 {
@@ -44,20 +47,13 @@ Q_SIGNALS:
     void layoutChanged();
     void layoutsListChanged();
 
-private Q_SLOTS:
-    void onConnected();
-    void onReadyRead();
-    void onDisconnected();
-    void onErrorOccurred(QLocalSocket::LocalSocketError socketError);
-    void reconnect();
-
 private:
-    void sendFrame(const QByteArray &payload);
-    void handleFrame(QByteArray &payload);
-    void sendHello();
+    void onConnected(Sonic::Ipc::Connection *connection);
+    void handleFrame(quint32 type, const QByteArray &payload);
+    void send(Msg message, const QByteArray &payload = {});
 
-    QLocalSocket *m_socket;
-    QTimer *m_reconnectTimer;
+    Sonic::Ipc::Client *m_client;
+    Sonic::Ipc::Connection *m_connection = nullptr;
     uint m_layout;
     QVariantList m_layoutsList;
     bool m_helloAccepted;

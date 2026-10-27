@@ -9,16 +9,18 @@
 #include <QByteArray>
 #include <QDataStream>
 #include <QList>
-#include <QLocalServer>
-#include <QLocalSocket>
 #include <QObject>
-#include <QSet>
 #include <QString>
 #include <QVector>
 #include <functional>
 
 #include "../layoutnames.h"
 #include "IpcProtocol.h"
+
+namespace Sonic::Ipc {
+class Connection;
+class Server;
+}
 
 class KeyboardIpcServer : public QObject
 {
@@ -31,12 +33,14 @@ public:
     using SwitchToPreviousLayoutFn = std::function<void()>;
     using SetLayoutFn = std::function<void(uint)>;
 
+    //! Listens on \a path; the default is the canonical per-user socket. Tests pass their own.
     KeyboardIpcServer(QObject *parent,
                       GetLayoutsListFn getLayoutsListFn,
                       GetLayoutFn getLayoutFn,
                       SwitchToNextLayoutFn switchToNextLayoutFn,
                       SwitchToPreviousLayoutFn switchToPreviousLayoutFn,
-                      SetLayoutFn setLayoutFn);
+                      SetLayoutFn setLayoutFn,
+                      const QString &path = socketPath());
 
     void broadcastLayoutsChanged(const QList<LayoutNames> &layouts);
     void broadcastLayoutChanged(uint index);
@@ -44,21 +48,14 @@ public:
     static QString socketPath();
 
 private Q_SLOTS:
-    void onNewConnection();
-    void onReadyRead();
-    void onDisconnected();
-    void onErrorOccurred(QLocalSocket::LocalSocketError socketError);
+    void onNewConnection(Sonic::Ipc::Connection *connection);
 
 private:
-    void sendToAll(const QByteArray &payload);
-    void sendToSocket(QLocalSocket *socket, const QByteArray &payload);
-    void handleFrame(QLocalSocket *socket, QByteArray &payload);
-    void replyHello(QLocalSocket *socket);
-    void replyLayouts(QLocalSocket *socket);
-    void replyLayout(QLocalSocket *socket);
+    void handleFrame(Sonic::Ipc::Connection *connection, quint32 type, const QByteArray &payload);
+    void replyLayouts(Sonic::Ipc::Connection *connection);
+    void replyLayout(Sonic::Ipc::Connection *connection);
 
-    QLocalServer *m_server;
-    QSet<QLocalSocket *> m_clients;
+    Sonic::Ipc::Server *m_server;
 
     GetLayoutsListFn m_getLayoutsListFn;
     GetLayoutFn m_getLayoutFn;

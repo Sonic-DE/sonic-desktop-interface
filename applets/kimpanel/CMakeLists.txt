@@ -24,11 +24,12 @@ plasma_add_applet(org.kde.plasma.kimpanel
         screen.cpp
         kimpanelagent.cpp
         ${kimpanel_dbus_SRCS}
-        ${CMAKE_SOURCE_DIR}/messagelogger.cpp
+        ${CMAKE_SOURCE_DIR}/sonic_logging_autoinstall.cpp
     RESOURCES
         main.xml
     GENERATE_APPLET_CLASS
 )
+sonic_logging_plugin(org.kde.plasma.kimpanel org.sonicde.desktopinterface.kimpanel)
 
 target_compile_definitions(org.kde.plasma.kimpanel PRIVATE -DKIMPANEL_LIBEXEC_DIR=\"${KDE_INSTALL_FULL_LIBEXECDIR}\")
 target_link_libraries(org.kde.plasma.kimpanel PRIVATE

@@ -5,8 +5,9 @@ ecm_add_qml_module(activityswitcherextensionplugin URI org.kde.plasma.activitysw
 target_sources(activityswitcherextensionplugin PRIVATE
    switcherbackend.cpp
    sortedactivitiesmodel.cpp
-   ${CMAKE_SOURCE_DIR}/messagelogger.cpp
+   ${CMAKE_SOURCE_DIR}/sonic_logging_autoinstall.cpp
 )
+sonic_logging_plugin(activityswitcherextensionplugin org.sonicde.desktopinterface.activitymanager)
 
 target_link_libraries(activityswitcherextensionplugin PRIVATE
    Qt::Core

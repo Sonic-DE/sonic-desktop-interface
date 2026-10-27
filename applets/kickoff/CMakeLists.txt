@@ -35,10 +35,11 @@ QML_SOURCES
  GENERATE_APPLET_CLASS
 
  CPP_SOURCES
-     ${CMAKE_SOURCE_DIR}/messagelogger.cpp
+     ${CMAKE_SOURCE_DIR}/sonic_logging_autoinstall.cpp
      liddetector.h
      liddetector.cpp
  )
+sonic_logging_plugin(org.kde.plasma.kickoff org.sonicde.desktopinterface.kickoff)
 
 target_link_libraries(org.kde.plasma.kickoff PRIVATE Qt::DBus)
 

@@ -11,17 +11,15 @@
 #include <QCommandLineParser>
 
 #include "knetattach.h"
-#include "messagehandler.h"
 
-static void knetattachMessageHandler(QtMsgType type, const QMessageLogContext &, const QString &msg)
-{
-    messageHandler(type, QStringLiteral("KNETATTACH"), msg);
-}
+#include <Sonic/Logging/Logging>
+
+SONIC_LOGGING_COMPONENT("org.sonicde.desktopinterface.knetattach")
 
 int main(int argc, char **argv)
 {
     QApplication app(argc, argv);
-    qInstallMessageHandler(knetattachMessageHandler);
+    Sonic::Logging::install();
     KLocalizedString::setApplicationDomain(QByteArrayLiteral("knetattach"));
 
     KAboutData aboutData(QLatin1String("knetattach"),

@@ -28,6 +28,7 @@ set( kded_keyboard_SRCS
     xkb_rules.cpp
     layoutnames.cpp
     ipc/KeyboardIpcServer.cpp
+    ${CMAKE_SOURCE_DIR}/sonic_logging_autoinstall.cpp
 )
 
 kconfig_add_kcfg_files(kded_keyboard_SRCS keyboardsettings.kcfgc GENERATE_MOC)
@@ -65,6 +66,7 @@ target_include_directories(kded_keyboard PRIVATE
 )
 target_link_libraries(kded_keyboard Qt::GuiPrivate)
 target_link_libraries(kded_keyboard keyboardlayout_ipc_protocol)
+sonic_logging_plugin(kded_keyboard org.sonicde.desktopinterface.keyboard PLAIN)
 
 if (HAVE_XINPUT)
     target_link_libraries(kded_keyboard X11::Xi)
@@ -158,10 +160,11 @@ ecm_add_qml_module(kcm_keyboard_declarative
         keyboardmodel.cpp
         layoutmodel.cpp
         types.h
-        ${CMAKE_SOURCE_DIR}/messagelogger.cpp
+        ${CMAKE_SOURCE_DIR}/sonic_logging_autoinstall.cpp
     DEPENDENCIES
         QtCore
 )
+sonic_logging_plugin(kcm_keyboard_declarative org.sonicde.desktopinterface.keyboard)
 
 target_link_libraries(kcm_keyboard_declarative PRIVATE kcm_keyboard_static)
 target_link_libraries(kcm_keyboard_declarative PRIVATE Qt::Network)

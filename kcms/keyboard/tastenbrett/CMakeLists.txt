@@ -31,6 +31,6 @@ target_link_libraries(tastenbrett
         X11::xkbfile
         X11::X11
 )
-target_link_libraries(tastenbrett PRIVATE Qt::GuiPrivate)
+target_link_libraries(tastenbrett PRIVATE Qt::GuiPrivate Sonic::Logging)
 
 install(TARGETS tastenbrett DESTINATION ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})

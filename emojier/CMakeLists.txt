@@ -5,8 +5,9 @@ target_sources(EmojierDeclarativePlugin PRIVATE
     emojierplugin.cpp
     emojidict.cpp
     emojicategory.cpp
-    ${CMAKE_SOURCE_DIR}/messagelogger.cpp
+    ${CMAKE_SOURCE_DIR}/sonic_logging_autoinstall.cpp
 )
+sonic_logging_plugin(EmojierDeclarativePlugin org.sonicde.desktopinterface.emojier)
 
 ecm_qt_declare_logging_category(EmojierDeclarativePlugin
     HEADER emojier_debug.h

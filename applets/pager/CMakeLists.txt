@@ -7,13 +7,14 @@ plasma_add_applet(org.kde.plasma.pager
     CPP_SOURCES
         pagermodel.cpp
         windowmodel.cpp
-        ${CMAKE_SOURCE_DIR}/messagelogger.cpp
+        ${CMAKE_SOURCE_DIR}/sonic_logging_autoinstall.cpp
     RESOURCES
         main.xml
     GENERATE_APPLET_CLASS
     QML_ARGS
         NO_LINT # https://qt-project.atlassian.net/browse/QTBUG-145572
 )
+sonic_logging_plugin(org.kde.plasma.pager org.sonicde.desktopinterface.pager)
 
 target_link_libraries(org.kde.plasma.pager PRIVATE
     KF6::WindowSystem

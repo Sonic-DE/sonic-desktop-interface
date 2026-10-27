@@ -11,11 +11,12 @@ plasma_add_applet(org.kde.plasma.showdesktop
     CPP_SOURCES
         showdesktop.cpp
         ${showdesktop_SRCS}
-        ${CMAKE_SOURCE_DIR}/messagelogger.cpp
+        ${CMAKE_SOURCE_DIR}/sonic_logging_autoinstall.cpp
     RESOURCES
         main.xml
     GENERATE_APPLET_CLASS
 )
+sonic_logging_plugin(org.kde.plasma.showdesktop org.sonicde.desktopinterface.showdesktop)
 
 target_link_libraries(org.kde.plasma.showdesktop PRIVATE
      Qt::Core

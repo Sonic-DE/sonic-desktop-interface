@@ -29,18 +29,16 @@
 #include <QSessionManager>
 
 #include "config-workspace.h"
-#include "messagehandler.h"
 
-static void emojierMessageHandler(QtMsgType type, const QMessageLogContext &, const QString &msg)
-{
-    messageHandler(type, QStringLiteral("PLASMA-EMOJIER"), msg);
-}
+#include <Sonic/Logging/Logging>
+
+SONIC_LOGGING_COMPONENT("org.sonicde.desktopinterface.plasma-emojier")
 
 int main(int argc, char **argv)
 {
     QCoreApplication::setAttribute(Qt::AA_DisableSessionManager);
     QApplication app(argc, argv);
-    qInstallMessageHandler(emojierMessageHandler);
+    Sonic::Logging::install();
     app.setWindowIcon(QIcon::fromTheme(QStringLiteral("preferences-desktop-emoticons")));
     KCrash::initialize();
 

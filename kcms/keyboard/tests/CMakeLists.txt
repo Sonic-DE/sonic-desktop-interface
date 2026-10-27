@@ -55,7 +55,7 @@ target_link_libraries(layout_memory_persister_test
 )
 
 if( X11_XTest_FOUND )
-   add_executable(keyboard_daemon_test keyboard_daemon_test.cpp ../keyboard_daemon.cpp ../layout_memory.cpp ../layout_memory_persister.cpp ../flags.cpp ../x11_helper.cpp ../xkb_helper.cpp ../xinput_helper.cpp ../keyboard_config.cpp ../xkb_rules.cpp ../keyboard_hardware.cpp ../bindings.cpp ../debug.cpp ../layoutnames.cpp ../ipc/KeyboardIpcServer.cpp)
+   add_executable(keyboard_daemon_test keyboard_daemon_test.cpp ../keyboard_daemon.cpp ../layout_memory.cpp ../layout_memory_persister.cpp ../flags.cpp ../x11_helper.cpp ../xkb_helper.cpp ../xinput_helper.cpp ../keyboard_config.cpp ../xkb_rules.cpp ../keyboard_hardware.cpp ../bindings.cpp ../debug.cpp ../layoutnames.cpp ../ipc/KeyboardIpcServer.cpp sonic_logging_component.cpp)
    kconfig_add_kcfg_files(keyboard_daemon_test ../keyboardsettings.kcfgc GENERATE_MOC)
    add_test(NAME kcm-keyboard-keyboard_daemon_test COMMAND keyboard_daemon_test)
    add_dependencies(keyboard_daemon_test kded_keyboard)
@@ -92,5 +92,13 @@ if( X11_XTest_FOUND )
    if (HAVE_XINPUT)
       target_link_libraries(keyboard_daemon_test X11::Xi)
    endif()
-   target_link_libraries(keyboard_daemon_test keyboardlayout_ipc_protocol)
+   target_link_libraries(keyboard_daemon_test keyboardlayout_ipc_protocol Sonic::Logging)
 endif()
+
+# The keyboard layout IPC between kded and the applet, over a socket in a temporary directory.
+add_executable(keyboard_ipc_test keyboard_ipc_test.cpp ../ipc/KeyboardIpcServer.cpp sonic_logging_component.cpp)
+ecm_mark_nongui_executable(keyboard_ipc_test)
+ecm_mark_as_test(keyboard_ipc_test)
+add_test(NAME kcm-keyboard-keyboard_ipc_test COMMAND keyboard_ipc_test)
+target_include_directories(keyboard_ipc_test PRIVATE ../ipc)
+target_link_libraries(keyboard_ipc_test PRIVATE keyboardlayout_ipc_protocol Sonic::Logging Qt::Network Qt::Test)

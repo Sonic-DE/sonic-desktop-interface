@@ -14,14 +14,14 @@ if(IBUS_FOUND AND GLIB2_FOUND AND GOBJECT_FOUND)
             ibus15/panel.cpp
             ibus15/propertymanager.cpp)
         target_compile_definitions(kimpanel-ibus-panel PRIVATE -DQT_NO_KEYWORDS)
-        target_link_libraries(kimpanel-ibus-panel GLIB2::GLIB2 PkgConfig::IBUS PkgConfig::GOBJECT Qt::Core Qt::DBus Qt::Gui Qt::GuiPrivate XCB::KEYSYMS)
+        target_link_libraries(kimpanel-ibus-panel GLIB2::GLIB2 PkgConfig::IBUS PkgConfig::GOBJECT Qt::Core Qt::DBus Qt::Gui Qt::GuiPrivate XCB::KEYSYMS Sonic::Logging)
         # configure_file(${CMAKE_CURRENT_SOURCE_DIR}/kimpanel.xml.in ${CMAKE_CURRENT_BINARY_DIR}/kimpanel.xml @ONLY)
         # install(FILES ${CMAKE_CURRENT_BINARY_DIR}/kimpanel.xml DESTINATION ${CMAKE_INSTALL_PREFIX}/share/ibus/component)
 
         target_include_directories(kimpanel-ibus-panel PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
 
         add_executable(kimpanel-ibus-panel-launcher launcher.cpp)
-        target_link_libraries(kimpanel-ibus-panel-launcher Qt::Core Qt::DBus)
+        target_link_libraries(kimpanel-ibus-panel-launcher Qt::Core Qt::DBus Sonic::Logging)
         install(TARGETS kimpanel-ibus-panel kimpanel-ibus-panel-launcher DESTINATION ${KDE_INSTALL_LIBEXECDIR})
     endif()
 endif()

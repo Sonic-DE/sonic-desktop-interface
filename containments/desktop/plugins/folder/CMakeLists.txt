@@ -23,9 +23,10 @@ target_sources(folderplugin PRIVATE
     screenmapper.cpp
     removeaction.cpp
     eventgenerator.cpp
-    ${CMAKE_SOURCE_DIR}/messagelogger.cpp
+    ${CMAKE_SOURCE_DIR}/sonic_logging_autoinstall.cpp
     types.h
 )
+sonic_logging_plugin(folderplugin org.sonicde.desktopinterface.folder)
 
 target_link_libraries(folderplugin PUBLIC
                       Qt::Core

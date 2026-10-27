@@ -9,24 +9,23 @@
 
 #include "cursortheme.h"
 
-#include "messagehandler.h"
 #include <QDebug>
 #include <QFile>
 #include <QGuiApplication>
 #include <QScopeGuard>
 
-static void kapplymousethemeMessageHandler(QtMsgType type, const QMessageLogContext &, const QString &msg)
-{
-    messageHandler(type, QStringLiteral("KAPPLYMOUSETHEME"), msg);
-}
+#include <Sonic/Logging/Logging>
+
+SONIC_LOGGING_COMPONENT("org.sonicde.desktopinterface.kapplymousetheme")
+
 int main(int argc, char *argv[])
 {
     int ret = 0;
     QGuiApplication::setDesktopSettingsAware(false);
     QGuiApplication app(argc, argv);
-    const auto previousMessageHandler = qInstallMessageHandler(kapplymousethemeMessageHandler);
-    // Restore the handler before app teardown and static plugin destruction:
-    // those can log after messageHandler's cached QString has been destroyed.
+    const auto previousMessageHandler = Sonic::Logging::install();
+    // Restore the handler that was in place before app teardown and static
+    // plugin destruction, as callers embedding this main() expect.
     const auto restoreMessageHandler = qScopeGuard([previousMessageHandler] {
         qInstallMessageHandler(previousMessageHandler);
     });

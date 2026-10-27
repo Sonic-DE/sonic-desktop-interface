@@ -8,8 +8,9 @@ plasma_add_applet(org.kde.plasma.windowlist
         main.qml
         MenuButton.qml
     CPP_SOURCES
-        ${CMAKE_SOURCE_DIR}/messagelogger.cpp
+        ${CMAKE_SOURCE_DIR}/sonic_logging_autoinstall.cpp
     RESOURCES
         main.xml
     GENERATE_APPLET_CLASS
 )
+sonic_logging_plugin(org.kde.plasma.windowlist org.sonicde.desktopinterface.windowlist)

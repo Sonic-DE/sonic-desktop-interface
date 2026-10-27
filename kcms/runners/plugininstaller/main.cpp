@@ -22,12 +22,10 @@
 #endif
 #include "ScriptJob.h"
 #include "ZypperRPMJob.h"
-#include "messagehandler.h"
 
-static void krunnerPluginInstallerMessageHandler(QtMsgType type, const QMessageLogContext &, const QString &msg)
-{
-    messageHandler(type, QStringLiteral("KRUNNER-PLUGININSTALLER"), msg);
-}
+#include <Sonic/Logging/Logging>
+
+SONIC_LOGGING_COMPONENT("org.sonicde.desktopinterface.krunner-plugininstaller")
 
 void fail(const QString &str)
 {
@@ -44,7 +42,7 @@ void fail(const QString &str)
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
-    qInstallMessageHandler(krunnerPluginInstallerMessageHandler);
+    const QtMessageHandler previousHandler = Sonic::Logging::install();
     app.setQuitOnLastWindowClosed(false);
 
     if (qEnvironmentVariableIsSet("PLUGININSTALLER_TEST_MODE")) {
@@ -125,6 +123,6 @@ int main(int argc, char *argv[])
     job->executeOperation(fileInfo, mimeType, install);
 
     const int result = app.exec();
-    qInstallMessageHandler(nullptr);
+    qInstallMessageHandler(previousHandler);
     return result;
 }
