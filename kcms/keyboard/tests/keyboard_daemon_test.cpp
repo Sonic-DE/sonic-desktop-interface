@@ -119,6 +119,26 @@ private Q_SLOTS:
         QCOMPARE(spy.count(), 1);
     }
 
+    // X merges layouts with identical keymaps into one group, so the selected
+    // layout must be reported even when X's group stays put.
+    void testLayoutSelectionSurvivesMergedGroups()
+    {
+        LayoutSelection selection;
+        QCOMPARE(selection.current(0), 0u);
+        QCOMPARE(selection.current(2), 2u);
+
+        // Layout 1 selected, but X merged it into group 0.
+        selection.select(1, 0);
+        QCOMPARE(selection.current(0), 1u);
+
+        // Something else moved X to another group: follow X.
+        QCOMPARE(selection.current(2), 2u);
+
+        // A new layout list invalidates the selection.
+        selection.reset();
+        QCOMPARE(selection.current(0), 0u);
+    }
+
     // A user who has never configured layouts has no kxkbrc when the daemon
     // starts; the first save must still be picked up, and so must later ones.
     void testKxkbrcCreatedLaterIsWatched()

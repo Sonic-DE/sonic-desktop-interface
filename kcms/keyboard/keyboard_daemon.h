@@ -21,6 +21,33 @@ class KeyboardConfig;
 class KeyboardSettings;
 class KeyboardIpcServer;
 
+// Remembers which configured layout the user selected. X merges layouts whose
+// keymaps are identical (us and au, for example) into one group and wraps a
+// locked group past the last real one back into range, so the X group alone
+// can't tell such layouts apart.
+class LayoutSelection {
+public:
+    void select(uint layout, uint xGroup)
+    {
+        m_layout = layout;
+        m_xGroup = xGroup;
+    }
+    void reset()
+    {
+        m_layout.reset();
+    }
+    // The selected layout while X still sits on the group it landed on;
+    // otherwise something else moved X, and X's group is the truth.
+    uint current(uint xGroup) const
+    {
+        return m_layout && xGroup == m_xGroup ? *m_layout : xGroup;
+    }
+
+private:
+    std::optional<uint> m_layout;
+    uint m_xGroup = 0;
+};
+
 class Q_DECL_EXPORT KeyboardDaemon : public KDEDModule
 {
     Q_OBJECT
@@ -31,6 +58,7 @@ class Q_DECL_EXPORT KeyboardDaemon : public KDEDModule
     XInputEventNotifier *xEventNotifier;
     LayoutMemory layoutMemory;
     std::optional<uint> lastUsedLayout;
+    LayoutSelection layoutSelection;
 
     QFileSystemWatcher *keyboardFileWatcher = nullptr;
     QTimer *keyboardFileDebounce = nullptr;
@@ -44,6 +72,9 @@ class Q_DECL_EXPORT KeyboardDaemon : public KDEDModule
     void unregisterListeners();
     void unregisterShortcut();
     void setLastUsedLayoutValue(uint newValue);
+    bool selectLayout(uint index);
+    void scrollLayouts(int delta);
+    LayoutUnit currentLayoutUnit() const;
 
     void broadcastLayoutsChanged();
     void broadcastLayoutChanged(uint index);

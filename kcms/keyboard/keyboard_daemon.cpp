@@ -65,7 +65,10 @@ KeyboardDaemon::KeyboardDaemon(QObject *parent, const QList<QVariant> &)
     LayoutMemoryPersister layoutMemoryPersister(layoutMemory);
     if (layoutMemoryPersister.restore()) {
         if (layoutMemoryPersister.getGlobalLayout().isValid()) {
-            X11Helper::setLayout(layoutMemoryPersister.getGlobalLayout());
+            const int index = X11Helper::getLayoutsList().indexOf(layoutMemoryPersister.getGlobalLayout());
+            if (index >= 0 && index < X11Helper::MAX_GROUP_COUNT) {
+                selectLayout(uint(index));
+            }
         }
     }
 }
@@ -73,7 +76,7 @@ KeyboardDaemon::KeyboardDaemon(QObject *parent, const QList<QVariant> &)
 KeyboardDaemon::~KeyboardDaemon()
 {
     LayoutMemoryPersister layoutMemoryPersister(layoutMemory);
-    layoutMemoryPersister.setGlobalLayout(X11Helper::getCurrentLayout());
+    layoutMemoryPersister.setGlobalLayout(currentLayoutUnit());
     layoutMemoryPersister.save();
 
     delete m_ipcServer;
@@ -94,6 +97,7 @@ void KeyboardDaemon::configureKeyboard()
     keyboardSettings->sharedConfig()->reparseConfiguration();
     keyboardConfig->load();
     XkbHelper::initializeKeyboardLayouts(*keyboardConfig);
+    layoutSelection.reset();
     layoutMemory.configChanged();
 
     unregisterShortcut();
@@ -121,7 +125,7 @@ void KeyboardDaemon::registerShortcut()
             setLastUsedLayoutValue(getLayout());
             switchToNextLayout();
 
-            LayoutUnit newLayout = X11Helper::getCurrentLayout();
+            LayoutUnit newLayout = currentLayoutUnit();
             QDBusMessage msg = QDBusMessage::createMethodCall(QStringLiteral("org.sonicde.sonicshell"),
                                                               QStringLiteral("/org/sonicde/osdService"),
                                                               QStringLiteral("org.sonicde.osdService"),
@@ -139,7 +143,7 @@ void KeyboardDaemon::registerShortcut()
                 setLayout(*lastUsedLayout);
             }
 
-            LayoutUnit newLayout = X11Helper::getCurrentLayout();
+            LayoutUnit newLayout = currentLayoutUnit();
             QDBusMessage msg = QDBusMessage::createMethodCall(QStringLiteral("org.sonicde.sonicshell"),
                                                               QStringLiteral("/org/sonicde/osdService"),
                                                               QStringLiteral("org.sonicde.osdService"),
@@ -207,15 +211,23 @@ void KeyboardDaemon::registerListeners()
         connect(layoutMapDebounce, &QTimer::timeout, this, [this]() {
             keyboardSettings->sharedConfig()->reparseConfiguration();
             keyboardConfig->load();
+            layoutSelection.reset();
             layoutMemory.layoutMapChanged();
             Q_EMIT layoutListChanged();
             broadcastLayoutsChanged();
         });
     }
 
+    // Watch the config directory too: a user who has never configured layouts
+    // has no kxkbrc yet, and the file can't be watched until it exists.
+    const QString configDir = QFileInfo(kxkbrc).absolutePath();
+    if (!keyboardFileWatcher->directories().contains(configDir) && !keyboardFileWatcher->addPath(configDir)) {
+        qCWarning(KCM_KEYBOARD) << "Failed to watch the config directory" << configDir << "; a kxkbrc created later will be missed";
+    }
+
     if (!keyboardFileWatcher->files().contains(kxkbrc)) {
         if (!keyboardFileWatcher->addPath(kxkbrc)) {
-            qCWarning(KCM_KEYBOARD) << "Failed to watch kxkbrc at" << kxkbrc;
+            qCDebug(KCM_KEYBOARD) << "kxkbrc does not exist yet at" << kxkbrc << "; waiting for it to be created";
         } else {
             qCDebug(KCM_KEYBOARD) << "Watching kxkbrc at" << kxkbrc;
         }
@@ -321,7 +333,7 @@ void KeyboardDaemon::layoutChangedSlot()
 void KeyboardDaemon::switchToNextLayout()
 {
     setLastUsedLayoutValue(getLayout());
-    X11Helper::scrollLayouts(1);
+    scrollLayouts(1);
     Q_EMIT layoutChanged(getLayout());
     broadcastLayoutChanged(getLayout());
 }
@@ -329,9 +341,42 @@ void KeyboardDaemon::switchToNextLayout()
 void KeyboardDaemon::switchToPreviousLayout()
 {
     setLastUsedLayoutValue(getLayout());
-    X11Helper::scrollLayouts(-1);
+    scrollLayouts(-1);
     Q_EMIT layoutChanged(getLayout());
     broadcastLayoutChanged(getLayout());
+}
+
+void KeyboardDaemon::scrollLayouts(int delta)
+{
+    // Count from the selected layout, not the X group, so stepping off a
+    // layout that X merged into an earlier group still reaches the next one.
+    const int size = X11Helper::getLayoutsList().size();
+    if (size == 0) {
+        return;
+    }
+    const int index = ((int(getLayout()) + delta) % size + size) % size;
+    selectLayout(uint(index));
+}
+
+bool KeyboardDaemon::selectLayout(uint index)
+{
+    if (!X11Helper::setGroup(index)) {
+        qCWarning(KCM_KEYBOARD) << "Could not switch X to layout" << index;
+        return false;
+    }
+    const uint xGroup = X11Helper::getGroup();
+    if (xGroup != index) {
+        qCDebug(KCM_KEYBOARD) << "X merged layout" << index << "into group" << xGroup << "because their keymaps are identical";
+    }
+    layoutSelection.select(index, xGroup);
+    return true;
+}
+
+LayoutUnit KeyboardDaemon::currentLayoutUnit() const
+{
+    const QList<LayoutUnit> layouts = X11Helper::getLayoutsList();
+    const uint index = getLayout();
+    return index < uint(layouts.size()) ? layouts.at(index) : X11Helper::getCurrentLayout();
 }
 
 void KeyboardDaemon::broadcastLayoutsChanged()
@@ -396,12 +441,12 @@ bool KeyboardDaemon::setLayout(uint index)
         index = indexOfLastMainLayoutInXKB;
     }
     setLastUsedLayoutValue(getLayout());
-    return X11Helper::setGroup(index);
+    return selectLayout(index);
 }
 
 uint KeyboardDaemon::getLayout() const
 {
-    return X11Helper::getGroup();
+    return layoutSelection.current(X11Helper::getGroup());
 }
 
 QList<LayoutNames> KeyboardDaemon::getLayoutsList() const
