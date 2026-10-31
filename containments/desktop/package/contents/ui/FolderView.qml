@@ -231,7 +231,7 @@ FocusScope {
 
         property alias hoveredItem: gridView.hoveredItem
 
-        property Item pressedItem: null
+        property FolderItemDelegate pressedItem: null
         property int pressX: -1
         property int pressY: -1
         property int dragX: -1
@@ -324,7 +324,7 @@ FocusScope {
                     }
                 }
             } else {
-                pressedItem = hoveredItem;
+                pressedItem = hoveredItem as FolderItemDelegate;
 
                 let pos = mapToItem(hoveredItem.actionsOverlay, mouse.x, mouse.y);
 
@@ -525,6 +525,9 @@ FocusScope {
             // Drag initiation.
             if (pressX !== -1 && root.isDrag(pressX, pressY, mouse.x, mouse.y)) {
                 if (pressedItem !== null && dir.isSelected(positioner.map(pressedItem.index))) {
+                    if (pressedItem.dragImageBeingGenerated) {
+                        return; // this should be very fast, we can try again next pixel
+                    }
                     pressedItem.hideToolTip();
                     dragX = mouse.x;
                     dragY = mouse.y;
@@ -1384,6 +1387,8 @@ FocusScope {
                 }
 
                 main.previouslySelectedItemIndex = -1;
+
+                main.generateDragImage(); // in case the user drags again
             }
         }
 
