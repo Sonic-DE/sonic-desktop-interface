@@ -71,6 +71,18 @@ Item {
     // palette. Controls retain their own Button/View color sets.
     Kirigami.Theme.colorSet: Kirigami.Theme.Window
 
+    // A glow in the background colour, so the scheme's text and icons stay
+    // readable on any wallpaper: dark on dark schemes, light on light ones.
+    component ContentShadow: MultiEffect {
+        Kirigami.Theme.colorSet: Kirigami.Theme.Window
+        Kirigami.Theme.inherit: false
+        shadowEnabled: true
+        shadowColor: Kirigami.Theme.backgroundColor
+        shadowOpacity: 0.9
+        shadowBlur: 1
+        blurMax: 8
+    }
+
     Connections {
         target: authenticator
         function onFailed(kind) {
@@ -262,30 +274,12 @@ Item {
             alwaysShowClock: config.alwaysShowClock && !config.hideClockWhenIdle
         }
 
-        MultiEffect {
-            id: clockShadow
-            anchors.fill: clock
-            source: clock
-            visible: !lockScreenUi.keyboardActive && !lockScreenUi.softwareRendering && config.alwaysShowClock
-            shadowEnabled: true
-            shadowHorizontalOffset: 0
-            shadowVerticalOffset: 0.8
-            shadowColor: Qt.rgba(0, 0, 0, 0.7)
-            shadowBlur: 1
-            blurMax: 7
-            shadowScale: 1
-            opacity: lockScreenRoot.uiVisible ? 0 : 1
-            Behavior on opacity {
-                OpacityAnimator {
-                    duration: Kirigami.Units.veryLongDuration * 2
-                    easing.type: Easing.InOutQuad
-                }
-            }
-        }
-
         Clock {
             id: clock
-            property Item shadow: clockShadow
+            // WallpaperFader hides this one when the UI shows; the layer stays.
+            property Item shadow: Item {}
+            layer.enabled: !lockScreenUi.softwareRendering
+            layer.effect: ContentShadow {}
             visible: !lockScreenUi.keyboardActive && y > 0 && config.alwaysShowClock
             anchors.horizontalCenter: parent.horizontalCenter
             y: (mainBlock.userList.y + mainStack.y)/2 - height/2
@@ -317,6 +311,8 @@ Item {
 
             // this isn't implicit, otherwise items still get processed for the scenegraph
             visible: opacity > 0
+            layer.enabled: !lockScreenUi.softwareRendering
+            layer.effect: ContentShadow {}
 
             initialItem: MainBlock {
                 id: mainBlock
@@ -463,6 +459,8 @@ Item {
         LoginLockScreen.Footer {
             id: footer
             visible: !lockScreenUi.keyboardActive
+            layer.enabled: !lockScreenUi.softwareRendering
+            layer.effect: ContentShadow {}
             onOskActivated: {
                 // Focus the input before the shared footer activates the on-screen keyboard.
                 if (mainBlock.passwordInputVisible && !mainBlock.submissionBlocked) {
