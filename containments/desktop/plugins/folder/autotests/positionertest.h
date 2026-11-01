@@ -51,6 +51,7 @@ private Q_SLOTS:
     void tst_unsortedInsertionPreservesPositions_data();
     void tst_unsortedInsertionPreservesPositions();
     void tst_bootstrapUrlNoDuplicatePointer();
+    void tst_mixedSetPerStripeListingAndReady();
 
 private:
     void checkDefaultPositions(int perStripe);
