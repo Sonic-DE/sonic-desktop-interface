@@ -58,6 +58,14 @@ void PlasmaDesktopRunner::run(const RunnerContext &context, const QueryMatch & /
 {
     bool showPlasmaConsole = context.query().startsWith(m_desktopConsoleKeyword, Qt::CaseInsensitive);
     QStringList args{showPlasmaConsole ? QStringLiteral("--plasma") : QStringLiteral("--kwin")};
+    const qsizetype keywordSize = (showPlasmaConsole ? m_desktopConsoleKeyword : m_kwinConsoleKeyword).size();
+    const QString query = context.query();
+    if (query.size() > keywordSize && query.at(keywordSize).isSpace()) {
+        const QString path = query.mid(keywordSize).trimmed();
+        if (!path.isEmpty()) {
+            args << QStringLiteral("--") << path;
+        }
+    }
     auto job = new KIO::CommandLauncherJob(QStringLiteral("plasma-interactiveconsole"), args);
     job->start();
 }
