@@ -534,8 +534,8 @@ msgstr "Gjennomsikt"
 #: contents/configuration/PanelConfiguration.qml:465
 #, kde-format
 msgctxt "@info:tooltip"
-msgid "The current Plasma style does not support opacity options."
-msgstr "Den gjeldande Plasma-stilen støttar ikkje gjennomsiktsval."
+msgid "The current desktop style does not support opacity options."
+msgstr "Den gjeldande skrivebordsstilen støttar ikkje gjennomsiktsval."
 
 #: contents/configuration/PanelConfiguration.qml:487
 #, kde-format

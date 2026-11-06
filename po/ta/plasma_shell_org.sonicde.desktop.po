@@ -533,8 +533,8 @@ msgstr "ஒளிபுகாமை"
 #: contents/configuration/PanelConfiguration.qml:465
 #, kde-format
 msgctxt "@info:tooltip"
-msgid "The current Plasma style does not support opacity options."
-msgstr "தற்போதைய பிளாஸ்மா தோற்றத்திட்டம், ஒளிபுகாமையை மாற்றுவதை ஆதரிக்காது."
+msgid "The current desktop style does not support opacity options."
+msgstr "தற்போதைய பணிமேடை தோற்றத்திட்டம், ஒளிபுகாமையை மாற்றுவதை ஆதரிக்காது."
 
 #: contents/configuration/PanelConfiguration.qml:487
 #, kde-format

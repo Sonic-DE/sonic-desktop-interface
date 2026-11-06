@@ -536,8 +536,8 @@ msgstr "Opakutasuna"
 #: contents/configuration/PanelConfiguration.qml:465
 #, kde-format
 msgctxt "@info:tooltip"
-msgid "The current Plasma style does not support opacity options."
-msgstr "Plasmaren uneko estiloak ez du opakutasun aukerarik onartzen."
+msgid "The current desktop style does not support opacity options."
+msgstr "Mahaigaineko uneko estiloak ez du opakutasun aukerarik onartzen."
 
 #: contents/configuration/PanelConfiguration.qml:487
 #, kde-format

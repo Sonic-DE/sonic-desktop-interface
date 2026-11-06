@@ -532,8 +532,8 @@ msgstr "Nieprzezroczystość"
 #: contents/configuration/PanelConfiguration.qml:465
 #, kde-format
 msgctxt "@info:tooltip"
-msgid "The current Plasma style does not support opacity options."
-msgstr "Obecny wygląd Plazmy nie obsługuje ustawień nieprzezroczystości."
+msgid "The current desktop style does not support opacity options."
+msgstr "Obecny wygląd pulpitu nie obsługuje ustawień nieprzezroczystości."
 
 #: contents/configuration/PanelConfiguration.qml:487
 #, kde-format

@@ -533,8 +533,8 @@ msgstr "Ogenomskinlighet"
 #: contents/configuration/PanelConfiguration.qml:465
 #, kde-format
 msgctxt "@info:tooltip"
-msgid "The current Plasma style does not support opacity options."
-msgstr "Den aktuella Plasmastilen stöder inte ogenomskinlighetsalternativ."
+msgid "The current desktop style does not support opacity options."
+msgstr "Den aktuella skrivbordsstilen stöder inte ogenomskinlighetsalternativ."
 
 #: contents/configuration/PanelConfiguration.qml:487
 #, kde-format

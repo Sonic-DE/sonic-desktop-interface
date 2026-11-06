@@ -539,8 +539,8 @@ msgstr "Neprosojnost"
 #: contents/configuration/PanelConfiguration.qml:465
 #, kde-format
 msgctxt "@info:tooltip"
-msgid "The current Plasma style does not support opacity options."
-msgstr "Trenutni slog Plasme ne podpira možnosti neprosojnosti."
+msgid "The current desktop style does not support opacity options."
+msgstr "Trenutni slog namizja ne podpira možnosti neprosojnosti."
 
 #: contents/configuration/PanelConfiguration.qml:487
 #, kde-format

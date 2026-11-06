@@ -534,8 +534,8 @@ msgstr "אטימות"
 #: contents/configuration/PanelConfiguration.qml:465
 #, kde-format
 msgctxt "@info:tooltip"
-msgid "The current Plasma style does not support opacity options."
-msgstr "הסגנון הנוכחי של פלזמה לא תומך באפשרויות אטימות."
+msgid "The current desktop style does not support opacity options."
+msgstr "סגנון שולחן העבודה הנוכחי לא תומך באפשרויות אטימות."
 
 #: contents/configuration/PanelConfiguration.qml:487
 #, kde-format

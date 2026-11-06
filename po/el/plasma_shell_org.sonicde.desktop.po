@@ -621,8 +621,8 @@ msgstr "Αδιαφάνεια"
 #: contents/configuration/PanelConfiguration.qml:465
 #, kde-format
 msgctxt "@info:tooltip"
-msgid "The current Plasma style does not support opacity options."
-msgstr ""
+msgid "The current desktop style does not support opacity options."
+msgstr "Το τρέχον στυλ επιφάνειας εργασίας δεν υποστηρίζει επιλογές αδιαφάνειας."
 
 #: contents/configuration/PanelConfiguration.qml:487
 #, fuzzy, kde-format

@@ -534,8 +534,8 @@ msgstr "불투명도"
 #: contents/configuration/PanelConfiguration.qml:465
 #, kde-format
 msgctxt "@info:tooltip"
-msgid "The current Plasma style does not support opacity options."
-msgstr "현재 Plasma 스타일에서 불투명도 옵션을 지원하지 않습니다."
+msgid "The current desktop style does not support opacity options."
+msgstr "현재 데스크톱 스타일에서 불투명도 옵션을 지원하지 않습니다."
 
 #: contents/configuration/PanelConfiguration.qml:487
 #, kde-format

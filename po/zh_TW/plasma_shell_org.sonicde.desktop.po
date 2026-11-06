@@ -534,8 +534,8 @@ msgstr "透明度"
 #: contents/configuration/PanelConfiguration.qml:465
 #, kde-format
 msgctxt "@info:tooltip"
-msgid "The current Plasma style does not support opacity options."
-msgstr "目前 Plasma 風格不支援透明度選項。"
+msgid "The current desktop style does not support opacity options."
+msgstr "目前桌面風格不支援透明度選項。"
 
 #: contents/configuration/PanelConfiguration.qml:487
 #, kde-format

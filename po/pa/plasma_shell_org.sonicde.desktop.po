@@ -532,8 +532,8 @@ msgstr "ਪਾਰਦਰਸ਼ਤਾ"
 #: contents/configuration/PanelConfiguration.qml:465
 #, kde-format
 msgctxt "@info:tooltip"
-msgid "The current Plasma style does not support opacity options."
-msgstr ""
+msgid "The current desktop style does not support opacity options."
+msgstr "ਮੌਜੂਦਾ ਡੈਸਕਟਾਪ ਸਟਾਈਲ ਧੁੰਦਲਾਪਣ ਚੋਣਾਂ ਨੂੰ ਸਹਾਇਕ ਨਹੀਂ ਹੈ।"
 
 #: contents/configuration/PanelConfiguration.qml:487
 #, kde-format

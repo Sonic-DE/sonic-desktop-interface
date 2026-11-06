@@ -536,9 +536,9 @@ msgstr "Dekking"
 #: contents/configuration/PanelConfiguration.qml:465
 #, kde-format
 msgctxt "@info:tooltip"
-msgid "The current Plasma style does not support opacity options."
+msgid "The current desktop style does not support opacity options."
 msgstr ""
-"De huidige Plasma-stijl biedt geen ondersteuning voor opties voor "
+"De huidige bureaubladstijl biedt geen ondersteuning voor opties voor "
 "transparantie."
 
 #: contents/configuration/PanelConfiguration.qml:487

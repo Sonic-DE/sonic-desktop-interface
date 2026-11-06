@@ -532,8 +532,8 @@ msgstr "غۇۋالىقى"
 #: contents/configuration/PanelConfiguration.qml:465
 #, kde-format
 msgctxt "@info:tooltip"
-msgid "The current Plasma style does not support opacity options."
-msgstr ""
+msgid "The current desktop style does not support opacity options."
+msgstr "نۆۋەتتىكى ئۈستەلئۈستى ئۇسلۇبى سۈزۈكلۈك تاللانمىلىرىنى قوللىمايدۇ."
 
 #: contents/configuration/PanelConfiguration.qml:487
 #, kde-format

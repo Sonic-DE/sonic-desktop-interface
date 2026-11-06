@@ -535,8 +535,8 @@ msgstr "Priehľadnosť"
 #: contents/configuration/PanelConfiguration.qml:465
 #, kde-format
 msgctxt "@info:tooltip"
-msgid "The current Plasma style does not support opacity options."
-msgstr "Aktuálny štýl Plasma nepodporuje možnosti priehľadnosti."
+msgid "The current desktop style does not support opacity options."
+msgstr "Aktuálny štýl pracovnej plochy nepodporuje možnosti priehľadnosti."
 
 #: contents/configuration/PanelConfiguration.qml:487
 #, kde-format

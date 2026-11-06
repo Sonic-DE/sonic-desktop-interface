@@ -462,7 +462,7 @@ ColumnLayout {
 
                 PlasmaExtras.ContextualHelpButton {
                     visible: !panel.adaptiveOpacityEnabled
-                    toolTipText: i18ndc("plasma_shell_org.sonicde.desktop", "@info:tooltip", "The current Plasma style does not support opacity options.")
+                    toolTipText: i18ndc("plasma_shell_org.sonicde.desktop", "@info:tooltip", "The current desktop style does not support opacity options.")
                 }
             }
             PanelRepresentation {

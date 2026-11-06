@@ -535,9 +535,9 @@ msgstr "გაუმჭვირვალობა"
 #: contents/configuration/PanelConfiguration.qml:465
 #, kde-format
 msgctxt "@info:tooltip"
-msgid "The current Plasma style does not support opacity options."
+msgid "The current desktop style does not support opacity options."
 msgstr ""
-"Plasma-ის მიმდინარე სტილს გაუმჭვირვალობის პარამეტრების მხარდაჭერა არ აქვს."
+"სამუშაო მაგიდის მიმდინარე სტილს გაუმჭვირვალობის პარამეტრების მხარდაჭერა არ აქვს."
 
 #: contents/configuration/PanelConfiguration.qml:487
 #, kde-format

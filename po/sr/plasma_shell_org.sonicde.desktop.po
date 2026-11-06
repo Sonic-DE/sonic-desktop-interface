@@ -591,8 +591,8 @@ msgstr ""
 #: contents/configuration/PanelConfiguration.qml:465
 #, kde-format
 msgctxt "@info:tooltip"
-msgid "The current Plasma style does not support opacity options."
-msgstr ""
+msgid "The current desktop style does not support opacity options."
+msgstr "Текући стил површи не подржава опције непрозирности."
 
 #: contents/configuration/PanelConfiguration.qml:487
 #, kde-format

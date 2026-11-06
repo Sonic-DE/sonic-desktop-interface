@@ -535,8 +535,8 @@ msgstr "العتمة"
 #: contents/configuration/PanelConfiguration.qml:465
 #, kde-format
 msgctxt "@info:tooltip"
-msgid "The current Plasma style does not support opacity options."
-msgstr "لا يدعم نمط بلازما الحالي خيارات التعتيم."
+msgid "The current desktop style does not support opacity options."
+msgstr "لا يدعم نمط سطح المكتب الحالي خيارات التعتيم."
 
 #: contents/configuration/PanelConfiguration.qml:487
 #, kde-format

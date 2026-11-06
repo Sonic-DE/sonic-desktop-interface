@@ -4,6 +4,9 @@ Sonic Desktop Interface is the heart of the SonicDE desktop: the panel, applicat
 
 ## Unreleased
 
+- Background Services now has a place in System Settings, under System > Session, and Plasma Search is now called Search.
+- The Mouse Navigation help now names the right keys for choosing the left, middle and right mouse buttons.
+- The panel's opacity help now says desktop style.
 - Keyboard layout switching is more dependable: switching between layouts that type the same characters (such as US and Australian English) no longer gets stuck, and your first layout change now takes effect right away even on a brand-new account.
 - The keyboard layout switcher and keyboard settings now talk to the keyboard service through SonicDE's new fast, robust communication framework.
 - The desktop's widgets and tools now record their logs through SonicDE's new unified logging system instead of a separate log file.

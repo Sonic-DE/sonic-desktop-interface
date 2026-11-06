@@ -535,8 +535,8 @@ msgstr "Matlık"
 #: contents/configuration/PanelConfiguration.qml:465
 #, kde-format
 msgctxt "@info:tooltip"
-msgid "The current Plasma style does not support opacity options."
-msgstr "Geçerli Plasma biçemi matlık seçeneklerini desteklemiyor."
+msgid "The current desktop style does not support opacity options."
+msgstr "Geçerli masaüstü biçemi matlık seçeneklerini desteklemiyor."
 
 #: contents/configuration/PanelConfiguration.qml:487
 #, kde-format

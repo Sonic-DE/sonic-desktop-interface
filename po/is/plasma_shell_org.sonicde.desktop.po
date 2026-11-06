@@ -535,8 +535,8 @@ msgstr "Ógegnsæi"
 #: contents/configuration/PanelConfiguration.qml:465
 #, kde-format
 msgctxt "@info:tooltip"
-msgid "The current Plasma style does not support opacity options."
-msgstr "Núverandi stíll Plasma styður ekki valkosti ógegnsæis."
+msgid "The current desktop style does not support opacity options."
+msgstr "Núverandi skjáborðsstíll styður ekki valkosti ógegnsæis."
 
 #: contents/configuration/PanelConfiguration.qml:487
 #, kde-format

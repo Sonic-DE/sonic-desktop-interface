@@ -539,8 +539,8 @@ msgstr "Deckkraft"
 #: contents/configuration/PanelConfiguration.qml:465
 #, kde-format
 msgctxt "@info:tooltip"
-msgid "The current Plasma style does not support opacity options."
-msgstr "Der aktuelle Plasma-Stil unterstützt keine Optionen zur Deckkraft."
+msgid "The current desktop style does not support opacity options."
+msgstr "Der aktuelle Arbeitsflächen-Stil unterstützt keine Optionen zur Deckkraft."
 
 #: contents/configuration/PanelConfiguration.qml:487
 #, kde-format

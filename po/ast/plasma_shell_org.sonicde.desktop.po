@@ -554,8 +554,8 @@ msgstr "Opacidá"
 #: contents/configuration/PanelConfiguration.qml:465
 #, kde-format
 msgctxt "@info:tooltip"
-msgid "The current Plasma style does not support opacity options."
-msgstr ""
+msgid "The current desktop style does not support opacity options."
+msgstr "L'estilu del escritoriu actual nun ye compatible coles opciones d'opacidá."
 
 #: contents/configuration/PanelConfiguration.qml:487
 #, fuzzy, kde-format
