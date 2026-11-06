@@ -11,7 +11,7 @@ Sonic Desktop Interface is the heart of the SonicDE desktop: the panel, applicat
 - The lock screen keeps your picture visible and centers your picture and password field above the on-screen keyboard when it is open.
 - Game controller settings now detect connected gamepads more reliably and show only the devices that matter.
 - Fixed a possible crash when the mouse settings finish applying your cursor theme.
-- Behind the scenes: new automated checks for applying mouse cursor themes.
+- Behind the scenes: new automated checks for applying mouse cursor themes, and the accessibility helper and keyboard preview use QXLibre for X11 when it's installed, going back to Qt's own X11 support when it isn't. Panels can also leave their background out behind part of a widget.
 
 ## 6.8.0.3 (2026-10-25)
 

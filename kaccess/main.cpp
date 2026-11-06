@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
 
     // this application is currently only relevant on X, force to run under X
     // note if someone does port this we still need to run kaccess under X for xwayland apps
-    qputenv("QT_QPA_PLATFORM", "xcb");
+    qputenv("QT_QPA_PLATFORM", "xlibre;xcb");
 
     // verify the Xlib has matching XKB extension
     int major = XkbMajorVersion;

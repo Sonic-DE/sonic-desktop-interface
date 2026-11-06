@@ -149,14 +149,14 @@ Item {
 
     KSvg.FrameSvgItem {
         id: translucentItem
-        visible: root.floatingness === 0 && root.panelOpacity !== 1
+        visible: !root.hasCutout && root.floatingness === 0 && root.panelOpacity !== 1
         enabledBorders: panel.enabledBorders
         anchors.fill: floatingTranslucentItem
         imagePath: root.containment?.plasmoid?.backgroundHints === PlasmaCore.Types.NoBackground ? "" : "widgets/panel-background"
     }
     KSvg.FrameSvgItem {
         id: floatingTranslucentItem
-        visible: root.floatingness !== 0 && root.panelOpacity !== 1
+        visible: !root.hasCutout && root.floatingness !== 0 && root.panelOpacity !== 1
         x: root.rightEdge ? root.fixedLeftFloatingPadding + root.fixedRightFloatingPadding * (1 - root.floatingness) : root.leftFloatingPadding
         y: root.bottomEdge ? root.fixedTopFloatingPadding + root.fixedBottomFloatingPadding * (1 - root.floatingness) : root.topFloatingPadding
         width: root.verticalPanel ? panel.thickness : parent.width - root.leftFloatingPadding - root.rightFloatingPadding
@@ -166,21 +166,66 @@ Item {
     }
     KSvg.FrameSvgItem {
         id: floatingOpaqueItem
-        visible: root.floatingness !== 0 && root.panelOpacity !== 0
+        visible: !root.hasCutout && root.floatingness !== 0 && root.panelOpacity !== 0
         opacity: root.panelOpacity
         anchors.fill: floatingTranslucentItem
         imagePath: root.containment?.plasmoid?.backgroundHints === PlasmaCore.Types.NoBackground ? "" : "solid/widgets/panel-background"
     }
     KSvg.FrameSvgItem {
         id: opaqueItem
-        visible: root.panelOpacity !== 0 && root.floatingness === 0
+        visible: !root.hasCutout && root.panelOpacity !== 0 && root.floatingness === 0
         opacity: root.panelOpacity
         enabledBorders: panel.enabledBorders
         anchors.fill: floatingTranslucentItem
         imagePath: root.containment?.plasmoid?.backgroundHints === PlasmaCore.Types.NoBackground ? "" : "solid/widgets/panel-background"
     }
 
+    // A widget asked for no background behind part of it: the same background, drawn around that.
+    Repeater {
+        model: root.hasCutout ? [
+            Qt.rect(0, 0, root.width, panel.backgroundCutout.y),
+            Qt.rect(0, panel.backgroundCutout.y + panel.backgroundCutout.height, root.width, root.height - panel.backgroundCutout.y - panel.backgroundCutout.height),
+            Qt.rect(0, panel.backgroundCutout.y, panel.backgroundCutout.x, panel.backgroundCutout.height),
+            Qt.rect(panel.backgroundCutout.x + panel.backgroundCutout.width, panel.backgroundCutout.y, root.width - panel.backgroundCutout.x - panel.backgroundCutout.width, panel.backgroundCutout.height),
+        ] : []
+        delegate: Item {
+            id: backgroundPiece
+            required property rect modelData
+            x: modelData.x
+            y: modelData.y
+            width: modelData.width
+            height: modelData.height
+            clip: true
+
+            KSvg.FrameSvgItem {
+                visible: root.panelOpacity !== 1
+                x: floatingTranslucentItem.x - backgroundPiece.x
+                y: floatingTranslucentItem.y - backgroundPiece.y
+                width: floatingTranslucentItem.width
+                height: floatingTranslucentItem.height
+                prefix: translucentItem.prefix
+                enabledBorders: root.floatingness === 0 ? panel.enabledBorders : floatingTranslucentItem.enabledBorders
+                imagePath: translucentItem.imagePath
+            }
+            KSvg.FrameSvgItem {
+                visible: root.panelOpacity !== 0
+                opacity: root.panelOpacity
+                x: floatingTranslucentItem.x - backgroundPiece.x
+                y: floatingTranslucentItem.y - backgroundPiece.y
+                width: floatingTranslucentItem.width
+                height: floatingTranslucentItem.height
+                prefix: translucentItem.prefix
+                enabledBorders: root.floatingness === 0 ? panel.enabledBorders : floatingOpaqueItem.enabledBorders
+                imagePath: opaqueItem.imagePath
+            }
+        }
+    }
+
+    // Only what nothing in the panel used, such as a terminal's.
     Keys.onEscapePressed: {
+        if (root.containment?.plasmoid?.status === PlasmaCore.Types.AcceptingInputStatus) {
+            root.containment.plasmoid.status = PlasmaCore.Types.PassiveStatus;
+        }
         root.parent.focus = false
     }
 
@@ -189,6 +234,8 @@ Item {
     property bool isAdaptive: panel.opacityMode === Panel.Global.Adaptive
     property bool floating: panel.floating
     property bool hasCompositing: KX11Extras.compositingActive
+    // Without a compositor there is nothing to show through it.
+    readonly property bool hasCutout: hasCompositing && panel.backgroundCutout.width > 0 && panel.backgroundCutout.height > 0
     property var stateTriggers: [floating, touchingWindowOrKeyboard, isOpaque, isAdaptive, isTransparent, hasCompositing, containment, panel.floatingApplets]
     onStateTriggersChanged: {
         let opaqueApplets = false
@@ -340,7 +387,8 @@ Item {
             ? (root.verticalPanel ?  Math.min(panel.activeFocusItem.height, panel.activeFocusItem.height) : translucentItem.height)
             : 0
 
-        visible: panel.active && panel.activeFocusItem
+        // A panel with a cutout shows no focus line.
+        visible: !root.hasCutout && panel.active && panel.activeFocusItem
 
         imagePath: "widgets/tabbar"
         prefix: {

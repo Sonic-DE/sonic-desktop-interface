@@ -48,7 +48,7 @@ static QString findXkbRulesFile()
 
 int main(int argc, char *argv[])
 {
-    setenv("QT_QPA_PLATFORM", "xcb", 1);
+    setenv("QT_QPA_PLATFORM", "xlibre;xcb", 1);
     Application app(argc, argv);
     Sonic::Logging::install();
     Q_ASSERT(app.platformName() == QStringLiteral("xcb"));
