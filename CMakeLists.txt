@@ -379,8 +379,6 @@ set_package_properties(FontNotoColorEmoji PROPERTIES
     TYPE RUNTIME
 )
 
-add_subdirectory(appiumtests)
-
 if(BUILD_DOC)
     add_subdirectory(doc)
     kdoctools_install(po)
