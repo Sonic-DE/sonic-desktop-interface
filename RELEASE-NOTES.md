@@ -2,7 +2,7 @@
 
 Sonic Desktop Interface is the heart of the SonicDE desktop: the panel, application launcher, task manager, desktop icons, lock screen look, and the settings pages for your keyboard, mouse, touchpad, tablet and more.
 
-## Unreleased
+## 6.8.2 (2026-11-10)
 
 - New Dwell Clicker widget in the system tray: turn dwell clicking on or off and choose the next type of click (left, double, drag, middle or right). Its settings, such as how long to wait and how far the pointer may move, are in Accessibility settings.
 - Background Services now has a place in System Settings, under System > Session, and Plasma Search is now called Search.
@@ -12,10 +12,10 @@ Sonic Desktop Interface is the heart of the SonicDE desktop: the panel, applicat
 - The keyboard layout switcher and keyboard settings now talk to the keyboard service through SonicDE's new fast, robust communication framework.
 - The desktop's widgets and tools now record their logs through SonicDE's new unified logging system instead of a separate log file.
 - The desktop and its shell integration now consistently identify themselves as SonicDE, with SonicDE names throughout.
-- The lock screen keeps your picture visible and centers your picture and password field above the on-screen keyboard when it is open.
-- Game controller settings now detect connected gamepads more reliably and show only the devices that matter.
-- Fixed a possible crash when the mouse settings finish applying your cursor theme.
-- Behind the scenes: new automated checks for applying mouse cursor themes, and the accessibility helper and keyboard preview use QXLibre for X11 when it's installed, going back to Qt's own X11 support when it isn't. Panels can also leave their background out behind part of a widget.
+- Text and icons on the lock screen now have a soft glow on dark themes, or a shadow on light ones, so they stand out over any wallpaper.
+- Pressing Escape in a panel now closes it when nothing in the panel needs the key.
+- Typing "desktop console" or "wm console" followed by a script file in the search now opens that script in the console.
+- Behind the scenes: the accessibility helper and keyboard preview use QXLibre for X11 when it's installed, going back to Qt's own X11 support when it isn't. Panels can also leave their background out behind part of a widget, and automated tests that need Wayland were removed.
 
 ## 6.8.0.3 (2026-10-25)
 
