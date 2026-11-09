@@ -4,6 +4,7 @@ Sonic Desktop Interface is the heart of the SonicDE desktop: the panel, applicat
 
 ## Unreleased
 
+- New Dwell Clicker widget in the system tray: turn dwell clicking on or off and choose the next type of click (left, double, drag, middle or right). Its settings, such as how long to wait and how far the pointer may move, are in Accessibility settings.
 - Background Services now has a place in System Settings, under System > Session, and Plasma Search is now called Search.
 - The Mouse Navigation help now names the right keys for choosing the left, middle and right mouse buttons.
 - The panel's opacity help now says desktop style.

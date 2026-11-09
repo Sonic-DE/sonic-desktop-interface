@@ -3,6 +3,19 @@ add_definitions(-DTRANSLATION_DOMAIN=\"kcmaccess\")
 
 kcmutils_add_qml_kcm(kcm_access SOURCES kcmaccess.cpp)
 
+# Types the pages create, as a declared module so qmllint and qmlcachegen can see them.
+ecm_add_qml_module(kcm_access_declarative
+    URI "org.kde.plasma.access.kcm"
+    GENERATE_PLUGIN_SOURCE
+    SOURCES
+        intvalidatorwithsuffix.cpp
+        intvalidatorwithsuffix.h
+    DEPENDENCIES
+        QtQuick
+)
+target_link_libraries(kcm_access_declarative PRIVATE Qt::Gui)
+ecm_finalize_qml_module(kcm_access_declarative)
+
 add_library(kaccess_settings STATIC)
 set_property(TARGET kaccess_settings PROPERTY POSITION_INDEPENDENT_CODE ON)
 
@@ -66,6 +79,14 @@ kconfig_target_kcfg_file(kaccess_settings
 
 kconfig_target_kcfg_file(kaccess_settings
     GENERATE_MOC
+    FILE kcmaccessibilitydwellclicker.kcfg
+    HEADER kcmaccessibilitydwellclicker.h
+    CLASS_NAME DwellClickerSettings
+    MUTATORS DEFAULT_VALUE_GETTERS GENERATE_PROPERTIES PARENT_IN_CONSTRUCTOR NOTIFIERS
+)
+
+kconfig_target_kcfg_file(kaccess_settings
+    GENERATE_MOC
     FILE kcmaccessibilitycolorblindnesscorrection.kcfg
     HEADER kcmaccessibilitycolorblindnesscorrection.h
     CLASS_NAME ColorblindnessCorrectionSettings
@@ -91,8 +112,8 @@ kconfig_target_kcfg_file(kaccess_settings
 kcmutils_generate_module_data(kcm_access
     MODULE_DATA_HEADER kcmaccessibilitydata.h
     MODULE_DATA_CLASS_NAME AccessibilityData
-    SETTINGS_HEADERS kcmaccessibilitybell.h kcmaccessibilitykeyboard.h kcmaccessibilitykeyboardfilters.h kcmaccessibilitymouse.h kcmaccessibilityactivationgestures.h kcmaccessibilityscreenreader.h kcmaccessibilityshakecursor.h kcmaccessibilitycolorblindnesscorrection.h kcmaccessibilityinvert.h kcmaccessibilityzoommagnifier.h
-    SETTINGS_CLASSES BellSettings KeyboardSettings KeyboardFiltersSettings MouseSettings ActivationGesturesSettings ScreenReaderSettings ShakeCursorSettings ColorblindnessCorrectionSettings InvertSettings ZoomMagnifierSettings
+    SETTINGS_HEADERS kcmaccessibilitybell.h kcmaccessibilitykeyboard.h kcmaccessibilitykeyboardfilters.h kcmaccessibilitymouse.h kcmaccessibilityactivationgestures.h kcmaccessibilityscreenreader.h kcmaccessibilityshakecursor.h kcmaccessibilitydwellclicker.h kcmaccessibilitycolorblindnesscorrection.h kcmaccessibilityinvert.h kcmaccessibilityzoommagnifier.h
+    SETTINGS_CLASSES BellSettings KeyboardSettings KeyboardFiltersSettings MouseSettings ActivationGesturesSettings ScreenReaderSettings ShakeCursorSettings DwellClickerSettings ColorblindnessCorrectionSettings InvertSettings ZoomMagnifierSettings
 )
 
 target_link_libraries(kcm_access PRIVATE

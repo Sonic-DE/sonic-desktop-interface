@@ -17,7 +17,6 @@
 #include <QProcess>
 #include <QQuickItem>
 #include <QStandardPaths>
-#include <QValidator>
 #include <QWindow>
 
 #include <KActionCollection>
@@ -35,6 +34,7 @@
 #include "kcmaccessibilitybell.h"
 #include "kcmaccessibilitycolorblindnesscorrection.h"
 #include "kcmaccessibilitydata.h"
+#include "kcmaccessibilitydwellclicker.h"
 #include "kcmaccessibilityinvert.h"
 #include "kcmaccessibilitykeyboard.h"
 #include "kcmaccessibilitykeyboardfilters.h"
@@ -44,25 +44,6 @@
 #include "kcmaccessibilityzoommagnifier.h"
 
 K_PLUGIN_FACTORY_WITH_JSON(KCMAccessFactory, "kcm_access.json", registerPlugin<KAccessConfig>(); registerPlugin<AccessibilityData>();)
-
-class IntValidatorWithSuffix : public QIntValidator
-{
-    Q_GADGET
-public:
-    State validate(QString &text, int &pos) const override
-    {
-        QString strippedText;
-        QRegularExpression re("\\d+");
-        QRegularExpressionMatchIterator i = re.globalMatch(text);
-
-        QString numbers;
-        while (i.hasNext()) {
-            QRegularExpressionMatch match = i.next();
-            strippedText += match.captured();
-        }
-        return QIntValidator::validate(strippedText, pos);
-    }
-};
 
 KAccessConfig::KAccessConfig(QObject *parent, const KPluginMetaData &metaData)
     : KQuickManagedConfigModule(parent, metaData)
@@ -75,10 +56,10 @@ KAccessConfig::KAccessConfig(QObject *parent, const KPluginMetaData &metaData)
     qmlRegisterAnonymousType<ActivationGesturesSettings>("org.kde.plasma.access.kcm", 0);
     qmlRegisterAnonymousType<ScreenReaderSettings>("org.kde.plasma.access.kcm", 0);
     qmlRegisterAnonymousType<ShakeCursorSettings>("org.kde.plasma.access.kcm", 0);
+    qmlRegisterAnonymousType<DwellClickerSettings>("org.kde.plasma.access.kcm", 0);
     qmlRegisterAnonymousType<ColorblindnessCorrectionSettings>("org.kde.plasma.access.kcm", 0);
     qmlRegisterAnonymousType<InvertSettings>("org.kde.plasma.access.kcm", 0);
     qmlRegisterAnonymousType<ZoomMagnifierSettings>("org.kde.plasma.access.kcm", 0);
-    qmlRegisterType<IntValidatorWithSuffix>("org.kde.plasma.access.kcm", 0, 0, "IntValidatorWithSuffix");
 
     int tryOrcaRun = QProcess::execute(QStringLiteral("orca"), {QStringLiteral("--version")});
     m_screenReaderInstalled = tryOrcaRun != -2;
@@ -92,6 +73,7 @@ KAccessConfig::KAccessConfig(QObject *parent, const KPluginMetaData &metaData)
     connect(m_data->keyboardSettings(), &KeyboardSettings::configChanged, this, &KAccessConfig::keyboardModifiersIsDefaultsChanged);
     connect(m_data->screenReaderSettings(), &ScreenReaderSettings::configChanged, this, &KAccessConfig::screenReaderIsDefaultsChanged);
     connect(m_data->shakeCursorSettings(), &ShakeCursorSettings::configChanged, this, &KAccessConfig::shakeCursorIsDefaultsChanged);
+    connect(m_data->dwellClickerSettings(), &DwellClickerSettings::configChanged, this, &KAccessConfig::dwellClickerIsDefaultsChanged);
     connect(m_data->colorblindnessCorrectionSettings(),
             &ColorblindnessCorrectionSettings::configChanged,
             this,
@@ -269,6 +251,8 @@ void KAccessConfig::save()
     const bool shakeCursorSaveNeeded = m_data->shakeCursorSettings()->findItem(QStringLiteral("ShakeCursor"))->isSaveNeeded();
     const bool shakeCursorMagnificationSaveNeeded = m_data->shakeCursorSettings()->findItem(QStringLiteral("ShakeCursorMagnification"))->isSaveNeeded();
 
+    const bool dwellClickerSaveNeeded = m_data->dwellClickerSettings()->isSaveNeeded();
+
     const bool colorblindnessCorrectionSaveNeeded =
         m_data->colorblindnessCorrectionSettings()->findItem(QStringLiteral("ColorblindnessCorrection"))->isSaveNeeded();
     const bool colorblindnessCorrectionSettingsSaveNeeded = m_data->colorblindnessCorrectionSettings()->findItem(QStringLiteral("Mode"))->isSaveNeeded()
@@ -320,6 +304,11 @@ void KAccessConfig::save()
                                                                          QStringLiteral("reconfigureEffect"));
         reconfigureMessage.setArguments({QStringLiteral("shakecursor")});
         QDBusConnection::sessionBus().call(reconfigureMessage);
+    }
+
+    if (dwellClickerSaveNeeded) {
+        // The window manager rereads kwinrc and turns the dwell clicker and its ring on or off itself.
+        QDBusConnection::sessionBus().send(QDBusMessage::createSignal(QStringLiteral("/KWin"), QStringLiteral("org.kde.KWin"), QStringLiteral("reloadConfig")));
     }
 
     if (colorblindnessCorrectionSaveNeeded) {
@@ -446,6 +435,11 @@ ShakeCursorSettings *KAccessConfig::shakeCursorSettings() const
     return m_data->shakeCursorSettings();
 }
 
+DwellClickerSettings *KAccessConfig::dwellClickerSettings() const
+{
+    return m_data->dwellClickerSettings();
+}
+
 ColorblindnessCorrectionSettings *KAccessConfig::colorblindnessCorrectionSettings() const
 {
     return m_data->colorblindnessCorrectionSettings();
@@ -494,6 +488,11 @@ bool KAccessConfig::screenReaderIsDefaults() const
 bool KAccessConfig::shakeCursorIsDefaults() const
 {
     return shakeCursorSettings()->isDefaults();
+}
+
+bool KAccessConfig::dwellClickerIsDefaults() const
+{
+    return dwellClickerSettings()->isDefaults();
 }
 
 bool KAccessConfig::colorblindnessCorrectionIsDefaults() const

@@ -49,6 +49,11 @@ KCMUtils.AbstractKCM {
             defaultnessKey: "mouseIsDefaults"
         },
         {
+            icon: "input-mouse-click-left",
+            title: i18nc("@title Category name in sidebar", "Dwell Clicker"),
+            defaultnessKey: "dwellClickerIsDefaults"
+        },
+        {
             icon: "input-caps-on",
             title: i18nc("@title Category name in sidebar", "Activation Shortcuts"),
             defaultnessKey: "activationGesturesIsDefaults"
@@ -179,6 +184,7 @@ KCMUtils.AbstractKCM {
                         ModifierKeys {}
                         KeyboardFilters {}
                         MouseNavigation {}
+                        DwellClicker {}
                         ActivationShortcuts {}
                         ScreenReader {}
                         ColorblindnessCorrection {}
