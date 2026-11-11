@@ -2,6 +2,10 @@
 
 Sonic Desktop Interface is the heart of the SonicDE desktop: the panel, application launcher, task manager, desktop icons, lock screen look, and the settings pages for your keyboard, mouse, touchpad, tablet and more.
 
+## Unreleased
+
+- Behind the scenes: a panel whose widget wants it to itself takes no other widgets and offers no Clone Panel.
+
 ## 6.8.2 (2026-11-10)
 
 - New Dwell Clicker widget in the system tray: turn dwell clicking on or off and choose the next type of click (left, double, drag, middle or right). Its settings, such as how long to wait and how far the pointer may move, are in Accessibility settings.

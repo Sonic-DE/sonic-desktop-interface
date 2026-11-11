@@ -44,6 +44,8 @@ ContainmentItem {
     property bool hasSpacer
     // True when e.g. the task manager is drag and dropping tasks.
     property bool appletRequestsInhibitDnD: false
+    // False while locked, or while a widget here wants the panel to itself.
+    readonly property bool takesWidgets: Plasmoid.internalAction("add widgets")?.enabled ?? true
     property bool reverse: Application.layoutDirection === Qt.RightToLeft
 
 //END properties
@@ -198,7 +200,7 @@ ContainmentItem {
         }
 
         onDragEnter: event => {
-            if (Plasmoid.immutable || root.appletRequestsInhibitDnD) {
+            if (Plasmoid.immutable || root.appletRequestsInhibitDnD || !root.takesWidgets) {
                 event.ignore();
                 return;
             }
@@ -226,6 +228,11 @@ ContainmentItem {
         }
 
         onDrop: event => {
+            // No spacer was added for a refused drag.
+            if (!root.takesWidgets) {
+                event.ignore();
+                return;
+            }
             appletsModel.remove((dndSpacer.parent as AppletContainer).index);
             root.processMimeData(event.mimeData, event.x, event.y);
             event.accept(event.proposedAction);

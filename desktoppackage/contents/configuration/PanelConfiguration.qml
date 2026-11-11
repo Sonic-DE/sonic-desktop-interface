@@ -139,6 +139,9 @@ ColumnLayout {
                     PC3.MenuItem {
                         text: i18ndc("plasma_shell_org.sonicde.desktop", "@action:menu add a widget", "Widgets…")
                         icon.name: "view-group-symbolic"
+                        // Not for a panel whose widget wants it to itself.
+                        visible: plasmoid.internalAction("add widgets")?.enabled ?? true
+                        height: visible ? implicitHeight : 0
                         onClicked: {
                             configDialog.close()
                             configDialog.showAddWidgetDialog()
@@ -749,6 +752,8 @@ ColumnLayout {
                 text: i18ndc("plasma_shell_org.sonicde.desktop", "@action:button Clone the panel", "Clone Panel")
                 icon.name: "edit-copy-symbolic"
                 checkable: true
+                // Its widget wouldn't be copied, so the clone would be empty.
+                visible: plasmoid.internalAction("add widgets")?.enabled ?? true
 
                 PC3.ToolTip.text: i18ndc("plasma_shell_org.sonicde.desktop", "@info:tooltip for button", "Create a new panel with the same settings and applets")
                 PC3.ToolTip.delay: Kirigami.Units.toolTipDelay
