@@ -21,7 +21,7 @@
     </entry>
     <entry name="lookAndFeelPackage" key="LookAndFeelPackage" type="String">
       <label>Global Look and Feel package</label>
-      <default>org.kde.silver.desktop</default>
+      <default>org.kde.silverlightbottompanel.desktop</default>
     </entry>
     <entry name="defaultLightLookAndFeel" key="DefaultLightLookAndFeel" type="String">
       <label>Global Look and Feel package, alternate</label>

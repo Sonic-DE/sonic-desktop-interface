@@ -4,6 +4,7 @@ Sonic Desktop Interface is the heart of the SonicDE desktop: the panel, applicat
 
 ## Unreleased
 
+- Quick Settings and Splash Screen now restore Silver Light - Bottom Panel and its splash screen as the defaults.
 - Behind the scenes: a panel whose widget wants it to itself takes no other widgets and offers no Clone Panel, and a widget that leaves shortcuts to its panel has no Keyboard Shortcuts page.
 
 ## 6.8.2 (2026-11-10)
