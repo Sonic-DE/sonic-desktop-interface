@@ -327,7 +327,8 @@ Rectangle {
             }
             Repeater {
                 Layout.fillWidth: true
-                model: !root.isContainment ? globalConfigModel : undefined
+                // A widget the panel's shortcut opens has no Keyboard Shortcuts page.
+                model: !root.isContainment && !Plasmoid.metaData.rawData["X-SonicDE-NoGlobalShortcut"] ? globalConfigModel : undefined
                 delegate: categoryDelegate
             }
             Repeater {
