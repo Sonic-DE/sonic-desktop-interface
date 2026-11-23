@@ -30,13 +30,18 @@ endif()
 # This test requires xvfb-run and the xcb platform
 find_program(XVFB_RUN_EXECUTABLE xvfb-run)
 if(XVFB_RUN_EXECUTABLE)
+    # The kcmshell6 of the KCMUtils built against, never another desktop's on PATH.
+    find_program(KCMSHELL6_EXECUTABLE kcmshell6
+        PATHS ${KF6KCMUtils_DIR}/../../../bin ${KF6KCMUtils_DIR}/../../../../bin
+        NO_DEFAULT_PATH REQUIRED
+    )
     add_test(
         NAME kcm_touchpad_smoketest
         COMMAND ${CMAKE_COMMAND} -E env
             QT_PLUGIN_PATH=${CMAKE_BINARY_DIR}/bin
             QT_QPA_PLATFORM=xcb
             ${XVFB_RUN_EXECUTABLE} -a
-            kcmshell6 --smoke-test kcm_touchpad
+            ${KCMSHELL6_EXECUTABLE} --smoke-test kcm_touchpad
     )
 else()
     message(STATUS "xvfb-run not found, skipping kcm_touchpad_smoketest")

@@ -9,6 +9,7 @@ add_library(keyboardlayout_ipc_protocol STATIC
     ipc/IpcProtocol.cpp
     ipc/IpcProtocol.h
 )
+set_property(TARGET keyboardlayout_ipc_protocol PROPERTY POSITION_INDEPENDENT_CODE ON)
 
 target_include_directories(keyboardlayout_ipc_protocol
     PUBLIC
