@@ -74,16 +74,26 @@ Item {
     // palette. Controls retain their own Button/View color sets.
     Kirigami.Theme.colorSet: Kirigami.Theme.Window
 
-    // A glow in the background colour, so the scheme's text and icons stay
-    // readable on any wallpaper: dark on dark schemes, light on light ones.
-    component ContentShadow: MultiEffect {
-        Kirigami.Theme.colorSet: Kirigami.Theme.Window
-        Kirigami.Theme.inherit: false
+    // A glow in the background colour behind the clock, so it stays readable on any wallpaper.
+    // Used as a sibling placed before its source: a layer.effect would draw the text blurry.
+    component GlowLayer: MultiEffect {
+        anchors.fill: parent
         shadowEnabled: true
         shadowColor: Kirigami.Theme.backgroundColor
-        shadowOpacity: 0.9
+        shadowOpacity: 1
         shadowBlur: 1
-        blurMax: 8
+    }
+    component ContentShadow: Item {
+        id: glow
+        required property Item source
+        Kirigami.Theme.colorSet: Kirigami.Theme.Window
+        Kirigami.Theme.inherit: false
+
+        // Two tight and two wider halos: one blurred layer alone is too faint over bright wallpapers.
+        GlowLayer { source: glow.source; blurMax: 16 }
+        GlowLayer { source: glow.source; blurMax: 16 }
+        GlowLayer { source: glow.source; blurMax: 48 }
+        GlowLayer { source: glow.source; blurMax: 48 }
     }
 
     Connections {
@@ -278,12 +288,23 @@ Item {
             Component.onCompleted: source = wallpaper
         }
 
+        // WallpaperFader hides this while the UI and its blurred background show.
+        ContentShadow {
+            id: clockGlow
+            anchors.fill: clock
+            source: clock
+            visible: !lockScreenUi.softwareRendering && clock.visible
+            Behavior on opacity {
+                OpacityAnimator {
+                    duration: Kirigami.Units.veryLongDuration * 2
+                    easing.type: Easing.InOutQuad
+                }
+            }
+        }
+
         Clock {
             id: clock
-            // WallpaperFader hides this one when the UI shows; the layer stays.
-            property Item shadow: Item {}
-            layer.enabled: !lockScreenUi.softwareRendering
-            layer.effect: ContentShadow {}
+            property Item shadow: clockGlow
             visible: !lockScreenUi.keyboardActive && y > 0 && config.alwaysShowClock
             anchors.horizontalCenter: parent.horizontalCenter
             y: (mainBlock.userList.y + mainStack.y)/2 - height/2
@@ -315,8 +336,6 @@ Item {
 
             // this isn't implicit, otherwise items still get processed for the scenegraph
             visible: opacity > 0
-            layer.enabled: !lockScreenUi.softwareRendering
-            layer.effect: ContentShadow {}
 
             initialItem: MainBlock {
                 id: mainBlock
@@ -463,8 +482,6 @@ Item {
         LoginLockScreen.Footer {
             id: footer
             visible: !lockScreenUi.keyboardActive
-            layer.enabled: !lockScreenUi.softwareRendering
-            layer.effect: ContentShadow {}
             onOskActivated: {
                 // Focus the input before the shared footer activates the on-screen keyboard.
                 if (mainBlock.passwordInputVisible && !mainBlock.submissionBlocked) {
