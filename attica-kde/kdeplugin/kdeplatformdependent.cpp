@@ -12,8 +12,6 @@
 
 #include "kdeplatformdependent.h"
 
-#include "attica_plugin_debug.h"
-
 #include <KCMultiDialog>
 #include <KConfigGroup>
 #include <KLocalizedString>
@@ -26,6 +24,11 @@
 #include <Accounts/Manager>
 #include <KAccounts/Core>
 #include <KAccounts/GetCredentialsJob>
+
+#include <Sonic/Logging/Log>
+
+// Attica loads this plugin into other programs, so it installs no handler of its own.
+SONIC_LOGGING_COMPONENT("org.sonicde.desktopinterface.attica")
 
 using namespace Attica;
 
@@ -118,7 +121,7 @@ QNetworkRequest KdePlatformDependent::removeAuthFromRequest(const QNetworkReques
 
 bool KdePlatformDependent::saveCredentials(const QUrl & /*baseUrl*/, const QString & /*user*/, const QString & /*password*/)
 {
-    qCDebug(ATTICA_PLUGIN_LOG) << "Launch the KAccounts control module";
+    sonicDebug() << "Launch the KAccounts control module";
     // TODO KF6 This will want replacing with a call named something that suggests calling it shows accounts (and perhaps
     // directly requests the accounts kcm to start adding a new account if it's not there, maybe even pre-fills the fields...)
 
@@ -132,13 +135,13 @@ bool KdePlatformDependent::saveCredentials(const QUrl & /*baseUrl*/, const QStri
 
 bool KdePlatformDependent::hasCredentials([[maybe_unused]] const QUrl &baseUrl) const
 {
-    qCDebug(ATTICA_PLUGIN_LOG) << Q_FUNC_INFO;
+    sonicDebug() << Q_FUNC_INFO;
     return !m_accessToken.isEmpty();
 }
 
 bool KdePlatformDependent::loadCredentials([[maybe_unused]] const QUrl &baseUrl, QString &user, QString & /*password*/)
 {
-    qCDebug(ATTICA_PLUGIN_LOG) << Q_FUNC_INFO;
+    sonicDebug() << Q_FUNC_INFO;
     if (!m_accessToken.isEmpty()) {
         user = m_accessToken;
     }
@@ -162,7 +165,7 @@ QList<QUrl> KdePlatformDependent::getDefaultProviderFiles() const
     for (const QString &pathString : pathStrings) {
         paths.append(QUrl(pathString));
     }
-    qCDebug(ATTICA_PLUGIN_LOG) << "Loaded paths from config:" << paths;
+    sonicDebug() << "Loaded paths from config:" << paths;
     return paths;
 }
 
@@ -175,7 +178,7 @@ void KdePlatformDependent::addDefaultProviderFile(const QUrl &url)
         pathStrings.append(urlString);
         group.writeEntry("providerFiles", pathStrings);
         group.sync();
-        qCDebug(ATTICA_PLUGIN_LOG) << "wrote providers: " << pathStrings;
+        sonicDebug() << "wrote providers: " << pathStrings;
     }
 }
 
@@ -240,18 +243,18 @@ void Attica::KdePlatformDependent::loadAccessToken()
 {
     auto accountsManager = KAccounts::accountsManager();
     if (!accountsManager) {
-        qCDebug(ATTICA_PLUGIN_LOG) << "No accounts manager could be fetched, so could not ask it for account details";
+        sonicDebug() << "No accounts manager could be fetched, so could not ask it for account details";
         return;
     }
 
     // TODO Present the user with a choice in case there's more than one, but for now just pick the latest successful one
     const auto accountIds = accountsManager->accountList(QStringLiteral("opendesktop-rating"));
     for (const auto &accountId : accountIds) {
-        qCDebug(ATTICA_PLUGIN_LOG) << "Fetching data for" << accountId;
+        sonicDebug() << "Fetching data for" << accountId;
 
         auto account = accountsManager->account(accountId);
         if (!account) {
-            qCWarning(ATTICA_PLUGIN_LOG) << "Failed to retrieve account" << accountId;
+            sonicWarning() << "Failed to retrieve account" << accountId;
             continue;
         }
 
@@ -263,13 +266,13 @@ void Attica::KdePlatformDependent::loadAccessToken()
             if (idToken.isEmpty()) {
                 // If we arrived here, we did have an opendesktop account, but without the id token, which means an old version of the signon oauth2 plugin was
                 // used
-                qCWarning(ATTICA_PLUGIN_LOG) << "We got an OpenDesktop account, but it seems to be lacking the id token. This means an old SignOn OAuth2 "
-                                                "plugin was used for logging in. The plugin may have been upgraded in the meantime, but an account created "
-                                                "using the old plugin cannot be used, and you must log out and back in again.";
+                sonicWarning() << "We got an OpenDesktop account, but it seems to be lacking the id token. This means an old SignOn OAuth2 "
+                                  "plugin was used for logging in. The plugin may have been upgraded in the meantime, but an account created "
+                                  "using the old plugin cannot be used, and you must log out and back in again.";
                 return;
             }
 
-            qCDebug(ATTICA_PLUGIN_LOG) << "OpenID Access token retrieved for account" << accountId;
+            sonicDebug() << "OpenID Access token retrieved for account" << accountId;
             m_accessToken = idToken;
             Q_EMIT readyChanged();
         });
