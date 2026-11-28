@@ -33,7 +33,9 @@ target_sources(kcm_tablet PRIVATE
     inputsequence.cpp
     tabletsmodel.cpp
     tabletmoduledata.cpp
+    ${CMAKE_SOURCE_DIR}/sonic_logging_autoinstall.cpp
 )
+sonic_logging_plugin(kcm_tablet org.sonicde.desktopinterface.tablet)
 
 target_link_libraries(kcm_tablet PRIVATE
     Qt::Quick

@@ -1,6 +1,7 @@
 add_definitions(-DTRANSLATION_DOMAIN=\"kcm_touchscreen\")
 
-kcmutils_add_qml_kcm(kcm_touchscreen SOURCES kcmtouchscreen.cpp touchscreenmoduledata.cpp)
+kcmutils_add_qml_kcm(kcm_touchscreen SOURCES kcmtouchscreen.cpp touchscreenmoduledata.cpp ${CMAKE_SOURCE_DIR}/sonic_logging_autoinstall.cpp)
+sonic_logging_plugin(kcm_touchscreen org.sonicde.desktopinterface.touchscreen)
 
 ecm_qt_declare_logging_category(kcm_touchscreen
     HEADER
