@@ -3,25 +3,6 @@ add_definitions(-DTRANSLATION_DOMAIN=\"kcm_touchscreen\")
 kcmutils_add_qml_kcm(kcm_touchscreen SOURCES kcmtouchscreen.cpp touchscreenmoduledata.cpp ${CMAKE_SOURCE_DIR}/sonic_logging_autoinstall.cpp)
 sonic_logging_plugin(kcm_touchscreen org.sonicde.desktopinterface.touchscreen)
 
-ecm_qt_declare_logging_category(kcm_touchscreen
-    HEADER
-        logging.h
-    IDENTIFIER
-        KCM_TOUCHSCREEN
-    CATEGORY_NAME
-        kcm_touchscreen
-    DEFAULT_SEVERITY
-        Critical
-    DESCRIPTION
-        "KCM for touchscreen input"
-    EXPORT
-        kcm_touchscreen
-)
-
-ecm_qt_install_logging_categories(
-    EXPORT kcm_touchscreen
-    DESTINATION "${KDE_INSTALL_LOGGINGCATEGORIESDIR}"
-)
 target_link_libraries(kcm_touchscreen PRIVATE
     KF6::CoreAddons
     KF6::ConfigCore
