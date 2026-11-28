@@ -9,7 +9,6 @@
 #include <QDBusConnection>
 #include <QDBusMessage>
 #include <QDBusServiceWatcher>
-#include <QDebug>
 
 #include <KConfigGroup>
 #include <KService>
@@ -18,7 +17,7 @@
 #include <algorithm>
 #include <cmath>
 
-#include "log_settings.h"
+#include <Sonic/Logging/Log>
 #include <settings.h>
 
 using namespace SmartLauncher;
@@ -75,17 +74,17 @@ void Backend::setupUnity()
                             QStringLiteral("Update"),
                             this,
                             SLOT(update(QString, QMap<QString, QVariant>)))) {
-        qCWarning(TASKMANAGER_DEBUG) << "failed to register Update signal";
+        sonicWarning() << "failed to register Update signal";
         return;
     }
 
     if (!sessionBus.registerObject(QStringLiteral("/Unity"), this)) {
-        qCWarning(TASKMANAGER_DEBUG) << "Failed to register unity object";
+        sonicWarning() << "Failed to register unity object";
         return;
     }
 
     if (!sessionBus.registerService(QStringLiteral("com.canonical.Unity"))) {
-        qCWarning(TASKMANAGER_DEBUG) << "Failed to register unity service";
+        sonicWarning() << "Failed to register unity service";
         // In case an external process uses this (e.g. Latte Dock), let it just listen.
     }
 
@@ -162,7 +161,7 @@ void Backend::update(const QString &uri, const QMap<QString, QVariant> &properti
 
         KService::Ptr service = KService::serviceByStorageId(normalizedUri);
         if (!service) {
-            qCWarning(TASKMANAGER_DEBUG) << "Failed to find service for Unity Launcher" << uri;
+            sonicWarning() << "Failed to find service for Unity Launcher" << uri;
             return;
         }
 
