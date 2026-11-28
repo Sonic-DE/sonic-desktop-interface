@@ -9,7 +9,7 @@
 #include <cstring>
 #include <libudev.h>
 
-#include "logging.h"
+#include <Sonic/Logging/Log>
 
 static std::string kDevicePathKey = "DEVPATH";
 
@@ -39,7 +39,7 @@ std::string UDevMatcher::deviceToUdevId(const std::string &device_path)
         return devicePath;
     }
 
-    qCDebug(KCM_GAMECONTROLLER) << "Using sys path: " << sys_path;
+    sonicDebug() << "Using sys path: " << sys_path;
     std::unique_ptr<struct udev_device, decltype(&udev_device_unref)> udevice(udev_device_new_from_syspath(udev.get(), sys_path), &udev_device_unref);
 
     if (!udevice) {
@@ -55,7 +55,7 @@ std::string UDevMatcher::deviceToUdevId(const std::string &device_path)
     // Walk the devpath looking for the ID
     size_t slash = devicePath.find_last_of('/');
 
-    qCDebug(KCM_GAMECONTROLLER) << "Looking for ID of " << devicePath;
+    sonicDebug() << "Looking for ID of " << devicePath;
 
     // If the bit after the last / is a digit, stop, we found it
     while (slash != std::string::npos && (slash + 1) < devicePath.length() && !std::isdigit(devicePath.at(slash + 1))) {
@@ -64,7 +64,7 @@ std::string UDevMatcher::deviceToUdevId(const std::string &device_path)
 
         slash = devicePath.find_last_of('/');
 
-        qCDebug(KCM_GAMECONTROLLER) << "Last part isn't an id, moving up: " << devicePath;
+        sonicDebug() << "Last part isn't an id, moving up: " << devicePath;
     }
 
     if (slash == std::string::npos || slash + 1 >= devicePath.size()) {

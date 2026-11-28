@@ -1,7 +1,7 @@
 #include "calibrationcontroller.h"
 
 #include "device.h"
-#include "logging.h"
+#include <Sonic/Logging/Log>
 
 #include <KConfigGroup>
 #include <KLocalizedString>
@@ -385,7 +385,7 @@ void CalibrationController::reset()
 void CalibrationController::fail(const QString &message, bool restore)
 {
     if (restore && m_fd >= 0 && !restoreOriginal()) {
-        qCCritical(KCM_GAMECONTROLLER) << "Failed to restore controller corrections after calibration error";
+        sonicCritical() << "Failed to restore controller corrections after calibration error";
     }
     closeDevice();
     m_errorText = message;
