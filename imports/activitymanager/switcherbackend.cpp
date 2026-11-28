@@ -17,6 +17,7 @@
 #include <QDateTime>
 #include <QGuiApplication>
 #include <QRasterWindow>
+#include <Sonic/Logging/Log>
 
 // Qml and QtQuick
 #include <QQmlEngine>
@@ -134,7 +135,7 @@ ThumbnailImageResponse::ThumbnailImageResponse(const QString &id, const QSize &r
 
     connect(job, &KIO::PreviewJob::failed, this, [this, job](const KFileItem &item) {
         Q_UNUSED(item);
-        qWarning() << "SwitcherBackend: FAILED to get the thumbnail" << job->errorString() << job->detailedErrorStrings();
+        sonicWarning() << "SwitcherBackend: FAILED to get the thumbnail" << job->errorString() << job->detailedErrorStrings();
         Q_EMIT finished();
     });
 }

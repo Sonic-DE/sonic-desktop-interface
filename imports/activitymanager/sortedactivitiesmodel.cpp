@@ -188,12 +188,6 @@ public:
             // or if the screen ID is closer to zero
             const bool processed = !ghostActivities.contains(activity) && newForActivity.contains(activity) && (lastScreenForActivity[activity] <= lastScreen);
 
-            // qDebug() << "GREPME Searching containment " << containmentId
-            //          << "for the wallpaper of the " << activity << " activity - "
-            //          << "currently, we think that the wallpaper is " << processed << (processed ? newForActivity[activity] : QString())
-            //          << "last screen is" << lastScreen
-            //          ;
-
             if (processed && !newForActivity[activity].startsWith(QLatin1Char{'#'}))
                 continue;
 
@@ -201,8 +195,6 @@ public:
             ghostActivities.removeAll(activity);
 
             const auto background = backgroundFromConfig(containment);
-
-            // qDebug() << "        GREPME Found wallpaper: " << background;
 
             if (background.isEmpty())
                 continue;
@@ -216,7 +208,6 @@ public:
                     changedActivities << activity;
                 }
 
-                // qDebug() << "        GREPME Setting: " << activity << " = " << background << "," << lastScreen;
                 newForActivity[activity] = background;
                 lastScreenForActivity[activity] = lastScreen;
             }
