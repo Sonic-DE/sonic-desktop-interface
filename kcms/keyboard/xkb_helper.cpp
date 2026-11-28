@@ -5,9 +5,8 @@
 */
 
 #include "xkb_helper.h"
-#include "debug.h"
+#include <Sonic/Logging/Log>
 
-#include <QDebug>
 #include <QDir>
 #include <QElapsedTimer>
 #include <QFile>
@@ -41,7 +40,7 @@ static QString getSetxkbmapExe()
         setxkbmapExe = QStandardPaths::findExecutable(SETXKBMAP_EXEC);
         if (setxkbmapExe.isEmpty()) {
             setxkbmapNotFound = true;
-            qCCritical(KCM_KEYBOARD) << "Can't find" << SETXKBMAP_EXEC << "- keyboard layouts won't be configured";
+            sonicCritical() << "Can't find" << SETXKBMAP_EXEC << "- keyboard layouts won't be configured";
             return QString();
         }
     }
@@ -58,15 +57,15 @@ static void executeXmodmap(const QString &configFileName)
             xmodmapExe = QStandardPaths::findExecutable(XMODMAP_EXEC);
             if (xmodmapExe.isEmpty()) {
                 xmodmapNotFound = true;
-                qCCritical(KCM_KEYBOARD) << "Can't find" << XMODMAP_EXEC << "- xmodmap files won't be run";
+                sonicCritical() << "Can't find" << XMODMAP_EXEC << "- xmodmap files won't be run";
                 return;
             }
         }
 
-        qCDebug(KCM_KEYBOARD) << "Executing" << xmodmapExe << configFileName;
+        sonicDebug() << "Executing" << xmodmapExe << configFileName;
         const int res = QProcess::execute(xmodmapExe, QStringList{configFileName});
         if (res != 0) {
-            qCCritical(KCM_KEYBOARD) << "Failed with return code:" << res;
+            sonicCritical() << "Failed with return code:" << res;
         }
     }
 }
@@ -91,18 +90,18 @@ bool XkbHelper::runConfigLayoutCommand(const QStringList &setxkbmapCommandArgume
         return false;
     }
 
-    qCDebug(KCM_KEYBOARD) << "Running" << setxkbmapExe << setxkbmapCommandArguments.join(QLatin1Char(' '));
+    sonicDebug() << "Running" << setxkbmapExe << setxkbmapCommandArguments.join(QLatin1Char(' '));
 
     const int res = QProcess::execute(setxkbmapExe, setxkbmapCommandArguments);
     if (res != 0) {
-        qCCritical(KCM_KEYBOARD) << "Failed with return code:" << res;
+        sonicCritical() << "Failed with return code:" << res;
         return false;
     }
 
     // restore Xmodmap mapping reset by setxkbmap
-    qCDebug(KCM_KEYBOARD) << "Executed successfully in " << timer.elapsed() << "ms";
+    sonicDebug() << "Executed successfully in " << timer.elapsed() << "ms";
     restoreXmodmap();
-    qCDebug(KCM_KEYBOARD) << "\t and with xmodmap" << timer.elapsed() << "ms";
+    sonicDebug() << "\t and with xmodmap" << timer.elapsed() << "ms";
     return true;
 }
 

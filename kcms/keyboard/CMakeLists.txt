@@ -14,7 +14,6 @@ endif()
 ### kded daemon ###
 
 set( kded_keyboard_SRCS
-    ${CMAKE_CURRENT_BINARY_DIR}/debug.cpp
     keyboard_daemon.cpp
     layout_memory.cpp
     layout_memory_persister.cpp
@@ -73,7 +72,7 @@ if (HAVE_XINPUT)
 endif()
 
 ### kcm keyboard ###
-kcmutils_add_qml_kcm(kcm_keyboard SOURCES kcmmain.cpp)
+kcmutils_add_qml_kcm(kcm_keyboard SOURCES kcmmain.cpp ${CMAKE_SOURCE_DIR}/sonic_logging_autoinstall.cpp)
 
 set( kcm_keyboard_PART_SRCS
     kcm_keyboard.cpp
@@ -88,26 +87,6 @@ set( kcm_keyboard_PART_SRCS
     xkboptionsmodel.cpp
     userlayoutmodel.cpp
     layoutsearchmodel.cpp
-)
-
-if(CMAKE_BUILD_TYPE STREQUAL "Debug" OR CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
-    set(_KCM_KEYBOARD_DEFAULT_SEVERITY "Debug")
-else()
-    set(_KCM_KEYBOARD_DEFAULT_SEVERITY "Warning")
-endif()
-
-ecm_qt_declare_logging_category(kcm_keyboard_PART_SRCS
-    HEADER debug.h
-    IDENTIFIER KCM_KEYBOARD
-    CATEGORY_NAME org.kde.kcm_keyboard
-    DEFAULT_SEVERITY ${_KCM_KEYBOARD_DEFAULT_SEVERITY}
-    DESCRIPTION "KCM and KDED for keyboard layouts"
-    EXPORT kcm_keyboard
-)
-
-ecm_qt_install_logging_categories(
-    EXPORT kcm_keyboard
-    DESTINATION "${KDE_INSTALL_LOGGINGCATEGORIESDIR}"
 )
 
 kconfig_add_kcfg_files(kcm_keyboard_PART_SRCS workspace_options.kcfgc GENERATE_MOC)
@@ -146,9 +125,11 @@ target_link_libraries(kcm_keyboard_static
     X11::X11
     X11::xkbfile
     PkgConfig::XKBREGISTRY
+    Sonic::Logging
 )
 
 target_link_libraries(kcm_keyboard kcm_keyboard_static)
+sonic_logging_plugin(kcm_keyboard org.sonicde.desktopinterface.keyboard PLAIN)
 
 configure_file(config-keyboard.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-keyboard.h)
 

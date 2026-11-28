@@ -7,10 +7,10 @@
 
 #include "keyboard_config.h"
 
-#include "debug.h"
 #include "keyboardsettings.h"
 #include "x11_helper.h"
 #include "xkb_rules.h"
+#include <Sonic/Logging/Log>
 
 const QMap<KeyboardConfig::SwitchingPolicy, QString> switchingPolicyNames = {
     {KeyboardConfig::SwitchingPolicy::SWITCH_POLICY_GLOBAL, QStringLiteral("Global")},
@@ -186,7 +186,7 @@ void KeyboardConfig::load()
     m_referenceLayouts = m_layouts;
     m_referenceLayoutLoopCount = m_settings->layoutLoopCount();
 
-    qCDebug(KCM_KEYBOARD) << "configuring layouts" << m_settings->configureLayouts() << "configuring options" << m_settings->resetOldXkbOptions();
+    sonicDebug() << "configuring layouts" << m_settings->configureLayouts() << "configuring options" << m_settings->resetOldXkbOptions();
 }
 
 void KeyboardConfig::defaults()

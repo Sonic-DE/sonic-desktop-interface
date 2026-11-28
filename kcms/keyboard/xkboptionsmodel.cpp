@@ -11,10 +11,10 @@
 #include <KLocalizedString>
 #include <KWindowSystem>
 
-#include "debug.h"
 #include "keyboardsettings.h"
 #include "x11_helper.h"
 #include "xkb_rules.h"
+#include <Sonic/Logging/Log>
 
 XkbOptionsModel::XkbOptionsModel(QObject *parent)
     : QAbstractItemModel(parent)
@@ -154,7 +154,7 @@ QString XkbOptionsModel::getShortcutName(const QString &group)
         const std::optional<OptionInfo> optionInfo = optionGroupInfo->getOptionInfo(option);
 
         if (!optionInfo || optionInfo->description == nullptr) {
-            qCDebug(KCM_KEYBOARD) << "Could not find option info for " << option;
+            sonicDebug() << "Could not find option info for " << option;
             return grpOptions.first();
         } else {
             return optionInfo->description;

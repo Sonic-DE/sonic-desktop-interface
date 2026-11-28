@@ -6,7 +6,6 @@
 
 #include "layoutmodel.h"
 
-#include "debug.h"
 #include "keyboardsettings.h"
 #include "x11_helper.h"
 #include "xkb_rules.h"

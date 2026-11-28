@@ -5,7 +5,7 @@
 */
 
 #include "layout_memory_persister.h"
-#include "debug.h"
+#include <Sonic/Logging/Log>
 
 #include <KConfigGroup>
 #include <KSharedConfig>
@@ -94,7 +94,7 @@ bool LayoutMemoryPersister::save()
     QDir baseDir(fileInfo.absoluteDir());
     if (!baseDir.exists()) {
         if (!QDir().mkpath(baseDir.absolutePath())) {
-            qCWarning(KCM_KEYBOARD) << "Failed to create directory" << baseDir.absolutePath();
+            sonicWarning() << "Failed to create directory" << baseDir.absolutePath();
         }
     }
 
@@ -119,7 +119,7 @@ bool LayoutMemoryPersister::saveToFile(const QFile &file_)
 
     QFile file(file_.fileName()); // so we don't expose the file we open/close to the caller
     if (!file.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text)) {
-        qCWarning(KCM_KEYBOARD) << "Failed to open layout memory xml file for writing" << file.fileName();
+        sonicWarning() << "Failed to open layout memory xml file for writing" << file.fileName();
         return false;
     }
 
@@ -128,12 +128,12 @@ bool LayoutMemoryPersister::saveToFile(const QFile &file_)
     out.flush();
 
     if (file.error() != QFile::NoError) {
-        qCWarning(KCM_KEYBOARD) << "Failed to store keyboard layout memory, error" << file.error();
+        sonicWarning() << "Failed to store keyboard layout memory, error" << file.error();
         file.close();
         file.remove();
         return false;
     } else {
-        qCDebug(KCM_KEYBOARD) << "Keyboard layout memory stored into" << file.fileName() << "written" << file.pos();
+        sonicDebug() << "Keyboard layout memory stored into" << file.fileName() << "written" << file.pos();
         return true;
     }
 }
@@ -218,7 +218,7 @@ bool LayoutMemoryPersister::restoreFromFile(const QFile &file_)
 
     QFile file(file_.fileName()); // so we don't expose the file we open/close to the caller
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        qCWarning(KCM_KEYBOARD) << "Failed to open layout memory xml file for reading" << file.fileName() << "error:" << file.error();
+        sonicWarning() << "Failed to open layout memory xml file for reading" << file.fileName() << "error:" << file.error();
         return false;
     }
 
@@ -226,26 +226,26 @@ bool LayoutMemoryPersister::restoreFromFile(const QFile &file_)
     MapHandler mapHandler(switchingPolicy);
 
     QXmlStreamReader xml(&file);
-    qCDebug(KCM_KEYBOARD) << "Restoring keyboard layout map from" << file.fileName();
+    sonicDebug() << "Restoring keyboard layout map from" << file.fileName();
 
     auto firstElement = xml.readNextStartElement();
     do {
         if (!firstElement || !mapHandler.startElement(xml)) {
-            qCWarning(KCM_KEYBOARD) << "Failed to parse the layout memory file" << file.fileName();
-            qCWarning(KCM_KEYBOARD) << xml.errorString();
+            sonicWarning() << "Failed to parse the layout memory file" << file.fileName();
+            sonicWarning() << xml.errorString();
             return false;
         }
     } while (xml.readNextStartElement());
 
     if (xml.hasError()) {
-        qCWarning(KCM_KEYBOARD) << "XML error:" << xml.errorString();
+        sonicWarning() << "XML error:" << xml.errorString();
         return false;
     }
 
     if (layoutMemory.keyboardConfig.switchingPolicy() == KeyboardConfig::SWITCH_POLICY_GLOBAL) {
         if (mapHandler.globalLayout.isValid() && layoutMemory.keyboardConfig.layouts().contains(mapHandler.globalLayout)) {
             globalLayout = mapHandler.globalLayout;
-            qCDebug(KCM_KEYBOARD) << "Restored global layout" << globalLayout.toString();
+            sonicDebug() << "Restored global layout" << globalLayout.toString();
         }
     } else {
         layoutMemory.layoutMap.clear();
@@ -254,7 +254,7 @@ bool LayoutMemoryPersister::restoreFromFile(const QFile &file_)
                 layoutMemory.layoutMap.insert(key, mapHandler.layoutMap[key]);
             }
         }
-        qCDebug(KCM_KEYBOARD) << "Restored layouts for" << layoutMemory.layoutMap.size() << "containers";
+        sonicDebug() << "Restored layouts for" << layoutMemory.layoutMap.size() << "containers";
     }
     return true;
 }
@@ -264,7 +264,7 @@ bool LayoutMemoryPersister::canPersist()
     // we can't persist per window - as we're using window id which is not preserved between sessions
     bool windowMode = layoutMemory.keyboardConfig.switchingPolicy() == KeyboardConfig::SWITCH_POLICY_WINDOW;
     if (windowMode) {
-        qCDebug(KCM_KEYBOARD) << "Not saving session for window mode";
+        sonicDebug() << "Not saving session for window mode";
     }
     return !windowMode;
 }

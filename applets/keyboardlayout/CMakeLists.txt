@@ -44,12 +44,6 @@ target_link_libraries(org.kde.plasma.keyboardlayout_ipc
         Qt::Network
 )
 
-ecm_qt_declare_logging_category(org.kde.plasma.keyboardlayout_ipc
-    HEADER debug.h
-    IDENTIFIER KCM_KEYBOARD
-    CATEGORY_NAME org.kde.kcm_keyboard
-)
-
 ecm_finalize_qml_module(org.kde.plasma.keyboardlayout_ipc)
 
 plasma_add_applet(org.kde.plasma.keyboardlayout

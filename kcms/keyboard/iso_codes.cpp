@@ -5,7 +5,7 @@
 */
 
 #include "iso_codes.h"
-#include "debug.h"
+#include <Sonic/Logging/Log>
 
 #include <KLocalizedString>
 
@@ -74,7 +74,7 @@ void IsoCodesPrivate::buildIsoEntryList()
     QString filePath = QStandardPaths::locate(QStandardPaths::GenericDataLocation, QStringLiteral("xml/iso-codes/iso_%1.xml").arg(isoCode));
     QFile file(filePath);
     if (!file.open(QFile::ReadOnly | QFile::Text)) {
-        qCCritical(KCM_KEYBOARD) << "Can't open the xml file" << file.fileName();
+        sonicCritical() << "Can't open the xml file" << file.fileName();
         return;
     }
 
@@ -92,9 +92,9 @@ void IsoCodesPrivate::buildIsoEntryList()
     }
 
     if (reader.hasError()) {
-        qCCritical(KCM_KEYBOARD) << "Failed to parse the xml file" << file.fileName() << reader.errorString();
+        sonicCritical() << "Failed to parse the xml file" << file.fileName() << reader.errorString();
         return;
     }
 
-    qCDebug(KCM_KEYBOARD) << "Loaded" << isoEntryList.count() << ("iso entry definitions for iso" + isoCode) << "from" << file.fileName();
+    sonicDebug() << "Loaded" << isoEntryList.count() << ("iso entry definitions for iso" + isoCode) << "from" << file.fileName();
 }

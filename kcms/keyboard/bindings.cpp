@@ -5,7 +5,7 @@
 */
 
 #include "bindings.h"
-#include "debug.h"
+#include <Sonic/Logging/Log>
 
 #include <KAboutData>
 #include <KGlobalAccel>
@@ -89,7 +89,7 @@ void KeyboardLayoutActionCollection::setLayoutShortcuts(QList<LayoutUnit> &layou
             createLayoutShortcutActon(layoutUnit, i, false);
         }
     }
-    qCDebug(KCM_KEYBOARD) << "Cleaning component shortcuts on save" << KGlobalAccel::cleanComponent(QStringLiteral("KDE Keyboard Layout Switcher"));
+    sonicDebug() << "Cleaning component shortcuts on save" << KGlobalAccel::cleanComponent(QStringLiteral("KDE Keyboard Layout Switcher"));
 }
 
 void KeyboardLayoutActionCollection::loadLayoutShortcuts(QList<LayoutUnit> &layoutUnits)
@@ -99,14 +99,14 @@ void KeyboardLayoutActionCollection::loadLayoutShortcuts(QList<LayoutUnit> &layo
         QAction *action = createLayoutShortcutActon(layoutUnit, i, true);
         const auto shortcut = KGlobalAccel::self()->shortcut(action);
         if (!shortcut.isEmpty()) {
-            qCDebug(KCM_KEYBOARD, ) << "Restored shortcut for" << layoutUnit.toString() << shortcut.first();
+            sonicDebug() << "Restored shortcut for" << layoutUnit.toString() << shortcut.first();
             layoutUnit.setShortcut(shortcut.first());
         } else {
-            qCDebug(KCM_KEYBOARD, ) << "Skipping empty shortcut for" << layoutUnit.toString();
+            sonicDebug() << "Skipping empty shortcut for" << layoutUnit.toString();
             removeAction(action);
         }
     }
-    qCDebug(KCM_KEYBOARD) << "Cleaning component shortcuts on load" << KGlobalAccel::cleanComponent(QStringLiteral("KDE Keyboard Layout Switcher"));
+    sonicDebug() << "Cleaning component shortcuts on load" << KGlobalAccel::cleanComponent(QStringLiteral("KDE Keyboard Layout Switcher"));
 }
 
 void KeyboardLayoutActionCollection::resetLayoutShortcuts()

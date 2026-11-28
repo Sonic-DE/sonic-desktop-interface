@@ -5,11 +5,10 @@
 */
 
 #include "xinput_helper.h"
-#include "debug.h"
+#include <Sonic/Logging/Log>
 #include <config-keyboard.h>
 
 #include <QCoreApplication>
-#include <QDebug>
 #include <QTimer>
 #include <QtGui/private/qtx11extras_p.h>
 
@@ -108,21 +107,20 @@ int XInputEventNotifier::getNewDeviceEventType(xcb_generic_event_t *event)
             int ndevices;
             XDeviceInfo *devices = XListInputDevices(display, &ndevices);
             if (devices != nullptr) {
-                qCDebug(KCM_KEYBOARD) << "New device id:" << xdpne->device_id;
+                sonicDebug() << "New device id:" << xdpne->device_id;
                 for (int i = 0; i < ndevices; i++) {
-                    qCDebug(KCM_KEYBOARD) << "id:" << devices[i].id << "name:" << devices[i].name << "used as:" << devices[i].use;
+                    sonicDebug() << "id:" << devices[i].id << "name:" << devices[i].name << "used as:" << devices[i].use;
                     if (devices[i].id == xdpne->device_id) {
                         if (devices[i].use == IsXKeyboard || devices[i].use == IsXExtensionKeyboard) {
                             if (isRealKeyboard(devices[i].name)) {
                                 newDeviceType = DEVICE_KEYBOARD;
-                                qCDebug(KCM_KEYBOARD) << "new keyboard device, id:" << devices[i].id << "name:" << devices[i].name
-                                                      << "used as:" << devices[i].use;
+                                sonicDebug() << "new keyboard device, id:" << devices[i].id << "name:" << devices[i].name << "used as:" << devices[i].use;
                                 break;
                             }
                         }
                         if (devices[i].use == IsXPointer || devices[i].use == IsXExtensionPointer) {
                             newDeviceType = DEVICE_POINTER;
-                            qCDebug(KCM_KEYBOARD) << "new pointer device, id:" << devices[i].id << "name:" << devices[i].name << "used as:" << devices[i].use;
+                            sonicDebug() << "new pointer device, id:" << devices[i].id << "name:" << devices[i].name << "used as:" << devices[i].use;
                             break;
                         }
                     }
@@ -142,7 +140,7 @@ int XInputEventNotifier::registerForNewDeviceEvent(Display *display_)
 
     DevicePresence(display, xitype, xiclass);
     XSelectExtensionEvent(display, DefaultRootWindow(display), &xiclass, 1);
-    qCDebug(KCM_KEYBOARD) << "Registered for new device events from XInput, class" << xitype;
+    sonicDebug() << "Registered for new device events from XInput, class" << xitype;
     xinputEventType = xitype;
     return xitype;
 }
@@ -155,7 +153,7 @@ int XInputEventNotifier::registerForNewDeviceEvent(Display *display_)
 
 int XInputEventNotifier::registerForNewDeviceEvent(Display * /*display*/)
 {
-    qCWarning(KCM_KEYBOARD) << "Keyboard kded daemon is compiled without XInput, xkb configuration will be reset when new keyboard device is plugged in!";
+    sonicWarning() << "Keyboard kded daemon is compiled without XInput, xkb configuration will be reset when new keyboard device is plugged in!";
     return -1;
 }
 

@@ -5,7 +5,7 @@
 */
 
 #include "layout_memory.h"
-#include "debug.h"
+#include <Sonic/Logging/Log>
 
 #include <KWindowInfo>
 #include <KWindowSystem>
@@ -59,7 +59,7 @@ QString LayoutMemory::getCurrentMapKey()
         WId wid = KX11Extras::self()->activeWindow();
         KWindowInfo winInfo(wid, NET::WMWindowType);
         NET::WindowType windowType = winInfo.windowType(NET::NormalMask | NET::DesktopMask | NET::DialogMask);
-        qCDebug(KCM_KEYBOARD, ) << "window type" << windowType;
+        sonicDebug() << "window type" << windowType;
 
         // we ignore desktop type so that our keyboard layout applet on desktop could change layout properly
         if (windowType == NET::Desktop)
@@ -73,7 +73,7 @@ QString LayoutMemory::getCurrentMapKey()
         WId wid = KX11Extras::self()->activeWindow();
         KWindowInfo winInfo(wid, NET::WMWindowType, NET::WM2WindowClass);
         NET::WindowType windowType = winInfo.windowType(NET::NormalMask | NET::DesktopMask | NET::DialogMask);
-        qCDebug(KCM_KEYBOARD, ) << "window type" << windowType;
+        sonicDebug() << "window type" << windowType;
 
         // we ignore desktop type so that our keyboard layout applet on desktop could change layout properly
         if (windowType == NET::Desktop)
@@ -83,7 +83,7 @@ QString LayoutMemory::getCurrentMapKey()
 
         // shall we use pid or window class ??? - class seems better (see e.g. https://bugs.kde.org/show_bug.cgi?id=245507)
         // for window class shall we use class.class or class.name? (seem class.class is a bit better - more app-oriented)
-        qCDebug(KCM_KEYBOARD, ) << "New active window with class.class: " << winInfo.windowClassClass();
+        sonicDebug() << "New active window with class.class: " << winInfo.windowClassClass();
         return QString(winInfo.windowClassClass());
         //		NETWinInfo winInfoForPid( QX11Info::display(), wid, QX11Info::appRootWindow(), NET::WMPid);
         //		return QString::number(winInfoForPid.pid());
@@ -113,16 +113,16 @@ void LayoutMemory::layoutMapChanged()
     if (prevLayoutList == newLayoutList)
         return;
 
-    qCDebug(KCM_KEYBOARD, ) << "Layout map change: " << LayoutSet::toString(prevLayoutList) << "-->" << LayoutSet::toString(newLayoutList);
+    sonicDebug() << "Layout map change: " << LayoutSet::toString(prevLayoutList) << "-->" << LayoutSet::toString(newLayoutList);
     prevLayoutList = newLayoutList;
 
     // TODO: need more thinking here on how to support external map resetting
     if (keyboardConfig.keyboardSettings()->configureLayouts() && isExtraSubset(keyboardConfig.layouts(), newLayoutList)) {
-        qCDebug(KCM_KEYBOARD, ) << "Layout map change for extra layout";
+        sonicDebug() << "Layout map change for extra layout";
         layoutChanged(); // to remember new map for active "window"
     } else {
         if (newLayoutList != keyboardConfig.getDefaultLayouts()) {
-            qCDebug(KCM_KEYBOARD, ) << "Layout map change from external source: clearing layout memory";
+            sonicDebug() << "Layout map change from external source: clearing layout memory";
             layoutMap.clear();
         }
     }
@@ -144,10 +144,7 @@ void LayoutMemory::setCurrentLayoutFromMap()
         return;
 
     if (!layoutMap.contains(layoutMapKey)) {
-        //		qCDebug(KCM_KEYBOARD, ) << "new key for layout map" << layoutMapKey;
-
         if (!X11Helper::isDefaultLayout()) {
-            //			qCDebug(KCM_KEYBOARD, ) << "setting default layout for container key" << layoutMapKey;
             if (keyboardConfig.keyboardSettings()->configureLayouts() && X11Helper::getLayoutsList() != keyboardConfig.getDefaultLayouts()) {
                 XkbHelper::initializeKeyboardLayouts(keyboardConfig.getDefaultLayouts());
             }
@@ -155,7 +152,7 @@ void LayoutMemory::setCurrentLayoutFromMap()
         }
     } else {
         LayoutSet layoutFromMap = layoutMap[layoutMapKey];
-        qCDebug(KCM_KEYBOARD, ) << "Setting layout map item" << layoutFromMap.currentLayout.toString() << "for container key" << layoutMapKey;
+        sonicDebug() << "Setting layout map item" << layoutFromMap.currentLayout.toString() << "for container key" << layoutMapKey;
 
         LayoutSet currentLayouts = X11Helper::getCurrentLayouts();
         if (layoutFromMap.layouts != currentLayouts.layouts) {

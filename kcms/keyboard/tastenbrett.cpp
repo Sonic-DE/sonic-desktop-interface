@@ -7,9 +7,9 @@
 #include "tastenbrett.h"
 
 #include <QCoreApplication>
-#include <QDebug>
 #include <QProcess>
 #include <QStandardPaths>
+#include <Sonic/Logging/Log>
 
 QString Tastenbrett::path()
 {
@@ -44,7 +44,7 @@ void Tastenbrett::launch(const QString &model, const QString &layout, const QStr
     if (!title.isEmpty()) {
         args << "-title" << title;
     }
-    qDebug() << args;
+    sonicDebug() << args;
     p.setArguments(args);
     p.setProcessChannelMode(QProcess::ForwardedChannels);
     p.startDetached();

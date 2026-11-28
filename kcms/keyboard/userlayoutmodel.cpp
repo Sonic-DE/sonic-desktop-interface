@@ -8,7 +8,6 @@
 
 #include <QItemSelectionModel>
 
-#include "debug.h"
 #include "keyboard_config.h"
 #include "x11_helper.h"
 #include "xkb_rules.h"
