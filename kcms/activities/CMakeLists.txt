@@ -4,7 +4,9 @@ kcmutils_add_qml_kcm(kcm_activities
    SOURCES
       kcm_activities.cpp
       activityconfig.cpp
+      ${CMAKE_SOURCE_DIR}/sonic_logging_autoinstall.cpp
 )
+sonic_logging_plugin(kcm_activities org.sonicde.desktopinterface.activities)
 
 target_link_libraries (kcm_activities PRIVATE
    Qt::Quick

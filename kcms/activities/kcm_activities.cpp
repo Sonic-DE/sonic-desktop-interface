@@ -17,6 +17,7 @@
 
 #include <QTimer>
 #include <QtQml/QQmlModuleRegistration>
+#include <Sonic/Logging/Log>
 
 K_PLUGIN_CLASS_WITH_JSON(ActivitiesModule, "kcm_activities.json")
 
@@ -49,8 +50,8 @@ bool ActivitiesModule::isNewActivityAuthorized() const
 void ActivitiesModule::configureActivity(const QString &id)
 {
     if (!id.isEmpty() && !KActivities::Controller().activities().contains(id)) {
-        qWarning() << "Cannot configure activity. There is no activity with id" << id;
-        qWarning() << "List of Activities: " << KActivities::Controller().activities();
+        sonicWarning() << "Cannot configure activity. There is no activity with id" << id;
+        sonicWarning() << "List of Activities: " << KActivities::Controller().activities();
         return;
     }
 
