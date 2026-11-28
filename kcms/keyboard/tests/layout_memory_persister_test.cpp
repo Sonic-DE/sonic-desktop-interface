@@ -46,12 +46,12 @@ public:
         , layoutUnit2("yy", "var1")
         , layoutUnit3("zz", "var2")
     {
-        Q_ASSERT(file.open());
     }
 
 private Q_SLOTS:
     void initTestCase()
     {
+        QVERIFY(file.open());
         keyboardSettings = new KeyboardSettings(this);
         keyboardConfig = new KeyboardConfig(keyboardSettings, this);
         layoutMemory = new TestLayoutMemory(*keyboardConfig);
