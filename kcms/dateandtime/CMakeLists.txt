@@ -22,6 +22,7 @@ target_link_libraries(kcm_clock
     KF6::KCMUtils
     KF6::I18n
     KF6::I18nLocaleData
+    KF6::I18nQml
     KF6::KIOCore
     KF6::KIOWidgets
     KF6::Svg

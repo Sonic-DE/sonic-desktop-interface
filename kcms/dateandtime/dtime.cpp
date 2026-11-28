@@ -8,6 +8,9 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 
+// Before dtime.h: its ui header pulls in KLocalizedString, whose i18n macros would rewrite this one.
+#include <KLocalizedQmlContext>
+
 #include "dtime.h"
 
 #include <stdlib.h>
@@ -27,14 +30,12 @@
 #include <KProcess>
 #include <KSharedConfig>
 #include <KTreeWidgetSearchLine>
-#include <QDebug>
 #include <QGridLayout>
 #include <QHBoxLayout>
 #include <QQmlContext>
 #include <QVBoxLayout>
 
 #include <KLocalizedString>
-#include <KLocalizedContext>
 #include <KSvg/Svg>
 
 #include "timedated_interface.h"
@@ -82,8 +83,7 @@ Dtime::Dtime(QWidget *parent)
 
     tabWidget->tabBar()->setExpanding(true);
 
-    auto engine = timezoneViewer->engine();
-    engine->rootContext()->setContextObject(new KLocalizedContext(engine));
+    KLocalization::setupLocalizedContext(timezoneViewer->engine());
 
     timezoneViewer->rootContext()->setContextProperty("DTime", this);
     timezoneViewer->setSource(QUrl("qrc:/kcm/kcm_clock/main.qml"));
