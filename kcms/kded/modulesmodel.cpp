@@ -13,7 +13,7 @@
 
 #include <algorithm>
 
-#include "debug.h"
+#include <Sonic/Logging/Log>
 
 ModulesModel::ModulesModel(QObject *parent)
     : QAbstractListModel(parent)
@@ -172,7 +172,7 @@ void ModulesModel::load()
         // keep estimating dbusModuleName in sync with KDEDModule (kdbusaddons) and kded (kded)
         // currently (KF5) the module name in the D-Bus object path is set by the pluginId
         const QString dbusModuleName = module.pluginId();
-        qCDebug(KCM_KDED) << "reading kded info from" << servicePath << "autoload =" << autoload << "dbus module name =" << dbusModuleName;
+        sonicDebug() << "reading kded info from" << servicePath << "autoload =" << autoload << "dbus module name =" << dbusModuleName;
 
         if (knownModules.contains(dbusModuleName)) {
             continue;
