@@ -12,9 +12,9 @@
 #include "propertymanager.h"
 #include "xkblayoutmanager.h"
 #include <QByteArray>
-#include <QDebug>
 #include <QPair>
 #include <QStringList>
+#include <Sonic/Logging/Log>
 #include <locale.h>
 #include <stdlib.h>
 #include <string.h>
@@ -613,7 +613,7 @@ static void impanel_set_engine(IBusPanelImpanel *impanel, const char *name)
         }
         impanel->engineManager->setCurrentEngine(name);
     } else {
-        qDebug() << "set engine failed.";
+        sonicDebug() << "set engine failed.";
     }
 }
 
