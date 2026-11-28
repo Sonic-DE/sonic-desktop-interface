@@ -26,6 +26,7 @@ target_sources(kglobalaccelmodel PRIVATE
     globalaccelmodel.cpp
     shortcutsmodel.cpp
     standardshortcutsmodel.cpp
+    sonic_logging_component.cpp
     ${kcm_keys_DBUS_SRCS}
 )
 generate_export_header(kglobalaccelmodel)
@@ -40,19 +41,11 @@ target_link_libraries(kglobalaccelmodel
         KF6::GlobalAccel
         KF6::I18n
         KF6::Service
+        Sonic::Logging
 )
 set_target_properties(kglobalaccelmodel PROPERTIES
                       VERSION ${PROJECT_VERSION}
                       SOVERSION ${PROJECT_VERSION_MAJOR})
-
-ecm_qt_declare_logging_category(kglobalaccelmodel
-    HEADER kcmkeys_debug.h
-    IDENTIFIER KCMKEYS
-    CATEGORY_NAME org.kde.kcm_keys
-    EXPORT KCMKEYS
-    DESCRIPTION "System Settings - Global Shortcuts"
-)
-ecm_qt_install_logging_categories(EXPORT KCMKEYS DESTINATION ${KDE_INSTALL_LOGGINGCATEGORIESDIR})
 
 install(TARGETS kglobalaccelmodel ${KDE_INSTALL_TARGETS_DEFAULT_ARGS} LIBRARY NAMELINK_SKIP)
 
@@ -63,7 +56,9 @@ target_sources(kcm_keys PRIVATE
     kcm_keys.cpp
     keysdata.cpp
     ${kcm_keys_DBUS_SRCS}
+    ${CMAKE_SOURCE_DIR}/sonic_logging_autoinstall.cpp
 )
+sonic_logging_plugin(kcm_keys org.sonicde.desktopinterface.keys)
 
 target_link_libraries(kcm_keys PRIVATE
     Qt::DBus

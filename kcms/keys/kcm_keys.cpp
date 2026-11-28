@@ -28,13 +28,12 @@
 #include "basemodel.h"
 #include "filteredmodel.h"
 #include "globalaccelmodel.h"
-#include "kcmkeys_debug.h"
 #include "keysdata.h"
 #include "shortcutsmodel.h"
 #include "standardshortcutsmodel.h"
 
-Q_DECLARE_LOGGING_CATEGORY(KCMKEYS)
-Q_LOGGING_CATEGORY(KCMKEYS, "org.kde.kcm_keys", QtInfoMsg)
+#include <Sonic/Logging/Log>
+
 K_PLUGIN_FACTORY_WITH_JSON(KCMKeysFactory, "kcm_keys.json", registerPlugin<KCMKeys>(); registerPlugin<KeysData>();)
 
 KCMKeys::KCMKeys(QObject *parent, const KPluginMetaData &metaData, const QVariantList &args)
@@ -127,7 +126,7 @@ QString KCMKeys::lastError() const
 
 void KCMKeys::writeScheme(const QUrl &url)
 {
-    qCDebug(KCMKEYS) << "Exporting to " << url.toLocalFile();
+    sonicDebug() << "Exporting to " << url.toLocalFile();
     KConfig file(url.toLocalFile(), KConfig::SimpleConfig);
     m_globalAccelModel->exportToConfig(file);
     m_standardShortcutsModel->exportToConfig(file);
@@ -145,15 +144,15 @@ void KCMKeys::writeScheme(const QUrl &url)
 
 void KCMKeys::loadScheme(const QUrl &url)
 {
-    qCDebug(KCMKEYS) << "Loading scheme" << url.toLocalFile();
+    sonicDebug() << "Loading scheme" << url.toLocalFile();
     KConfig file(url.toLocalFile(), KConfig::SimpleConfig);
     m_standardShortcutsModel->importConfig(file);
 
     auto migrateGroup = [](KConfigGroup &parentGroup, const QString &oldGroup, const QString &newGroup) {
         if (newGroup == oldGroup) {
-            qCDebug(KCMKEYS) << "Already have command id " << oldGroup;
+            sonicDebug() << "Already have command id " << oldGroup;
         } else {
-            qCDebug(KCMKEYS) << "Have command at" << newGroup << "moving from" << oldGroup;
+            sonicDebug() << "Have command at" << newGroup << "moving from" << oldGroup;
             KConfigGroup n(&parentGroup, newGroup);
             parentGroup.group(oldGroup).copyTo(&n);
             parentGroup.deleteGroup(oldGroup);
@@ -225,7 +224,7 @@ void KCMKeys::addApplication(QQuickItem *ctx)
             if (m_globalAccelModel->match(m_shortcutsModel->index(0, 0), BaseModel::ComponentRole, desktopFileName, 1, Qt::MatchExactly).isEmpty()) {
                 m_globalAccelModel->addApplication(desktopFileName, service->name());
             } else {
-                qCDebug(KCMKEYS) << "Already have component" << service->storageId();
+                sonicDebug() << "Already have component" << service->storageId();
             }
         }
         dialog->deleteLater();
@@ -343,7 +342,7 @@ QList<QPersistentModelIndex> KCMKeys::conflictingIndices(const QKeySequence &key
 
 void KCMKeys::requestKeySequence(QQuickItem *context, const QModelIndex &index, const QKeySequence &newSequence, const QKeySequence &oldSequence)
 {
-    qCDebug(KCMKEYS) << index << "wants" << newSequence << "instead of" << oldSequence;
+    sonicDebug() << index << "wants" << newSequence << "instead of" << oldSequence;
     const QList<QPersistentModelIndex> conflicts = conflictingIndices(newSequence);
     if (conflicts.isEmpty()) {
         auto model = const_cast<BaseModel *>(static_cast<const BaseModel *>(index.model()));
@@ -356,12 +355,12 @@ void KCMKeys::requestKeySequence(QQuickItem *context, const QModelIndex &index, 
     }
 
     if (conflicts.contains(index)) {
-        qCDebug(KCMKEYS) << "Ignoring conflict refers to the same action" << conflicts;
+        sonicDebug() << "Ignoring conflict refers to the same action" << conflicts;
         Q_EMIT shortcutChangeRejected();
         return;
     }
 
-    qCDebug(KCMKEYS) << "Found conflict for" << newSequence << conflicts;
+    sonicDebug() << "Found conflict for" << newSequence << conflicts;
     const QString newActionName = index.data().toString();
     const QString newComponentName = index.parent().data().toString();
     const QString keysString = newSequence.toString(QKeySequence::NativeText);

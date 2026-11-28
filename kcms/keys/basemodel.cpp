@@ -11,7 +11,7 @@
 #include <KLocalizedString>
 #include <KService>
 
-#include "kcmkeys_debug.h"
+#include <Sonic/Logging/Log>
 
 BaseModel::BaseModel(QObject *parent)
     : QAbstractItemModel(parent)
@@ -26,7 +26,7 @@ void BaseModel::addShortcut(const QModelIndex &index, const QKeySequence &shortc
     if (shortcut.isEmpty()) {
         return;
     }
-    qCDebug(KCMKEYS) << "Adding shortcut" << index << shortcut;
+    sonicDebug() << "Adding shortcut" << index << shortcut;
     Action &a = m_components[index.parent().row()].actions[index.row()];
     a.activeShortcuts.insert(shortcut);
     Q_EMIT dataChanged(index, index, {ActiveShortcutsRole, CustomShortcutsRole, IsDefaultRole});
@@ -38,7 +38,7 @@ void BaseModel::disableShortcut(const QModelIndex &index, const QKeySequence &sh
     if (!checkIndex(index, QAbstractItemModel::CheckIndexOption::IndexIsValid) || !index.parent().isValid()) {
         return;
     }
-    qCDebug(KCMKEYS) << "Disabling shortcut" << index << shortcut;
+    sonicDebug() << "Disabling shortcut" << index << shortcut;
     Action &a = m_components[index.parent().row()].actions[index.row()];
     a.activeShortcuts.remove(shortcut);
     Q_EMIT dataChanged(index, index, {ActiveShortcutsRole, CustomShortcutsRole, IsDefaultRole});
@@ -53,7 +53,7 @@ void BaseModel::changeShortcut(const QModelIndex &index, const QKeySequence &old
     if (newShortcut.isEmpty()) {
         return;
     }
-    qCDebug(KCMKEYS) << "Changing Shortcut" << index << oldShortcut << " to " << newShortcut;
+    sonicDebug() << "Changing Shortcut" << index << oldShortcut << " to " << newShortcut;
     Action &a = m_components[index.parent().row()].actions[index.row()];
     a.activeShortcuts.remove(oldShortcut);
     a.activeShortcuts.insert(newShortcut);
