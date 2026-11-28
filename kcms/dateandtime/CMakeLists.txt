@@ -2,7 +2,7 @@
 add_definitions(-DTRANSLATION_DOMAIN=\"kcmkclock\")
 ########### next target ###############
 
-set(kcm_clock_PART_SRCS dtime.cpp main.cpp)
+set(kcm_clock_PART_SRCS dtime.cpp main.cpp ${CMAKE_SOURCE_DIR}/sonic_logging_autoinstall.cpp)
 
 ki18n_wrap_ui(kcm_clock_PART_SRCS dateandtime.ui)
 
@@ -28,4 +28,5 @@ target_link_libraries(kcm_clock
     KF6::AuthCore
     PolkitQt6-1::Core
 )
+sonic_logging_plugin(kcm_clock org.sonicde.desktopinterface.clock PLAIN)
 install(TARGETS kcm_clock  DESTINATION ${KDE_INSTALL_PLUGINDIR}/plasma/kcms/systemsettings_qwidgets )

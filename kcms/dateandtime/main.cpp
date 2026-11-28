@@ -20,6 +20,7 @@
 #include <PolkitQt1/Authority>
 #include <PolkitQt1/Subject>
 #include <QDBusConnection>
+#include <Sonic/Logging/Log>
 
 #include "dtime.h"
 
@@ -77,7 +78,7 @@ bool KclockModule::timedatedSave()
         if (reply.error().name() != QDBusError::errorString(QDBusError::AccessDenied)) {
             KMessageBox::error(widget(), i18n("Unable to change NTP settings"));
         }
-        qWarning() << "Failed to enable NTP" << reply.error().name() << reply.error().message();
+        sonicWarning() << "Failed to enable NTP" << reply.error().name() << reply.error().message();
         return false;
     }
     if (!dtime->ntpEnabled()) {
@@ -88,7 +89,7 @@ bool KclockModule::timedatedSave()
             if (reply.error().name() != QDBusError::errorString(QDBusError::AccessDenied)) {
                 KMessageBox::error(widget(), i18n("Unable to set current time"));
             }
-            qWarning() << "Failed to set current time" << reply.error().name() << reply.error().message();            
+            sonicWarning() << "Failed to set current time" << reply.error().name() << reply.error().message();
             return false;
         }
     }
@@ -100,7 +101,7 @@ bool KclockModule::timedatedSave()
             if (reply.error().name() != QDBusError::errorString(QDBusError::AccessDenied)) {
                 KMessageBox::error(widget(), i18n("Unable to set timezone"));
             }
-            qWarning() << "Failed to set timezone" << reply.error().name() << reply.error().message();
+            sonicWarning() << "Failed to set timezone" << reply.error().name() << reply.error().message();
             return false;
         }
     }
