@@ -6,9 +6,9 @@
 
 #include "kcm.h"
 
-#include "logging.h"
 #include "touchpadbackend.h"
 #include "touchpadmoduledata.h"
+#include <Sonic/Logging/Log>
 #include <config-build-options.h>
 
 #include <KLocalizedString>
@@ -66,7 +66,7 @@ KCMTouchpad::KCMTouchpad(QObject *parent, const KPluginMetaData &data)
     if (!m_backend) {
         m_initError = true;
         setSaveLoadMessage(Message::error(i18n("Not able to select appropriate backend")));
-        qCCritical(KCM_TOUCHPAD) << "Not able to select appropriate backend.";
+        sonicCritical() << "Not able to select appropriate backend.";
         return;
     }
 
@@ -136,9 +136,9 @@ void KCMTouchpad::kcmInit()
 #endif
     ) {
         if (!backend->load()) {
-            qCWarning(KCM_TOUCHPAD) << "Failed to load touchpad config at session initialization";
+            sonicWarning() << "Failed to load touchpad config at session initialization";
         } else if (!backend->save()) {
-            qCWarning(KCM_TOUCHPAD) << "Failed to apply touchpad config at session initialization";
+            sonicWarning() << "Failed to apply touchpad config at session initialization";
         }
     }
 #endif
@@ -246,8 +246,8 @@ void KCMTouchpad::onQmlEngineWarnings(const QList<QQmlError> &warnings)
             continue;
         }
 
-        qCWarning(KCM_TOUCHPAD).noquote() << "QML warning:" << url << "line:" << warning.line() << "column:" << warning.column()
-                                          << "type:" << warning.messageType() << "description:" << warning.description();
+        sonicWarning().noquote() << "QML warning:" << url << "line:" << warning.line() << "column:" << warning.column() << "type:" << warning.messageType()
+                                 << "description:" << warning.description();
     }
 
     // Collect touchpad-scoped warnings for display

@@ -12,7 +12,7 @@
 #include <QDBusConnection>
 #include <QDBusConnectionInterface>
 #include <QDBusMessage>
-#include <QDebug>
+#include <Sonic/Logging/Log>
 
 using namespace Qt::Literals::StringLiterals;
 
@@ -134,7 +134,7 @@ void TouchpadDisabler::serviceNameFetchFinished(QDBusPendingCallWatcher *callWat
     callWatcher->deleteLater();
 
     if (reply.isError() || reply.value().isEmpty()) {
-        qWarning() << "Error: Couldn't get registered services list from session bus";
+        sonicWarning() << "Error: Couldn't get registered services list from session bus";
         return;
     }
 
@@ -199,9 +199,9 @@ void TouchpadDisabler::handleReset()
 #endif
     ) {
         if (!m_backend->load()) {
-            qWarning() << "Failed to load touchpad config on attach";
+            sonicWarning() << "Failed to load touchpad config on attach";
         } else if (!m_backend->save()) {
-            qWarning() << "Failed to save touchpad config on attach";
+            sonicWarning() << "Failed to save touchpad config on attach";
         }
     }
 #endif

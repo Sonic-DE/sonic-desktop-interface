@@ -8,9 +8,6 @@
 
 #if HAVE_UDEV
 
-#include "logging.h"
-
-#include <QDebug>
 #include <QRegularExpression>
 
 #include <fcntl.h>

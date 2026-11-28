@@ -10,10 +10,9 @@
 #include <QtAlgorithms>
 
 #include <KLocalizedString>
-#include <QDebug>
 
-#include "logging.h"
 #include "touchpadclassifier.h"
+#include <Sonic/Logging/Log>
 
 #if HAVE_UDEV
 #include "udevresolver.h"
@@ -183,7 +182,7 @@ LibinputTouchpad *XlibBackend::findTouchpad()
         // Resolve through udev
         UdevTouchpadResult udevResult = resolveUdevTouchpad(deviceNode);
         if (!udevResult.isTouchpad) {
-            qCDebug(KCM_TOUCHPAD) << "Udev fallback rejected device" << info->id << ":" << udevResult.diagnosticMessage;
+            sonicDebug() << "Udev fallback rejected device" << info->id << ":" << udevResult.diagnosticMessage;
             continue;
         }
 
@@ -199,14 +198,14 @@ LibinputTouchpad *XlibBackend::findTouchpad()
         for (; atom != atomEnd; atom++) {
 #if HAVE_XORGLIBINPUT
             if (*atom == m_libinputIdentifierAtom.atom()) {
-                qCInfo(KCM_TOUCHPAD) << "Found touchpad via udev fallback: device" << info->id << "node" << deviceNode;
+                sonicInfo() << "Found touchpad via udev fallback: device" << info->id << "node" << deviceNode;
                 setMode(TouchpadInputBackendMode::XLibinput);
                 return new LibinputTouchpad(m_display.get(), info->id);
             }
 #endif
 #if HAVE_SYNAPTICS
             if (*atom == m_synapticsIdentifierAtom.atom()) {
-                qCInfo(KCM_TOUCHPAD) << "Found Synaptics touchpad via udev fallback: device" << info->id << "node" << deviceNode;
+                sonicInfo() << "Found Synaptics touchpad via udev fallback: device" << info->id << "node" << deviceNode;
                 setMode(TouchpadInputBackendMode::XSynaptics);
                 return new SynapticsTouchpad(m_display.get(), info->id, QString::fromLocal8Bit(info->name));
             }
@@ -214,7 +213,7 @@ LibinputTouchpad *XlibBackend::findTouchpad()
         }
 
         // Udev says touchpad but X doesn't have the required properties
-        qCWarning(KCM_TOUCHPAD) << "Udev classifies device" << info->id << "as touchpad but X does not expose libinput or Synaptics configuration properties";
+        sonicWarning() << "Udev classifies device" << info->id << "as touchpad but X does not expose libinput or Synaptics configuration properties";
     }
 
     // Stage 3: Diagnostic-only heuristic - no verified StarLite identifiers yet
@@ -251,13 +250,13 @@ LibinputTouchpad *XlibBackend::findTouchpad()
             XFree(prodData);
         }
 
-        qCInfo(KCM_TOUCHPAD).noquote() << "Unrecognized pointer device" << info->id << "name:" << QString::fromLocal8Bit(info->name)
-                                       << "vendor:" << QStringLiteral("0x%1").arg(vendorId, 4, 16, QLatin1Char('0'))
-                                       << "product:" << QStringLiteral("0x%1").arg(productId, 4, 16, QLatin1Char('0'))
-                                       << "- collect xinput, libinput, and udevadm data for diagnosis";
+        sonicInfo().noquote() << "Unrecognized pointer device" << info->id << "name:" << QString::fromLocal8Bit(info->name)
+                              << "vendor:" << QStringLiteral("0x%1").arg(vendorId, 4, 16, QLatin1Char('0'))
+                              << "product:" << QStringLiteral("0x%1").arg(productId, 4, 16, QLatin1Char('0'))
+                              << "- collect xinput, libinput, and udevadm data for diagnosis";
     }
 #else
-    qCDebug(KCM_TOUCHPAD) << "Udev fallback classification not available (HAVE_UDEV=0)";
+    sonicDebug() << "Udev fallback classification not available (HAVE_UDEV=0)";
 #endif
 
     return nullptr;
@@ -344,7 +343,7 @@ bool XlibBackend::isTouchpadSuspended() const
 
 void XlibBackend::touchpadDetached()
 {
-    qCWarning(KCM_TOUCHPAD) << "Touchpad detached";
+    sonicWarning() << "Touchpad detached";
 
     m_device.reset();
     setMode(TouchpadInputBackendMode::Unset);
@@ -360,7 +359,7 @@ void XlibBackend::devicePlugged(int /*device*/)
     if (!m_device) {
         m_device.reset(findTouchpad());
         if (m_device) {
-            qCDebug(KCM_TOUCHPAD) << "Touchpad reset";
+            sonicDebug() << "Touchpad reset";
             // Connect the device's generic changed signal to backend needsSaveChanged
             connect(m_device.get(), &LibinputCommon::changed, this, &TouchpadBackend::needsSaveChanged);
 
@@ -418,7 +417,7 @@ void XlibBackend::watchForEvents()
         m_notifications.reset(new XlibNotifications(m_display.get(), m_device ? m_device->deviceId() : XIAllDevices));
         if (!m_notifications->isValid()) {
             m_eventWatchingErrorString = i18n("Could not set up hotplug detection");
-            qCWarning(KCM_TOUCHPAD) << "Failed to initialize XInput notifications";
+            sonicWarning() << "Failed to initialize XInput notifications";
         }
         connect(m_notifications.get(), &XlibNotifications::devicePlugged, this, &XlibBackend::devicePlugged);
         connect(m_notifications.get(), &XlibNotifications::touchpadDetached, this, &XlibBackend::touchpadDetached);

@@ -11,7 +11,7 @@
 #include "backends/x11/xlibbackend.h"
 #endif
 
-#include "logging.h"
+#include <Sonic/Logging/Log>
 
 #include <QThreadStorage>
 
@@ -29,12 +29,12 @@ TouchpadBackend *TouchpadBackend::implementation()
     {
         static QThreadStorage<std::shared_ptr<XlibBackend>> backend;
         if (!backend.hasLocalData()) {
-            qCDebug(KCM_TOUCHPAD) << "Using X11 backend";
+            sonicDebug() << "Using X11 backend";
             backend.setLocalData(std::shared_ptr<XlibBackend>(XlibBackend::initialize()));
         }
         return backend.localData().get();
     }
 #endif
-    qCCritical(KCM_TOUCHPAD) << "Not able to select appropriate backend.";
+    sonicCritical() << "Not able to select appropriate backend.";
     return nullptr;
 }

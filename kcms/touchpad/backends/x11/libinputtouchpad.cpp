@@ -5,7 +5,7 @@
 */
 
 #include "libinputtouchpad.h"
-#include "logging.h"
+#include <Sonic/Logging/Log>
 
 #include <QSet>
 
@@ -289,7 +289,7 @@ bool LibinputTouchpad::save()
 
     for (const QString &m : std::as_const(msgs)) {
         if (!m.isNull()) {
-            qCCritical(KCM_TOUCHPAD) << "in error:" << m;
+            sonicCritical() << "in error:" << m;
             if (!success) {
                 error_msg.append("\n");
             }
@@ -299,7 +299,7 @@ bool LibinputTouchpad::save()
     }
 
     if (!success) {
-        qCCritical(KCM_TOUCHPAD) << error_msg;
+        sonicCritical() << error_msg;
     }
 
     flush();
@@ -373,7 +373,7 @@ bool LibinputTouchpad::valueLoader(Prop<T> &prop)
     const Parameter *p = findParameter(QString::fromLatin1(prop.name));
 
     if (!p) {
-        qCCritical(KCM_TOUCHPAD) << "Error on read of " << QString::fromLatin1(prop.name);
+        sonicCritical() << "Error on read of " << QString::fromLatin1(prop.name);
     }
 
     QVariant reply = getParameter(p);
@@ -404,7 +404,7 @@ QString LibinputTouchpad::valueWriter(const Prop<T> &prop)
 
     bool error = !setParameter(p, prop.val);
     if (error) {
-        qCCritical(KCM_TOUCHPAD) << "Cannot set property " + QString::fromLatin1(prop.name);
+        sonicCritical() << "Cannot set property " + QString::fromLatin1(prop.name);
         return QStringLiteral("Cannot set property ") + QString::fromLatin1(prop.name);
     }
     auto touchpadConfig = m_config->group(m_name);
