@@ -8,7 +8,6 @@
 #include <KOSRelease>
 #include <QApplication>
 #include <QCommandLineParser>
-#include <QDebug>
 #include <QDir>
 #include <QFileInfo>
 #include <QMimeDatabase>
@@ -59,11 +58,11 @@ int main(int argc, char *argv[])
 
     const QStringList args = parser.positionalArguments();
     if (args.isEmpty()) {
-        qWarning() << "Command is required";
+        sonicWarning() << "Command is required";
         return 1;
     }
     if (args.size() == 1) {
-        qWarning() << "Path to archive/extracted folder is required";
+        sonicWarning() << "Path to archive/extracted folder is required";
         return 1;
     }
 
@@ -81,7 +80,7 @@ int main(int argc, char *argv[])
     } else if (cmd == QLatin1String("uninstall")) {
         install = false;
     } else {
-        qWarning() << "Unsupported command" << cmd;
+        sonicWarning() << "Unsupported command" << cmd;
         return 1;
     }
 
