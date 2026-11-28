@@ -8,10 +8,10 @@ add_library(foldertest STATIC
    ../positioner.cpp
    ../itemviewadapter.cpp
    ../desktopschemehelper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/../debug.cpp
+   sonic_logging_component.cpp
 )
 
-target_link_libraries(foldertest PUBLIC Qt::Gui Qt::Quick Plasma::Plasma KF6::KIOFileWidgets KF6::XmlGui KF6::I18n Plasma::Activities KF6::Notifications)
+target_link_libraries(foldertest PUBLIC Qt::Gui Qt::Quick Plasma::Plasma KF6::KIOFileWidgets KF6::XmlGui KF6::I18n Plasma::Activities KF6::Notifications Sonic::Logging)
 
 ecm_add_tests(
    desktopschemehelpertest.cpp

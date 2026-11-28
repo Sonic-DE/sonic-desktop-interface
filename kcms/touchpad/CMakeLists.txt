@@ -31,7 +31,6 @@ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/org.kde.touchpad.xml
 
 add_library(touchpad_common STATIC
     touchpadbackend.cpp
-    logging.cpp
     ${TOUCHPAD_DBUS_SRCS}
 )
 set_property(TARGET touchpad_common PROPERTY POSITION_INDEPENDENT_CODE ON)
@@ -44,6 +43,7 @@ target_link_libraries(touchpad_common
     PUBLIC
     Qt::Core
     KF6::XmlGui
+    Sonic::Logging
     PRIVATE
     KF6::ConfigCore
     KF6::WindowSystem
@@ -70,7 +70,8 @@ add_subdirectory(backends)
 add_subdirectory(kded)
 
 kcmutils_add_qml_kcm(kcm_touchpad)
-target_sources(kcm_touchpad PRIVATE kcm.cpp touchpadmoduledata.cpp)
+target_sources(kcm_touchpad PRIVATE kcm.cpp touchpadmoduledata.cpp ${CMAKE_SOURCE_DIR}/sonic_logging_autoinstall.cpp)
+sonic_logging_plugin(kcm_touchpad org.sonicde.desktopinterface.touchpad)
 
 target_link_libraries(kcm_touchpad
     PRIVATE

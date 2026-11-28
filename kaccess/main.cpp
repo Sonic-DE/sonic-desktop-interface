@@ -12,7 +12,6 @@
 #include <KLocalizedString>
 
 #include <QApplication>
-#include <QDebug>
 #include <QtGui/private/qtx11extras_p.h>
 
 #include <plasma_version.h>
@@ -33,10 +32,10 @@ int main(int argc, char *argv[])
     int major = XkbMajorVersion;
     int minor = XkbMinorVersion;
     if (!XkbLibraryVersion(&major, &minor)) {
-        qWarning() << "Xlib XKB extension does not match";
+        sonicWarning() << "Xlib XKB extension does not match";
         return 1;
     }
-    qDebug() << "Xlib XKB extension major=" << major << " minor=" << minor;
+    sonicDebug() << "Xlib XKB extension major=" << major << " minor=" << minor;
 
     // we need an application object for QX11Info
     QApplication app(argc, argv);
@@ -67,10 +66,10 @@ int main(int argc, char *argv[])
     int error_rtrn;
     int xkb_opcode;
     if (!XkbQueryExtension(QX11Info::display(), &opcode_rtrn, &xkb_opcode, &error_rtrn, &major, &minor)) {
-        qWarning() << "X server has not matching XKB extension" << Qt::endl;
+        sonicWarning() << "X server has not matching XKB extension" << Qt::endl;
         return 1;
     }
-    qDebug() << "X server XKB extension major=" << major << " minor=" << minor;
+    sonicDebug() << "X server XKB extension major=" << major << " minor=" << minor;
 
     app.installNativeEventFilter(&acc);
 

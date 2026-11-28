@@ -236,7 +236,7 @@ public:
     Q_INVOKABLE QAction *action(const QString &name) const;
     QObject *newMenu() const;
     Q_INVOKABLE void updateActions();
-    Q_INVOKABLE void openContextMenu(QQuickItem *visualParent = nullptr, Qt::KeyboardModifiers modifiers = Qt::NoModifier);
+    Q_INVOKABLE void openContextMenu(QQuickItem *visualParent = nullptr, Qt::KeyboardModifiers modifiers = Qt::NoModifier, bool openAtPointer = true);
 
     Q_INVOKABLE void linkHere(const QUrl &sourceUrl);
 
@@ -249,6 +249,7 @@ public:
     bool lessThan(const QModelIndex &left, const QModelIndex &right) const override;
     Qt::DropActions supportedDragActions() const override;
     Qt::DropActions supportedDropActions() const override;
+    bool desktopFileExists(const QString &fileName) const;
 
     Q_INVOKABLE void paste();
     Q_INVOKABLE void copy();

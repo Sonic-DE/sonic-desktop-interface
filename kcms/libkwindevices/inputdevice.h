@@ -16,7 +16,7 @@
 
 #include <optional>
 
-#include "kwindevices-logging.h"
+#include <Sonic/Logging/Log>
 
 class InputDeviceTest;
 
@@ -283,7 +283,7 @@ private:
         {
             int idx = OrgKdeKWinInputDeviceInterface::staticMetaObject.indexOfProperty(propName);
             if (idx < 0) {
-                qCDebug(LIBKWINDEVICES) << "there is no" << propName;
+                sonicDebug() << "there is no" << propName;
             }
             Q_ASSERT(idx >= 0);
             m_prop = OrgKdeKWinInputDeviceInterface::staticMetaObject.property(idx);
@@ -366,7 +366,7 @@ private:
         bool save()
         {
             if (!isSupported() || !m_value || m_prop.isConstant()) {
-                qCDebug(LIBKWINDEVICES) << "skipping" << this << m_value.has_value() << isSupported() << m_prop.name();
+                sonicDebug() << "skipping" << this << m_value.has_value() << isSupported() << m_prop.name();
                 return false;
             }
 

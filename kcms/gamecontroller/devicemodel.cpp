@@ -17,7 +17,7 @@
 
 #include <iterator>
 
-#include "logging.h"
+#include <Sonic/Logging/Log>
 
 // 100 ms while we have devices
 const int kShortPollTime = 100;
@@ -38,7 +38,7 @@ DeviceModel::DeviceModel(QObject *parent)
         m_hasSdlLease = true;
         s_deviceModels.append(this);
     } else {
-        qCWarning(KCM_GAMECONTROLLER) << "Could not initialise SDL game controller subsystem:" << SDL_GetError();
+        sonicWarning() << "Could not initialise SDL game controller subsystem:" << SDL_GetError();
     }
 
     m_timer = new QTimer(this);
@@ -60,7 +60,7 @@ DeviceModel::~DeviceModel()
     qDeleteAll(m_devices);
     m_devices.clear();
     if (m_hasSdlLease && --s_sdlLeaseCount == 0) {
-        qCDebug(KCM_GAMECONTROLLER) << "Releasing SDL game controller subsystem";
+        sonicDebug() << "Releasing SDL game controller subsystem";
         SDL_QuitSubSystem(SDL_INIT_GAMECONTROLLER);
     }
 }
@@ -196,17 +196,17 @@ void DeviceModel::addDevice(const int deviceIndex)
     auto device = std::make_unique<Device>(deviceIndex, this);
     if (!device->open()) {
         const QString error = QString::fromLocal8Bit(SDL_GetError());
-        qCCritical(KCM_GAMECONTROLLER).nospace() << "Could not open device " << deviceIndex << ": " << error;
+        sonicCritical().nospace() << "Could not open device " << deviceIndex << ": " << error;
         return;
     }
 
     const SDL_JoystickID id = device->id();
     if (m_devices.contains(id)) {
-        qCWarning(KCM_GAMECONTROLLER) << "Ignoring a duplicate device ID" << id << "from add event";
+        sonicWarning() << "Ignoring a duplicate device ID" << id << "from add event";
         return;
     }
 
-    qCDebug(KCM_GAMECONTROLLER) << "Adding device" << deviceIndex << "with ID" << id;
+    sonicDebug() << "Adding device" << deviceIndex << "with ID" << id;
 
     const int row = std::distance(m_devices.begin(), m_devices.lowerBound(id));
     beginInsertRows(QModelIndex(), row, row);
@@ -221,13 +221,13 @@ void DeviceModel::addDevice(const int deviceIndex)
 void DeviceModel::removeDevice(const SDL_JoystickID id)
 {
     if (!m_devices.contains(id)) {
-        qCWarning(KCM_GAMECONTROLLER) << "Ignoring an invalid device ID" << id << "from removal event";
+        sonicWarning() << "Ignoring an invalid device ID" << id << "from removal event";
         return;
     }
 
     const int index = m_devices.keys().indexOf(id);
 
-    qCDebug(KCM_GAMECONTROLLER) << "Removing device with ID" << id;
+    sonicDebug() << "Removing device with ID" << id;
 
     beginRemoveRows(QModelIndex(), index, index);
     Device *device = m_devices.take(id);

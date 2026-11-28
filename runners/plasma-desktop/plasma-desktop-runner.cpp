@@ -11,7 +11,6 @@
 #include <QDBusConnectionInterface>
 #include <QDBusServiceWatcher>
 
-#include <QDebug>
 
 #include <KLocalizedString>
 

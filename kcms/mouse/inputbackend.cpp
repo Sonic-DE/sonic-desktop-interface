@@ -5,7 +5,7 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 #include "inputbackend.h"
-#include "logging.h"
+#include <Sonic/Logging/Log>
 
 #include <KWindowSystem>
 
@@ -22,14 +22,14 @@ std::unique_ptr<InputBackend> InputBackend::create()
     // There are multiple possible backends
 #if BUILD_KCM_MOUSE_X11
     {
-        qCDebug(KCM_MOUSE) << "Using X11 backend";
+        sonicDebug() << "Using X11 backend";
 
         if (QX11Info::display()) {
             return std::make_unique<X11LibinputBackend>();
         }
     }
 #endif
-    qCCritical(KCM_MOUSE) << "Not able to select appropriate backend.";
+    sonicCritical() << "Not able to select appropriate backend.";
     return nullptr;
 }
 

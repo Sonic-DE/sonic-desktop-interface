@@ -24,7 +24,6 @@
 #include "x11_helper.h"
 #include "xkboptionsmodel.h"
 
-#include "debug.h"
 
 KCMKeyboard::KCMKeyboard(QObject *parent, const KPluginMetaData &data)
     : KQuickManagedConfigModule(parent, data)

@@ -6,7 +6,6 @@
 
 #include "key.h"
 
-#include <QDebug>
 #include <QKeyEvent>
 #include <QMetaEnum>
 

@@ -36,11 +36,6 @@ sonic_logging_plugin(org.kde.plasma.taskmanager org.sonicde.desktopinterface.tas
 
 kconfig_add_kcfg_files(org.kde.plasma.taskmanager ${CMAKE_SOURCE_DIR}/kcms/recentFiles/kactivitymanagerd_plugins_settings.kcfgc)
 
-ecm_qt_declare_logging_category(org.kde.plasma.taskmanager
-    HEADER log_settings.h
-    IDENTIFIER TASKMANAGER_DEBUG
-    CATEGORY_NAME org.kde.plasma.taskmanager)
-
 # FIXME Cleanup no longer used libs.
 target_link_libraries(org.kde.plasma.taskmanager PRIVATE
                       Qt::Core

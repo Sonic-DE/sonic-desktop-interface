@@ -8,7 +8,6 @@
 
 #include <KAboutData>
 #include <KPluginFactory>
-#include <QDebug>
 
 #include "renderersettings.h"
 #include "ui_kcmqtquicksettingswidget.h"

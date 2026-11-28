@@ -8,7 +8,7 @@
 
 #include "kcmkded.h"
 
-#include "debug.h"
+#include <Sonic/Logging/Log>
 
 #include <qqml.h>
 
@@ -130,7 +130,7 @@ void KDEDConfig::startOrStopModule(const QString &moduleName, ModuleStatus statu
             return;
         }
 
-        qCDebug(KCM_KDED) << "Successfully" << (status == Running ? "started" : "stopped") << moduleName;
+        sonicDebug() << "Successfully" << (status == Running ? "started" : "stopped") << moduleName;
         if (status == Running) {
             m_lastStartedModule = moduleName;
         } else {
@@ -150,7 +150,7 @@ void KDEDConfig::getModuleStatus()
         watcher->deleteLater();
 
         if (reply.isError()) {
-            qCWarning(KCM_KDED) << "Failed to get loaded modules" << reply.error().name() << reply.error().message();
+            sonicWarning() << "Failed to get loaded modules" << reply.error().name() << reply.error().message();
             return;
         }
 
@@ -227,7 +227,7 @@ void KDEDConfig::save()
             return;
         }
 
-        qCDebug(KCM_KDED) << "Successfully reconfigured kded";
+        sonicDebug() << "Successfully reconfigured kded";
         getModuleStatus();
     });
 }

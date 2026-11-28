@@ -4,8 +4,10 @@ Sonic Desktop Interface is the heart of the SonicDE desktop: the panel, applicat
 
 ## Unreleased
 
+- Text and icons on the lock screen are sharp again. The clock and date have a stronger glow (on dark themes) or shadow (on light themes) behind them while only the wallpaper shows, and it fades away when the unlock prompt and its blurred background appear.
 - Quick Settings and Splash Screen now restore Silver Light - Bottom Panel and its splash screen as the defaults.
-- Behind the scenes: a panel whose widget wants it to itself takes no other widgets and offers no Clone Panel, and a widget that leaves shortcuts to its panel has no Keyboard Shortcuts page, and the keyboard layout widget builds with compilers that don't make position-independent code by default, such as FreeBSD's.
+- The desktop, its widgets and its settings pages now record their messages through SonicDE's unified logging system.
+- Behind the scenes: a panel whose widget wants it to itself takes no other widgets and offers no Clone Panel, and a widget that leaves shortcuts to its panel has no Keyboard Shortcuts page, and the keyboard layout widget builds with compilers that don't make position-independent code by default, such as FreeBSD's, and the desktop no longer writes debugging messages about its icon layout to the session log, and the emoji picker and the date and time settings build without deprecation warnings.
 
 ## 6.8.2 (2026-11-10)
 

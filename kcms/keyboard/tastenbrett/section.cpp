@@ -6,7 +6,6 @@
 
 #include "section.h"
 
-#include <QDebug>
 
 #include "doodad.h"
 #include "row.h"

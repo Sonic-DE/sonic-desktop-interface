@@ -6,7 +6,6 @@
 
 #include "ExcludedApplicationsModel.h"
 
-#include <QDebug>
 #include <QList>
 #include <QScopeGuard>
 #include <QSet>
@@ -80,7 +79,6 @@ void ExcludedApplicationsModel::load()
     // Reading new applications from the database
 
     if (!database.open()) {
-        // qDebug() << "Failed to open the database" << path << d->database.lastError();
         return;
     }
 

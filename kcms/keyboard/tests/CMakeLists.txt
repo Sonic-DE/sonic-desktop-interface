@@ -1,5 +1,5 @@
 macro(KEYBOARD_DAEMON_UNIT_TESTS _testname)
-               add_executable(${_testname}_test ${_testname}_test.cpp ../${_testname}.cpp ../debug.cpp)
+               add_executable(${_testname}_test ${_testname}_test.cpp ../${_testname}.cpp sonic_logging_component.cpp)
                ecm_mark_nongui_executable(${_testname}_test)
                ecm_mark_as_test(${_testname}_test)
                add_test(NAME kcm-keyboard-${_testname} COMMAND ${_testname}_test)
@@ -13,6 +13,7 @@ macro(KEYBOARD_DAEMON_UNIT_TESTS _testname)
                                      X11::xkbfile
                                      X11::X11
                                      PkgConfig::XKBREGISTRY
+                                     Sonic::Logging
                )
                target_link_libraries(${_testname}_test Qt::GuiPrivate)
 endmacro(KEYBOARD_DAEMON_UNIT_TESTS)
@@ -20,7 +21,7 @@ endmacro(KEYBOARD_DAEMON_UNIT_TESTS)
 keyboard_daemon_unit_tests(xkb_rules)
 keyboard_daemon_unit_tests(iso_codes)
 
-add_executable(flags_test flags_test.cpp)
+add_executable(flags_test flags_test.cpp sonic_logging_component.cpp)
 ecm_mark_nongui_executable(flags_test)
 ecm_mark_as_test(flags_test)
 add_test(NAME kcm-keyboard-flags_test COMMAND flags_test)
@@ -44,7 +45,7 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config/base.1.1.xml ${CMAKE_CURRENT_B
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config/base.bad.xml ${CMAKE_CURRENT_BINARY_DIR}/config/base.bad.xml COPYONLY)
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config/base.xml ${CMAKE_CURRENT_BINARY_DIR}/config/base.xml COPYONLY)
 
-add_executable(layout_memory_persister_test layout_memory_persister_test.cpp ../layout_memory.cpp ../layout_memory_persister.cpp)
+add_executable(layout_memory_persister_test layout_memory_persister_test.cpp ../layout_memory.cpp ../layout_memory_persister.cpp sonic_logging_component.cpp)
 add_test(NAME kcm-keyboard-keyboard_memory_persister_test COMMAND layout_memory_persister_test)
 add_dependencies(layout_memory_persister_test kded_keyboard)
 ecm_mark_nongui_executable(layout_memory_persister_test)
@@ -55,7 +56,7 @@ target_link_libraries(layout_memory_persister_test
 )
 
 if( X11_XTest_FOUND )
-   add_executable(keyboard_daemon_test keyboard_daemon_test.cpp ../keyboard_daemon.cpp ../layout_memory.cpp ../layout_memory_persister.cpp ../flags.cpp ../x11_helper.cpp ../xkb_helper.cpp ../xinput_helper.cpp ../keyboard_config.cpp ../xkb_rules.cpp ../keyboard_hardware.cpp ../bindings.cpp ../debug.cpp ../layoutnames.cpp ../ipc/KeyboardIpcServer.cpp sonic_logging_component.cpp)
+   add_executable(keyboard_daemon_test keyboard_daemon_test.cpp ../keyboard_daemon.cpp ../layout_memory.cpp ../layout_memory_persister.cpp ../flags.cpp ../x11_helper.cpp ../xkb_helper.cpp ../xinput_helper.cpp ../keyboard_config.cpp ../xkb_rules.cpp ../keyboard_hardware.cpp ../bindings.cpp ../layoutnames.cpp ../ipc/KeyboardIpcServer.cpp sonic_logging_component.cpp)
    kconfig_add_kcfg_files(keyboard_daemon_test ../keyboardsettings.kcfgc GENERATE_MOC)
    add_test(NAME kcm-keyboard-keyboard_daemon_test COMMAND keyboard_daemon_test)
    add_dependencies(keyboard_daemon_test kded_keyboard)

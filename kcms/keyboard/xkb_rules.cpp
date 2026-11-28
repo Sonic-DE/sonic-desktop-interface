@@ -6,7 +6,7 @@
 
 #include "xkb_rules.h"
 #include "config-workspace.h"
-#include "debug.h"
+#include <Sonic/Logging/Log>
 
 #include <KLocalizedString>
 
@@ -97,20 +97,21 @@ static void rxkbLogHandler(rxkb_context *context, rxkb_log_level priority, const
     if (length <= 0) {
         return;
     }
+    const QString text = QString::fromUtf8(buf, length);
     switch (priority) {
     case RXKB_LOG_LEVEL_DEBUG:
-        qCDebug(KCM_KEYBOARD(), "XKB: %.*s", length, buf);
+        sonicDebug().noquote() << "XKB:" << text;
         break;
     case RXKB_LOG_LEVEL_INFO:
-        qCInfo(KCM_KEYBOARD(), "XKB: %.*s", length, buf);
+        sonicInfo().noquote() << "XKB:" << text;
         break;
     case RXKB_LOG_LEVEL_WARNING:
-        qCWarning(KCM_KEYBOARD(), "XKB: %.*s", length, buf);
+        sonicWarning().noquote() << "XKB:" << text;
         break;
     case RXKB_LOG_LEVEL_ERROR:
     case RXKB_LOG_LEVEL_CRITICAL:
     default:
-        qCCritical(KCM_KEYBOARD(), "XKB: %.*s", length, buf);
+        sonicCritical().noquote() << "XKB:" << text;
         break;
     }
 }
@@ -125,7 +126,7 @@ Rules Rules::readRules()
 {
     rxkb_context *context = rxkb_context_new(RXKB_CONTEXT_LOAD_EXOTIC_RULES);
     if (!context) {
-        qCDebug(KCM_KEYBOARD) << "Could not create xkb-registry context";
+        sonicDebug() << "Could not create xkb-registry context";
         return {};
     }
     rxkb_context_set_log_level(context, RXKB_LOG_LEVEL_DEBUG);
@@ -133,7 +134,7 @@ Rules Rules::readRules()
 
     if (!rxkb_context_parse_default_ruleset(context)) {
         rxkb_context_unref(context);
-        qCDebug(KCM_KEYBOARD) << "Could not parse xkb rules";
+        sonicDebug() << "Could not parse xkb rules";
         return {};
     }
     Rules rules;

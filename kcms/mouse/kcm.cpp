@@ -8,13 +8,13 @@
 #include "kcm.h"
 #include "cursortheme.h"
 #include "inputbackend.h"
-#include "logging.h"
 #include "mousemoduledata.h"
 
 #include <KConfigGroup>
 #include <KLocalizedString>
 #include <KSharedConfig>
 #include <KWindowSystem>
+#include <Sonic/Logging/Log>
 
 #include <QQmlProperty>
 #include <QQuickItem>
@@ -85,7 +85,7 @@ KCMMouse::KCMMouse(QObject *parent, const KPluginMetaData &data, [[maybe_unused]
     if (!m_inputBackend) {
         m_initError = true;
         setSaveLoadMessage(Message::error(i18n("Not able to select appropriate backend")));
-        qCCritical(KCM_MOUSE) << "Not able to select appropriate backend.";
+        sonicCritical() << "Not able to select appropriate backend.";
         return;
     }
 

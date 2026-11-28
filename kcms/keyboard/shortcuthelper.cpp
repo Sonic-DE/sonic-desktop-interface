@@ -9,7 +9,6 @@
 #include <KGlobalAccel>
 
 #include "bindings.h"
-#include "debug.h"
 
 namespace
 {

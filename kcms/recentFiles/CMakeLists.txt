@@ -49,7 +49,7 @@ kcmutils_generate_module_data(
 
 kconfig_add_kcfg_files(KAMD_KCM_SRCS kactivitymanagerd_plugins_settings.kcfgc GENERATE_MOC)
 
-add_library (kcm_recentFiles MODULE ${KAMD_KCM_SRCS})
+add_library (kcm_recentFiles MODULE ${KAMD_KCM_SRCS} ${CMAKE_SOURCE_DIR}/sonic_logging_autoinstall.cpp)
 
 kcmutils_generate_desktop_file(kcm_recentFiles)
 target_link_libraries (kcm_recentFiles
@@ -65,6 +65,7 @@ target_link_libraries (kcm_recentFiles
    KF6::XmlGui
    Plasma::Activities
    )
+sonic_logging_plugin(kcm_recentFiles org.sonicde.desktopinterface.recentfiles PLAIN)
 
 install (
    TARGETS kcm_recentFiles
@@ -78,10 +79,3 @@ install (
    )
 
 install(FILES kactivitymanagerd_plugins_settings.kcfg DESTINATION ${KDE_INSTALL_KCFGDIR})
-
-include(ECMQtDeclareLoggingCategory)
-ecm_qt_declare_logging_category(kcm_recentFiles
-    HEADER kcms-recentfiles-debug.h
-    IDENTIFIER "LOG_KCMS_RECENTFILES"
-    CATEGORY_NAME "org.kde.kcms.recentFiles"
-)

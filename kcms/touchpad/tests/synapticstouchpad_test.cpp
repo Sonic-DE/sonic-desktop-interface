@@ -62,7 +62,8 @@ void SynapticsTouchpadTest::initTestCase()
                   QStringLiteral("1"),
                   QStringLiteral("-screen"),
                   QStringLiteral("0"),
-                  QStringLiteral("640x480x24"),
+                  // Xvfb refuses a screen smaller than its default 1280x1024 CRTC.
+                  QStringLiteral("1280x1024x24"),
                   QStringLiteral("-nolisten"),
                   QStringLiteral("tcp")});
     QVERIFY(m_xvfb.waitForStarted());

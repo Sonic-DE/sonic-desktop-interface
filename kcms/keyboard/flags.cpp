@@ -21,9 +21,7 @@
 #include "x11_helper.h"
 #include "xkb_rules.h"
 
-#include <QLoggingCategory>
-
-Q_LOGGING_CATEGORY(KCM_KEYBOARD_FLAGS, "org.kde.kcm_keyboard.flags", QtWarningMsg)
+#include <Sonic/Logging/Log>
 
 QIcon Flags::getIcon(const QString &layout)
 {
@@ -31,11 +29,10 @@ QIcon Flags::getIcon(const QString &layout)
         iconMap[layout] = createIcon(layout);
         const QIcon &icon = iconMap[layout];
         const QString country = getCountryFromLayoutName(layout);
-        qCDebug(KCM_KEYBOARD_FLAGS) << "getIcon: layout=" << layout << "country=" << country << "isNull=" << icon.isNull()
-                                    << "availableSizes=" << icon.availableSizes();
+        sonicDebug() << "getIcon: layout=" << layout << "country=" << country << "isNull=" << icon.isNull() << "availableSizes=" << icon.availableSizes();
         // Probe a pixmap to see if the engine actually paints something.
         const QPixmap probe = icon.pixmap(32, 32);
-        qCDebug(KCM_KEYBOARD_FLAGS) << "  probe pixmap 32x32: isNull=" << probe.isNull() << "size=" << probe.size();
+        sonicDebug() << "  probe pixmap 32x32: isNull=" << probe.isNull() << "size=" << probe.size();
     }
     return iconMap[layout];
 }
@@ -43,7 +40,7 @@ QIcon Flags::getIcon(const QString &layout)
 QIcon Flags::createIcon(const QString &layout)
 {
     const QString country = getCountryFromLayoutName(layout);
-    qCDebug(KCM_KEYBOARD_FLAGS) << "createIcon: layout=" << layout << "-> country=" << country;
+    sonicDebug() << "createIcon: layout=" << layout << "-> country=" << country;
     return QIcon(new KCountryFlagEmojiIconEngine(country));
 }
 

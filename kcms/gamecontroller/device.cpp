@@ -10,7 +10,7 @@
 
 #include <SDL2/SDL_hidapi.h>
 
-#include "logging.h"
+#include <Sonic/Logging/Log>
 #if HAVE_UDEV
 #include "udevmatcher.h"
 #endif
@@ -93,7 +93,7 @@ SDL_hid_device_info getJoystickHidInfo(short vendor, short product, std::string 
 
     SDL_hid_device_info *current = info;
 
-    qCDebug(KCM_GAMECONTROLLER) << "Checking for hidapi with vendor: " << vendor << " and product: " << product;
+    sonicDebug() << "Checking for hidapi with vendor: " << vendor << " and product: " << product;
 
     SDL_hid_device_info result{};
     result.interface_number = -2;
@@ -103,27 +103,27 @@ SDL_hid_device_info getJoystickHidInfo(short vendor, short product, std::string 
             // currently only the interface number, but more later maybe
             result.interface_number = info->interface_number;
 
-            qCDebug(KCM_GAMECONTROLLER) << "Found hidapi data for path " << info->path;
+            sonicDebug() << "Found hidapi data for path " << info->path;
         } else {
             // Set to unknown in case we don't find a match
             result.interface_number = -2;
 
             // There are more than one device with the same vendor and product
             // so iterate through them looking for ours.
-            qCDebug(KCM_GAMECONTROLLER) << "Found multiple hidapi data with that vendor and product id";
+            sonicDebug() << "Found multiple hidapi data with that vendor and product id";
 #if HAVE_UDEV
             auto to_match = UDevMatcher::deviceToUdevId(path);
 
-            qCDebug(KCM_GAMECONTROLLER) << "Looking for device with this udev id: " << to_match;
+            sonicDebug() << "Looking for device with this udev id: " << to_match;
 
             while (current) {
                 auto test_id = UDevMatcher::deviceToUdevId(current->path);
-                qCDebug(KCM_GAMECONTROLLER) << "Found device: " << current->path << " udev id: " << test_id;
+                sonicDebug() << "Found device: " << current->path << " udev id: " << test_id;
 
                 if (to_match == test_id) {
                     result.interface_number = current->interface_number;
 
-                    qCDebug(KCM_GAMECONTROLLER) << "Found hidapi data for path " << current->path;
+                    sonicDebug() << "Found hidapi data for path " << current->path;
                     current = nullptr;
                 } else {
                     current = current->next;
@@ -162,14 +162,14 @@ bool Device::open()
     m_joystick = SDL_JoystickOpen(m_deviceIndex);
 
     if (!m_joystick) {
-        qCWarning(KCM_GAMECONTROLLER) << "Failed to open joystick" << m_deviceIndex << SDL_GetError();
+        sonicWarning() << "Failed to open joystick" << m_deviceIndex << SDL_GetError();
         return false;
     }
 
     short vendor = SDL_JoystickGetVendor(m_joystick);
     short product = SDL_JoystickGetProduct(m_joystick);
     auto path = SDL_JoystickPath(m_joystick);
-    qCDebug(KCM_GAMECONTROLLER) << "Device path: " << path;
+    sonicDebug() << "Device path: " << path;
     SDL_hid_device_info info = getJoystickHidInfo(vendor, product, path);
     if (info.interface_number == -2) {
         // Couldn't find hidapi device, so unknown
@@ -184,7 +184,7 @@ bool Device::open()
     if (!m_controller) {
         m_leftTrigger = SDL_JoystickGetAxis(m_joystick, SDL_CONTROLLER_AXIS_TRIGGERLEFT);
         m_rightTrigger = SDL_JoystickGetAxis(m_joystick, SDL_CONTROLLER_AXIS_TRIGGERRIGHT);
-        qCDebug(KCM_GAMECONTROLLER) << "Device" << m_deviceIndex << "is not a gamepad. using as joystick";
+        sonicDebug() << "Device" << m_deviceIndex << "is not a gamepad. using as joystick";
         m_buttonCount = SDL_JoystickNumButtons(m_joystick);
     } else {
         m_leftTrigger = SDL_GameControllerGetAxis(m_controller, SDL_CONTROLLER_AXIS_TRIGGERLEFT);
@@ -360,7 +360,7 @@ void Device::onButtonEvent(const SDL_JoyButtonEvent &event)
 
 void Device::onControllerButtonEvent(const SDL_ControllerButtonEvent &event)
 {
-    qCDebug(KCM_GAMECONTROLLER) << "Got controller button event for button: " << ButtonToButtonName(SDL_GameControllerButton(event.button));
+    sonicDebug() << "Got controller button event for button: " << ButtonToButtonName(SDL_GameControllerButton(event.button));
     Q_EMIT buttonStateChanged(event.button);
 }
 

@@ -11,9 +11,7 @@
 #include <QDBusPendingCallWatcher>
 #include <QDBusPendingReply>
 #include <QDBusServiceWatcher>
-#include <QLoggingCategory>
-
-Q_LOGGING_CATEGORY(LOG_KICKOFF_LID, "org.kde.plasma.kickoff.lid")
+#include <Sonic/Logging/Log>
 
 static const QString s_service = QStringLiteral("org.kde.Solid.PowerManagement");
 static const QString s_path = QStringLiteral("/org/kde/Solid/PowerManagement");
@@ -62,10 +60,10 @@ void LidDetector::queryLidPresent()
             return;
         }
         if (reply.isError()) {
-            qCWarning(LOG_KICKOFF_LID).nospace().noquote() << "Failed to query lid state: "
-                                                           << "org.kde.Solid.PowerManagement"
-                                                           << " /org/kde/Solid/PowerManagement"
-                                                           << " isLidPresent: " << reply.error().name() << ": " << reply.error().message();
+            sonicWarning().nospace().noquote() << "Failed to query lid state: "
+                                               << "org.kde.Solid.PowerManagement"
+                                               << " /org/kde/Solid/PowerManagement"
+                                               << " isLidPresent: " << reply.error().name() << ": " << reply.error().message();
             setAvailable(false);
             setLidPresent(false);
         } else {

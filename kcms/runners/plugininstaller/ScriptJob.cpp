@@ -9,7 +9,6 @@
 #include "ScriptConfirmationDialog.h"
 #include <KLocalizedString>
 #include <KShell>
-#include <QDebug>
 #include <QDir>
 #include <QFileInfoList>
 

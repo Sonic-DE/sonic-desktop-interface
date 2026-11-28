@@ -5,7 +5,7 @@
 */
 
 #include "inputsequence.h"
-#include "logging.h"
+#include <Sonic/Logging/Log>
 
 #include <KLocalizedString>
 
@@ -81,7 +81,7 @@ InputSequence::InputSequence(const QStringList &config)
     } else if (type == u"Scroll"_s) {
         setType(Type::Scroll);
     } else {
-        qCWarning(KCM_TABLET) << "Unknown input sequence type" << type;
+        sonicWarning() << "Unknown input sequence type" << type;
     }
 }
 

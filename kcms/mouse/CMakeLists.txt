@@ -25,7 +25,9 @@ kcmutils_add_qml_kcm(kcm_mouse
         inputdevice.h
         mousemoduledata.cpp
         mousemoduledata.h
+        ${CMAKE_SOURCE_DIR}/sonic_logging_autoinstall.cpp
 )
+sonic_logging_plugin(kcm_mouse org.sonicde.desktopinterface.mouse)
 
 if (BUILD_KCM_MOUSE_X11)
     target_sources(kcm_mouse PRIVATE
@@ -33,20 +35,6 @@ if (BUILD_KCM_MOUSE_X11)
         cursortheme.h
     )
 endif()
-
-ecm_qt_declare_logging_category(kcm_mouse
-    HEADER logging.h
-    IDENTIFIER KCM_MOUSE
-    CATEGORY_NAME kcm_mouse
-    DEFAULT_SEVERITY Critical
-    DESCRIPTION "KCM for mouse input"
-    EXPORT KCM_MOUSE
-)
-
-ecm_qt_install_logging_categories(
-    EXPORT KCM_MOUSE
-    DESTINATION "${KDE_INSTALL_LOGGINGCATEGORIESDIR}"
-)
 
 if (BUILD_KCM_MOUSE_X11)
     # kapplymousetheme is an X11-only tool, called by startplasma-x11 but not startplasma-wayland

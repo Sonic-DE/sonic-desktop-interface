@@ -8,7 +8,6 @@
 
 #include <algorithm>
 
-#include <QDebug>
 #include <QStringLiteral>
 
 #include <KFuzzyMatcher>

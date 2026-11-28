@@ -18,7 +18,7 @@
 #include <KService>
 
 #include "basemodel.h"
-#include "kcmkeys_debug.h"
+#include <Sonic/Logging/Log>
 #include <kglobalaccel_component_interface.h>
 #include <kglobalaccel_interface.h>
 
@@ -40,9 +40,9 @@ GlobalAccelModel::GlobalAccelModel(QObject *parent)
                                                        this))
 {
     if (!m_globalAccelInterface->isValid()) {
-        qCCritical(KCMKEYS) << "Interface is not valid";
+        sonicCritical() << "Interface is not valid";
         if (m_globalAccelInterface->lastError().isValid()) {
-            qCCritical(KCMKEYS) << m_globalAccelInterface->lastError().name() << m_globalAccelInterface->lastError().message();
+            sonicCritical() << m_globalAccelInterface->lastError().name() << m_globalAccelInterface->lastError().message();
         }
     }
 
@@ -269,13 +269,13 @@ bool GlobalAccelModel::saveAction(const Component &component, const Action &acti
     for (const QKeySequence &key : shortcutsToSave) {
         keys.append(key);
     }
-    qCDebug(KCMKEYS) << "Saving" << actionId << "target" << action.activeShortcuts << "applying" << keys;
+    sonicDebug() << "Saving" << actionId << "target" << action.activeShortcuts << "applying" << keys;
     auto reply = m_globalAccelInterface->setForeignShortcutKeys(actionId, keys);
     reply.waitForFinished();
     if (!reply.isValid()) {
-        qCCritical(KCMKEYS) << "Error while saving";
+        sonicCritical() << "Error while saving";
         if (reply.error().isValid()) {
-            qCCritical(KCMKEYS) << reply.error().name() << reply.error().message();
+            sonicCritical() << reply.error().name() << reply.error().message();
         }
         Q_EMIT errorOccured(i18nc("%1 is the name of the component, %2 is the action for which saving failed",
                                   "Error while saving shortcut %1: %2",
@@ -313,12 +313,12 @@ void GlobalAccelModel::importConfig(const KConfigBase &config)
             return c.id == componentGroupName;
         });
         if (component == m_components.end()) {
-            qCWarning(KCMKEYS) << "Ignoring unknown component" << componentGroupName;
+            sonicWarning() << "Ignoring unknown component" << componentGroupName;
             continue;
         }
         KConfigGroup componentGroup(&config, componentGroupName);
         if (!componentGroup.hasGroup("Global Shortcuts")) {
-            qCWarning(KCMKEYS) << "Group" << componentGroupName << "has no shortcuts group";
+            sonicWarning() << "Group" << componentGroupName << "has no shortcuts group";
             continue;
         }
         KConfigGroup shortcutsGroup(&componentGroup, QStringLiteral("Global Shortcuts"));
@@ -328,7 +328,7 @@ void GlobalAccelModel::importConfig(const KConfigBase &config)
                 return a.id == key;
             });
             if (action == component->actions.end()) {
-                qCWarning(KCMKEYS) << "Ignoring unknown action" << key;
+                sonicWarning() << "Ignoring unknown action" << key;
                 continue;
             }
             const auto shortcuts = QKeySequence::listFromString(shortcutsGroup.readEntry(key));
@@ -345,7 +345,7 @@ void GlobalAccelModel::importConfig(const KConfigBase &config)
 void GlobalAccelModel::addApplication(const QString &desktopFileName, const QString &displayName)
 {
     if (desktopFileName.isEmpty()) {
-        qCWarning(KCMKEYS()) << "Tried to add empty application" << displayName;
+        sonicWarning() << "Tried to add empty application" << displayName;
         return;
     }
 
@@ -391,10 +391,10 @@ void GlobalAccelModel::addApplication(const QString &desktopFileName, const QStr
                 return;
             }
             if (infoReply.value().isEmpty()) {
-                qCWarning(KCMKEYS()) << "New component has no shortcuts:" << reply.value().path();
+                sonicWarning() << "New component has no shortcuts:" << reply.value().path();
                 Q_EMIT errorOccured(i18nc("%1 is the name of an application", "Error while adding %1, it seems it has no actions."));
             }
-            qCDebug(KCMKEYS) << "inserting at " << pos - m_components.begin();
+            sonicDebug() << "inserting at " << pos - m_components.begin();
             beginInsertRows(QModelIndex(), pos - m_components.begin(), pos - m_components.begin());
             auto c = loadComponent(infoReply.value());
             m_components.insert(pos, c);
@@ -439,12 +439,12 @@ void GlobalAccelModel::removeComponent(const Component &component)
     if (component.type == ComponentType::Command) {
         KService::Ptr service = KService::serviceByStorageId(component.id);
         if (service) {
-            qCDebug(KCMKEYS) << "Removing " << service->entryPath();
+            sonicDebug() << "Removing " << service->entryPath();
             QFile::remove(service->entryPath());
         }
     }
     KGlobalAccelComponentInterface componentInterface(m_globalAccelInterface->service(), componentReply.value().path(), m_globalAccelInterface->connection());
-    qCDebug(KCMKEYS) << "Cleaning up component at" << componentReply.value().path();
+    sonicDebug() << "Cleaning up component at" << componentReply.value().path();
     auto cleanUpReply = componentInterface.cleanUp();
     cleanUpReply.waitForFinished();
     if (!cleanUpReply.isValid()) {
@@ -462,9 +462,9 @@ void GlobalAccelModel::removeComponent(const Component &component)
 
 void GlobalAccelModel::genericErrorOccured(const QString &description, const QDBusError &error)
 {
-    qCCritical(KCMKEYS) << description;
+    sonicCritical() << description;
     if (error.isValid()) {
-        qCCritical(KCMKEYS) << error.name() << error.message();
+        sonicCritical() << error.name() << error.message();
     }
     Q_EMIT this->errorOccured(i18n("Error while communicating with the global shortcuts service"));
 }

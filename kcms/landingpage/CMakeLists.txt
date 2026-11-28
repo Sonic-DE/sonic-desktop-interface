@@ -9,7 +9,9 @@ kcmutils_add_qml_kcm(kcm_landingpage
         lookandfeelmodel.cpp
         splititem.cpp
         splitnode.cpp
+        ${CMAKE_SOURCE_DIR}/sonic_logging_autoinstall.cpp
 )
+sonic_logging_plugin(kcm_landingpage org.sonicde.desktopinterface.landingpage)
 
 qt6_add_shaders(kcm_landingpage "shaders"
     PRECOMPILE

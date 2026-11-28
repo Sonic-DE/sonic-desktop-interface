@@ -9,8 +9,8 @@
 #include "gtkaccelparse_p.h"
 #include <QDBusConnection>
 #include <QDBusServiceWatcher>
-#include <QDebug>
 #include <QTimer>
+#include <Sonic/Logging/Log>
 #include <private/qtx11extras_p.h>
 
 #define USED_MASK (XCB_MOD_MASK_SHIFT | XCB_MOD_MASK_CONTROL | XCB_MOD_MASK_1 | XCB_MOD_MASK_4)
@@ -411,7 +411,7 @@ void App::ungrabXKeyboard()
 {
     if (!m_keyboardGrabbed) {
         // grabXKeyboard() may fail sometimes, so don't fail, but at least warn anyway
-        qDebug() << "ungrabXKeyboard() called but keyboard not grabbed!";
+        sonicDebug() << "ungrabXKeyboard() called but keyboard not grabbed!";
     }
     m_keyboardGrabbed = false;
     xcb_ungrab_keyboard(QX11Info::connection(), XCB_CURRENT_TIME);

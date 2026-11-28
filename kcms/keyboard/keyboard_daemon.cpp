@@ -5,7 +5,7 @@
 */
 
 #include "keyboard_daemon.h"
-#include "debug.h"
+#include <Sonic/Logging/Log>
 
 #include <QAction>
 #include <QDBusConnection>
@@ -90,7 +90,7 @@ KeyboardDaemon::~KeyboardDaemon()
 
 void KeyboardDaemon::configureKeyboard()
 {
-    qCDebug(KCM_KEYBOARD) << "Configuring keyboard";
+    sonicDebug() << "Configuring keyboard";
     init_keyboard_hardware();
 
     // Force the shared KConfig to re-read kxkbrc from disk
@@ -103,7 +103,7 @@ void KeyboardDaemon::configureKeyboard()
     unregisterShortcut();
     registerShortcut();
 
-    qCDebug(KCM_KEYBOARD) << "Emitting layoutListChanged (from configureKeyboard)";
+    sonicDebug() << "Emitting layoutListChanged (from configureKeyboard)";
     Q_EMIT layoutListChanged();
     broadcastLayoutsChanged();
 }
@@ -188,7 +188,7 @@ void KeyboardDaemon::registerListeners()
 
     const QString kxkbrc = kxkbrcPath();
     if (kxkbrc.isEmpty()) {
-        qCWarning(KCM_KEYBOARD) << "Could not determine config directory; kxkbrc will not be watched";
+        sonicWarning() << "Could not determine config directory; kxkbrc will not be watched";
         return;
     }
 
@@ -222,14 +222,14 @@ void KeyboardDaemon::registerListeners()
     // has no kxkbrc yet, and the file can't be watched until it exists.
     const QString configDir = QFileInfo(kxkbrc).absolutePath();
     if (!keyboardFileWatcher->directories().contains(configDir) && !keyboardFileWatcher->addPath(configDir)) {
-        qCWarning(KCM_KEYBOARD) << "Failed to watch the config directory" << configDir << "; a kxkbrc created later will be missed";
+        sonicWarning() << "Failed to watch the config directory" << configDir << "; a kxkbrc created later will be missed";
     }
 
     if (!keyboardFileWatcher->files().contains(kxkbrc)) {
         if (!keyboardFileWatcher->addPath(kxkbrc)) {
-            qCDebug(KCM_KEYBOARD) << "kxkbrc does not exist yet at" << kxkbrc << "; waiting for it to be created";
+            sonicDebug() << "kxkbrc does not exist yet at" << kxkbrc << "; waiting for it to be created";
         } else {
-            qCDebug(KCM_KEYBOARD) << "Watching kxkbrc at" << kxkbrc;
+            sonicDebug() << "Watching kxkbrc at" << kxkbrc;
         }
     }
 }
@@ -268,16 +268,16 @@ QString KeyboardDaemon::kxkbrcPath() const
 void KeyboardDaemon::kxkbrcChanged(const QString &path)
 {
     Q_UNUSED(path);
-    qCDebug(KCM_KEYBOARD) << "kxkbrc changed, restarting 1000 ms debounce timer";
+    sonicDebug() << "kxkbrc changed, restarting 1000 ms debounce timer";
 
     // QSaveFile replaces the file by rename, which can drop the watch.
     // Re-add immediately so we do not miss subsequent saves.
     const QString kxkbrc = kxkbrcPath();
     if (!kxkbrc.isEmpty() && !keyboardFileWatcher->files().contains(kxkbrc)) {
         if (!keyboardFileWatcher->addPath(kxkbrc)) {
-            qCWarning(KCM_KEYBOARD) << "Failed to re-add kxkbrc watch at" << kxkbrc;
+            sonicWarning() << "Failed to re-add kxkbrc watch at" << kxkbrc;
         } else {
-            qCDebug(KCM_KEYBOARD) << "Re-added kxkbrc watch at" << kxkbrc;
+            sonicDebug() << "Re-added kxkbrc watch at" << kxkbrc;
         }
     }
 
@@ -293,9 +293,9 @@ void KeyboardDaemon::kxkbrcDirectoryChanged(const QString &path)
         return;
     }
     if (!keyboardFileWatcher->addPath(kxkbrc)) {
-        qCWarning(KCM_KEYBOARD) << "kxkbrc appeared but could not be watched at" << kxkbrc;
+        sonicWarning() << "kxkbrc appeared but could not be watched at" << kxkbrc;
     } else {
-        qCDebug(KCM_KEYBOARD) << "kxkbrc appeared at" << kxkbrc << "; now watching it";
+        sonicDebug() << "kxkbrc appeared at" << kxkbrc << "; now watching it";
     }
     keyboardFileDebounce->start();
 }
@@ -304,20 +304,20 @@ void KeyboardDaemon::kxkbrcDebounceTimeout()
 {
     const QString kxkbrc = kxkbrcPath();
     if (kxkbrc.isEmpty() || !QFile::exists(kxkbrc)) {
-        qCWarning(KCM_KEYBOARD) << "kxkbrc is missing at debounce timeout; skipping configureKeyboard";
+        sonicWarning() << "kxkbrc is missing at debounce timeout; skipping configureKeyboard";
         if (!kxkbrc.isEmpty() && !keyboardFileWatcher->files().contains(kxkbrc)) {
             keyboardFileWatcher->addPath(kxkbrc); // re-arm for when the file reappears
         }
         return;
     }
 
-    qCDebug(KCM_KEYBOARD) << "kxkbrc debounce timer fired, calling configureKeyboard";
+    sonicDebug() << "kxkbrc debounce timer fired, calling configureKeyboard";
     configureKeyboard();
 
     // After configureKeyboard returns, make sure the watch is still in place.
     if (!keyboardFileWatcher->files().contains(kxkbrc)) {
         if (!keyboardFileWatcher->addPath(kxkbrc)) {
-            qCWarning(KCM_KEYBOARD) << "Failed to re-add kxkbrc watch after configureKeyboard at" << kxkbrc;
+            sonicWarning() << "Failed to re-add kxkbrc watch after configureKeyboard at" << kxkbrc;
         }
     }
 }
@@ -361,12 +361,12 @@ void KeyboardDaemon::scrollLayouts(int delta)
 bool KeyboardDaemon::selectLayout(uint index)
 {
     if (!X11Helper::setGroup(index)) {
-        qCWarning(KCM_KEYBOARD) << "Could not switch X to layout" << index;
+        sonicWarning() << "Could not switch X to layout" << index;
         return false;
     }
     const uint xGroup = X11Helper::getGroup();
     if (xGroup != index) {
-        qCDebug(KCM_KEYBOARD) << "X merged layout" << index << "into group" << xGroup << "because their keymaps are identical";
+        sonicDebug() << "X merged layout" << index << "into group" << xGroup << "because their keymaps are identical";
     }
     layoutSelection.select(index, xGroup);
     return true;

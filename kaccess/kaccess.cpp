@@ -18,7 +18,6 @@
 #include <QDialogButtonBox>
 #include <QFile>
 #include <QHBoxLayout>
-#include <QLoggingCategory>
 #include <QPainter>
 #include <QProcess>
 #include <QScreen>
@@ -47,7 +46,7 @@
 #define XK_XKB_KEYS
 #include <X11/keysymdef.h>
 
-Q_LOGGING_CATEGORY(logKAccess, "kcm_kaccess")
+#include <Sonic/Logging/Log>
 
 struct ModifierKey {
     const unsigned int mask;
@@ -321,7 +320,7 @@ void KAccessApp::setScreenReaderEnabled(bool enabled)
         if (ret == 0) {
             qint64 pid = 0;
             QProcess::startDetached(QStringLiteral("orca"), {QStringLiteral("--replace")}, QString(), &pid);
-            qCDebug(logKAccess) << "Launching Orca, pid:" << pid;
+            sonicDebug() << "Launching Orca, pid:" << pid;
         }
     } else {
         QProcess::startDetached(

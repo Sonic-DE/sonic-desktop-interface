@@ -6,7 +6,6 @@
 
 #include "backend.h"
 
-#include "log_settings.h"
 #include <KConfigGroup>
 #include <KDesktopFile>
 #include <KFileItem>
@@ -18,6 +17,7 @@
 #include <KServiceAction>
 #include <KWindowEffects>
 #include <KWindowSystem>
+#include <Sonic/Logging/Log>
 
 #include <KApplicationTrader>
 #include <KIO/ApplicationLauncherJob>
@@ -442,7 +442,7 @@ void Backend::handleRecentDocumentAction() const
                 // no service found to handle the mimetype
                 return;
             } else {
-                qCWarning(TASKMANAGER_DEBUG) << "Preventing the file to open with " << service->desktopEntryName() << "no alternative found";
+                sonicWarning() << "Preventing the file to open with " << service->desktopEntryName() << "no alternative found";
             }
         }
     }

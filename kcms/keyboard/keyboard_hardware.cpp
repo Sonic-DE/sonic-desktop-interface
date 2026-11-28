@@ -8,13 +8,12 @@
 #include <KModifierKeyInfo>
 #include <KSharedConfig>
 
-#include <QDebug>
 #include <QtGui/private/qtx11extras_p.h>
 
 #include <math.h>
 
-#include "debug.h"
 #include "x11_helper.h"
+#include <Sonic/Logging/Log>
 
 #include <X11/XKBlib.h>
 #include <X11/Xlib.h>
@@ -54,7 +53,7 @@ public:
 static void set_repeatrate(int delay, double rate)
 {
     if (!X11Helper::xkbSupported(nullptr)) {
-        qCCritical(KCM_KEYBOARD) << "Failed to set keyboard repeat rate: xkb is not supported";
+        sonicCritical() << "Failed to set keyboard repeat rate: xkb is not supported";
         return;
     }
 

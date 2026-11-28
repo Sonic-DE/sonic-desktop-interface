@@ -27,6 +27,7 @@
 #include <QQuickWindow>
 #include <QScreen>
 #include <QStandardItemModel>
+#include <Sonic/Logging/Log>
 
 #include "landingpage_kdeglobalssettings.h"
 #include "landingpagedata.h"
@@ -68,7 +69,7 @@ MostUsedModel::MostUsedModel(QObject *parent)
             m_defaultModel->appendRow(item);
         }
     } else {
-        qCritical() << "Failed to find desktop file for" << qGuiApp->desktopFileName();
+        sonicCritical() << "Failed to find desktop file for" << qGuiApp->desktopFileName();
     }
 }
 

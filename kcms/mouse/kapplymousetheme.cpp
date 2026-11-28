@@ -9,7 +9,6 @@
 
 #include "cursortheme.h"
 
-#include <QDebug>
 #include <QFile>
 #include <QGuiApplication>
 #include <QScopeGuard>

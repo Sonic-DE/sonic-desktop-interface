@@ -15,7 +15,6 @@
 #include <QDBusInterface>
 
 #include "inputdevice.h"
-#include "kwindevices-logging.h"
 
 DevicesModel::DevicesModel(const QByteArray &kind, QObject *parent)
     : QAbstractListModel(parent)
@@ -53,7 +52,7 @@ void DevicesModel::resetModel()
     if (reply.isValid()) {
         devicesSysNames = reply.toStringList();
     } else {
-        qCWarning(LIBKWINDEVICES) << "Error on receiving device list from KWin.";
+        sonicWarning() << "Error on receiving device list from KWin.";
         return;
     }
 
@@ -109,7 +108,7 @@ void DevicesModel::addDevice(const QString &sysName, bool tellModel)
         if (tellModel) {
             beginInsertRows({}, m_devices.size(), m_devices.size());
         }
-        qCDebug(LIBKWINDEVICES).nospace() << "Device connected: " << dev->name() << " (" << dev->sysName() << ")";
+        sonicDebug().nospace() << "Device connected: " << dev->name() << " (" << dev->sysName() << ")";
         m_devices.push_back(std::move(dev));
         if (tellModel) {
             endInsertRows();
@@ -127,7 +126,7 @@ void DevicesModel::onDeviceRemoved(const QString &sysName)
     }
 
     auto dev = static_cast<InputDevice *>(it->get());
-    qCDebug(LIBKWINDEVICES).nospace() << "Device disconnected: " << dev->name() << " (" << dev->sysName() << ")";
+    sonicDebug().nospace() << "Device disconnected: " << dev->name() << " (" << dev->sysName() << ")";
 
     int index = std::distance(m_devices.cbegin(), it);
 

@@ -6,7 +6,6 @@
 
 #include "dirmodel.h"
 
-#include <QDebug>
 #include <QImage>
 #include <QMimeDatabase>
 #include <QPixmap>
@@ -170,7 +169,6 @@ void DirModel::delayedPreview()
     if (!list.isEmpty()) {
         KIO::PreviewJob *job = KIO::filePreview(list, m_screenshotSize);
         job->setIgnoreMaximumSize(true);
-        // qDebug() << "Created job" << job;
         connect(job, &KIO::PreviewJob::gotPreview, this, &DirModel::showPreview);
         connect(job, &KIO::PreviewJob::failed, this, &DirModel::previewFailed);
     }
@@ -188,7 +186,6 @@ void DirModel::showPreview(const KFileItem &item, const QPixmap &preview)
     }
 
     m_imageCache->insertImage(item.url().toString(), preview.toImage());
-    // qDebug() << "preview size:" << preview.size();
     Q_EMIT dataChanged(index, index);
 }
 

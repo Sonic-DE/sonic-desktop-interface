@@ -1,5 +1,6 @@
 ecm_add_test(
     touchpadclassifier_test.cpp
+    sonic_logging_component.cpp
     TEST_NAME touchpadclassifier_test
     LINK_LIBRARIES touchpad_x11_backends Qt::Test
 )
@@ -17,6 +18,7 @@ endif()
 if (BUILD_KCM_TOUCHPAD_X11 AND TARGET XOrg::Synaptics)
     ecm_add_test(
         synapticstouchpad_test.cpp
+        sonic_logging_component.cpp
         TEST_NAME synapticstouchpad_test
         LINK_LIBRARIES touchpad_x11_backends Qt::Test Qt::GuiPrivate KF6::ConfigCore XOrg::Synaptics X11::X11 X11::Xi
     )

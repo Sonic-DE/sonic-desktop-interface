@@ -7,6 +7,7 @@
 #include <KAboutData>
 #include <KCrash>
 #include <KDBusService>
+#include <KLocalizedQmlContext>
 #include <KLocalizedString>
 #include <KSharedConfig>
 #include <KWindowConfig>
@@ -17,13 +18,11 @@
 #include <QDBusConnection>
 #include <QDBusConnectionInterface>
 #include <QDBusMessage>
-#include <QDebug>
 #include <QIcon>
 #include <QList>
 #include <QLocale>
 #include <QPainter>
 #include <QQmlApplicationEngine>
-#include <QQmlContext>
 #include <QQuickImageProvider>
 #include <QQuickWindow>
 #include <QSessionManager>
@@ -83,7 +82,7 @@ int main(int argc, char **argv)
 
     QQmlApplicationEngine engine;
 
-    engine.rootContext()->setContextObject(new KLocalizedContext(&engine));
+    KLocalization::setupLocalizedContext(&engine);
     engine.loadFromModule("org.kde.plasma.emoji.app", "Emojier");
 
     QObject::connect(service, &KDBusService::activateRequested, &engine, [&engine](const QStringList & /*arguments*/, const QString & /*workingDirectory*/) {

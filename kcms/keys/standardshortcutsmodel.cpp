@@ -15,7 +15,7 @@
 #include <KStandardShortcut>
 
 #include "basemodel.h"
-#include "kcmkeys_debug.h"
+#include <Sonic/Logging/Log>
 
 StandardShortcutsModel::StandardShortcutsModel(QObject *parent)
     : BaseModel(parent)
@@ -82,7 +82,7 @@ void StandardShortcutsModel::exportToConfig(KConfigBase &config)
 void StandardShortcutsModel::importConfig(const KConfigBase &config)
 {
     if (!config.hasGroup("StandardShortcuts")) {
-        qCDebug(KCMKEYS) << "Config has no StandardShortcuts group";
+        sonicDebug() << "Config has no StandardShortcuts group";
         return;
     }
     const KConfigGroup group = config.group(QStringLiteral("StandardShortcuts"));
@@ -90,7 +90,7 @@ void StandardShortcutsModel::importConfig(const KConfigBase &config)
     for (const auto &key : keys) {
         KStandardShortcut::StandardShortcut id = KStandardShortcut::findByName(key);
         if (id == KStandardShortcut::AccelNone) {
-            qCWarning(KCMKEYS) << "Unknown standard shortcut" << key;
+            sonicWarning() << "Unknown standard shortcut" << key;
             continue;
         }
         QString name;
@@ -120,14 +120,14 @@ void StandardShortcutsModel::importConfig(const KConfigBase &config)
             return c.id == name;
         });
         if (cat == m_components.end()) {
-            qCWarning(KCMKEYS) << "No category for standard shortcut" << key;
+            sonicWarning() << "No category for standard shortcut" << key;
             continue;
         }
         auto action = std::find_if(cat->actions.begin(), cat->actions.end(), [&](const Action &a) {
             return a.id == key;
         });
         if (action == cat->actions.end()) {
-            qCWarning(KCMKEYS) << "Model doesn't include action" << key;
+            sonicWarning() << "Model doesn't include action" << key;
             continue;
         }
         const auto shortcuts = QKeySequence::listFromString(group.readEntry(key));
