@@ -13,6 +13,7 @@
 #include <QGuiApplication>
 #include <QSortFilterProxyModel>
 #include <QStandardPaths>
+#include <Sonic/Logging/Log>
 #include <qqml.h>
 
 int AbstractEmojiModel::rowCount(const QModelIndex &parent) const
@@ -143,7 +144,7 @@ EmojiModel::EmojiModel()
     dicts << genericPath;
 
     if (dicts.isEmpty()) {
-        qWarning() << "could not find emoji dictionaries." << dictName;
+        sonicWarning() << "could not find emoji dictionaries." << dictName;
         return;
     }
 

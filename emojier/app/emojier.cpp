@@ -17,7 +17,6 @@
 #include <QDBusConnection>
 #include <QDBusConnectionInterface>
 #include <QDBusMessage>
-#include <QDebug>
 #include <QIcon>
 #include <QList>
 #include <QLocale>

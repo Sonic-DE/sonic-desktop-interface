@@ -6,11 +6,11 @@
 
 #include "emojidict.h"
 #include "emojicategory.h"
-#include "emojier_debug.h"
 #include <KLocalizedString>
 #include <QFile>
 #include <QJsonArray>
 #include <QJsonObject>
+#include <Sonic/Logging/Log>
 
 QString Emoji::categoryName() const
 {
@@ -94,7 +94,7 @@ void EmojiDict::load(const QString &path)
     }
 
     if (skinToneVariantIndex != 0 && m_tonedEmojis.size() != skinToneVariantIndex) {
-        qCWarning(EMOJIER_LOG) << "Some skin tone variants are missing.";
+        sonicWarning() << "Some skin tone variants are missing.";
         m_emojis.append(std::move(m_tonedEmojis));
         m_emojis.append(std::move(m_twoToneEmojis));
         for (auto &emoji : m_emojis) {
@@ -102,7 +102,7 @@ void EmojiDict::load(const QString &path)
             emoji.twoToneVariantIndex = 0;
         }
     } else if (twoToneVariantIndex != 0 && m_twoToneEmojis.size() != twoToneVariantIndex) {
-        qCWarning(EMOJIER_LOG) << "Some two-tone skin variants are missing.";
+        sonicWarning() << "Some two-tone skin variants are missing.";
         m_emojis.append(std::move(m_twoToneEmojis));
         for (auto &emoji : m_emojis) {
             emoji.twoToneVariantIndex = 0;
