@@ -6,7 +6,7 @@
 
 #include "calibrationtool.h"
 
-#include "logging.h"
+#include <Sonic/Logging/Log>
 
 #include <KConfigGroup>
 #include <KSharedConfig>
@@ -288,7 +288,7 @@ ca_context *CalibrationTool::canberraContext()
     if (!m_canberraContext) {
         int ret = ca_context_create(&m_canberraContext);
         if (ret != CA_SUCCESS) {
-            qCWarning(KCM_TABLET) << "Failed to initialize canberra context:" << ca_strerror(ret);
+            sonicWarning() << "Failed to initialize canberra context:" << ca_strerror(ret);
             m_canberraContext = nullptr;
             return nullptr;
         }

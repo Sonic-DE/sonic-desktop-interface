@@ -10,7 +10,7 @@
 #include <utility>
 
 #include "inputdevice.h"
-#include "logging.h"
+#include <Sonic/Logging/Log>
 
 extern "C" {
 #include <libwacom/libwacom.h>
@@ -74,7 +74,7 @@ QVariant TabletsModel::data(const QModelIndex &index, int role) const
         WacomError *error = libwacom_error_new();
         auto device = libwacom_new_from_path(m_db, sysPath.toLatin1().constData(), WFALLBACK_NONE, error);
         if (device == nullptr) {
-            qCWarning(KCM_TABLET()) << "Failed to find device in libwacom:" << libwacom_error_get_message(error);
+            sonicWarning() << "Failed to find device in libwacom:" << libwacom_error_get_message(error);
             libwacom_error_free(&error);
         } else {
             libwacom_error_free(&error);
@@ -202,7 +202,7 @@ void TabletsModel::addDevice(const QString &sysName, bool tellModel)
 
         if (it != m_devices.end()) {
             if (dev->tabletTool() && !it->penDevice) {
-                qCDebug(KCM_TABLET) << "Adding a tablet pen to an existing thing.";
+                sonicDebug() << "Adding a tablet pen to an existing thing.";
                 it->penDevice = std::move(dev);
 
                 const int index = std::distance(m_devices.begin(), it);
@@ -211,7 +211,7 @@ void TabletsModel::addDevice(const QString &sysName, bool tellModel)
                 return;
             }
             if (dev->tabletPad() && !it->padDevice) {
-                qCDebug(KCM_TABLET) << "Adding a tablet pad to an existing thing.";
+                sonicDebug() << "Adding a tablet pad to an existing thing.";
                 it->padDevice = std::move(dev);
 
                 const int index = std::distance(m_devices.begin(), it);
@@ -279,7 +279,7 @@ void TabletsModel::loadReply(QDBusMessage reply)
     if (reply.type() == QDBusMessage::ReplyMessage) {
         devicesSysNames = reply.arguments().first().value<QDBusVariant>().variant().toStringList();
     } else {
-        qCWarning(KCM_TABLET) << "Error on receiving device list from KWin:" << reply.errorMessage();
+        sonicWarning() << "Error on receiving device list from KWin:" << reply.errorMessage();
         return;
     }
 

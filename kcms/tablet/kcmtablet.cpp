@@ -7,9 +7,9 @@
 #include "kcmtablet.h"
 #include "calibrationtool.h"
 #include "inputdevice.h"
-#include "logging.h"
 #include "tabletevents.h"
 #include "tabletmoduledata.h"
+#include <Sonic/Logging/Log>
 
 #include <KConfigGroup>
 #include <KLocalizedString>
@@ -239,7 +239,7 @@ private:
         WacomError *error = libwacom_error_new();
         auto device = libwacom_new_from_path(m_db, sysPath.toLatin1().constData(), WFALLBACK_GENERIC, error);
         if (device == nullptr) {
-            qCWarning(KCM_TABLET()) << "Failed to find device in libwacom:" << libwacom_error_get_message(error);
+            sonicWarning() << "Failed to find device in libwacom:" << libwacom_error_get_message(error);
         } else {
             int num_styli = 0;
             const WacomStylus **styli = libwacom_get_styli(device, &num_styli);
@@ -261,8 +261,7 @@ private:
         // We currently don't support more than 3 stylus buttons, at the moment
         if (numButtons > 3) {
             numButtons = 3;
-            qCWarning(KCM_TABLET)
-                << "More than 3 stylus buttons detected! This is currently not supported. If you have such a stylus, please file a bug report.";
+            sonicWarning() << "More than 3 stylus buttons detected! This is currently not supported. If you have such a stylus, please file a bug report.";
         }
 
         clear();
@@ -297,7 +296,7 @@ Tablet::Tablet(QObject *parent, const KPluginMetaData &metaData)
 {
     m_db = libwacom_database_new();
     if (m_db == nullptr) {
-        qCWarning(KCM_TABLET) << "Failed to initialize libwacom database!";
+        sonicWarning() << "Failed to initialize libwacom database!";
     }
 
     m_tabletsModel = new TabletsModel(m_db, this);

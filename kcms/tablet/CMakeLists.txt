@@ -2,29 +2,9 @@ add_definitions(-DTRANSLATION_DOMAIN=\"kcm_tablet\")
 
 kcmutils_add_qml_kcm(kcm_tablet INSTALL_NAMESPACE "plasma/kcms/systemsettings")
 
-ecm_qt_declare_logging_category(kcm_tablet
-    HEADER
-        logging.h
-    IDENTIFIER
-        KCM_TABLET
-    CATEGORY_NAME
-        kcm_tablet
-    DEFAULT_SEVERITY
-        Critical
-    DESCRIPTION
-        "KCM for tablet input"
-    EXPORT
-        kcm_tablet
-)
-
 if (Qt6_VERSION VERSION_GREATER_EQUAL "6.8.0")
     set(private_code_option  "PRIVATE_CODE")
 endif()
-
-ecm_qt_install_logging_categories(
-    EXPORT kcm_tablet
-    DESTINATION "${KDE_INSTALL_LOGGINGCATEGORIESDIR}"
-)
 
 target_sources(kcm_tablet PRIVATE
     kcmtablet.cpp
