@@ -18,7 +18,6 @@
 #include <KIO/Global>
 
 #include <QComboBox>
-#include <QDebug>
 #include <QPushButton>
 
 #include <Solid/DeviceInterface>

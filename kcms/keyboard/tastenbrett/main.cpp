@@ -5,7 +5,6 @@
 */
 
 #include <QCommandLineParser>
-#include <QDebug>
 #include <QProcess>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>

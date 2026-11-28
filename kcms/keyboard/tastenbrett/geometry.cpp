@@ -6,7 +6,6 @@
 
 #include "geometry.h"
 
-#include <QDebug>
 
 #include "doodad.h"
 #include "section.h"
