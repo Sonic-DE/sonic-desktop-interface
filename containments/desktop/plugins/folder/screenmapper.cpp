@@ -21,7 +21,7 @@
 #include <PlasmaActivities/Consumer>
 #include <chrono>
 
-#include "debug.h"
+#include <Sonic/Logging/Log>
 
 using namespace std::chrono_literals;
 
@@ -246,7 +246,7 @@ void ScreenMapper::addMapping(const QUrl &url, int screen, const QString &activi
         // Don't spam this
         static auto reported = false;
         if (!reported) {
-            qCCritical(FOLDER)
+            sonicCritical()
                 << "Greater than" << MAX_MAPPING_COUNT
                 << "files and folders on the desktop; this is too many to map their positions in a performant way! Not adding any more position mappings.";
             reported = true;
@@ -275,7 +275,6 @@ void ScreenMapper::removeFromMap(const QUrl &url, const QString &activity)
 
 void ScreenMapper::flushDelayedSignal()
 {
-    qDebug() << "diag flushDelayedSignal";
     if (m_screenMappingChangedTimer->isActive()) {
         m_screenMappingChangedTimer->stop();
         Q_EMIT screenMappingChanged();
@@ -374,7 +373,7 @@ QStringList ScreenMapper::screenMapping() const
     int i = 0;
     while (it != m_screenItemMap.constEnd()) {
         if (i >= MAX_MAPPING_COUNT) {
-            qCCritical(FOLDER)
+            sonicCritical()
                 << "Greater than" << MAX_MAPPING_COUNT
                 << "disabled files and folders; this is too many to remember their position in a performant way! Not adding any more position mappings.";
             break;
@@ -529,7 +528,7 @@ QStringList ScreenMapper::disabledScreensMap() const
     auto it = m_itemsOnDisabledScreensMap.constBegin();
     for (int i = 0; it != m_itemsOnDisabledScreensMap.constEnd(); it = std::next(it), ++i) {
         if (i >= MAX_MAPPING_COUNT) {
-            qCCritical(FOLDER)
+            sonicCritical()
                 << "Greater than" << MAX_MAPPING_COUNT
                 << "files and folders on the desktop; this is too many to map their positions in a performant way! Not adding any more position mappings.";
             break;

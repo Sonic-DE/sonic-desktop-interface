@@ -43,12 +43,6 @@ target_link_libraries(folderplugin PUBLIC
                       KF6::Notifications
                       KF6::XmlGui)
 
-ecm_qt_declare_logging_category(folderplugin
-    HEADER debug.h
-    IDENTIFIER FOLDER
-    CATEGORY_NAME org.kde.plasma.folder
-)
-
 ecm_finalize_qml_module(folderplugin)
 
 if(BUILD_TESTING)
