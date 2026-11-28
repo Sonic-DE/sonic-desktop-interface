@@ -18,6 +18,7 @@
 #include <QDBusConnection>
 #include <QDBusMessage>
 #include <QDBusMetaType>
+#include <Sonic/Logging/Log>
 
 class KRunnerData : public KCModuleData
 {
@@ -73,7 +74,7 @@ void SearchConfigModule::load()
         if (data.isValid()) {
             showKCM(data);
         } else {
-            qWarning() << "Could not find plugin with id" << m_pluginID;
+            sonicWarning() << "Could not find plugin with id" << m_pluginID;
         }
         m_pluginID.clear(); // Clear this to avoid showing the plugin's config again if we reset the KCM
     }
