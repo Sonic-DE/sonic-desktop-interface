@@ -32,7 +32,7 @@
 
 #include "common/dbus/common.h"
 #include "kactivitiesdata.h"
-#include "kcms-recentfiles-debug.h"
+#include <Sonic/Logging/Log>
 
 K_PLUGIN_FACTORY_WITH_JSON(KActivityManagerKCMFactory, "kcm_recentFiles.json", registerPlugin<RecentFilesKcm>(); registerPlugin<KActivitiesData>();)
 
@@ -172,7 +172,7 @@ void RecentFilesKcm::whatToRememberWidgetChanged(bool)
         d->radioDontRememberApplications->isChecked()     ? NoApplications :
         /* otherwise */                                     AllApplications;
     // clang-format on
-    qCDebug(LOG_KCMS_RECENTFILES) << "whatToRememberWidgetChangeState: " << whatToRemember;
+    sonicDebug() << "whatToRememberWidgetChangeState: " << whatToRemember;
     d->kcfg_whatToRemember->setProperty("kcfg_value", whatToRemember);
     setNeedsSave(whatToRemember != d->pluginConfig->whatToRemember());
 
